@@ -31,7 +31,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 
 /* ── Sidebar ──────────────────────────────────────────────────────────────── */
 .sidebar {
-  width: var(--sidebar-w); min-height: 100vh; background: var(--navy-d);
+  width: var(--sidebar-w); height: 100vh; background: var(--navy-d);
   display: flex; flex-direction: column; position: fixed; top: 0; left: 0; z-index: 10;
   overflow-y: auto;
 }
@@ -45,7 +45,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 }
 .sidebar-brand p { font-size: 10px; color: #7A9CC6; letter-spacing: .06em; text-transform: uppercase; }
 .sidebar-section { padding: 14px 18px 4px; font-size: 9px; color: #7A9CC6; text-transform: uppercase; letter-spacing: .1em; }
-.sidebar-nav { list-style: none; padding: 0 8px 16px; }
+.sidebar-nav { list-style: none; padding: 0 8px 4px; }
 .sidebar-nav li {
   border-radius: 6px; margin-bottom: 2px;
   cursor: pointer; transition: background .15s;
@@ -53,6 +53,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .sidebar-nav li a {
   display: block; padding: 7px 10px; font-size: 12px; color: #B8CDE0;
   text-decoration: none; line-height: 1.4;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .sidebar-nav li:hover { background: rgba(255,255,255,.07); }
 .sidebar-nav li:hover a { color: #fff; }
@@ -278,6 +279,38 @@ tbody td.delta-cell { background: #fff; }
   <div style="height:1px;background:rgba(255,255,255,.1);margin:0 12px 8px"></div>
   <div class="sidebar-section">APQC PCF v8.0 — All Categories</div>
   <ul class="sidebar-nav" id="sidebar-nav"></ul>
+
+  <div style="height:1px;background:rgba(255,255,255,.1);margin:0 12px 8px"></div>
+  <div class="sidebar-section">End-to-End Processes</div>
+  <ul class="sidebar-nav" style="padding:0 8px 16px">
+    <li>
+      <a href="https://hitldrivenarchitecture.com/hitl_navigator_p2p_final.html" target="_blank" title="Module 1 · Procure-to-Pay" style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+        <span>
+          <span class="pcf-num" style="color:#7DCFB6">M1</span>
+          <span style="font-size:12px;color:#E2EEF9;font-weight:600">Procure-to-Pay</span>
+        </span>
+        <span style="font-size:9px;font-family:'DM Mono',monospace;font-weight:700;color:#7DCFB6;background:rgba(125,207,182,.15);border:1px solid rgba(125,207,182,.4);padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;">LIVE ↗</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" title="Module 2 · Order-to-Cash — Coming Soon" style="display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:default;pointer-events:none;">
+        <span>
+          <span class="pcf-num" style="color:#5B8AB8">M2</span>
+          <span style="font-size:12px;color:#5B8AB8;">Order-to-Cash</span>
+        </span>
+        <span style="font-size:9px;font-family:'DM Mono',monospace;color:#4A6E8A;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;">COMING</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" title="Module 3 · Hire-to-Retire — Coming Soon" style="display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:default;pointer-events:none;">
+        <span>
+          <span class="pcf-num" style="color:#5B8AB8">M3</span>
+          <span style="font-size:12px;color:#5B8AB8;">Hire-to-Retire</span>
+        </span>
+        <span style="font-size:9px;font-family:'DM Mono',monospace;color:#4A6E8A;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;">COMING</span>
+      </a>
+    </li>
+  </ul>
 </aside>
 
 <!-- ── Main ── -->
@@ -960,7 +993,7 @@ PCF.forEach(cat => {
 const nav = document.getElementById('sidebar-nav');
 PCF.forEach((cat,idx) => {
   const li = document.createElement('li');
-  li.innerHTML = `<a href="#"><span class="pcf-num">${cat.code}</span>${cat.name}</a>`;
+  li.innerHTML = `<a href="#" title="${cat.code} ${cat.name}"><span class="pcf-num">${cat.code}</span>${cat.name}</a>`;
   li.onclick = () => render(idx);
   nav.appendChild(li);
 });
@@ -1047,14 +1080,21 @@ function render(idx) {
   let html = '';
   // L1 row
   html += `<tr class="row-l1">
-    <td><strong>${cat.code} &nbsp;${cat.name}</strong> <span class="pcf-ref">L1 Domain Aggregate</span></td>
-    <td style="text-align:center;font-size:10px;color:#A8C4E0;letter-spacing:.05em">L1 AGG</td>
-    <td class="col-m1" style="text-align:center">${cat.l1mv[0]}%</td>
-    <td class="col-m2" style="text-align:center">${cat.l1mv[1]}%</td>
-    <td class="col-m3 m3-col" style="text-align:center"><strong>${cat.l1mv[2]}%</strong></td>
-    <td class="col-m4" style="text-align:center">${cat.l1mv[3]}%</td>
-    <td class="col-m5" style="text-align:center">${cat.l1mv[4]}%</td>
-    <td style="text-align:center">${fmtDelta(cat.l1mv[0],cat.l1mv[2])}</td>
+    <td>
+      <div style="font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${cat.code} &nbsp;${cat.name}</div>
+      <div style="margin-top:5px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:600;color:#7A9CC6;background:rgba(255,255,255,.12);border:1px solid rgba(168,196,224,.3);padding:2px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;">L1 Domain Aggregate</span>
+      </div>
+    </td>
+    <td style="vertical-align:bottom;padding-bottom:8px;text-align:center;">
+      <span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#A8C4E0;background:rgba(255,255,255,.15);border:1px solid rgba(168,196,224,.4);padding:2px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;">L1 AGG</span>
+    </td>
+    <td class="col-m1" style="text-align:center;vertical-align:bottom;padding-bottom:8px">${cat.l1mv[0]}%</td>
+    <td class="col-m2" style="text-align:center;vertical-align:bottom;padding-bottom:8px">${cat.l1mv[1]}%</td>
+    <td class="col-m3 m3-col" style="text-align:center;vertical-align:bottom;padding-bottom:8px"><strong>${cat.l1mv[2]}%</strong></td>
+    <td class="col-m4" style="text-align:center;vertical-align:bottom;padding-bottom:8px">${cat.l1mv[3]}%</td>
+    <td class="col-m5" style="text-align:center;vertical-align:bottom;padding-bottom:8px">${cat.l1mv[4]}%</td>
+    <td style="text-align:center;vertical-align:bottom;padding-bottom:8px">${fmtDelta(cat.l1mv[0],cat.l1mv[2])}</td>
   </tr>`;
   cat.groups.forEach(g => {
     const dom = g.dominant;
