@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>End-to-End Process — Hire-to-Retire (H2R)</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#1B4F8A;--navy-d:#0D2D4F;--navy-l:#EEF3FA;
+  --dark:#0D1B2A;--gray:#444;--lgray:#888;--white:#fff;
+  --bg:#F4F6FB;--border:#DDE3EE;
+  --dec-bg:#EEF3FA;--dec-c:#1B4F8A;
+  --kno-bg:#F3F0FE;--kno-c:#534AB7;
+  --doc-bg:#E0F2FE;--doc-c:#0369A1;
+  --tra-bg:#DCFCE7;--tra-c:#166534;
+  --exc-bg:#FEE2E2;--exc-c:#991B1B;
+  --m1:#F0F7FF;--m2:#E6F1FF;--m3:#D6E8FF;--m4:#C4DCFF;--m5:#B0CEFF;
+  --c-c:#166534;--r-c:#1B4F8A;--u-c:#B45309;--d-c:#991B1B;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--dark);font-size:14px;line-height:1.6;}
+
+/* ── Header ── */
+.site-header{background:var(--navy-d);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Playfair Display',serif;font-size:17px;color:#fff;font-weight:700;}
+.brand span{font-size:11px;color:#7A9CC6;font-weight:400;letter-spacing:.08em;text-transform:uppercase;display:block;margin-top:2px;}
+.header-right{font-size:11px;color:#7A9CC6;text-align:right;display:flex;align-items:center;gap:16px;}
+.header-right a{color:#A8C4E0;text-decoration:none;}
+
+/* ── PDF Dropdown ── */
+.pdf-wrap{position:relative;}
+.pdf-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;padding:6px 12px;border-radius:6px;cursor:pointer;letter-spacing:.04em;display:flex;align-items:center;gap:6px;}
+.pdf-btn:hover{background:rgba(255,255,255,.2);}
+.pdf-arrow{font-size:9px;transition:transform .2s;}
+.pdf-menu{display:none;position:absolute;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);min-width:220px;z-index:100;overflow:hidden;}
+.pdf-menu.open{display:block;}
+.pdf-menu-item{padding:10px 16px;font-size:12px;color:var(--dark);cursor:pointer;border-bottom:1px solid #F0F2F8;display:flex;align-items:center;justify-content:flex-end;gap:8px;text-align:right;}
+.pdf-menu-item:last-child{border-bottom:none;}
+.pdf-menu-item:hover{background:var(--navy-l);}
+.pdf-menu-item .pmi-label{font-weight:600;color:var(--navy);}
+.pdf-menu-item .pmi-sub{font-size:10px;color:var(--lgray);margin-top:1px;}
+
+/* ── Hero ── */
+.hero{background:#fff;border-bottom:1px solid var(--border);padding:28px 32px 24px;}
+.module-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--navy);background:var(--navy-l);padding:3px 10px;border-radius:4px;display:inline-block;margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:26px;color:var(--dark);font-weight:700;margin-bottom:6px;}
+.hero-sub{font-size:13px;color:var(--lgray);margin-bottom:20px;line-height:1.7;}
+.hero-sub strong{color:var(--navy);}
+.metrics{display:flex;gap:12px;flex-wrap:wrap;}
+.metric{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 16px;min-width:120px;}
+.metric .lbl{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--lgray);margin-bottom:4px;}
+.metric .val{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;}
+.metric .sub{font-size:10px;color:var(--lgray);margin-top:2px;}
+.m-dec .val{color:var(--dec-c);} .m-tra .val{color:var(--tra-c);}
+.m-exc .val{color:var(--exc-c);} .m-gap .val{color:#B45309;}
+
+/* ── Main ── */
+.main{padding:24px 32px 40px;}
+.section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--lgray);margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.view-label{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#fff;background:var(--navy);padding:2px 8px;border-radius:3px;margin-bottom:6px;}
+
+/* ── Legend ── */
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gray);}
+.ld{width:12px;height:12px;border-radius:3px;}
+.ld.dec{background:var(--dec-bg);border:1px solid var(--dec-c);}
+.ld.kno{background:var(--kno-bg);border:1px solid var(--kno-c);}
+.ld.doc{background:var(--doc-bg);border:1px solid var(--doc-c);}
+.ld.tra{background:var(--tra-bg);border:1px solid var(--tra-c);}
+.ld.exc{background:var(--exc-bg);border:1px solid var(--exc-c);}
+.legend-sep{width:1px;background:var(--border);height:16px;}
+.legend-note{font-size:10px;color:var(--lgray);font-style:italic;}
+
+/* ── Swim lane ── */
+.swimlane-wrap{overflow-x:auto;margin-bottom:24px;}
+.swimlane{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;min-width:760px;background:var(--border);border-radius:10px;overflow:hidden;}
+.lane-col{display:flex;flex-direction:column;}
+.lane-header{padding:10px 12px 6px;text-align:center;}
+.lh-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#fff;margin-bottom:2px;}
+.lh-pcf{font-size:9px;color:rgba(255,255,255,.65);font-family:'DM Mono',monospace;font-style:italic;}
+.l-sc{background:#2D6A4F;} .l-pr{background:#5B3FA6;} .l-fi{background:var(--navy-d);} .l-su{background:#4A5568;}
+.lane-body{background:#fff;padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;}
+.step{width:100%;max-width:175px;border-radius:6px;padding:6px 9px;transition:box-shadow .15s;}
+.step:hover{box-shadow:0 2px 8px rgba(0,0,0,.1);}
+.step-ref{font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray);margin-bottom:1px;}
+.step-name{font-size:11px;font-weight:600;line-height:1.3;margin-bottom:4px;}
+.step-foot{display:flex;align-items:center;justify-content:space-between;gap:4px;}
+.step-pat{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+.m3pill{background:var(--m3);padding:1px 5px;border-radius:3px;font-family:'DM Mono',monospace;font-size:9px;color:var(--navy);font-weight:700;}
+.step.dec{background:var(--dec-bg);border:1px solid #C8D8EE;position:relative;}
+.step.dec::before{content:'⬡ Decision gate';position:absolute;top:-7px;left:8px;font-size:7px;font-weight:700;color:var(--dec-c);background:#fff;padding:0 3px;}
+.step.dec .step-name,.step.dec .step-pat{color:var(--dec-c);}
+.step.kno{background:var(--kno-bg);border:1px solid #D4CFFA;}
+.step.kno .step-name,.step.kno .step-pat{color:var(--kno-c);}
+.step.doc{background:var(--doc-bg);border:1px solid #BAE3FE;}
+.step.doc .step-name,.step.doc .step-pat{color:var(--doc-c);}
+.step.tra{background:var(--tra-bg);border:1px solid #BBF0CC;}
+.step.tra .step-name,.step.tra .step-pat{color:var(--tra-c);}
+.step.exc{background:var(--exc-bg);border:2px dashed #F4A0A0;}
+.step.exc .step-name,.step.exc .step-pat{color:var(--exc-c);}
+.lane-arr{width:1px;height:10px;background:var(--border);position:relative;align-self:center;}
+.lane-arr::after{content:'▾';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);font-size:9px;color:#ccc;}
+.handoff{width:100%;max-width:175px;background:var(--bg);border:1px dashed var(--border);border-radius:4px;padding:3px 8px;text-align:center;font-size:9px;color:var(--lgray);font-style:italic;line-height:1.4;}
+.handoff .hf-pcf{font-family:'DM Mono',monospace;font-size:8px;color:var(--navy);font-style:normal;font-weight:600;display:block;margin-bottom:1px;}
+
+/* ── Insight ── */
+.insight{background:var(--navy-l);border-left:4px solid var(--navy);border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:24px;}
+.insight h3{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em;}
+.insight p{font-size:13px;color:var(--dark);line-height:1.7;}
+.insight strong{color:var(--navy);}
+
+/* ── HITL Impact Table (dashboard style) ── */
+.tbl-wrap{overflow-x:auto;margin-bottom:28px;}
+.hitl-table{width:100%;border-collapse:collapse;font-size:12px;}
+.hitl-table thead th{background:var(--navy);color:#fff;padding:9px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;border:1px solid var(--navy);}
+.hitl-table thead th:first-child{text-align:left;min-width:200px;}
+.hitl-table thead th:not(:first-child){text-align:center;}
+.row-agg td{background:var(--navy-d);color:#fff;font-weight:700;padding:9px 10px;border-top:2px solid var(--navy);}
+.row-l2 td{background:var(--navy-l);color:var(--navy-d);font-weight:700;font-size:12px;padding:7px 10px;border-top:2px solid #7AAED6;border-bottom:1px solid #C8D8EE;}
+.row-l2 td:first-child{border-left:3px solid #7AAED6;}
+.row-l3 td{padding:7px 10px;border-bottom:1px solid #F0F2F8;color:var(--gray);vertical-align:middle;}
+.row-l3:nth-child(even) td{background:#F9FBFD;}
+.row-l3:nth-child(odd) td{background:#fff;}
+.step-cell{padding-left:20px;font-size:11px;}
+.step-cell::before{content:'↳ ';color:#B0BAD0;font-size:10px;}
+.pcf-cell{font-family:'DM Mono',monospace;font-size:10px;color:var(--lgray);text-align:center;}
+.pat{display:inline-block;font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}
+.pat.dec{background:var(--dec-bg);color:var(--dec-c);}
+.pat.kno{background:var(--kno-bg);color:var(--kno-c);}
+.pat.doc{background:var(--doc-bg);color:var(--doc-c);}
+.pat.tra{background:var(--tra-bg);color:var(--tra-c);}
+.pat.exc{background:var(--exc-bg);color:var(--exc-c);}
+td.m1{background:var(--m1);color:var(--navy);text-align:center;font-family:'DM Mono',monospace;font-size:11px;}
+td.m3{background:var(--m3);color:var(--navy);font-weight:700;text-align:center;font-family:'DM Mono',monospace;font-size:11px;}
+td.delta{color:#B45309;font-weight:700;text-align:center;font-family:'DM Mono',monospace;font-size:11px;}
+td.opp{text-align:center;font-size:10px;font-weight:600;}
+.opp-h{color:var(--tra-c);} .opp-l{color:var(--lgray);}
+
+/* ── Capability map ── */
+.cap-map{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;}
+.cap-card{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.cap-head{background:var(--navy-d);padding:8px 14px;}
+.cap-head .ptag{font-family:'DM Mono',monospace;font-size:10px;color:#7A9CC6;margin-bottom:2px;}
+.cap-head .pname{font-size:12px;font-weight:700;color:#fff;}
+.cap-body{padding:10px 14px;}
+.cap-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid #F5F5F5;font-size:11px;}
+.cap-row:last-child{border-bottom:none;}
+.cap-row .crn{color:var(--gray);flex:1;padding-right:8px;}
+.cap-agg{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;gap:12px;font-size:10px;color:var(--lgray);}
+.cap-agg strong{color:var(--navy);}
+
+/* ── Value Chain Specification table ── */
+.wcs-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:28px;}
+.wcs-table thead th{background:var(--navy);color:#fff;padding:8px 10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;border:1px solid var(--navy);vertical-align:bottom;}
+.wcs-table thead th:first-child{text-align:left;min-width:160px;}
+.wcs-l2 td{background:var(--navy-l);color:var(--navy-d);font-weight:700;font-size:11px;padding:6px 10px;border-top:2px solid #7AAED6;border-bottom:1px solid #C8D8EE;}
+.wcs-l2 td:first-child{border-left:3px solid #7AAED6;}
+.wcs-row td{padding:7px 10px;border-bottom:1px solid #F0F2F8;vertical-align:top;color:var(--gray);font-size:11px;}
+.wcs-row:nth-child(even) td{background:#F9FBFD;}
+.wcs-row:nth-child(odd) td{background:#fff;}
+.wcs-step{font-weight:600;color:var(--dark);font-size:11px;}
+.wcs-pcf{font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray);display:block;margin-top:1px;}
+.wcs-people{font-size:10px;line-height:1.5;}
+.wcs-people strong{color:var(--dark);display:block;margin-bottom:2px;}
+.wcs-process{font-size:10px;line-height:1.5;color:var(--gray);}
+.wcs-data{font-size:10px;line-height:1.6;}
+.wcs-data .de{display:flex;align-items:flex-start;gap:4px;margin-bottom:3px;}
+.wcs-data .de-name{color:var(--dark);font-size:10px;}
+.wcs-data .de-sys{color:var(--lgray);font-size:9px;font-style:italic;}
+.crud-chip{display:inline-block;font-family:'DM Mono',monospace;font-size:8px;font-weight:700;padding:0 4px;border-radius:2px;margin-left:2px;}
+.crud-c{background:#DCFCE7;color:var(--c-c);}
+.crud-r{background:var(--m1);color:var(--r-c);}
+.crud-u{background:#FEF3C7;color:var(--u-c);}
+.crud-d{background:var(--exc-bg);color:var(--d-c);}
+.wcs-tech{font-size:10px;line-height:1.6;color:var(--gray);}
+.wcs-tech .sys{display:block;padding:2px 0;border-bottom:1px solid #F5F5F5;}
+.wcs-tech .sys:last-child{border-bottom:none;}
+.wcs-tech .sys-name{font-weight:600;color:var(--dark);}
+
+/* ── CRUD Matrix ── */
+.crud-matrix-wrap{overflow-x:auto;margin-bottom:20px;}
+.crud-table{border-collapse:collapse;font-size:10px;width:100%;}
+.crud-table{border-collapse:collapse;font-size:10px;width:100%;table-layout:fixed;}
+.crud-table thead th{background:var(--navy);color:#fff;padding:6px 8px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:1px solid var(--navy);text-align:left;vertical-align:bottom;overflow:hidden;}
+.crud-table td{padding:5px 8px;border-bottom:1px solid #F0F2F8;vertical-align:middle;overflow:hidden;}
+.crud-table thead th:first-child{font-weight:700;color:#fff;font-size:10px;}
+.crud-table td:first-child{font-weight:600;color:var(--dark);font-size:10px;}
+.crud-table thead th:nth-child(2){font-size:9px;color:#fff;font-style:normal;font-family:'DM Sans',sans-serif;font-weight:700;}
+.crud-table td:nth-child(2){font-size:9px;color:var(--lgray);font-style:italic;font-family:'DM Mono',monospace;}
+.crud-table td:nth-child(n+3){text-align:center;}
+.crud-table .ct-l2 td{background:var(--navy-l);color:var(--navy-d);font-weight:700;font-size:10px;padding:5px 8px;border-top:2px solid #7AAED6;}
+.crud-table .ct-l2 td:first-child{border-left:3px solid #7AAED6;}
+.crud-table tbody tr:not(.ct-l2) td{padding:5px 8px;border-bottom:1px solid #F0F2F8;vertical-align:middle;}
+.crud-table tbody tr:not(.ct-l2):nth-child(even) td{background:#F9FBFD;}
+.crud-table tbody tr:not(.ct-l2):nth-child(odd) td{background:#fff;}
+.crud-table td:first-child{font-weight:600;color:var(--dark);font-size:10px;}
+.crud-table td:nth-child(2){font-size:9px;color:var(--lgray);font-style:italic;font-family:'DM Mono',monospace;}
+.crud-cell{text-align:center;font-family:'DM Mono',monospace;font-size:9px;font-weight:700;}
+.crud-cell.c{background:#DCFCE7;color:var(--c-c);}
+.crud-cell.r{background:var(--m1);color:var(--r-c);}
+.crud-cell.u{background:#FEF3C7;color:var(--u-c);}
+.crud-cell.ru{background:#FEF9E7;color:#92400E;}
+.crud-cell.cu{background:#D1FAE5;color:#065F46;}
+.crud-cell.empty{background:#FAFAFA;color:#ddd;}
+
+/* ── CRUD legend ── */
+.crud-legend{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+.cl-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--gray);}
+.cl-chip{width:20px;height:14px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:8px;font-weight:700;}
+
+/* ── Footer ── */
+.site-footer{background:var(--navy-d);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+.footer-l{font-size:11px;color:#5B8AB8;}
+.footer-r{font-size:10px;color:#5B8AB8;text-align:right;}
+
+/* ── Divider ── */
+.section-divider{border:none;border-top:2px solid var(--border);margin:32px 0;}
+
+/* ── Print styles ── */
+@media print {
+  * { -webkit-print-color-adjust:exact!important;print-color-adjust:exact!important; }
+  @page { size:A4 landscape;margin:12mm 10mm; }
+  .no-print,.site-header,.site-footer,.pdf-wrap,.section-divider{display:none!important;}
+  .main{padding:0!important;}
+  body{background:#fff;}
+
+  /* View isolation via print-view class */
+  .view-hitl .view-vs,.view-hitl .view-wcs,
+  .view-vs .view-hitl,.view-vs .view-wcs,
+  .view-wcs .view-hitl,.view-wcs .view-vs { display:none!important; }
+
+  .print-header{display:block!important;}
+}
+@media screen { .print-header{display:none!important;} }
+</style>
+
+</head>
+<body>
+
+<header class="site-header no-print">
+  <div class="brand">End-to-End Process<span>Human-AI Partnership Framework</span></div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#fff;font-weight:600">hitldrivenarchitecture.com</div>
+      <div style="font-size:11px;color:#7A9CC6">Timothy P. King · Human Enterprise Architect</div>
+    </div>
+    <div class="pdf-wrap no-print">
+      <button class="pdf-btn" onclick="togglePDF()">
+        ↓ Download PDF <span id="pdf-arrow" style="display:inline-block;transition:transform .2s">▾</span>
+      </button>
+      <div class="pdf-menu" id="pdf-menu">
+        <div class="pdf-menu-item" onclick="window.open('pdfs/hitl_navigator_h2r_hitl_design_final.pdf','_blank')">
+          <div><div class="pmi-label">HITL Design</div><div class="pmi-sub">People · Swim lane + impact table</div></div>
+        </div>
+        <div class="pdf-menu-item" onclick="window.open('pdfs/hitl_navigator_h2r_process_diagram_final.pdf','_blank')">
+          <div><div class="pmi-label">Process Diagram</div><div class="pmi-sub">Process · Swim lane diagram</div></div>
+        </div>
+        <div class="pdf-menu-item" onclick="window.open('pdfs/hitl_navigator_h2r_process_spec_final.pdf','_blank')">
+          <div><div class="pmi-label">Process Specification</div><div class="pmi-sub">Data &amp; Technology · Step-level detail</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Hire-to-Retire (H2R)</h1>
+  <p class="hero-sub">
+    <strong>PCF 7.2</strong> Recruit, Source, and Select Employees &nbsp;·&nbsp;
+    <strong>PCF 7.3</strong> Manage Employee Onboarding, Training, and Development &nbsp;·&nbsp;
+    <strong>PCF 7.5</strong> Manage Employee Information and Analytics<br>
+    4 participant roles · 22 process steps · HITL design intent derived from APQC PCF v8.0 verb taxonomy
+  </p>
+  <div class="metrics">
+    <div class="metric"><div class="lbl">H2R Aggregate H% · M3</div><div class="val" style="color:var(--navy)">63%</div><div class="sub">Human at design intent</div></div>
+    <div class="metric m-dec"><div class="lbl">Decision Gates</div><div class="val">7</div><div class="sub">Irreducibly human · 80% H</div></div>
+    <div class="metric m-tra"><div class="lbl">Knowledge Steps</div><div class="val">6</div><div class="sub">AI-augmented · 65% H</div></div>
+    <div class="metric m-exc"><div class="lbl">Exception Flows</div><div class="val">2</div><div class="sub">Human resolution · 82% H</div></div>
+    <div class="metric m-gap"><div class="lbl">Δ M1 → M3</div><div class="val">-15%</div><div class="sub">AI convergence opportunity</div></div>
+  </div>
+</div>
+
+<div class="main">
+
+<div id="view-hitl">
+  <div class="view-label">View 1 — HITL Design</div>
+  <div class="section-title">Pattern Type Legend</div>
+  <div class="legend">
+    <div class="legend-item"><div class="ld dec"></div>Decision — 80% H at M3</div>
+    <div class="legend-item"><div class="ld doc"></div>Document — 40% H</div>
+    <div class="legend-item"><div class="ld tra"></div>Transaction — 35% H</div>
+    <div class="legend-item"><div class="ld exc"></div>Exception — 82% H</div>
+    <div class="legend-sep"></div>
+    <div class="legend-note">Swim lanes = PCF process group ownership roles · PCF L3 reference shown on each step and handoff</div>
+  </div>
+
+  <div class="section-title">H2R End-to-End Process — HITL Design · PCF-Derived Process Ownership</div>
+  <div class="swimlane-wrap">
+    <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
+      <colgroup><col style="width:25%"><col style="width:25%"><col style="width:25%"><col style="width:25%"></colgroup>
+      <thead>
+        <tr>
+          <th style="background:#1B4F8A;color:#fff;padding:12px 12px 8px;text-align:left;vertical-align:top;border:2px solid #fff;">
+            <div style="height:8px"></div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Talent Acquisition</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);font-style:italic;font-family:'DM Mono',monospace">PCF 7.2</div>
+          </th>
+          <th style="background:#2D6A4F;color:#fff;padding:12px 12px 8px;text-align:left;vertical-align:top;border:2px solid #fff;">
+            <div style="height:8px"></div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">HR Operations</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);font-style:italic;font-family:'DM Mono',monospace">PCF 7.3 + 7.5</div>
+          </th>
+          <th style="background:#0D7A8A;color:#fff;padding:12px 12px 8px;text-align:left;vertical-align:top;border:2px solid #fff;">
+            <div style="height:8px"></div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Employee / Manager</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);font-style:italic;font-family:'DM Mono',monospace">Internal</div>
+          </th>
+          <th style="background:#4A5568;color:#fff;padding:12px 12px 8px;text-align:left;vertical-align:top;border:2px solid #fff;">
+            <div style="height:8px"></div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Candidate / Agency</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);font-style:italic;font-family:'DM Mono',monospace">External participant</div>
+          </th>
+        </tr>
+      </thead>
+      <tbody id="swim-body"></tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <h3>HITL Design Insight — H2R</h3>
+    <p><strong>7 Decision gates</strong> (80% Human) are the irreducibly human layer — hiring, performance, and career decisions carry people authority that must remain human by design. <strong>6 Knowledge steps</strong> (65% Human) represent the AI-augmented opportunity — sourcing, onboarding, training, and workforce analytics. <strong>2 Exception flows</strong> (82% Human) require human resolution. H2R aggregate at M3: <strong>63% Human / 37% AI</strong> — reflecting the judgment-heavy nature of the HR lifecycle.</p>
+  </div>
+
+  <div class="section-title hitl-table">HITL Impact Analysis</div>
+  <div class="tbl-wrap hitl-table">
+    <table class="hitl-table"><thead><tr>
+        <th style="text-align:left">Process Step</th>
+        <th>PCF Ref</th><th>Pattern</th>
+        <th style="background:#1a3a5c">M1 H%</th>
+        <th style="background:#1d5699">M3 H% ★</th>
+        <th>Δ M1→M3</th><th>AI Opportunity</th>
+      </tr></thead>
+      <tbody>
+        <tr class="row-agg">
+          <td>H2R End-to-End Process <span style="font-family:'DM Mono',monospace;font-size:10px;color:#7A9CC6;margin-left:8px">L1 Aggregate</span></td>
+          <td style="text-align:center;font-family:'DM Mono',monospace;font-size:10px;color:#7A9CC6">7.2+7.3+7.5</td>
+          <td style="text-align:center"><span class="pat" style="background:rgba(255,255,255,.15);color:#A8C4E0">Mixed</span></td>
+          <td style="background:#1a3a5c;color:#A8C4E0;font-family:'DM Mono',monospace;font-size:11px;text-align:center;font-weight:700">78%</td>
+          <td style="background:#1d5699;color:#fff;font-family:'DM Mono',monospace;font-size:13px;text-align:center;font-weight:700">63%</td>
+          <td style="color:#F59E0B;font-family:'DM Mono',monospace;font-size:11px;text-align:center;font-weight:700">-15%</td>
+          <td style="color:#6EE7B7;font-size:11px;font-weight:600;text-align:center">Significant</td>
+        </tr><tr class="row-l2"><td colspan="7">PCF 7.2 · Talent Acquisition — Recruit, Source, and Select</td></tr><tr class="row-l3"><td class="step-cell">Manage Employee Requisition</td><td class="pcf-cell">7.2.1</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr><tr class="row-l3"><td class="step-cell">Source / Recruit Candidates</td><td class="pcf-cell">7.2.2</td><td style="text-align:center"><span class="pat kno">Knowledge</span></td><td class="m1">85%</td><td class="m3">65%</td><td class="delta">-20%</td><td class="opp opp-h">High</td></tr><tr class="row-l3"><td class="step-cell">Screen Candidates</td><td class="pcf-cell">7.2.3</td><td style="text-align:center"><span class="pat dec">Decision</span></td><td class="m1">92%</td><td class="m3">80%</td><td class="delta">-12%</td><td class="opp opp-l">Retain Human</td></tr><tr class="row-l3"><td class="step-cell">Select Candidate</td><td class="pcf-cell">7.2.3</td><td style="text-align:center"><span class="pat dec">Decision</span></td><td class="m1">92%</td><td class="m3">80%</td><td class="delta">-12%</td><td class="opp opp-l">Retain Human</td></tr><tr class="row-l3"><td class="step-cell">Manage Applicant Information</td><td class="pcf-cell">7.2.5</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr><tr class="row-l3"><td class="step-cell">Manage New Hire</td><td class="pcf-cell">7.2.4</td><td style="text-align:center"><span class="pat dec">Decision</span></td><td class="m1">92%</td><td class="m3">80%</td><td class="delta">-12%</td><td class="opp opp-l">Retain Human</td></tr><tr class="row-l3"><td class="step-cell">Hiring Exception</td><td class="pcf-cell">7.2.3</td><td style="text-align:center"><span class="pat exc">Exception</span></td><td class="m1">95%</td><td class="m3">82%</td><td class="delta">-13%</td><td class="opp opp-l">Retain Human</td></tr><tr class="row-l2"><td colspan="7">PCF 7.3 · HR Operations — Onboarding, Training, and Development</td></tr><tr class="row-l3"><td class="step-cell">Manage Employee Onboarding</td><td class="pcf-cell">7.3.1</td><td style="text-align:center"><span class="pat kno">Knowledge</span></td><td class="m1">85%</td><td class="m3">65%</td><td class="delta">-20%</td><td class="opp opp-h">High</td></tr><tr class="row-l3"><td class="step-cell">Develop &amp; Train Employee</td><td class="pcf-cell">7.3.4</td><td style="text-align:center"><span class="pat kno">Knowledge</span></td><td class="m1">85%</td><td class="m3">65%</td><td class="delta">-20%</td><td class="opp opp-h">High</td></tr><tr class="row-l3"><td class="step-cell">Manage Employee Performance</td><td class="pcf-cell">7.3.2</td><td style="text-align:center"><span class="pat dec">Decision</span></td><td class="m1">92%</td><td class="m3">80%</td><td class="delta">-12%</td><td class="opp opp-l">Retain Human</td></tr><tr class="row-l3"><td class="step-cell">Manage Career Development</td><td class="pcf-cell">7.3.3</td><td style="text-align:center"><span class="pat kno">Knowledge</span></td><td class="m1">85%</td><td class="m3">65%</td><td class="delta">-20%</td><td class="opp opp-h">High</td></tr><tr class="row-l2"><td colspan="7">PCF 7.5 · HR Operations — Employee Information and Analytics</td></tr><tr class="row-l3"><td class="step-cell">Manage and Maintain Employee Data</td><td class="pcf-cell">7.5.3</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr><tr class="row-l3"><td class="step-cell">Manage Employee Inquiry</td><td class="pcf-cell">7.5.2</td><td style="text-align:center"><span class="pat exc">Exception</span></td><td class="m1">95%</td><td class="m3">82%</td><td class="delta">-13%</td><td class="opp opp-l">Retain Human</td></tr><tr class="row-l3"><td class="step-cell">Manage Reporting</td><td class="pcf-cell">7.5.1</td><td style="text-align:center"><span class="pat doc">Document</span></td><td class="m1">72%</td><td class="m3">40%</td><td class="delta">-32%</td><td class="opp opp-h">High</td></tr><tr class="row-l3"><td class="step-cell">Develop Workforce Analytics</td><td class="pcf-cell">7.5.5</td><td style="text-align:center"><span class="pat kno">Knowledge</span></td><td class="m1">85%</td><td class="m3">65%</td><td class="delta">-20%</td><td class="opp opp-h">High</td></tr><tr class="row-l2"><td colspan="7">Employee / Manager</td></tr><tr class="row-l3"><td class="step-cell">Submit Requisition</td><td class="pcf-cell">7.2.1</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr><tr class="row-l3"><td class="step-cell">Complete Onboarding</td><td class="pcf-cell">7.3.1</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr><tr class="row-l3"><td class="step-cell">Complete Training</td><td class="pcf-cell">7.3.4</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr><tr class="row-l3"><td class="step-cell">Performance Review</td><td class="pcf-cell">7.3.2</td><td style="text-align:center"><span class="pat dec">Decision</span></td><td class="m1">92%</td><td class="m3">80%</td><td class="delta">-12%</td><td class="opp opp-l">Retain Human</td></tr><tr class="row-l2"><td colspan="7">External Participant · Candidate / Agency</td></tr><tr class="row-l3"><td class="step-cell">Submit Application</td><td class="pcf-cell">Ext</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr><tr class="row-l3"><td class="step-cell">Receive Offer</td><td class="pcf-cell">Ext</td><td style="text-align:center"><span class="pat dec">Decision</span></td><td class="m1">92%</td><td class="m3">80%</td><td class="delta">-12%</td><td class="opp opp-l">Retain Human</td></tr><tr class="row-l3"><td class="step-cell">Accept / Decline Offer</td><td class="pcf-cell">Ext</td><td style="text-align:center"><span class="pat dec">Decision</span></td><td class="m1">92%</td><td class="m3">80%</td><td class="delta">-12%</td><td class="opp opp-l">Retain Human</td></tr></tbody></table>
+  </div>
+
+  <div class="section-title cap-map">PCF Capability Domains — O2C Footprint</div>
+  <div class="cap-map"><div class="cap-card">
+      <div class="cap-head"><div class="ptag">PCF 7.2</div><div class="pname">Recruit, Source, and Select Employees</div></div>
+      <div class="cap-body">
+        <div class="cap-row"><span class="crn">7.2.1 Manage employee requisitions</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-row"><span class="crn">7.2.2 Recruit / Source candidates</span><span class="pat kno">Knowledge</span></div>
+        <div class="cap-row"><span class="crn">7.2.3 Screen and select candidates</span><span class="pat dec">Decision</span></div>
+        <div class="cap-row"><span class="crn">7.2.4 Manage new hire / re-hire</span><span class="pat dec">Decision</span></div>
+        <div class="cap-row"><span class="crn">7.2.5 Manage applicant information</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-agg"><span>M1: <strong>78%</strong></span><span>M3: <strong>59%</strong></span><span>M5: <strong>39%</strong></span></div>
+      </div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-head"><div class="ptag">PCF 7.3</div><div class="pname">Onboarding, Training, and Development</div></div>
+      <div class="cap-body">
+        <div class="cap-row"><span class="crn">7.3.1 Manage employee onboarding</span><span class="pat kno">Knowledge</span></div>
+        <div class="cap-row"><span class="crn">7.3.2 Manage employee performance</span><span class="pat dec">Decision</span></div>
+        <div class="cap-row"><span class="crn">7.3.3 Manage employee career development</span><span class="pat kno">Knowledge</span></div>
+        <div class="cap-row"><span class="crn">7.3.4 Develop and train employees</span><span class="pat kno">Knowledge</span></div>
+        <div class="cap-agg"><span>M1: <strong>87%</strong></span><span>M3: <strong>69%</strong></span><span>M5: <strong>48%</strong></span></div>
+      </div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-head"><div class="ptag">PCF 7.5</div><div class="pname">Employee Information and Analytics</div></div>
+      <div class="cap-body">
+        <div class="cap-row"><span class="crn">7.5.1 Manage reporting processes</span><span class="pat doc">Document</span></div>
+        <div class="cap-row"><span class="crn">7.5.2 Manage employee inquiry process</span><span class="pat exc">Exception</span></div>
+        <div class="cap-row"><span class="crn">7.5.3 Manage and maintain employee data</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-row"><span class="crn">7.5.5 Develop workforce analytics</span><span class="pat kno">Knowledge</span></div>
+        <div class="cap-agg"><span>M1: <strong>75%</strong></span><span>M3: <strong>51%</strong></span><span>M5: <strong>30%</strong></span></div>
+      </div>
+    </div>
+  </div>
+</div><!-- end view-hitl -->
+
+<hr class="section-divider">
+
+<div id="view-wcs">
+  <div class="view-label">View 3 — Process Specification · Data &amp; Technology</div>
+  <div class="section-title">Step-Level Process Specification — People · Process · Data · Technology</div>
+  <p style="font-size:12px;color:var(--lgray);margin-bottom:14px;line-height:1.6">Each L3 process step is fully specified below. Data entities show the system of record and the CRUD operation performed at this step.</p>
+
+  <div class="tbl-wrap">
+    <table class="wcs-table"><tr class="wcs-l2"><td colspan="6">PCF 7.2 · Talent Acquisition — Recruit, Source, and Select</td></tr><tr>
+          <td><strong>Manage Employee Requisition</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.2.1</span></td>
+          <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">35%</span></td>
+          <td style="font-size:12px">AI automated routing. HR monitors SLA exceptions.</td>
+          <td style="font-size:12px">Receive headcount request. Validate role and budget. Open requisition in ATS.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-c">C</span> Job Requisition <span style="color:var(--lgray);font-style:italic">· ATS</span><br><span class="crud-chip crud-r">R</span> Headcount Plan <span style="color:var(--lgray);font-style:italic">· HRIS</span><br><span class="crud-chip crud-r">R</span> Budget <span style="color:var(--lgray);font-style:italic">· ERP Finance</span><br></td>
+          <td style="font-size:11px">ATS · HRIS · AI JD generation</td>
+        </tr><tr>
+          <td><strong>Source / Recruit Candidates</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.2.2</span></td>
+          <td style="text-align:center"><span class="pat kno">Knowledge</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">65%</span></td>
+          <td style="font-size:12px">Recruiter — AI surfaces pipeline. Human crafts strategy and relationships.</td>
+          <td style="font-size:12px">Post role. Source passive candidates. Engage agencies where required.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-u">U</span> Job Requisition <span style="color:var(--lgray);font-style:italic">· ATS</span><br><span class="crud-chip crud-c">C</span> Candidate Profile <span style="color:var(--lgray);font-style:italic">· ATS</span><br><span class="crud-chip crud-r">R</span> Job Description <span style="color:var(--lgray);font-style:italic">· HRIS</span><br></td>
+          <td style="font-size:11px">ATS · LinkedIn Recruiter · AI candidate matching</td>
+        </tr><tr>
+          <td><strong>Screen Candidates</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.2.3</span></td>
+          <td style="text-align:center"><span class="pat dec">Decision</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">80%</span></td>
+          <td style="font-size:12px">Recruiter — AI pre-screens and scores CVs. Human makes shortlist decision.</td>
+          <td style="font-size:12px">Review AI-scored applications. Conduct phone screens. Select for interview.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-u">U</span> Candidate Profile <span style="color:var(--lgray);font-style:italic">· ATS</span><br><span class="crud-chip crud-r">R</span> Job Requisition <span style="color:var(--lgray);font-style:italic">· ATS</span><br><span class="crud-chip crud-c">C</span> Interview Schedule <span style="color:var(--lgray);font-style:italic">· ATS</span><br></td>
+          <td style="font-size:11px">ATS AI CV scoring · Video interview platform · Scheduling AI</td>
+        </tr><tr>
+          <td><strong>Select Candidate</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.2.3</span></td>
+          <td style="text-align:center"><span class="pat dec">Decision</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">80%</span></td>
+          <td style="font-size:12px">Hiring Manager + HR — final selection. AI presents comparison summary.</td>
+          <td style="font-size:12px">Conduct structured interviews. Debrief panel. Select and initiate offer.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-u">U</span> Candidate Profile <span style="color:var(--lgray);font-style:italic">· ATS</span><br><span class="crud-chip crud-u">U</span> Job Requisition <span style="color:var(--lgray);font-style:italic">· ATS</span><br><span class="crud-chip crud-c">C</span> Offer <span style="color:var(--lgray);font-style:italic">· ATS</span><br></td>
+          <td style="font-size:11px">ATS interview scorecard · AI interview analysis · Reference check platform</td>
+        </tr><tr>
+          <td><strong>Manage Applicant Information</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.2.5</span></td>
+          <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">35%</span></td>
+          <td style="font-size:12px">AI automated data management and compliance. HR audits periodically.</td>
+          <td style="font-size:12px">Maintain candidate records. Ensure data privacy compliance. Archive per policy.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-u">U</span> Candidate Profile <span style="color:var(--lgray);font-style:italic">· ATS</span><br><span class="crud-chip crud-r">R</span> Candidate Profile <span style="color:var(--lgray);font-style:italic">· ATS</span><br></td>
+          <td style="font-size:11px">ATS data management · GDPR / privacy compliance tools</td>
+        </tr><tr>
+          <td><strong>Manage New Hire</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.2.4</span></td>
+          <td style="text-align:center"><span class="pat dec">Decision</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">80%</span></td>
+          <td style="font-size:12px">HR Manager — approves offer terms and start date. AI drafts offer letter.</td>
+          <td style="font-size:12px">Prepare and extend offer. Negotiate terms. Issue contract. Confirm start date.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-u">U</span> Offer <span style="color:var(--lgray);font-style:italic">· ATS</span><br><span class="crud-chip crud-c">C</span> Employee Record <span style="color:var(--lgray);font-style:italic">· HRIS</span><br><span class="crud-chip crud-r">R</span> Compensation Band <span style="color:var(--lgray);font-style:italic">· HRIS</span><br></td>
+          <td style="font-size:11px">ATS offer management · HRIS · DocuSign / e-signature</td>
+        </tr><tr>
+          <td><strong>Hiring Exception</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.2.3</span></td>
+          <td style="text-align:center"><span class="pat exc">Exception</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">82%</span></td>
+          <td style="font-size:12px">HR Manager + Legal — human resolves. AI flags compliance or equity risk.</td>
+          <td style="font-size:12px">Investigate offer rejection, counter-offer, or compliance concern.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-u">U</span> Offer <span style="color:var(--lgray);font-style:italic">· ATS</span><br><span class="crud-chip crud-u">U</span> Job Requisition <span style="color:var(--lgray);font-style:italic">· ATS</span><br><span class="crud-chip crud-r">R</span> Candidate Profile <span style="color:var(--lgray);font-style:italic">· ATS</span><br></td>
+          <td style="font-size:11px">ATS Exception Workflow · Legal review · AI risk flagging</td>
+        </tr><tr class="wcs-l2"><td colspan="6">PCF 7.3 · HR Operations — Onboarding, Training, and Development</td></tr><tr>
+          <td><strong>Manage Employee Onboarding</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.3.1</span></td>
+          <td style="text-align:center"><span class="pat kno">Knowledge</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">65%</span></td>
+          <td style="font-size:12px">HR + Manager — AI orchestrates tasks. Human leads cultural integration.</td>
+          <td style="font-size:12px">Coordinate system access, equipment, and orientation. Assign 30/60/90 plan.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-u">U</span> Employee Record <span style="color:var(--lgray);font-style:italic">· HRIS</span><br><span class="crud-chip crud-c">C</span> Onboarding Plan <span style="color:var(--lgray);font-style:italic">· LMS</span><br><span class="crud-chip crud-c">C</span> IT Access Request <span style="color:var(--lgray);font-style:italic">· ITSM</span><br></td>
+          <td style="font-size:11px">HRIS onboarding · LMS · ITSM ServiceNow · AI task orchestration</td>
+        </tr><tr>
+          <td><strong>Develop &amp; Train Employee</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.3.4</span></td>
+          <td style="text-align:center"><span class="pat kno">Knowledge</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">65%</span></td>
+          <td style="font-size:12px">L&amp;D Team — AI personalizes learning path. Human facilitates and coaches.</td>
+          <td style="font-size:12px">Assign mandatory and role-based training. Track completion. Assess competency.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-u">U</span> Onboarding Plan <span style="color:var(--lgray);font-style:italic">· LMS</span><br><span class="crud-chip crud-c">C</span> Training Record <span style="color:var(--lgray);font-style:italic">· LMS</span><br><span class="crud-chip crud-r">R</span> Competency Framework <span style="color:var(--lgray);font-style:italic">· HRIS</span><br></td>
+          <td style="font-size:11px">LMS — Cornerstone / Workday Learning · AI personalized paths · Assessment platform</td>
+        </tr><tr>
+          <td><strong>Manage Employee Performance</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.3.2</span></td>
+          <td style="text-align:center"><span class="pat dec">Decision</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">80%</span></td>
+          <td style="font-size:12px">Manager — performance judgment is irreducibly human. AI provides data and drafts.</td>
+          <td style="font-size:12px">Set objectives. Conduct mid-year and annual reviews. Document ratings.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-c">C</span> Performance Review <span style="color:var(--lgray);font-style:italic">· HRIS</span><br><span class="crud-chip crud-r">R</span> Employee Record <span style="color:var(--lgray);font-style:italic">· HRIS</span><br><span class="crud-chip crud-u">U</span> Compensation Band <span style="color:var(--lgray);font-style:italic">· HRIS</span><br></td>
+          <td style="font-size:11px">HRIS performance module · AI goal tracking · Calibration tools</td>
+        </tr><tr>
+          <td><strong>Manage Career Development</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.3.3</span></td>
+          <td style="text-align:center"><span class="pat kno">Knowledge</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">65%</span></td>
+          <td style="font-size:12px">HR + Manager — AI surfaces opportunities. Human guides career conversation.</td>
+          <td style="font-size:12px">Identify development needs. Create IDPs. Discuss succession and mobility.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-c">C</span> Development Plan <span style="color:var(--lgray);font-style:italic">· HRIS</span><br><span class="crud-chip crud-r">R</span> Performance Review <span style="color:var(--lgray);font-style:italic">· HRIS</span><br><span class="crud-chip crud-r">R</span> Competency Framework <span style="color:var(--lgray);font-style:italic">· HRIS</span><br></td>
+          <td style="font-size:11px">HRIS career development · AI skills gap analysis · Succession planning tools</td>
+        </tr><tr class="wcs-l2"><td colspan="6">PCF 7.5 · HR Operations — Employee Information and Analytics</td></tr><tr>
+          <td><strong>Manage and Maintain Employee Data</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.5.3</span></td>
+          <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">35%</span></td>
+          <td style="font-size:12px">AI automated data maintenance. HR audits and approves changes.</td>
+          <td style="font-size:12px">Process role, compensation, and status changes. Maintain data integrity.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-u">U</span> Employee Record <span style="color:var(--lgray);font-style:italic">· HRIS</span><br><span class="crud-chip crud-r">R</span> Employee Record <span style="color:var(--lgray);font-style:italic">· HRIS</span><br></td>
+          <td style="font-size:11px">HRIS · AI data validation · HR shared services portal</td>
+        </tr><tr>
+          <td><strong>Manage Employee Inquiry</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.5.2</span></td>
+          <td style="text-align:center"><span class="pat exc">Exception</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">82%</span></td>
+          <td style="font-size:12px">HR Specialist — complex inquiries require human. AI handles tier-1.</td>
+          <td style="font-size:12px">Receive and triage HR queries. Resolve policy, benefit, or process questions.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-r">R</span> Employee Record <span style="color:var(--lgray);font-style:italic">· HRIS</span><br><span class="crud-chip crud-r">R</span> Policy Document <span style="color:var(--lgray);font-style:italic">· Knowledge Base</span><br><span class="crud-chip crud-c">C</span> Case Record <span style="color:var(--lgray);font-style:italic">· HR Case Mgmt</span><br></td>
+          <td style="font-size:11px">HR Case Management ServiceNow · AI chatbot tier-1 · Knowledge base</td>
+        </tr><tr>
+          <td><strong>Manage Reporting</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.5.1</span></td>
+          <td style="text-align:center"><span class="pat doc">Document</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">40%</span></td>
+          <td style="font-size:12px">HR Analytics — AI generates standard reports. Human interprets and presents.</td>
+          <td style="font-size:12px">Produce headcount, turnover, and compliance reports. Distribute to stakeholders.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-r">R</span> Employee Record <span style="color:var(--lgray);font-style:italic">· HRIS</span><br><span class="crud-chip crud-c">C</span> HR Report <span style="color:var(--lgray);font-style:italic">· BI Platform</span><br><span class="crud-chip crud-r">R</span> Training Record <span style="color:var(--lgray);font-style:italic">· LMS</span><br></td>
+          <td style="font-size:11px">BI Platform Power BI / Tableau · HRIS reporting · AI narrative generation</td>
+        </tr><tr>
+          <td><strong>Develop Workforce Analytics</strong><br><span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray)">7.5.5</span></td>
+          <td style="text-align:center"><span class="pat kno">Knowledge</span><br><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--navy)">65%</span></td>
+          <td style="font-size:12px">HR Analytics + CHRO — AI models data. Human interprets and recommends strategy.</td>
+          <td style="font-size:12px">Analyse workforce trends, flight risk, skills gaps. Develop predictive models.</td>
+          <td style="font-size:11px"><span class="crud-chip crud-r">R</span> Employee Record <span style="color:var(--lgray);font-style:italic">· HRIS</span><br><span class="crud-chip crud-r">R</span> Performance Review <span style="color:var(--lgray);font-style:italic">· HRIS</span><br><span class="crud-chip crud-c">C</span> Analytics Dashboard <span style="color:var(--lgray);font-style:italic">· BI Platform</span><br></td>
+          <td style="font-size:11px">BI Platform Power BI / Tableau · AI predictive workforce models · HRIS people analytics</td>
+        </tr></table>
+  </div>
+
+  <div class="section-title">CRUD Data Matrix — H2R End-to-End Process</div>
+  <div class="crud-legend">
+    <div class="cl-item"><div class="cl-chip" style="background:#DCFCE7;color:var(--c-c)">C</div>Create</div>
+    <div class="cl-item"><div class="cl-chip" style="background:var(--m1);color:var(--r-c)">R</div>Read</div>
+    <div class="cl-item"><div class="cl-chip" style="background:#FEF3C7;color:var(--u-c)">U</div>Update</div>
+    <div class="cl-item"><div class="cl-chip" style="background:var(--exc-bg);color:var(--d-c)">D</div>Delete</div>
+    <div class="cl-item"><div class="cl-chip" style="background:#D1FAE5;color:#065F46">C/U</div>Create then Update</div>
+    <div class="cl-item"><div class="cl-chip" style="background:#FEF9E7;color:#92400E">R/U</div>Read then Update</div>
+  </div>
+
+  <p style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">PCF 7.2 · Talent Acquisition</p>
+  <div class="crud-matrix-wrap" style="margin-bottom:20px">
+    <table class="crud-table">
+      <thead><tr><th>Data Entity</th><th>System of Record</th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.2.1</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(1)</span></th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.2.2</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(2)</span></th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.2.3</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(3)</span></th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.2.3</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(4)</span></th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.2.5</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(5)</span></th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.2.4</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(6)</span></th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.2.3</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(7)</span></th></tr></thead>
+      <tbody><tr><td style="width:160px;min-width:160px">Job Requisition</td><td style="width:150px;min-width:150px">ATS</td><td class="crud-cell c">C</td><td class="crud-cell u">U</td><td class="crud-cell u">U</td><td class="crud-cell u">U</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell u">U</td></tr><tr><td style="width:160px;min-width:160px">Candidate Profile</td><td style="width:150px;min-width:150px">ATS</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell u">U</td><td class="crud-cell u">U</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell u">U</td></tr><tr><td style="width:160px;min-width:160px">Interview Schedule</td><td style="width:150px;min-width:150px">ATS</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr><tr><td style="width:160px;min-width:160px">Offer</td><td style="width:150px;min-width:150px">ATS</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell empty">·</td><td class="crud-cell u">U</td><td class="crud-cell u">U</td></tr><tr><td style="width:160px;min-width:160px">Employee Record</td><td style="width:150px;min-width:150px">HRIS</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell empty">·</td></tr><tr><td style="width:160px;min-width:160px">Headcount Plan</td><td style="width:150px;min-width:150px">HRIS</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr><tr><td style="width:160px;min-width:160px">Compensation Band</td><td style="width:150px;min-width:150px">HRIS</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td></tr></tbody>
+    </table>
+  </div>
+  <div style="font-size:9px;color:var(--lgray);margin-top:4px;margin-bottom:16px;line-height:1.8;font-style:italic">(1) 7.2.1 Manage Employee Requisition &nbsp;·&nbsp; (2) 7.2.2 Source/Recruit &nbsp;·&nbsp; (3) 7.2.3 Screen Candidates &nbsp;·&nbsp; (4) 7.2.3 Select Candidate &nbsp;·&nbsp; (5) 7.2.5 Manage Applicant Information &nbsp;·&nbsp; (6) 7.2.4 Manage New Hire &nbsp;·&nbsp; (7) 7.2.3 Hiring Exception</div>
+  <p style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">PCF 7.3 · HR Operations — Onboarding, Training &amp; Development</p>
+  <div class="crud-matrix-wrap" style="margin-bottom:20px">
+    <table class="crud-table">
+      <thead><tr><th>Data Entity</th><th>System of Record</th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.3.1</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(1)</span></th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.3.4</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(2)</span></th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.3.2</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(3)</span></th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.3.3</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(4)</span></th></tr></thead>
+      <tbody><tr><td style="width:160px;min-width:160px">Employee Record</td><td style="width:150px;min-width:150px">HRIS</td><td class="crud-cell u">U</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td></tr><tr><td style="width:160px;min-width:160px">Onboarding Plan</td><td style="width:150px;min-width:150px">LMS</td><td class="crud-cell c">C</td><td class="crud-cell u">U</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr><tr><td style="width:160px;min-width:160px">Training Record</td><td style="width:150px;min-width:150px">LMS</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr><tr><td style="width:160px;min-width:160px">Performance Review</td><td style="width:150px;min-width:150px">HRIS</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell r">R</td></tr><tr><td style="width:160px;min-width:160px">Development Plan</td><td style="width:150px;min-width:150px">HRIS</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td></tr><tr><td style="width:160px;min-width:160px">Competency Framework</td><td style="width:150px;min-width:150px">HRIS</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td></tr><tr><td style="width:160px;min-width:160px">IT Access Request</td><td style="width:150px;min-width:150px">ITSM</td><td class="crud-cell c">C</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr></tbody>
+    </table>
+  </div>
+  <div style="font-size:9px;color:var(--lgray);margin-top:4px;margin-bottom:16px;line-height:1.8;font-style:italic">(1) 7.3.1 Manage Employee Onboarding &nbsp;·&nbsp; (2) 7.3.4 Develop &amp; Train Employee &nbsp;·&nbsp; (3) 7.3.2 Manage Employee Performance &nbsp;·&nbsp; (4) 7.3.3 Manage Career Development</div>
+  <p style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">PCF 7.5 · HR Operations — Employee Information &amp; Analytics</p>
+  <div class="crud-matrix-wrap" style="margin-bottom:20px">
+    <table class="crud-table">
+      <thead><tr><th>Data Entity</th><th>System of Record</th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.5.3</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(1)</span></th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.5.2</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(2)</span></th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.5.1</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(3)</span></th><th><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">7.5.5</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(4)</span></th></tr></thead>
+      <tbody><tr><td style="width:160px;min-width:160px">Employee Record</td><td style="width:150px;min-width:150px">HRIS</td><td class="crud-cell u">U</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td></tr><tr><td style="width:160px;min-width:160px">HR Report</td><td style="width:150px;min-width:150px">BI Platform</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell empty">·</td></tr><tr><td style="width:160px;min-width:160px">Analytics Dashboard</td><td style="width:150px;min-width:150px">BI Platform</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td></tr><tr><td style="width:160px;min-width:160px">Training Record</td><td style="width:150px;min-width:150px">LMS</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td></tr><tr><td style="width:160px;min-width:160px">Case Record</td><td style="width:150px;min-width:150px">HR Case Mgmt</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr><tr><td style="width:160px;min-width:160px">Policy Document</td><td style="width:150px;min-width:150px">Knowledge Base</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr></tbody>
+    </table>
+  </div>
+  <div style="font-size:9px;color:var(--lgray);margin-top:4px;margin-bottom:16px;line-height:1.8;font-style:italic">(1) 7.5.3 Manage and Maintain Employee Data &nbsp;·&nbsp; (2) 7.5.2 Manage Employee Inquiry &nbsp;·&nbsp; (3) 7.5.1 Manage Reporting &nbsp;·&nbsp; (4) 7.5.5 Develop Workforce Analytics</div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 18px;font-size:11px;color:var(--lgray);line-height:1.7">
+    <strong style="color:var(--dark)">Methodology</strong> · Pattern types derived using HITL Pattern Type Derivation Method. Swim lanes represent PCF process ownership roles. CRUD operations validated against PCF Level 4 activity definitions. Systems listed are representative industry-standard platforms — organizations substitute their actual system of record. ·
+    <strong style="color:var(--dark)">Full reference:</strong> <a href="https://hitldrivenarchitecture.com" style="color:var(--navy)">hitldrivenarchitecture.com</a>
+  </div>
+
+</div><!-- end view-wcs -->
+
+</div><!-- end main -->
+
+<footer class="site-footer">
+  <div class="footer-l">End-to-End Process · Hire-to-Retire (H2R) · Human-AI Partnership Framework · © Timothy P. King &amp; Claude (Anthropic), 2026</div>
+  <div class="footer-r">APQC PCF v8.0 © 2026 APQC. All rights reserved. Open standard, free to use with attribution.</div>
+</footer>
+
+<script>
+function togglePDF() {
+  const menu = document.getElementById('pdf-menu');
+  const arrow = document.getElementById('pdf-arrow');
+  const isOpen = menu.classList.toggle('open');
+  arrow.style.transform = isOpen ? 'rotate(180deg)' : '';
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.pdf-wrap')) {
+    document.getElementById('pdf-menu').classList.remove('open');
+    document.getElementById('pdf-arrow').style.transform = '';
+  }
+});
+
+// ── Swim lane data ─────────────────────────────────────────────────────────────
+const swimSteps = [
+  // [laneIdx, pcf, name, pattern, m3h, isException]
+  // Lane 0=Talent Acquisition, 1=HR Operations, 2=Employee/Manager, 3=Candidate/Agency
+  [0,"7.2.1","Manage Employee Requisition","Transaction","35%",false],
+  [0,"7.2.2","Source / Recruit Candidates","Knowledge","65%",false],
+  [0,"7.2.3","Screen Candidates","Decision","80%",false],
+  [0,"7.2.3","Select Candidate","Decision","80%",false],
+  [0,"7.2.5","Manage Applicant Information","Transaction","35%",false],
+  [0,"7.2.4","Manage New Hire","Decision","80%",false],
+  [0,"7.2.3","Hiring Exception","Exception","82%",true],
+  [1,"7.3.1","Manage Employee Onboarding","Knowledge","65%",false],
+  [1,"7.3.4","Develop & Train Employee","Knowledge","65%",false],
+  [1,"7.3.2","Manage Employee Performance","Decision","80%",false],
+  [1,"7.3.3","Manage Career Development","Knowledge","65%",false],
+  [1,"7.5.3","Manage and Maintain Employee Data","Transaction","35%",false],
+  [1,"7.5.2","Manage Employee Inquiry","Exception","82%",true],
+  [1,"7.5.1","Manage Reporting","Document","40%",false],
+  [1,"7.5.5","Develop Workforce Analytics","Knowledge","65%",false],
+  [2,"7.2.1","Submit Requisition","Transaction","35%",false],
+  [2,"XFER","7.2.1","→ Talent Acquisition (7.2)"],
+  [2,"7.3.1","Complete Onboarding","Transaction","35%",false],
+  [2,"7.3.4","Complete Training","Transaction","35%",false],
+  [2,"7.3.2","Performance Review","Decision","80%",false],
+  [3,"Ext","Submit Application","Transaction","35%",false],
+  [3,"XFER","Ext","→ Talent Acquisition (7.2)"],
+  [3,"Ext","Receive Offer","Decision","80%",false],
+  [3,"Ext","Accept / Decline Offer","Decision","80%",false],
+];
+
+const patStyle = {
+  Decision:   {bg:'var(--dec-bg)',c:'var(--dec-c)',border:'#C8D8EE'},
+  Knowledge:  {bg:'var(--kno-bg)',c:'var(--kno-c)',border:'#D4CFFA'},
+  Document:   {bg:'var(--doc-bg)',c:'var(--doc-c)',border:'#BAE3FE'},
+  Transaction:{bg:'var(--tra-bg)',c:'var(--tra-c)',border:'#BBF0CC'},
+  Exception:  {bg:'var(--exc-bg)',c:'var(--exc-c)',border:'transparent'},
+};
+
+function buildSwimLane() {
+  const lanes = [[],[],[],[]];
+  swimSteps.forEach(s => lanes[s[0]].push(s));
+  const maxLen = Math.max(...lanes.map(l=>l.length));
+  const tbody = document.getElementById('swim-body');
+  if(!tbody) return;
+  tbody.innerHTML = '';
+
+  for(let r=0; r<maxLen; r++) {
+    const tr = document.createElement('tr');
+    for(let li=0; li<4; li++) {
+      const step = lanes[li][r] || null;
+      const td = document.createElement('td');
+      td.style.cssText = 'border:2px solid #fff;vertical-align:top;padding:0;';
+
+      if(!step) {
+        td.style.background = '#F8F9FA';
+        td.innerHTML = '<div style="padding:6px"></div>';
+      } else if(step[1]==='XFER') {
+        td.style.background = 'var(--navy-l)';
+        td.style.borderLeft = '4px solid var(--navy)';
+        td.innerHTML = `<div style="padding:8px 10px">
+          <div style="font-size:9px;color:var(--lgray);font-style:italic;margin-bottom:2px">${step[2]}</div>
+          <div style="font-size:11px;font-weight:700;color:var(--navy)">${step[3]}</div>
+        </div>`;
+      } else {
+        const [,pcf,name,pat,m3h,isExc] = step;
+        const ps = patStyle[pat] || {bg:'#fff',c:'#444',border:'#ccc'};
+        const leftBorder = isExc ? `4px solid ${ps.c}` : `1px solid ${ps.border}`;
+        td.style.background = ps.bg;
+        td.style.borderLeft = leftBorder;
+        td.innerHTML = `<div style="padding:8px 10px">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray);margin-bottom:2px">${pcf}</div>
+          <div style="font-size:11px;font-weight:700;color:${ps.c};margin-bottom:3px;line-height:1.3">${name}</div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:9px;font-weight:700;color:${ps.c};text-transform:uppercase;letter-spacing:.03em">${pat}</span>
+            <span style="background:var(--m3);padding:1px 5px;border-radius:3px;font-family:'DM Mono',monospace;font-size:9px;color:var(--navy);font-weight:700">M3 ${m3h}</span>
+          </div>
+        </div>`;
+      }
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+}
+
+window.addEventListener('load', buildSwimLane);
+
+function sizeCrudTables() {
+  const DE_W    = 160;
+  const SOR_W   = 150;
+  const MAX_CRUD = 12;
+
+  document.querySelectorAll('.crud-table').forEach(table => {
+    const wrap = table.closest('.crud-matrix-wrap');
+    if (!wrap) return;
+    const available = wrap.clientWidth - DE_W - SOR_W - 2;
+    const colW = Math.max(40, Math.floor(available / MAX_CRUD));
+    const headerRow = table.querySelector('thead tr');
+    const currentCols = headerRow.querySelectorAll('th').length - 2;
+    for (let i = currentCols; i < MAX_CRUD; i++) {
+      const th = document.createElement('th');
+      th.style.cssText = 'background:var(--navy);border:1px solid var(--navy);';
+      headerRow.appendChild(th);
+    }
+    table.querySelectorAll('tbody tr').forEach(row => {
+      const cells = row.querySelectorAll('td').length;
+      const isGroup = row.querySelector('td[colspan]');
+      if (isGroup) {
+        const td = row.querySelector('td');
+        if (td) td.setAttribute('colspan', 2 + MAX_CRUD);
+        return;
+      }
+      for (let i = cells; i < 2 + MAX_CRUD; i++) {
+        const td = document.createElement('td');
+        td.className = 'crud-cell empty';
+        td.textContent = '·';
+        row.appendChild(td);
+      }
+    });
+    let cg = table.querySelector('colgroup');
+    if (!cg) { cg = document.createElement('colgroup'); table.prepend(cg); }
+    cg.innerHTML = '';
+    const makeCol = (w) => { const col = document.createElement('col'); col.style.width = w + 'px'; cg.appendChild(col); };
+    makeCol(DE_W); makeCol(SOR_W);
+    for (let i = 0; i < MAX_CRUD; i++) makeCol(colW);
+  });
+  document.querySelectorAll('.crud-table thead th span').forEach(span => { span.style.color = '#fff'; });
+}
+window.addEventListener('load', sizeCrudTables);
+window.addEventListener('resize', sizeCrudTables);
+</script>
+</body>
+</html>
