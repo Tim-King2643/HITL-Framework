@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>End-to-End Process — Order-to-Cash (O2C)</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#1B4F8A;--navy-d:#0D2D4F;--navy-l:#EEF3FA;
+  --dark:#0D1B2A;--gray:#444;--lgray:#888;--white:#fff;
+  --bg:#F4F6FB;--border:#DDE3EE;
+  --dec-bg:#EEF3FA;--dec-c:#1B4F8A;
+  --kno-bg:#F3F0FE;--kno-c:#534AB7;
+  --doc-bg:#E0F2FE;--doc-c:#0369A1;
+  --tra-bg:#DCFCE7;--tra-c:#166534;
+  --exc-bg:#FEE2E2;--exc-c:#991B1B;
+  --m1:#F0F7FF;--m2:#E6F1FF;--m3:#D6E8FF;--m4:#C4DCFF;--m5:#B0CEFF;
+  --c-c:#166534;--r-c:#1B4F8A;--u-c:#B45309;--d-c:#991B1B;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--dark);font-size:14px;line-height:1.6;}
+.site-header{background:var(--navy-d);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Playfair Display',serif;font-size:17px;color:#fff;font-weight:700;}
+.brand span{font-size:11px;color:#7A9CC6;font-weight:400;letter-spacing:.08em;text-transform:uppercase;display:block;margin-top:2px;}
+.header-right{font-size:11px;color:#7A9CC6;text-align:right;display:flex;align-items:center;gap:16px;}
+.header-right a{color:#A8C4E0;text-decoration:none;}
+.pdf-wrap{position:relative;}
+.pdf-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;padding:6px 12px;border-radius:6px;cursor:pointer;letter-spacing:.04em;display:flex;align-items:center;gap:6px;}
+.pdf-btn:hover{background:rgba(255,255,255,.2);}
+.pdf-arrow{font-size:9px;transition:transform .2s;}
+.pdf-menu{display:none;position:absolute;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);min-width:220px;z-index:100;overflow:hidden;}
+.pdf-menu.open{display:block;}
+.pdf-menu-item{padding:10px 16px;font-size:12px;color:var(--dark);cursor:pointer;border-bottom:1px solid #F0F2F8;display:flex;align-items:center;justify-content:flex-end;gap:8px;text-align:right;}
+.pdf-menu-item:last-child{border-bottom:none;}
+.pdf-menu-item:hover{background:var(--navy-l);}
+.pdf-menu-item .pmi-label{font-weight:600;color:var(--navy);}
+.pdf-menu-item .pmi-sub{font-size:10px;color:var(--lgray);margin-top:1px;}
+.hero{background:#fff;border-bottom:1px solid var(--border);padding:28px 32px 24px;}
+.module-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--navy);background:var(--navy-l);padding:3px 10px;border-radius:4px;display:inline-block;margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:26px;color:var(--dark);font-weight:700;margin-bottom:6px;}
+.hero-sub{font-size:13px;color:var(--lgray);margin-bottom:20px;line-height:1.7;}
+.hero-sub strong{color:var(--navy);}
+.metrics{display:flex;gap:12px;flex-wrap:wrap;}
+.metric{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 16px;min-width:120px;}
+.metric .lbl{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--lgray);margin-bottom:4px;}
+.metric .val{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;}
+.metric .sub{font-size:10px;color:var(--lgray);margin-top:2px;}
+.m-dec .val{color:var(--dec-c);} .m-tra .val{color:var(--tra-c);}
+.m-exc .val{color:var(--exc-c);} .m-gap .val{color:#B45309;}
+.main{padding:24px 32px 40px;}
+.section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--lgray);margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.view-label{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#fff;background:var(--navy);padding:2px 8px;border-radius:3px;margin-bottom:6px;}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gray);}
+.ld{width:12px;height:12px;border-radius:3px;}
+.ld.dec{background:var(--dec-bg);border:1px solid var(--dec-c);}
+.ld.kno{background:var(--kno-bg);border:1px solid var(--kno-c);}
+.ld.doc{background:var(--doc-bg);border:1px solid var(--doc-c);}
+.ld.tra{background:var(--tra-bg);border:1px solid var(--tra-c);}
+.ld.exc{background:var(--exc-bg);border:1px solid var(--exc-c);}
+.legend-sep{width:1px;background:var(--border);height:16px;}
+.legend-note{font-size:10px;color:var(--lgray);font-style:italic;}
+.swimlane-wrap{overflow-x:auto;margin-bottom:24px;}
+.step{width:100%;max-width:175px;border-radius:6px;padding:6px 9px;transition:box-shadow .15s;}
+.step:hover{box-shadow:0 2px 8px rgba(0,0,0,.1);}
+.step-ref{font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray);margin-bottom:1px;}
+.step-name{font-size:11px;font-weight:600;line-height:1.3;margin-bottom:4px;}
+.step-foot{display:flex;align-items:center;justify-content:space-between;gap:4px;}
+.step-pat{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+.m3pill{background:var(--m3);padding:1px 5px;border-radius:3px;font-family:'DM Mono',monospace;font-size:9px;color:var(--navy);font-weight:700;}
+.step.dec{background:var(--dec-bg);border:1px solid #C8D8EE;position:relative;}
+.step.dec::before{content:'⬡ Decision gate';position:absolute;top:-7px;left:8px;font-size:7px;font-weight:700;color:var(--dec-c);background:#fff;padding:0 3px;}
+.step.dec .step-name,.step.dec .step-pat{color:var(--dec-c);}
+.step.kno{background:var(--kno-bg);border:1px solid #D4CFFA;}
+.step.kno .step-name,.step.kno .step-pat{color:var(--kno-c);}
+.step.doc{background:var(--doc-bg);border:1px solid #BAE3FE;}
+.step.doc .step-name,.step.doc .step-pat{color:var(--doc-c);}
+.step.tra{background:var(--tra-bg);border:1px solid #BBF0CC;}
+.step.tra .step-name,.step.tra .step-pat{color:var(--tra-c);}
+.step.exc{background:var(--exc-bg);border:2px dashed #F4A0A0;}
+.step.exc .step-name,.step.exc .step-pat{color:var(--exc-c);}
+.handoff{width:100%;max-width:175px;background:var(--bg);border:1px dashed var(--border);border-radius:4px;padding:3px 8px;text-align:center;font-size:9px;color:var(--lgray);font-style:italic;line-height:1.4;}
+.handoff .hf-pcf{font-family:'DM Mono',monospace;font-size:8px;color:var(--navy);font-style:normal;font-weight:600;display:block;margin-bottom:1px;}
+.insight{background:var(--navy-l);border-left:4px solid var(--navy);border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:24px;}
+.insight h3{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em;}
+.insight p{font-size:13px;color:var(--dark);line-height:1.7;}
+.insight strong{color:var(--navy);}
+.tbl-wrap{overflow-x:auto;margin-bottom:28px;}
+.hitl-table{width:100%;border-collapse:collapse;font-size:12px;}
+.hitl-table thead th{background:var(--navy);color:#fff;padding:9px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;border:1px solid var(--navy);}
+.hitl-table thead th:first-child{text-align:left;min-width:200px;}
+.hitl-table thead th:not(:first-child){text-align:center;}
+.row-agg td{background:var(--navy-d);color:#fff;font-weight:700;padding:9px 10px;border-top:2px solid var(--navy);}
+.row-l2 td{background:var(--navy-l);color:var(--navy-d);font-weight:700;font-size:12px;padding:7px 10px;border-top:2px solid #7AAED6;border-bottom:1px solid #C8D8EE;}
+.row-l2 td:first-child{border-left:3px solid #7AAED6;}
+.row-l3 td{padding:7px 10px;border-bottom:1px solid #F0F2F8;color:var(--gray);vertical-align:middle;}
+.row-l3:nth-child(even) td{background:#F9FBFD;}
+.row-l3:nth-child(odd) td{background:#fff;}
+.step-cell{padding-left:20px;font-size:11px;}
+.step-cell::before{content:'↳ ';color:#B0BAD0;font-size:10px;}
+.pcf-cell{font-family:'DM Mono',monospace;font-size:10px;color:var(--lgray);text-align:center;}
+.pat{display:inline-block;font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}
+.pat.dec{background:var(--dec-bg);color:var(--dec-c);}
+.pat.kno{background:var(--kno-bg);color:var(--kno-c);}
+.pat.doc{background:var(--doc-bg);color:var(--doc-c);}
+.pat.tra{background:var(--tra-bg);color:var(--tra-c);}
+.pat.exc{background:var(--exc-bg);color:var(--exc-c);}
+td.m1{background:var(--m1);color:var(--navy);text-align:center;font-family:'DM Mono',monospace;font-size:11px;}
+td.m3{background:var(--m3);color:var(--navy);font-weight:700;text-align:center;font-family:'DM Mono',monospace;font-size:11px;}
+td.delta{color:#B45309;font-weight:700;text-align:center;font-family:'DM Mono',monospace;font-size:11px;}
+td.opp{text-align:center;font-size:10px;font-weight:600;}
+.opp-h{color:var(--tra-c);} .opp-l{color:var(--lgray);}
+.cap-map{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:28px;}
+.cap-card{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.cap-head{background:var(--navy-d);padding:8px 14px;}
+.cap-head .ptag{font-family:'DM Mono',monospace;font-size:10px;color:#7A9CC6;margin-bottom:2px;}
+.cap-head .pname{font-size:12px;font-weight:700;color:#fff;}
+.cap-body{padding:10px 14px;}
+.cap-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid #F5F5F5;font-size:11px;}
+.cap-row:last-child{border-bottom:none;}
+.cap-row .crn{color:var(--gray);flex:1;padding-right:8px;}
+.cap-agg{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;gap:12px;font-size:10px;color:var(--lgray);}
+.cap-agg strong{color:var(--navy);}
+.wcs-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:28px;}
+.wcs-table thead th{background:var(--navy);color:#fff;padding:8px 10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;border:1px solid var(--navy);vertical-align:bottom;}
+.wcs-table thead th:first-child{text-align:left;min-width:160px;}
+.wcs-l2 td{background:var(--navy-l);color:var(--navy-d);font-weight:700;font-size:11px;padding:6px 10px;border-top:2px solid #7AAED6;border-bottom:1px solid #C8D8EE;}
+.wcs-l2 td:first-child{border-left:3px solid #7AAED6;}
+.wcs-row td{padding:7px 10px;border-bottom:1px solid #F0F2F8;vertical-align:top;color:var(--gray);font-size:11px;}
+.wcs-row:nth-child(even) td{background:#F9FBFD;}
+.wcs-row:nth-child(odd) td{background:#fff;}
+.wcs-step{font-weight:600;color:var(--dark);font-size:11px;}
+.wcs-pcf{font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray);display:block;margin-top:1px;}
+.wcs-people{font-size:10px;line-height:1.5;}
+.wcs-people strong{color:var(--dark);display:block;margin-bottom:2px;}
+.wcs-process{font-size:10px;line-height:1.5;color:var(--gray);}
+.wcs-data{font-size:10px;line-height:1.6;}
+.wcs-data .de{display:flex;align-items:flex-start;gap:4px;margin-bottom:3px;}
+.wcs-data .de-name{color:var(--dark);font-size:10px;}
+.wcs-data .de-sys{color:var(--lgray);font-size:9px;font-style:italic;}
+.crud-chip{display:inline-block;font-family:'DM Mono',monospace;font-size:8px;font-weight:700;padding:0 4px;border-radius:2px;margin-left:2px;}
+.crud-c{background:#DCFCE7;color:var(--c-c);}
+.crud-r{background:var(--m1);color:var(--r-c);}
+.crud-u{background:#FEF3C7;color:var(--u-c);}
+.crud-d{background:var(--exc-bg);color:var(--d-c);}
+.wcs-tech{font-size:10px;line-height:1.6;color:var(--gray);}
+.wcs-tech .sys{display:block;padding:2px 0;border-bottom:1px solid #F5F5F5;}
+.wcs-tech .sys:last-child{border-bottom:none;}
+.wcs-tech .sys-name{font-weight:600;color:var(--dark);}
+.crud-matrix-wrap{overflow-x:auto;margin-bottom:20px;}
+.crud-table{border-collapse:collapse;font-size:10px;width:100%;}
+.crud-table{border-collapse:collapse;font-size:10px;width:100%;table-layout:fixed;}
+.crud-table thead th{background:var(--navy);color:#fff;padding:6px 8px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:1px solid var(--navy);text-align:left;vertical-align:bottom;overflow:hidden;}
+.crud-table td{padding:5px 8px;border-bottom:1px solid #F0F2F8;vertical-align:middle;overflow:hidden;}
+.crud-table thead th:first-child{font-weight:700;color:#fff;font-size:10px;}
+.crud-table td:first-child{font-weight:600;color:var(--dark);font-size:10px;}
+.crud-table thead th:nth-child(2){font-size:9px;color:#fff;font-style:normal;font-family:'DM Sans',sans-serif;font-weight:700;}
+.crud-table td:nth-child(2){font-size:9px;color:var(--lgray);font-style:italic;font-family:'DM Mono',monospace;}
+.crud-table td:nth-child(n+3){text-align:center;}
+.crud-table .ct-l2 td{background:var(--navy-l);color:var(--navy-d);font-weight:700;font-size:10px;padding:5px 8px;border-top:2px solid #7AAED6;}
+.crud-table .ct-l2 td:first-child{border-left:3px solid #7AAED6;}
+.crud-table tbody tr:not(.ct-l2) td{padding:5px 8px;border-bottom:1px solid #F0F2F8;vertical-align:middle;}
+.crud-table tbody tr:not(.ct-l2):nth-child(even) td{background:#F9FBFD;}
+.crud-table tbody tr:not(.ct-l2):nth-child(odd) td{background:#fff;}
+.crud-table td:first-child{font-weight:600;color:var(--dark);font-size:10px;}
+.crud-table td:nth-child(2){font-size:9px;color:var(--lgray);font-style:italic;font-family:'DM Mono',monospace;}
+.crud-cell{text-align:center;font-family:'DM Mono',monospace;font-size:10px;font-weight:700;}
+.crud-cell.c{background:#DCFCE7;color:var(--c-c);}
+.crud-cell.r{background:var(--m1);color:var(--r-c);}
+.crud-cell.u{background:#FEF3C7;color:var(--u-c);}
+.crud-cell.empty{background:#FAFAFA;color:#ddd;}
+.crud-legend{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+.cl-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--gray);}
+.cl-chip{width:20px;height:14px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:8px;font-weight:700;}
+.site-footer{background:var(--navy-d);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+.footer-l{font-size:11px;color:#5B8AB8;}
+.footer-r{font-size:10px;color:#5B8AB8;text-align:right;}
+.section-divider{border:none;border-top:2px solid var(--border);margin:32px 0;}
+@media print {
+  * { -webkit-print-color-adjust:exact!important;print-color-adjust:exact!important; }
+  .site-header,.site-footer,.pdf-wrap { display:none!important; }
+  .main { padding:0!important; }
+  .print-header{display:block!important;}
+}
+@media screen { .print-header{display:none!important;} }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="brand">End-to-End Process<span>Human-AI Partnership Framework</span></div>
+  <div class="header-right">
+    <div style="text-align:right">
+      <a href="https://hitldrivenarchitecture.com">hitldrivenarchitecture.com</a><br>
+      <span>Timothy P. King · Human Enterprise Architect</span>
+    </div>
+    <div class="pdf-wrap">
+      <button class="pdf-btn" onclick="togglePDF()">
+        ⬇ Download PDF <span class="pdf-arrow" id="pdf-arrow">▾</span>
+      </button>
+      <div class="pdf-menu" id="pdf-menu">
+        <div class="pdf-menu-item" onclick="window.open('pdfs/hitl_navigator_o2c_hitl_design_final.pdf','_blank')">
+          <div><div class="pmi-label">HITL Design</div><div class="pmi-sub">People · Swim lane + impact table</div></div>
+        </div>
+        <div class="pdf-menu-item" onclick="window.open('pdfs/hitl_navigator_o2c_process_diagram_final.pdf','_blank')">
+          <div><div class="pmi-label">Process Diagram</div><div class="pmi-sub">Process · Swim lane diagram</div></div>
+        </div>
+        <div class="pdf-menu-item" onclick="window.open('pdfs/hitl_navigator_o2c_process_spec_final.pdf','_blank')">
+          <div><div class="pmi-label">Process Specification</div><div class="pmi-sub">Data &amp; Technology · Step-level detail</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="module-tag">Module 2 — O2C</div>
+  <h1>Order-to-Cash (O2C)</h1>
+  <p class="hero-sub">
+    <strong>PCF 3.5</strong> Manage Sales Orders &nbsp;·&nbsp;
+    <strong>PCF 4.4</strong> Manage Logistics and Warehousing &nbsp;·&nbsp;
+    <strong>PCF 9.4</strong> Manage Customer Credit, Invoicing, and Accounts Receivable<br>
+    4 participant roles · 24 process steps · HITL design intent derived from APQC PCF v8.0 SIPOC reference architecture
+  </p>
+  <div class="metrics">
+    <div class="metric"><div class="lbl">O2C Aggregate H% · M3</div><div class="val" style="color:var(--navy)">52%</div><div class="sub">Human at design intent</div></div>
+    <div class="metric m-dec"><div class="lbl">Decision Gates</div><div class="val">4</div><div class="sub">Irreducibly human · 80% H</div></div>
+    <div class="metric m-tra"><div class="lbl">Transaction Steps</div><div class="val">12</div><div class="sub">AI absorption · 35% H</div></div>
+    <div class="metric m-exc"><div class="lbl">Exception Flows</div><div class="val">4</div><div class="sub">Human resolution · 82% H</div></div>
+    <div class="metric m-gap"><div class="lbl">Δ M1 → M3</div><div class="val">-20%</div><div class="sub">AI convergence opportunity</div></div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     VIEW 1 — HITL DESIGN VIEW
+     ══════════════════════════════════════════════════════════════════════ -->
+<div id="view-hitl">
+  <div class="view-label">View 1 — HITL Design</div>
+  <div class="section-title">Pattern Type Legend</div>
+  <div class="legend">
+    <div class="legend-item"><div class="ld dec"></div>Decision — 80% H at M3</div>
+    <div class="legend-item"><div class="ld doc"></div>Document — 40% H</div>
+    <div class="legend-item"><div class="ld tra"></div>Transaction — 35% H</div>
+    <div class="legend-item"><div class="ld exc"></div>Exception — 82% H</div>
+    <div class="legend-sep"></div>
+    <div class="legend-note">Swim lanes = PCF process group ownership · PCF L3 reference shown on each step and handoff</div>
+  </div>
+
+  <!-- Swim Lane -->
+  <div class="section-title">O2C End-to-End Process — HITL Design · PCF-Derived Process Ownership</div>
+  <div class="swimlane-wrap">
+    <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
+      <colgroup><col style="width:25%"><col style="width:25%"><col style="width:25%"><col style="width:25%"></colgroup>
+      <thead>
+        <tr>
+          <th style="background:#2D6A4F;color:#fff;padding:12px 12px 8px;text-align:left;vertical-align:top;border:2px solid #fff;">
+            <div style="height:8px"></div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Sales</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);font-style:italic;font-family:'DM Mono',monospace">PCF 3.5</div>
+          </th>
+          <th style="background:#5B3FA6;color:#fff;padding:12px 12px 8px;text-align:left;vertical-align:top;border:2px solid #fff;">
+            <div style="height:8px"></div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Materials</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);font-style:italic;font-family:'DM Mono',monospace">PCF 4.4</div>
+          </th>
+          <th style="background:var(--navy-d);color:#fff;padding:12px 12px 8px;text-align:left;vertical-align:top;border:2px solid #fff;">
+            <div style="height:8px"></div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Finance</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);font-style:italic;font-family:'DM Mono',monospace">PCF 9.4</div>
+          </th>
+          <th style="background:#4A5568;color:#fff;padding:12px 12px 8px;text-align:left;vertical-align:top;border:2px solid #fff;">
+            <div style="height:8px"></div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Customer</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);font-style:italic;font-family:'DM Mono',monospace">External participant</div>
+          </th>
+        </tr>
+      </thead>
+      <tbody id="swim-body"></tbody>
+    </table>
+  </div>
+
+  <!-- HITL Insight -->
+  <div class="insight">
+    <h3>HITL Design Insight — O2C</h3>
+    <p><strong>4 Decision gates</strong> (80% Human at M3) are the irreducibly human layer — order acceptance, availability determination, and fulfillment routing carry commercial and customer authority that must remain human by design. <strong>12 Transaction-pattern steps</strong> (35% Human at M3) represent the AI absorption opportunity — fulfillment, invoicing, AR maintenance, payment processing, and cash application in rules-based sequence. <strong>4 Exception flows</strong> (82% Human) require human resolution — backorders, order inquiries, collections/dunning, and dispute resolution. O2C aggregate at M3: <strong>52% Human / 48% AI</strong> — grounded in APQC PCF SIPOC reference architecture and consistent with the enterprise-wide Human-AI convergence finding.</p>
+  </div>
+
+  <!-- HITL Impact Table -->
+  <div class="section-title">HITL Impact Analysis</div>
+  <div class="tbl-wrap">
+    <table class="hitl-table">
+      <thead><tr>
+        <th style="text-align:left">Process Step</th>
+        <th>PCF Ref</th><th>Pattern</th>
+        <th style="background:#1a3a5c">M1 H%</th>
+        <th style="background:#1d5699">M3 H% ★</th>
+        <th>Δ M1→M3</th><th>AI Opportunity</th>
+      </tr></thead>
+      <tbody>
+        <tr class="row-agg">
+          <td>O2C End-to-End Process <span style="font-family:'DM Mono',monospace;font-size:10px;color:#7A9CC6;margin-left:8px">L1 Aggregate</span></td>
+          <td style="text-align:center;font-family:'DM Mono',monospace;font-size:10px;color:#7A9CC6">3.5+4.4+9.4</td>
+          <td style="text-align:center"><span class="pat" style="background:rgba(255,255,255,.15);color:#A8C4E0">Mixed</span></td>
+          <td style="background:#1a3a5c;color:#A8C4E0;font-family:'DM Mono',monospace;font-size:11px;text-align:center;font-weight:700">72%</td>
+          <td style="background:#1d5699;color:#fff;font-family:'DM Mono',monospace;font-size:13px;text-align:center;font-weight:700">52%</td>
+          <td style="color:#F59E0B;font-family:'DM Mono',monospace;font-size:11px;text-align:center;font-weight:700">-20%</td>
+          <td style="color:#6EE7B7;font-size:11px;font-weight:600;text-align:center">Significant</td>
+        </tr>
+        <tr class="row-l2"><td colspan="7">PCF 3.5 · Manage Sales Orders</td></tr>
+        <tr class="row-l3"><td class="step-cell">Accept &amp; Validate Sales Order</td><td class="pcf-cell">3.5.4</td><td style="text-align:center"><span class="pat dec">Decision</span></td><td class="m1">92%</td><td class="m3">80%</td><td class="delta">-12%</td><td class="opp opp-l">Retain Human</td></tr>
+        <tr class="row-l3"><td class="step-cell">Determine Availability</td><td class="pcf-cell">3.5.4</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Determine Fulfillment Process</td><td class="pcf-cell">3.5.4</td><td style="text-align:center"><span class="pat dec">Decision</span></td><td class="m1">92%</td><td class="m3">80%</td><td class="delta">-12%</td><td class="opp opp-l">Retain Human</td></tr>
+        <tr class="row-l3"><td class="step-cell">Confirm Sales Order</td><td class="pcf-cell">3.5.4</td><td style="text-align:center"><span class="pat doc">Document</span></td><td class="m1">72%</td><td class="m3">40%</td><td class="delta">-32%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Process Backorders &amp; Updates</td><td class="pcf-cell">3.5.4</td><td style="text-align:center"><span class="pat exc">Exception</span></td><td class="m1">95%</td><td class="m3">82%</td><td class="delta">-13%</td><td class="opp opp-l">Retain Human</td></tr>
+        <tr class="row-l3"><td class="step-cell">Handle Order Inquiries</td><td class="pcf-cell">3.5.4</td><td style="text-align:center"><span class="pat exc">Exception</span></td><td class="m1">95%</td><td class="m3">82%</td><td class="delta">-13%</td><td class="opp opp-l">Retain Human</td></tr>
+        <tr class="row-l2"><td colspan="7">PCF 4.4 · Manage Logistics and Warehousing</td></tr>
+        <tr class="row-l3"><td class="step-cell">Pick / Pack / Ship</td><td class="pcf-cell">4.4.3</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Track Inventory Accuracy</td><td class="pcf-cell">4.4.3</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Plan &amp; Execute Outbound Delivery</td><td class="pcf-cell">4.4.4</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Track Carrier Delivery Performance</td><td class="pcf-cell">4.4.4</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l2"><td colspan="7">PCF 9.4 · Manage Customer Credit, Invoicing, and Accounts Receivable</td></tr>
+        <tr class="row-l3"><td class="step-cell">Generate Invoice</td><td class="pcf-cell">9.4.2</td><td style="text-align:center"><span class="pat doc">Document</span></td><td class="m1">72%</td><td class="m3">40%</td><td class="delta">-32%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Apply Taxes</td><td class="pcf-cell">9.4.2</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Distribute Invoice</td><td class="pcf-cell">9.4.2</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Maintain AR</td><td class="pcf-cell">9.4.3</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Monitor Aging</td><td class="pcf-cell">9.4.3</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Reconcile Accounts</td><td class="pcf-cell">9.4.3</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Manage Collections / Dunning</td><td class="pcf-cell">9.4.4</td><td style="text-align:center"><span class="pat exc">Exception</span></td><td class="m1">95%</td><td class="m3">82%</td><td class="delta">-13%</td><td class="opp opp-l">Retain Human</td></tr>
+        <tr class="row-l3"><td class="step-cell">Resolve Disputes</td><td class="pcf-cell">9.4.4</td><td style="text-align:center"><span class="pat exc">Exception</span></td><td class="m1">95%</td><td class="m3">82%</td><td class="delta">-13%</td><td class="opp opp-l">Retain Human</td></tr>
+        <tr class="row-l3"><td class="step-cell">Process Customer Payment</td><td class="pcf-cell">9.4.5</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Apply Cash</td><td class="pcf-cell">9.4.5</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l2"><td colspan="7">External Participant · Customer</td></tr>
+        <tr class="row-l3"><td class="step-cell">Submit Sales Order</td><td class="pcf-cell">Ext</td><td style="text-align:center"><span class="pat doc">Document</span></td><td class="m1">72%</td><td class="m3">40%</td><td class="delta">-32%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Receive Order Confirmation</td><td class="pcf-cell">Ext</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Receive Goods / Delivery</td><td class="pcf-cell">Ext</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Receive Invoice</td><td class="pcf-cell">Ext</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Submit Payment</td><td class="pcf-cell">Ext</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Receive Payment Confirmation</td><td class="pcf-cell">Ext</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PCF Capability Map -->
+  <div class="section-title">PCF Capability Domains — O2C Footprint</div>
+  <div class="cap-map">
+    <div class="cap-card">
+      <div class="cap-head"><div class="ptag">PCF 3.0 → 3.5</div><div class="pname">Market &amp; Sell — Manage Sales Orders</div></div>
+      <div class="cap-body">
+        <div class="cap-row"><span class="crn">3.5.4 Accept &amp; validate sales orders</span><span class="pat dec">Decision</span></div>
+        <div class="cap-row"><span class="crn">3.5.4 Determine availability</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-row"><span class="crn">3.5.4 Determine fulfillment process</span><span class="pat dec">Decision</span></div>
+        <div class="cap-row"><span class="crn">3.5.4 Confirm sales order</span><span class="pat doc">Document</span></div>
+        <div class="cap-row"><span class="crn">3.5.4 Process backorders &amp; updates</span><span class="pat exc">Exception</span></div>
+        <div class="cap-row"><span class="crn">3.5.4 Handle order inquiries</span><span class="pat exc">Exception</span></div>
+        <div class="cap-agg"><span>M1: <strong>76%</strong></span><span>M3: <strong>57%</strong></span><span>M5: <strong>30%</strong></span></div>
+      </div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-head"><div class="ptag">PCF 4.0 → 4.4</div><div class="pname">Supply Chain — Manage Logistics and Warehousing</div></div>
+      <div class="cap-body">
+        <div class="cap-row"><span class="crn">4.4.3 Pick / pack / ship</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-row"><span class="crn">4.4.3 Track inventory accuracy</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-row"><span class="crn">4.4.4 Plan &amp; execute outbound delivery</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-row"><span class="crn">4.4.4 Track carrier delivery performance</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-agg"><span>M1: <strong>60%</strong></span><span>M3: <strong>35%</strong></span><span>M5: <strong>15%</strong></span></div>
+      </div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-head"><div class="ptag">PCF 9.0 → 9.4</div><div class="pname">Financial Resources — Credit, Invoicing &amp; AR</div></div>
+      <div class="cap-body">
+        <div class="cap-row"><span class="crn">9.4.2 Generate / distribute invoice</span><span class="pat doc">Document</span></div>
+        <div class="cap-row"><span class="crn">9.4.3 Maintain AR / monitor aging</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-row"><span class="crn">9.4.3 Reconcile accounts</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-row"><span class="crn">9.4.4 Manage collections / dunning</span><span class="pat exc">Exception</span></div>
+        <div class="cap-row"><span class="crn">9.4.4 Resolve disputes</span><span class="pat exc">Exception</span></div>
+        <div class="cap-row"><span class="crn">9.4.5 Process payment / apply cash</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-agg"><span>M1: <strong>68%</strong></span><span>M3: <strong>48%</strong></span><span>M5: <strong>20%</strong></span></div>
+      </div>
+    </div>
+  </div>
+</div><!-- end view-hitl -->
+
+<hr class="section-divider">
+
+<hr class="section-divider">
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     VIEW 3 — END-TO-END PROCESS SPECIFICATION
+     ══════════════════════════════════════════════════════════════════════ -->
+<div id="view-wcs">
+  <div class="view-label">View 2 — End-to-End Process Specification</div>
+  <div class="section-title">O2C End-to-End Process Specification · People · Process · Data · Technology</div>
+
+  <table class="wcs-table">
+    <thead>
+      <tr>
+        <th style="width:14%;min-width:130px">Step · PCF</th>
+        <th style="width:10%;min-width:90px">Pattern · M3 H%</th>
+        <th style="width:18%;min-width:150px">People</th>
+        <th style="width:20%;min-width:160px">Process</th>
+        <th style="width:20%;min-width:160px">Data · CRUD</th>
+        <th style="width:18%;min-width:150px">Technology</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- PCF 3.5 Order Capture -->
+      <tr class="wcs-l2"><td colspan="6">PCF 3.5 · Manage Sales Orders — Order Capture</td></tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Accept &amp; Validate Sales Order</div><div class="wcs-pcf">3.5.4</div></td>
+        <td style="text-align:center"><span class="pat dec">Decision</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">80%</span></td>
+        <td class="wcs-people"><strong>Sales / Order Management</strong>AI validates against customer master, credit limit, and availability. Human reviews exceptions and approves non-standard orders.</td>
+        <td class="wcs-process">Receive sales order. Validate customer, credit, and availability. Accept or reject. Flag non-standard terms for human review.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Sales Order</div><div class="de-sys">ERP — Order Mgmt</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Customer Master</div><div class="de-sys">ERP — CRM</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Credit Limit</div><div class="de-sys">ERP — Finance</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Product Master</div><div class="de-sys">ERP — MM</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">ERP Order Mgmt</span> — SAP SD / Oracle OM</div>
+          <div class="sys"><span class="sys-name">CRM</span> — Salesforce / SAP CRM</div>
+          <div class="sys"><span class="sys-name">AI Validation</span> — Credit and availability check</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Determine Availability</div><div class="wcs-pcf">3.5.4</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>AI — System automated</strong>Real-time ATP check against inventory and production schedule. Human intervenes only on constraint exceptions.</td>
+        <td class="wcs-process">Check inventory availability against order. Run ATP logic. Confirm availability date. Flag shortfalls to backorder processing.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Inventory Master</div><div class="de-sys">ERP — MM / WM</div></span></div>
+          <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Sales Order</div><div class="de-sys">ERP — Order Mgmt</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">ERP ATP</span> — SAP SD / Oracle ATP</div>
+          <div class="sys"><span class="sys-name">AI Scheduling</span> — Demand vs supply matching</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Determine Fulfillment Process</div><div class="wcs-pcf">3.5.4</div></td>
+        <td style="text-align:center"><span class="pat dec">Decision</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">80%</span></td>
+        <td class="wcs-people"><strong>Sales Operations</strong>AI proposes fulfillment route. Human approves routing for complex or high-value orders.</td>
+        <td class="wcs-process">Determine delivery method, shipping route, warehouse source. Assign fulfillment instruction to Materials. Set delivery commitment date.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Sales Order</div><div class="de-sys">ERP — Order Mgmt</div></span></div>
+          <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Fulfillment Instruction</div><div class="de-sys">ERP — WM</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Delivery Capabilities</div><div class="de-sys">ERP — Logistics</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">ERP Logistics</span> — SAP LE / Oracle Logistics</div>
+          <div class="sys"><span class="sys-name">TMS</span> — Transportation Management</div>
+          <div class="sys"><span class="sys-name">AI Routing</span> — Fulfillment optimization</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Confirm Sales Order</div><div class="wcs-pcf">3.5.4</div></td>
+        <td style="text-align:center"><span class="pat doc">Document</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">40%</span></td>
+        <td class="wcs-people"><strong>AI — System automated</strong>Generates and distributes order confirmation. Human reviews high-value or custom orders.</td>
+        <td class="wcs-process">Generate order confirmation. Apply agreed pricing and delivery terms. Distribute to customer via EDI or portal. Record confirmation.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Order Confirmation</div><div class="de-sys">ERP — Order Mgmt</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Sales Order</div><div class="de-sys">ERP — Order Mgmt</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Pricing Rules</div><div class="de-sys">ERP — Pricing</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">ERP Order Mgmt</span> — SAP SD / Oracle OM</div>
+          <div class="sys"><span class="sys-name">EDI / Customer Portal</span> — Confirmation distribution</div>
+          <div class="sys"><span class="sys-name">AI Drafting</span> — Confirmation generation</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Process Backorders &amp; Updates</div><div class="wcs-pcf">3.5.4</div></td>
+        <td style="text-align:center"><span class="pat exc">Exception</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">82%</span></td>
+        <td class="wcs-people"><strong>Sales / Customer Service</strong>AI flags backorder and drafts customer communication. Human determines resolution — partial shipment, substitute, or cancellation.</td>
+        <td class="wcs-process">Identify stock shortfall. Determine backorder resolution. Notify customer of delay and options. Update order with revised commitment or cancellation.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Sales Order</div><div class="de-sys">ERP — Order Mgmt</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Inventory Master</div><div class="de-sys">ERP — MM / WM</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">ERP Order Mgmt</span> — Backorder management</div>
+          <div class="sys"><span class="sys-name">Customer Portal</span> — Customer notification</div>
+          <div class="sys"><span class="sys-name">AI Communication</span> — Draft customer update</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Handle Order Inquiries</div><div class="wcs-pcf">3.5.4</div></td>
+        <td style="text-align:center"><span class="pat exc">Exception</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">82%</span></td>
+        <td class="wcs-people"><strong>Sales / Customer Service</strong>AI handles routine tracking inquiries. Human resolves complex issues requiring judgment — order changes, pricing disputes, or delivery failures.</td>
+        <td class="wcs-process">Receive customer inquiry. Classify inquiry type. Provide order status or tracking. Escalate complex inquiries to human agent. Log resolution.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Sales Order</div><div class="de-sys">ERP — Order Mgmt</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Delivery / Tracking</div><div class="de-sys">TMS / Carrier System</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">CRM</span> — Case management</div>
+          <div class="sys"><span class="sys-name">Customer Portal</span> — Self-service tracking</div>
+          <div class="sys"><span class="sys-name">AI Chat</span> — Routine inquiry resolution</div>
+        </td>
+      </tr>
+
+      <!-- PCF 4.4 Fulfillment -->
+      <tr class="wcs-l2"><td colspan="6">PCF 4.4 · Manage Logistics and Warehousing</td></tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Pick / Pack / Ship</div><div class="wcs-pcf">4.4.3</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>Warehouse Operations</strong>AI directs pick path and generates packing instructions. Warehouse staff execute physical pick, pack, and handoff to carrier. AI records and posts shipment.</td>
+        <td class="wcs-process">Receive fulfillment instruction. Pick goods from warehouse. Pack per order specification. Generate shipping documentation. Hand off to carrier. Post goods issue.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Fulfillment Instruction</div><div class="de-sys">ERP — WM</div></span></div>
+          <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Shipment Record</div><div class="de-sys">ERP — Logistics</div></span></div>
+          <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Inventory Master</div><div class="de-sys">ERP — MM / WM</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">WMS</span> — SAP EWM / Manhattan WMS</div>
+          <div class="sys"><span class="sys-name">Barcode / RFID</span> — Pick confirmation</div>
+          <div class="sys"><span class="sys-name">AI Pick Path</span> — Warehouse route optimization</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Track Inventory Accuracy</div><div class="wcs-pcf">4.4.3</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>AI — System automated</strong>Continuous inventory reconciliation post-shipment. AI flags discrepancies. Human investigates and resolves variances.</td>
+        <td class="wcs-process">Reconcile inventory post-pick. Update stock levels. Flag discrepancies. Trigger cycle count if variance exceeds threshold.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Inventory Master</div><div class="de-sys">ERP — MM / WM</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Shipment Record</div><div class="de-sys">ERP — Logistics</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">WMS</span> — Real-time inventory tracking</div>
+          <div class="sys"><span class="sys-name">AI Reconciliation</span> — Variance detection</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Plan &amp; Execute Outbound Delivery</div><div class="wcs-pcf">4.4.4</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>AI — System automated</strong>AI plans carrier selection, route, and delivery schedule. Transmits shipment to carrier. Human monitors SLA compliance.</td>
+        <td class="wcs-process">Select carrier per delivery requirements and cost constraints. Plan route. Transmit shipping instructions. Record delivery commitment. Notify customer of shipment.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Delivery Record</div><div class="de-sys">TMS / ERP Logistics</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Shipment Record</div><div class="de-sys">ERP — Logistics</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Transportation Schedules</div><div class="de-sys">TMS</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">TMS</span> — SAP TM / Oracle TMS</div>
+          <div class="sys"><span class="sys-name">Carrier EDI</span> — Shipment transmission</div>
+          <div class="sys"><span class="sys-name">AI Route Optimization</span> — Cost and SLA balancing</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Track Carrier Delivery Performance</div><div class="wcs-pcf">4.4.4</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>AI — System automated</strong>AI monitors carrier tracking and flags exceptions. Human intervenes on missed SLAs and escalated delivery failures.</td>
+        <td class="wcs-process">Monitor carrier tracking events. Confirm proof of delivery. Record delivery completion. Flag late or failed deliveries. Create billing trigger on delivery confirmation.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Delivery Record</div><div class="de-sys">TMS / ERP Logistics</div></span></div>
+          <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Proof of Delivery</div><div class="de-sys">TMS / Carrier System</div></span></div>
+          <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Billing Trigger</div><div class="de-sys">ERP — Finance</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">TMS</span> — Carrier tracking integration</div>
+          <div class="sys"><span class="sys-name">AI Monitoring</span> — SLA exception detection</div>
+        </td>
+      </tr>
+
+      <!-- PCF 9.4 Finance -->
+      <tr class="wcs-l2"><td colspan="6">PCF 9.4 · Manage Customer Credit, Invoicing, and Accounts Receivable</td></tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Generate Invoice</div><div class="wcs-pcf">9.4.2</div></td>
+        <td style="text-align:center"><span class="pat doc">Document</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">40%</span></td>
+        <td class="wcs-people"><strong>AI — System automated</strong>Auto-generated on billing trigger from delivery confirmation. AI applies pricing, discounts, and contract terms. Human reviews high-value invoices.</td>
+        <td class="wcs-process">Receive billing trigger. Generate invoice from sales order and delivery record. Apply pricing rules, discounts, and contract terms.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Customer Invoice</div><div class="de-sys">ERP — AR / Billing</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Sales Order</div><div class="de-sys">ERP — Order Mgmt</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Billing Trigger</div><div class="de-sys">ERP — Finance</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Pricing Rules</div><div class="de-sys">ERP — Pricing</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">ERP Billing</span> — SAP FICA / Oracle AR</div>
+          <div class="sys"><span class="sys-name">AI Invoice Generation</span> — Contract-aware drafting</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Apply Taxes</div><div class="wcs-pcf">9.4.2</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>AI — System automated</strong>Tax engine calculates applicable taxes per jurisdiction, product type, and customer tax status. Zero human involvement for standard transactions.</td>
+        <td class="wcs-process">Determine applicable tax jurisdiction. Calculate tax amounts per product line. Apply to invoice. Record tax liability.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Customer Invoice</div><div class="de-sys">ERP — AR / Billing</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Tax Rules</div><div class="de-sys">Tax Engine</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">Tax Engine</span> — Vertex / Avalara / SAP Tax</div>
+          <div class="sys"><span class="sys-name">AI Tax Classification</span> — Jurisdiction determination</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Distribute Invoice</div><div class="wcs-pcf">9.4.2</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>AI — System automated</strong>Transmits invoice to customer via EDI, portal, or email. Records distribution and opens AR.</td>
+        <td class="wcs-process">Transmit invoice to customer per preferred channel. Record distribution. Open AR line. Set payment due date per contract terms.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Customer Invoice</div><div class="de-sys">ERP — AR / Billing</div></span></div>
+          <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">AR Open Item</div><div class="de-sys">ERP — AR</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">EDI / Customer Portal</span> — Invoice distribution</div>
+          <div class="sys"><span class="sys-name">ERP AR</span> — SAP FI-AR / Oracle AR</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Maintain AR</div><div class="wcs-pcf">9.4.3</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>AI — System automated</strong>Continuous AR ledger maintenance. AI posts receipts and applies payments to open items. Human resolves unapplied cash and complex exceptions.</td>
+        <td class="wcs-process">Maintain open AR items. Post incoming payments to customer accounts. Apply cash to oldest open items per payment terms. Flag unapplied items.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">AR Open Item</div><div class="de-sys">ERP — AR</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Customer Master</div><div class="de-sys">ERP — CRM</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">ERP AR</span> — SAP FI-AR / Oracle AR</div>
+          <div class="sys"><span class="sys-name">AI Cash Application</span> — Remittance matching</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Monitor Aging</div><div class="wcs-pcf">9.4.3</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>AI — System automated</strong>AI generates aging analysis and flags overdue accounts. Human reviews and determines collection action for high-risk accounts.</td>
+        <td class="wcs-process">Generate AR aging report. Classify overdue accounts by risk tier. Flag accounts for collections action. Notify AR team of priority items.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">AR Open Item</div><div class="de-sys">ERP — AR</div></span></div>
+          <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Aging Report</div><div class="de-sys">ERP — AR / BI</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">ERP AR</span> — Aging analysis</div>
+          <div class="sys"><span class="sys-name">BI / Analytics</span> — Collections dashboard</div>
+          <div class="sys"><span class="sys-name">AI Risk Scoring</span> — Payment probability</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Reconcile Accounts</div><div class="wcs-pcf">9.4.3</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>AI — System automated</strong>AI reconciles AR ledger against bank receipts. Flags variances. Human resolves open items and approves period close.</td>
+        <td class="wcs-process">Reconcile AR ledger against cash receipts and bank statements. Resolve open variances. Close period. Output reconciled AR to Financial Reporting.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">AR Ledger</div><div class="de-sys">ERP — FI-GL / AR</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Bank Statements</div><div class="de-sys">Treasury / Banking</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">ERP GL</span> — SAP FI-GL / Oracle GL</div>
+          <div class="sys"><span class="sys-name">AI Reconciliation</span> — Auto-match and variance detection</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Manage Collections / Dunning</div><div class="wcs-pcf">9.4.4</div></td>
+        <td style="text-align:center"><span class="pat exc">Exception</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">82%</span></td>
+        <td class="wcs-people"><strong>Collections Manager — Recovery authority</strong>AI generates dunning notices and tracks responses. Human determines escalation — payment plan, legal referral, or write-off.</td>
+        <td class="wcs-process">Issue dunning notices per aging tier. Track customer responses. Escalate unresponsive accounts. Negotiate payment arrangements. Recommend write-off where appropriate.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Dunning Notice</div><div class="de-sys">ERP — AR / Collections</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">AR Open Item</div><div class="de-sys">ERP — AR</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Customer Master</div><div class="de-sys">ERP — CRM</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">Collections Platform</span> — SAP Collections / Emagia</div>
+          <div class="sys"><span class="sys-name">AI Dunning</span> — Automated notice generation</div>
+          <div class="sys"><span class="sys-name">AI Risk Scoring</span> — Recovery probability</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Resolve Disputes</div><div class="wcs-pcf">9.4.4</div></td>
+        <td style="text-align:center"><span class="pat exc">Exception</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">82%</span></td>
+        <td class="wcs-people"><strong>AR Specialist + Sales</strong>AI classifies dispute and routes to owner. Human investigates, collaborates with Sales and customer, issues credit note or correction.</td>
+        <td class="wcs-process">Receive dispute notification. Classify — pricing, quantity, quality, or duplicate. Investigate with Sales and customer. Issue credit note or corrected invoice. Close dispute.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Customer Invoice</div><div class="de-sys">ERP — AR / Billing</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Sales Order</div><div class="de-sys">ERP — Order Mgmt</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Customer Master</div><div class="de-sys">ERP — CRM</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">Collections Platform</span> — Dispute management</div>
+          <div class="sys"><span class="sys-name">CRM</span> — Customer communication</div>
+          <div class="sys"><span class="sys-name">AI Classification</span> — Dispute root cause</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Process Customer Payment</div><div class="wcs-pcf">9.4.5</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>AI — System automated</strong>Receives inbound payment. AI records, validates, and routes to cash application. Human monitors exception queue only.</td>
+        <td class="wcs-process">Receive payment via ACH, wire, check, or card. Validate amount. Record receipt. Route to cash application. Notify customer of receipt.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Payment Receipt</div><div class="de-sys">Treasury / Banking</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">AR Open Item</div><div class="de-sys">ERP — AR</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">Treasury Platform</span> — Payment receipt</div>
+          <div class="sys"><span class="sys-name">Lockbox / EDI</span> — Remittance processing</div>
+          <div class="sys"><span class="sys-name">AI Matching</span> — Payment-to-invoice matching</div>
+        </td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Apply Cash</div><div class="wcs-pcf">9.4.5</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>AI — System automated</strong>AI matches payment to open invoices and applies cash. Human resolves unapplied or partially applied cash. Clears AR and confirms to customer.</td>
+        <td class="wcs-process">Match payment remittance to open AR items. Apply cash to invoice(s). Post to AR ledger. Clear open items. Handle unapplied cash exceptions. Send payment confirmation to customer.</td>
+        <td class="wcs-data">
+          <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">AR Open Item</div><div class="de-sys">ERP — AR</div></span></div>
+          <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">AR Ledger</div><div class="de-sys">ERP — FI-GL / AR</div></span></div>
+          <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Payment Receipt</div><div class="de-sys">Treasury / Banking</div></span></div>
+        </td>
+        <td class="wcs-tech">
+          <div class="sys"><span class="sys-name">ERP AR</span> — SAP FI-AR / Oracle AR</div>
+          <div class="sys"><span class="sys-name">AI Cash Application</span> — Remittance matching and posting</div>
+        </td>
+      </tr>
+
+      <!-- Customer External -->
+      <tr class="wcs-l2"><td colspan="6">External Participant · Customer</td></tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Submit Sales Order</div><div class="wcs-pcf">Ext</div></td>
+        <td style="text-align:center"><span class="pat doc">Document</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">40%</span></td>
+        <td class="wcs-people"><strong>Customer Purchasing</strong>Customer submits order via EDI, web portal, email, or phone.</td>
+        <td class="wcs-process">Prepare and submit purchase order. Specify product, quantity, delivery date, and shipping address.</td>
+        <td class="wcs-data"><div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Sales Order (submitted)</div><div class="de-sys">Customer ERP / Portal</div></span></div></td>
+        <td class="wcs-tech"><div class="sys"><span class="sys-name">EDI / Customer Portal</span> — Order submission</div></td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Receive Order Confirmation</div><div class="wcs-pcf">Ext</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>Customer Purchasing</strong>Receives and records order confirmation. Reviews delivery commitment.</td>
+        <td class="wcs-process">Receive order confirmation. Verify quantities, pricing, and delivery date. Record in customer system.</td>
+        <td class="wcs-data"><div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Order Confirmation (received)</div><div class="de-sys">Customer ERP / Portal</div></span></div></td>
+        <td class="wcs-tech"><div class="sys"><span class="sys-name">EDI / Customer Portal</span> — Confirmation receipt</div></td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Receive Goods / Delivery</div><div class="wcs-pcf">Ext</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>Customer Receiving</strong>Receives and inspects goods. Records goods receipt. Signs proof of delivery.</td>
+        <td class="wcs-process">Receive shipment. Inspect quantity and condition. Accept delivery. Sign proof of delivery. Record in customer system.</td>
+        <td class="wcs-data"><div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Goods Receipt (customer)</div><div class="de-sys">Customer ERP</div></span></div></td>
+        <td class="wcs-tech"><div class="sys"><span class="sys-name">Customer WMS / ERP</span> — Goods receipt</div></td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Receive Invoice</div><div class="wcs-pcf">Ext</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>Customer AP</strong>Receives and records invoice. Routes to AP matching and payment.</td>
+        <td class="wcs-process">Receive invoice. Validate against PO and goods receipt. Route to payment process.</td>
+        <td class="wcs-data"><div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Invoice (received)</div><div class="de-sys">Customer AP System</div></span></div></td>
+        <td class="wcs-tech"><div class="sys"><span class="sys-name">Customer AP System / EDI</span> — Invoice receipt</div></td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Submit Payment</div><div class="wcs-pcf">Ext</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>Customer Finance</strong>Executes payment per agreed terms. Transmits remittance advice.</td>
+        <td class="wcs-process">Schedule and execute payment. Transmit remittance advice. Record payment in customer system.</td>
+        <td class="wcs-data"><div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Payment (transmitted)</div><div class="de-sys">Customer Treasury</div></span></div></td>
+        <td class="wcs-tech"><div class="sys"><span class="sys-name">Customer Treasury / Bank</span> — ACH / Wire / Check</div></td>
+      </tr>
+
+      <tr class="wcs-row">
+        <td><div class="wcs-step">Receive Payment Confirmation</div><div class="wcs-pcf">Ext</div></td>
+        <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+        <td class="wcs-people"><strong>Customer Finance</strong>Receives and records payment confirmation. Closes invoice in customer AP.</td>
+        <td class="wcs-process">Receive payment confirmation. Record in customer AP. Close invoice. Reconcile against remittance.</td>
+        <td class="wcs-data"><div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Invoice (closed)</div><div class="de-sys">Customer AP System</div></span></div></td>
+        <td class="wcs-tech"><div class="sys"><span class="sys-name">Customer AP System</span> — Payment confirmation</div></td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <!-- CRUD Legend -->
+  <div class="crud-legend">
+    <div class="cl-item"><div class="cl-chip crud-c" style="background:#DCFCE7;color:#166534">C</div> Create — net new record</div>
+    <div class="cl-item"><div class="cl-chip crud-r" style="background:#F0F7FF;color:#1B4F8A">R</div> Read — consume existing</div>
+    <div class="cl-item"><div class="cl-chip crud-u" style="background:#FEF3C7;color:#B45309">U</div> Update — modify existing</div>
+    <div class="cl-item"><div class="cl-chip" style="background:#FAFAFA;color:#ddd">·</div> No operation at this step</div>
+  </div>
+
+  <!-- CRUD Matrix PCF 3.5 -->
+  <p style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">PCF 3.5 · Manage Sales Orders — Order Capture</p>
+  <div class="crud-matrix-wrap" style="margin-bottom:20px">
+    <table class="crud-table">
+      <thead><tr>
+        <th style="text-align:left;width:160px;min-width:160px">Data Entity</th>
+        <th style="text-align:left;width:150px;min-width:150px">System of Record</th>
+        <th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.2</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(1)</span></th><th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.2</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(2)</span></th><th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.2</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(3)</span></th><th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.3</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(4)</span></th><th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.3</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(5)</span></th><th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.3</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(6)</span></th><th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.5</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(7)</span></th><th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.5</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(8)</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="width:160px;min-width:160px">Customer Invoice</td><td style="width:150px;min-width:150px">ERP — AR / Billing</td><td class="crud-cell c">C</td><td class="crud-cell u">U</td><td class="crud-cell u">U</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Sales Order</td><td style="width:150px;min-width:150px">ERP — Order Mgmt</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Billing Trigger</td><td style="width:150px;min-width:150px">ERP — Finance</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Tax Rules</td><td style="width:150px;min-width:150px">Tax Engine</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">AR Open Item</td><td style="width:150px;min-width:150px">ERP — AR</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell u">U</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell u">U</td></tr>
+        <tr><td style="width:160px;min-width:160px">Aging Report</td><td style="width:150px;min-width:150px">ERP — AR / BI</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">AR Ledger</td><td style="width:150px;min-width:150px">ERP — FI-GL / AR</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell u">U</td><td class="crud-cell empty">·</td><td class="crud-cell u">U</td></tr>
+        <tr><td style="width:160px;min-width:160px">Payment Receipt</td><td style="width:150px;min-width:150px">Treasury / Banking</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell c">C</td><td class="crud-cell r">R</td></tr>
+        <tr><td style="width:160px;min-width:160px">Bank Statements</td><td style="width:150px;min-width:150px">Treasury / Banking</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Customer Master</td><td style="width:150px;min-width:150px">ERP — CRM</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="font-size:9px;color:var(--lgray);margin-top:4px;margin-bottom:8px;line-height:1.8;font-style:italic">
+    (1) 3.5.4 Accept &amp; Validate Sales Order &nbsp;·&nbsp; (2) 3.5.4 Determine Availability &nbsp;·&nbsp; (3) 3.5.4 Determine Fulfillment Process &nbsp;·&nbsp; (4) 3.5.4 Confirm Sales Order
+  </div>
+  <div style="margin-bottom:20px;font-size:9px;color:var(--lgray);font-style:italic">Exception steps (Process Backorders 3.5.4 · Handle Order Inquiries 3.5.4) omitted — exception flows read/update existing entities with no net-new pattern.</div>
+
+  <!-- CRUD Matrix PCF 4.4 -->
+  <p style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">PCF 4.4 · Manage Logistics and Warehousing</p>
+  <div class="crud-matrix-wrap" style="margin-bottom:20px">
+    <table class="crud-table">
+      <thead><tr>
+        <th style="text-align:left;width:160px;min-width:160px">Data Entity</th>
+        <th style="text-align:left;width:150px;min-width:150px">System of Record</th>
+        <th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">4.4.3</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(1)</span></th><th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">4.4.3</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(2)</span></th><th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">4.4.4</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(3)</span></th><th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">4.4.4</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(4)</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="width:160px;min-width:160px">Fulfillment Instruction</td><td style="width:150px;min-width:150px">ERP — WM</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Shipment Record</td><td style="width:150px;min-width:150px">ERP — Logistics</td><td class="crud-cell c">C</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Inventory Master</td><td style="width:150px;min-width:150px">ERP — MM / WM</td><td class="crud-cell u">U</td><td class="crud-cell u">U</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Delivery Record</td><td style="width:150px;min-width:150px">TMS / ERP Logistics</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell u">U</td></tr>
+        <tr><td style="width:160px;min-width:160px">Proof of Delivery</td><td style="width:150px;min-width:150px">TMS / Carrier</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td></tr>
+        <tr><td style="width:160px;min-width:160px">Billing Trigger</td><td style="width:150px;min-width:150px">ERP — Finance</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td></tr>
+        <tr><td style="width:160px;min-width:160px">Transportation Schedules</td><td style="width:150px;min-width:150px">TMS</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="font-size:9px;color:var(--lgray);margin-top:4px;margin-bottom:20px;line-height:1.8;font-style:italic">
+    (1) 4.4.3 Pick / Pack / Ship &nbsp;·&nbsp; (2) 4.4.3 Track Inventory Accuracy &nbsp;·&nbsp; (3) 4.4.4 Plan &amp; Execute Outbound Delivery &nbsp;·&nbsp; (4) 4.4.4 Track Carrier Delivery Performance
+  </div>
+
+  <!-- CRUD Matrix PCF 9.4 -->
+  <p style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">PCF 9.4 · Manage Customer Credit, Invoicing, and Accounts Receivable</p>
+  <div class="crud-matrix-wrap" style="margin-bottom:20px">
+    <table class="crud-table">
+      <thead><tr>
+        <th style="text-align:left;width:160px;min-width:160px">Data Entity</th>
+        <th style="text-align:left;width:150px;min-width:150px">System of Record</th>
+        <th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.2</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(1)</span></th>
+        <th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.2</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(2)</span></th>
+        <th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.2</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(3)</span></th>
+        <th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.3</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(4)</span></th>
+        <th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.3</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(5)</span></th>
+        <th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.3</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(6)</span></th>
+        <th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.5</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(7)</span></th>
+        <th style="text-align:left;vertical-align:bottom;width:44px;min-width:44px"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.4.5</span><span style="font-size:8px;color:rgba(255,255,255,.6);display:block">(8)</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="width:160px;min-width:160px">Customer Invoice</td><td style="width:150px;min-width:150px">ERP — AR / Billing</td><td class="crud-cell c">C</td><td class="crud-cell u">U</td><td class="crud-cell u">U</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Sales Order</td><td style="width:150px;min-width:150px">ERP — Order Mgmt</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Billing Trigger</td><td style="width:150px;min-width:150px">ERP — Finance</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Tax Rules</td><td style="width:150px;min-width:150px">Tax Engine</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">AR Open Item</td><td style="width:150px;min-width:150px">ERP — AR</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell u">U</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell u">U</td></tr>
+        <tr><td style="width:160px;min-width:160px">Aging Report</td><td style="width:150px;min-width:150px">ERP — AR / BI</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">AR Ledger</td><td style="width:150px;min-width:150px">ERP — FI-GL / AR</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell u">U</td><td class="crud-cell empty">·</td><td class="crud-cell u">U</td></tr>
+        <tr><td style="width:160px;min-width:160px">Payment Receipt</td><td style="width:150px;min-width:150px">Treasury / Banking</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell c">C</td><td class="crud-cell r">R</td></tr>
+        <tr><td style="width:160px;min-width:160px">Bank Statements</td><td style="width:150px;min-width:150px">Treasury / Banking</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Customer Master</td><td style="width:150px;min-width:150px">ERP — CRM</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="font-size:9px;color:var(--lgray);margin-top:4px;margin-bottom:8px;line-height:1.8;font-style:italic">
+    (1) 9.4.2 Generate Invoice &nbsp;·&nbsp; (2) 9.4.2 Apply Taxes &nbsp;·&nbsp; (3) 9.4.2 Distribute Invoice &nbsp;·&nbsp; (4) 9.4.3 Maintain AR &nbsp;·&nbsp;
+    (5) 9.4.3 Monitor Aging &nbsp;·&nbsp; (6) 9.4.3 Reconcile Accounts &nbsp;·&nbsp; (7) 9.4.5 Process Customer Payment &nbsp;·&nbsp; (8) 9.4.5 Apply Cash
+  </div>
+  <div style="margin-bottom:20px;font-size:9px;color:var(--lgray);font-style:italic">Exception steps (Manage Collections 9.4.4 · Resolve Disputes 9.4.4) omitted — exception flows read/update existing entities with no net-new pattern.</div>
+
+  <!-- Methodology note -->
+  <div style="margin-top:24px;padding:12px 16px;background:var(--navy-l);border-radius:8px;font-size:11px;color:var(--gray);line-height:1.7;">
+    <strong style="color:var(--navy)">Methodology:</strong> H% values represent the proportion of human involvement at each HITL maturity level. M3 = HITL Design Intent — the designed steady-state human/AI balance for a mature implementation. M1 = Undesigned baseline. Pattern types (Decision, Document, Transaction, Exception) are derived from APQC PCF v8.0 SIPOC reference architecture. CRUD operations reflect net-new data interactions; exception flows that only read/update existing entities are noted separately.
+  </div>
+</div><!-- end view-wcs -->
+
+</div><!-- end main -->
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-l">Human-AI Partnership Framework &nbsp;·&nbsp; End-to-End Process: Order-to-Cash (O2C) &nbsp;·&nbsp; Module 2</div>
+  <div class="footer-r">APQC PCF v8.0 © 2026 APQC. All rights reserved.<br>HITL Maturity Methodology © Timothy P. King &amp; Claude (Anthropic), May 2026 &nbsp;·&nbsp; hitldrivenarchitecture.com</div>
+</footer>
+
+<script>
+// ── PDF dropdown ──────────────────────────────────────────────────────────────
+function togglePDF() {
+  const m = document.getElementById('pdf-menu');
+  const a = document.getElementById('pdf-arrow');
+  m.classList.toggle('open');
+  a.style.transform = m.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.pdf-wrap')) {
+    document.getElementById('pdf-menu').classList.remove('open');
+    document.getElementById('pdf-arrow').style.transform = '';
+  }
+});
+
+// ── Swim lane step data ───────────────────────────────────────────────────────
+// [laneIdx, pcf, name, pattern, m3h, isException]
+// Lane 0 = Sales (PCF 3.5) | Lane 1 = Materials (PCF 4.4) | Lane 2 = Finance (PCF 9.4) | Lane 3 = Customer (Ext)
+const swimSteps = [
+  [3,"Ext","Submit Sales Order","Document","40%",false],
+  [3,"XFER","Ext","→ Sales (3.5.4)"],
+  [0,"3.5.4","Accept & Validate Sales Order","Decision","80%",false],
+  [0,"3.5.4","Determine Availability","Transaction","35%",false],
+  [0,"3.5.4","Determine Fulfillment Process","Decision","80%",false],
+  [0,"3.5.4","Confirm Sales Order","Document","40%",false],
+  [0,"XFER","3.5.4","→ Materials (4.4.3) + Customer"],
+  [3,"Ext","Receive Order Confirmation","Transaction","35%",false],
+  [1,"4.4.3","Pick / Pack / Ship","Transaction","35%",false],
+  [1,"4.4.3","Track Inventory Accuracy","Transaction","35%",false],
+  [1,"4.4.4","Plan & Execute Outbound Delivery","Transaction","35%",false],
+  [1,"4.4.4","Track Carrier Delivery Performance","Transaction","35%",false],
+  [1,"XFER","4.4.4","→ Finance (9.4.2) + Customer"],
+  [3,"Ext","Receive Goods / Delivery","Transaction","35%",false],
+  [2,"9.4.2","Generate Invoice","Document","40%",false],
+  [2,"9.4.2","Apply Taxes","Transaction","35%",false],
+  [2,"9.4.2","Distribute Invoice","Transaction","35%",false],
+  [2,"XFER","9.4.2","→ Customer + AR (9.4.3)"],
+  [3,"Ext","Receive Invoice","Transaction","35%",false],
+  [2,"9.4.3","Maintain AR","Transaction","35%",false],
+  [2,"9.4.3","Monitor Aging","Transaction","35%",false],
+  [2,"9.4.3","Reconcile Accounts","Transaction","35%",false],
+  [3,"Ext","Submit Payment","Transaction","35%",false],
+  [3,"XFER","Ext","→ Finance (9.4.5)"],
+  [2,"9.4.5","Process Customer Payment","Transaction","35%",false],
+  [2,"9.4.5","Apply Cash","Transaction","35%",false],
+  [2,"XFER","9.4.5","→ Customer (Payment Confirmation)"],
+  [3,"Ext","Receive Payment Confirmation","Transaction","35%",false],
+  [0,"3.5.4","Process Backorders & Updates","Exception","82%",true],
+  [0,"3.5.4","Handle Order Inquiries","Exception","82%",true],
+  [2,"9.4.4","Manage Collections / Dunning","Exception","82%",true],
+  [2,"9.4.4","Resolve Disputes","Exception","82%",true],
+];
+
+const patClass = {Decision:'dec',Knowledge:'kno',Document:'doc',Transaction:'tra',Exception:'exc'};
+
+function buildSwim(bodyId) {
+  const body = document.getElementById(bodyId);
+  if (!body) return;
+  const rows = [];
+  let maxRow = 0;
+
+  // Separate exceptions from main flow
+  const mainFlow = swimSteps.filter(s => !s[5]);
+  const exceptions = swimSteps.filter(s => s[5]);
+
+  // Build row assignments for main flow
+  const lanes = [[],[],[],[]];
+  mainFlow.forEach(s => {
+    const lane = s[0];
+    if (s[1] === 'XFER') {
+      lanes[lane].push({type:'xfer', pcf:s[2], label:s[3]});
+    } else {
+      lanes[lane].push({type:'step', pcf:s[1], name:s[2], pat:s[3], h:s[4]});
+    }
+  });
+
+  const maxLen = Math.max(...lanes.map(l=>l.length));
+  for (let i=0; i<maxLen; i++) {
+    const cells = lanes.map((lane,li) => {
+      const item = lane[i];
+      if (!item) return `<td style="background:#fff;padding:6px;border:2px solid #F4F6FB;vertical-align:top;"></td>`;
+      if (item.type === 'xfer') return `<td style="background:#fff;padding:6px;border:2px solid #F4F6FB;vertical-align:top;text-align:center;"><div class="handoff"><span class="hf-pcf">${item.pcf}</span>${item.label}</div></td>`;
+      const pc = patClass[item.pat] || 'tra';
+      return `<td style="background:#fff;padding:6px;border:2px solid #F4F6FB;vertical-align:top;text-align:center;">
+        <div class="step ${pc}">
+          <div class="step-ref">${item.pcf}</div>
+          <div class="step-name">${item.name}</div>
+          <div class="step-foot"><span class="step-pat">${item.pat}</span><span class="m3pill">${item.h}</span></div>
+        </div>
+      </td>`;
+    });
+    body.innerHTML += `<tr>${cells.join('')}</tr>`;
+  }
+
+  // Exception rows
+  if (exceptions.length > 0) {
+    body.innerHTML += `<tr><td colspan="4" style="background:var(--navy-l);color:var(--navy-d);font-weight:700;font-size:11px;padding:6px 10px;border-top:2px solid #7AAED6;border-left:3px solid #7AAED6;">Exception Flows — Human Resolution Required (82% H at M3)</td></tr>`;
+    const excLanes = [[],[],[],[]];
+    exceptions.forEach(s => excLanes[s[0]].push({type:'step',pcf:s[1],name:s[2],pat:s[3],h:s[4]}));
+    const excMax = Math.max(...excLanes.map(l=>l.length));
+    for (let i=0; i<excMax; i++) {
+      const cells = excLanes.map(lane => {
+        const item = lane[i];
+        if (!item) return `<td style="background:#fff;padding:6px;border:2px solid #F4F6FB;"></td>`;
+        return `<td style="background:#fff;padding:6px;border:2px solid #F4F6FB;vertical-align:top;text-align:center;">
+          <div class="step exc">
+            <div class="step-ref">${item.pcf}</div>
+            <div class="step-name">${item.name}</div>
+            <div class="step-foot"><span class="step-pat">${item.pat}</span><span class="m3pill">${item.h}</span></div>
+          </div>
+        </td>`;
+      });
+      body.innerHTML += `<tr>${cells.join('')}</tr>`;
+    }
+  }
+}
+
+buildSwim('swim-body');
+
+// ── CRUD table column sizing (matches P2P pattern) ────────────────────────────
+function sizeCrudTables() {
+  const DE_W     = 160;  // Data Entity fixed px
+  const SOR_W    = 150;  // System of Record fixed px
+  const MAX_CRUD = 12;   // Fixed 12 CRUD columns across all sections
+
+  document.querySelectorAll('.crud-table').forEach(table => {
+    const wrap = table.closest('.crud-matrix-wrap');
+    if (!wrap) return;
+
+    const available = wrap.clientWidth - DE_W - SOR_W - 2;
+    const colW = Math.max(40, Math.floor(available / MAX_CRUD));
+
+    // Pad header row to exactly 12 CRUD columns
+    const headerRow = table.querySelector('thead tr');
+    const currentCols = headerRow.querySelectorAll('th').length - 2;
+    for (let i = currentCols; i < MAX_CRUD; i++) {
+      const th = document.createElement('th');
+      th.style.cssText = 'background:var(--navy);border:1px solid var(--navy);';
+      headerRow.appendChild(th);
+    }
+
+    // Pad every body row to exactly 12 CRUD columns
+    table.querySelectorAll('tbody tr').forEach(row => {
+      const cells = row.querySelectorAll('td').length;
+      const isGroup = row.querySelector('td[colspan]');
+      if (isGroup) {
+        const td = row.querySelector('td');
+        if (td) td.setAttribute('colspan', 2 + MAX_CRUD);
+        return;
+      }
+      for (let i = cells; i < 2 + MAX_CRUD; i++) {
+        const td = document.createElement('td');
+        td.className = 'crud-cell empty';
+        td.textContent = '·';
+        row.appendChild(td);
+      }
+    });
+
+    // Apply colgroup with exact widths
+    let cg = table.querySelector('colgroup');
+    if (!cg) { cg = document.createElement('colgroup'); table.prepend(cg); }
+    cg.innerHTML = '';
+    const makeCol = (w) => {
+      const col = document.createElement('col');
+      col.style.width = w + 'px';
+      cg.appendChild(col);
+    };
+    makeCol(DE_W);
+    makeCol(SOR_W);
+    for (let i = 0; i < MAX_CRUD; i++) makeCol(colW);
+  });
+
+  // Fix all th text to white
+  document.querySelectorAll('.crud-table thead th span').forEach(span => {
+    span.style.color = '#fff';
+  });
+}
+
+window.addEventListener('load', sizeCrudTables);
+window.addEventListener('resize', sizeCrudTables);
+</script>
+</body>
+</html>
