@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>End-to-End Process — Procure-to-Pay (P2P)</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#1B4F8A;--navy-d:#0D2D4F;--navy-l:#EEF3FA;
+  --dark:#0D1B2A;--gray:#444;--lgray:#888;--white:#fff;
+  --bg:#F4F6FB;--border:#DDE3EE;
+  --dec-bg:#EEF3FA;--dec-c:#1B4F8A;
+  --kno-bg:#F3F0FE;--kno-c:#534AB7;
+  --doc-bg:#E0F2FE;--doc-c:#0369A1;
+  --tra-bg:#DCFCE7;--tra-c:#166534;
+  --exc-bg:#FEE2E2;--exc-c:#991B1B;
+  --m1:#F0F7FF;--m2:#E6F1FF;--m3:#D6E8FF;--m4:#C4DCFF;--m5:#B0CEFF;
+  --c-c:#166534;--r-c:#1B4F8A;--u-c:#B45309;--d-c:#991B1B;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--dark);font-size:14px;line-height:1.6;}
+.site-header{background:var(--navy-d);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Playfair Display',serif;font-size:17px;color:#fff;font-weight:700;}
+.brand span{font-size:11px;color:#7A9CC6;font-weight:400;letter-spacing:.08em;text-transform:uppercase;display:block;margin-top:2px;}
+.header-right{font-size:11px;color:#7A9CC6;text-align:right;display:flex;align-items:center;gap:16px;}
+.header-right a{color:#A8C4E0;text-decoration:none;}
+.pdf-wrap{position:relative;}
+.pdf-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;padding:6px 12px;border-radius:6px;cursor:pointer;letter-spacing:.04em;display:flex;align-items:center;gap:6px;}
+.pdf-btn:hover{background:rgba(255,255,255,.2);}
+.pdf-arrow{font-size:9px;transition:transform .2s;}
+.pdf-menu{display:none;position:absolute;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);min-width:220px;z-index:100;overflow:hidden;}
+.pdf-menu.open{display:block;}
+.pdf-menu-item{padding:10px 16px;font-size:12px;color:var(--dark);cursor:pointer;border-bottom:1px solid #F0F2F8;display:flex;align-items:center;justify-content:flex-end;gap:8px;text-align:right;}
+.pdf-menu-item:last-child{border-bottom:none;}
+.pdf-menu-item:hover{background:var(--navy-l);}
+.pdf-menu-item .pmi-label{font-weight:600;color:var(--navy);}
+.pdf-menu-item .pmi-sub{font-size:10px;color:var(--lgray);margin-top:1px;}
+.hero{background:#fff;border-bottom:1px solid var(--border);padding:28px 32px 24px;}
+.module-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--navy);background:var(--navy-l);padding:3px 10px;border-radius:4px;display:inline-block;margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:26px;color:var(--dark);font-weight:700;margin-bottom:6px;}
+.hero-sub{font-size:13px;color:var(--lgray);margin-bottom:20px;line-height:1.7;}
+.hero-sub strong{color:var(--navy);}
+.metrics{display:flex;gap:12px;flex-wrap:wrap;}
+.metric{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 16px;min-width:120px;}
+.metric .lbl{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--lgray);margin-bottom:4px;}
+.metric .val{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;}
+.metric .sub{font-size:10px;color:var(--lgray);margin-top:2px;}
+.m-dec .val{color:var(--dec-c);} .m-tra .val{color:var(--tra-c);}
+.m-exc .val{color:var(--exc-c);} .m-gap .val{color:#B45309;}
+.main{padding:24px 32px 40px;}
+.section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--lgray);margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.view-label{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#fff;background:var(--navy);padding:2px 8px;border-radius:3px;margin-bottom:6px;}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gray);}
+.ld{width:12px;height:12px;border-radius:3px;}
+.ld.dec{background:var(--dec-bg);border:1px solid var(--dec-c);}
+.ld.kno{background:var(--kno-bg);border:1px solid var(--kno-c);}
+.ld.doc{background:var(--doc-bg);border:1px solid var(--doc-c);}
+.ld.tra{background:var(--tra-bg);border:1px solid var(--tra-c);}
+.ld.exc{background:var(--exc-bg);border:1px solid var(--exc-c);}
+.legend-sep{width:1px;background:var(--border);height:16px;}
+.legend-note{font-size:10px;color:var(--lgray);font-style:italic;}
+.swimlane-wrap{overflow-x:auto;margin-bottom:24px;}
+.step{width:100%;max-width:175px;border-radius:6px;padding:6px 9px;transition:box-shadow .15s;}
+.step:hover{box-shadow:0 2px 8px rgba(0,0,0,.1);}
+.step-ref{font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray);margin-bottom:1px;}
+.step-name{font-size:11px;font-weight:600;line-height:1.3;margin-bottom:4px;}
+.step-foot{display:flex;align-items:center;justify-content:space-between;gap:4px;}
+.step-pat{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+.m3pill{background:var(--m3);padding:1px 5px;border-radius:3px;font-family:'DM Mono',monospace;font-size:9px;color:var(--navy);font-weight:700;}
+.step.dec{background:var(--dec-bg);border:1px solid #C8D8EE;position:relative;}
+.step.dec::before{content:'⬡ Decision gate';position:absolute;top:-7px;left:8px;font-size:7px;font-weight:700;color:var(--dec-c);background:#fff;padding:0 3px;}
+.step.dec .step-name,.step.dec .step-pat{color:var(--dec-c);}
+.step.kno{background:var(--kno-bg);border:1px solid #D4CFFA;}
+.step.kno .step-name,.step.kno .step-pat{color:var(--kno-c);}
+.step.doc{background:var(--doc-bg);border:1px solid #BAE3FE;}
+.step.doc .step-name,.step.doc .step-pat{color:var(--doc-c);}
+.step.tra{background:var(--tra-bg);border:1px solid #BBF0CC;}
+.step.tra .step-name,.step.tra .step-pat{color:var(--tra-c);}
+.step.exc{background:var(--exc-bg);border:2px dashed #F4A0A0;}
+.step.exc .step-name,.step.exc .step-pat{color:var(--exc-c);}
+.handoff{width:100%;max-width:175px;background:var(--bg);border:1px dashed var(--border);border-radius:4px;padding:3px 8px;text-align:center;font-size:9px;color:var(--lgray);font-style:italic;line-height:1.4;}
+.handoff .hf-pcf{font-family:'DM Mono',monospace;font-size:8px;color:var(--navy);font-style:normal;font-weight:600;display:block;margin-bottom:1px;}
+.insight{background:var(--navy-l);border-left:4px solid var(--navy);border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:24px;}
+.insight h3{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em;}
+.insight p{font-size:13px;color:var(--dark);line-height:1.7;}
+.insight strong{color:var(--navy);}
+.tbl-wrap{overflow-x:auto;margin-bottom:28px;}
+.hitl-table{width:100%;border-collapse:collapse;font-size:12px;}
+.hitl-table thead th{background:var(--navy);color:#fff;padding:9px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;border:1px solid var(--navy);}
+.hitl-table thead th:first-child{text-align:left;min-width:200px;}
+.hitl-table thead th:not(:first-child){text-align:center;}
+.row-agg td{background:var(--navy-d);color:#fff;font-weight:700;padding:9px 10px;border-top:2px solid var(--navy);}
+.row-l2 td{background:var(--navy-l);color:var(--navy-d);font-weight:700;font-size:12px;padding:7px 10px;border-top:2px solid #7AAED6;border-bottom:1px solid #C8D8EE;}
+.row-l2 td:first-child{border-left:3px solid #7AAED6;}
+.row-l3 td{padding:7px 10px;border-bottom:1px solid #F0F2F8;color:var(--gray);vertical-align:middle;}
+.row-l3:nth-child(even) td{background:#F9FBFD;}
+.row-l3:nth-child(odd) td{background:#fff;}
+.step-cell{padding-left:20px;font-size:11px;}
+.step-cell::before{content:'↳ ';color:#B0BAD0;font-size:10px;}
+.pcf-cell{font-family:'DM Mono',monospace;font-size:10px;color:var(--lgray);text-align:center;}
+.pat{display:inline-block;font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}
+.pat.dec{background:var(--dec-bg);color:var(--dec-c);}
+.pat.kno{background:var(--kno-bg);color:var(--kno-c);}
+.pat.doc{background:var(--doc-bg);color:var(--doc-c);}
+.pat.tra{background:var(--tra-bg);color:var(--tra-c);}
+.pat.exc{background:var(--exc-bg);color:var(--exc-c);}
+td.m1{background:var(--m1);color:var(--navy);text-align:center;font-family:'DM Mono',monospace;font-size:11px;}
+td.m3{background:var(--m3);color:var(--navy);font-weight:700;text-align:center;font-family:'DM Mono',monospace;font-size:11px;}
+td.delta{color:#B45309;font-weight:700;text-align:center;font-family:'DM Mono',monospace;font-size:11px;}
+td.opp{text-align:center;font-size:10px;font-weight:600;}
+.opp-h{color:var(--tra-c);} .opp-l{color:var(--lgray);}
+.cap-map{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:28px;}
+.cap-card{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.cap-head{background:var(--navy-d);padding:8px 14px;}
+.cap-head .ptag{font-family:'DM Mono',monospace;font-size:10px;color:#7A9CC6;margin-bottom:2px;}
+.cap-head .pname{font-size:12px;font-weight:700;color:#fff;}
+.cap-body{padding:10px 14px;}
+.cap-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid #F5F5F5;font-size:11px;}
+.cap-row:last-child{border-bottom:none;}
+.cap-row .crn{color:var(--gray);flex:1;padding-right:8px;}
+.cap-agg{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;gap:12px;font-size:10px;color:var(--lgray);}
+.cap-agg strong{color:var(--navy);}
+.wcs-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:28px;}
+.wcs-table thead th{background:var(--navy);color:#fff;padding:8px 10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;border:1px solid var(--navy);vertical-align:bottom;}
+.wcs-table thead th:first-child{text-align:left;min-width:160px;}
+.wcs-l2 td{background:var(--navy-l);color:var(--navy-d);font-weight:700;font-size:11px;padding:6px 10px;border-top:2px solid #7AAED6;border-bottom:1px solid #C8D8EE;}
+.wcs-l2 td:first-child{border-left:3px solid #7AAED6;}
+.wcs-row td{padding:7px 10px;border-bottom:1px solid #F0F2F8;vertical-align:top;color:var(--gray);font-size:11px;}
+.wcs-row:nth-child(even) td{background:#F9FBFD;}
+.wcs-row:nth-child(odd) td{background:#fff;}
+.wcs-step{font-weight:600;color:var(--dark);font-size:11px;}
+.wcs-pcf{font-family:'DM Mono',monospace;font-size:9px;color:var(--lgray);display:block;margin-top:1px;}
+.wcs-people{font-size:10px;line-height:1.5;}
+.wcs-people strong{color:var(--dark);display:block;margin-bottom:2px;}
+.wcs-process{font-size:10px;line-height:1.5;color:var(--gray);}
+.wcs-data{font-size:10px;line-height:1.6;}
+.wcs-data .de{display:flex;align-items:flex-start;gap:4px;margin-bottom:3px;}
+.wcs-data .de-name{color:var(--dark);font-size:10px;}
+.wcs-data .de-sys{color:var(--lgray);font-size:9px;font-style:italic;}
+.crud-chip{display:inline-block;font-family:'DM Mono',monospace;font-size:8px;font-weight:700;padding:0 4px;border-radius:2px;margin-left:2px;}
+.crud-c{background:#DCFCE7;color:var(--c-c);}
+.crud-r{background:var(--m1);color:var(--r-c);}
+.crud-u{background:#FEF3C7;color:var(--u-c);}
+.crud-d{background:var(--exc-bg);color:var(--d-c);}
+.wcs-tech{font-size:10px;line-height:1.6;color:var(--gray);}
+.wcs-tech .sys{display:block;padding:2px 0;border-bottom:1px solid #F5F5F5;}
+.wcs-tech .sys:last-child{border-bottom:none;}
+.wcs-tech .sys-name{font-weight:600;color:var(--dark);}
+.crud-matrix-wrap{overflow-x:auto;margin-bottom:20px;}
+.crud-table{border-collapse:collapse;font-size:10px;width:100%;table-layout:fixed;}
+.crud-table thead th{background:var(--navy);color:#fff;padding:6px 8px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:1px solid var(--navy);text-align:left;vertical-align:bottom;overflow:hidden;}
+.crud-table td{padding:5px 8px;border-bottom:1px solid #F0F2F8;vertical-align:middle;overflow:hidden;}
+.crud-table thead th:first-child{font-weight:700;color:#fff;font-size:10px;}
+.crud-table td:first-child{font-weight:600;color:var(--dark);font-size:10px;}
+.crud-table thead th:nth-child(2){font-size:9px;color:#fff;font-style:normal;font-family:'DM Sans',sans-serif;font-weight:700;}
+.crud-table td:nth-child(2){font-size:9px;color:var(--lgray);font-style:italic;font-family:'DM Mono',monospace;}
+.crud-table td:nth-child(n+3){text-align:center;}
+.crud-table .ct-l2 td{background:var(--navy-l);color:var(--navy-d);font-weight:700;font-size:10px;padding:5px 8px;border-top:2px solid #7AAED6;}
+.crud-table .ct-l2 td:first-child{border-left:3px solid #7AAED6;}
+.crud-table tbody tr:not(.ct-l2) td{padding:5px 8px;border-bottom:1px solid #F0F2F8;vertical-align:middle;}
+.crud-table tbody tr:not(.ct-l2):nth-child(even) td{background:#F9FBFD;}
+.crud-table tbody tr:not(.ct-l2):nth-child(odd) td{background:#fff;}
+.crud-table td:first-child{font-weight:600;color:var(--dark);font-size:10px;}
+.crud-table td:nth-child(2){font-size:9px;color:var(--lgray);font-style:italic;font-family:'DM Mono',monospace;}
+.crud-cell{text-align:center;font-family:'DM Mono',monospace;font-size:10px;font-weight:700;}
+.crud-cell.c{background:#DCFCE7 !important;color:var(--c-c);}
+.crud-cell.r{background:#DBEAFE !important;color:var(--r-c);}
+.crud-cell.u{background:#FEF3C7 !important;color:var(--u-c);}
+.crud-cell.empty{background:#FAFAFA !important;color:#ddd;}
+.crud-legend{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+.cl-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--gray);}
+.cl-chip{width:20px;height:14px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:8px;font-weight:700;}
+.site-footer{background:var(--navy-d);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+.footer-l{font-size:11px;color:#5B8AB8;}
+.footer-r{font-size:10px;color:#5B8AB8;text-align:right;}
+.section-divider{border:none;border-top:2px solid var(--border);margin:32px 0;}
+.view-panel{display:none;}
+.view-panel.active{display:block;}
+.view-switcher{display:flex;gap:10px;margin-bottom:20px;align-items:center;}
+.vsw-btn{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:5px 14px;border-radius:4px;cursor:pointer;border:2px solid var(--navy);}
+.vsw-btn.active{background:var(--navy);color:#fff;}
+.vsw-btn.inactive{background:#fff;color:var(--navy);}
+@media print {
+  * { -webkit-print-color-adjust:exact!important;print-color-adjust:exact!important; }
+  .site-header,.site-footer,.pdf-wrap { display:none!important; }
+  .main { padding:0!important; }
+  .print-header{display:block!important;}
+}
+@media screen { .print-header{display:none!important;} }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="brand">End-to-End Process<span>Human-AI Partnership Framework</span></div>
+  <div class="header-right">
+    <div style="text-align:right">
+      <a href="https://hitldrivenarchitecture.com">hitldrivenarchitecture.com</a><br>
+      <span>Timothy P. King · Human Enterprise Architect</span>
+    </div>
+    <div class="pdf-wrap">
+      <button class="pdf-btn" onclick="togglePDF(event)">
+        ⬇ Download PDF <span class="pdf-arrow" id="pdf-arrow">▾</span>
+      </button>
+      <div class="pdf-menu" id="pdf-menu">
+        <div class="pdf-menu-item" onclick="window.open('pdfs/hitl_navigator_p2p_hitl_design_final.pdf','_blank')">
+          <div><div class="pmi-label">HITL Design</div><div class="pmi-sub">View 1 · Swim lane + impact table</div></div>
+        </div>
+        <div class="pdf-menu-item" onclick="window.open('pdfs/hitl_navigator_p2p_process_spec_final.pdf','_blank')">
+          <div><div class="pmi-label">Process Specification</div><div class="pmi-sub">View 2 · Step-level detail</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="module-tag">Module 1 — P2P</div>
+  <h1>Procure-to-Pay (P2P)</h1>
+  <p class="hero-sub">
+    <strong>PCF 4.2</strong> Develop Sourcing Strategy &amp; Procure Materials &nbsp;·&nbsp;
+    <strong>PCF 4.3</strong> Manage Logistics and Warehousing &nbsp;·&nbsp;
+    <strong>PCF 9.2</strong> Process Accounts Payable<br>
+    4 participant roles · 27 process steps · HITL design intent derived from APQC PCF v8.0 SIPOC reference architecture
+  </p>
+  <div class="metrics">
+    <div class="metric"><div class="lbl">P2P Aggregate H% · M3</div><div class="val" style="color:var(--navy)">55%</div><div class="sub">Human at design intent</div></div>
+    <div class="metric m-dec"><div class="lbl">Decision Gates</div><div class="val">5</div><div class="sub">Irreducibly human · 80% H</div></div>
+    <div class="metric m-tra"><div class="lbl">Transaction Steps</div><div class="val">13</div><div class="sub">AI absorption · 35% H</div></div>
+    <div class="metric m-exc"><div class="lbl">Exception Flows</div><div class="val">4</div><div class="sub">Human resolution · 82% H</div></div>
+    <div class="metric m-gap"><div class="lbl">Δ M1 → M3</div><div class="val">-17%</div><div class="sub">AI convergence opportunity</div></div>
+  </div>
+</div>
+
+<div class="main">
+
+<div class="view-switcher">
+  <button class="vsw-btn active" id="btn-v1" onclick="showView('v1')">View 1 — HITL Design</button>
+  <button class="vsw-btn inactive" id="btn-v2" onclick="showView('v2')">View 2 — Process Specification</button>
+</div>
+<!-- VIEW 1 — HITL DESIGN VIEW -->
+<div id="view-hitl" class="view-panel active">
+  <div class="view-label">View 1 — HITL Design</div>
+  <div class="section-title">Pattern Type Legend</div>
+  <div class="legend">
+    <div class="legend-item"><div class="ld dec"></div>Decision — 80% H at M3</div>
+    <div class="legend-item"><div class="ld doc"></div>Document — 40% H</div>
+    <div class="legend-item"><div class="ld tra"></div>Transaction — 35% H</div>
+    <div class="legend-item"><div class="ld exc"></div>Exception — 82% H</div>
+    <div class="legend-sep"></div>
+    <div class="legend-note">Swim lanes = PCF process group ownership · PCF L3 reference shown on each step and handoff</div>
+  </div>
+
+  <!-- Swim Lane -->
+  <div class="section-title">P2P End-to-End Process — HITL Design · PCF-Derived Process Ownership</div>
+  <div class="swimlane-wrap">
+    <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
+      <colgroup><col style="width:25%"><col style="width:25%"><col style="width:25%"><col style="width:25%"></colgroup>
+      <thead>
+        <tr>
+          <th style="background:#2D6A4F;color:#fff;padding:12px 12px 8px;text-align:left;vertical-align:top;border:2px solid #fff;">
+            <div style="height:8px"></div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Materials</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);font-style:italic;font-family:'DM Mono',monospace">PCF 4.2 – 4.3</div>
+          </th>
+          <th style="background:#5B3FA6;color:#fff;padding:12px 12px 8px;text-align:left;vertical-align:top;border:2px solid #fff;">
+            <div style="height:8px"></div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Purchasing</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);font-style:italic;font-family:'DM Mono',monospace">PCF 4.2</div>
+          </th>
+          <th style="background:var(--navy-d);color:#fff;padding:12px 12px 8px;text-align:left;vertical-align:top;border:2px solid #fff;">
+            <div style="height:8px"></div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Finance</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);font-style:italic;font-family:'DM Mono',monospace">PCF 9.2</div>
+          </th>
+          <th style="background:#4A5568;color:#fff;padding:12px 12px 8px;text-align:left;vertical-align:top;border:2px solid #fff;">
+            <div style="height:8px"></div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Supplier</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);font-style:italic;font-family:'DM Mono',monospace">External participant</div>
+          </th>
+        </tr>
+      </thead>
+      <tbody id="swim-body"></tbody>
+    </table>
+  </div>
+
+  <!-- HITL Insight -->
+  <div class="insight">
+    <h3>HITL Design Insight — P2P</h3>
+    <p><strong>5 Decision gates</strong> (80% Human at M3) are the irreducibly human layer — supplier selection, requisition approval, and payment authorization carry strategic and financial authority that must remain human by design. <strong>13 Transaction-pattern steps</strong> (35% Human at M3) represent the AI absorption opportunity — receive, create, distribute, and post steps in rules-based sequence. <strong>4 Exception flows</strong> (82% Human) require human resolution. P2P aggregate at M3: <strong>55% Human / 45% AI</strong> — grounded in APQC PCF SIPOC reference architecture and consistent with the enterprise-wide Human-AI convergence finding.</p>
+  </div>
+
+  <!-- HITL Impact Table -->
+  <div class="section-title">HITL Impact Analysis</div>
+  <div class="tbl-wrap">
+    <table class="hitl-table">
+      <thead><tr>
+        <th style="text-align:left">Process Step</th>
+        <th>PCF Ref</th><th>Pattern</th>
+        <th style="background:#1a3a5c">M1 H%</th>
+        <th style="background:#1d5699">M3 H% ★</th>
+        <th>Δ M1→M3</th><th>AI Opportunity</th>
+      </tr></thead>
+      <tbody>
+        <tr class="row-agg">
+          <td>P2P End-to-End Process <span style="font-family:'DM Mono',monospace;font-size:10px;color:#7A9CC6;margin-left:8px">L1 Aggregate</span></td>
+          <td style="text-align:center;font-family:'DM Mono',monospace;font-size:10px;color:#7A9CC6">4.2–4.3+9.2</td>
+          <td style="text-align:center"><span class="pat" style="background:rgba(255,255,255,.15);color:#A8C4E0">Mixed</span></td>
+          <td style="background:#1a3a5c;color:#A8C4E0;font-family:'DM Mono',monospace;font-size:11px;text-align:center;font-weight:700">72%</td>
+          <td style="background:#1d5699;color:#fff;font-family:'DM Mono',monospace;font-size:13px;text-align:center;font-weight:700">55%</td>
+          <td style="color:#F59E0B;font-family:'DM Mono',monospace;font-size:11px;text-align:center;font-weight:700">-17%</td>
+          <td style="color:#6EE7B7;font-size:11px;font-weight:600;text-align:center">Significant</td>
+        </tr>
+        <tr class="row-l2"><td colspan="7">PCF 4.2 · Develop Sourcing Strategy</td></tr>
+        <tr class="row-l3"><td class="step-cell">Develop Sourcing Strategy</td><td class="pcf-cell">4.2.1</td><td style="text-align:center"><span class="pat kno">Knowledge</span></td><td class="m1">82%</td><td class="m3">65%</td><td class="delta">-17%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Develop Category Plan</td><td class="pcf-cell">4.2.1</td><td style="text-align:center"><span class="pat kno">Knowledge</span></td><td class="m1">82%</td><td class="m3">65%</td><td class="delta">-17%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Identify &amp; Select Suppliers</td><td class="pcf-cell">4.2.3</td><td style="text-align:center"><span class="pat dec">Decision</span></td><td class="m1">92%</td><td class="m3">80%</td><td class="delta">-12%</td><td class="opp opp-l">Retain Human</td></tr>
+        <tr class="row-l2"><td colspan="7">PCF 4.2 · Procure Materials and Services</td></tr>
+        <tr class="row-l3"><td class="step-cell">Process Requisition</td><td class="pcf-cell">4.2.4</td><td style="text-align:center"><span class="pat doc">Document</span></td><td class="m1">72%</td><td class="m3">40%</td><td class="delta">-32%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Approve Requisition</td><td class="pcf-cell">4.2.4</td><td style="text-align:center"><span class="pat dec">Decision</span></td><td class="m1">92%</td><td class="m3">80%</td><td class="delta">-12%</td><td class="opp opp-l">Retain Human</td></tr>
+        <tr class="row-l3"><td class="step-cell">Solicit Supplier Quotes</td><td class="pcf-cell">4.2.4</td><td style="text-align:center"><span class="pat doc">Document</span></td><td class="m1">72%</td><td class="m3">40%</td><td class="delta">-32%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Create Purchase Order</td><td class="pcf-cell">4.2.4</td><td style="text-align:center"><span class="pat doc">Document</span></td><td class="m1">72%</td><td class="m3">40%</td><td class="delta">-32%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Distribute Purchase Order</td><td class="pcf-cell">4.2.4</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Resolve Order Exception</td><td class="pcf-cell">4.2.4</td><td style="text-align:center"><span class="pat exc">Exception</span></td><td class="m1">95%</td><td class="m3">82%</td><td class="delta">-13%</td><td class="opp opp-l">Retain Human</td></tr>
+        <tr class="row-l2"><td colspan="7">PCF 4.3 · Manage Logistics and Warehousing</td></tr>
+        <tr class="row-l3"><td class="step-cell">Receive / Inspect / Store Product</td><td class="pcf-cell">4.3.2</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Resolve Receipt Exception</td><td class="pcf-cell">4.3.2</td><td style="text-align:center"><span class="pat exc">Exception</span></td><td class="m1">95%</td><td class="m3">82%</td><td class="delta">-13%</td><td class="opp opp-l">Retain Human</td></tr>
+        <tr class="row-l2"><td colspan="7">PCF 9.2 · Process Accounts Payable</td></tr>
+        <tr class="row-l3"><td class="step-cell">Validate Invoice</td><td class="pcf-cell">9.2.1</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Resolve Invoice Discrepancies</td><td class="pcf-cell">9.2.2</td><td style="text-align:center"><span class="pat exc">Exception</span></td><td class="m1">95%</td><td class="m3">82%</td><td class="delta">-13%</td><td class="opp opp-l">Retain Human</td></tr>
+        <tr class="row-l3"><td class="step-cell">Approve for Payment</td><td class="pcf-cell">9.2.3</td><td style="text-align:center"><span class="pat dec">Decision</span></td><td class="m1">92%</td><td class="m3">80%</td><td class="delta">-12%</td><td class="opp opp-l">Retain Human</td></tr>
+        <tr class="row-l3"><td class="step-cell">Process Payment</td><td class="pcf-cell">9.2.3</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Reconcile Accounts</td><td class="pcf-cell">9.2.4</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Invoice Exception</td><td class="pcf-cell">9.2.1</td><td style="text-align:center"><span class="pat exc">Exception</span></td><td class="m1">95%</td><td class="m3">82%</td><td class="delta">-13%</td><td class="opp opp-l">Retain Human</td></tr>
+        <tr class="row-l2"><td colspan="7">External Participant · Supplier</td></tr>
+        <tr class="row-l3"><td class="step-cell">Receive Purchase Order</td><td class="pcf-cell">Ext</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Ship Goods / Deliver</td><td class="pcf-cell">Ext</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Prepare Invoice</td><td class="pcf-cell">Ext</td><td style="text-align:center"><span class="pat doc">Document</span></td><td class="m1">72%</td><td class="m3">40%</td><td class="delta">-32%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Issue Invoice</td><td class="pcf-cell">Ext</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+        <tr class="row-l3"><td class="step-cell">Receive Payment</td><td class="pcf-cell">Ext</td><td style="text-align:center"><span class="pat tra">Transaction</span></td><td class="m1">60%</td><td class="m3">35%</td><td class="delta">-25%</td><td class="opp opp-h">High</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PCF Capability Map -->
+  <div class="section-title">PCF Capability Domains — P2P Footprint</div>
+  <div class="cap-map">
+    <div class="cap-card">
+      <div class="cap-head"><div class="ptag">PCF 4.0 → 4.2 + 4.3</div><div class="pname">Supply Chain — Sourcing, Procure &amp; Logistics</div></div>
+      <div class="cap-body">
+        <div class="cap-row"><span class="crn">4.2.1 Develop sourcing strategy</span><span class="pat kno">Knowledge</span></div>
+        <div class="cap-row"><span class="crn">4.2.3 Identify &amp; select suppliers</span><span class="pat dec">Decision</span></div>
+        <div class="cap-row"><span class="crn">4.2.4 Order materials and services</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-row"><span class="crn">4.3.2 Receive / inspect / store product</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-agg"><span>M1: <strong>74%</strong></span><span>M3: <strong>55%</strong></span><span>M5: <strong>28%</strong></span></div>
+      </div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-head"><div class="ptag">PCF 9.0 → 9.2</div><div class="pname">Financial Resources — Accounts Payable</div></div>
+      <div class="cap-body">
+        <div class="cap-row"><span class="crn">9.2.1 Validate invoice</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-row"><span class="crn">9.2.2 Resolve invoice discrepancies</span><span class="pat exc">Exception</span></div>
+        <div class="cap-row"><span class="crn">9.2.3 Approve for payment</span><span class="pat dec">Decision</span></div>
+        <div class="cap-row"><span class="crn">9.2.3 Process payment</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-row"><span class="crn">9.2.4 Reconcile accounts</span><span class="pat tra">Transaction</span></div>
+        <div class="cap-agg"><span>M1: <strong>68%</strong></span><span>M3: <strong>52%</strong></span><span>M5: <strong>20%</strong></span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end view-hitl -->
+
+<!-- VIEW 2 — PROCESS SPECIFICATION -->
+<div id="view-wcs" class="view-panel">
+  <div class="view-label">View 2 — End-to-End Process Specification</div>
+  <div class="section-title">Step-Level Process Specification — People · Process · Data · Technology</div>
+  <p style="font-size:12px;color:var(--lgray);margin-bottom:14px;line-height:1.6">Each L3 process step is fully specified below. Data entities show the system of record and the CRUD operation performed at this step. CRUD operations validate the HITL pattern type assignment.</p>
+
+  <div class="tbl-wrap">
+    <table class="wcs-table">
+      <thead><tr>
+        <th style="text-align:left;min-width:140px">Step · PCF Ref</th>
+        <th style="min-width:70px">Pattern<br>M3 H%</th>
+        <th style="min-width:140px">People</th>
+        <th style="min-width:160px">Process</th>
+        <th style="min-width:180px">Data · CRUD · System</th>
+        <th style="min-width:160px">Technology</th>
+      </tr></thead>
+      <tbody>
+
+        <!-- PCF 4.1 Sourcing Strategy -->
+        <tr class="wcs-l2"><td colspan="6">PCF 4.2 · Develop Sourcing Strategy</td></tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Develop Sourcing Strategy</div><div class="wcs-pcf">4.2.1</div></td>
+          <td style="text-align:center"><span class="pat kno">Knowledge</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">65%</span></td>
+          <td class="wcs-people"><strong>Category Manager + Procurement Lead</strong>AI analyzes spend data, market trends, and supplier performance. Human interprets insights and sets sourcing direction.</td>
+          <td class="wcs-process">Analyze spend profile and supply market. Identify sourcing opportunities. Establish procurement plan and contingency strategy. Collaborate with stakeholders.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Procurement Plan</div><div class="de-sys">ERP — Procurement</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Spend Data</div><div class="de-sys">ERP — Finance / BI</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Risk Policy</div><div class="de-sys">GRC Platform</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">Spend Analytics</span> — SAP Analytics / Coupa</div>
+            <div class="sys"><span class="sys-name">AI Spend Analysis</span> — Pattern and opportunity identification</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Develop Category Plan</div><div class="wcs-pcf">4.2.1</div></td>
+          <td style="text-align:center"><span class="pat kno">Knowledge</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">65%</span></td>
+          <td class="wcs-people"><strong>Category Manager</strong>AI forecasts demand by market segment. Human assigns revenue/margin targets and validates category strategy.</td>
+          <td class="wcs-process">Analyze category and product positioning. Forecast demand by market. Assign revenue and margin targets. Output category plan and demand forecast.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Category Plan</div><div class="de-sys">ERP — Procurement</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Procurement Plan</div><div class="de-sys">ERP — Procurement</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">Demand Planning</span> — SAP IBP / Oracle Demand Mgmt</div>
+            <div class="sys"><span class="sys-name">AI Forecasting</span> — Demand signal modeling</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Identify &amp; Select Suppliers</div><div class="wcs-pcf">4.2.3</div></td>
+          <td style="text-align:center"><span class="pat dec">Decision</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">80%</span></td>
+          <td class="wcs-people"><strong>Procurement Manager — Strategic authority</strong>AI scores and ranks suppliers against qualification criteria. Human makes final selection and approves contract terms.</td>
+          <td class="wcs-process">Evaluate supplier capabilities against qualification criteria. Negotiate and establish contracts. Certify suppliers. Maintain approved supplier list.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Approved Supplier List</div><div class="de-sys">ERP — Supplier Mgmt</div></span></div>
+            <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Contract Master</div><div class="de-sys">Contract Mgmt System</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Supplier Performance Data</div><div class="de-sys">ERP — Supplier Mgmt</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">Supplier Mgmt</span> — SAP SLC / Ariba SLP</div>
+            <div class="sys"><span class="sys-name">Contract Mgmt</span> — SAP CLM / Ariba Contracts</div>
+            <div class="sys"><span class="sys-name">AI Scoring</span> — Supplier risk and capability ranking</div>
+          </td>
+        </tr>
+
+        <!-- PCF 4.2 Procure Materials and Services -->
+        <tr class="wcs-l2"><td colspan="6">PCF 4.2 · Procure Materials and Services</td></tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Process Requisition</div><div class="wcs-pcf">4.2.4</div></td>
+          <td style="text-align:center"><span class="pat doc">Document</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">40%</span></td>
+          <td class="wcs-people"><strong>Requisitioner</strong>Initiates need. AI drafts requisition from historical order patterns and catalog data. Human reviews and approves.</td>
+          <td class="wcs-process">Identify material need. Select item from catalog. Specify quantity, delivery date, cost center. AI pre-populates from purchase history.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Purchase Requisition</div><div class="de-sys">ERP — Procurement</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Item / Material Master</div><div class="de-sys">ERP — MM Module</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Budget / Cost Center</div><div class="de-sys">ERP — Finance</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">ERP Procurement</span> — SAP ME51N / Oracle iProcurement</div>
+            <div class="sys"><span class="sys-name">AI Drafting</span> — Purchase history pattern recognition</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Approve Requisition</div><div class="wcs-pcf">4.2.4</div></td>
+          <td style="text-align:center"><span class="pat dec">Decision</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">80%</span></td>
+          <td class="wcs-people"><strong>Budget Owner — Financial authority</strong>AI validates requisition against budget and policy. Human reviews AI-flagged anomalies and approves or rejects.</td>
+          <td class="wcs-process">Validate requisition against budget, sourcing strategy, and approved supplier list. Human approves within authority limit. Route to purchasing on approval.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Purchase Requisition</div><div class="de-sys">ERP — Procurement</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Budget / Cost Center</div><div class="de-sys">ERP — Finance</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">ERP Workflow</span> — Approval routing engine</div>
+            <div class="sys"><span class="sys-name">AI Policy Check</span> — Budget and compliance validation</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Solicit Supplier Quotes</div><div class="wcs-pcf">4.2.4</div></td>
+          <td style="text-align:center"><span class="pat doc">Document</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">40%</span></td>
+          <td class="wcs-people"><strong>Buyer</strong>AI generates RFQ from approved requisition. Human reviews, selects suppliers, and evaluates quotes against sourcing criteria.</td>
+          <td class="wcs-process">Issue RFQ to approved suppliers. Receive and evaluate supplier quotes. Select best offer against price, lead time, and quality criteria.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Purchase Requisition</div><div class="de-sys">ERP — Procurement</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Approved Supplier List</div><div class="de-sys">ERP — Supplier Mgmt</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Contract Master</div><div class="de-sys">Contract Mgmt System</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">ERP Procurement</span> — SAP MM-PUR / Ariba Sourcing</div>
+            <div class="sys"><span class="sys-name">Supplier Portal</span> — RFQ distribution and response</div>
+            <div class="sys"><span class="sys-name">AI Quote Analysis</span> — Automated scoring</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Create Purchase Order</div><div class="wcs-pcf">4.2.4</div></td>
+          <td style="text-align:center"><span class="pat doc">Document</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">40%</span></td>
+          <td class="wcs-people"><strong>Buyer</strong>AI drafts PO from approved requisition and contract terms. Buyer reviews, adjusts, and approves draft before distribution.</td>
+          <td class="wcs-process">Generate PO from approved requisition. Apply contract pricing and terms. Validate against budget. Reconcile PO against supplier quote.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Purchase Order</div><div class="de-sys">ERP — Procurement</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Contract Master</div><div class="de-sys">Contract Mgmt System</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Supplier Master</div><div class="de-sys">ERP — Supplier Mgmt</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Budget / Cost Center</div><div class="de-sys">ERP — Finance</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">ERP Procurement</span> — SAP ME21N / Oracle PO</div>
+            <div class="sys"><span class="sys-name">Contract Mgmt System</span> — Ariba / Coupa / SAP CLM</div>
+            <div class="sys"><span class="sys-name">AI PO Generation</span> — Contract-aware drafting</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Distribute Purchase Order</div><div class="wcs-pcf">4.2.4</div></td>
+          <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+          <td class="wcs-people"><strong>AI — System automated</strong>Transmits approved PO to supplier via EDI or supplier portal. AI handles within approved parameters. Human monitors delivery confirmation.</td>
+          <td class="wcs-process">Transmit approved PO to supplier. Send copy to Finance. Record transmission and delivery commitment. Update quantities, dates, and pricing.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Purchase Order</div><div class="de-sys">ERP — Procurement</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Supplier Master</div><div class="de-sys">ERP — Supplier Mgmt</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">EDI / Supplier Portal</span> — PO transmission (SAP MM-SLP)</div>
+            <div class="sys"><span class="sys-name">ERP Integration</span> — Finance notification</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Resolve Order Exception</div><div class="wcs-pcf">4.2.4</div></td>
+          <td style="text-align:center"><span class="pat exc">Exception</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">82%</span></td>
+          <td class="wcs-people"><strong>Buyer + Supplier</strong>AI flags PO exception (rejection, amendment, price discrepancy). Human buyer expedites orders, reconciles POs, and resolves exceptions with supplier.</td>
+          <td class="wcs-process">Investigate PO rejection or amendment request. Negotiate with supplier. Correct PO or issue exception closure report. Notify Finance of change.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Purchase Order</div><div class="de-sys">ERP — Procurement</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Contract Master</div><div class="de-sys">Contract Mgmt System</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Supplier Master</div><div class="de-sys">ERP — Supplier Mgmt</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">Supplier Portal</span> — Exception communication</div>
+            <div class="sys"><span class="sys-name">AI Triage</span> — Exception classification and routing</div>
+          </td>
+        </tr>
+
+        <!-- PCF 4.3 Receive, Inspect, Store -->
+        <tr class="wcs-l2"><td colspan="6">PCF 4.3 · Manage Logistics and Warehousing</td></tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Receive / Inspect / Store Product</div><div class="wcs-pcf">4.3.2</div></td>
+          <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+          <td class="wcs-people"><strong>Warehouse / Receiving</strong>Physical receipt and inspection confirmed by warehouse staff. AI records, matches against PO, and posts goods receipt to Finance automatically.</td>
+          <td class="wcs-process">Receive goods per PO and delivery note. Inspect quantity and condition. Accept or reject deliveries. Record goods receipt. Post GR to trigger AP match. Store product.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Receipt / GRN</div><div class="de-sys">ERP — Warehouse Mgmt</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Purchase Order</div><div class="de-sys">ERP — Procurement</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Item / Material Master</div><div class="de-sys">ERP — MM Module</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">ERP WM</span> — SAP MIGO / MM-IM / EWM / QM</div>
+            <div class="sys"><span class="sys-name">Barcode / RFID</span> — Goods receipt scanning</div>
+            <div class="sys"><span class="sys-name">AI Matching</span> — PO-to-receipt reconciliation</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Resolve Receipt Exception</div><div class="wcs-pcf">4.3.2</div></td>
+          <td style="text-align:center"><span class="pat exc">Exception</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">82%</span></td>
+          <td class="wcs-people"><strong>Warehouse Manager + Buyer</strong>AI flags discrepancy and routes to responsible human. Human investigates, contacts supplier, determines accept, return, or credit.</td>
+          <td class="wcs-process">Investigate quantity/quality discrepancy. Contact supplier. Determine resolution — accept, return, or credit note. Issue rejection notice. Update receipt record.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Receipt / GRN</div><div class="de-sys">ERP — Warehouse Mgmt</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Purchase Order</div><div class="de-sys">ERP — Procurement</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Supplier Master</div><div class="de-sys">ERP — Supplier Mgmt</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">ERP Exception Workflow</span> — Exception routing</div>
+            <div class="sys"><span class="sys-name">Supplier Portal</span> — Discrepancy communication</div>
+            <div class="sys"><span class="sys-name">AI Triage</span> — Discrepancy classification</div>
+          </td>
+        </tr>
+
+        <!-- Finance / Accounts Payable -->
+        <tr class="wcs-l2"><td colspan="6">PCF 9.2 · Process Accounts Payable</td></tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Validate Invoice</div><div class="wcs-pcf">9.2.1</div></td>
+          <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+          <td class="wcs-people"><strong>AI — System automated</strong>Ingests invoice via EDI, supplier portal, or OCR. AI performs 2-way/3-way match against PO and GR. Validates pricing and quantity within tolerance. Human monitors exception queue only.</td>
+          <td class="wcs-process">Receive invoice. Match to PO and Goods Receipt. Validate pricing, quantity, and payment terms. Route clean invoices to approval. Flag discrepancies to exception queue.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Invoice</div><div class="de-sys">AP Automation Platform</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Purchase Order</div><div class="de-sys">ERP — Procurement</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Receipt / GRN</div><div class="de-sys">ERP — Warehouse Mgmt</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Supplier Master</div><div class="de-sys">ERP — Supplier Mgmt</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">AP Automation</span> — SAP MM-IV / FI-AP / VIM</div>
+            <div class="sys"><span class="sys-name">AI OCR</span> — Invoice data extraction</div>
+            <div class="sys"><span class="sys-name">AI Matching</span> — 2-way / 3-way match engine</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Resolve Invoice Discrepancies</div><div class="wcs-pcf">9.2.2</div></td>
+          <td style="text-align:center"><span class="pat exc">Exception</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">82%</span></td>
+          <td class="wcs-people"><strong>AP Specialist + Buyer</strong>AI flags match exception and classifies root cause. Human investigates mismatch, collaborates with Purchasing and Supplier, corrects invoice or updates PO.</td>
+          <td class="wcs-process">Investigate match mismatch. Collaborate with Purchasing and Supplier. Correct invoice or update PO. Issue discrepancy report. Resubmit for validation.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Invoice</div><div class="de-sys">AP Automation Platform</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Purchase Order</div><div class="de-sys">ERP — Procurement</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Supplier Master</div><div class="de-sys">ERP — Supplier Mgmt</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">AP Automation</span> — Exception queue management</div>
+            <div class="sys"><span class="sys-name">Supplier Portal</span> — Dispute communication</div>
+            <div class="sys"><span class="sys-name">AI Root Cause</span> — Discrepancy classification</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Approve for Payment</div><div class="wcs-pcf">9.2.3</div></td>
+          <td style="text-align:center"><span class="pat dec">Decision</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">80%</span></td>
+          <td class="wcs-people"><strong>Finance Director — Payment authority</strong>Final human authorization for payment release. AI presents payment batch summary with risk flags and DPO analysis. Human approves batch within delegated authority.</td>
+          <td class="wcs-process">Review validated invoices. Confirm payment batch against cash position and DPO targets. Authorize payment release. AI provides compliance score and exception summary.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Payment</div><div class="de-sys">Treasury / Payment Platform</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Invoice</div><div class="de-sys">AP Automation Platform</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Budget / Cost Center</div><div class="de-sys">ERP — Finance</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">Treasury Platform</span> — SAP TRM / Kyriba / GTreasury</div>
+            <div class="sys"><span class="sys-name">ERP AP Module</span> — Payment authorization workflow</div>
+            <div class="sys"><span class="sys-name">AI Payment Batch</span> — DPO optimization</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Process Payment</div><div class="wcs-pcf">9.2.3</div></td>
+          <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+          <td class="wcs-people"><strong>AI — System automated</strong>Executes approved payment batch. Transmits to bank. Posts payment. Human monitors settlement confirmation only.</td>
+          <td class="wcs-process">Schedule and execute payment run. Transmit payment instruction to bank or payment processor. Post payment to AP ledger. Notify supplier. Record cleared vendor account.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Payment</div><div class="de-sys">Treasury / Payment Platform</div></span></div>
+            <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Invoice</div><div class="de-sys">AP Automation Platform</div></span></div>
+            <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Supplier Master</div><div class="de-sys">ERP — Supplier Mgmt</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">Treasury Platform</span> — Payment execution (ACH / SWIFT / Wire)</div>
+            <div class="sys"><span class="sys-name">Supplier Portal</span> — Payment notification</div>
+            <div class="sys"><span class="sys-name">ERP AP Module</span> — SAP FI-AP / FSCM</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Reconcile Accounts</div><div class="wcs-pcf">9.2.4</div></td>
+          <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+          <td class="wcs-people"><strong>AI — System automated</strong>AI reconciles AP ledger against bank statements. Flags variances for human review. Human resolves open items and approves period close.</td>
+          <td class="wcs-process">Reconcile AP ledger against bank statements and payment execution data. Resolve variances. Close period. Output reconciled AP ledger to Financial Reporting (6.1.3).</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">AP Ledger</div><div class="de-sys">ERP — FI-GL / FI-AP</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Payment</div><div class="de-sys">Treasury / Payment Platform</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Bank Statements</div><div class="de-sys">Treasury / Banking Platform</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">ERP GL</span> — SAP FI-GL / Oracle GL</div>
+            <div class="sys"><span class="sys-name">Treasury Platform</span> — Bank reconciliation</div>
+            <div class="sys"><span class="sys-name">AI Reconciliation</span> — Auto-match and variance detection</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Invoice Exception</div><div class="wcs-pcf">9.2.1</div></td>
+          <td style="text-align:center"><span class="pat exc">Exception</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">82%</span></td>
+          <td class="wcs-people"><strong>AP Manager — Resolution authority</strong>Escalated exception requiring management judgment. Human determines root cause and authorizes resolution: approve, dispute, or return.</td>
+          <td class="wcs-process">Investigate failed validation. Determine root cause — pricing error, unauthorized purchase, or duplicate. Authorize resolution path. Update AP record and notify stakeholders.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Invoice</div><div class="de-sys">AP Automation Platform</div></span></div>
+            <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Receipt / GRN</div><div class="de-sys">ERP — Warehouse Mgmt</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Contract Master</div><div class="de-sys">Contract Mgmt System</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">AP Automation</span> — Exception workflow</div>
+            <div class="sys"><span class="sys-name">Contract Mgmt System</span> — Contract validation</div>
+            <div class="sys"><span class="sys-name">AI Root Cause</span> — Discrepancy analysis</div>
+          </td>
+        </tr>
+
+                <!-- Supplier Section -->
+        <tr class="wcs-l2"><td colspan="6">External Participant · Supplier</td></tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Receive Purchase Order</div><div class="wcs-pcf">External</div></td>
+          <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+          <td class="wcs-people"><strong>Supplier — Automated receipt</strong>Supplier ERP or portal receives PO electronically. Acknowledgment auto-generated. Human reviews exceptions only.</td>
+          <td class="wcs-process">Receive PO via EDI or supplier portal. Auto-acknowledge receipt. Create sales order in supplier system. Confirm delivery commitment.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Purchase Order</div><div class="de-sys">Supplier ERP / Portal</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">Supplier Portal</span> — PO receipt and acknowledgment</div>
+            <div class="sys"><span class="sys-name">EDI</span> — Electronic PO transmission</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Ship Goods</div><div class="wcs-pcf">External</div></td>
+          <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+          <td class="wcs-people"><strong>Supplier Warehouse</strong>Physical fulfilment of PO. Shipping notice generated automatically. Tracked via carrier integration.</td>
+          <td class="wcs-process">Pick, pack, and ship goods per PO. Generate advance ship notice (ASN). Transmit ASN to buyer. Update order status.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Purchase Order</div><div class="de-sys">Supplier ERP</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">Supplier WMS</span> — Pick, pack, ship</div>
+            <div class="sys"><span class="sys-name">EDI / ASN</span> — Advance ship notice</div>
+            <div class="sys"><span class="sys-name">Carrier Integration</span> — Shipment tracking</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Prepare Invoice</div><div class="wcs-pcf">External</div></td>
+          <td style="text-align:center"><span class="pat doc">Document</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">40%</span></td>
+          <td class="wcs-people"><strong>Supplier AR Team</strong>AI drafts invoice from shipment and PO data. Human reviews pricing, tax, and payment terms before issue.</td>
+          <td class="wcs-process">Generate invoice from PO and shipping confirmation. Apply contract pricing and payment terms. Validate tax calculation. Human approves before transmission.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-c">C</span><span><div class="de-name">Invoice</div><div class="de-sys">Supplier ERP / AR</div></span></div>
+            <div class="de"><span class="crud-chip crud-r">R</span><span><div class="de-name">Purchase Order</div><div class="de-sys">Supplier ERP</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">Supplier ERP</span> — AR invoice generation</div>
+            <div class="sys"><span class="sys-name">AI Invoice</span> — Auto-populate from PO + shipment</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Issue Invoice</div><div class="wcs-pcf">External</div></td>
+          <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+          <td class="wcs-people"><strong>AI — System automated</strong>Transmits approved invoice electronically. No human touch on standard transmission.</td>
+          <td class="wcs-process">Transmit approved invoice to buyer via EDI, supplier portal, or email. Confirm delivery. Update AR status.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Invoice</div><div class="de-sys">Supplier ERP / AR</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">EDI / Supplier Portal</span> — Invoice transmission</div>
+            <div class="sys"><span class="sys-name">AP Automation</span> — Buyer-side receipt</div>
+          </td>
+        </tr>
+
+        <tr class="wcs-row">
+          <td><div class="wcs-step">Receive Payment</div><div class="wcs-pcf">External</div></td>
+          <td style="text-align:center"><span class="pat tra">Transaction</span><br><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--navy);font-weight:700">35%</span></td>
+          <td class="wcs-people"><strong>AI — System automated</strong>Payment receipt confirmed automatically. AR record updated. Remittance advice matched. Human reconciles discrepancies only.</td>
+          <td class="wcs-process">Receive and confirm payment. Match to open invoice. Update AR ledger. Clear invoice. Generate remittance confirmation to buyer.</td>
+          <td class="wcs-data">
+            <div class="de"><span class="crud-chip crud-u">U</span><span><div class="de-name">Invoice</div><div class="de-sys">Supplier ERP / AR</div></span></div>
+          </td>
+          <td class="wcs-tech">
+            <div class="sys"><span class="sys-name">Supplier ERP</span> — AR cash application</div>
+            <div class="sys"><span class="sys-name">Bank Integration</span> — Payment confirmation</div>
+            <div class="sys"><span class="sys-name">AI Remittance</span> — Auto-match and clear</div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CRUD Matrix -->
+  <div class="section-title">CRUD Data Matrix — P2P End-to-End Process</div>
+  <div class="crud-legend">
+    <div class="cl-item"><div class="cl-chip" style="background:#DCFCE7;color:var(--c-c)">C</div>Create</div>
+    <div class="cl-item"><div class="cl-chip" style="background:var(--m1);color:var(--r-c)">R</div>Read</div>
+    <div class="cl-item"><div class="cl-chip" style="background:#FEF3C7;color:var(--u-c)">U</div>Update</div>
+    <div class="cl-item"><div class="cl-chip" style="background:var(--exc-bg);color:var(--d-c)">D</div>Delete</div>
+    <div class="cl-item"><div class="cl-chip" style="background:#D1FAE5;color:#065F46">C/U</div>Create then Update</div>
+    <div class="cl-item"><div class="cl-chip" style="background:#FEF9E7;color:#92400E">R/U</div>Read then Update</div>
+  </div>
+
+  <!-- CRUD Matrix — PCF 4.2 Sourcing & Procure -->
+  <p style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">PCF 4.2 · Develop Sourcing Strategy + Procure Materials and Services</p>
+  <div class="crud-matrix-wrap" style="margin-bottom:20px">
+    <table class="crud-table">
+      <thead><tr>
+        <th style="text-align:left;width:160px;min-width:160px">Data Entity</th>
+        <th style="text-align:left;width:150px;min-width:150px">System of Record</th>
+        <th style="text-align:center;vertical-align:middle;width:60px;min-width:60px;padding:6px 4px;"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">4.2.1</span></th><th style="text-align:center;vertical-align:middle;width:60px;min-width:60px;padding:6px 4px;"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">4.2.1</span></th><th style="text-align:center;vertical-align:middle;width:60px;min-width:60px;padding:6px 4px;"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">4.2.3</span></th><th style="text-align:center;vertical-align:middle;width:60px;min-width:60px;padding:6px 4px;"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">4.2.4</span></th><th style="text-align:center;vertical-align:middle;width:60px;min-width:60px;padding:6px 4px;"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">4.2.4</span></th><th style="text-align:center;vertical-align:middle;width:60px;min-width:60px;padding:6px 4px;"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">4.2.4</span></th><th style="text-align:center;vertical-align:middle;width:60px;min-width:60px;padding:6px 4px;"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">4.2.4</span></th><th style="text-align:center;vertical-align:middle;width:60px;min-width:60px;padding:6px 4px;"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">4.2.4</span></th>
+      </tr></thead>
+      <tbody>
+        <!--                                            (1)DSS  (2)DCP  (3)ISS  (4)PRQ  (5)APR  (6)SSQ  (7)CPO  (8)DPO  -->
+        <tr><td style="width:160px;min-width:160px">Procurement Plan</td>      <td style="width:150px;min-width:150px">ERP Procurement</td>    <td class="crud-cell c">C</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Spend Data</td>            <td style="width:150px;min-width:150px">ERP Finance / BI</td>    <td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Approved Supplier List</td><td style="width:150px;min-width:150px">ERP Supplier Mgmt</td>   <td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td></tr>
+        <tr><td style="width:160px;min-width:160px">Contract Master</td>       <td style="width:150px;min-width:150px">Contract Mgmt System</td> <td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td></tr>
+        <tr><td style="width:160px;min-width:160px">Supplier Master</td>       <td style="width:150px;min-width:150px">ERP Supplier Mgmt</td>    <td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td></tr>
+        <tr><td style="width:160px;min-width:160px">Purchase Requisition</td>  <td style="width:150px;min-width:150px">ERP Procurement</td>      <td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell u">U</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td></tr>
+        <tr><td style="width:160px;min-width:160px">Purchase Order</td>        <td style="width:150px;min-width:150px">ERP Procurement</td>      <td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell c">C</td><td class="crud-cell u">U</td></tr>
+        <tr><td style="width:160px;min-width:160px">Budget / Cost Center</td>  <td style="width:150px;min-width:150px">ERP Finance</td>          <td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Item / Material Master</td><td style="width:150px;min-width:150px">ERP MM</td>               <td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-bottom:8px;font-size:9px;color:var(--lgray);font-style:italic">Exception steps (Resolve Order Exception 4.2.4) omitted from CRUD matrix — exception flows read/update existing entities with no net-new pattern.</div>
+
+  <!-- CRUD Matrix — PCF 4.3 Logistics -->
+  <p style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">PCF 4.3 · Manage Logistics and Warehousing</p>
+  <div class="crud-matrix-wrap" style="margin-bottom:20px">
+    <table class="crud-table">
+      <thead><tr>
+        <th style="text-align:left;width:160px;min-width:160px">Data Entity</th>
+        <th style="text-align:left;width:150px;min-width:150px">System of Record</th>
+        <th style="text-align:center;vertical-align:middle;width:60px;min-width:60px;padding:6px 4px;"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">4.3.2</span></th>
+      </tr></thead>
+      <tbody>
+        <!--                                            (1)RIS  -->
+        <tr><td style="width:160px;min-width:160px">Receipt / GRN</td>        <td style="width:150px;min-width:150px">ERP Warehouse Mgmt</td>  <td class="crud-cell c">C</td></tr>
+        <tr><td style="width:160px;min-width:160px">Purchase Order</td>       <td style="width:150px;min-width:150px">ERP Procurement</td>     <td class="crud-cell r">R</td></tr>
+        <tr><td style="width:160px;min-width:160px">Item / Material Master</td><td style="width:150px;min-width:150px">ERP MM</td>             <td class="crud-cell r">R</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-bottom:8px;font-size:9px;color:var(--lgray);font-style:italic">Exception step (Resolve Receipt Exception 4.3.2) omitted from CRUD matrix — exception flows read/update existing entities with no net-new pattern.</div>
+
+  <!-- CRUD Matrix — PCF 9.2 Accounts Payable -->
+  <p style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">PCF 9.2 · Process Accounts Payable</p>
+  <div class="crud-matrix-wrap" style="margin-bottom:24px">
+    <table class="crud-table">
+      <thead><tr>
+        <th style="text-align:left;width:160px;min-width:160px">Data Entity</th>
+        <th style="text-align:left;width:150px;min-width:150px">System of Record</th>
+        <th style="text-align:center;vertical-align:middle;width:60px;min-width:60px;padding:6px 4px;"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.2.1</span></th><th style="text-align:center;vertical-align:middle;width:60px;min-width:60px;padding:6px 4px;"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.2.3</span></th><th style="text-align:center;vertical-align:middle;width:60px;min-width:60px;padding:6px 4px;"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.2.3</span></th><th style="text-align:center;vertical-align:middle;width:60px;min-width:60px;padding:6px 4px;"><span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#fff;display:block">9.2.4</span></th>
+      </tr></thead>
+      <tbody>
+        <!--                                            (1)VAL  (2)AFP  (3)PPY  (4)RCA  -->
+        <tr><td style="width:160px;min-width:160px">Invoice</td>             <td style="width:150px;min-width:150px">AP Automation</td>           <td class="crud-cell c">C</td><td class="crud-cell r">R</td><td class="crud-cell u">U</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Purchase Order</td>      <td style="width:150px;min-width:150px">ERP Procurement</td>          <td class="crud-cell r">R</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Receipt / GRN</td>       <td style="width:150px;min-width:150px">ERP Warehouse Mgmt</td>       <td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Supplier Master</td>     <td style="width:150px;min-width:150px">ERP Supplier Mgmt</td>        <td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell u">U</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">Payment</td>             <td style="width:150px;min-width:150px">Treasury Platform</td>        <td class="crud-cell empty">·</td><td class="crud-cell c">C</td><td class="crud-cell u">U</td><td class="crud-cell r">R</td></tr>
+        <tr><td style="width:160px;min-width:160px">Budget / Cost Center</td><td style="width:150px;min-width:150px">ERP Finance</td>             <td class="crud-cell empty">·</td><td class="crud-cell r">R</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td></tr>
+        <tr><td style="width:160px;min-width:160px">AP Ledger</td>           <td style="width:150px;min-width:150px">ERP FI-GL / FI-AP</td>       <td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell u">U</td><td class="crud-cell u">U</td></tr>
+        <tr><td style="width:160px;min-width:160px">Bank Statements</td>     <td style="width:150px;min-width:150px">Treasury / Banking</td>      <td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell empty">·</td><td class="crud-cell r">R</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-bottom:8px;font-size:9px;color:var(--lgray);font-style:italic">Exception steps (Resolve Invoice Discrepancies 9.2.2 · Invoice Exception 9.2.1) omitted from CRUD matrix — exception flows read/update existing entities with no net-new pattern.</div>
+
+    <!-- Methodology note -->
+  <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 18px;font-size:11px;color:var(--lgray);line-height:1.7">
+    <strong style="color:var(--dark)">Methodology</strong> · Pattern types derived using HITL Pattern Type Derivation Method. Swim lanes represent PCF process ownership roles. CRUD operations validated against PCF Level 4 activity definitions. Systems listed are representative industry-standard platforms — organizations substitute their actual system of record. ·
+    <strong style="color:var(--dark)">Full reference:</strong> <a href="https://hitldrivenarchitecture.com" style="color:var(--navy)">hitldrivenarchitecture.com</a>
+  </div>
+
+</div><!-- end view-wcs -->
+
+</div><!-- end main -->
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-l">Human-AI Partnership Framework &nbsp;·&nbsp; End-to-End Process: Procure-to-Pay (P2P) &nbsp;·&nbsp; Module 1</div>
+  <div class="footer-r">APQC PCF v8.0 © 2026 APQC. All rights reserved.<br>HITL Maturity Methodology © Timothy P. King &amp; Claude (Anthropic), May 2026 &nbsp;·&nbsp; hitldrivenarchitecture.com</div>
+</footer>
+
+<script>
+
+// ── View switcher ──────────────────────────────────────────────────────────────
+function showView(v) {
+  document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(v === 'v1' ? 'view-hitl' : 'view-wcs').classList.add('active');
+  document.getElementById('btn-v1').className = 'vsw-btn ' + (v === 'v1' ? 'active' : 'inactive');
+  document.getElementById('btn-v2').className = 'vsw-btn ' + (v === 'v2' ? 'active' : 'inactive');
+}
+// ── PDF dropdown ──────────────────────────────────────────────────────────────
+function togglePDF(e) {
+  e.stopPropagation();
+  const m = document.getElementById('pdf-menu');
+  const a = document.getElementById('pdf-arrow');
+  m.classList.toggle('open');
+  a.style.transform = m.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.pdf-wrap')) {
+    document.getElementById('pdf-menu').classList.remove('open');
+    document.getElementById('pdf-arrow').style.transform = '';
+  }
+});
+
+// ── Swim lane step data ───────────────────────────────────────────────────────
+// [laneIdx, pcf, name, pattern, m3h, isException]
+// Lane 0 = Sales (PCF 3.5) | Lane 1 = Materials (PCF 4.4) | Lane 2 = Finance (PCF 9.4) | Lane 3 = Customer (Ext)
+const swimSteps = [
+  // Lane 0 = Materials (PCF 4.2–4.3) | Lane 1 = Purchasing (PCF 4.2) | Lane 2 = Finance (PCF 9.2) | Lane 3 = Supplier (Ext)
+  [1,"4.2.1","Develop Sourcing Strategy","Knowledge","65%",false],
+  [1,"4.2.1","Develop Category Plan","Knowledge","65%",false],
+  [1,"4.2.3","Identify & Select Suppliers","Decision","80%",false],
+  [1,"XFER","4.2.3","→ Procure Materials (4.2.4)"],
+  [0,"4.2.4","Process Requisition","Document","40%",false],
+  [0,"4.2.4","Approve Requisition","Decision","80%",false],
+  [0,"XFER","4.2.4","→ Purchasing (4.2.4)"],
+  [1,"4.2.4","Solicit Supplier Quotes","Document","40%",false],
+  [1,"4.2.4","Create Purchase Order","Document","40%",false],
+  [1,"4.2.4","Distribute Purchase Order","Transaction","35%",false],
+  [1,"XFER","4.2.4","→ Finance (9.2.1) + Supplier"],
+  [3,"Ext","Receive Purchase Order","Transaction","35%",false],
+  [3,"Ext","Ship Goods / Deliver","Transaction","35%",false],
+  [3,"XFER","Ext","→ Materials (4.3.2)"],
+  [0,"4.3.2","Receive / Inspect / Store Product","Transaction","35%",false],
+  [0,"XFER","4.3.2","→ Finance (9.2.1)"],
+  [3,"Ext","Prepare Invoice","Document","40%",false],
+  [3,"Ext","Issue Invoice","Transaction","35%",false],
+  [3,"XFER","Ext","→ Finance (9.2.1)"],
+  [2,"9.2.1","Validate Invoice","Transaction","35%",false],
+  [2,"9.2.2","Resolve Invoice Discrepancies","Exception","82%",true],
+  [2,"9.2.3","Approve for Payment","Decision","80%",false],
+  [2,"9.2.3","Process Payment","Transaction","35%",false],
+  [2,"XFER","9.2.3","→ Supplier (Receive Payment)"],
+  [3,"Ext","Receive Payment","Transaction","35%",false],
+  [2,"9.2.4","Reconcile Accounts","Transaction","35%",false],
+  [0,"4.3.2","Resolve Receipt Exception","Exception","82%",true],
+  [1,"4.2.4","Resolve Order Exception","Exception","82%",true],
+  [2,"9.2.1","Invoice Exception","Exception","82%",true],
+];
+
+const patClass = {Decision:'dec',Knowledge:'kno',Document:'doc',Transaction:'tra',Exception:'exc'};
+
+function buildSwim(bodyId) {
+  const body = document.getElementById(bodyId);
+  if (!body) return;
+  const rows = [];
+  let maxRow = 0;
+
+  // Separate exceptions from main flow
+  const mainFlow = swimSteps.filter(s => !s[5]);
+  const exceptions = swimSteps.filter(s => s[5]);
+
+  // Build row assignments for main flow
+  const lanes = [[],[],[],[]];
+  mainFlow.forEach(s => {
+    const lane = s[0];
+    if (s[1] === 'XFER') {
+      lanes[lane].push({type:'xfer', pcf:s[2], label:s[3]});
+    } else {
+      lanes[lane].push({type:'step', pcf:s[1], name:s[2], pat:s[3], h:s[4]});
+    }
+  });
+
+  const maxLen = Math.max(...lanes.map(l=>l.length));
+  for (let i=0; i<maxLen; i++) {
+    const cells = lanes.map((lane,li) => {
+      const item = lane[i];
+      if (!item) return `<td style="background:#fff;padding:6px;border:2px solid #F4F6FB;vertical-align:top;"></td>`;
+      if (item.type === 'xfer') return `<td style="background:#fff;padding:6px;border:2px solid #F4F6FB;vertical-align:top;text-align:center;"><div class="handoff"><span class="hf-pcf">${item.pcf}</span>${item.label}</div></td>`;
+      const pc = patClass[item.pat] || 'tra';
+      return `<td style="background:#fff;padding:6px;border:2px solid #F4F6FB;vertical-align:top;text-align:center;">
+        <div class="step ${pc}">
+          <div class="step-ref">${item.pcf}</div>
+          <div class="step-name">${item.name}</div>
+          <div class="step-foot"><span class="step-pat">${item.pat}</span><span class="m3pill">${item.h}</span></div>
+        </div>
+      </td>`;
+    });
+    body.innerHTML += `<tr>${cells.join('')}</tr>`;
+  }
+
+  // Exception rows
+  if (exceptions.length > 0) {
+    body.innerHTML += `<tr><td colspan="4" style="background:var(--navy-l);color:var(--navy-d);font-weight:700;font-size:11px;padding:6px 10px;border-top:2px solid #7AAED6;border-left:3px solid #7AAED6;">Exception Flows — Human Resolution Required (82% H at M3)</td></tr>`;
+    const excLanes = [[],[],[],[]];
+    exceptions.forEach(s => excLanes[s[0]].push({type:'step',pcf:s[1],name:s[2],pat:s[3],h:s[4]}));
+    const excMax = Math.max(...excLanes.map(l=>l.length));
+    for (let i=0; i<excMax; i++) {
+      const cells = excLanes.map(lane => {
+        const item = lane[i];
+        if (!item) return `<td style="background:#fff;padding:6px;border:2px solid #F4F6FB;"></td>`;
+        return `<td style="background:#fff;padding:6px;border:2px solid #F4F6FB;vertical-align:top;text-align:center;">
+          <div class="step exc">
+            <div class="step-ref">${item.pcf}</div>
+            <div class="step-name">${item.name}</div>
+            <div class="step-foot"><span class="step-pat">${item.pat}</span><span class="m3pill">${item.h}</span></div>
+          </div>
+        </td>`;
+      });
+      body.innerHTML += `<tr>${cells.join('')}</tr>`;
+    }
+  }
+}
+
+buildSwim('swim-body');
+
+// ── CRUD table column sizing (matches P2P pattern) ────────────────────────────
+function sizeCrudTables() {
+  const DE_W     = 160;  // Data Entity fixed px
+  const SOR_W    = 150;  // System of Record fixed px
+  const MAX_CRUD = 12;   // Fixed 12 CRUD columns across all sections
+
+  document.querySelectorAll('.crud-table').forEach(table => {
+    const wrap = table.closest('.crud-matrix-wrap');
+    if (!wrap) return;
+
+    const available = wrap.clientWidth - DE_W - SOR_W - 2;
+    const colW = Math.max(40, Math.floor(available / MAX_CRUD));
+
+    // Pad header row to exactly 12 CRUD columns
+    const headerRow = table.querySelector('thead tr');
+    const currentCols = headerRow.querySelectorAll('th').length - 2;
+    for (let i = currentCols; i < MAX_CRUD; i++) {
+      const th = document.createElement('th');
+      th.style.cssText = 'background:var(--navy);border:1px solid var(--navy);';
+      headerRow.appendChild(th);
+    }
+
+    // Pad every body row to exactly 12 CRUD columns
+    table.querySelectorAll('tbody tr').forEach(row => {
+      const cells = row.querySelectorAll('td').length;
+      const isGroup = row.querySelector('td[colspan]');
+      if (isGroup) {
+        const td = row.querySelector('td');
+        if (td) td.setAttribute('colspan', 2 + MAX_CRUD);
+        return;
+      }
+      for (let i = cells; i < 2 + MAX_CRUD; i++) {
+        const td = document.createElement('td');
+        td.className = 'crud-cell empty';
+        td.textContent = '·';
+        row.appendChild(td);
+      }
+    });
+
+    // Apply colgroup with exact widths
+    let cg = table.querySelector('colgroup');
+    if (!cg) { cg = document.createElement('colgroup'); table.prepend(cg); }
+    cg.innerHTML = '';
+    const makeCol = (w) => {
+      const col = document.createElement('col');
+      col.style.width = w + 'px';
+      cg.appendChild(col);
+    };
+    makeCol(DE_W);
+    makeCol(SOR_W);
+    for (let i = 0; i < MAX_CRUD; i++) makeCol(colW);
+  });
+
+  // Fix all th text to white
+  document.querySelectorAll('.crud-table thead th span').forEach(span => {
+    span.style.color = '#fff';
+  });
+}
+
+window.addEventListener('load', sizeCrudTables);
+window.addEventListener('resize', sizeCrudTables);
+</script>
+</body>
+</html>
