@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HITL Capability Dashboard — Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --c-dec:  #1B4F8A; --bg-dec: #EEF3FA;
+  --c-kno:  #534AB7; --bg-kno: #F3F0FE;
+  --c-doc:  #0369A1; --bg-doc: #E0F2FE;
+  --c-tra:  #166534; --bg-tra: #DCFCE7;
+  --c-exc:  #991B1B; --bg-exc: #FEE2E2;
+  --m1: #F0F7FF; --m2: #E6F1FF; --m3: #D6E8FF; --m4: #C4DCFF; --m5: #B0CEFF;
+  --m-text: #1B4F8A;
+  --sidebar-w: 260px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; display: flex; }
+
+/* ── Sidebar ──────────────────────────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w); height: 100vh; background: var(--navy-d);
+  display: flex; flex-direction: column; position: fixed; top: 0; left: 0; z-index: 10;
+  overflow-y: auto;
+}
+.sidebar-brand {
+  padding: 20px 18px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.sidebar-brand h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px; color: #fff; line-height: 1.3; margin-bottom: 4px;
+}
+.sidebar-brand p { font-size: 10px; color: #7A9CC6; letter-spacing: .06em; text-transform: uppercase; }
+.sidebar-brand .tagline { font-size: 10px; color: #A8C4E0; letter-spacing: .01em; text-transform: none; display: block; margin-top: 6px; line-height: 1.4; }
+.sidebar-section { padding: 14px 18px 4px; font-size: 9px; color: #7A9CC6; text-transform: uppercase; letter-spacing: .1em; }
+.sidebar-nav { list-style: none; padding: 0 8px 4px; }
+.sidebar-nav li {
+  border-radius: 6px; margin-bottom: 2px;
+  cursor: pointer; transition: background .15s;
+}
+.sidebar-nav li a {
+  display: block; padding: 7px 10px; font-size: 12px; color: #B8CDE0;
+  text-decoration: none; line-height: 1.4;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sidebar-nav li:hover { background: rgba(255,255,255,.07); }
+.sidebar-nav li:hover a { color: #fff; }
+.sidebar-nav li.active { background: rgba(59,130,246,.2); }
+.sidebar-nav li.active a { color: #fff; font-weight: 600; }
+.sidebar-nav li .pcf-num { font-family: 'DM Mono', monospace; font-size: 10px; color: #5B8AB8; margin-right: 4px; }
+
+/* ── Main layout ──────────────────────────────────────────────────────────── */
+.main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+/* ── Topbar ───────────────────────────────────────────────────────────────── */
+.topbar {
+  background: #fff; border-bottom: 1px solid var(--border);
+  padding: 14px 24px; display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 5;
+}
+.topbar-left h2 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--navy-d); }
+.topbar-left p { font-size: 12px; color: var(--lgray); margin-top: 2px; }
+.topbar-pills { display: flex; gap: 6px; }
+.pill {
+  font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+  text-transform: uppercase; letter-spacing: .06em; white-space: nowrap;
+}
+.pill-m1 { background: var(--m1); color: var(--m-text); border: 1px solid var(--m3); }
+.pill-m3 { background: var(--m3); color: var(--m-text); border: 1px solid var(--m5); font-weight: 700; }
+.pill-m5 { background: var(--m5); color: var(--m-text); border: 1px solid var(--m5); }
+
+/* ── Summary bar ──────────────────────────────────────────────────────────── */
+.summary-bar {
+  display: flex; gap: 12px; padding: 14px 24px;
+  background: var(--navy-l); border-bottom: 1px solid var(--border);
+}
+.summary-card {
+  background: #fff; border-radius: 8px; border: 1px solid var(--border);
+  padding: 10px 16px; min-width: 130px;
+}
+.summary-card .label { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--lgray); margin-bottom: 4px; }
+.summary-card .value { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--navy); }
+.summary-card .sub { font-size: 10px; color: var(--lgray); margin-top: 2px; }
+
+/* ── Content ──────────────────────────────────────────────────────────────── */
+.content { padding: 20px 24px 40px; }
+.card { background: #fff; border-radius: 10px; border: 1px solid var(--border); overflow: hidden; }
+.card-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: baseline; justify-content: space-between; }
+.card-header h3 { font-size: 14px; font-weight: 600; color: var(--dark); }
+.card-header span { font-size: 11px; color: var(--lgray); }
+
+/* ── Table ────────────────────────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+thead tr { background: var(--navy-d); }
+thead th {
+  padding: 9px 12px; text-align: center; color: #fff;
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em;
+  white-space: nowrap;
+}
+thead th:first-child { text-align: left; min-width: 300px; }
+thead th:nth-child(2) { min-width: 100px; }
+thead th.col-m1, thead th.col-m2, thead th.col-m3,
+thead th.col-m4, thead th.col-m5, thead th.delta-cell {
+  color: #fff !important; background: var(--navy-d) !important; font-weight: 700;
+}
+thead th.col-m1, thead th.col-m2, thead th.col-m3,
+thead th.col-m4, thead th.col-m5, thead th.delta-cell { color: #fff !important; font-weight: 600; }
+thead th.col-m3 { background: rgba(147,197,253,.25) !important; }
+tbody tr { transition: background .1s; }
+tbody tr:hover { background: #FAFBFF; }
+
+/* Level rows */
+.row-l1 td { background: #0D2D4F; color: #fff; font-weight: 700; font-size: 12px; border-top: 2px solid #1B4F8A; border-bottom: 2px solid #1B4F8A; }
+.row-l1 td .pcf-ref { font-family: 'DM Mono', monospace; font-size: 10px; color: #7A9CC6; margin-left: 6px; }
+.row-l2 td { background: #EEF3FA; font-weight: 600; font-size: 12px; color: #0D2D4F; border-top: 2px solid #7AAED6; }
+.row-l2 td .pcf-ref { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--lgray); margin-left: 6px; }
+.row-l3 td { border-bottom: 1px solid #F0F2F8; color: var(--gray); }
+.row-l3:nth-child(even) td { background: #F9FBFD; }
+
+td { padding: 8px 12px; vertical-align: middle; }
+td:first-child { text-align: left; }
+td:not(:first-child):not(:nth-child(2)) { text-align: center; font-family: 'DM Mono', monospace; font-size: 12px; }
+
+.indent-l2 { padding-left: 16px; }
+.indent-l3 { padding-left: 32px; font-size: 11px; }
+.indent-l3::before { content: '↳ '; color: #B0BAD0; font-size: 10px; }
+
+/* Pattern badge */
+.pat {
+  display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px;
+  text-transform: uppercase; letter-spacing: .05em; white-space: nowrap;
+}
+.pat-Decision   { background: var(--bg-dec); color: var(--c-dec); }
+.pat-Knowledge  { background: var(--bg-kno); color: var(--c-kno); }
+.pat-Document   { background: var(--bg-doc); color: var(--c-doc); }
+.pat-Transaction{ background: var(--bg-tra); color: var(--c-tra); }
+.pat-Exception  { background: var(--bg-exc); color: var(--c-exc); }
+.pat-avg        { background: #F3F4F6; color: #6B7280; }
+
+/* Maturity cells */
+.m-cell { position: relative; }
+.m-bar {
+  position: absolute; bottom: 0; left: 0; height: 3px; border-radius: 0 0 0 0;
+  transition: width .3s;
+}
+.col-m1 { color: var(--m-text); }
+.col-m2 { color: var(--m-text); }
+.col-m3 { color: var(--m-text); font-weight: 700; }
+.col-m4 { color: var(--m-text); }
+.col-m5 { color: var(--m-text); font-weight: 600; }
+tbody td.col-m1 { background: var(--m1) !important; color: var(--m-text); }
+tbody td.col-m2 { background: var(--m2) !important; color: var(--m-text); }
+tbody td.col-m3 { background: var(--m3) !important; color: var(--m-text); font-weight: 700; }
+tbody td.col-m4 { background: var(--m4) !important; color: var(--m-text); }
+tbody td.col-m5 { background: var(--m5) !important; color: var(--m-text); font-weight: 600; }
+tbody td.delta-cell { background: #fff; }
+.row-l1 td.col-m1, .row-l1 td.col-m2, .row-l1 td.col-m3,
+.row-l1 td.col-m4, .row-l1 td.col-m5, .row-l1 td.m3-col {
+  background: #0D2D4F !important; color: #A8C4E0 !important; font-weight: 700;
+}
+.row-l1 td.delta-cell { background: #0D2D4F !important; color: #A8C4E0 !important; }
+.row-l1 td.col-m1, .row-l1 td.col-m2, .row-l1 td.col-m3,
+.row-l1 td.col-m4, .row-l1 td.col-m5, .row-l1 td.delta-cell { text-align: center !important; font-family: 'DM Mono', monospace; }
+.row-l2 td.m3-col, .row-l3 td.m3-col { background: var(--m3) !important; }
+.delta-cell { font-weight: 600; }
+.delta-neg { color: #B45309; }
+
+/* Expand toggle */
+.toggle-l2 { cursor: pointer; user-select: none; }
+.toggle-l2::after { content: ' ▾'; font-size: 9px; color: var(--lgray); }
+.toggle-l2.collapsed::after { content: ' ▸'; }
+
+/* Legend */
+.legend {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  padding: 12px 18px; background: #FAFBFF; border-top: 1px solid var(--border);
+}
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--gray); }
+.legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+/* Maturity header labels */
+
+
+/* ── Print button ─────────────────────────────────────────────────────────── */
+.print-btn {
+  background: #fff; border: 1px solid var(--border); color: var(--navy);
+  font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600;
+  padding: 5px 12px; border-radius: 6px; cursor: pointer;
+  letter-spacing: .04em; transition: all .15s;
+}
+.print-btn:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+/* ── Print styles ─────────────────────────────────────────────────────────── */
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  @page { size: A4 landscape; margin: 18mm 10mm 14mm; }
+  @page :first { margin-top: 10mm; }
+
+  /* Hide screen-only elements */
+  .no-print, .sidebar, .topbar, .summary-bar, .legend,
+  .toggle-l2::after, .card-header { display: none !important; }
+
+  /* Show all L3 rows regardless of collapsed state */
+  tr[data-parent] { display: table-row !important; }
+
+  /* Reset layout to full width */
+  body { display: block; background: #fff; font-family: Arial, sans-serif; }
+  .main { margin-left: 0 !important; }
+  .content { padding: 0 !important; }
+  .card { border: none !important; border-radius: 0 !important; box-shadow: none !important; }
+
+  /* Show print-only elements */
+  .print-header { display: block !important; margin-bottom: 12px; }
+  .print-ref-table { display: block !important; page-break-after: always; margin-bottom: 0; }
+
+  /* Print header uses inline styles for font reliability */
+
+  /* Main data table */
+  table { font-size: 8.5px; width: 100%; border-collapse: collapse; }
+  thead { display: table-header-group; }
+  thead th { font-size: 8px; padding: 5px 5px; white-space: normal; line-height: 1.3; }
+  tbody td { padding: 4px 5px; }
+  .indent-l2 { padding-left: 10px !important; }
+  .indent-l3 { padding-left: 18px !important; font-size: 8px !important; }
+  .indent-l3::before { content: "↳  "; }
+  .pat { font-size: 7.5px !important; padding: 1px 3px !important; }
+
+  /* Row styles for print */
+  .row-l1 td { background: #0D2D4F !important; color: #fff !important; }
+  .row-l2 td { background: #EEF3FA !important; color: #0D2D4F !important; border-top: 1.5px solid #7AAED6 !important; }
+
+  /* Footer */
+  .print-footer { display: block !important; margin-top: 8px; padding-top: 6px; border-top: 1px solid #ccc; font-size: 8px; color: #888; }
+  /* Running header for pages 2+ */
+  .print-running-header { display: block !important; position: fixed; top: 0; left: 0; right: 0;
+    padding: 4px 10mm; border-bottom: 1px solid #1B4F8A; font-size: 8px; background: #fff;
+    font-family: Arial, sans-serif; }
+
+  /* Page breaks */
+  tr { page-break-inside: avoid; }
+  .row-l2 { page-break-before: auto; }
+}
+
+@media screen {
+  .print-header, .print-footer { display: none !important; }
+  .print-ref-table { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <h1>HITL Capability Dashboard</h1>
+    <p>Human-AI Partnership Framework</p>
+    <span class="tagline">Where human judgment belongs</span>
+  </div>
+  <ul class="sidebar-nav" style="padding:8px 8px 0">
+    <li id="about-nav-item" onclick="renderAbout()" style="margin-bottom:6px">
+      <a href="#" style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:13px;color:#7A9CC6">&#9432;</span>
+        <span style="font-size:12px;font-weight:600">About This Framework</span>
+      </a>
+    </li>
+  </ul>
+  <div style="height:1px;background:rgba(255,255,255,.1);margin:0 12px 8px"></div>
+  <div class="sidebar-section">APQC PCF v8.0 — All Categories</div>
+  <ul class="sidebar-nav" id="sidebar-nav"></ul>
+
+  <div style="height:1px;background:rgba(255,255,255,.1);margin:0 12px 8px"></div>
+  <div class="sidebar-section">End-to-End Processes</div>
+  <ul class="sidebar-nav" style="padding:0 8px 16px">
+    <li>
+      <a href="https://hitldrivenarchitecture.com/hitl_navigator_s2e_final.html" target="_blank" title="Module 1 · Strategy-to-Execution" style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+        <span>
+          <span style="font-size:12px;color:#E2EEF9;font-weight:600">Strategy-to-Execution</span>
+        </span>
+        <span style="font-size:9px;font-family:'DM Mono',monospace;font-weight:700;color:#7DCFB6;background:rgba(125,207,182,.15);border:1px solid rgba(125,207,182,.4);padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;">LIVE ↗</span>
+      </a>
+    </li>
+    <li>
+      <a href="https://hitldrivenarchitecture.com/hitl_navigator_i2m_final.html" target="_blank" title="Module 2 · Idea-to-Market" style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+        <span>
+          <span style="font-size:12px;color:#E2EEF9;font-weight:600">Idea-to-Market</span>
+        </span>
+        <span style="font-size:9px;font-family:'DM Mono',monospace;font-weight:700;color:#7DCFB6;background:rgba(125,207,182,.15);border:1px solid rgba(125,207,182,.4);padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;">LIVE ↗</span>
+      </a>
+    </li>
+    <li>
+      <a href="https://hitldrivenarchitecture.com/hitl_navigator_l2o_final.html" target="_blank" title="Module 3 · Lead-to-Order" style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+        <span>
+          <span style="font-size:12px;color:#E2EEF9;font-weight:600">Lead-to-Order</span>
+        </span>
+        <span style="font-size:9px;font-family:'DM Mono',monospace;font-weight:700;color:#7DCFB6;background:rgba(125,207,182,.15);border:1px solid rgba(125,207,182,.4);padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;">LIVE ↗</span>
+      </a>
+    </li>
+    <li>
+      <a href="https://hitldrivenarchitecture.com/hitl_navigator_p2p_final.html" target="_blank" title="Module 4 · Procure-to-Pay" style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+        <span>
+          <span style="font-size:12px;color:#E2EEF9;font-weight:600">Procure-to-Pay</span>
+        </span>
+        <span style="font-size:9px;font-family:'DM Mono',monospace;font-weight:700;color:#7DCFB6;background:rgba(125,207,182,.15);border:1px solid rgba(125,207,182,.4);padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;">LIVE ↗</span>
+      </a>
+    </li>
+    <li>
+      <a href="https://hitldrivenarchitecture.com/hitl_navigator_p2m_final.html" target="_blank" title="Module 5 · Plan-to-Make" style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+        <span>
+          <span style="font-size:12px;color:#E2EEF9;font-weight:600">Plan-to-Make</span>
+        </span>
+        <span style="font-size:9px;font-family:'DM Mono',monospace;font-weight:700;color:#7DCFB6;background:rgba(125,207,182,.15);border:1px solid rgba(125,207,182,.4);padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;">LIVE ↗</span>
+      </a>
+    </li>
+    <li>
+      <a href="https://hitldrivenarchitecture.com/hitl_navigator_o2c_final.html" target="_blank" title="Module 6 · Order-to-Cash" style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+        <span>
+          <span style="font-size:12px;color:#E2EEF9;font-weight:600">Order-to-Cash</span>
+        </span>
+        <span style="font-size:9px;font-family:'DM Mono',monospace;font-weight:700;color:#7DCFB6;background:rgba(125,207,182,.15);border:1px solid rgba(125,207,182,.4);padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;">LIVE ↗</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" onclick="return false;" title="Module 7 · Plan-to-Serve — Coming Soon" style="display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:default;">
+        <span>
+          <span style="font-size:12px;color:#94A3B8;font-weight:600">Plan-to-Serve</span>
+        </span>
+        <span style="font-size:9px;font-family:'DM Mono',monospace;font-weight:700;color:#94A3B8;background:rgba(148,163,184,.1);border:1px solid rgba(148,163,184,.3);padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;">Coming Soon</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" onclick="return false;" title="Module 8 · Issue-to-Resolution — Coming Soon" style="display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:default;">
+        <span>
+          <span style="font-size:12px;color:#94A3B8;font-weight:600">Issue-to-Resolution</span>
+        </span>
+        <span style="font-size:9px;font-family:'DM Mono',monospace;font-weight:700;color:#94A3B8;background:rgba(148,163,184,.1);border:1px solid rgba(148,163,184,.3);padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;">Coming Soon</span>
+      </a>
+    </li>
+    <li>
+      <a href="https://hitldrivenarchitecture.com/hitl_navigator_h2r_final.html" target="_blank" title="Module 9 · Hire-to-Retire" style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+        <span>
+          <span style="font-size:12px;color:#E2EEF9;font-weight:600">Hire-to-Retire</span>
+        </span>
+        <span style="font-size:9px;font-family:'DM Mono',monospace;font-weight:700;color:#7DCFB6;background:rgba(125,207,182,.15);border:1px solid rgba(125,207,182,.4);padding:1px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;">LIVE ↗</span>
+      </a>
+    </li>
+  </ul>
+</aside>
+
+<!-- ── Main ── -->
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-left">
+      <h2 id="topbar-title">—</h2>
+      <p id="topbar-sub">HITL Maturity Ratios · M1 (Undesigned) through M5 (Leading)</p>
+    </div>
+    <div class="topbar-right" style="display:flex;align-items:center;gap:10px;">
+      <div class="topbar-pills" id="topbar-pills">
+        <span class="pill pill-m1">M1 Undesigned</span>
+        <span class="pill pill-m3">M3 Design Intent ★</span>
+        <span class="pill pill-m5">M5 Leading</span>
+      </div>
+      <button class="print-btn no-print" id="download-pdf-btn" onclick="downloadPDF()" title="Download PDF">
+        ⬇ Download PDF
+      </button>
+    </div>
+  </header>
+
+  <div class="summary-bar" id="summary-bar"></div>
+
+  <!-- Print-only header and reference tables -->
+  <div class="print-header" style="display:none">
+    <div style="font-family:Georgia,serif;font-size:36pt;font-weight:700;color:#0D1B2A;line-height:1.1;margin-bottom:6px">HITL Maturity Ratios</div>
+    <div id="print-subtitle" style="font-family:Georgia,serif;font-size:20pt;color:#1B4F8A;font-weight:400;margin-bottom:6px;padding-bottom:8px;border-bottom:3px solid #1B4F8A"></div>
+    <div style="margin-bottom:14px">
+      <span style="font-family:Arial,sans-serif;font-size:8pt;color:#888;font-style:italic">Human involvement H% at each of five HITL maturity levels &nbsp;·&nbsp; L3 Process &rarr; L2 Process Group &rarr; L1 Domain &nbsp;·&nbsp; Equal-weighted aggregation &nbsp;·&nbsp; Pattern types derived using HITL Verb Derivation Method from PCF Level 4 activities</span>
+    </div>
+    <div class="print-ref-table">
+      <table style="width:100%;border-collapse:collapse;font-size:9px;margin-bottom:16px">
+        <tr>
+          <td style="background:#1B4F8A;color:#fff;padding:7px 8px;font-weight:700;font-size:10px;width:14%">Maturity<br>Level</td>
+          <td style="background:#F0F7FF;color:#1B4F8A;padding:7px 8px;font-weight:700;text-align:center;width:17.2%">M1 Undesigned</td>
+          <td style="background:#E6F1FF;color:#1B4F8A;padding:7px 8px;font-weight:700;text-align:center;width:17.2%">M2 Emerging</td>
+          <td style="background:#D6E8FF;color:#1B4F8A;padding:7px 8px;font-weight:700;text-align:center;width:17.2%">M3 Defined ★</td>
+          <td style="background:#C4DCFF;color:#1B4F8A;padding:7px 8px;font-weight:700;text-align:center;width:17.2%">M4 Optimized</td>
+          <td style="background:#B0CEFF;color:#1B4F8A;padding:7px 8px;font-weight:700;text-align:center;width:17.2%">M5 Leading</td>
+        </tr>
+        <tr>
+          <td style="background:#EEF3FA;color:#888;padding:6px 8px;font-style:italic">Description</td>
+          <td style="background:#F0F7FF;color:#444;padding:6px 8px;font-style:italic">No intentional HITL design. AI tools exist but aren't systematically applied.</td>
+          <td style="background:#E6F1FF;color:#444;padding:6px 8px;font-style:italic">Tools selectively deployed. AI awareness growing. No systematic design yet.</td>
+          <td style="background:#D6E8FF;color:#444;padding:6px 8px;font-style:italic">Intentional HITL design applied. Pattern types classified. Decision rights documented.</td>
+          <td style="background:#C4DCFF;color:#444;padding:6px 8px;font-style:italic">AI mature across all patterns. Continuous improvement. Benchmarked against industry.</td>
+          <td style="background:#B0CEFF;color:#444;padding:6px 8px;font-style:italic">Maximum AI absorption with principled human oversight. Future state north star.</td>
+        </tr>
+      </table>
+      <div style="font-size:11px;font-weight:700;color:#0D1B2A;margin-bottom:8px">H% by Pattern Type per Maturity Level</div>
+      <table style="width:100%;border-collapse:collapse;font-size:10px">
+        <thead>
+          <tr>
+            <th style="background:#1B4F8A;color:#fff;padding:6px 8px;text-align:left">Pattern</th>
+            <th style="background:#1B4F8A;color:#fff;padding:6px 8px;text-align:left">Nature of Work</th>
+            <th style="background:#1B4F8A;color:#fff;padding:6px 8px;text-align:center">M1</th>
+            <th style="background:#1B4F8A;color:#fff;padding:6px 8px;text-align:center">M2</th>
+            <th style="background:#1B4F8A;color:#fff;padding:6px 8px;text-align:center">M3</th>
+            <th style="background:#1B4F8A;color:#fff;padding:6px 8px;text-align:center">M4</th>
+            <th style="background:#1B4F8A;color:#fff;padding:6px 8px;text-align:center">M5</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="background:#EEF3FA;color:#1B4F8A;font-weight:700;padding:5px 8px">Decision</td><td style="padding:5px 8px;color:#444">Judgment &amp; Authority</td><td style="background:#F0F7FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">92%</td><td style="background:#E6F1FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">88%</td><td style="background:#D6E8FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">80%</td><td style="background:#C4DCFF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">72%</td><td style="background:#B0CEFF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">65%</td></tr>
+          <tr><td style="background:#F3F0FE;color:#534AB7;font-weight:700;padding:5px 8px">Knowledge</td><td style="padding:5px 8px;color:#444">Synthesis &amp; Interpretation</td><td style="background:#F0F7FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">85%</td><td style="background:#E6F1FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">78%</td><td style="background:#D6E8FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">65%</td><td style="background:#C4DCFF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">52%</td><td style="background:#B0CEFF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">42%</td></tr>
+          <tr><td style="background:#E0F2FE;color:#0369A1;font-weight:700;padding:5px 8px">Document</td><td style="padding:5px 8px;color:#444">Content Generation</td><td style="background:#F0F7FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">72%</td><td style="background:#E6F1FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">58%</td><td style="background:#D6E8FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">40%</td><td style="background:#C4DCFF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">28%</td><td style="background:#B0CEFF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">18%</td></tr>
+          <tr><td style="background:#DCFCE7;color:#166534;font-weight:700;padding:5px 8px">Transaction</td><td style="padding:5px 8px;color:#444">Rules-Based Processing</td><td style="background:#F0F7FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">60%</td><td style="background:#E6F1FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">48%</td><td style="background:#D6E8FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">35%</td><td style="background:#C4DCFF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">22%</td><td style="background:#B0CEFF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">12%</td></tr>
+          <tr><td style="background:#FEE2E2;color:#991B1B;font-weight:700;padding:5px 8px">Exception</td><td style="padding:5px 8px;color:#444">Non-Standard Resolution</td><td style="background:#F0F7FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">95%</td><td style="background:#E6F1FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">92%</td><td style="background:#D6E8FF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">82%</td><td style="background:#C4DCFF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">75%</td><td style="background:#B0CEFF;text-align:center;padding:5px 8px;color:#1B4F8A;font-weight:700">68%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="card">
+      <div class="card-header">
+        <h3 id="card-title">HITL Maturity Assessment</h3>
+        <span>H% = Human involvement at each maturity level · M3 = HITL Design Intent</span>
+      </div>
+      <div class="table-wrap">
+        <table id="main-table">
+          <thead>
+            <tr>
+              <th>Capability / Process</th>
+              <th>Pattern</th>
+              <th class="col-m1">M1<br><small>Undesigned</small></th>
+              <th class="col-m2">M2<br><small>Emerging</small></th>
+              <th class="col-m3 mh-m3">M3 ★<br><small>Design Intent</small></th>
+              <th class="col-m4">M4<br><small>Optimized</small></th>
+              <th class="col-m5">M5<br><small>Leading</small></th>
+              <th class="delta-cell">Δ M1→M3</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+      <div class="print-footer" style="display:none">
+        APQC PCF v8.0 &copy; 2026 APQC. All rights reserved. &nbsp;·&nbsp;
+        HITL Maturity Methodology &copy; Timothy P. King &amp; Claude (Anthropic), May 2026 &nbsp;·&nbsp; hitldrivenarchitecture.com
+      </div>
+      <div class="print-running-header" style="display:none">
+        <span style="font-weight:700;color:#1B4F8A">The Human-AI Partnership Framework &nbsp;·&nbsp; HITL Maturity Ratios</span>
+        &nbsp;&nbsp;&nbsp;<span id="print-running-sub" style="color:#888"></span>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-dec);border:1px solid var(--c-dec)"></div>Decision — Judgment & Authority</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-kno);border:1px solid var(--c-kno)"></div>Knowledge — Synthesis & Interpretation</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-doc);border:1px solid var(--c-doc)"></div>Document — Content Generation</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-tra);border:1px solid var(--c-tra)"></div>Transaction — Rules-Based Processing</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-exc);border:1px solid var(--c-exc)"></div>Exception — Non-Standard Resolution</div>
+        <div class="legend-item" style="margin-left:auto;color:#888">★ M3 = HITL Design Intent baseline · Equal-weighted L3→L2→L1 aggregation · © Timothy P. King & Claude (Anthropic) 2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Data ────────────────────────────────────────────────────────────────────
+const M = {
+  Decision:    [92,88,80,72,65],
+  Knowledge:   [85,78,65,52,42],
+  Document:    [72,58,40,28,18],
+  Transaction: [60,48,35,22,12],
+  Exception:   [95,92,82,75,68],
+};
+
+function avg(arr){ return Math.round(arr.reduce((a,b)=>a+b,0)/arr.length); }
+function l2avg(procs){ return [0,1,2,3,4].map(i=>avg(procs.map(p=>M[p[1]][i]))); }
+
+const PCF = [
+  { code:"1.0", name:"Develop Vision and Strategy", groups:[
+    { code:"1.1", name:"Define the Business Concept and Long-Term Vision", procs:[
+      ["1.1.1 Assess the external environment","Knowledge"],
+      ["1.1.2 Survey market and determine customer needs and wants","Knowledge"],
+      ["1.1.3 Assess the internal environment","Knowledge"],
+      ["1.1.4 Establish strategic vision","Decision"],
+      ["1.1.5 Conduct organization restructuring opportunities","Knowledge"],
+    ]},
+    { code:"1.2", name:"Develop Business Strategy", procs:[
+      ["1.2.1 Develop overall mission statement","Decision"],
+      ["1.2.2 Define and evaluate strategic options to achieve the mission","Knowledge"],
+      ["1.2.3 Set/Develop long-term enterprise strategy","Knowledge"],
+      ["1.2.4 Coordinate and align cross-functional and process strategies","Knowledge"],
+      ["1.2.5 Create organizational design","Knowledge"],
+      ["1.2.6 Develop and set organizational objectives","Decision"],
+      ["1.2.7 Formulate business unit strategies","Knowledge"],
+      ["1.2.8 Develop customer experience strategy","Knowledge"],
+      ["1.2.9 Communicate strategies internally and externally","Document"],
+    ]},
+    { code:"1.3", name:"Develop and Measure Strategic Initiatives", procs:[
+      ["1.3.1 Develop strategic initiatives","Knowledge"],
+      ["1.3.2 Evaluate strategic initiatives","Knowledge"],
+      ["1.3.3 Select strategic initiatives","Decision"],
+      ["1.3.4 Establish high-level measures","Knowledge"],
+      ["1.3.5 Execute strategic initiatives","Transaction"],
+      ["1.3.6 Review execution of strategic initiatives","Knowledge"],
+      ["1.3.7 Refine strategic initiatives and project plans as needed","Knowledge"],
+    ]},
+    { code:"1.4", name:"Develop and Maintain Business Models", procs:[
+      ["1.4.1 Develop business models","Knowledge"],
+      ["1.4.2 Maintain business models","Knowledge"],
+      ["1.4.3 Establish business model governance","Decision"],
+    ]},
+  ]},
+  { code:"2.0", name:"Develop and Manage Products and Services", groups:[
+    { code:"2.1", name:"Govern and Manage Product/Service Development Program", procs:[
+      ["2.1.1 Manage product and service portfolio","Knowledge"],
+      ["2.1.2 Manage product and service life cycle","Knowledge"],
+      ["2.1.3 Manage patents, copyrights, and regulatory requirements","Knowledge"],
+      ["2.1.4 Manage product and service master data","Transaction"],
+    ]},
+    { code:"2.2", name:"Generate and Define New Product/Service Ideas", procs:[
+      ["2.2.1 Perform discovery research","Knowledge"],
+      ["2.2.2 Generate new product/service concepts","Knowledge"],
+      ["2.2.3 Define product/service development requirements","Knowledge"],
+    ]},
+    { code:"2.3", name:"Develop Products and Services", procs:[
+      ["2.3.1 Design and prototype products and services","Knowledge"],
+      ["2.3.2 Test market for new or revised products and services","Knowledge"],
+      ["2.3.3 Prepare for production/service delivery","Knowledge"],
+      ["2.3.4 Define warranty claims","Document"],
+      ["2.3.5 Develop recall strategy","Knowledge"],
+    ]},
+  ]},
+  { code:"3.0", name:"Market and Sell Products and Services", groups:[
+    { code:"3.1", name:"Understand Markets, Customers, and Capabilities", procs:[
+      ["3.1.1 Perform customer and market intelligence analysis","Knowledge"],
+      ["3.1.2 Evaluate and prioritize market opportunities","Knowledge"],
+    ]},
+    { code:"3.2", name:"Develop Marketing Strategy", procs:[
+      ["3.2.1 Define offering and customer value proposition","Knowledge"],
+      ["3.2.2 Develop and manage brands","Knowledge"],
+      ["3.2.3 Define pricing strategy","Decision"],
+      ["3.2.4 Define and manage channel strategy","Knowledge"],
+      ["3.2.5 Analyze and manage channel performance","Knowledge"],
+      ["3.2.6 Develop marketing communication strategy","Knowledge"],
+      ["3.2.7 Design and manage customer loyalty program","Knowledge"],
+    ]},
+    { code:"3.3", name:"Develop and Manage Marketing Plans", procs:[
+      ["3.3.1 Establish goals, objectives, and measures for products/services","Decision"],
+      ["3.3.2 Establish marketing budgets","Decision"],
+      ["3.3.3 Develop and manage pricing","Transaction"],
+      ["3.3.4 Develop and manage promotional activities","Document"],
+      ["3.3.5 Track customer management measures","Knowledge"],
+      ["3.3.6 Analyze and respond to customer insight","Knowledge"],
+      ["3.3.7 Develop and manage packaging strategy","Knowledge"],
+      ["3.3.8 Develop go-to-market strategy","Knowledge"],
+      ["3.3.9 Manage product marketing material","Transaction"],
+    ]},
+    { code:"3.4", name:"Develop Sales Strategy", procs:[
+      ["3.4.1 Develop sales forecast","Knowledge"],
+      ["3.4.2 Develop sales partner/alliance relationships","Knowledge"],
+      ["3.4.3 Establish overall sales budgets","Decision"],
+      ["3.4.4 Establish sales goals and measures","Decision"],
+      ["3.4.5 Establish customer management measures","Knowledge"],
+    ]},
+    { code:"3.5", name:"Develop and Manage Sales Plans", procs:[
+      ["3.5.1 Manage leads/opportunities","Transaction"],
+      ["3.5.2 Manage customers and accounts","Knowledge"],
+      ["3.5.3 Develop and manage sales proposals, bids, and quotes","Document"],
+      ["3.5.4 Manage sales orders","Transaction"],
+      ["3.5.5 Manage sales partners and alliances","Knowledge"],
+      ["3.5.6 Perform sales at physical outlets","Transaction"],
+      ["3.5.7 Perform field sales","Transaction"],
+      ["3.5.8 Perform digital sales","Transaction"],
+    ]},
+  ]},
+  { code:"4.0", name:"Manage Supply Chain for Physical Products", groups:[
+    { code:"4.1", name:"Plan for and Align Supply Chain Resources", procs:[
+      ["4.1.1 Develop production and materials strategies","Knowledge"],
+      ["4.1.2 Manage demand for products","Knowledge"],
+      ["4.1.3 Create materials plan","Knowledge"],
+      ["4.1.4 Create and manage master production schedule","Transaction"],
+      ["4.1.5 Plan distribution requirements","Knowledge"],
+      ["4.1.6 Establish distribution planning constraints","Decision"],
+      ["4.1.7 Review distribution planning policies","Knowledge"],
+      ["4.1.8 Develop quality standards and procedures","Knowledge"],
+    ]},
+    { code:"4.2", name:"Procure Materials and Services", procs:[
+      ["4.2.1 Provide sourcing governance","Knowledge"],
+      ["4.2.2 Develop category plan","Knowledge"],
+      ["4.2.3 Select suppliers and develop/maintain contracts","Decision"],
+      ["4.2.4 Order materials and services","Transaction"],
+      ["4.2.5 Manage suppliers","Knowledge"],
+    ]},
+    { code:"4.3", name:"Produce/Assemble/Test Product", procs:[
+      ["4.3.1 Schedule production","Transaction"],
+      ["4.3.2 Produce/Assemble product","Transaction"],
+      ["4.3.3 Perform quality testing","Transaction"],
+      ["4.3.4 Maintain production records and manage lot traceability","Transaction"],
+    ]},
+    { code:"4.4", name:"Manage Logistics and Warehousing", procs:[
+      ["4.4.1 Provide logistics governance","Knowledge"],
+      ["4.4.2 Plan and manage inbound material flow","Transaction"],
+      ["4.4.3 Operate warehousing","Transaction"],
+      ["4.4.4 Operate outbound transportation","Transaction"],
+      ["4.4.5 Deliver last mile delivery services","Transaction"],
+    ]},
+  ]},
+  { code:"5.0", name:"Deliver Services", groups:[
+    { code:"5.1", name:"Establish Service Delivery Governance and Strategies", procs:[
+      ["5.1.1 Establish service delivery governance","Decision"],
+      ["5.1.2 Develop service delivery strategies","Knowledge"],
+    ]},
+    { code:"5.2", name:"Manage Service Delivery Resources", procs:[
+      ["5.2.1 Manage service delivery resource demand","Knowledge"],
+      ["5.2.2 Create and manage resource plan","Knowledge"],
+      ["5.2.3 Enable service delivery resources","Knowledge"],
+    ]},
+    { code:"5.3", name:"Manage and Operate Service Delivery System", procs:[
+      ["5.3.1 Perform service delivery system planning","Knowledge"],
+      ["5.3.2 Perform service delivery system startup","Transaction"],
+      ["5.3.3 Operate service delivery system","Transaction"],
+      ["5.3.4 Assure service delivery system service","Exception"],
+    ]},
+    { code:"5.4", name:"Deliver Service to Customer", procs:[
+      ["5.4.1 Initiate service delivery","Knowledge"],
+      ["5.4.2 Execute service delivery","Transaction"],
+      ["5.4.3 Complete service delivery","Transaction"],
+    ]},
+  ]},
+  { code:"6.0", name:"Manage Customer Service", groups:[
+    { code:"6.1", name:"Develop Customer Service Strategy", procs:[
+      ["6.1.1 Define customer service requirements across the enterprise","Knowledge"],
+      ["6.1.2 Define customer service experience","Knowledge"],
+      ["6.1.3 Define and manage customer service channel strategy","Knowledge"],
+      ["6.1.4 Define customer service policies and procedures","Document"],
+      ["6.1.5 Establish target service level for each customer segment","Decision"],
+      ["6.1.6 Identify and define customer service strategy integrations","Knowledge"],
+    ]},
+    { code:"6.2", name:"Plan and Manage Customer Service Contacts", procs:[
+      ["6.2.1 Plan and manage customer service workforce","Knowledge"],
+      ["6.2.2 Manage customer service problems, requests, and inquiries","Exception"],
+      ["6.2.3 Manage customer complaints","Exception"],
+      ["6.2.4 Process returns","Transaction"],
+      ["6.2.5 Report incidents and risks to regulatory bodies","Document"],
+    ]},
+    { code:"6.3", name:"Service Products After Sales", procs:[
+      ["6.3.1 Register products","Transaction"],
+      ["6.3.2 Process warranty claims","Exception"],
+      ["6.3.3 Manage supplier recovery","Knowledge"],
+      ["6.3.4 Service products","Transaction"],
+    ]},
+    { code:"6.4", name:"Manage Product Recalls and Regulatory Audits", procs:[
+      ["6.4.1 Initiate recall","Decision"],
+      ["6.4.2 Assess likelihood and consequences of hazards","Knowledge"],
+      ["6.4.3 Manage recall related communications","Document"],
+      ["6.4.4 Submit regulatory reports","Document"],
+      ["6.4.5 Monitor and audit recall effectiveness","Knowledge"],
+      ["6.4.6 Manage recall termination","Decision"],
+    ]},
+    { code:"6.5", name:"Evaluate Customer Service Operations and Satisfaction", procs:[
+      ["6.5.1 Measure customer satisfaction with inquiries handling","Knowledge"],
+      ["6.5.2 Measure customer satisfaction with complaint handling","Knowledge"],
+      ["6.5.3 Measure customer satisfaction with products and services","Knowledge"],
+      ["6.5.4 Evaluate and manage warranty performance","Knowledge"],
+      ["6.5.5 Evaluate recall performance","Knowledge"],
+    ]},
+  ]},
+  { code:"7.0", name:"Develop and Manage Human Resources", groups:[
+    { code:"7.1", name:"Develop and Manage HR Planning, Policies, and Strategies", procs:[
+      ["7.1.1 Develop human resources strategy","Knowledge"],
+      ["7.1.2 Develop and implement workforce planning, policies, and strategies","Knowledge"],
+      ["7.1.3 Monitor and update HR strategies, plans, and policies","Document"],
+      ["7.1.4 Develop competency management models","Knowledge"],
+    ]},
+    { code:"7.2", name:"Recruit, Source, and Select Employees", procs:[
+      ["7.2.1 Manage employee requisitions","Transaction"],
+      ["7.2.2 Recruit/Source candidates","Knowledge"],
+      ["7.2.3 Screen and select candidates","Decision"],
+      ["7.2.4 Manage new hire/re-hire","Decision"],
+      ["7.2.5 Manage applicant information","Transaction"],
+    ]},
+    { code:"7.3", name:"Manage Employee Onboarding, Training, and Development", procs:[
+      ["7.3.1 Manage employee onboarding","Knowledge"],
+      ["7.3.2 Manage employee performance","Decision"],
+      ["7.3.3 Manage employee career development","Knowledge"],
+      ["7.3.4 Develop and train employees","Knowledge"],
+    ]},
+    { code:"7.4", name:"Manage Employee Relations", procs:[
+      ["7.4.1 Manage labor relations","Decision"],
+      ["7.4.2 Manage collective bargaining process","Decision"],
+      ["7.4.3 Manage labor management partnerships","Knowledge"],
+      ["7.4.4 Manage employee grievances","Exception"],
+      ["7.4.5 Monitor legal and regulatory environment","Knowledge"],
+    ]},
+    { code:"7.5", name:"Reward and Retain Employees", procs:[
+      ["7.5.1 Develop and manage reward, recognition, and motivation programs","Knowledge"],
+      ["7.5.2 Manage and administer benefits","Transaction"],
+      ["7.5.3 Manage employee assistance and retention","Knowledge"],
+      ["7.5.4 Administer payroll","Transaction"],
+    ]},
+    { code:"7.6", name:"Redeploy and Retire Employees", procs:[
+      ["7.6.1 Manage promotion and demotion process","Decision"],
+      ["7.6.2 Manage separation","Transaction"],
+      ["7.6.3 Relocate employees and manage assignments","Transaction"],
+    ]},
+    { code:"7.7", name:"Manage Employee Information and Analytics", procs:[
+      ["7.7.1 Manage reporting processes","Document"],
+      ["7.7.2 Manage employee inquiry process","Exception"],
+      ["7.7.3 Manage and maintain employee data","Transaction"],
+      ["7.7.4 Manage human resource information systems","Transaction"],
+      ["7.7.5 Develop and manage employee measures","Knowledge"],
+      ["7.7.6 Develop and manage time and attendance systems","Transaction"],
+      ["7.7.7 Develop workforce analytics","Knowledge"],
+      ["7.7.8 Implement workforce analytics","Knowledge"],
+      ["7.7.9 Manage/Collect employee suggestions and perform employee research","Document"],
+    ]},
+    { code:"7.8", name:"Manage Employee Communication", procs:[
+      ["7.8.1 Develop employee communication plan","Knowledge"],
+      ["7.8.2 Conduct employee engagement surveys","Document"],
+      ["7.8.3 Deliver employee communications","Document"],
+    ]},
+  ]},
+  { code:"8.0", name:"Manage Information Technology (IT)", groups:[
+    { code:"8.1", name:"Develop and Manage IT Customer Relationships", procs:[
+      ["8.1.1 Understand IT customer needs","Knowledge"],
+      ["8.1.2 Identify IT customer transformation needs","Knowledge"],
+      ["8.1.3 Plan and communicate IT services","Document"],
+      ["8.1.4 Provide IT transformation guidance","Knowledge"],
+      ["8.1.5 Develop and manage IT service levels","Knowledge"],
+      ["8.1.6 Manage IT customer relationships","Knowledge"],
+      ["8.1.7 Analyze service performance","Knowledge"],
+    ]},
+    { code:"8.2", name:"Develop and Manage IT Business Strategy", procs:[
+      ["8.2.1 Define business technology and governance strategy","Decision"],
+      ["8.2.2 Manage IT portfolio strategy","Decision"],
+      ["8.2.3 Define and maintain enterprise architecture","Knowledge"],
+      ["8.2.4 Define IT service management strategy","Knowledge"],
+      ["8.2.5 Control IT management system","Knowledge"],
+      ["8.2.6 Manage IT value portfolio","Knowledge"],
+      ["8.2.7 Define and manage technology innovation","Knowledge"],
+    ]},
+    { code:"8.3", name:"Develop and Manage IT Resilience and Risk", procs:[
+      ["8.3.1 Develop IT compliance, risk, and security strategy","Knowledge"],
+      ["8.3.2 Develop IT resilience strategy","Knowledge"],
+      ["8.3.3 Control IT risk, compliance, and security","Knowledge"],
+      ["8.3.4 Plan and manage IT continuity","Knowledge"],
+      ["8.3.5 Develop and manage IT security, privacy, and data protection","Knowledge"],
+      ["8.3.6 Conduct and analyze IT compliance assessments","Knowledge"],
+      ["8.3.7 Develop and execute IT resilience and continuity operations","Transaction"],
+      ["8.3.8 Manage IT user identity and authorization","Transaction"],
+    ]},
+    { code:"8.4", name:"Manage Information", procs:[
+      ["8.4.1 Define business information and analytics strategy","Knowledge"],
+      ["8.4.2 Define and maintain business information architecture","Knowledge"],
+      ["8.4.3 Define and execute business information lifecycle planning","Knowledge"],
+      ["8.4.4 Manage business information","Transaction"],
+    ]},
+    { code:"8.5", name:"Develop and Manage Services/Solutions", procs:[
+      ["8.5.1 Develop service/solution and integration strategy","Knowledge"],
+      ["8.5.2 Manage service/solution lifecycle planning","Knowledge"],
+      ["8.5.3 Develop and manage service/solution architecture","Knowledge"],
+      ["8.5.4 Execute IT service/solution creation and testing","Transaction"],
+      ["8.5.5 Perform service/solution maintenance and testing","Transaction"],
+    ]},
+    { code:"8.6", name:"Deploy Services/Solutions", procs:[
+      ["8.6.1 Develop and manage service/solution deployment strategy","Knowledge"],
+      ["8.6.2 Plan service and solution implementation","Knowledge"],
+      ["8.6.3 Manage change deployment control","Transaction"],
+      ["8.6.4 Implement technology solutions","Transaction"],
+      ["8.6.5 Perform service and solution rollout","Transaction"],
+    ]},
+    { code:"8.7", name:"Create and Manage Support Services/Solutions", procs:[
+      ["8.7.1 Define and establish service delivery strategy","Knowledge"],
+      ["8.7.2 Define and develop service support strategy","Knowledge"],
+      ["8.7.3 Plan and manage service delivery control","Transaction"],
+      ["8.7.4 Develop and manage infrastructure resource planning","Knowledge"],
+      ["8.7.5 Define service support planning","Knowledge"],
+      ["8.7.6 Develop and manage service delivery operations","Transaction"],
+      ["8.7.7 Manage infrastructure resource administration","Transaction"],
+      ["8.7.8 Operate IT user support","Exception"],
+    ]},
+  ]},
+  { code:"9.0", name:"Manage Financial Resources", groups:[
+    { code:"9.1", name:"Perform Planning and Management Accounting", procs:[
+      ["9.1.1 Develop and manage financial resources strategy","Knowledge"],
+      ["9.1.2 Perform planning/budgeting/forecasting","Knowledge"],
+      ["9.1.3 Perform cost accounting and control","Transaction"],
+      ["9.1.4 Perform cost management","Knowledge"],
+      ["9.1.5 Evaluate and manage financial performance","Knowledge"],
+    ]},
+    { code:"9.2", name:"Perform Revenue Accounting", procs:[
+      ["9.2.1 Process customer credit","Decision"],
+      ["9.2.2 Invoice customer","Transaction"],
+      ["9.2.3 Process accounts receivable (AR)","Transaction"],
+      ["9.2.4 Manage and process collections","Transaction"],
+      ["9.2.5 Manage and process adjustments/deductions","Transaction"],
+    ]},
+    { code:"9.3", name:"Perform General Accounting and Reporting", procs:[
+      ["9.3.1 Manage financial policies and procedures","Document"],
+      ["9.3.2 Perform general accounting","Transaction"],
+      ["9.3.3 Perform fixed-asset accounting","Transaction"],
+      ["9.3.4 Perform financial reporting","Document"],
+    ]},
+    { code:"9.4", name:"Manage Fixed-Asset Project Accounting", procs:[
+      ["9.4.1 Perform capital planning and project approval","Decision"],
+      ["9.4.2 Perform capital project accounting","Transaction"],
+    ]},
+    { code:"9.5", name:"Process Payroll", procs:[
+      ["9.5.1 Report time","Transaction"],
+      ["9.5.2 Manage pay","Transaction"],
+      ["9.5.3 Manage and process payroll taxes","Transaction"],
+    ]},
+    { code:"9.6", name:"Process Accounts Payable and Expense Reimbursements", procs:[
+      ["9.6.1 Process accounts payable (AP)","Transaction"],
+      ["9.6.2 Process expense reimbursements","Transaction"],
+      ["9.6.3 Manage corporate credit cards","Transaction"],
+    ]},
+    { code:"9.7", name:"Manage Treasury Operations", procs:[
+      ["9.7.1 Manage treasury policies and procedures","Knowledge"],
+      ["9.7.2 Manage cash","Transaction"],
+      ["9.7.3 Manage in-house bank accounts","Transaction"],
+      ["9.7.4 Manage debt and investment","Decision"],
+      ["9.7.5 Monitor and execute risk and hedging transactions","Knowledge"],
+      ["9.7.6 Manage financial fraud/dispute cases","Exception"],
+    ]},
+    { code:"9.8", name:"Manage Internal Controls", procs:[
+      ["9.8.1 Establish internal controls, policies, and procedures","Decision"],
+      ["9.8.2 Operate controls and monitor compliance","Transaction"],
+      ["9.8.3 Report on internal controls compliance","Document"],
+    ]},
+    { code:"9.9", name:"Manage Taxes", procs:[
+      ["9.9.1 Develop tax strategy and plan","Knowledge"],
+      ["9.9.2 Process taxes","Transaction"],
+    ]},
+    { code:"9.10", name:"Manage International Funds/Consolidation", procs:[
+      ["9.10.1 Monitor international rates","Knowledge"],
+      ["9.10.2 Manage transactions","Transaction"],
+      ["9.10.3 Monitor currency exposure/hedge currency","Knowledge"],
+      ["9.10.4 Report results","Document"],
+    ]},
+    { code:"9.11", name:"Perform Global Trade Services", procs:[
+      ["9.11.1 Screen sanctioned party list","Transaction"],
+      ["9.11.2 Control exports and imports","Transaction"],
+      ["9.11.3 Classify products","Transaction"],
+      ["9.11.4 Perform currency conversion","Transaction"],
+      ["9.11.5 Calculate duty","Transaction"],
+      ["9.11.6 Communicate with customs","Document"],
+      ["9.11.7 Document trade","Document"],
+      ["9.11.8 Process trade preferences","Transaction"],
+      ["9.11.9 Handle restitution","Exception"],
+      ["9.11.10 Prepare letter of credit","Document"],
+    ]},
+  ]},
+  { code:"10.0", name:"Acquire, Construct, and Manage Assets", groups:[
+    { code:"10.1", name:"Plan and Acquire Assets", procs:[
+      ["10.1.1 Develop property strategy and long-term vision","Knowledge"],
+      ["10.1.2 Plan facility","Knowledge"],
+      ["10.1.3 Provide workspace and facilities","Transaction"],
+      ["10.1.4 Manage facilities operations","Transaction"],
+    ]},
+    { code:"10.2", name:"Design and Construct Assets", procs:[
+      ["10.2.1 Manage capital program for assets","Knowledge"],
+      ["10.2.2 Design and plan asset construction","Knowledge"],
+      ["10.2.3 Schedule and perform construction work","Transaction"],
+      ["10.2.4 Manage asset construction","Knowledge"],
+    ]},
+    { code:"10.3", name:"Maintain Assets", procs:[
+      ["10.3.1 Plan asset maintenance","Knowledge"],
+      ["10.3.2 Manage asset maintenance","Knowledge"],
+      ["10.3.3 Perform asset maintenance","Transaction"],
+    ]},
+    { code:"10.4", name:"Manage Asset End-of-Life", procs:[
+      ["10.4.1 Develop exit strategy","Knowledge"],
+      ["10.4.2 Decommission productive assets","Transaction"],
+      ["10.4.3 Perform sale or trade","Decision"],
+      ["10.4.4 Manage take-back centers","Transaction"],
+      ["10.4.5 Dismantle assets","Transaction"],
+      ["10.4.6 Track parts","Transaction"],
+      ["10.4.7 Recycle parts","Transaction"],
+      ["10.4.8 Ship hazardous material","Transaction"],
+      ["10.4.9 Provide government reporting","Document"],
+      ["10.4.10 Perform abandonment","Transaction"],
+      ["10.4.11 Perform waste and hazardous goods management","Transaction"],
+    ]},
+  ]},
+  { code:"11.0", name:"Manage Enterprise Risk, Compliance, Remediation, and Resiliency", groups:[
+    { code:"11.1", name:"Manage Enterprise Risk", procs:[
+      ["11.1.1 Establish the enterprise risk framework and policies","Decision"],
+      ["11.1.2 Oversee and coordinate enterprise risk management activities","Knowledge"],
+      ["11.1.3 Manage business unit and function risk","Knowledge"],
+    ]},
+    { code:"11.2", name:"Manage Compliance", procs:[
+      ["11.2.1 Establish compliance framework and policies","Decision"],
+      ["11.2.2 Manage regulatory compliance","Knowledge"],
+    ]},
+    { code:"11.3", name:"Manage Remediation Efforts", procs:[
+      ["11.3.1 Create remediation plans","Knowledge"],
+      ["11.3.2 Contact and confer with experts","Knowledge"],
+      ["11.3.3 Identify/dedicate resources","Knowledge"],
+      ["11.3.4 Investigate legal aspects","Knowledge"],
+      ["11.3.5 Investigate damage cause","Knowledge"],
+      ["11.3.6 Amend or create policy","Decision"],
+    ]},
+    { code:"11.4", name:"Manage Business Resiliency", procs:[
+      ["11.4.1 Develop the business resilience strategy","Knowledge"],
+      ["11.4.2 Perform continuous business operations planning","Knowledge"],
+      ["11.4.3 Test continuous business operations","Transaction"],
+      ["11.4.4 Maintain continuous business operations","Transaction"],
+      ["11.4.5 Share knowledge of specific risks across the organization","Knowledge"],
+    ]},
+  ]},
+  { code:"12.0", name:"Manage External Relationships", groups:[
+    { code:"12.1", name:"Build Investor Relationships", procs:[
+      ["12.1.1 Plan, build, and manage lender relations","Knowledge"],
+      ["12.1.2 Plan, build, and manage analyst relations","Knowledge"],
+      ["12.1.3 Communicate with shareholders","Document"],
+    ]},
+    { code:"12.2", name:"Manage Government and Industry Relationships", procs:[
+      ["12.2.1 Manage government relations","Knowledge"],
+      ["12.2.2 Manage relations with quasi-government bodies","Knowledge"],
+      ["12.2.3 Manage relations with trade or industry groups","Knowledge"],
+      ["12.2.4 Manage lobby activities","Knowledge"],
+    ]},
+    { code:"12.3", name:"Manage Relations with Board of Directors", procs:[
+      ["12.3.1 Report financial results","Document"],
+      ["12.3.2 Report audit findings","Document"],
+    ]},
+    { code:"12.4", name:"Manage Legal and Ethical Issues", procs:[
+      ["12.4.1 Create ethics policies","Document"],
+      ["12.4.2 Manage corporate governance policies","Decision"],
+      ["12.4.3 Develop and perform preventive law programs","Knowledge"],
+      ["12.4.4 Ensure compliance","Knowledge"],
+      ["12.4.5 Manage outside counsel","Decision"],
+      ["12.4.6 Protect intellectual property","Knowledge"],
+      ["12.4.7 Resolve disputes and litigations","Exception"],
+      ["12.4.8 Provide legal advice/counseling","Knowledge"],
+      ["12.4.9 Negotiate and document agreements/contracts","Decision"],
+    ]},
+    { code:"12.5", name:"Manage Public Relations Program", procs:[
+      ["12.5.1 Manage community relations","Knowledge"],
+      ["12.5.2 Manage media relations","Knowledge"],
+      ["12.5.3 Promote political stability","Knowledge"],
+      ["12.5.4 Create press releases","Document"],
+      ["12.5.5 Issue press releases","Document"],
+    ]},
+  ]},
+  { code:"13.0", name:"Develop and Manage Business Capabilities", groups:[
+    { code:"13.1", name:"Manage Business Processes", procs:[
+      ["13.1.1 Establish and maintain process management governance","Decision"],
+      ["13.1.2 Define and manage process frameworks","Knowledge"],
+      ["13.1.3 Define processes","Knowledge"],
+      ["13.1.4 Manage process performance","Knowledge"],
+      ["13.1.5 Improve processes","Knowledge"],
+    ]},
+    { code:"13.2", name:"Manage Portfolio, Program, and Project", procs:[
+      ["13.2.1 Manage portfolio","Knowledge"],
+      ["13.2.2 Manage programs","Knowledge"],
+      ["13.2.3 Manage projects","Knowledge"],
+    ]},
+    { code:"13.3", name:"Manage Enterprise Quality", procs:[
+      ["13.3.1 Establish quality requirements","Knowledge"],
+      ["13.3.2 Evaluate performance to requirements","Knowledge"],
+      ["13.3.3 Manage non-conformance","Exception"],
+      ["13.3.4 Implement and maintain the enterprise quality management system","Knowledge"],
+    ]},
+    { code:"13.4", name:"Manage Change", procs:[
+      ["13.4.1 Plan for change","Knowledge"],
+      ["13.4.2 Design the change","Knowledge"],
+      ["13.4.3 Implement change","Transaction"],
+      ["13.4.4 Sustain improvement","Knowledge"],
+    ]},
+    { code:"13.5", name:"Develop and Manage Enterprise-Wide Knowledge Management", procs:[
+      ["13.5.1 Develop KM strategy","Knowledge"],
+      ["13.5.2 Assess KM capabilities","Knowledge"],
+      ["13.5.3 Design and implement KM capabilities","Knowledge"],
+      ["13.5.4 Evolve and sustain KM capabilities","Knowledge"],
+    ]},
+    { code:"13.6", name:"Manage Content", procs:[
+      ["13.6.1 Define content management strategy","Knowledge"],
+      ["13.6.2 Develop and manage taxonomies","Knowledge"],
+      ["13.6.3 Define content systems of record and storage requirements","Knowledge"],
+      ["13.6.4 Manage content infrastructure","Transaction"],
+      ["13.6.5 Develop and manage content","Knowledge"],
+      ["13.6.6 Deliver approved content","Transaction"],
+      ["13.6.7 Control delivered content","Transaction"],
+    ]},
+    { code:"13.7", name:"Measure and Benchmark", procs:[
+      ["13.7.1 Define and manage organizational performance strategy","Knowledge"],
+      ["13.7.2 Benchmark performance","Knowledge"],
+      ["13.7.3 Evaluate performance","Knowledge"],
+    ]},
+    { code:"13.8", name:"Develop, Manage, and Deliver Analytics", procs:[
+      ["13.8.1 Identify needs from stakeholders","Knowledge"],
+      ["13.8.2 Scope analytics project","Knowledge"],
+      ["13.8.3 Develop and manage hypotheses","Knowledge"],
+      ["13.8.4 Collect data","Transaction"],
+      ["13.8.5 Prepare data","Transaction"],
+      ["13.8.6 Analyze data","Knowledge"],
+      ["13.8.7 Create data models","Knowledge"],
+      ["13.8.8 Review data models with stakeholders","Knowledge"],
+      ["13.8.9 Refine data models","Knowledge"],
+      ["13.8.10 Report on analysis","Document"],
+      ["13.8.11 Identify remedial actions","Knowledge"],
+    ]},
+    { code:"13.9", name:"Manage Environmental Health and Safety (EHS)", procs:[
+      ["13.9.1 Determine environmental health and safety impacts","Knowledge"],
+      ["13.9.2 Develop EHS program","Knowledge"],
+      ["13.9.3 Monitor and manage EHS program","Knowledge"],
+    ]},
+    { code:"13.10", name:"Manage Sustainability", procs:[
+      ["13.10.1 Develop sustainability capability","Knowledge"],
+      ["13.10.2 Manage sustainability capability","Knowledge"],
+    ]},
+  ]},
+];
+
+// ── Compute aggregates ───────────────────────────────────────────────────────
+PCF.forEach(cat => {
+  cat.groups.forEach(g => {
+    g.mv = [0,1,2,3,4].map(i => avg(g.procs.map(p => M[p[1]][i])));
+    g.patternMix = {};
+    g.procs.forEach(p => { g.patternMix[p[1]] = (g.patternMix[p[1]]||0)+1; });
+    g.dominant = Object.entries(g.patternMix).sort((a,b)=>b[1]-a[1])[0][0];
+  });
+  cat.l1mv = [0,1,2,3,4].map(i => avg(cat.groups.map(g => g.mv[i])));
+  cat.totalProcs = cat.groups.reduce((s,g)=>s+g.procs.length,0);
+});
+
+// ── Render sidebar ───────────────────────────────────────────────────────────
+const nav = document.getElementById('sidebar-nav');
+PCF.forEach((cat,idx) => {
+  const li = document.createElement('li');
+  li.innerHTML = `<a href="#" title="${cat.code} ${cat.name}"><span class="pcf-num">${cat.code}</span>${cat.name}</a>`;
+  li.onclick = () => render(idx);
+  nav.appendChild(li);
+});
+
+// ── Render main ──────────────────────────────────────────────────────────────
+function fmtDelta(m1,m3){
+  const d = m3-m1;
+  const s = d < 0 ? `<span class="delta-neg">${d}%</span>` : `+${d}%`;
+  return s;
+}
+
+function renderAbout() {
+  // Scroll to top of page
+  window.scrollTo(0, 0);
+  // Deactivate all PCF nav items
+  [...document.getElementById("sidebar-nav").children].forEach(li => li.classList.remove("active"));
+  // Highlight About item
+  document.getElementById("about-nav-item").classList.add("active");
+  // Update topbar
+  document.getElementById("topbar-title").textContent = "The Human-AI Partnership Framework";
+  document.getElementById("topbar-sub").textContent = "A design standard for where human judgment belongs in the age of AI";
+  document.getElementById("card-title").textContent = "About This Framework";
+  // Clear summary bar
+  document.getElementById("summary-bar").innerHTML = "";
+  // Hide maturity pills — not applicable to About page
+  document.getElementById("topbar-pills").style.display = "none";
+  // Show Download PDF button, pointed at the About page PDF
+  const aboutBtn = document.getElementById("download-pdf-btn");
+  aboutBtn.style.display = "";
+  aboutBtn.onclick = downloadAboutPDF;
+  // Render about content in table body
+  document.getElementById("table-body").innerHTML = `
+    <tr><td colspan="8" style="padding:0">
+      <div style="padding:32px 40px;max-width:860px">
+        <p style="font-size:16px;color:#1B4F8A;font-style:italic;margin-bottom:24px;line-height:1.6">
+          HITL — Human-in-the-Loop — as an organizational design standard, not a safety checkpoint.
+        </p>
+        <p style="font-size:14px;color:#444;line-height:1.8;margin-bottom:20px">
+          Every process in the enterprise has an optimal human/AI balance. Most organizations are letting that balance shift by default — driven by tool availability, cost pressure, and urgency — rather than by deliberate design. This framework introduces a structured methodology for designing, measuring, and governing the optimal level of human involvement at every level of the capability hierarchy.
+        </p>
+        <p style="font-size:14px;color:#444;line-height:1.8;margin-bottom:20px">
+          Applied here to all 13 categories of the APQC Process Classification Framework v8.0, it produces measurable HITL maturity ratios from L3 process through L2 process group to L1 capability domain — at five maturity levels from Undesigned (M1) through Leading (M5).
+        </p>
+        <p style="font-size:14px;color:#444;line-height:1.8;margin-bottom:28px">
+          The central finding is consistent across all 13 categories: organizations are running <strong>18-20 percentage points more human involvement than HITL design intent</strong> at every level of the capability hierarchy. That gap is the AI convergence opportunity — measurable, prioritizable, and governable.
+        </p>
+        <div style="background:#EEF3FA;border-left:4px solid #1B4F8A;padding:16px 20px;border-radius:0 6px 6px 0;margin-bottom:28px">
+          <p style="font-size:13px;font-weight:700;color:#1B4F8A;margin-bottom:6px">HITL Design Principle</p>
+          <p style="font-size:14px;color:#0D2D4F;line-height:1.7;margin:0">
+            This is not a technology problem. It is a design problem. Every process in the enterprise has an optimal human/AI balance. The job of HITL design is to find it, define it, measure it, and govern it.
+          </p>
+        </div>
+        <div style="margin-bottom:28px">
+          <p style="font-size:13px;font-weight:700;color:#0D1B2A;margin-bottom:14px;text-transform:uppercase;letter-spacing:.04em">See It In Action</p>
+          <div style="display:flex;gap:16px;flex-wrap:wrap">
+            <a href="#" onclick="render(0);return false;" style="flex:1;min-width:220px;display:block;padding:16px 18px;background:#fff;border:1px solid #DDE3EE;border-radius:8px;text-decoration:none;transition:border-color .15s">
+              <p style="font-size:13px;font-weight:700;color:#1B4F8A;margin-bottom:4px">13 PCF Capability Domains</p>
+              <p style="font-size:12px;color:#888;line-height:1.6;margin:0">Browse HITL maturity ratios across every APQC PCF v8.0 category — from L3 process up to L1 domain.</p>
+            </a>
+            <a href="https://hitldrivenarchitecture.com/hitl_navigator_s2e_final.html" target="_blank" style="flex:1;min-width:220px;display:block;padding:16px 18px;background:#fff;border:1px solid #DDE3EE;border-radius:8px;text-decoration:none">
+              <p style="font-size:13px;font-weight:700;color:#1B4F8A;margin-bottom:4px">End-to-End Process Navigators</p>
+              <p style="font-size:12px;color:#888;line-height:1.6;margin:0">Strategy-to-Execution, Idea-to-Market, Lead-to-Order, Procure-to-Pay, Plan-to-Make, Order-to-Cash, and Hire-to-Retire — full HITL design and process specification, step by step.</p>
+            </a>
+          </div>
+        </div>
+        <div style="border-top:1px solid #DDE3EE;padding-top:20px">
+          <p style="font-size:12px;color:#888;line-height:1.8;margin:0">
+            <strong style="color:#1B4F8A">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect &nbsp;·&nbsp; May 2026<br>
+            Co-developed with Claude (Anthropic)<br>
+            <a href="mailto:timothy.king@hitldrivenarchitecture.com" style="color:#1B4F8A;text-decoration:none">timothy.king@hitldrivenarchitecture.com</a>
+            &nbsp;·&nbsp; hitldrivenarchitecture.com
+          </p>
+        </div>
+      </div>
+    </td></tr>`;
+  // Hide table header
+  document.querySelector("#main-table thead").style.display = "none";
+}
+
+function render(idx) {
+  // Scroll to top of page
+  window.scrollTo(0, 0);
+  // Show table header
+  document.querySelector("#main-table thead").style.display = "";
+  // Deactivate about item
+  document.getElementById("about-nav-item").classList.remove("active");
+  // Restore maturity pills and PDF button to category-page behavior
+  document.getElementById("topbar-pills").style.display = "flex";
+  const catBtn = document.getElementById("download-pdf-btn");
+  catBtn.style.display = "";
+  catBtn.onclick = downloadPDF;
+
+  const cat = PCF[idx];
+  // Sidebar active
+  [...nav.children].forEach((li,i) => li.classList.toggle('active', i===idx));
+  // Topbar
+  document.getElementById('topbar-title').textContent = cat.code + ' — ' + cat.name;
+  document.getElementById('topbar-sub').textContent = 'HITL Maturity Ratios · M1 (Undesigned) through M5 (Leading)';
+  document.getElementById('card-title').textContent = 'HITL Maturity Assessment';
+  // Summary bar
+  const sb = document.getElementById('summary-bar');
+  sb.innerHTML = `
+    <div class="summary-card"><div class="label">L3 Processes</div><div class="value">${cat.totalProcs}</div><div class="sub">${cat.groups.length} process groups</div></div>
+    <div class="summary-card"><div class="label">M1 Baseline H%</div><div class="value">${cat.l1mv[0]}%</div><div class="sub">Undesigned state</div></div>
+    <div class="summary-card"><div class="label">M3 Design Intent H%</div><div class="value" style="color:var(--navy)">${cat.l1mv[2]}%</div><div class="sub">★ HITL design intent</div></div>
+    <div class="summary-card"><div class="label">M5 Leading H%</div><div class="value" style="color:var(--navy-d)">${cat.l1mv[4]}%</div><div class="sub">North star target</div></div>
+    <div class="summary-card"><div class="label">Δ M1 → M3</div><div class="value" style="color:#B45309">${cat.l1mv[2]-cat.l1mv[0]}%</div><div class="sub">AI convergence opportunity</div></div>
+  `;
+  // Table
+  const tbody = document.getElementById('table-body');
+  let html = '';
+  // L1 row
+  html += `<tr class="row-l1">
+    <td>
+      <div style="font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${cat.code} &nbsp;${cat.name}</div>
+      <div style="margin-top:5px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:600;color:#7A9CC6;background:rgba(255,255,255,.12);border:1px solid rgba(168,196,224,.3);padding:2px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;">L1 Domain Aggregate</span>
+      </div>
+    </td>
+    <td style="vertical-align:bottom;padding-bottom:8px;text-align:center;">
+      <span style="font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:#A8C4E0;background:rgba(255,255,255,.15);border:1px solid rgba(168,196,224,.4);padding:2px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;">L1 AGG</span>
+    </td>
+    <td class="col-m1" style="text-align:center;vertical-align:bottom;padding-bottom:8px">${cat.l1mv[0]}%</td>
+    <td class="col-m2" style="text-align:center;vertical-align:bottom;padding-bottom:8px">${cat.l1mv[1]}%</td>
+    <td class="col-m3 m3-col" style="text-align:center;vertical-align:bottom;padding-bottom:8px"><strong>${cat.l1mv[2]}%</strong></td>
+    <td class="col-m4" style="text-align:center;vertical-align:bottom;padding-bottom:8px">${cat.l1mv[3]}%</td>
+    <td class="col-m5" style="text-align:center;vertical-align:bottom;padding-bottom:8px">${cat.l1mv[4]}%</td>
+    <td style="text-align:center;vertical-align:bottom;padding-bottom:8px">${fmtDelta(cat.l1mv[0],cat.l1mv[2])}</td>
+  </tr>`;
+  cat.groups.forEach(g => {
+    const dom = g.dominant;
+    html += `<tr class="row-l2 toggle-row" data-group="${g.code}">
+      <td class="indent-l2 toggle-l2" onclick="toggleGroup('${g.code}',this)">
+        ${g.code} ${g.name}
+      </td>
+      <td><span class="pat pat-${dom}">${dom}</span></td>
+      <td class="col-m1">${g.mv[0]}%</td>
+      <td class="col-m2">${g.mv[1]}%</td>
+      <td class="col-m3 m3-col"><strong>${g.mv[2]}%</strong></td>
+      <td class="col-m4">${g.mv[3]}%</td>
+      <td class="col-m5">${g.mv[4]}%</td>
+      <td>${fmtDelta(g.mv[0],g.mv[2])}</td>
+    </tr>`;
+    g.procs.forEach((p,pi) => {
+      const pv = M[p[1]];
+      html += `<tr class="row-l3" data-parent="${g.code}">
+        <td class="indent-l3">${p[0]}</td>
+        <td><span class="pat pat-${p[1]}">${p[1]}</span></td>
+        <td class="col-m1">${pv[0]}%</td>
+        <td class="col-m2">${pv[1]}%</td>
+        <td class="col-m3 m3-col"><strong>${pv[2]}%</strong></td>
+        <td class="col-m4">${pv[3]}%</td>
+        <td class="col-m5">${pv[4]}%</td>
+        <td>${fmtDelta(pv[0],pv[2])}</td>
+      </tr>`;
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+function toggleGroup(code, el) {
+  const rows = document.querySelectorAll(`tr[data-parent="${code}"]`);
+  const hidden = rows[0] && rows[0].style.display === 'none';
+  rows.forEach(r => r.style.display = hidden ? '' : 'none');
+  el.classList.toggle('collapsed', !hidden);
+}
+
+// Default to PCF 1.0 (Vision and Strategy)
+renderAbout();
+
+function downloadPDF() {
+  const pdfFiles = [
+    'hitl_maturity_pcf1_final.pdf',
+    'hitl_maturity_pcf2_final.pdf',
+    'hitl_maturity_pcf3_final.pdf',
+    'hitl_maturity_pcf4_final.pdf',
+    'hitl_maturity_pcf5_final.pdf',
+    'hitl_maturity_pcf6_final.pdf',
+    'hitl_maturity_pcf7_final.pdf',
+    'hitl_maturity_pcf8_final.pdf',
+    'hitl_maturity_pcf9_final.pdf',
+    'hitl_maturity_pcf10_final.pdf',
+    'hitl_maturity_pcf11_final.pdf',
+    'hitl_maturity_pcf12_final.pdf',
+    'hitl_maturity_pcf13_final.pdf',
+  ];
+  // Guard: button is hidden on About page, but skip safely if no category is active
+  if (document.getElementById('about-nav-item').classList.contains('active')) return;
+  const idx = [...document.getElementById('sidebar-nav').children]
+    .findIndex(li => li.classList.contains('active'));
+  if (idx >= 0 && idx < pdfFiles.length) {
+    const a = document.createElement('a');
+    a.href = 'pdfs/' + pdfFiles[idx];
+    a.download = pdfFiles[idx];
+    a.click();
+  }
+}
+
+function downloadAboutPDF() {
+  const a = document.createElement('a');
+  a.href = 'pdfs/hitl_about_final.pdf';
+  a.download = 'hitl_about_final.pdf';
+  a.click();
+}
+
+function printDomain() {
+  const title = document.getElementById("topbar-title").textContent;
+  document.getElementById("print-subtitle").textContent = title;
+  const runningSub = document.getElementById("print-running-sub");
+  if (runningSub) runningSub.textContent = title;
+  // Show all collapsed L3 rows before printing
+  document.querySelectorAll('tr[data-parent]').forEach(r => r.style.display = '');
+  window.print();
+}
+</script>
+</body>
+</html>
