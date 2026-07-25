@@ -140,11 +140,20 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .desc-stat strong { color: var(--navy-d); font-size: 13px; display: block; }
 .desc-section-heading { font-size: 13px; font-weight: 700; color: var(--navy-d); padding: 14px 16px 8px; border-top: 1px solid var(--border); }
 .desc-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.desc-table-gov { table-layout: fixed; }
+.desc-table-gov th:nth-child(1), .desc-table-gov td:nth-child(1) { width: 9%; }
+.desc-table-gov th:nth-child(2), .desc-table-gov td:nth-child(2) { width: 27%; text-align: left !important; font-family: inherit !important; }
+.desc-table-gov th:nth-child(3), .desc-table-gov td:nth-child(3) { width: 31%; text-align: left !important; font-family: inherit !important; }
+.desc-table-gov th:nth-child(4), .desc-table-gov td:nth-child(4) { width: 33%; text-align: left !important; font-family: inherit !important; }
 .desc-table th { background: var(--navy); color: #fff; font-size: 11px; font-weight: 700; text-align: left; padding: 8px 16px; }
 .desc-table td { padding: 8px 16px; border-top: 1px solid var(--border); color: var(--dark); vertical-align: top; }
 .desc-table-formula { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--lgray); font-style: italic; margin-top: 4px; }
-.desc-table-source { font-size: 10px; font-weight: 700; color: #166534; text-align: center; }
-.desc-table-tier { font-size: 10px; font-weight: 700; text-align: center; }
+.desc-table-source { font-size: 10px; font-weight: 700; color: #166534; text-align: left; }
+.desc-table-tier { font-size: 10px; font-weight: 700; text-align: left; }
+.desc-table-roles { table-layout: fixed; }
+.desc-table-roles th:nth-child(1), .desc-table-roles td:nth-child(1) { width: 220px; }
+.desc-table-roles th:nth-child(2), .desc-table-roles td:nth-child(2) { width: 155px; white-space: nowrap; }
+.desc-table-pcf { font-family: 'DM Mono', monospace; font-size: 10.5px; color: var(--gray); white-space: normal; word-break: break-word; }
 .desc-card .lens-empty { padding: 14px 16px; text-align: left; font-size: 12px; }
 .kpi-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 .kpi-card-head { background: var(--navy-d); color: #fff; padding: 8px 14px; font-size: 12px; font-weight: 700; }
@@ -201,10 +210,11 @@ table.governance-table td, table.governance-table th { text-align: left !importa
 table { width: 100%; border-collapse: collapse; font-size: 12px; }
 thead tr { background: var(--navy-d); }
 thead th {
-  padding: 9px 12px; text-align: center; color: #fff;
+  padding: 9px 12px; text-align: left; color: #fff;
   font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em;
   white-space: nowrap;
 }
+#main-table thead th:not(:first-child):not(:nth-child(2)) { text-align: center; }
 thead th:first-child { text-align: left; min-width: 300px; }
 thead th:nth-child(2) { min-width: 100px; }
 thead th.col-m1, thead th.col-m2, thead th.col-m3,
@@ -232,7 +242,7 @@ td { padding: 8px 12px; vertical-align: middle; }
 #raci-main-table td { vertical-align: top; padding-right: 8px; }
 #raci-main-table td:not(:first-child) { padding-left: 8px; }
 td:first-child { text-align: left; }
-td:not(:first-child):not(:nth-child(2)) { text-align: center; font-family: 'DM Mono', monospace; font-size: 12px; }
+#main-table td:not(:first-child):not(:nth-child(2)) { text-align: center; font-family: 'DM Mono', monospace; font-size: 12px; }
 #raci-main-table td:not(:first-child):not(:nth-child(2)) { text-align: left; font-family: inherit; }
 #raci-main-table thead th:first-child { min-width: 380px; }
 
@@ -3808,30 +3818,54 @@ function renderDescriptionPanel(cat, streamFilter) {
         </tbody>
       </table>` : '';
 
+    const stream = (cat.valueStreams || []).find(s => s.name === d.stream);
+
+    // Matches a role name against a RACI cell value, accounting for
+    // multi-role " · "-separated entries and "(qualifier)" suffixes —
+    // e.g. "Recruiter (data entry)" still matches role name "Recruiter".
+    function roleInRaciValue(value, roleName) {
+      if (!value || value === '\u2014') return false;
+      return value.split(' \u00b7 ').some(part => part.replace(/\s*\([^)]*\)\s*$/, '').trim() === roleName);
+    }
+
+    // Which L3 processes (within this stream) a role appears in anywhere
+    // in its confirmed RACI — R, A, C, or I.
+    function rolePcfCodes(roleName) {
+      if (!stream) return [];
+      const codes = [];
+      cat.groups.forEach(g => {
+        g.l3.forEach(l3 => {
+          if (!codeInStream(l3.code, stream) || !l3.raci) return;
+          const hit = ['R', 'A', 'C', 'I'].some(k => roleInRaciValue(l3.raci[k], roleName));
+          if (hit) codes.push(l3.code);
+        });
+      });
+      return codes;
+    }
+
     // Roles Involved — per-stream role/tier list carried from the confirmed RACI work
     const rolesSection = (d.roles && d.roles.length) ? `
       <div class="desc-section-heading">Roles Involved</div>
-      <table class="desc-table">
-        <thead><tr><th>Role</th><th>Tier</th></tr></thead>
+      <table class="desc-table desc-table-roles">
+        <thead><tr><th>Role</th><th>Tier</th><th>Process / Activities</th></tr></thead>
         <tbody>
           ${d.roles.map(r => {
             const tc = TIER_COLORS[r.tier] || TIER_COLORS["External Participant"];
+            const codes = rolePcfCodes(r.role);
             return `
             <tr>
               <td>${r.role}</td>
               <td class="desc-table-tier" style="background:${tc.fill};color:${tc.text}">${r.tier}</td>
+              <td class="desc-table-pcf">${codes.length ? codes.join(', ') : '\u2014'}</td>
             </tr>`;
           }).join('')}
         </tbody>
       </table>` : '';
-
-    // Governed Decision Points — reuse the same domain-wide data as Process Specification, filtered to this stream
-    const stream = (cat.valueStreams || []).find(s => s.name === d.stream);
     const govItems = stream ? (cat.lenses.governance || []).filter(g => codeInStream(g.code, stream)) : [];
     const govSection = `
       <div class="desc-section-heading">Governed Decision Points</div>
       ${govItems.length ? `
-      <table class="desc-table">
+      <table class="desc-table desc-table-gov">
         <thead><tr><th>PCF</th><th>Decision</th><th>Authority</th><th>Escalates To</th></tr></thead>
         <tbody>
           ${govItems.map(g => `
