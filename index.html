@@ -229,10 +229,12 @@ tbody tr:hover { background: #FAFBFF; }
 .row-l3:nth-child(even) td { background: #F9FBFD; }
 
 td { padding: 8px 12px; vertical-align: middle; }
-#raci-main-table td { vertical-align: top; padding-left: 8px; padding-right: 8px; }
+#raci-main-table td { vertical-align: top; padding-right: 8px; }
+#raci-main-table td:not(:first-child) { padding-left: 8px; }
 td:first-child { text-align: left; }
 td:not(:first-child):not(:nth-child(2)) { text-align: center; font-family: 'DM Mono', monospace; font-size: 12px; }
 #raci-main-table td:not(:first-child):not(:nth-child(2)) { text-align: left; font-family: inherit; }
+#raci-main-table thead th:first-child { min-width: 380px; }
 
 .indent-l2 { padding-left: 16px; }
 .indent-l3 { padding-left: 32px; font-size: 11px; }
@@ -241,8 +243,8 @@ td:not(:first-child):not(:nth-child(2)) { text-align: center; font-family: 'DM M
 .raci-entry:last-child { margin-bottom: 0; }
 .raci-entry-name { font-size: 11px; color: var(--dark); line-height: 1.3; }
 .raci-entry-sub { font-size: 9.5px; color: var(--lgray); font-style: italic; line-height: 1.3; }
-.human-tag { display: inline-block; margin-top: 4px; padding: 2px 7px; border-radius: 4px; font-size: 9.5px; font-weight: 600; letter-spacing: .02em; }
-.human-tag-mixed { background: #F2F2F2; color: #666; font-style: italic; font-weight: 400; }
+.raci-entry-derived .raci-entry-name { color: var(--lgray); font-style: italic; }
+.raci-derived-note { font-size: 9px; color: var(--lgray); font-style: italic; margin-top: 2px; }
 .row-l4 td { border-bottom: 1px solid #F5F6FA; color: var(--gray); font-size: 12px; }
 .row-l4:nth-child(even) td { background: #FBFCFE; }
 .tag-avg {
@@ -535,14 +537,13 @@ tbody td.delta-cell { background: #fff; }
       </div>
       </div>
       <div class="lens-panel" id="lens-panel-raci">
-        <div class="lens-note" id="raci-note">Full end-to-end process flow and role accountability — every L4 activity inherits its parent L3's confirmed RACI, since RACI in this framework is assigned at L3 process granularity, grounded directly in real APQC L4 activity text against the Organizational Role Taxonomy. Human Role identifies the responsible human at the process level (Responsible role, falling back to Accountable where no separate Responsible exists) and whether AI meaningfully augments that work at M3 — Decision and Exception patterns stay Human by design; Knowledge, Document, and Transaction patterns are Human (AI-Augmented). This framework never labels a role AI-led — a human is never fully removed, even at M5.</div>
+        <div class="lens-note" id="raci-note">Full end-to-end process flow and role accountability — every L4 activity inherits its parent L3's confirmed RACI, since RACI in this framework is assigned at L3 process granularity, grounded directly in real APQC L4 activity text against the Organizational Role Taxonomy.</div>
         <div class="table-wrap">
           <table id="raci-main-table">
             <thead>
               <tr>
                 <th class="th-bottom">L1-Category/L2-Process Group/L3-Process/L4-Activity</th>
                 <th class="th-bottom">Pattern</th>
-                <th class="th-bottom">Human Role</th>
                 <th class="th-bottom">R — Responsible</th>
                 <th class="th-bottom">A — Accountable</th>
                 <th class="th-bottom">C — Consulted</th>
@@ -3322,39 +3323,28 @@ function toggleL3(code, el) {
 // parenthetical qualifier shown as a smaller sub-line beneath it, matching
 // the stacked People/Data cell format used in the old Navigator's Process
 // Specification view.
-// Identifies the responsible human role at the process level: the R
-// (Responsible) role if one is assigned, falling back to A (Accountable)
-// when there's no separate Responsible — which is most H2R L3s, where the
-// Accountable role does the work directly. Tagged Human or Human
-// (AI-Augmented) based on the activity's pattern — Decision/Exception stay
-// pure human by design; Knowledge/Document/Transaction carry real AI
-// absorption at M3 while the human stays the responsible role throughout.
-// This framework never labels a role "AI-led" — a human is never fully
-// removed, even at M5, so there is no AI-only bucket.
-function humanRoleTag(pattern) {
-  if (pattern === 'Decision' || pattern === 'Exception') {
-    return { label: 'Human', fill: 'EEF3FA', color: '1B4F8A' };
-  }
-  if (pattern === 'Knowledge' || pattern === 'Document' || pattern === 'Transaction') {
-    return { label: 'Human (AI-Augmented)', fill: 'E6FFFA', color: '0D9488' };
-  }
-  return null; // Mixed L3 rollups — no single pattern, so no single tag at that level
-}
-
-function responsibleRoleValue(raci) {
-  return (raci.R && raci.R !== '\u2014') ? raci.R : raci.A;
-}
-
-function formatRaciCell(value) {
+function formatRaciCell(value, derived) {
   if (!value || value === '\u2014') return '\u2014';
   const parts = value.split(' \u00b7 ').map(p => p.trim()).filter(Boolean);
+  const cls = derived ? 'raci-entry raci-entry-derived' : 'raci-entry';
   return parts.map(part => {
     const m = part.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
     if (m) {
-      return `<div class="raci-entry"><div class="raci-entry-name">${m[1]}</div><div class="raci-entry-sub">${m[2]}</div></div>`;
+      return `<div class="${cls}"><div class="raci-entry-name">${m[1]}</div><div class="raci-entry-sub">${m[2]}</div></div>`;
     }
-    return `<div class="raci-entry"><div class="raci-entry-name">${part}</div></div>`;
-  }).join('');
+    return `<div class="${cls}"><div class="raci-entry-name">${part}</div></div>`;
+  }).join('') + (derived ? '<div class="raci-derived-note">from Accountable</div>' : '');
+}
+
+// R column shows the literal Responsible value when one was confirmed; when
+// R is blank (most H2R L3s — no separate Responsible was identified), it
+// falls back to showing the Accountable role instead, visually marked as
+// derived (gray/italic, "from Accountable") rather than blended in as if
+// it were an independently confirmed R — same honesty convention as the
+// L4-inherits-L3 styling elsewhere in this table.
+function formatRCell(raci) {
+  if (raci.R && raci.R !== '\u2014') return formatRaciCell(raci.R);
+  return formatRaciCell(raci.A, true);
 }
 
 function renderRaciTable(cat) {
@@ -3384,7 +3374,6 @@ function renderRaciTable(cat) {
       <td>\u2014</td>
       <td>\u2014</td>
       <td>\u2014</td>
-      <td>\u2014</td>
     </tr>`;
     g.l3.forEach(l3 => {
       const hasL4 = l3.l4 && l3.l4.length > 0;
@@ -3398,28 +3387,19 @@ function renderRaciTable(cat) {
         ? `<span class="toggle-icon" title="Click to expand">+</span>`
         : `<span class="toggle-icon placeholder"></span>`;
       const raci = l3.raci || { R: '\u2014', A: '\u2014', C: '\u2014', I: '\u2014' };
-      const l3Resp = raci.R || raci.A ? responsibleRoleValue(raci) : '\u2014';
-      const l3Tag = l3.mixed ? null : humanRoleTag(l3.pattern);
-      const l3HumanCell = l3Tag
-        ? `${formatRaciCell(l3Resp)}<div class="human-tag" style="background:#${l3Tag.fill};color:#${l3Tag.color}">${l3Tag.label}</div>`
-        : `${formatRaciCell(l3Resp)}<div class="human-tag human-tag-mixed">Mixed \u2014 see L4</div>`;
       html += `<tr class="row-l3" data-raci-parent="${g.code}" data-raci-l3code="${l3.code}">
         <td ${l3ToggleAttrs}><span class="row-flex"><span class="row-prefix">${l3Icon}<span class="pcf-ref">${l3.code}</span></span><span class="row-text">${l3.name}</span></span></td>
         <td>${patBadge}</td>
-        <td>${l3HumanCell}</td>
-        <td>${formatRaciCell(raci.R)}</td>
+        <td>${formatRCell(raci)}</td>
         <td>${formatRaciCell(raci.A)}</td>
         <td>${formatRaciCell(raci.C)}</td>
         <td>${formatRaciCell(raci.I)}</td>
       </tr>`;
       (l3.l4 || []).forEach(l4 => {
-        const l4Tag = humanRoleTag(l4.pattern);
-        const l4HumanCell = `${formatRaciCell(l3Resp)}<div class="human-tag" style="background:#${l4Tag.fill};color:#${l4Tag.color}">${l4Tag.label}</div>`;
         html += `<tr class="row-l4" data-raci-parent="${g.code}" data-raci-parent-l3="${l3.code}" style="display:none">
           <td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">${l4.code}</span></span><span class="row-text">${l4.name}</span></span></td>
           <td><span class="pat pat-${l4.pattern}">${l4.pattern}</span></td>
-          <td>${l4HumanCell}</td>
-          <td>${formatRaciCell(raci.R)}</td>
+          <td>${formatRCell(raci)}</td>
           <td>${formatRaciCell(raci.A)}</td>
           <td>${formatRaciCell(raci.C)}</td>
           <td>${formatRaciCell(raci.I)}</td>
