@@ -125,7 +125,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .lens-empty { padding: 24px 18px; text-align: center; color: var(--lgray); font-style: italic; font-size: 12px; }
 .lens-panel { display: none; }
 .lens-panel.active { display: block; }
-.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 18px; }
 .description-grid { display: grid; grid-template-columns: 1fr; gap: 14px; padding: 18px; }
 .desc-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 .desc-card-head { background: var(--navy-d); color: #fff; padding: 10px 16px; }
@@ -142,9 +141,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .desc-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .desc-table-gov { table-layout: fixed; }
 .desc-table-gov th:nth-child(1), .desc-table-gov td:nth-child(1) { width: 9%; }
-.desc-table-gov th:nth-child(2), .desc-table-gov td:nth-child(2) { width: 27%; text-align: left !important; font-family: inherit !important; }
-.desc-table-gov th:nth-child(3), .desc-table-gov td:nth-child(3) { width: 31%; text-align: left !important; font-family: inherit !important; }
-.desc-table-gov th:nth-child(4), .desc-table-gov td:nth-child(4) { width: 33%; text-align: left !important; font-family: inherit !important; }
+.desc-table-gov th:nth-child(2), .desc-table-gov td:nth-child(2) { width: 20%; text-align: left !important; font-family: inherit !important; }
+.desc-table-gov th:nth-child(3), .desc-table-gov td:nth-child(3) { width: 14%; text-align: left !important; font-family: inherit !important; }
+.desc-table-gov th:nth-child(4), .desc-table-gov td:nth-child(4) { width: 16%; text-align: left !important; font-family: inherit !important; }
+.desc-table-gov th:nth-child(5), .desc-table-gov td:nth-child(5) { width: 15%; text-align: left !important; font-family: inherit !important; }
+.desc-table-gov th:nth-child(6), .desc-table-gov td:nth-child(6) { width: 26%; text-align: left !important; font-family: inherit !important; }
 .desc-table th { background: var(--navy); color: #fff; font-size: 11px; font-weight: 700; text-align: left; padding: 8px 16px; }
 .desc-table td { padding: 8px 16px; border-top: 1px solid var(--border); color: var(--dark); vertical-align: top; }
 .desc-table-formula { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--lgray); font-style: italic; margin-top: 4px; }
@@ -155,26 +156,10 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .desc-table-roles th:nth-child(2), .desc-table-roles td:nth-child(2) { width: 155px; white-space: nowrap; }
 .desc-table-pcf { font-family: 'DM Mono', monospace; font-size: 10.5px; color: var(--gray); white-space: normal; word-break: break-word; }
 .desc-card .lens-empty { padding: 14px 16px; text-align: left; font-size: 12px; }
-.kpi-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-.kpi-card-head { background: var(--navy-d); color: #fff; padding: 8px 14px; font-size: 12px; font-weight: 700; }
-.kpi-card-head .kpi-pcf { font-family: 'DM Mono', monospace; font-size: 10px; color: #A8C4E0; font-weight: 400; display: block; margin-bottom: 2px; }
-.kpi-list { padding: 10px 14px; }
-.kpi-item { padding: 6px 0; border-bottom: 1px solid #F5F5F5; }
-.kpi-item:last-child { border-bottom: none; }
-.kpi-name { font-size: 12px; color: var(--dark); display: flex; align-items: center; gap: 8px; }
-.kpi-src { font-size: 8px; font-weight: 700; letter-spacing: .04em; color: #166534; background: #DCFCE7; padding: 1px 6px; border-radius: 3px; text-transform: uppercase; }
-.kpi-formula { font-size: 10px; color: var(--lgray); font-family: 'DM Mono', monospace; margin-top: 3px; line-height: 1.5; }
 .lens-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .lens-table thead th { background: var(--navy); color: #fff; padding: 8px 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; text-align: left; }
 .lens-table tbody td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
 .lens-table tbody tr:nth-child(even) td { background: #FAFBFD; }
-.roles-table { table-layout: fixed; }
-table.roles-table td, table.roles-table th { text-align: left !important; word-wrap: break-word; }
-.roles-table .tier-pill { white-space: normal; line-height: 1.3; }
-.governance-table { table-layout: fixed; }
-table.governance-table td, table.governance-table th { text-align: left !important; word-wrap: break-word; vertical-align: top; }
-.governance-table td:first-child { white-space: nowrap; }
-.tier-pill { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
 .tier-executive { background: #FEE2E2; color: #991B1B; }
 .tier-manager-approver { background: #EEF3FA; color: #1B4F8A; }
 .tier-managerial { background: #EEF3FA; color: #1B4F8A; }
@@ -509,7 +494,6 @@ tbody td.delta-cell { background: #fff; }
         <div class="lens-divider"></div>
         <button class="lens-tab" id="tab-hitldesign" onclick="showLens('hitldesign')">HITL Design</button>
         <button class="lens-tab" id="tab-processspec" onclick="showLens('processspec')">Process Specification</button>
-        <button class="lens-tab" id="tab-kpi" onclick="showLens('kpi')">KPI Taxonomy</button>
       </div>
       <div class="lens-panel active" id="lens-panel-maturity">
       <div class="table-wrap">
@@ -565,10 +549,6 @@ tbody td.delta-cell { background: #fff; }
         </div>
         <div class="lens-empty" id="raci-empty" style="display:none">RACI data for this domain hasn't been built yet — currently available for PCF 7.0 (Develop and Manage Human Resources) only.</div>
       </div>
-      <div class="lens-panel" id="lens-panel-kpi">
-        <div class="lens-note">Metric names only — no benchmark figures. Each value stream's natural KPI family, ready for an organization's own numbers.</div>
-        <div class="kpi-grid" id="kpi-grid"></div>
-      </div>
       <div class="lens-panel" id="lens-panel-hitldesign">
         <div class="stream-prompt" id="hitldesign-prompt">Select a value stream above to view its HITL Design — narrative, AI capability map, and role accountability.</div>
         <div id="hitldesign-content" style="display:none">
@@ -577,13 +557,6 @@ tbody td.delta-cell { background: #fff; }
           <div class="section-label">AI Capability Map</div>
           <div class="lens-note" style="padding-top:0">Pattern-type distribution across this value stream's activity units. H% figures are the pattern type's standard value at each maturity level, applied consistently across all PCF domains.</div>
           <div class="capmap-grid" id="capmap-grid"></div>
-          <div class="section-label">Role Accountability</div>
-          <div class="lens-note" style="padding-top:0">Accountable role for every L3 process, reasoned-match methodology. Full RACI detail (Responsible, Accountable, Consulted, Informed) is in the companion Role Assignment RACI document for this value stream.</div>
-          <table class="lens-table roles-table">
-            <colgroup><col style="width:12%"><col style="width:60%"><col style="width:28%"></colgroup>
-            <thead><tr><th>PCF</th><th>L3 Process</th><th>Accountable</th></tr></thead>
-            <tbody id="hitldesign-raci-body"></tbody>
-          </table>
         </div>
       </div>
       <div class="lens-panel" id="lens-panel-processspec">
@@ -604,20 +577,6 @@ tbody td.delta-cell { background: #fff; }
           </table>
           <div class="section-label">Handoff Points</div>
           <div class="narrative-block" id="handoff-block"></div>
-          <div class="section-label">Governance &amp; Decision Points</div>
-          <div class="lens-note" style="padding-top:0">Every Decision/Exception-pattern activity in the value stream, including those embedded inside Mixed-labeled steps.</div>
-          <table class="lens-table governance-table">
-            <colgroup>
-              <col style="width:9%">
-              <col style="width:20%">
-              <col style="width:14%">
-              <col style="width:16%">
-              <col style="width:15%">
-              <col style="width:26%">
-            </colgroup>
-            <thead><tr><th>PCF</th><th>Decision</th><th>Authority</th><th>Impact</th><th>Escalates To</th><th>Trigger</th></tr></thead>
-            <tbody id="governance-body"></tbody>
-          </table>
         </div>
       </div>
       <div class="lens-panel" id="lens-panel-description">
@@ -1612,31 +1571,6 @@ const PCF = [
           {role:"Legal*", tier:"External Participant"},
         ] },
     ],
-      // L3 code -> Accountable role (base role name only; used for both display
-      // and swim-lane color lookup via ROLE_COLORS). Sourced directly from each
-      // value stream's finalized Role Assignment RACI document.
-      l3Accountable: {
-        "Recruit-to-Hire": {
-          "7.1.1": "CHRO", "7.1.2": "Director of HR Ops", "7.1.3": "Director of HR Ops", "7.1.4": "Director of L&D",
-          "7.2.1": "HRBP Manager", "7.2.2": "Recruiter", "7.2.3": "Recruiter", "7.2.4": "Recruiter", "7.2.5": "HRIS Analyst",
-        },
-        "Perform-to-Grow": {
-          "7.3.1": "Onboarding Coordinator", "7.3.2": "HRBP Manager", "7.3.3": "Director of L&D", "7.3.4": "Director of L&D",
-        },
-        "Reward-to-Retain": {
-          "7.5.1": "Compensation & Benefits Manager", "7.5.2": "Compensation Analyst", "7.5.3": "HR Generalist",
-          "7.5.4": "HRIS Analyst", "7.5.5": "HR Generalist",
-        },
-        "Move-to-Exit": {
-          "7.6.1": "HRBP Manager", "7.6.2": "HRBP Manager", "7.6.3": "HRBP Manager",
-        },
-        "Enable & Govern": {
-          "7.4.1": "HRBP Manager", "7.4.2": "HRBP Manager", "7.4.3": "HRBP Manager", "7.4.4": "HRBP Manager", "7.4.5": "Director of HR Ops",
-          "7.7.1": "HRIS Analyst", "7.7.2": "HR Generalist", "7.7.3": "HRIS Analyst", "7.7.4": "HRIS Analyst",
-          "7.7.5": "HRIS Analyst", "7.7.6": "HRIS Analyst", "7.7.7": "HRIS Analyst", "7.7.8": "HRIS Analyst",
-          "7.8.1": "HRBP Manager", "7.8.2": "HR Generalist", "7.8.3": "HRBP Manager",
-        },
-      },
       designNarrative: {
         "Recruit-to-Hire": "Recruit-to-Hire's HITL design keeps human judgment concentrated at three points: strategy formation (7.1.1, Knowledge-pattern, CHRO-accountable), candidate selection itself (7.2.3, the interview and select/reject decision), and final hire commitment (7.2.4, offer negotiation). Everything else in the value stream — requisition administration, sourcing-channel execution, applicant data management — carries real AI-absorption opportunity at M3, reflected in the value stream's largest single Δ M1→M3 gap sitting in 7.2.5 (Manage Applicant Information, entirely Transaction-pattern, -25 points).",
         "Perform-to-Grow": "Perform-to-Grow's HITL design keeps human judgment concentrated at two points: succession-plan decisions (7.3.3.4, Decision-pattern, the smallest Δ M1→M3 in the value stream at -12 points) and the performance review conversation itself (7.3.2.2), which sits outside the HR role catalog entirely and is conducted by the employee's direct manager rather than an HR role. Everything else in the value stream — onboarding implementation, performance documentation, skill and competency execution, training delivery and certifications — carries real AI-absorption opportunity at M3, reflected in the value stream's largest single Δ M1→M3 gap sitting in 7.3.2.3 (Document employee performance, Document-pattern, -32 points).",
@@ -3487,7 +3421,6 @@ function applyValueStream(val) {
     cat.groups.forEach(g => g.l3.forEach(l3 => { if (l3.l4.length) setL3Expanded(l3.code, false); }));
     cat.groups.forEach(g => setRaciGroupExpanded(g.code, true));
     cat.groups.forEach(g => g.l3.forEach(l3 => { if (l3.l4.length) setRaciL3Expanded(l3.code, false); }));
-    renderKPIPanel(cat, 'all');
     renderHitlDesignPanel(cat, 'all');
     renderProcessSpecPanel(cat, 'all');
     renderDescriptionPanel(cat, 'all');
@@ -3550,7 +3483,6 @@ function applyValueStream(val) {
     }
   });
 
-  renderKPIPanel(cat, stream);
   renderHitlDesignPanel(cat, val);
   renderProcessSpecPanel(cat, val);
   renderDescriptionPanel(cat, stream);
@@ -3636,13 +3568,12 @@ function renderCapabilityMap(l3s) {
   }).join('');
 }
 function renderProcessFlow(cat, stream, l3s) {
-  const map = (cat.lenses.l3Accountable && cat.lenses.l3Accountable[stream.name]) || {};
   const flowBody = document.getElementById('processflow-body');
   const laneData = {};
   let rows = '';
   let step = 0;
   l3s.forEach(l3 => {
-    const role = map[l3.code] || 'Unassigned';
+    const role = (l3.raci && l3.raci.A) || 'Unassigned';
     const colors = ROLE_COLORS[baseRoleName(role)] || { fill: '#F3F4F6', text: '#374151' };
     rows += `<tr class="flow-l3-band"><td colspan="5">
       <span class="band-pcf">${l3.code}  </span>${l3.name}<span class="band-owner">   \u2014   Owner: ${role}</span>
@@ -3651,11 +3582,11 @@ function renderProcessFlow(cat, stream, l3s) {
     activities.forEach(a => {
       step++;
       rows += `<tr>
-        <td style="text-align:left;color:#888888">${step}</td>
-        <td style="text-align:left;color:#1B4F8A">${a.code}</td>
-        <td style="color:#444444;text-align:left;font-family:'DM Sans',sans-serif">${a.name}</td>
-        <td style="text-align:left;color:#444444;font-family:'DM Sans',sans-serif">${a.pattern}</td>
-        <td class="flow-lane-cell" style="background:${colors.fill};color:${colors.text};font-family:'DM Sans',sans-serif">${role}</td>
+        <td style="text-align:left;color:var(--lgray);font-size:11px">${step}</td>
+        <td style="text-align:left;font-family:'DM Mono',monospace;font-size:10px;color:var(--gray)">${a.code}</td>
+        <td style="color:var(--dark);text-align:left;font-size:11px">${a.name}</td>
+        <td style="text-align:left"><span class="pat pat-${a.pattern}">${a.pattern}</span></td>
+        <td class="flow-lane-cell" style="background:${colors.fill};color:${colors.text};font-size:11px;text-align:left">${role}</td>
       </tr>`;
     });
     if (!laneData[role]) laneData[role] = { steps: 0, l3s: [] };
@@ -3668,9 +3599,9 @@ function renderProcessFlow(cat, stream, l3s) {
   laneBody.innerHTML = Object.entries(laneData).map(([role, data]) => {
     const colors = ROLE_COLORS[baseRoleName(role)] || { fill: '#F3F4F6', text: '#374151' };
     return `<tr>
-      <td class="flow-lane-cell" style="background:${colors.fill};color:${colors.text};text-align:left">${role}</td>
-      <td style="text-align:center">${data.steps}</td>
-      <td style="text-align:left;font-family:'DM Sans',sans-serif">${data.l3s.join(', ')}</td>
+      <td class="flow-lane-cell" style="background:${colors.fill};color:${colors.text};text-align:left;font-size:11px">${role}</td>
+      <td style="text-align:center;font-size:11px;color:var(--dark)">${data.steps}</td>
+      <td style="text-align:left;font-size:11px;color:var(--dark)">${data.l3s.join(', ')}</td>
     </tr>`;
   }).join('');
 }
@@ -3689,11 +3620,6 @@ function renderHitlDesignPanel(cat, val) {
     (cat.lenses.designNarrative && cat.lenses.designNarrative[stream.name]) || '';
   const l3s = getStreamL3s(cat, stream);
   renderCapabilityMap(l3s);
-  const map = (cat.lenses.l3Accountable && cat.lenses.l3Accountable[stream.name]) || {};
-  document.getElementById('hitldesign-raci-body').innerHTML = l3s.map(l3 => {
-    const role = map[l3.code] || 'Unassigned';
-    return `<tr><td style="font-family:'DM Mono',monospace;font-weight:400">${l3.code}</td><td>${l3.name}</td><td>${role}</td></tr>`;
-  }).join('');
 }
 function renderProcessSpecPanel(cat, val) {
   const prompt = document.getElementById('processspec-prompt');
@@ -3701,7 +3627,6 @@ function renderProcessSpecPanel(cat, val) {
   if (!val || val === 'all' || !cat.valueStreams) {
     prompt.style.display = 'block';
     content.style.display = 'none';
-    renderGovernancePanel(cat, 'all');
     return;
   }
   const stream = cat.valueStreams[val];
@@ -3711,7 +3636,6 @@ function renderProcessSpecPanel(cat, val) {
   renderProcessFlow(cat, stream, l3s);
   const hp = (cat.lenses.handoffPoints && cat.lenses.handoffPoints[stream.name]) || [];
   document.getElementById('handoff-block').innerHTML = hp.map(p => `<p>${p}</p>`).join('');
-  renderGovernancePanel(cat, stream);
 }
 
 // ── Lens tabs (KPI / HITL Design / Process Specification) ──────────────────
@@ -3728,14 +3652,13 @@ function populateLensTabs(cat) {
   tabsSecondary.style.display = 'flex';
   showLens('maturity');
   renderRaciTable(cat);
-  renderKPIPanel(cat, 'all');
   renderHitlDesignPanel(cat, 'all');
   renderProcessSpecPanel(cat, 'all');
   renderDescriptionPanel(cat, 'all');
 }
 
 function showLens(name) {
-  ['maturity', 'raci', 'kpi', 'hitldesign', 'processspec', 'description'].forEach(n => {
+  ['maturity', 'raci', 'hitldesign', 'processspec', 'description'].forEach(n => {
     document.getElementById('lens-panel-' + n).classList.toggle('active', n === name);
     document.getElementById('tab-' + n).classList.toggle('active', n === name);
   });
@@ -3744,45 +3667,6 @@ function showLens(name) {
   if (vsBar.dataset.hasStreams === '1') {
     vsBar.style.display = 'flex';
   }
-}
-
-function renderKPIPanel(cat, streamFilter) {
-  const grid = document.getElementById('kpi-grid');
-  if (!cat.lenses) { grid.innerHTML = ''; return; }
-  const kpis = (!streamFilter || streamFilter === 'all')
-    ? cat.lenses.kpis
-    : cat.lenses.kpis.filter(k => k.stream === streamFilter.name);
-  if (!kpis.length) { grid.innerHTML = '<div class="lens-empty">No KPI data tagged for this value stream yet.</div>'; return; }
-  grid.innerHTML = kpis.map(k => `
-    <div class="kpi-card">
-      <div class="kpi-card-head"><span class="kpi-pcf">${k.pcf}</span>${k.stream}</div>
-      <div class="kpi-list">${k.metrics.map(m => `
-        <div class="kpi-item">
-          <div class="kpi-name">${m.name}${m.formula ? '<span class="kpi-src">APQC OSB</span>' : ''}</div>
-          ${m.formula ? `<div class="kpi-formula">${m.formula}</div>` : ''}
-        </div>
-      `).join('')}</div>
-    </div>
-  `).join('');
-}
-
-function renderGovernancePanel(cat, streamFilter) {
-  const body = document.getElementById('governance-body');
-  if (!cat.lenses) { body.innerHTML = ''; return; }
-  const items = (!streamFilter || streamFilter === 'all')
-    ? cat.lenses.governance
-    : cat.lenses.governance.filter(g => codeInStream(g.code, streamFilter));
-  if (!items.length) { body.innerHTML = '<tr><td colspan="6" class="lens-empty">No governance decision points identified in this value stream yet.</td></tr>'; return; }
-  body.innerHTML = items.map(g => `
-    <tr>
-      <td class="pcf-code">${g.code}</td>
-      <td>${g.decision}</td>
-      <td>${g.authority}</td>
-      <td>${g.impact}</td>
-      <td>${g.escalates}</td>
-      <td>${g.trigger}</td>
-    </tr>
-  `).join('');
 }
 
 const TIER_COLORS = {
@@ -3799,7 +3683,7 @@ function renderDescriptionPanel(cat, streamFilter) {
     ? cat.lenses.descriptions
     : cat.lenses.descriptions.filter(d => d.stream === streamFilter.name);
   grid.innerHTML = descs.map(d => {
-    // KPIs — reuse the same per-stream data as the KPI Taxonomy lens
+    // KPIs — per-stream metric families from the confirmed KPI data
     const kpiEntry = (cat.lenses.kpis || []).find(k => k.stream === d.stream);
     const kpiSection = kpiEntry ? `
       <div class="desc-section-heading">KPIs</div>
@@ -3865,15 +3749,18 @@ function renderDescriptionPanel(cat, streamFilter) {
     const govSection = `
       <div class="desc-section-heading">Governed Decision Points</div>
       ${govItems.length ? `
+      <div class="lens-note" style="padding:0 16px 10px">Every Decision/Exception-pattern activity in the value stream, including those embedded inside Mixed-labeled steps.</div>
       <table class="desc-table desc-table-gov">
-        <thead><tr><th>PCF</th><th>Decision</th><th>Authority</th><th>Escalates To</th></tr></thead>
+        <thead><tr><th>PCF</th><th>Decision</th><th>Authority</th><th>Impact</th><th>Escalates To</th><th>Trigger</th></tr></thead>
         <tbody>
           ${govItems.map(g => `
             <tr>
               <td class="pcf-code">${g.code}</td>
               <td>${g.decision}</td>
               <td>${g.authority}</td>
+              <td>${g.impact}</td>
               <td>${g.escalates}</td>
+              <td>${g.trigger}</td>
             </tr>
           `).join('')}
         </tbody>
@@ -3949,7 +3836,6 @@ const domainStreamProfilePdfMap = {
 // Lens-tab PDFs (Maturity Table, HITL Design, and Process Specification use
 // the stream-aware logic below instead)
 const lensPdfMap = {
-  'KPI Taxonomy': 'hitl_kpi_taxonomy_pcf7_final.pdf',
   'Value Stream Profile': 'hitl_valuestream_description_pcf7_final.pdf',
 };
 
