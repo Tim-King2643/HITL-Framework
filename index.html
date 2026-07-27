@@ -183,7 +183,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .flow-l3-band td { background: #0D2D4F !important; color: #FFFFFF !important; font-weight: 700; font-size: 12px; padding: 8px 10px; }
 .flow-l3-band .band-pcf { color: #9FC0E8; font-family: 'DM Mono', monospace; }
 .flow-l3-band .band-owner { color: #C9DCF5; font-style: italic; font-weight: 400; font-size: 11px; }
-.flow-lane-cell { text-align: center; }
+.owner-cell { text-align: center; }
 .pcf-code { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--dark); }
 .row-l3.vs-active td, .row-l4.vs-active td { background: #FFFBEB; }
 .vs-active td:first-child { box-shadow: inset 3px 0 0 #B45309; }
@@ -199,6 +199,7 @@ thead th {
   font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em;
   white-space: nowrap;
 }
+#raci-main-table thead th { font-size: 10px !important; line-height: 1.2 !important; }
 #main-table thead th:not(:first-child):not(:nth-child(2)) { text-align: center; }
 thead th:first-child { text-align: left; min-width: 300px; }
 thead th:nth-child(2) { min-width: 100px; }
@@ -491,11 +492,9 @@ tbody td.delta-cell { background: #fff; }
       </div>
       <div class="lens-tabs lens-tabs-secondary" id="lens-tabs-secondary" style="display:none">
         <button class="lens-tab" id="tab-description" onclick="showLens('description')">Value Stream Profile</button>
-        <div class="lens-divider"></div>
-        <button class="lens-tab" id="tab-hitldesign" onclick="showLens('hitldesign')">HITL Design</button>
-        <button class="lens-tab" id="tab-processspec" onclick="showLens('processspec')">Process Specification</button>
       </div>
       <div class="lens-panel active" id="lens-panel-maturity">
+      <div class="lens-note">Full APQC PCF v8.0 hierarchy — every L4 activity rolled up through L3 process, L2 process group, and L1 category — at five HITL maturity levels from Undesigned (M1) through Leading (M5). Mixed-pattern L3 rows reflect an equal-weighted rollup of their real L4 children rather than a single forced classification.</div>
       <div class="table-wrap">
         <table id="main-table">
           <thead>
@@ -539,7 +538,7 @@ tbody td.delta-cell { background: #fff; }
                 <th class="th-bottom">L1-Category/L2-Process Group/L3-Process/L4-Activity</th>
                 <th class="th-bottom">Pattern</th>
                 <th class="th-bottom">R — Responsible</th>
-                <th class="th-bottom">A — Accountable</th>
+                <th class="th-bottom" style="text-align:center">★<br>A — Accountable</th>
                 <th class="th-bottom">C — Consulted</th>
                 <th class="th-bottom">I — Informed</th>
               </tr>
@@ -548,36 +547,6 @@ tbody td.delta-cell { background: #fff; }
           </table>
         </div>
         <div class="lens-empty" id="raci-empty" style="display:none">RACI data for this domain hasn't been built yet — currently available for PCF 7.0 (Develop and Manage Human Resources) only.</div>
-      </div>
-      <div class="lens-panel" id="lens-panel-hitldesign">
-        <div class="stream-prompt" id="hitldesign-prompt">Select a value stream above to view its HITL Design — narrative, AI capability map, and role accountability.</div>
-        <div id="hitldesign-content" style="display:none">
-          <div class="section-label">Design Narrative</div>
-          <div class="narrative-block"><p id="hitldesign-narrative"></p></div>
-          <div class="section-label">AI Capability Map</div>
-          <div class="lens-note" style="padding-top:0">Pattern-type distribution across this value stream's activity units. H% figures are the pattern type's standard value at each maturity level, applied consistently across all PCF domains.</div>
-          <div class="capmap-grid" id="capmap-grid"></div>
-        </div>
-      </div>
-      <div class="lens-panel" id="lens-panel-processspec">
-        <div class="stream-prompt" id="processspec-prompt">Select a value stream above to view its Process Specification — L4 activity flow, swim lanes, and handoff points.</div>
-        <div id="processspec-content" style="display:none">
-          <div class="section-label">Process Flow</div>
-          <div class="lens-note" style="padding-top:0">Full L4 activity sequence, grouped by L3, with swim lane ownership carried from the confirmed Role Accountability RACI.</div>
-          <table class="lens-table" style="table-layout:fixed">
-            <colgroup><col style="width:4%"><col style="width:8%"><col style="width:53%"><col style="width:12%"><col style="width:23%"></colgroup>
-            <thead><tr><th>Step</th><th>PCF</th><th>Activity</th><th>Pattern</th><th>Swim Lane (Owner)</th></tr></thead>
-            <tbody id="processflow-body"></tbody>
-          </table>
-          <div class="section-label">Swim Lane Summary</div>
-          <table class="lens-table">
-            <colgroup><col style="width:34%"><col style="width:16%"><col style="width:50%"></colgroup>
-            <thead><tr><th>Swim Lane (Owner)</th><th>Steps Owned</th><th>L3 Processes</th></tr></thead>
-            <tbody id="laneSummary-body"></tbody>
-          </table>
-          <div class="section-label">Handoff Points</div>
-          <div class="narrative-block" id="handoff-block"></div>
-        </div>
       </div>
       <div class="lens-panel" id="lens-panel-description">
         <div class="lens-note">Built strictly from the Dashboard's own PCF Category/Group/Process/Activity hierarchy and maturity data — no Navigator step names or Navigator-derived content in this view.</div>
@@ -1522,7 +1491,7 @@ const PCF = [
           {role:"CHRO", tier:"Executive"},
           {role:"VP People & Culture", tier:"Executive"},
           {role:"Director of Talent Acquisition", tier:"Managerial"},
-          {role:"Director of HR Operations", tier:"Managerial"},
+          {role:"Director of HR Ops", tier:"Managerial"},
           {role:"Director of L&D", tier:"Managerial"},
           {role:"HRBP Manager", tier:"Managerial"},
           {role:"Compensation & Benefits Manager", tier:"Managerial"},
@@ -1536,7 +1505,7 @@ const PCF = [
           {role:"CHRO", tier:"Executive"},
           {role:"VP People & Culture", tier:"Executive"},
           {role:"Director of Talent Acquisition", tier:"Managerial"},
-          {role:"Director of HR Operations", tier:"Managerial"},
+          {role:"Director of HR Ops", tier:"Managerial"},
           {role:"Director of L&D", tier:"Managerial"},
           {role:"HRBP Manager", tier:"Managerial"},
           {role:"HR Generalist", tier:"Operational"},
@@ -1547,7 +1516,7 @@ const PCF = [
       { stream:"Reward-to-Retain", pcf:"PCF 7.5", subtitle:"Reward & Retain Talent", l3Count:5, activityUnits:17, m1:71, m3:47, delta:-24, narrative:["This value stream comprises one APQC PCF process group: 7.5 Reward and Retain Employees — spanning 5 Level 3 processes and 17 Level 4 activities.", "At the activity level, this value stream's work breaks down as 9 Knowledge activities (judgment, synthesis, and interpretation-driven work), 7 Transaction activities (rules-based processing suited to automation), and 1 Document activity (content generation). No Exception-pattern activity exists within this value stream.", "At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 47%, down from a 71% undesigned baseline — a 24-point AI convergence opportunity."],
         roles:[
           {role:"Compensation & Benefits Manager", tier:"Managerial"},
-          {role:"Director of HR Operations", tier:"Managerial"},
+          {role:"Director of HR Ops", tier:"Managerial"},
           {role:"HRBP Manager", tier:"Managerial"},
           {role:"Compensation Analyst", tier:"Operational"},
           {role:"HR Generalist", tier:"Operational"},
@@ -1564,7 +1533,7 @@ const PCF = [
       { stream:"Enable & Govern", pcf:"PCF 7.4, 7.7–7.8", subtitle:"Cross-cutting — compliance, data, communication", l3Count:16, activityUnits:22, m1:79, m3:57, delta:-22, narrative:["This value stream spans 3 APQC PCF process groups: 7.4 Manage Employee Relations, 7.7 Manage Employee Information, and 7.8 Manage Employee Communication — together comprising 16 Level 3 processes and 22 Level 4 activities.", "At the activity level, this value stream's work breaks down as 8 Knowledge activities (judgment, synthesis, and interpretation-driven work), 5 Transaction activities (rules-based processing suited to automation), 4 Document activities (content generation), 3 Decision activities (judgment-and-authority gates that stay human by design), and 2 Exception activities (non-standard cases requiring human resolution).", "At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 57%, down from a 79% undesigned baseline — a 22-point AI convergence opportunity."],
         roles:[
           {role:"CHRO", tier:"Executive"},
-          {role:"Director of HR Operations", tier:"Managerial"},
+          {role:"Director of HR Ops", tier:"Managerial"},
           {role:"HRBP Manager", tier:"Managerial"},
           {role:"HR Generalist", tier:"Operational"},
           {role:"HRIS Analyst", tier:"Operational"},
@@ -1595,13 +1564,13 @@ const PCF = [
           "HR Generalist owns two separate pieces of the value stream — employee assistance and retention program delivery (7.5.3) and employee suggestion/research program administration (7.5.5). HRIS Analyst's single step (7.5.4 Administer Payroll) marks the value stream's only genuine cross-functional boundary: HR's accountability there is explicitly scoped to personnel data, with Finance owning the payroll run and payroll accounting outside this process flow entirely.",
         ],
         "Move-to-Exit": [
-          "Move-to-Exit is the framework's first value stream with a single swim lane: HR Business Partner Manager is Accountable for all three L3s and every step in this process flow, consistent with the offboarding-literature finding that diffused ownership is the primary failure mode for exit processes.",
+          "Move-to-Exit is the framework's first value stream with a single Accountable role: HR Business Partner Manager is Accountable for all three L3s and every step in this process flow, consistent with the offboarding-literature finding that diffused ownership is the primary failure mode for exit processes.",
           "The real handoffs in this value stream sit outside HR rather than between HR roles. 7.6.2 Manage Separation triggers coordinated workstreams with Payroll, IT/Security, and Facilities against a shared offboarding checklist — final pay, access removal, asset return — outside HR's accountability scope, and escalates to Legal only for contested or high-risk terminations, not as a routine participant.",
           "7.6.3 Relocate Employees and Manage Assignments is the value stream's confirmed specialist-role gap: HR Business Partner Manager's ownership here is explicitly partial, since International HR Management is a recognized specialist discipline the current role catalog does not name.",
         ],
         "Enable & Govern": [
-          "Enable & Govern is the first value stream in this framework to span multiple PCF L2 groups rather than one, and its swim lanes reflect that structure directly: HRBP Manager owns the case-based, relationship-driven work clustered in 7.4 (labor relations, bargaining, partnerships, grievances) plus the communication bookends in 7.8, while HRIS Analyst owns the systems and data infrastructure that makes up the majority of 7.7 — the largest single lane in the framework so far.",
-          "Director of HR Ops holds a single step (7.4.5 Monitor Legal and Regulatory Environment) but sits above both other lanes as the cross-domain governance layer — Consulted or Informed across most of the remaining steps even without direct Accountable ownership of them, reflecting the value stream's own \"enable and govern\" purpose.",
+          "Enable & Govern is the first value stream in this framework to span multiple PCF L2 groups rather than one, and its ownership split reflects that structure directly: HRBP Manager owns the case-based, relationship-driven work clustered in 7.4 (labor relations, bargaining, partnerships, grievances) plus the communication bookends in 7.8, while HRIS Analyst owns the systems and data infrastructure that makes up the majority of 7.7 — the largest single ownership share in the framework so far.",
+          "Director of HR Ops holds a single step (7.4.5 Monitor Legal and Regulatory Environment) but sits above both other owners as the cross-domain governance layer — Consulted or Informed across most of the remaining steps even without direct Accountable ownership of them, reflecting the value stream's own \"enable and govern\" purpose.",
           "HR Generalist's two steps (7.7.2 Manage Employee Inquiry Process, 7.8.2 Conduct Employee Engagement Surveys) form the value stream's operational-delivery layer. 7.8.2 carries forward its Reward-to-Retain assignment unchanged, since APQC names the same underlying activity separately under two different L2 groups — the framework's first confirmed content overlap across value streams.",
         ],
       },
@@ -3421,8 +3390,6 @@ function applyValueStream(val) {
     cat.groups.forEach(g => g.l3.forEach(l3 => { if (l3.l4.length) setL3Expanded(l3.code, false); }));
     cat.groups.forEach(g => setRaciGroupExpanded(g.code, true));
     cat.groups.forEach(g => g.l3.forEach(l3 => { if (l3.l4.length) setRaciL3Expanded(l3.code, false); }));
-    renderHitlDesignPanel(cat, 'all');
-    renderProcessSpecPanel(cat, 'all');
     renderDescriptionPanel(cat, 'all');
     return;
   }
@@ -3483,8 +3450,6 @@ function applyValueStream(val) {
     }
   });
 
-  renderHitlDesignPanel(cat, val);
-  renderProcessSpecPanel(cat, val);
   renderDescriptionPanel(cat, stream);
 }
 
@@ -3501,7 +3466,7 @@ function extractCodes(text) {
   return (text.match(/7\.\d+(?:\.\d+)*/g) || []);
 }
 
-// ── HITL Design / Process Specification: pattern & role constants ──────────
+// ── HITL Design: pattern & role constants ──────────────────────────────────
 const PATTERN_META = {
   Decision:    { fill: "#EEF3FA", text: "#1B4F8A", tagline: "Judgment & Authority \u2014 gates that stay human by design", m1: 92, m3: 80 },
   Knowledge:   { fill: "#F3F0FE", text: "#534AB7", tagline: "Synthesis & Interpretation \u2014 judgment-driven work", m1: 85, m3: 65 },
@@ -3550,95 +3515,8 @@ function countPatternsForL3s(l3s) {
   });
   return counts;
 }
-function renderCapabilityMap(l3s) {
-  const counts = countPatternsForL3s(l3s);
-  const grid = document.getElementById('capmap-grid');
-  const order = ['Decision', 'Knowledge', 'Document', 'Transaction', 'Exception'];
-  grid.innerHTML = order.map(name => {
-    const meta = PATTERN_META[name];
-    const count = counts[name];
-    const body = count === 0
-      ? `<div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities of this pattern in this value stream</div>`
-      : `<div class="cm-count">${count} <span>L4 activities</span></div><div class="cm-mvals">M1 ${meta.m1}%  \u2192  M3 ${meta.m3}%</div>`;
-    return `<div class="capmap-card" style="background:${meta.fill};color:${meta.text}">
-      <div class="cm-name">${name}</div>
-      <div class="cm-tagline">${meta.tagline}</div>
-      ${body}
-    </div>`;
-  }).join('');
-}
-function renderProcessFlow(cat, stream, l3s) {
-  const flowBody = document.getElementById('processflow-body');
-  const laneData = {};
-  let rows = '';
-  let step = 0;
-  l3s.forEach(l3 => {
-    const role = (l3.raci && l3.raci.A) || 'Unassigned';
-    const colors = ROLE_COLORS[baseRoleName(role)] || { fill: '#F3F4F6', text: '#374151' };
-    rows += `<tr class="flow-l3-band"><td colspan="5">
-      <span class="band-pcf">${l3.code}  </span>${l3.name}<span class="band-owner">   \u2014   Owner: ${role}</span>
-    </td></tr>`;
-    const activities = (l3.l4 && l3.l4.length) ? l3.l4 : [{ code: l3.code, name: l3.name, pattern: l3.pattern }];
-    activities.forEach(a => {
-      step++;
-      rows += `<tr>
-        <td style="text-align:left;color:var(--lgray);font-size:11px">${step}</td>
-        <td style="text-align:left;font-family:'DM Mono',monospace;font-size:10px;color:var(--gray)">${a.code}</td>
-        <td style="color:var(--dark);text-align:left;font-size:11px">${a.name}</td>
-        <td style="text-align:left"><span class="pat pat-${a.pattern}">${a.pattern}</span></td>
-        <td class="flow-lane-cell" style="background:${colors.fill};color:${colors.text};font-size:11px;text-align:left">${role}</td>
-      </tr>`;
-    });
-    if (!laneData[role]) laneData[role] = { steps: 0, l3s: [] };
-    laneData[role].steps += activities.length;
-    laneData[role].l3s.push(l3.code);
-  });
-  flowBody.innerHTML = rows;
 
-  const laneBody = document.getElementById('laneSummary-body');
-  laneBody.innerHTML = Object.entries(laneData).map(([role, data]) => {
-    const colors = ROLE_COLORS[baseRoleName(role)] || { fill: '#F3F4F6', text: '#374151' };
-    return `<tr>
-      <td class="flow-lane-cell" style="background:${colors.fill};color:${colors.text};text-align:left;font-size:11px">${role}</td>
-      <td style="text-align:center;font-size:11px;color:var(--dark)">${data.steps}</td>
-      <td style="text-align:left;font-size:11px;color:var(--dark)">${data.l3s.join(', ')}</td>
-    </tr>`;
-  }).join('');
-}
-function renderHitlDesignPanel(cat, val) {
-  const prompt = document.getElementById('hitldesign-prompt');
-  const content = document.getElementById('hitldesign-content');
-  if (!val || val === 'all' || !cat.valueStreams) {
-    prompt.style.display = 'block';
-    content.style.display = 'none';
-    return;
-  }
-  const stream = cat.valueStreams[val];
-  prompt.style.display = 'none';
-  content.style.display = 'block';
-  document.getElementById('hitldesign-narrative').textContent =
-    (cat.lenses.designNarrative && cat.lenses.designNarrative[stream.name]) || '';
-  const l3s = getStreamL3s(cat, stream);
-  renderCapabilityMap(l3s);
-}
-function renderProcessSpecPanel(cat, val) {
-  const prompt = document.getElementById('processspec-prompt');
-  const content = document.getElementById('processspec-content');
-  if (!val || val === 'all' || !cat.valueStreams) {
-    prompt.style.display = 'block';
-    content.style.display = 'none';
-    return;
-  }
-  const stream = cat.valueStreams[val];
-  prompt.style.display = 'none';
-  content.style.display = 'block';
-  const l3s = getStreamL3s(cat, stream);
-  renderProcessFlow(cat, stream, l3s);
-  const hp = (cat.lenses.handoffPoints && cat.lenses.handoffPoints[stream.name]) || [];
-  document.getElementById('handoff-block').innerHTML = hp.map(p => `<p>${p}</p>`).join('');
-}
-
-// ── Lens tabs (KPI / HITL Design / Process Specification) ──────────────────
+// ── Lens tabs ────────────────────────────────────────────────────────────
 function populateLensTabs(cat) {
   const tabs = document.getElementById('lens-tabs');
   const tabsSecondary = document.getElementById('lens-tabs-secondary');
@@ -3652,13 +3530,11 @@ function populateLensTabs(cat) {
   tabsSecondary.style.display = 'flex';
   showLens('maturity');
   renderRaciTable(cat);
-  renderHitlDesignPanel(cat, 'all');
-  renderProcessSpecPanel(cat, 'all');
   renderDescriptionPanel(cat, 'all');
 }
 
 function showLens(name) {
-  ['maturity', 'raci', 'hitldesign', 'processspec', 'description'].forEach(n => {
+  ['maturity', 'raci', 'description'].forEach(n => {
     document.getElementById('lens-panel-' + n).classList.toggle('active', n === name);
     document.getElementById('tab-' + n).classList.toggle('active', n === name);
   });
@@ -3704,47 +3580,79 @@ function renderDescriptionPanel(cat, streamFilter) {
 
     const stream = (cat.valueStreams || []).find(s => s.name === d.stream);
 
-    // Matches a role name against a RACI cell value, accounting for
-    // multi-role " · "-separated entries and "(qualifier)" suffixes —
-    // e.g. "Recruiter (data entry)" still matches role name "Recruiter".
-    function roleInRaciValue(value, roleName) {
-      if (!value || value === '\u2014') return false;
-      return value.split(' \u00b7 ').some(part => part.replace(/\s*\([^)]*\)\s*$/, '').trim() === roleName);
-    }
+    // Design Narrative + AI Capability Map — moved here from HITL Design
+    // (now removed as a standalone lens). Design Narrative is unique prose;
+    // the Capability Map cards give an exact per-pattern count + M3 H%
+    // that the Description narrative above states in prose but not always
+    // with the same precision, so both are kept rather than picking one.
+    const designNarrativeText = (stream && cat.lenses.designNarrative && cat.lenses.designNarrative[stream.name]) || '';
+    const designNarrativeSection = designNarrativeText ? `
+      <div class="desc-section-heading">Design Narrative</div>
+      <div class="narrative-block" style="padding:0 16px 14px"><p>${designNarrativeText}</p></div>` : '';
 
-    // Which L3 processes (within this stream) a role appears in anywhere
-    // in its confirmed RACI — R, A, C, or I.
-    function rolePcfCodes(roleName) {
-      if (!stream) return [];
-      const codes = [];
-      cat.groups.forEach(g => {
-        g.l3.forEach(l3 => {
-          if (!codeInStream(l3.code, stream) || !l3.raci) return;
-          const hit = ['R', 'A', 'C', 'I'].some(k => roleInRaciValue(l3.raci[k], roleName));
-          if (hit) codes.push(l3.code);
-        });
+    const capabilityMapSection = stream ? (() => {
+      const counts = countPatternsForL3s(getStreamL3s(cat, stream));
+      const order = ['Decision', 'Knowledge', 'Document', 'Transaction', 'Exception'];
+      const cards = order.map(name => {
+        const meta = PATTERN_META[name];
+        const count = counts[name];
+        const body = count === 0
+          ? `<div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities of this pattern in this value stream</div>`
+          : `<div class="cm-count">${count} <span>L4 activities</span></div><div class="cm-mvals">M1 ${meta.m1}%  \u2192  M3 ${meta.m3}%</div>`;
+        return `<div class="capmap-card" style="background:${meta.fill};color:${meta.text}">
+          <div class="cm-name">${name}</div>
+          <div class="cm-tagline">${meta.tagline}</div>
+          ${body}
+        </div>`;
+      }).join('');
+      return `
+      <div class="desc-section-heading">AI Capability Map</div>
+      <div class="lens-note" style="padding:0 16px 10px">Pattern-type distribution across this value stream's activity units. H% figures are the pattern type's standard value at each maturity level, applied consistently across all PCF domains.</div>
+      <div class="capmap-grid">${cards}</div>`;
+    })() : '';
+
+    // Process Accountability — per-role activity count and L3 coverage,
+    // moved here from Process Specification's former "Process Ownership
+    // Summary" (same underlying Accountable-role data, one location now).
+    const ownerData = {};
+    if (stream) {
+      getStreamL3s(cat, stream).forEach(l3 => {
+        const role = (l3.raci && l3.raci.A) || 'Unassigned';
+        const count = (l3.l4 && l3.l4.length) ? l3.l4.length : 1;
+        if (!ownerData[role]) ownerData[role] = { steps: 0, l3s: [] };
+        ownerData[role].steps += count;
+        ownerData[role].l3s.push(l3.code);
       });
-      return codes;
     }
-
-    // Roles Involved — per-stream role/tier list carried from the confirmed RACI work
-    const rolesSection = (d.roles && d.roles.length) ? `
-      <div class="desc-section-heading">Roles Involved</div>
+    const tierByRole = {};
+    (d.roles || []).forEach(r => { tierByRole[r.role] = r.tier; });
+    const accountabilitySection = Object.keys(ownerData).length ? `
+      <div class="desc-section-heading">Process Accountability</div>
       <table class="desc-table desc-table-roles">
-        <thead><tr><th>Role</th><th>Tier</th><th>Process / Activities</th></tr></thead>
+        <thead><tr><th>Process Accountability</th><th>Tier</th><th>L3 Processes</th><th>L4 Activities</th></tr></thead>
         <tbody>
-          ${d.roles.map(r => {
-            const tc = TIER_COLORS[r.tier] || TIER_COLORS["External Participant"];
-            const codes = rolePcfCodes(r.role);
+          ${Object.entries(ownerData).map(([role, data]) => {
+            const tier = tierByRole[role] || tierByRole[role.replace(/\*$/, '')] || 'External Participant';
+            const tc = TIER_COLORS[tier] || TIER_COLORS["External Participant"];
             return `
             <tr>
-              <td>${r.role}</td>
-              <td class="desc-table-tier" style="background:${tc.fill};color:${tc.text}">${r.tier}</td>
-              <td class="desc-table-pcf">${codes.length ? codes.join(', ') : '\u2014'}</td>
+              <td>${role}</td>
+              <td class="desc-table-tier" style="background:${tc.fill};color:${tc.text}">${tier}</td>
+              <td class="desc-table-pcf">${data.l3s.join(', ')}</td>
+              <td style="text-align:left">${data.steps}</td>
             </tr>`;
           }).join('')}
         </tbody>
       </table>` : '';
+
+    // Handoff Points — moved here from Process Specification (now removed
+    // as a standalone lens); genuinely unique narrative content, no overlap
+    // with any other section.
+    const handoffPoints = (stream && cat.lenses.handoffPoints && cat.lenses.handoffPoints[stream.name]) || [];
+    const handoffSection = handoffPoints.length ? `
+      <div class="desc-section-heading">Handoff Points</div>
+      <div class="narrative-block" style="padding:0 16px 14px">${handoffPoints.map(p => `<p>${p}</p>`).join('')}</div>` : '';
+
     const govItems = stream ? (cat.lenses.governance || []).filter(g => codeInStream(g.code, stream)) : [];
     const govSection = `
       <div class="desc-section-heading">Governed Decision Points</div>
@@ -3784,7 +3692,10 @@ function renderDescriptionPanel(cat, streamFilter) {
         <div class="desc-stat"><strong>${d.delta}%</strong>Δ M1→M3</div>
       </div>
       ${kpiSection}
-      ${rolesSection}
+      ${designNarrativeSection}
+      ${capabilityMapSection}
+      ${accountabilitySection}
+      ${handoffSection}
       ${govSection}
     </div>
   `;
@@ -3811,11 +3722,6 @@ const domainStreamDesignPdfMap = {
           'hitl_valuestream_reward_to_retain_hitl_design_final.pdf','hitl_valuestream_move_to_exit_hitl_design_final.pdf',
           'hitl_valuestream_enable_and_govern_hitl_design_final.pdf'],
 };
-const domainStreamProcessSpecPdfMap = {
-  '7.0': ['hitl_valuestream_recruit_to_hire_process_spec_final.pdf','hitl_valuestream_perform_to_grow_process_spec_final.pdf',
-          'hitl_valuestream_reward_to_retain_process_spec_final.pdf','hitl_valuestream_move_to_exit_process_spec_final.pdf',
-          'hitl_valuestream_enable_and_govern_process_spec_final.pdf'],
-};
 // Per-value-stream RACI-only PDFs — used by downloadPDF() when the Value
 // Stream Description lens is active and a specific stream is selected.
 // Index-matched to the same domain's valueStreams array.
@@ -3833,7 +3739,7 @@ const domainStreamProfilePdfMap = {
           'hitl_valuestream_reward_to_retain_pcf7_final.pdf','hitl_valuestream_move_to_exit_pcf7_final.pdf',
           'hitl_valuestream_enable_and_govern_pcf7_final.pdf'],
 };
-// Lens-tab PDFs (Maturity Table, HITL Design, and Process Specification use
+// Lens-tab PDFs (Maturity Table and HITL Design use
 // the stream-aware logic below instead)
 const lensPdfMap = {
   'Value Stream Profile': 'hitl_valuestream_description_pcf7_final.pdf',
@@ -3855,21 +3761,7 @@ function downloadPDF() {
   }
 
   let filename;
-  if (activeLensName === 'HITL Design') {
-    // Stream-aware: the HITL Design PDF (Design Narrative, AI Capability Map,
-    // Role Accountability) only exists per selected stream — no domain-wide
-    // combined version, matching the on-screen "select a stream" prompt.
-    const vsSelect = document.getElementById("vs-select");
-    const streamIdx = (vsSelect && vsSelect.value !== 'all') ? parseInt(vsSelect.value, 10) : null;
-    const files = domainStreamDesignPdfMap[cat.code];
-    filename = (streamIdx !== null && files && files[streamIdx]) ? files[streamIdx] : null;
-  } else if (activeLensName === 'Process Specification') {
-    // Stream-aware, same reasoning as HITL Design above.
-    const vsSelect = document.getElementById("vs-select");
-    const streamIdx = (vsSelect && vsSelect.value !== 'all') ? parseInt(vsSelect.value, 10) : null;
-    const files = domainStreamProcessSpecPdfMap[cat.code];
-    filename = (streamIdx !== null && files && files[streamIdx]) ? files[streamIdx] : null;
-  } else if (activeLensName === 'Value Stream Profile') {
+  if (activeLensName === 'Value Stream Profile') {
     // Context-aware: if a specific value stream is selected (from the Maturity
     // Table's selector, which persists even though it's hidden on this lens),
     // download that stream's Value Stream Profile PDF (Description, KPIs, Roles
