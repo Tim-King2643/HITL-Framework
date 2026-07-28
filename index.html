@@ -320,6 +320,9 @@ tbody td.delta-cell { background: #fff; }
   letter-spacing: .04em; transition: all .15s;
 }
 .print-btn:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+.print-btn:disabled, .print-btn:disabled:hover {
+  background: #F5F5F5; border-color: var(--border); color: #AAAAAA; cursor: not-allowed;
+}
 
 /* ── Print styles ─────────────────────────────────────────────────────────── */
 @media print {
@@ -3463,6 +3466,7 @@ function applyValueStream(val) {
       l4: cat.totalL4, l4sub: `${cat.mixedL3} mixed-pattern L3s`,
       m1: cat.l1mv[0], m3: cat.l1mv[2], m5: cat.l1mv[4], delta: cat.l1mv[2]-cat.l1mv[0]
     });
+    updateDownloadPdfState();
     return;
   }
 
@@ -3530,6 +3534,7 @@ function applyValueStream(val) {
   });
 
   renderDescriptionPanel(cat, stream);
+  updateDownloadPdfState();
 }
 
 // ── Stream-filter helpers ───────────────────────────────────────────────────
@@ -3619,6 +3624,7 @@ function showLens(name) {
   if (vsBar.dataset.hasStreams === '1') {
     vsBar.style.display = 'flex';
   }
+  updateDownloadPdfState();
 }
 
 const TIER_COLORS = {
@@ -3789,18 +3795,14 @@ const domainMaturityPdf = {
   '10.0':'hitl_maturity_pcf10_final.pdf', '11.0':'hitl_maturity_pcf11_final.pdf', '12.0':'hitl_maturity_pcf12_final.pdf',
   '13.0':'hitl_maturity_pcf13_final.pdf',
 };
-// Per-value-stream PDFs — only built for domains with dedicated value-stream
-// doc pairs (currently HR/7.0 only). Index-matched to that domain's
-// valueStreams array. Domains without an entry here fall back to the
-// single domainMaturityPdf file regardless of stream selection.
-const domainStreamDesignPdfMap = {
-  '7.0': ['hitl_valuestream_hr_vision_to_strategy_hitl_design_final.pdf','hitl_valuestream_recruit_to_hire_hitl_design_final.pdf','hitl_valuestream_perform_to_grow_hitl_design_final.pdf',
-          'hitl_valuestream_reward_to_retain_hitl_design_final.pdf','hitl_valuestream_move_to_exit_hitl_design_final.pdf',
-          'hitl_valuestream_enable_and_govern_hitl_design_final.pdf'],
+// Domain-wide RACI companion PDF (fallback / "All Processes" default for the
+// RACI Table lens) — only domains with confirmed RACI data have an entry.
+const domainRaciPdf = {
+  '7.0': 'hitl_processspec_raci_pcf7_final.pdf',
 };
-// Per-value-stream RACI-only PDFs — used by downloadPDF() when the Value
-// Stream Description lens is active and a specific stream is selected.
-// Index-matched to the same domain's valueStreams array.
+// Per-value-stream RACI-only PDFs — used by downloadPDF() when the RACI
+// Table or Value Stream Profile lens is active and a specific stream is
+// selected. Index-matched to the same domain's valueStreams array.
 const domainStreamRaciPdfMap = {
   '7.0': ['hitl_role_assignment_raci_hr_vision_to_strategy_final.pdf','hitl_role_assignment_raci_recruit_to_hire_final.pdf','hitl_role_assignment_raci_perform_to_grow_final.pdf',
           'hitl_role_assignment_raci_reward_to_retain_final.pdf','hitl_role_assignment_raci_move_to_exit_final.pdf',
@@ -3821,9 +3823,30 @@ const lensPdfMap = {
   'Value Stream Profile': 'hitl_valuestream_description_pcf7_final.pdf',
 };
 
+// Value Stream Profile has no "All Processes" PDF — the doc type is
+// inherently stream-scoped (KPIs/Roles/Governance all aggregate per
+// stream), so there's nothing valid to download in that combination.
+// Disables the button rather than falling back to a nonexistent file.
+function updateDownloadPdfState() {
+  const btn = document.getElementById('download-pdf-btn');
+  if (!btn || document.getElementById('about-nav-item').classList.contains('active')) return;
+  const lensTabs = document.getElementById('lens-tabs');
+  const activeTab = (lensTabs && lensTabs.style.display !== 'none') ? lensTabs.querySelector('.lens-tab.active') : null;
+  const activeLensName = activeTab ? activeTab.textContent.trim() : null;
+  const vsSelect = document.getElementById('vs-select');
+  const isAllProcesses = !vsSelect || vsSelect.value === 'all';
+
+  const shouldDisable = activeLensName === 'Value Stream Profile' && isAllProcesses;
+  btn.disabled = shouldDisable;
+  btn.title = shouldDisable ? 'Select a value stream to download its profile' : 'Download PDF';
+}
+
 function downloadPDF() {
   // Guard: button is hidden on About page, but skip safely if no category is active
   if (document.getElementById('about-nav-item').classList.contains('active')) return;
+  // Guard: no valid PDF exists for Value Stream Profile + All Processes (see updateDownloadPdfState)
+  const btn = document.getElementById('download-pdf-btn');
+  if (btn && btn.disabled) return;
   const cat = PCF[window.currentDomainIdx];
   if (!cat) return;
 
@@ -3847,20 +3870,24 @@ function downloadPDF() {
     filename = (streamIdx !== null && profileFiles && profileFiles[streamIdx])
       ? profileFiles[streamIdx]
       : lensPdfMap['Value Stream Profile'];
+  } else if (activeLensName === 'RACI Table') {
+    // Context-aware, same pattern as Value Stream Profile: a specific stream
+    // selected downloads that stream's RACI-only PDF; "All Processes" downloads
+    // the domain-wide RACI companion doc — never the Maturity Table's PDF.
+    const vsSelect = document.getElementById("vs-select");
+    const streamIdx = (vsSelect && vsSelect.value !== 'all') ? parseInt(vsSelect.value, 10) : null;
+    const raciFiles = domainStreamRaciPdfMap[cat.code];
+    filename = (streamIdx !== null && raciFiles && raciFiles[streamIdx])
+      ? raciFiles[streamIdx]
+      : domainRaciPdf[cat.code];
   } else if (activeLensName && lensPdfMap[activeLensName]) {
     filename = lensPdfMap[activeLensName];
   } else {
-    // Maturity Table (default view) — check for a value-stream selection
-    const vsSelect = document.getElementById("vs-select");
-    const vsBar = document.getElementById("vs-bar");
-    let streamIdx = null;
-    if (vsSelect && vsBar && vsBar.style.display !== 'none' && vsSelect.value !== 'all') {
-      streamIdx = parseInt(vsSelect.value, 10);
-    }
-    const streamFiles = domainStreamDesignPdfMap[cat.code];
-    filename = (streamIdx !== null && streamFiles && streamFiles[streamIdx])
-      ? streamFiles[streamIdx]
-      : domainMaturityPdf[cat.code];
+    // Maturity Table (default view). No per-stream Maturity PDF is built —
+    // HITL Design (the doc type that used to serve this) was retired and
+    // consolidated into this lens, so always use the single domain-wide PDF
+    // regardless of value-stream selection.
+    filename = domainMaturityPdf[cat.code];
   }
 
   if (!filename) return;
