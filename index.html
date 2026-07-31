@@ -17,11 +17,11 @@
   --white:  #fff;
   --bg:     #F4F6FB;
   --border: #DDE3EE;
-  --c-dec:  #1B4F8A; --bg-dec: #EEF3FA; --mid-dec: #7B9FD1;
-  --c-kno:  #534AB7; --bg-kno: #F3F0FE; --mid-kno: #A79AE0;
-  --c-doc:  #0369A1; --bg-doc: #E0F2FE; --mid-doc: #5EB8E0;
-  --c-tra:  #166534; --bg-tra: #DCFCE7; --mid-tra: #6FC48C;
-  --c-exc:  #991B1B; --bg-exc: #FEE2E2; --mid-exc: #E88A8A;
+  --c-dec:  #1B4F8A; --bg-dec: #EEF3FA;
+  --c-kno:  #534AB7; --bg-kno: #F3F0FE;
+  --c-doc:  #0369A1; --bg-doc: #E0F2FE;
+  --c-tra:  #166534; --bg-tra: #DCFCE7;
+  --c-exc:  #991B1B; --bg-exc: #FEE2E2;
   --m1: #F0F7FF; --m2: #E6F1FF; --m3: #D6E8FF; --m4: #C4DCFF; --m5: #B0CEFF;
   --m-text: #1B4F8A;
   --sidebar-w: 260px;
@@ -90,9 +90,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 }
 .summary-card {
   background: #fff; border-radius: 8px; border: 1px solid var(--border);
-  padding: 10px 16px; min-width: 130px;
+  padding: 10px 16px; min-width: 130px; flex: 1; text-align: center;
 }
-.summary-card .label { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--lgray); margin-bottom: 4px; }
+.summary-card .label { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--lgray); margin-bottom: 4px; white-space: nowrap; }
 .summary-card .value { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--navy); }
 .summary-card .sub { font-size: 10px; color: var(--lgray); margin-top: 2px; }
 
@@ -254,14 +254,11 @@ td:first-child { text-align: left; }
   display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px;
   text-transform: uppercase; letter-spacing: .05em; white-space: nowrap;
 }
-.pat-Decision   { background: var(--mid-dec); color: #fff; }
-.pat-Knowledge  { background: var(--mid-kno); color: #fff; }
-.pat-Document   { background: var(--mid-doc); color: #fff; }
-.pat-Transaction{ background: var(--mid-tra); color: #fff; }
-.pat-Exception  { background: var(--mid-exc); color: #fff; }
-.pat-mix-bar { display:inline-flex; width:56px; height:10px; overflow:hidden; vertical-align:middle; border-radius:0; }
-.pat-mix-bar span { display:block; height:100%; border-radius:0; box-sizing:border-box; border-right:1px solid #CBD5E1; }
-.pat-mix-bar span:last-child { border-right:none; }
+.pat-Decision   { background: var(--bg-dec); color: var(--c-dec); }
+.pat-Knowledge  { background: var(--bg-kno); color: var(--c-kno); }
+.pat-Document   { background: var(--bg-doc); color: var(--c-doc); }
+.pat-Transaction{ background: var(--bg-tra); color: var(--c-tra); }
+.pat-Exception  { background: var(--bg-exc); color: var(--c-exc); }
 .pat-avg        { background: #F3F4F6; color: #6B7280; }
 .pat-Mixed      { background: #F3F4F6; color: #4B5563; font-weight: 700; }
 
@@ -525,11 +522,11 @@ tbody td.delta-cell { background: #fff; }
         &nbsp;&nbsp;&nbsp;<span id="print-running-sub" style="color:#888"></span>
       </div>
       <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-dec)"></div>Decision — Judgment & Authority</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-kno)"></div>Knowledge — Synthesis & Interpretation</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-doc)"></div>Document — Content Generation</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-tra)"></div>Transaction — Rules-Based Processing</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-exc)"></div>Exception — Non-Standard Resolution</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-dec);border:1px solid var(--c-dec)"></div>Decision — Judgment & Authority</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-kno);border:1px solid var(--c-kno)"></div>Knowledge — Synthesis & Interpretation</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-doc);border:1px solid var(--c-doc)"></div>Document — Content Generation</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-tra);border:1px solid var(--c-tra)"></div>Transaction — Rules-Based Processing</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-exc);border:1px solid var(--c-exc)"></div>Exception — Non-Standard Resolution</div>
         <div class="legend-item" style="margin-left:auto;color:#888">★ M3 = HITL Design Intent baseline · Equal-weighted L3→L2→L1 aggregation · © Timothy P. King & Claude (Anthropic) 2026</div>
       </div>
       </div>
@@ -1704,11 +1701,11 @@ const PCF = [
       ]},
     ]},
     { code:"7.4", name:"Manage Employee Relations", mv:[90, 85, 74, 65, 56], l3:[
-      { code:"7.4.1", name:"Manage labor relations", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal*",I:"Director of HR Ops"}, l4:[] },
-      { code:"7.4.2", name:"Manage collective bargaining process", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal*",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.4.1", name:"Manage labor relations", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.4.2", name:"Manage collective bargaining process", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal",I:"Director of HR Ops"}, l4:[] },
       { code:"7.4.3", name:"Manage labor management partnerships", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"—",I:"Director of HR Ops"}, l4:[] },
       { code:"7.4.4", name:"Manage employee grievances", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"—",I:"Legal* · Director of HR Ops"}, l4:[] },
-      { code:"7.4.5", name:"Monitor legal and regulatory environment", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"Director of HR Ops",C:"Legal*",I:"CHRO"}, l4:[] },
+      { code:"7.4.5", name:"Monitor legal and regulatory environment", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"Director of HR Ops",C:"Legal",I:"CHRO"}, l4:[] },
     ]},
     { code:"7.5", name:"Reward and Retain Employees", mv:[71, 61, 47, 34, 24], l3:[
       { code:"7.5.1", name:"Develop and manage reward, recognition, and motivation programs", pattern:"Mixed", mv:[79, 71, 58, 45, 35], mixed:true, raci:{R:"Compensation Analyst (admin-tier activities)",A:"Compensation & Benefits Manager",C:"—",I:"HRBP Manager"}, l4:[
@@ -3164,7 +3161,9 @@ function render(idx) {
     </tr>`;
     g.l3.forEach(l3 => {
       const hasL4 = l3.l4.length > 0;
-      const patBadge = renderPatternMixBar(l3);
+      const patBadge = l3.mixed
+        ? `<span class="pat pat-Mixed">Mixed</span>`
+        : `<span class="pat pat-${l3.pattern}">${l3.pattern}</span>`;
       const l3ToggleAttrs = hasL4
         ? `class="indent-l3 toggle-l3 collapsed" data-l3code="${l3.code}" onclick="toggleL3('${l3.code}',this)"`
         : `class="indent-l3"`;
@@ -3303,7 +3302,9 @@ function renderRaciTable(cat) {
     </tr>`;
     g.l3.forEach(l3 => {
       const hasL4 = l3.l4 && l3.l4.length > 0;
-      const patBadge = renderPatternMixBar(l3);
+      const patBadge = l3.mixed
+        ? `<span class="pat pat-Mixed">Mixed</span>`
+        : `<span class="pat pat-${l3.pattern}">${l3.pattern}</span>`;
       const l3ToggleAttrs = hasL4
         ? `class="indent-l3 toggle-l3 collapsed" data-raci-l3code="${l3.code}" onclick="toggleRaciL3('${l3.code}',this)"`
         : `class="indent-l3"`;
@@ -3411,7 +3412,7 @@ function renderSummaryBar(s) {
     <div class="summary-card"><div class="label">L3 Processes</div><div class="value">${s.l3}</div><div class="sub">${s.l3sub}</div></div>
     <div class="summary-card"><div class="label">L4 Activities</div><div class="value">${s.l4}</div><div class="sub">${s.l4sub}</div></div>
     <div class="summary-card"><div class="label">M1 Baseline H%</div><div class="value">${s.m1}%</div><div class="sub">Undesigned state</div></div>
-    <div class="summary-card"><div class="label">M3 Design Intent H%</div><div class="value" style="color:var(--navy)">${s.m3}%</div><div class="sub">★ HITL design intent</div></div>
+    <div class="summary-card" style="flex:1.3"><div class="label">M3 Design Intent H%</div><div class="value" style="color:var(--navy)">${s.m3}%</div><div class="sub">★ HITL design intent</div></div>
     <div class="summary-card"><div class="label">M5 Leading H%</div><div class="value" style="color:var(--navy-d)">${s.m5}%</div><div class="sub">North star target</div></div>
     <div class="summary-card"><div class="label">Δ M1 → M3</div><div class="value" style="color:#B45309">${s.delta}%</div><div class="sub">AI convergence opportunity</div></div>
   `;
@@ -3597,26 +3598,6 @@ function countPatternsForL3s(l3s) {
     }
   });
   return counts;
-}
-
-// Thin, square-ended pattern bar for every L3 row — solid single color for a
-// real single-pattern L3, segmented breakdown for Mixed rows. Fill uses a
-// medium-saturation tone per pattern (visible at 10px height, distinct from
-// its neighbors) rather than the badge/legend's pale tint, which washed out
-// at this thinness. Segments are divided by a thin neutral gray line, not a
-// colored border — the fill color alone carries the pattern signal.
-// Keep in sync with --mid-dec/kno/doc/tra/exc CSS variables (used by the legend) — duplicated
-// here rather than read via getComputedStyle since this runs inside a template-string builder.
-const PATTERN_HEX = { Decision: '#7B9FD1', Knowledge: '#A79AE0', Document: '#5EB8E0', Transaction: '#6FC48C', Exception: '#E88A8A' };
-function renderPatternMixBar(l3) {
-  const counts = countPatternsForL3s([l3]);
-  const total = Object.values(counts).reduce((a, b) => a + b, 0) || 1;
-  const present = Object.entries(counts).filter(([, c]) => c > 0);
-  const segs = present
-    .map(([p, c]) => `<span style="width:${(c / total * 100).toFixed(1)}%;background:${PATTERN_HEX[p]}" title="${p} ${c}"></span>`)
-    .join('');
-  const label = present.length === 1 ? `${present[0][0]} pattern` : 'Mixed pattern';
-  return `<span class="pat-mix-bar" role="img" aria-label="${label}">${segs}</span>`;
 }
 
 // ── Lens tabs ────────────────────────────────────────────────────────────
@@ -3814,14 +3795,18 @@ const domainMaturityPdf = {
   '10.0':'hitl_maturity_pcf10_final.pdf', '11.0':'hitl_maturity_pcf11_final.pdf', '12.0':'hitl_maturity_pcf12_final.pdf',
   '13.0':'hitl_maturity_pcf13_final.pdf',
 };
-// Domain-wide RACI companion PDF (fallback / "All Processes" default for the
-// RACI Table lens) — only domains with confirmed RACI data have an entry.
-const domainRaciPdf = {
-  '7.0': 'hitl_raci_pcf7_final.pdf',
+// Per-value-stream PDFs — only built for domains with dedicated value-stream
+// doc pairs (currently HR/7.0 only). Index-matched to that domain's
+// valueStreams array. Domains without an entry here fall back to the
+// single domainMaturityPdf file regardless of stream selection.
+const domainStreamDesignPdfMap = {
+  '7.0': ['hitl_valuestream_hr_vision_to_strategy_hitl_design_final.pdf','hitl_valuestream_recruit_to_hire_hitl_design_final.pdf','hitl_valuestream_perform_to_grow_hitl_design_final.pdf',
+          'hitl_valuestream_reward_to_retain_hitl_design_final.pdf','hitl_valuestream_move_to_exit_hitl_design_final.pdf',
+          'hitl_valuestream_enable_and_govern_hitl_design_final.pdf'],
 };
-// Per-value-stream RACI-only PDFs — used by downloadPDF() when the RACI
-// Table or Value Stream Profile lens is active and a specific stream is
-// selected. Index-matched to the same domain's valueStreams array.
+// Per-value-stream RACI-only PDFs — used by downloadPDF() when the Value
+// Stream Description lens is active and a specific stream is selected.
+// Index-matched to the same domain's valueStreams array.
 const domainStreamRaciPdfMap = {
   '7.0': ['hitl_role_assignment_raci_hr_vision_to_strategy_final.pdf','hitl_role_assignment_raci_recruit_to_hire_final.pdf','hitl_role_assignment_raci_perform_to_grow_final.pdf',
           'hitl_role_assignment_raci_reward_to_retain_final.pdf','hitl_role_assignment_raci_move_to_exit_final.pdf',
@@ -3889,24 +3874,20 @@ function downloadPDF() {
     filename = (streamIdx !== null && profileFiles && profileFiles[streamIdx])
       ? profileFiles[streamIdx]
       : lensPdfMap['Value Stream Profile'];
-  } else if (activeLensName === 'RACI Table') {
-    // Context-aware, same pattern as Value Stream Profile: a specific stream
-    // selected downloads that stream's RACI-only PDF; "All Processes" downloads
-    // the domain-wide RACI companion doc — never the Maturity Table's PDF.
-    const vsSelect = document.getElementById("vs-select");
-    const streamIdx = (vsSelect && vsSelect.value !== 'all') ? parseInt(vsSelect.value, 10) : null;
-    const raciFiles = domainStreamRaciPdfMap[cat.code];
-    filename = (streamIdx !== null && raciFiles && raciFiles[streamIdx])
-      ? raciFiles[streamIdx]
-      : domainRaciPdf[cat.code];
   } else if (activeLensName && lensPdfMap[activeLensName]) {
     filename = lensPdfMap[activeLensName];
   } else {
-    // Maturity Table (default view). No per-stream Maturity PDF is built —
-    // HITL Design (the doc type that used to serve this) was retired and
-    // consolidated into this lens, so always use the single domain-wide PDF
-    // regardless of value-stream selection.
-    filename = domainMaturityPdf[cat.code];
+    // Maturity Table (default view) — check for a value-stream selection
+    const vsSelect = document.getElementById("vs-select");
+    const vsBar = document.getElementById("vs-bar");
+    let streamIdx = null;
+    if (vsSelect && vsBar && vsBar.style.display !== 'none' && vsSelect.value !== 'all') {
+      streamIdx = parseInt(vsSelect.value, 10);
+    }
+    const streamFiles = domainStreamDesignPdfMap[cat.code];
+    filename = (streamIdx !== null && streamFiles && streamFiles[streamIdx])
+      ? streamFiles[streamIdx]
+      : domainMaturityPdf[cat.code];
   }
 
   if (!filename) return;
