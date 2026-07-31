@@ -17,11 +17,11 @@
   --white:  #fff;
   --bg:     #F4F6FB;
   --border: #DDE3EE;
-  --c-dec:  #1B4F8A; --bg-dec: #EEF3FA;
-  --c-kno:  #534AB7; --bg-kno: #F3F0FE;
-  --c-doc:  #0369A1; --bg-doc: #E0F2FE;
-  --c-tra:  #166534; --bg-tra: #DCFCE7;
-  --c-exc:  #991B1B; --bg-exc: #FEE2E2;
+  --c-dec:  #1B4F8A; --bg-dec: #EEF3FA; --mid-dec: #7B9FD1;
+  --c-kno:  #534AB7; --bg-kno: #F3F0FE; --mid-kno: #A79AE0;
+  --c-doc:  #0369A1; --bg-doc: #E0F2FE; --mid-doc: #5EB8E0;
+  --c-tra:  #166534; --bg-tra: #DCFCE7; --mid-tra: #6FC48C;
+  --c-exc:  #991B1B; --bg-exc: #FEE2E2; --mid-exc: #E88A8A;
   --m1: #F0F7FF; --m2: #E6F1FF; --m3: #D6E8FF; --m4: #C4DCFF; --m5: #B0CEFF;
   --m-text: #1B4F8A;
   --sidebar-w: 260px;
@@ -254,11 +254,14 @@ td:first-child { text-align: left; }
   display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px;
   text-transform: uppercase; letter-spacing: .05em; white-space: nowrap;
 }
-.pat-Decision   { background: var(--bg-dec); color: var(--c-dec); }
-.pat-Knowledge  { background: var(--bg-kno); color: var(--c-kno); }
-.pat-Document   { background: var(--bg-doc); color: var(--c-doc); }
-.pat-Transaction{ background: var(--bg-tra); color: var(--c-tra); }
-.pat-Exception  { background: var(--bg-exc); color: var(--c-exc); }
+.pat-Decision   { background: var(--mid-dec); color: #fff; }
+.pat-Knowledge  { background: var(--mid-kno); color: #fff; }
+.pat-Document   { background: var(--mid-doc); color: #fff; }
+.pat-Transaction{ background: var(--mid-tra); color: #fff; }
+.pat-Exception  { background: var(--mid-exc); color: #fff; }
+.pat-mix-bar { display:inline-flex; width:56px; height:10px; overflow:hidden; vertical-align:middle; border-radius:0; }
+.pat-mix-bar span { display:block; height:100%; border-radius:0; box-sizing:border-box; border-right:1px solid #CBD5E1; }
+.pat-mix-bar span:last-child { border-right:none; }
 .pat-avg        { background: #F3F4F6; color: #6B7280; }
 .pat-Mixed      { background: #F3F4F6; color: #4B5563; font-weight: 700; }
 
@@ -522,11 +525,11 @@ tbody td.delta-cell { background: #fff; }
         &nbsp;&nbsp;&nbsp;<span id="print-running-sub" style="color:#888"></span>
       </div>
       <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-dec);border:1px solid var(--c-dec)"></div>Decision — Judgment & Authority</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-kno);border:1px solid var(--c-kno)"></div>Knowledge — Synthesis & Interpretation</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-doc);border:1px solid var(--c-doc)"></div>Document — Content Generation</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-tra);border:1px solid var(--c-tra)"></div>Transaction — Rules-Based Processing</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-exc);border:1px solid var(--c-exc)"></div>Exception — Non-Standard Resolution</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-dec)"></div>Decision — Judgment & Authority</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-kno)"></div>Knowledge — Synthesis & Interpretation</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-doc)"></div>Document — Content Generation</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-tra)"></div>Transaction — Rules-Based Processing</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-exc)"></div>Exception — Non-Standard Resolution</div>
         <div class="legend-item" style="margin-left:auto;color:#888">★ M3 = HITL Design Intent baseline · Equal-weighted L3→L2→L1 aggregation · © Timothy P. King & Claude (Anthropic) 2026</div>
       </div>
       </div>
@@ -3161,9 +3164,7 @@ function render(idx) {
     </tr>`;
     g.l3.forEach(l3 => {
       const hasL4 = l3.l4.length > 0;
-      const patBadge = l3.mixed
-        ? `<span class="pat pat-Mixed">Mixed</span>`
-        : `<span class="pat pat-${l3.pattern}">${l3.pattern}</span>`;
+      const patBadge = renderPatternMixBar(l3);
       const l3ToggleAttrs = hasL4
         ? `class="indent-l3 toggle-l3 collapsed" data-l3code="${l3.code}" onclick="toggleL3('${l3.code}',this)"`
         : `class="indent-l3"`;
@@ -3302,9 +3303,7 @@ function renderRaciTable(cat) {
     </tr>`;
     g.l3.forEach(l3 => {
       const hasL4 = l3.l4 && l3.l4.length > 0;
-      const patBadge = l3.mixed
-        ? `<span class="pat pat-Mixed">Mixed</span>`
-        : `<span class="pat pat-${l3.pattern}">${l3.pattern}</span>`;
+      const patBadge = renderPatternMixBar(l3);
       const l3ToggleAttrs = hasL4
         ? `class="indent-l3 toggle-l3 collapsed" data-raci-l3code="${l3.code}" onclick="toggleRaciL3('${l3.code}',this)"`
         : `class="indent-l3"`;
@@ -3598,6 +3597,26 @@ function countPatternsForL3s(l3s) {
     }
   });
   return counts;
+}
+
+// Thin, square-ended pattern bar for every L3 row — solid single color for a
+// real single-pattern L3, segmented breakdown for Mixed rows. Fill uses a
+// medium-saturation tone per pattern (visible at 10px height, distinct from
+// its neighbors) rather than the badge/legend's pale tint, which washed out
+// at this thinness. Segments are divided by a thin neutral gray line, not a
+// colored border — the fill color alone carries the pattern signal.
+// Keep in sync with --mid-dec/kno/doc/tra/exc CSS variables (used by the legend) — duplicated
+// here rather than read via getComputedStyle since this runs inside a template-string builder.
+const PATTERN_HEX = { Decision: '#7B9FD1', Knowledge: '#A79AE0', Document: '#5EB8E0', Transaction: '#6FC48C', Exception: '#E88A8A' };
+function renderPatternMixBar(l3) {
+  const counts = countPatternsForL3s([l3]);
+  const total = Object.values(counts).reduce((a, b) => a + b, 0) || 1;
+  const present = Object.entries(counts).filter(([, c]) => c > 0);
+  const segs = present
+    .map(([p, c]) => `<span style="width:${(c / total * 100).toFixed(1)}%;background:${PATTERN_HEX[p]}" title="${p} ${c}"></span>`)
+    .join('');
+  const label = present.length === 1 ? `${present[0][0]} pattern` : 'Mixed pattern';
+  return `<span class="pat-mix-bar" role="img" aria-label="${label}">${segs}</span>`;
 }
 
 // ── Lens tabs ────────────────────────────────────────────────────────────
