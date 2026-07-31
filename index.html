@@ -17,11 +17,11 @@
   --white:  #fff;
   --bg:     #F4F6FB;
   --border: #DDE3EE;
-  --c-dec:  #1B4F8A; --bg-dec: #EEF3FA;
-  --c-kno:  #534AB7; --bg-kno: #F3F0FE;
-  --c-doc:  #0369A1; --bg-doc: #E0F2FE;
-  --c-tra:  #166534; --bg-tra: #DCFCE7;
-  --c-exc:  #991B1B; --bg-exc: #FEE2E2;
+  --c-dec:  #1B4F8A; --bg-dec: #EEF3FA; --mid-dec: #7B9FD1;
+  --c-kno:  #534AB7; --bg-kno: #F3F0FE; --mid-kno: #A79AE0;
+  --c-doc:  #0369A1; --bg-doc: #E0F2FE; --mid-doc: #5EB8E0;
+  --c-tra:  #166534; --bg-tra: #DCFCE7; --mid-tra: #6FC48C;
+  --c-exc:  #991B1B; --bg-exc: #FEE2E2; --mid-exc: #E88A8A;
   --m1: #F0F7FF; --m2: #E6F1FF; --m3: #D6E8FF; --m4: #C4DCFF; --m5: #B0CEFF;
   --m-text: #1B4F8A;
   --sidebar-w: 260px;
@@ -83,6 +83,17 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .pill-m3 { background: var(--m3); color: var(--m-text); border: 1px solid var(--m5); font-weight: 700; }
 .pill-m5 { background: var(--m5); color: var(--m-text); border: 1px solid var(--m5); }
 
+/* ── View toggle (Process/People) ───────────────────────────────────────── */
+.view-toggle { display: flex; gap: 8px; padding: 14px 18px; }
+.view-toggle-btn {
+  background: #fff; border: 1px solid var(--border); border-radius: 6px;
+  padding: 7px 16px; font-size: 12px; font-weight: 600; color: var(--lgray);
+  cursor: pointer;
+}
+.view-toggle-btn.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+.role-toggle-icon { display: inline-block; width: 12px; font-weight: 700; color: var(--navy); }
+
 /* ── Summary bar ──────────────────────────────────────────────────────────── */
 .summary-bar {
   display: flex; gap: 12px; padding: 14px 24px;
@@ -90,7 +101,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 }
 .summary-card {
   background: #fff; border-radius: 8px; border: 1px solid var(--border);
-  padding: 10px 16px; min-width: 130px; flex: 1; text-align: center;
+  padding: 10px 16px; flex: 1; text-align: center;
 }
 .summary-card .label { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--lgray); margin-bottom: 4px; white-space: nowrap; }
 .summary-card .value { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--navy); }
@@ -122,6 +133,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
   padding: 6px 14px; border-radius: 5px; cursor: pointer; border: 1.5px solid var(--navy); background: #fff; color: var(--navy);
 }
 .lens-tab.active { background: var(--navy); color: #fff; }
+.lens-tab:disabled { border-color: var(--border); color: #B8C0CC; cursor: not-allowed; background: #FAFBFD; }
 .lens-empty { padding: 24px 18px; text-align: center; color: var(--lgray); font-style: italic; font-size: 12px; }
 .lens-panel { display: none; }
 .lens-panel.active { display: block; }
@@ -201,6 +213,8 @@ thead th {
 }
 #raci-main-table thead th { font-size: 10px !important; line-height: 1.2 !important; }
 #main-table thead th:not(:first-child):not(:nth-child(2)) { text-align: center; }
+#role-impact-table thead th:not(:first-child):not(:nth-child(2)) { text-align: center; }
+#role-impact-table thead th:first-child { min-width: 260px; }
 thead th:first-child { text-align: left; min-width: 300px; }
 thead th:nth-child(2) { min-width: 100px; }
 thead th.col-m1, thead th.col-m2, thead th.col-m3,
@@ -229,6 +243,7 @@ td { padding: 8px 12px; vertical-align: middle; }
 #raci-main-table td:not(:first-child) { padding-left: 8px; }
 td:first-child { text-align: left; }
 #main-table td:not(:first-child):not(:nth-child(2)) { text-align: center; font-family: 'DM Mono', monospace; font-size: 12px; }
+#role-impact-table td:not(:first-child):not(:nth-child(2)) { text-align: center; font-family: 'DM Mono', monospace; font-size: 12px; }
 #raci-main-table td:not(:first-child):not(:nth-child(2)) { text-align: left; font-family: inherit; }
 #raci-main-table thead th:first-child { min-width: 380px; }
 
@@ -254,11 +269,14 @@ td:first-child { text-align: left; }
   display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px;
   text-transform: uppercase; letter-spacing: .05em; white-space: nowrap;
 }
-.pat-Decision   { background: var(--bg-dec); color: var(--c-dec); }
-.pat-Knowledge  { background: var(--bg-kno); color: var(--c-kno); }
-.pat-Document   { background: var(--bg-doc); color: var(--c-doc); }
-.pat-Transaction{ background: var(--bg-tra); color: var(--c-tra); }
-.pat-Exception  { background: var(--bg-exc); color: var(--c-exc); }
+.pat-Decision   { background: var(--mid-dec); color: #fff; }
+.pat-Knowledge  { background: var(--mid-kno); color: #fff; }
+.pat-Document   { background: var(--mid-doc); color: #fff; }
+.pat-Transaction{ background: var(--mid-tra); color: #fff; }
+.pat-Exception  { background: var(--mid-exc); color: #fff; }
+.pat-mix-bar { display:inline-flex; width:56px; height:10px; overflow:hidden; vertical-align:middle; border-radius:0; }
+.pat-mix-bar span { display:block; height:100%; border-radius:0; box-sizing:border-box; border-right:1px solid #CBD5E1; }
+.pat-mix-bar span:last-child { border-right:none; }
 .pat-avg        { background: #F3F4F6; color: #6B7280; }
 .pat-Mixed      { background: #F3F4F6; color: #4B5563; font-weight: 700; }
 
@@ -482,6 +500,11 @@ tbody td.delta-cell { background: #fff; }
         <h3 id="card-title">HITL Maturity Assessment</h3>
         <span>H% = Human involvement at each maturity level · M3 = HITL Design Intent</span>
       </div>
+      <div class="view-toggle no-print" id="view-toggle" style="display:none">
+        <button class="view-toggle-btn active" id="view-btn-process" onclick="setMainView('process')">Process View</button>
+        <button class="view-toggle-btn" id="view-btn-people" onclick="setMainView('people')">People View</button>
+      </div>
+      <div id="process-view">
       <div class="lens-tabs" id="lens-tabs" style="display:none">
         <button class="lens-tab active" id="tab-maturity" onclick="showLens('maturity')">Maturity Table</button>
         <button class="lens-tab" id="tab-raci" onclick="showLens('raci')">RACI Table</button>
@@ -522,11 +545,11 @@ tbody td.delta-cell { background: #fff; }
         &nbsp;&nbsp;&nbsp;<span id="print-running-sub" style="color:#888"></span>
       </div>
       <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-dec);border:1px solid var(--c-dec)"></div>Decision — Judgment & Authority</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-kno);border:1px solid var(--c-kno)"></div>Knowledge — Synthesis & Interpretation</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-doc);border:1px solid var(--c-doc)"></div>Document — Content Generation</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-tra);border:1px solid var(--c-tra)"></div>Transaction — Rules-Based Processing</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--bg-exc);border:1px solid var(--c-exc)"></div>Exception — Non-Standard Resolution</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-dec)"></div>Decision — Judgment & Authority</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-kno)"></div>Knowledge — Synthesis & Interpretation</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-doc)"></div>Document — Content Generation</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-tra)"></div>Transaction — Rules-Based Processing</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--mid-exc)"></div>Exception — Non-Standard Resolution</div>
         <div class="legend-item" style="margin-left:auto;color:#888">★ M3 = HITL Design Intent baseline · Equal-weighted L3→L2→L1 aggregation · © Timothy P. King & Claude (Anthropic) 2026</div>
       </div>
       </div>
@@ -552,6 +575,42 @@ tbody td.delta-cell { background: #fff; }
       <div class="lens-panel" id="lens-panel-description">
         <div class="lens-note">Built strictly from the Dashboard's own PCF Category/Group/Process/Activity hierarchy and maturity data — no Navigator step names or Navigator-derived content in this view.</div>
         <div id="description-grid" class="description-grid"></div>
+      </div>
+      </div>
+      <div id="people-view" style="display:none">
+        <div class="lens-tabs" id="people-lens-tabs" style="display:flex">
+          <button class="lens-tab active" id="tab-role-impact" onclick="showPeopleLens('role-impact')">Role Impact Table</button>
+          <button class="lens-tab" id="tab-readiness" disabled title="Not yet built — needs the People-side readiness scoring work">Readiness Table</button>
+          <button class="lens-tab" id="tab-transition" disabled title="Not yet built — role-by-role research in progress">Role Transition Profile</button>
+        </div>
+        <div class="lens-panel active" id="lens-panel-role-impact">
+          <div class="lens-note">Derived from the same confirmed RACI data as the Process side's RACI Table — a role's row reflects every L3 process where it holds Responsible or Accountable. Consulted/Informed involvement isn't counted toward a role's pattern mix or maturity rollup, since R/A reflect who does or owns the work, not who's kept in the loop. Click a role to see the specific single-pattern processes driving its mix.</div>
+          <div class="table-wrap">
+            <table id="role-impact-table">
+              <thead>
+                <tr>
+                  <th class="th-bottom">Tier / Role</th>
+                  <th class="th-bottom">Pattern Mix</th>
+                  <th class="col-m1">M1<br><small>Undesigned</small></th>
+                  <th class="col-m2">M2<br><small>Emerging</small></th>
+                  <th class="col-m3 mh-m3">M3 ★<br><small>Design Intent</small></th>
+                  <th class="col-m4">M4<br><small>Optimized</small></th>
+                  <th class="col-m5">M5<br><small>Leading</small></th>
+                  <th class="delta-cell th-bottom">Δ M1→M3</th>
+                </tr>
+              </thead>
+              <tbody id="role-impact-table-body"></tbody>
+            </table>
+          </div>
+          <div class="legend">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--mid-dec)"></div>Decision — Judgment & Authority</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--mid-kno)"></div>Knowledge — Synthesis & Interpretation</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--mid-doc)"></div>Document — Content Generation</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--mid-tra)"></div>Transaction — Rules-Based Processing</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--mid-exc)"></div>Exception — Non-Standard Resolution</div>
+            <div class="legend-item" style="margin-left:auto;color:#888">R/A-touch basis, not C/I · Equal-weighted rollup across touched processes · © Timothy P. King & Claude (Anthropic) 2026</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1701,11 +1760,11 @@ const PCF = [
       ]},
     ]},
     { code:"7.4", name:"Manage Employee Relations", mv:[90, 85, 74, 65, 56], l3:[
-      { code:"7.4.1", name:"Manage labor relations", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal",I:"Director of HR Ops"}, l4:[] },
-      { code:"7.4.2", name:"Manage collective bargaining process", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.4.1", name:"Manage labor relations", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal*",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.4.2", name:"Manage collective bargaining process", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal*",I:"Director of HR Ops"}, l4:[] },
       { code:"7.4.3", name:"Manage labor management partnerships", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"—",I:"Director of HR Ops"}, l4:[] },
       { code:"7.4.4", name:"Manage employee grievances", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"—",I:"Legal* · Director of HR Ops"}, l4:[] },
-      { code:"7.4.5", name:"Monitor legal and regulatory environment", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"Director of HR Ops",C:"Legal",I:"CHRO"}, l4:[] },
+      { code:"7.4.5", name:"Monitor legal and regulatory environment", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"Director of HR Ops",C:"Legal*",I:"CHRO"}, l4:[] },
     ]},
     { code:"7.5", name:"Reward and Retain Employees", mv:[71, 61, 47, 34, 24], l3:[
       { code:"7.5.1", name:"Develop and manage reward, recognition, and motivation programs", pattern:"Mixed", mv:[79, 71, 58, 45, 35], mixed:true, raci:{R:"Compensation Analyst (admin-tier activities)",A:"Compensation & Benefits Manager",C:"—",I:"HRBP Manager"}, l4:[
@@ -3161,9 +3220,7 @@ function render(idx) {
     </tr>`;
     g.l3.forEach(l3 => {
       const hasL4 = l3.l4.length > 0;
-      const patBadge = l3.mixed
-        ? `<span class="pat pat-Mixed">Mixed</span>`
-        : `<span class="pat pat-${l3.pattern}">${l3.pattern}</span>`;
+      const patBadge = renderPatternMixBar(l3);
       const l3ToggleAttrs = hasL4
         ? `class="indent-l3 toggle-l3 collapsed" data-l3code="${l3.code}" onclick="toggleL3('${l3.code}',this)"`
         : `class="indent-l3"`;
@@ -3302,9 +3359,7 @@ function renderRaciTable(cat) {
     </tr>`;
     g.l3.forEach(l3 => {
       const hasL4 = l3.l4 && l3.l4.length > 0;
-      const patBadge = l3.mixed
-        ? `<span class="pat pat-Mixed">Mixed</span>`
-        : `<span class="pat pat-${l3.pattern}">${l3.pattern}</span>`;
+      const patBadge = renderPatternMixBar(l3);
       const l3ToggleAttrs = hasL4
         ? `class="indent-l3 toggle-l3 collapsed" data-raci-l3code="${l3.code}" onclick="toggleRaciL3('${l3.code}',this)"`
         : `class="indent-l3"`;
@@ -3600,18 +3655,257 @@ function countPatternsForL3s(l3s) {
   return counts;
 }
 
+// Thin, square-ended pattern bar for every L3 row — solid single color for a
+// real single-pattern L3, segmented breakdown for Mixed rows. Fill uses a
+// medium-saturation tone per pattern (visible at 10px height, distinct from
+// its neighbors) rather than the badge/legend's pale tint, which washed out
+// at this thinness. Segments are divided by a thin neutral gray line, not a
+// colored border — the fill color alone carries the pattern signal.
+// Keep in sync with --mid-dec/kno/doc/tra/exc CSS variables (used by the legend) — duplicated
+// here rather than read via getComputedStyle since this runs inside a template-string builder.
+const PATTERN_HEX = { Decision: '#7B9FD1', Knowledge: '#A79AE0', Document: '#5EB8E0', Transaction: '#6FC48C', Exception: '#E88A8A' };
+function renderPatternMixBar(l3) {
+  const counts = countPatternsForL3s([l3]);
+  const total = Object.values(counts).reduce((a, b) => a + b, 0) || 1;
+  const present = Object.entries(counts).filter(([, c]) => c > 0);
+  const segs = present
+    .map(([p, c]) => `<span style="width:${(c / total * 100).toFixed(1)}%;background:${PATTERN_HEX[p]}" title="${p} ${c}"></span>`)
+    .join('');
+  const label = present.length === 1 ? `${present[0][0]} pattern` : 'Mixed pattern';
+  return `<span class="pat-mix-bar" role="img" aria-label="${label}">${segs}</span>`;
+}
+
+// Same bar, generalized to a role's full touched-L3 set rather than one L3
+// — countPatternsForL3s already accepts an array, so this is a thin
+// wrapper that keeps the exact same markup/colors as the Process side.
+function renderRoleMixBar(l3s) {
+  const counts = countPatternsForL3s(l3s);
+  const total = Object.values(counts).reduce((a, b) => a + b, 0);
+  if (!total) return '<span style="color:#B8C0CC;font-style:italic;font-size:11px">\u2014</span>';
+  const present = Object.entries(counts).filter(([, c]) => c > 0);
+  const segs = present
+    .map(([p, c]) => `<span style="width:${(c / total * 100).toFixed(1)}%;background:${PATTERN_HEX[p]}" title="${p} ${c}"></span>`)
+    .join('');
+  const label = present.length === 1 ? `${present[0][0]} pattern` : 'Mixed pattern';
+  return `<span class="pat-mix-bar" role="img" aria-label="${label}">${segs}</span>`;
+}
+
+// ── Role Impact Table (People View) ─────────────────────────────────────
+// Anchored on the Organizational Role Taxonomy's PCF 7.0 catalog (14 roles,
+// 3 tiers). Every role's row is derived live from the same RACI data the
+// Process side's RACI Table renders — no separate data entry. A role
+// "touches" an L3 process when it holds R (Responsible) or A (Accountable)
+// on that process; C (Consulted) and I (Informed) are excluded from the
+// pattern-mix/maturity rollup, since this table measures whose work
+// actually changes as a process's pattern automates, not who's kept in
+// the loop. This R/A-only rule is a real methodological choice — flagged
+// to Tim rather than silently assumed, same as prior RACI diagnostic calls.
+const ROLE_TAXONOMY = [
+  { name: "CHRO", tier: "Executive" },
+  { name: "SVP Talent Management", tier: "Executive" },
+  { name: "VP People & Culture", tier: "Executive" },
+  { name: "Director of TA", tier: "Managerial" },
+  { name: "Director of L&D", tier: "Managerial" },
+  { name: "HRBP Manager", tier: "Managerial" },
+  { name: "Compensation & Benefits Manager", tier: "Managerial" },
+  { name: "Director of HR Ops", tier: "Managerial" },
+  { name: "HR Generalist", tier: "Operational" },
+  { name: "Recruiter", tier: "Operational" },
+  { name: "L&D Specialist", tier: "Operational" },
+  { name: "Compensation Analyst", tier: "Operational" },
+  { name: "HRIS Analyst", tier: "Operational" },
+  { name: "Onboarding Coordinator", tier: "Operational" },
+];
+// Extends the existing ROLE_COLORS map with the taxonomy roles that never
+// carry an R/A assignment in PCF 7.0 RACI data, so every row still gets a
+// distinct color (only added if not already present, since this file may
+// have grown its own entries for these roles elsewhere).
+const ROLE_COLOR_FALLBACKS = {
+  "SVP Talent Management": { fill: "#F0F7FF", text: "#0D2D4F" },
+  "VP People & Culture":   { fill: "#FFF1E6", text: "#9A3412" },
+  "Director of TA":        { fill: "#CCFBF1", text: "#0F766E" },
+  "L&D Specialist":        { fill: "#FAE8FF", text: "#86198F" },
+};
+Object.keys(ROLE_COLOR_FALLBACKS).forEach(name => {
+  if (!ROLE_COLORS[name]) ROLE_COLORS[name] = ROLE_COLOR_FALLBACKS[name];
+});
+
+// Raw RACI text uses some abbreviated forms inconsistently with the
+// taxonomy's canonical names — normalize to the same 14 roles the
+// taxonomy defines. Anything not listed here is assumed already canonical.
+const ROLE_RACI_ALIASES = {
+  "HRBP Mgr": "HRBP Manager",
+  "Comp & Benefits Mgr": "Compensation & Benefits Manager",
+  "Dir. of L&D": "Director of L&D",
+};
+// External participants and empty-cell markers never resolve to a
+// taxonomy role — they're excluded from role touches entirely.
+function normalizeRaciToken(base) {
+  if (base === "\u2014" || base === "") return null;
+  if (base.endsWith("*")) return null;          // Hiring Managers*, Legal*, Finance*, Managers*
+  if (base === "Legal") return null;
+  if (base === "All Managerial-tier") return null; // aggregate reference, only ever appears in I
+  return ROLE_RACI_ALIASES[base] || base;
+}
+// Splits a raw RACI field ("A · B (qualifier) · C") into normalized role
+// names, stripping trailing parenthetical qualifiers before matching.
+function parseRaciField(str) {
+  if (!str) return [];
+  return str.split('\u00b7').map(tok => {
+    const base = tok.replace(/\s*\([^)]*\)\s*$/, '').trim();
+    return normalizeRaciToken(base);
+  }).filter(Boolean);
+}
+
+// Builds { roleName: [l3, l3, ...] } across all groups in a domain, using
+// the R/A-touch rule above. Dedupes if a role holds both R and A on the
+// same L3 (wouldn't double count it).
+function computeRoleL3Map(cat) {
+  const map = {};
+  cat.groups.forEach(g => {
+    g.l3.forEach(l3 => {
+      if (!l3.raci) return;
+      const touchedRoles = new Set([
+        ...parseRaciField(l3.raci.R),
+        ...parseRaciField(l3.raci.A),
+      ]);
+      touchedRoles.forEach(role => {
+        if (!map[role]) map[role] = [];
+        map[role].push(l3);
+      });
+    });
+  });
+  return map;
+}
+
+// Same equal-weighted atomic-unit rollup as computeStreamStats — an L3
+// with no L4 children counts as one atomic unit using its own mv.
+function computeRoleStats(l3s) {
+  const groupsTouched = new Set();
+  let mixedL3 = 0;
+  const units = [];
+  l3s.forEach(l3 => {
+    groupsTouched.add(l3.code.split('.').slice(0, 2).join('.'));
+    if (l3.mixed) mixedL3++;
+    if (l3.l4 && l3.l4.length) l3.l4.forEach(l4 => units.push(l4.mv));
+    else units.push(l3.mv);
+  });
+  const n = units.length;
+  const mv = n ? [0, 1, 2, 3, 4].map(i => Math.round(units.reduce((s, x) => s + x[i], 0) / n)) : [0, 0, 0, 0, 0];
+  return { l3count: l3s.length, groupsTouched: groupsTouched.size, mixedL3, activityUnits: n, mv };
+}
+
+// Flattens a role's touched L3s into single-pattern leaf rows for the
+// expand view: a single-pattern L3 is shown as-is; a mixed L3 is expanded
+// to its L4 children instead, since a role row (like an L2 group) should
+// never expand into a row that itself still needs a mix bar.
+function roleLeafRows(l3s) {
+  const rows = [];
+  l3s.forEach(l3 => {
+    if (l3.mixed && l3.l4 && l3.l4.length) {
+      l3.l4.forEach(l4 => rows.push({ code: l4.code, name: l4.name, pattern: l4.pattern, mv: l4.mv }));
+    } else {
+      rows.push({ code: l3.code, name: l3.name, pattern: l3.pattern, mv: l3.mv });
+    }
+  });
+  rows.sort((a, b) => a.code.localeCompare(b.code, undefined, { numeric: true }));
+  return rows;
+}
+
+function renderRoleImpactTable(cat) {
+  const tbody = document.getElementById('role-impact-table-body');
+  if (!tbody) return;
+  if (!cat.lenses) { tbody.innerHTML = ''; return; }
+  const roleL3Map = computeRoleL3Map(cat);
+  const tiers = ["Executive", "Managerial", "Operational"];
+  let html = '';
+  tiers.forEach(tier => {
+    const rolesInTier = ROLE_TAXONOMY.filter(r => r.tier === tier);
+    html += `<tr class="row-l2"><td colspan="8">${tier} Tier</td></tr>`;
+    rolesInTier.forEach(r => {
+      const l3s = roleL3Map[r.name] || [];
+      const stats = computeRoleStats(l3s);
+      const color = ROLE_COLORS[r.name] || { fill: "#F1EFE8", text: "#5F5E5A" };
+      const rowId = 'role-' + r.name.replace(/[^a-zA-Z0-9]/g, '');
+      if (!stats.l3count) {
+        html += `<tr class="row-l3">
+          <td class="indent-l3"><span style="display:inline-block;padding:2px 8px;border-radius:4px;background:${color.fill};color:${color.text};font-weight:600;font-size:11px">${r.name}</span></td>
+          <td style="color:#B8C0CC;font-style:italic;font-size:11px">No R/A touches in current RACI data</td>
+          <td colspan="6" style="text-align:center;color:#B8C0CC">\u2014</td>
+        </tr>`;
+        return;
+      }
+      const delta = stats.mv[2] - stats.mv[0];
+      html += `<tr class="row-l3 toggle-role" data-role="${rowId}" onclick="toggleRoleRow('${rowId}')" style="cursor:pointer">
+        <td class="indent-l3">
+          <span class="role-toggle-icon" id="icon-${rowId}">+</span>
+          <span style="display:inline-block;padding:2px 8px;border-radius:4px;background:${color.fill};color:${color.text};font-weight:600;font-size:11px;margin-left:4px">${r.name}</span>
+          <span style="color:var(--lgray);font-size:10px;margin-left:6px">${stats.l3count} process${stats.l3count === 1 ? '' : 'es'} · ${stats.groupsTouched} group${stats.groupsTouched === 1 ? '' : 's'}</span>
+        </td>
+        <td>${renderRoleMixBar(l3s)}</td>
+        <td class="col-m1">${stats.mv[0]}%</td>
+        <td class="col-m2">${stats.mv[1]}%</td>
+        <td class="col-m3 mh-m3">${stats.mv[2]}%</td>
+        <td class="col-m4">${stats.mv[3]}%</td>
+        <td class="col-m5">${stats.mv[4]}%</td>
+        <td class="delta-cell">${delta}%</td>
+      </tr>`;
+      roleLeafRows(l3s).forEach(row => {
+        html += `<tr class="row-l4 role-leaf" data-role-parent="${rowId}" style="display:none">
+          <td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">${row.code}</span></span><span class="row-text">${row.name}</span></span></td>
+          <td>${renderPatternMixBar(row)}</td>
+          <td class="col-m1">${row.mv[0]}%</td>
+          <td class="col-m2">${row.mv[1]}%</td>
+          <td class="col-m3 mh-m3">${row.mv[2]}%</td>
+          <td class="col-m4">${row.mv[3]}%</td>
+          <td class="col-m5">${row.mv[4]}%</td>
+          <td class="delta-cell">${row.mv[2] - row.mv[0]}%</td>
+        </tr>`;
+      });
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+function toggleRoleRow(rowId) {
+  const icon = document.getElementById('icon-' + rowId);
+  const collapsed = icon.textContent === '+';
+  icon.textContent = collapsed ? '\u2212' : '+';
+  document.querySelectorAll(`tr.role-leaf[data-role-parent="${rowId}"]`).forEach(r => {
+    r.style.display = collapsed ? '' : 'none';
+  });
+}
+
 // ── Lens tabs ────────────────────────────────────────────────────────────
 function populateLensTabs(cat) {
   const tabs = document.getElementById('lens-tabs');
+  const viewToggle = document.getElementById('view-toggle');
+  setMainView('process');
   if (!cat.lenses) {
     tabs.style.display = 'none';
+    viewToggle.style.display = 'none';
     showLens('maturity');
     return;
   }
   tabs.style.display = 'flex';
+  viewToggle.style.display = 'flex';
   showLens('maturity');
   renderRaciTable(cat);
   renderDescriptionPanel(cat, 'all');
+  renderRoleImpactTable(cat);
+}
+
+// ── Process View / People View toggle ──────────────────────────────────
+function setMainView(view) {
+  document.getElementById('process-view').style.display = view === 'process' ? '' : 'none';
+  document.getElementById('people-view').style.display = view === 'people' ? '' : 'none';
+  document.getElementById('view-btn-process').classList.toggle('active', view === 'process');
+  document.getElementById('view-btn-people').classList.toggle('active', view === 'people');
+}
+
+function showPeopleLens(name) {
+  document.getElementById('tab-role-impact').classList.toggle('active', name === 'role-impact');
+  document.getElementById('lens-panel-role-impact').classList.toggle('active', name === 'role-impact');
 }
 
 function showLens(name) {
@@ -3795,18 +4089,14 @@ const domainMaturityPdf = {
   '10.0':'hitl_maturity_pcf10_final.pdf', '11.0':'hitl_maturity_pcf11_final.pdf', '12.0':'hitl_maturity_pcf12_final.pdf',
   '13.0':'hitl_maturity_pcf13_final.pdf',
 };
-// Per-value-stream PDFs — only built for domains with dedicated value-stream
-// doc pairs (currently HR/7.0 only). Index-matched to that domain's
-// valueStreams array. Domains without an entry here fall back to the
-// single domainMaturityPdf file regardless of stream selection.
-const domainStreamDesignPdfMap = {
-  '7.0': ['hitl_valuestream_hr_vision_to_strategy_hitl_design_final.pdf','hitl_valuestream_recruit_to_hire_hitl_design_final.pdf','hitl_valuestream_perform_to_grow_hitl_design_final.pdf',
-          'hitl_valuestream_reward_to_retain_hitl_design_final.pdf','hitl_valuestream_move_to_exit_hitl_design_final.pdf',
-          'hitl_valuestream_enable_and_govern_hitl_design_final.pdf'],
+// Domain-wide RACI companion PDF (fallback / "All Processes" default for the
+// RACI Table lens) — only domains with confirmed RACI data have an entry.
+const domainRaciPdf = {
+  '7.0': 'hitl_raci_pcf7_final.pdf',
 };
-// Per-value-stream RACI-only PDFs — used by downloadPDF() when the Value
-// Stream Description lens is active and a specific stream is selected.
-// Index-matched to the same domain's valueStreams array.
+// Per-value-stream RACI-only PDFs — used by downloadPDF() when the RACI
+// Table or Value Stream Profile lens is active and a specific stream is
+// selected. Index-matched to the same domain's valueStreams array.
 const domainStreamRaciPdfMap = {
   '7.0': ['hitl_role_assignment_raci_hr_vision_to_strategy_final.pdf','hitl_role_assignment_raci_recruit_to_hire_final.pdf','hitl_role_assignment_raci_perform_to_grow_final.pdf',
           'hitl_role_assignment_raci_reward_to_retain_final.pdf','hitl_role_assignment_raci_move_to_exit_final.pdf',
@@ -3874,20 +4164,24 @@ function downloadPDF() {
     filename = (streamIdx !== null && profileFiles && profileFiles[streamIdx])
       ? profileFiles[streamIdx]
       : lensPdfMap['Value Stream Profile'];
+  } else if (activeLensName === 'RACI Table') {
+    // Context-aware, same pattern as Value Stream Profile: a specific stream
+    // selected downloads that stream's RACI-only PDF; "All Processes" downloads
+    // the domain-wide RACI companion doc — never the Maturity Table's PDF.
+    const vsSelect = document.getElementById("vs-select");
+    const streamIdx = (vsSelect && vsSelect.value !== 'all') ? parseInt(vsSelect.value, 10) : null;
+    const raciFiles = domainStreamRaciPdfMap[cat.code];
+    filename = (streamIdx !== null && raciFiles && raciFiles[streamIdx])
+      ? raciFiles[streamIdx]
+      : domainRaciPdf[cat.code];
   } else if (activeLensName && lensPdfMap[activeLensName]) {
     filename = lensPdfMap[activeLensName];
   } else {
-    // Maturity Table (default view) — check for a value-stream selection
-    const vsSelect = document.getElementById("vs-select");
-    const vsBar = document.getElementById("vs-bar");
-    let streamIdx = null;
-    if (vsSelect && vsBar && vsBar.style.display !== 'none' && vsSelect.value !== 'all') {
-      streamIdx = parseInt(vsSelect.value, 10);
-    }
-    const streamFiles = domainStreamDesignPdfMap[cat.code];
-    filename = (streamIdx !== null && streamFiles && streamFiles[streamIdx])
-      ? streamFiles[streamIdx]
-      : domainMaturityPdf[cat.code];
+    // Maturity Table (default view). No per-stream Maturity PDF is built —
+    // HITL Design (the doc type that used to serve this) was retired and
+    // consolidated into this lens, so always use the single domain-wide PDF
+    // regardless of value-stream selection.
+    filename = domainMaturityPdf[cat.code];
   }
 
   if (!filename) return;
