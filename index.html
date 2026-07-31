@@ -3716,19 +3716,6 @@ const ROLE_TAXONOMY = [
   { name: "HRIS Analyst", tier: "Operational" },
   { name: "Onboarding Coordinator", tier: "Operational" },
 ];
-// Extends the existing ROLE_COLORS map with the taxonomy roles that never
-// carry an R/A assignment in PCF 7.0 RACI data, so every row still gets a
-// distinct color (only added if not already present, since this file may
-// have grown its own entries for these roles elsewhere).
-const ROLE_COLOR_FALLBACKS = {
-  "SVP Talent Management": { fill: "#F0F7FF", text: "#0D2D4F" },
-  "VP People & Culture":   { fill: "#FFF1E6", text: "#9A3412" },
-  "Director of TA":        { fill: "#CCFBF1", text: "#0F766E" },
-  "L&D Specialist":        { fill: "#FAE8FF", text: "#86198F" },
-};
-Object.keys(ROLE_COLOR_FALLBACKS).forEach(name => {
-  if (!ROLE_COLORS[name]) ROLE_COLORS[name] = ROLE_COLOR_FALLBACKS[name];
-});
 
 // Raw RACI text uses some abbreviated forms inconsistently with the
 // taxonomy's canonical names — normalize to the same 14 roles the
@@ -3825,11 +3812,10 @@ function renderRoleImpactTable(cat) {
     rolesInTier.forEach(r => {
       const l3s = roleL3Map[r.name] || [];
       const stats = computeRoleStats(l3s);
-      const color = ROLE_COLORS[r.name] || { fill: "#F1EFE8", text: "#5F5E5A" };
       const rowId = 'role-' + r.name.replace(/[^a-zA-Z0-9]/g, '');
       if (!stats.l3count) {
         html += `<tr class="row-l3">
-          <td class="indent-l3"><span style="display:inline-block;padding:2px 8px;border-radius:4px;background:${color.fill};color:${color.text};font-weight:600;font-size:11px">${r.name}</span></td>
+          <td class="indent-l3"><span class="row-text">${r.name}</span></td>
           <td style="color:#B8C0CC;font-style:italic;font-size:11px">No R/A touches in current RACI data</td>
           <td colspan="6" style="text-align:center;color:#B8C0CC">\u2014</td>
         </tr>`;
@@ -3839,7 +3825,7 @@ function renderRoleImpactTable(cat) {
       html += `<tr class="row-l3 toggle-role" data-role="${rowId}" onclick="toggleRoleRow('${rowId}')" style="cursor:pointer">
         <td class="indent-l3">
           <span class="role-toggle-icon" id="icon-${rowId}">+</span>
-          <span style="display:inline-block;padding:2px 8px;border-radius:4px;background:${color.fill};color:${color.text};font-weight:600;font-size:11px;margin-left:4px">${r.name}</span>
+          <span class="row-text">${r.name}</span>
           <span style="color:var(--lgray);font-size:10px;margin-left:6px">${stats.l3count} process${stats.l3count === 1 ? '' : 'es'} · ${stats.groupsTouched} group${stats.groupsTouched === 1 ? '' : 's'}</span>
         </td>
         <td>${renderRoleMixBar(l3s)}</td>
@@ -3853,7 +3839,7 @@ function renderRoleImpactTable(cat) {
       roleLeafRows(l3s).forEach(row => {
         html += `<tr class="row-l4 role-leaf" data-role-parent="${rowId}" style="display:none">
           <td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">${row.code}</span></span><span class="row-text">${row.name}</span></span></td>
-          <td>${renderPatternMixBar(row)}</td>
+          <td><span class="pat pat-${row.pattern}">${row.pattern}</span></td>
           <td class="col-m1">${row.mv[0]}%</td>
           <td class="col-m2">${row.mv[1]}%</td>
           <td class="col-m3 mh-m3">${row.mv[2]}%</td>
