@@ -584,7 +584,7 @@ tbody td.delta-cell { background: #fff; }
           <button class="lens-tab" id="tab-transition" disabled title="Not yet built — role-by-role research in progress">Role Transition Profile</button>
         </div>
         <div class="lens-panel active" id="lens-panel-role-impact">
-          <div class="lens-note">Derived from the same confirmed RACI data as the Process side's RACI Table — a role's row reflects every L3 process where it holds Responsible or Accountable. Consulted/Informed involvement isn't counted toward a role's pattern mix or maturity rollup, since R/A reflect who does or owns the work, not who's kept in the loop. Click a role to see the specific single-pattern processes driving its mix.</div>
+          <div class="lens-note">Derived from the same confirmed RACI data as the Process side's RACI Table — a role's row reflects every L3 process where it holds Responsible or Accountable. Consulted/Informed involvement isn't counted toward a role's pattern mix or maturity rollup, since R/A reflect who does or owns the work, not who's kept in the loop. Click a role to see the specific single-pattern processes driving its mix. Each role also shows who it reports to and its computed span of control — a first-pass reporting structure, reasoned rather than externally sourced, still awaiting a full confirmation pass.</div>
           <div class="table-wrap">
             <table id="role-impact-table">
               <thead>
@@ -3700,21 +3700,25 @@ function renderRoleMixBar(l3s) {
 // actually changes as a process's pattern automates, not who's kept in
 // the loop. This R/A-only rule is a real methodological choice — flagged
 // to Tim rather than silently assumed, same as prior RACI diagnostic calls.
+// reportsTo: first-pass reporting structure (July 31, 2026) — reasoned inference,
+// not externally sourced, walked through with Tim (one correction made: Compensation
+// & Benefits Manager -> Director of TA). contextDependent flags Director of HR Ops's
+// placement, which Tim called genuinely ambiguous rather than confirmed.
 const ROLE_TAXONOMY = [
-  { name: "CHRO", tier: "Executive" },
-  { name: "SVP Talent Management", tier: "Executive" },
-  { name: "VP People & Culture", tier: "Executive" },
-  { name: "Director of TA", tier: "Managerial" },
-  { name: "Director of L&D", tier: "Managerial" },
-  { name: "HRBP Manager", tier: "Managerial" },
-  { name: "Compensation & Benefits Manager", tier: "Managerial" },
-  { name: "Director of HR Ops", tier: "Managerial" },
-  { name: "HR Generalist", tier: "Operational" },
-  { name: "Recruiter", tier: "Operational" },
-  { name: "L&D Specialist", tier: "Operational" },
-  { name: "Compensation Analyst", tier: "Operational" },
-  { name: "HRIS Analyst", tier: "Operational" },
-  { name: "Onboarding Coordinator", tier: "Operational" },
+  { name: "CHRO", tier: "Executive", reportsTo: null },
+  { name: "SVP Talent Management", tier: "Executive", reportsTo: "CHRO" },
+  { name: "VP People & Culture", tier: "Executive", reportsTo: "CHRO" },
+  { name: "Director of TA", tier: "Managerial", reportsTo: "SVP Talent Management" },
+  { name: "Director of L&D", tier: "Managerial", reportsTo: "SVP Talent Management" },
+  { name: "HRBP Manager", tier: "Managerial", reportsTo: "VP People & Culture" },
+  { name: "Compensation & Benefits Manager", tier: "Managerial", reportsTo: "Director of TA" },
+  { name: "Director of HR Ops", tier: "Managerial", reportsTo: "CHRO", contextDependent: true },
+  { name: "HR Generalist", tier: "Operational", reportsTo: "HRBP Manager" },
+  { name: "Recruiter", tier: "Operational", reportsTo: "Director of TA" },
+  { name: "L&D Specialist", tier: "Operational", reportsTo: "Director of L&D" },
+  { name: "Compensation Analyst", tier: "Operational", reportsTo: "Compensation & Benefits Manager" },
+  { name: "HRIS Analyst", tier: "Operational", reportsTo: "Director of HR Ops" },
+  { name: "Onboarding Coordinator", tier: "Operational", reportsTo: "HRBP Manager" },
 ];
 
 // Raw RACI text uses some abbreviated forms inconsistently with the
@@ -3799,6 +3803,35 @@ function roleLeafRows(l3s) {
   return rows;
 }
 
+// Direct reports = roles whose reportsTo === this role's name. Total span
+// walks the whole subtree (direct + indirect reports), since a role's real
+// span of control includes everyone under it, not just direct reports.
+function computeSpanOfControl(roleName) {
+  const direct = ROLE_TAXONOMY.filter(r => r.reportsTo === roleName).map(r => r.name);
+  const total = new Set();
+  (function collect(name) {
+    ROLE_TAXONOMY.filter(r => r.reportsTo === name).forEach(r => {
+      if (!total.has(r.name)) { total.add(r.name); collect(r.name); }
+    });
+  })(roleName);
+  return { direct: direct.length, total: total.size };
+}
+
+// Renders the reporting-line shown under every role's name in the Role
+// Impact Table — reportsTo target (or "top of the org" for CHRO) plus
+// computed span of control, so this reads correctly even for the 3
+// zero-RACI-touch roles this was built to explain in the first place.
+function reportingLine(r) {
+  const span = computeSpanOfControl(r.name);
+  const reportsToText = r.reportsTo
+    ? `Reports to <strong>${r.reportsTo}</strong>${r.contextDependent ? ' <em>(context-dependent)</em>' : ''}`
+    : 'Top of the org \u00b7 escalates to CEO/Board (outside role catalog)';
+  const spanText = span.direct
+    ? ` \u00b7 ${span.direct} direct report${span.direct === 1 ? '' : 's'}, ${span.total} total in span`
+    : '';
+  return `<div style="color:var(--lgray);font-size:10px;margin-top:2px">${reportsToText}${spanText}</div>`;
+}
+
 function renderRoleImpactTable(cat) {
   const tbody = document.getElementById('role-impact-table-body');
   if (!tbody) return;
@@ -3815,7 +3848,7 @@ function renderRoleImpactTable(cat) {
       const rowId = 'role-' + r.name.replace(/[^a-zA-Z0-9]/g, '');
       if (!stats.l3count) {
         html += `<tr class="row-l3">
-          <td class="indent-l3"><span class="row-text">${r.name}</span></td>
+          <td class="indent-l3"><span class="row-text">${r.name}</span>${reportingLine(r)}</td>
           <td style="color:#B8C0CC;font-style:italic;font-size:11px">No R/A touches in current RACI data</td>
           <td colspan="6" style="text-align:center;color:#B8C0CC">\u2014</td>
         </tr>`;
@@ -3827,6 +3860,7 @@ function renderRoleImpactTable(cat) {
           <span class="role-toggle-icon" id="icon-${rowId}">+</span>
           <span class="row-text">${r.name}</span>
           <span style="color:var(--lgray);font-size:10px;margin-left:6px">${stats.l3count} process${stats.l3count === 1 ? '' : 'es'} · ${stats.groupsTouched} group${stats.groupsTouched === 1 ? '' : 's'}</span>
+          ${reportingLine(r)}
         </td>
         <td>${renderRoleMixBar(l3s)}</td>
         <td class="col-m1">${stats.mv[0]}%</td>
