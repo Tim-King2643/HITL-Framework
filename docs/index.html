@@ -1,1 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Documentation — The Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
 
+/* ── Top banner (matches the dashboard sidebar's brand block) ─────────────── */
+.masthead {
+  background: var(--navy-d); color: #fff; padding: 40px 24px 36px;
+  text-align: center;
+}
+.masthead h1 {
+  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 30px;
+  margin-bottom: 6px;
+}
+.masthead .tagline1 { font-size: 13px; color: #9FC2EE; font-weight: 500; letter-spacing: .02em; margin-bottom: 4px; }
+.masthead .tagline2 { font-size: 13px; color: #6E8CB8; font-style: italic; }
+.masthead nav { margin-top: 22px; }
+.masthead nav a {
+  color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600;
+  margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent;
+}
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: var(--mid, #7B9FD1); }
+
+/* ── Intro ──────────────────────────────────────────────────────────────── */
+.intro { max-width: 760px; margin: 0 auto; padding: 44px 24px 8px; text-align: center; }
+.intro p { font-size: 15px; color: var(--gray); line-height: 1.7; }
+.intro p.lead { font-size: 17px; color: var(--navy); font-style: italic; margin-bottom: 16px; line-height: 1.6; }
+
+/* ── Section groups ─────────────────────────────────────────────────────── */
+.groups { max-width: 1000px; margin: 0 auto; padding: 28px 24px 64px; display: flex; flex-direction: column; gap: 32px; }
+.group { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.group-header { background: var(--navy-l); padding: 18px 26px; border-bottom: 1px solid var(--border); }
+.group-header h2 { font-size: 17px; color: var(--navy-d); font-weight: 700; margin-bottom: 4px; }
+.group-header p { font-size: 13px; color: var(--lgray); }
+.doc-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1px; background: var(--border); }
+.doc-card {
+  background: #fff; padding: 18px 22px; text-decoration: none; display: block;
+  transition: background .12s;
+}
+.doc-card:hover { background: var(--navy-l); }
+.doc-card .doc-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.doc-card .doc-desc { font-size: 12px; color: var(--lgray); line-height: 1.5; }
+.doc-card.disabled { cursor: default; }
+.doc-card.disabled:hover { background: #fff; }
+.doc-card.disabled .doc-title { color: #B8C0CC; }
+.doc-card.disabled .badge {
+  display: inline-block; margin-left: 8px; font-size: 9px; font-weight: 700; letter-spacing: .04em;
+  color: #B8873F; background: #FEF3C7; border-radius: 3px; padding: 1px 6px; vertical-align: middle;
+}
+.doc-card .filetype {
+  display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .04em;
+  color: var(--navy); background: var(--navy-l); border-radius: 3px; padding: 1px 6px; margin-left: 6px; vertical-align: middle;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+footer { text-align: center; padding: 0 24px 48px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <h1>The Human-AI Partnership Framework</h1>
+  <div class="tagline1">HUMAN-AI PARTNERSHIP FRAMEWORK</div>
+  <div class="tagline2">Where human judgment belongs</div>
+  <nav>
+    <a href="index.html" class="active">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+  </nav>
+</div>
+
+<div class="intro">
+  <p class="lead">HITL — Human-in-the-Loop — as an organizational design standard, not a safety checkpoint.</p>
+  <p>Everything below is the written record behind the interactive dashboard: the methodology itself, how it plays out across a real business domain, and what it means for the people doing the work. Start with Core Methodology if you're new here.</p>
+</div>
+
+<div class="groups">
+
+  <div class="group">
+    <div class="group-header">
+      <h2>Core Methodology</h2>
+      <p>The conceptual foundation — read these first.</p>
+    </div>
+    <div class="doc-list">
+      <a class="doc-card disabled" href="#" onclick="return false;">
+        <div class="doc-title">The HITL Design Methodology <span class="badge">COMING SOON</span></div>
+        <div class="doc-desc">The full methodology: the HITL Stack, the five pattern types, the ratio methodology, and the governance model.</div>
+      </a>
+      <a class="doc-card disabled" href="#" onclick="return false;">
+        <div class="doc-title">Understanding the HITL Maturity Scale <span class="badge">COMING SOON</span></div>
+        <div class="doc-desc">Why human involvement is measured on a five-point scale (M1–M5) — and why the goal isn't the top of it.</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-header">
+      <h2>Business Side — PCF 7.0 Value Streams</h2>
+      <p>Human Resources, mapped end to end across six value streams.</p>
+    </div>
+    <div class="doc-list">
+      <a class="doc-card" href="../pdfs/hitl_valuestream_hr_vision_to_strategy_pcf7_final.pdf">
+        <div class="doc-title">HR Vision-to-Strategy <span class="filetype">PDF</span></div>
+        <div class="doc-desc">PCF 7.1 · Set HR direction & workforce strategy</div>
+      </a>
+      <a class="doc-card" href="../pdfs/hitl_valuestream_recruit_to_hire_pcf7_final.pdf">
+        <div class="doc-title">Recruit-to-Hire <span class="filetype">PDF</span></div>
+        <div class="doc-desc">PCF 7.2 · Acquire talent</div>
+      </a>
+      <a class="doc-card" href="../pdfs/hitl_valuestream_perform_to_grow_pcf7_final.pdf">
+        <div class="doc-title">Perform-to-Grow <span class="filetype">PDF</span></div>
+        <div class="doc-desc">PCF 7.3 · Develop talent</div>
+      </a>
+      <a class="doc-card" href="../pdfs/hitl_valuestream_reward_to_retain_pcf7_final.pdf">
+        <div class="doc-title">Reward-to-Retain <span class="filetype">PDF</span></div>
+        <div class="doc-desc">PCF 7.5 · Reward & retain talent</div>
+      </a>
+      <a class="doc-card" href="../pdfs/hitl_valuestream_move_to_exit_pcf7_final.pdf">
+        <div class="doc-title">Move-to-Exit <span class="filetype">PDF</span></div>
+        <div class="doc-desc">PCF 7.6 · Transition talent</div>
+      </a>
+      <a class="doc-card" href="../pdfs/hitl_valuestream_enable_and_govern_pcf7_final.pdf">
+        <div class="doc-title">Enable & Govern <span class="filetype">PDF</span></div>
+        <div class="doc-desc">PCF 7.4, 7.7, 7.8 · Cross-cutting — compliance, data, communication</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-header">
+      <h2>People Side — Role Transition Profiles</h2>
+      <p>What AI-driven maturity means for the person in each role, not just the process.</p>
+    </div>
+    <div class="doc-list">
+      <a class="doc-card disabled" href="#" onclick="return false;">
+        <div class="doc-title">Organizational Role Taxonomy <span class="badge">COMING SOON</span></div>
+        <div class="doc-desc">The 14-role catalog, tiers, and reporting structure.</div>
+      </a>
+      <a class="doc-card disabled" href="#" onclick="return false;">
+        <div class="doc-title">Executive Tier <span class="badge">COMING SOON</span></div>
+        <div class="doc-desc">CHRO</div>
+      </a>
+      <a class="doc-card disabled" href="#" onclick="return false;">
+        <div class="doc-title">Managerial Tier <span class="badge">COMING SOON</span></div>
+        <div class="doc-desc">Director of HR Ops, Director of L&amp;D, HRBP Manager, Compensation &amp; Benefits Manager</div>
+      </a>
+      <a class="doc-card disabled" href="#" onclick="return false;">
+        <div class="doc-title">Operational Tier <span class="badge">COMING SOON</span></div>
+        <div class="doc-desc">HR Generalist, Recruiter, L&amp;D Specialist, Compensation Analyst, HRIS Analyst, Onboarding Coordinator</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect &nbsp;·&nbsp; August 2026<br>
+    Co-developed with Claude (Anthropic)<br>
+    <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
+    &nbsp;·&nbsp; hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>
