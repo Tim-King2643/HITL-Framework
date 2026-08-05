@@ -423,7 +423,7 @@ tbody td.delta-cell { background: #fff; }
     </li>
   </ul>
   <div style="height:1px;background:rgba(255,255,255,.1);margin:0 12px 8px"></div>
-  <div class="sidebar-section">APQC PCF v8.0 — All Categories</div>
+  <div class="sidebar-section">APQC PCF v8.0 — All Domains</div>
   <ul class="sidebar-nav" id="sidebar-nav"></ul>
 
 
@@ -524,12 +524,12 @@ tbody td.delta-cell { background: #fff; }
         <button class="lens-tab" id="tab-description" onclick="showLens('description')" style="margin-left:auto">Value Stream Profile</button>
       </div>
       <div class="lens-panel active" id="lens-panel-maturity">
-      <div class="lens-note">Full APQC PCF v8.0 hierarchy — every L4 activity rolled up through L3 process, L2 process group, and L1 category — at five HITL maturity levels from Undesigned (M1) through Leading (M5). Mixed-pattern L3 rows reflect an equal-weighted rollup of their real L4 children rather than a single forced classification.</div>
+      <div class="lens-note">Full APQC PCF v8.0 hierarchy — every L4 activity rolled up through L3 process, L2 process group, and L1 domain — at five HITL maturity levels from Undesigned (M1) through Leading (M5). Mixed-pattern L3 rows reflect an equal-weighted rollup of their real L4 children rather than a single forced classification.</div>
       <div class="table-wrap">
         <table id="main-table">
           <thead>
             <tr>
-              <th class="th-bottom">L1-Category/L2-Process Group/L3-Process/L4-Activity</th>
+              <th class="th-bottom">L1-Domain/L2-Process Group/L3-Process/L4-Activity</th>
               <th class="th-bottom">Pattern</th>
               <th class="col-m1">M1<br><small>Undesigned</small></th>
               <th class="col-m2">M2<br><small>Emerging</small></th>
@@ -565,7 +565,7 @@ tbody td.delta-cell { background: #fff; }
           <table id="raci-main-table">
             <thead>
               <tr>
-                <th class="th-bottom">L1-Category/L2-Process Group/L3-Process/L4-Activity</th>
+                <th class="th-bottom">L1-Domain/L2-Process Group/L3-Process/L4-Activity</th>
                 <th class="th-bottom">Pattern</th>
                 <th class="th-bottom">R — Responsible</th>
                 <th class="th-bottom" style="text-align:center">★<br>A — Accountable</th>
@@ -579,7 +579,7 @@ tbody td.delta-cell { background: #fff; }
         <div class="lens-empty" id="raci-empty" style="display:none">RACI data for this domain hasn't been built yet — currently available for PCF 7.0 (Develop and Manage Human Resources) only.</div>
       </div>
       <div class="lens-panel" id="lens-panel-description">
-        <div class="lens-note">Built strictly from the Dashboard's own PCF Category/Group/Process/Activity hierarchy and maturity data — no Navigator step names or Navigator-derived content in this view.</div>
+        <div class="lens-note">Built strictly from the Dashboard's own PCF Domain/Group/Process/Activity hierarchy and maturity data — no Navigator step names or Navigator-derived content in this view.</div>
         <div id="description-grid" class="description-grid"></div>
       </div>
       </div>
@@ -3117,10 +3117,10 @@ function renderAbout() {
           Every process in the enterprise has an optimal human/AI balance. Most organizations are letting that balance shift by default — driven by tool availability, cost pressure, and urgency — rather than by deliberate design. This framework introduces a structured methodology for designing, measuring, and governing the optimal level of human involvement at every level of the capability hierarchy.
         </p>
         <p style="font-size:14px;color:#444;line-height:1.8;margin-bottom:20px">
-          Applied here to all 13 categories of the APQC Process Classification Framework v8.0, it produces measurable HITL maturity ratios from L4 activity through L3 process and L2 process group, up to L1 category — at five maturity levels from Undesigned (M1) through Leading (M5). Mixed-pattern L3 processes are rolled up transparently from their real L4 children rather than force-classified to a single pattern.
+          Applied here to all 13 domains of the APQC Process Classification Framework v8.0, it produces measurable HITL maturity ratios from L4 activity through L3 process and L2 process group, up to L1 domain — at five maturity levels from Undesigned (M1) through Leading (M5). Mixed-pattern L3 processes are rolled up transparently from their real L4 children rather than force-classified to a single pattern.
         </p>
         <p style="font-size:14px;color:#444;line-height:1.8;margin-bottom:20px">
-          The central finding is consistent across all 13 categories: organizations are running <strong>18-20 percentage points more human involvement than HITL design intent</strong> at every level of the capability hierarchy. That gap is the AI convergence opportunity — measurable, prioritizable, and governable.
+          The central finding is consistent across all 13 domains: organizations are running <strong>18-20 percentage points more human involvement than HITL design intent</strong> at every level of the capability hierarchy. That gap is the AI convergence opportunity — measurable, prioritizable, and governable.
         </p>
         <p style="font-size:14px;color:#444;line-height:1.8;margin-bottom:28px">
           Beyond the raw taxonomy, select domains now expose a <strong>value-stream lens</strong> — HR, Supply Chain, Finance, and others — that regroups the same underlying L4 data around the end-to-end flows a business leader actually recognizes, without changing a single underlying number.
@@ -3136,7 +3136,7 @@ function renderAbout() {
           <div style="display:flex;gap:16px;flex-wrap:wrap">
             <a href="#" onclick="render(0);return false;" style="flex:1;min-width:220px;display:block;padding:16px 18px;background:#fff;border:1px solid #DDE3EE;border-radius:8px;text-decoration:none;transition:border-color .15s">
               <p style="font-size:13px;font-weight:700;color:#1B4F8A;margin-bottom:4px">13 PCF Capability Domains</p>
-              <p style="font-size:12px;color:#888;line-height:1.6;margin:0">Browse HITL maturity ratios across every APQC PCF v8.0 category — full L1→L2→L3→L4 hierarchy, from L1 category down to individual APQC activity.</p>
+              <p style="font-size:12px;color:#888;line-height:1.6;margin:0">Browse HITL maturity ratios across every APQC PCF v8.0 domain — full L1→L2→L3→L4 hierarchy, from L1 domain down to individual APQC activity.</p>
             </a>
             <a href="#" onclick="render(6); document.getElementById('vs-select').value='0'; applyValueStream('0'); return false;" style="flex:1;min-width:220px;display:block;padding:16px 18px;background:#fff;border:1px solid #DDE3EE;border-radius:8px;text-decoration:none;transition:border-color .15s">
               <p style="font-size:13px;font-weight:700;color:#1B4F8A;margin-bottom:4px">Value Stream Views</p>
@@ -3169,7 +3169,7 @@ function render(idx) {
   document.querySelector("#main-table thead").style.display = "";
   // Deactivate about item
   document.getElementById("about-nav-item").classList.remove("active");
-  // Restore maturity pills and PDF button to category-page behavior
+  // Restore maturity pills and PDF button to domain-page behavior
   document.getElementById("topbar-pills").style.display = "flex";
   const catBtn = document.getElementById("download-pdf-btn");
   catBtn.style.display = "";
@@ -4166,7 +4166,7 @@ function updateDownloadPdfState() {
 }
 
 function downloadPDF() {
-  // Guard: button is hidden on About page, but skip safely if no category is active
+  // Guard: button is hidden on About page, but skip safely if no domain is active
   if (document.getElementById('about-nav-item').classList.contains('active')) return;
   // Guard: no valid PDF exists for Value Stream Profile + All Processes (see updateDownloadPdfState)
   const btn = document.getElementById('download-pdf-btn');
