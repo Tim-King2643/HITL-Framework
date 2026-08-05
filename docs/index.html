@@ -50,12 +50,13 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .group-header { background: var(--navy-l); padding: 18px 26px; border-bottom: 1px solid var(--border); }
 .group-header h2 { font-size: 17px; color: var(--navy-d); font-weight: 700; margin-bottom: 4px; }
 .group-header p { font-size: 13px; color: var(--lgray); }
-.doc-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1px; background: var(--border); }
+.doc-list { display: flex; flex-wrap: wrap; gap: 12px; padding: 16px 18px 20px; }
 .doc-card {
-  background: #fff; padding: 18px 22px; text-decoration: none; display: block;
-  transition: background .12s;
+  flex: 1 1 260px; background: #fff; border: 1px solid var(--border); border-radius: 8px;
+  padding: 18px 22px; text-decoration: none; display: block;
+  transition: background .12s, border-color .12s;
 }
-.doc-card:hover { background: var(--navy-l); }
+.doc-card:hover { background: var(--navy-l); border-color: #B8CCE8; }
 .doc-card .doc-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
 .doc-card .doc-desc { font-size: 12px; color: var(--lgray); line-height: 1.5; }
 .doc-card.disabled { cursor: default; }
