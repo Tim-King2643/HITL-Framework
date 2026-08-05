@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CHRO — Role Transition Profile — The Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B4F8A; --navy-d: #0D2D4F; --navy-l: #EEF3FA; --dark: #0D1B2A;
+  --gray: #444; --lgray: #888; --bg: #F4F6FB; --border: #DDE3EE;
+  --c-dec:#1B4F8A; --bg-dec:#EEF3FA; --c-kno:#534AB7; --bg-kno:#F3F0FE;
+  --c-doc:#0369A1; --bg-doc:#E0F2FE; --c-tra:#166534; --bg-tra:#DCFCE7;
+  --c-exc:#991B1B; --bg-exc:#FEE2E2;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); }
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 4px; }
+.masthead .tagline { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+.breadcrumb { max-width: 860px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
+.breadcrumb a { color: var(--navy); text-decoration: none; }
+.doc { max-width: 860px; margin: 0 auto; padding: 24px 24px 80px; }
+.doc h1.title { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--navy-d); margin: 8px 0 6px; }
+.doc .subtitle { font-size: 14px; color: var(--lgray); font-style: italic; margin-bottom: 28px; }
+.doc h2 { font-size: 20px; color: var(--navy-d); font-weight: 700; margin: 34px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
+.doc p { font-size: 14.5px; line-height: 1.75; color: var(--gray); margin-bottom: 14px; }
+.doc p.caption { font-size: 12.5px; color: var(--lgray); margin-bottom: 16px; }
+.doc p.framework-connection { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 0 6px 6px 0; padding: 14px 18px; font-size: 13.5px; color: #333; }
+.doc ul.skills { margin: 0 0 16px 0; padding: 0; list-style: none; }
+.doc ul.skills li { font-size: 14.5px; line-height: 1.7; color: var(--gray); margin-bottom: 8px; padding-left: 18px; position: relative; }
+.doc ul.skills li::before { content: "—"; position: absolute; left: 0; color: var(--navy); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 12.5px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 7px 8px; font-size: 11px; }
+.mh { font-weight: 400; font-size: 9px; display:block; opacity:.85; }
+td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.detail-table td.stat, .detail-table th { text-align: center; }
+.detail-table td.pcf { font-family: 'DM Mono', monospace; color: var(--navy); font-size: 11.5px; }
+.detail-table tr.l3-row td { background: #E8EEF7; font-weight: 700; color: var(--navy-d); }
+.detail-table tr.l3-row td.stat { color: var(--navy); }
+.detail-table tr.l4-row td.act { padding-left: 18px; color: var(--gray); font-weight: 400; }
+.detail-table td.m3 { background: #D6E8FF; font-weight: 700; color: var(--navy); }
+.detail-table tr.l3-row td.m3 { background: #C4DCFF; }
+.detail-table td.delta { color: #B45309; }
+.pat-badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+.mixbar { display: flex; height: 14px; width: 100%; border-radius: 3px; overflow: hidden; }
+.mixbar span { display: block; height: 100%; }
+.legend { font-size: 11.5px; color: var(--gray); margin: 10px 0 4px; line-height: 1.9; }
+.legend .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+.snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0 20px; }
+.snap-box { border: 1px solid #7AAED6; border-radius: 6px; padding: 12px 14px; background: #fff; }
+.snap-label { font-size: 12px; color: var(--lgray); margin-bottom: 4px; }
+.snap-value { font-size: 20px; font-weight: 700; color: var(--navy); font-family: 'DM Mono', monospace; }
+.scope-callout { background: #FEF3C7; border-top: 3px solid #F59E0B; border-radius: 4px; padding: 14px 18px; margin: 18px 0; }
+.scope-callout .label { font-size: 12px; font-weight: 700; color: #92400E; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 6px; }
+.scope-callout p { color: #333; font-size: 13.5px; margin-bottom: 0; }
+.prog-table th:first-child { background: var(--navy-d); }
+.prog-table td.rowlabel { font-weight: 700; color: var(--navy-d); background: var(--navy-l); width: 14%; }
+tr:nth-child(even) td { background: #FAFBFD; }
+.detail-table tr.l3-row:nth-child(even) td, .detail-table tr.l4-row:nth-child(even) td { background: inherit; }
+.detail-table tbody tr.l4-row td { background: #fff; }
+.detail-table tbody tr.l4-row:nth-child(odd) td { background: #FAFBFD; }
+p.sources { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 14px; }
+footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+.crosslink { display: block; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 24px 0; text-decoration: none; }
+.crosslink .ct { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.crosslink .cd { font-size: 12px; color: var(--lgray); }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <h1>The Human-AI Partnership Framework</h1>
+  <div class="tagline">Where human judgment belongs</div>
+  <nav>
+    <a href="index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+  </nav>
+</div>
+
+<div class="breadcrumb"><a href="index.html">Documentation</a> / <a href="role_taxonomy.html">People Side</a> / CHRO</div>
+
+<div class="doc">
+  <h1 class="title">CHRO — Role Transition Profile</h1>
+  <p class="subtitle">Executive Tier &middot; PCF 7.1.1 Develop Human Resources Strategy</p>
+
+  <h2>Role Impact Snapshot</h2><p class="caption">Computed from PCF 7.0's confirmed RACI data using the Responsible/Accountable touch rule.</p><div class="snapshot-grid"><div class="snap-box"><div class="snap-label">L3 processes touched</div><div class="snap-value">1</div></div><div class="snap-box"><div class="snap-label">L4 activity units</div><div class="snap-value">10</div></div><div class="snap-box"><div class="snap-label">Process groups spanned</div><div class="snap-value">1 of 8</div></div><div class="snap-box"><div class="snap-label">Aggregate M1 → M3</div><div class="snap-value">82% → 60%</div></div><div class="snap-box"><div class="snap-label">Convergence gap</div><div class="snap-value">-22 pts</div></div><div class="snap-box"><div class="snap-label">Dominant pattern</div><div class="snap-value">Knowledge (80%)</div></div></div><p>The CHRO holds Accountable on PCF 7.1.1 (Develop human resources strategy) — the only L3 process in PCF 7.0 currently modeled as Executive-tier Accountable. Every other Executive- and Managerial-tier role in the domain sits below this one in scope.</p><h2>Role Impact Profile — Full Detail</h2><p>7.1.1 is itself Mixed-pattern — shown below with its own aggregate rollup row (pattern-mix bar), followed by its 10 individual Level 4 activities.</p><table class="detail-table"><colgroup><col style="width:8%"><col style="width:29%"><col style="width:12%"><col style="width:8%"><col style="width:8%"><col style="width:9%"><col style="width:8%"><col style="width:8%"><col style="width:9%"></colgroup><thead><tr><th>PCF</th><th>Activity</th><th>Pattern</th><th>M1<br><span class=mh>UNDESIGNED</span></th><th>M2<br><span class=mh>EMERGING</span></th><th>M3 ★<br><span class=mh>DESIGN INTENT</span></th><th>M4<br><span class=mh>OPTIMIZED</span></th><th>M5<br><span class=mh>LEADING</span></th><th>Δ M1→M3</th></tr></thead><tbody><tr class="l3-row"><td class="pcf">7.1.1</td><td class="act">Develop human resources strategy</td><td class="patcell"><span class="mixbar"><span style="width:80.0%;background:#A79AE0" title="Knowledge (8)"></span><span style="width:20.0%;background:#5EB8E0" title="Document (2)"></span></span></td><td class="stat">82%</td><td class="stat">74%</td><td class="stat m3">60%</td><td class="stat">47%</td><td class="stat">37%</td><td class="stat delta">-22%</td></tr><tr class="l4-row"><td class="pcf">7.1.1.1</td><td class="act">Identify strategic HR needs</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.1.1.2</td><td class="act">Define HR and business function roles and accountability</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.1.1.3</td><td class="act">Determine HR function roles and structure</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.1.1.4</td><td class="act">Determine HR delivery model</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.1.1.5</td><td class="act">Determine HR costs</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.1.1.6</td><td class="act">Establish HR measures</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.1.1.7</td><td class="act">Communicate HR strategies</td><td class="patcell"><span class="pat-badge" style="color:var(--c-doc);background:var(--bg-doc)">Document</span></td><td class="stat">72%</td><td class="stat">58%</td><td class="stat m3">40%</td><td class="stat">28%</td><td class="stat">18%</td><td class="stat delta">-32%</td></tr><tr class="l4-row"><td class="pcf">7.1.1.8</td><td class="act">Develop strategy for HR systems/technologies/tools</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.1.1.9</td><td class="act">Manage employer branding</td><td class="patcell"><span class="pat-badge" style="color:var(--c-doc);background:var(--bg-doc)">Document</span></td><td class="stat">72%</td><td class="stat">58%</td><td class="stat m3">40%</td><td class="stat">28%</td><td class="stat">18%</td><td class="stat delta">-32%</td></tr><tr class="l4-row"><td class="pcf">7.1.1.10</td><td class="act">Design the employee experience</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr></tbody></table><div class="legend"><span class="sw" style="background:var(--c-dec)"></span>Decision — Judgment &amp; Authority &nbsp; <span class="sw" style="background:var(--c-kno)"></span>Knowledge — Synthesis &amp; Interpretation &nbsp; <span class="sw" style="background:var(--c-doc)"></span>Document — Content Generation &nbsp; <span class="sw" style="background:var(--c-tra)"></span>Transaction — Rules-Based Processing<br><span class="sw" style="background:var(--c-exc)"></span>Exception — Non-Standard Resolution &nbsp;·&nbsp; R/A-touch basis, not C/I &nbsp;·&nbsp; Equal-weighted rollup across touched processes &nbsp;·&nbsp; © Timothy P. King &amp; Claude (Anthropic) 2026</div><p>8 of the 10 underlying activities are Knowledge-pattern (judgment, synthesis, and interpretation); the remaining 2 are Document-pattern (communicating strategy and managing employer branding), which is why they show the steepest gap in the set.</p><div class="scope-callout"><div class="label">SCOPE NOTE</div><p>This profile is grounded only in PCF 7.0 (Develop and Manage Human Resources), where RACI data currently exists. A real CHRO's strategic remit extends into PCF 1.0 (Develop Vision and Strategy) — enterprise-level strategy linkage that this framework hasn't modeled yet. Nothing above should be read as a complete picture of the CHRO's AI exposure; it's what's groundable in the data today.</p></div><h2>A Different Shape of Transition</h2><p>HRBP Manager and HRIS Analyst's profiles both told a story about a role's own tasks shifting — gradual expansion for one, genuine reinvention for the other. CHRO's story is structurally different: this is already the most judgment-heavy, least directly automatable role the framework has profiled. The relevant transition isn't what AI takes off the CHRO's own plate — it's that the CHRO becomes accountable for orchestrating the transition happening below, across every other role in the domain.</p><p>Josh Bersin's February 2026 CHRO-specific research frames this directly: as ‘superagents’ consolidate what were previously more than 100 separate HR agents into task families, entire workflow segments across recruiting, performance, coaching, and workforce management, this doesn't reduce HR's importance — it repositions HR leadership as the owner of enterprise-wide AI deployment, not just HR's own.</p><h2>Skills &amp; Competencies</h2><p>Bersin's 2026 CHRO imperatives collapse into three near-term priorities: training teams to use and build with AI, identifying high-value use cases across employee services, recruiting, performance, coaching, and workforce management, and executing deployment strategies that show measurable return.</p><ul class="skills"><li>AI architecture literacy — evaluating and consolidating a coherent, scalable AI ecosystem rather than accumulating point solutions from separate vendors</li><li>Data governance judgment — large language models vary widely in quality; the CHRO's new territory includes data labeling, external validation, and internal data governance, not just tool selection</li><li>Enterprise-scope AI leadership — stepping beyond HR's own function to drive AI adoption for the company more broadly</li><li>Trust and fairness stewardship — as automation intensifies, employee trust, wellbeing, and fairness become a named executive responsibility, not a byproduct of good HR practice</li><li>Talent-density thinking — retiring headcount-growth as the default model in favor of fewer, more capable people supported by AI infrastructure</li></ul><p class="framework-connection"><strong>Framework connection: </strong>These priorities map directly onto the Role Impact Snapshot's single finding — with only one Knowledge/Document-pattern process in scope, the CHRO's own task-level exposure to automation is minimal; the real transition work is enterprise-wide orchestration, not personal task change.</p><h2>Role Progression Framework</h2><p>Structural template adapted from AIHR's HR Business Partner Guide; content sourced from Bersin's 2026 CHRO-specific research, not the template itself.</p><table class="prog-table"><thead><tr><th></th><th>Getting Started</th><th>Established</th><th>Future-Focused</th></tr></thead><tbody><tr><td class="rowlabel">Role focus</td><td>Audit current HR agent/tool sprawl across employee services, recruiting, performance, coaching, and workforce management</td><td>Consolidate fragmented point-solution agents into a coherent, unified AI architecture</td><td>Lead AI-driven leadership development, including ‘digital twin’ coaching built from current or past leaders' own patterns</td></tr><tr><td class="rowlabel">Key activities</td><td>Stand up team-wide AI training rather than leaving adoption to individual initiative; identify 2–3 high-value use cases worth a real deployment</td><td>Enable a ‘citizen developer’ model; begin formal workforce planning for job transformation (new titles emerging, not just roles disappearing)</td><td>Shift L&amp;D from static courseware to continuously generated, personalized learning; own the company's readiness for a coming HR vendor market reshuffle</td></tr><tr><td class="rowlabel">Skills to build</td><td>Baseline AI/agent literacy — what superagents actually consolidate and why</td><td>Architecture-level thinking; change leadership for a citizen-developer culture shift</td><td>Enterprise-level AI transformation leadership, extending past HR's own boundaries</td></tr><tr><td class="rowlabel">Common pitfalls</td><td>Treating this as an HR-only initiative — Bersin is explicit that the highest-value move is stepping beyond HR's own function</td><td>Under-investing in data quality and governance while over-investing in agent count — volume without validation creates real litigation exposure, per Bersin</td><td>Treating ‘future-focused’ as optional — Bersin frames 2026 as the year this shift is already underway, not a future scenario to plan toward</td></tr></tbody></table><p class="sources">Source: Josh Bersin, “2026 imperatives for the AI-aware CHRO: Preparing for the superagent,” HRZone, February 18, 2026. Fetched and read in full for this profile, not paraphrased from a snippet.</p>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;&middot;&nbsp; Human Enterprise Architect &nbsp;&middot;&nbsp; August 2026<br>
+    Co-developed with Claude (Anthropic)<br>
+    <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
+    &nbsp;&middot;&nbsp; hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>

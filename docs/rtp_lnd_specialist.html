@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>L&amp;D Specialist — Role Transition Profile — The Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B4F8A; --navy-d: #0D2D4F; --navy-l: #EEF3FA; --dark: #0D1B2A;
+  --gray: #444; --lgray: #888; --bg: #F4F6FB; --border: #DDE3EE;
+  --c-dec:#1B4F8A; --bg-dec:#EEF3FA; --c-kno:#534AB7; --bg-kno:#F3F0FE;
+  --c-doc:#0369A1; --bg-doc:#E0F2FE; --c-tra:#166534; --bg-tra:#DCFCE7;
+  --c-exc:#991B1B; --bg-exc:#FEE2E2;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); }
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 4px; }
+.masthead .tagline { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+.breadcrumb { max-width: 860px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
+.breadcrumb a { color: var(--navy); text-decoration: none; }
+.doc { max-width: 860px; margin: 0 auto; padding: 24px 24px 80px; }
+.doc h1.title { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--navy-d); margin: 8px 0 6px; }
+.doc .subtitle { font-size: 14px; color: var(--lgray); font-style: italic; margin-bottom: 28px; }
+.doc h2 { font-size: 20px; color: var(--navy-d); font-weight: 700; margin: 34px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
+.doc p { font-size: 14.5px; line-height: 1.75; color: var(--gray); margin-bottom: 14px; }
+.doc p.caption { font-size: 12.5px; color: var(--lgray); margin-bottom: 16px; }
+.doc p.framework-connection { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 0 6px 6px 0; padding: 14px 18px; font-size: 13.5px; color: #333; }
+.doc ul.skills { margin: 0 0 16px 0; padding: 0; list-style: none; }
+.doc ul.skills li { font-size: 14.5px; line-height: 1.7; color: var(--gray); margin-bottom: 8px; padding-left: 18px; position: relative; }
+.doc ul.skills li::before { content: "—"; position: absolute; left: 0; color: var(--navy); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 12.5px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 7px 8px; font-size: 11px; }
+.mh { font-weight: 400; font-size: 9px; display:block; opacity:.85; }
+td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.detail-table td.stat, .detail-table th { text-align: center; }
+.detail-table td.pcf { font-family: 'DM Mono', monospace; color: var(--navy); font-size: 11.5px; }
+.detail-table tr.l3-row td { background: #E8EEF7; font-weight: 700; color: var(--navy-d); }
+.detail-table tr.l3-row td.stat { color: var(--navy); }
+.detail-table tr.l4-row td.act { padding-left: 18px; color: var(--gray); font-weight: 400; }
+.detail-table td.m3 { background: #D6E8FF; font-weight: 700; color: var(--navy); }
+.detail-table tr.l3-row td.m3 { background: #C4DCFF; }
+.detail-table td.delta { color: #B45309; }
+.pat-badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+.mixbar { display: flex; height: 14px; width: 100%; border-radius: 3px; overflow: hidden; }
+.mixbar span { display: block; height: 100%; }
+.legend { font-size: 11.5px; color: var(--gray); margin: 10px 0 4px; line-height: 1.9; }
+.legend .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+.snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0 20px; }
+.snap-box { border: 1px solid #7AAED6; border-radius: 6px; padding: 12px 14px; background: #fff; }
+.snap-label { font-size: 12px; color: var(--lgray); margin-bottom: 4px; }
+.snap-value { font-size: 20px; font-weight: 700; color: var(--navy); font-family: 'DM Mono', monospace; }
+.scope-callout { background: #FEF3C7; border-top: 3px solid #F59E0B; border-radius: 4px; padding: 14px 18px; margin: 18px 0; }
+.scope-callout .label { font-size: 12px; font-weight: 700; color: #92400E; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 6px; }
+.scope-callout p { color: #333; font-size: 13.5px; margin-bottom: 0; }
+.prog-table th:first-child { background: var(--navy-d); }
+.prog-table td.rowlabel { font-weight: 700; color: var(--navy-d); background: var(--navy-l); width: 14%; }
+tr:nth-child(even) td { background: #FAFBFD; }
+.detail-table tr.l3-row:nth-child(even) td, .detail-table tr.l4-row:nth-child(even) td { background: inherit; }
+.detail-table tbody tr.l4-row td { background: #fff; }
+.detail-table tbody tr.l4-row:nth-child(odd) td { background: #FAFBFD; }
+p.sources { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 14px; }
+footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+.crosslink { display: block; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 24px 0; text-decoration: none; }
+.crosslink .ct { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.crosslink .cd { font-size: 12px; color: var(--lgray); }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <h1>The Human-AI Partnership Framework</h1>
+  <div class="tagline">Where human judgment belongs</div>
+  <nav>
+    <a href="index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+  </nav>
+</div>
+
+<div class="breadcrumb"><a href="index.html">Documentation</a> / <a href="role_taxonomy.html">People Side</a> / L&amp;D Specialist</div>
+
+<div class="doc">
+  <h1 class="title">L&amp;D Specialist — Role Transition Profile</h1>
+  <p class="subtitle">Operational Tier &middot; 2 PCF processes, entirely within Perform-to-Grow</p>
+
+  <h2>Role Impact Snapshot</h2><p class="caption">Computed from PCF 7.0's confirmed RACI data using the Responsible/Accountable touch rule.</p><div class="snapshot-grid"><div class="snap-box"><div class="snap-label">L3 processes touched</div><div class="snap-value">2</div></div><div class="snap-box"><div class="snap-label">L4 activity units</div><div class="snap-value">11</div></div><div class="snap-box"><div class="snap-label">Process groups spanned</div><div class="snap-value">1 of 8</div></div><div class="snap-box"><div class="snap-label">Aggregate M1 → M3</div><div class="snap-value">79% → 58%</div></div><div class="snap-box"><div class="snap-label">Convergence gap</div><div class="snap-value">-21 pts</div></div><div class="snap-box"><div class="snap-label">Dominant pattern</div><div class="snap-value">Knowledge (64%)</div></div></div><p>L&amp;D Specialist touches the exact same two L3 processes as Director of L&amp;D — 7.3.3 (career development) and 7.3.4 (training and development) — but on the execution side (R: “skill execution” / “execution”) rather than the accountability side. It's the clearest manager-and-specialist pairing on the same real work found in this framework so far.</p><h2>Role Impact Profile — Full Detail</h2><p>Each Mixed-pattern process is shown with its own aggregate rollup row (a proportional pattern-mix bar), followed by its individual Level 4 activities.</p><table class="detail-table"><colgroup><col style="width:8%"><col style="width:29%"><col style="width:12%"><col style="width:8%"><col style="width:8%"><col style="width:9%"><col style="width:8%"><col style="width:8%"><col style="width:9%"></colgroup><thead><tr><th>PCF</th><th>Activity</th><th>Pattern</th><th>M1<br><span class=mh>UNDESIGNED</span></th><th>M2<br><span class=mh>EMERGING</span></th><th>M3 ★<br><span class=mh>DESIGN INTENT</span></th><th>M4<br><span class=mh>OPTIMIZED</span></th><th>M5<br><span class=mh>LEADING</span></th><th>Δ M1→M3</th></tr></thead><tbody><tr class="l3-row"><td class="pcf">7.3.3</td><td class="act">Manage employee career development</td><td class="patcell"><span class="mixbar"><span style="width:50.0%;background:#A79AE0" title="Knowledge (2)"></span><span style="width:25.0%;background:#6FC48C" title="Transaction (1)"></span><span style="width:25.0%;background:#7B9FD1" title="Decision (1)"></span></span></td><td class="stat">80%</td><td class="stat">73%</td><td class="stat m3">61%</td><td class="stat">50%</td><td class="stat">40%</td><td class="stat delta">-19%</td></tr><tr class="l4-row"><td class="pcf">7.3.3.1</td><td class="act">Define employee development guidelines</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.3.3.2</td><td class="act">Develop employee career plans and career paths</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.3.3.3</td><td class="act">Manage employee skill and competency development</td><td class="patcell"><span class="pat-badge" style="color:var(--c-tra);background:var(--bg-tra)">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.3.3.4</td><td class="act">Establish succession plans</td><td class="patcell"><span class="pat-badge" style="color:var(--c-dec);background:var(--bg-dec)">Decision</span></td><td class="stat">92%</td><td class="stat">88%</td><td class="stat m3">80%</td><td class="stat">72%</td><td class="stat">65%</td><td class="stat delta">-12%</td></tr><tr class="l3-row"><td class="pcf">7.3.4</td><td class="act">Develop and train employees</td><td class="patcell"><span class="mixbar"><span style="width:71.4%;background:#A79AE0" title="Knowledge (5)"></span><span style="width:28.6%;background:#6FC48C" title="Transaction (2)"></span></span></td><td class="stat">78%</td><td class="stat">69%</td><td class="stat m3">56%</td><td class="stat">43%</td><td class="stat">33%</td><td class="stat delta">-22%</td></tr><tr class="l4-row"><td class="pcf">7.3.4.1</td><td class="act">Align organizational development needs to employees</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.3.4.2</td><td class="act">Define employees competencies and skills</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.3.4.3</td><td class="act">Align learning programs with competencies and skills</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.3.4.4</td><td class="act">Establish training needs by analysis of required and available skills</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.3.4.5</td><td class="act">Develop, conduct, and manage employee training programs</td><td class="patcell"><span class="pat-badge" style="color:var(--c-tra);background:var(--bg-tra)">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.3.4.6</td><td class="act">Manage examinations and certifications</td><td class="patcell"><span class="pat-badge" style="color:var(--c-tra);background:var(--bg-tra)">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.3.4.7</td><td class="act">Monitor and evaluate learning programs</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr></tbody></table><div class="legend"><span class="sw" style="background:var(--c-dec)"></span>Decision — Judgment &amp; Authority &nbsp; <span class="sw" style="background:var(--c-kno)"></span>Knowledge — Synthesis &amp; Interpretation &nbsp; <span class="sw" style="background:var(--c-doc)"></span>Document — Content Generation &nbsp; <span class="sw" style="background:var(--c-tra)"></span>Transaction — Rules-Based Processing<br><span class="sw" style="background:var(--c-exc)"></span>Exception — Non-Standard Resolution &nbsp;·&nbsp; R/A-touch basis, not C/I &nbsp;·&nbsp; Equal-weighted rollup across touched processes &nbsp;·&nbsp; © Timothy P. King &amp; Claude (Anthropic) 2026</div><p>This is the smallest role footprint profiled after CHRO — just 11 activity units — but with a real Knowledge majority (64%) rather than being purely execution-heavy. The role inherits the same Decision-pattern activity as Director of L&amp;D (7.3.3.4, Establish succession plans) simply by touching the L3 it sits inside.</p><h2>Delivery-Layer Shape of Transition</h2><p>Director of L&amp;D's transition story was about the operating model — replacing SCORM-based infrastructure with AI-native content systems. L&amp;D Specialist's story is one level closer to the work itself: this is the role actually delivering, conducting, and grading the training Director of L&amp;D's strategy sets direction for.</p><p>Josh Bersin's March 2026 market scan of the corporate training vendor landscape is unusually concrete about exactly this layer. He documents dozens of vendors (Arist, Uplimit, Sana, Docebo, Degreed, and others) racing to automate content delivery, roleplay coaching, and certification — including an “AI Performance Consultant” that can interview operational staff, identify problems, and build content to address them, which he calls “the first big step toward autonomous corporate learning.” But he's equally explicit about what doesn't disappear: platforms like Uplimit are built so that “instructors or experts can grade exercises and support thousands of learners through its AI,” and digital-twin platforms like Viven exist specifically to capture and preserve the tacit expertise of top performers and subject matter experts — meaning the expertise itself, not just the delivery mechanism, is what companies are racing to keep.</p><h2>Skills &amp; Competencies</h2><p>Bersin's vendor-landscape research names specific new roles for L&amp;D delivery staff inside an AI-native system, not just “use AI more.”</p><ul class="skills"><li>AI-delivery-platform fluency — working inside dynamic content and roleplay-coaching systems (Uplimit, Sana, Arist) rather than authoring and delivering content manually</li><li>Grading and coaching at scale — Bersin's research names this directly as the surviving human role inside AI-delivered practice: reviewing and coaching, not authoring every exercise</li><li>Expertise worth capturing — digital-twin platforms exist specifically to preserve what a top performer or subject matter expert knows; being that source of expertise is real career leverage, not a threat</li><li>Needs-analysis validation — as ‘AI Performance Consultant’ tools surface training needs automatically, validating what the AI gets right or wrong becomes a real skill, not a formality</li><li>Succession-planning judgment — this role's one Decision-pattern touchpoint (inherited from 7.3.3) stays firmly human, the same anchor point Director of L&amp;D's own profile identified</li></ul><p class="framework-connection"><strong>Framework connection: </strong>The Role Impact Snapshot's Knowledge-majority (64%) finding lines up with Bersin's own framing — the delivery mechanism automates fast, but the expertise, grading judgment, and coaching relationship are exactly what his research treats as durable.</p><h2>Role Progression Framework</h2><table class="prog-table"><thead><tr><th></th><th>Getting Started</th><th>Established</th><th>Future-Focused</th></tr></thead><tbody><tr><td class="rowlabel">Role focus</td><td>Delivering, conducting, and managing training programs; running exams and certifications; executing skill/competency development plans</td><td>Grading and coaching inside AI-delivered practice — Bersin's research is explicit that ‘instructors or experts can grade exercises and support thousands of learners through AI at scale,’ not that they're replaced by it</td><td>Becoming the human expertise a digital twin captures — or the person who curates and validates what an AI performance consultant surfaces from operational staff</td></tr><tr><td class="rowlabel">Key activities</td><td>Content delivery and certification administration — exactly what ‘AI Performance Consultant’ and microlearning tools (Arist, Axonify) already automate end-to-end</td><td>Partnering with digital-twin and roleplay platforms to scale coaching without scaling headcount</td><td>Owning the one Decision-pattern judgment call in this role's scope (succession planning, inherited from 7.3.3) and the strategic execution work in 7.3.4 that stays furthest from pure delivery</td></tr><tr><td class="rowlabel">Skills to build</td><td>Comfort working alongside AI-native delivery tools rather than owning content creation and delivery manually</td><td>Coaching-at-scale fluency; comfort reviewing AI-generated practice feedback rather than authoring every exercise</td><td>Subject-matter depth substantial enough to be worth capturing as a digital twin; judgment for validating what an AI-generated needs analysis gets right or wrong</td></tr><tr><td class="rowlabel">Common pitfalls</td><td>Treating content delivery as the whole job — the delivery layer is precisely what Bersin's March 2026 market scan shows dozens of vendors racing to automate</td><td>Competing with the delivery agent instead of operating alongside it — the research frames experts as graders/coaches within the AI system, not bystanders to it</td><td>Assuming expertise capture is a one-time event — Bersin's framing treats digital twins and enablement content as continuously updated, not archived once and left alone</td></tr></tbody></table><p class="sources">Source: Josh Bersin, “The World of Corporate Training Lurches Toward Enablement,” joshbersin.com, March 9, 2026. Fetched and read in full for this profile, not paraphrased from a snippet.</p>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;&middot;&nbsp; Human Enterprise Architect &nbsp;&middot;&nbsp; August 2026<br>
+    Co-developed with Claude (Anthropic)<br>
+    <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
+    &nbsp;&middot;&nbsp; hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>

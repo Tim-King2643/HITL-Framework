@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Onboarding Coordinator — Role Transition Profile — The Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B4F8A; --navy-d: #0D2D4F; --navy-l: #EEF3FA; --dark: #0D1B2A;
+  --gray: #444; --lgray: #888; --bg: #F4F6FB; --border: #DDE3EE;
+  --c-dec:#1B4F8A; --bg-dec:#EEF3FA; --c-kno:#534AB7; --bg-kno:#F3F0FE;
+  --c-doc:#0369A1; --bg-doc:#E0F2FE; --c-tra:#166534; --bg-tra:#DCFCE7;
+  --c-exc:#991B1B; --bg-exc:#FEE2E2;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); }
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 4px; }
+.masthead .tagline { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+.breadcrumb { max-width: 860px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
+.breadcrumb a { color: var(--navy); text-decoration: none; }
+.doc { max-width: 860px; margin: 0 auto; padding: 24px 24px 80px; }
+.doc h1.title { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--navy-d); margin: 8px 0 6px; }
+.doc .subtitle { font-size: 14px; color: var(--lgray); font-style: italic; margin-bottom: 28px; }
+.doc h2 { font-size: 20px; color: var(--navy-d); font-weight: 700; margin: 34px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
+.doc p { font-size: 14.5px; line-height: 1.75; color: var(--gray); margin-bottom: 14px; }
+.doc p.caption { font-size: 12.5px; color: var(--lgray); margin-bottom: 16px; }
+.doc p.framework-connection { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 0 6px 6px 0; padding: 14px 18px; font-size: 13.5px; color: #333; }
+.doc ul.skills { margin: 0 0 16px 0; padding: 0; list-style: none; }
+.doc ul.skills li { font-size: 14.5px; line-height: 1.7; color: var(--gray); margin-bottom: 8px; padding-left: 18px; position: relative; }
+.doc ul.skills li::before { content: "—"; position: absolute; left: 0; color: var(--navy); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 12.5px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 7px 8px; font-size: 11px; }
+.mh { font-weight: 400; font-size: 9px; display:block; opacity:.85; }
+td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.detail-table td.stat, .detail-table th { text-align: center; }
+.detail-table td.pcf { font-family: 'DM Mono', monospace; color: var(--navy); font-size: 11.5px; }
+.detail-table tr.l3-row td { background: #E8EEF7; font-weight: 700; color: var(--navy-d); }
+.detail-table tr.l3-row td.stat { color: var(--navy); }
+.detail-table tr.l4-row td.act { padding-left: 18px; color: var(--gray); font-weight: 400; }
+.detail-table td.m3 { background: #D6E8FF; font-weight: 700; color: var(--navy); }
+.detail-table tr.l3-row td.m3 { background: #C4DCFF; }
+.detail-table td.delta { color: #B45309; }
+.pat-badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+.mixbar { display: flex; height: 14px; width: 100%; border-radius: 3px; overflow: hidden; }
+.mixbar span { display: block; height: 100%; }
+.legend { font-size: 11.5px; color: var(--gray); margin: 10px 0 4px; line-height: 1.9; }
+.legend .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+.snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0 20px; }
+.snap-box { border: 1px solid #7AAED6; border-radius: 6px; padding: 12px 14px; background: #fff; }
+.snap-label { font-size: 12px; color: var(--lgray); margin-bottom: 4px; }
+.snap-value { font-size: 20px; font-weight: 700; color: var(--navy); font-family: 'DM Mono', monospace; }
+.scope-callout { background: #FEF3C7; border-top: 3px solid #F59E0B; border-radius: 4px; padding: 14px 18px; margin: 18px 0; }
+.scope-callout .label { font-size: 12px; font-weight: 700; color: #92400E; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 6px; }
+.scope-callout p { color: #333; font-size: 13.5px; margin-bottom: 0; }
+.prog-table th:first-child { background: var(--navy-d); }
+.prog-table td.rowlabel { font-weight: 700; color: var(--navy-d); background: var(--navy-l); width: 14%; }
+tr:nth-child(even) td { background: #FAFBFD; }
+.detail-table tr.l3-row:nth-child(even) td, .detail-table tr.l4-row:nth-child(even) td { background: inherit; }
+.detail-table tbody tr.l4-row td { background: #fff; }
+.detail-table tbody tr.l4-row:nth-child(odd) td { background: #FAFBFD; }
+p.sources { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 14px; }
+footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+.crosslink { display: block; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 24px 0; text-decoration: none; }
+.crosslink .ct { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.crosslink .cd { font-size: 12px; color: var(--lgray); }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <h1>The Human-AI Partnership Framework</h1>
+  <div class="tagline">Where human judgment belongs</div>
+  <nav>
+    <a href="index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+  </nav>
+</div>
+
+<div class="breadcrumb"><a href="index.html">Documentation</a> / <a href="role_taxonomy.html">People Side</a> / Onboarding Coordinator</div>
+
+<div class="doc">
+  <h1 class="title">Onboarding Coordinator — Role Transition Profile</h1>
+  <p class="subtitle">Operational Tier &middot; 1 PCF process (7.3.1, Manage employee onboarding)</p>
+
+  <h2>Role Impact Snapshot</h2><p class="caption">Computed from PCF 7.0's confirmed RACI data using the Responsible/Accountable touch rule.</p><div class="snapshot-grid"><div class="snap-box"><div class="snap-label">L3 processes touched</div><div class="snap-value">1</div></div><div class="snap-box"><div class="snap-label">L4 activity units</div><div class="snap-value">3</div></div><div class="snap-box"><div class="snap-label">Process groups spanned</div><div class="snap-value">1 of 8</div></div><div class="snap-box"><div class="snap-label">Aggregate M1 → M3</div><div class="snap-value">77% → 55%</div></div><div class="snap-box"><div class="snap-label">Convergence gap</div><div class="snap-value">-22 pts</div></div><div class="snap-box"><div class="snap-label">Dominant pattern</div><div class="snap-value">Knowledge (67%)</div></div></div><p>The smallest role footprint in the framework — a single L3 process, 3 activity units — and, like Compensation Analyst's benefits administration, one this role is Accountable for entirely alone, with no separate Responsible party.</p><h2>Role Impact Profile — Full Detail</h2><p class="caption">7.3.1 is Mixed-pattern, shown below with its own aggregate rollup row, followed by its 3 individual Level 4 activities.</p><table class="detail-table"><colgroup><col style="width:8%"><col style="width:29%"><col style="width:12%"><col style="width:8%"><col style="width:8%"><col style="width:9%"><col style="width:8%"><col style="width:8%"><col style="width:9%"></colgroup><thead><tr><th>PCF</th><th>Activity</th><th>Pattern</th><th>M1<br><span class=mh>UNDESIGNED</span></th><th>M2<br><span class=mh>EMERGING</span></th><th>M3 ★<br><span class=mh>DESIGN INTENT</span></th><th>M4<br><span class=mh>OPTIMIZED</span></th><th>M5<br><span class=mh>LEADING</span></th><th>Δ M1→M3</th></tr></thead><tbody><tr class="l3-row"><td class="pcf">7.3.1</td><td class="act">Manage employee onboarding</td><td class="patcell"><span class="mixbar"><span style="width:66.7%;background:#A79AE0" title="Knowledge (2)"></span><span style="width:33.3%;background:#6FC48C" title="Transaction (1)"></span></span></td><td class="stat">77%</td><td class="stat">68%</td><td class="stat m3">55%</td><td class="stat">42%</td><td class="stat">32%</td><td class="stat delta">-22%</td></tr><tr class="l4-row"><td class="pcf">7.3.1.1</td><td class="act">Develop employee onboarding program</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.3.1.2</td><td class="act">Implement employee onboarding program</td><td class="patcell"><span class="pat-badge" style="color:var(--c-tra);background:var(--bg-tra)">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.3.1.3</td><td class="act">Monitor and update employee onboarding program</td><td class="patcell"><span class="pat-badge" style="color:var(--c-kno);background:var(--bg-kno)">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr></tbody></table><div class="legend"><span class="sw" style="background:var(--c-dec)"></span>Decision — Judgment &amp; Authority &nbsp; <span class="sw" style="background:var(--c-kno)"></span>Knowledge — Synthesis &amp; Interpretation &nbsp; <span class="sw" style="background:var(--c-doc)"></span>Document — Content Generation &nbsp; <span class="sw" style="background:var(--c-tra)"></span>Transaction — Rules-Based Processing<br><span class="sw" style="background:var(--c-exc)"></span>Exception — Non-Standard Resolution &nbsp;·&nbsp; R/A-touch basis, not C/I &nbsp;·&nbsp; Equal-weighted rollup across touched processes &nbsp;·&nbsp; © Timothy P. King &amp; Claude (Anthropic) 2026</div><p>Two of the three activities are Knowledge-pattern (developing and monitoring the onboarding program); the one Transaction-pattern activity — implementing the program — is where this role's real automation exposure concentrates.</p><h2>A Named Case Study, Not a Hypothetical</h2><p>This is the smallest role profiled in the framework, but it's also the only one whose exact function Josh Bersin names as a live, real-world deployment rather than a projected trend. In the same January 2026 piece already sourced for Compensation Analyst, Bersin describes his firm's own client work using the autonomous-car analogy for what he calls Superagents — systems that manage an entire process outcome, not just assist an individual worker — and states plainly: “We are already working with a large insurance company, an airline, and a pharma company on Superagents for global onboarding, targeted talent acquisition, and sales training.”</p><p>Global onboarding is one of only three named, currently-deployed Superagent case studies in that entire piece. For this role, that changes the nature of the transition question: it isn't whether onboarding gets a Superagent, but what this role's job becomes once the checklist-execution layer (this role's own Transaction-pattern activity) is the part actually running inside one.</p><h2>Skills &amp; Competencies</h2><p>Bersin's autonomous-car analogy is worth taking literally here: the purpose of the car is to optimize the passenger's journey, not to make the driver's job easier — and “suddenly the driver 'goes away,' similar to replacing a routine job.” The skills below follow from what's left once the checklist-execution driver seat is automated.</p><ul class="skills"><li>Program ownership at the outcome level — this role already holds sole Accountability for onboarding; a Superagent world makes that ownership about outcomes (retention, time-to-productivity) rather than task completion</li><li>Superagent oversight — Bersin's own case studies involve his firm working directly alongside the companies deploying these systems, not a hands-off rollout; this role is the natural human owner of that relationship</li><li>New-hire experience judgment — the Knowledge-pattern majority of this role's real scope (developing and monitoring the program) is exactly what determines whether an automated onboarding experience actually lands well</li><li>Business-metric fluency — once the process runs autonomously, success has to be measured in ramp-time and retention, not checklist completion</li><li>Comfort with a genuinely small, deep scope — this role's entire footprint is one process; its transition path is depth in that one process, not breadth across many</li></ul><p class="framework-connection"><strong>Framework connection: </strong>The Role Impact Snapshot's Knowledge-majority (67%) finding matches what stays once a Superagent absorbs this role's one Transaction-pattern activity — the program design and monitoring work is exactly the ownership layer Bersin's own client deployments still need a human for.</p><h2>Role Progression Framework</h2><table class="prog-table"><thead><tr><th></th><th>Getting Started</th><th>Established</th><th>Future-Focused</th></tr></thead><tbody><tr><td class="rowlabel">Role focus</td><td>Running the onboarding program as a set of discrete steps — paperwork, orientation, system access, initial check-ins</td><td>Owning the onboarding program end-to-end (this role is Accountable alone, with no separate Responsible party) as it shifts from a manual checklist to an AI-run Superagent workflow</td><td>Designing and continuously improving the onboarding program a Superagent executes — Bersin names global onboarding directly as one of the first three real-world Superagent deployments his firm has built</td></tr><tr><td class="rowlabel">Key activities</td><td>Implementing/executing the onboarding program (this role's own Transaction-pattern activity) — the layer Bersin's Superagent case studies show being absorbed first</td><td>Developing and monitoring the onboarding program — the Knowledge-pattern majority of this role's real scope</td><td>Owning what ‘good onboarding’ means for the business — retention, time-to-productivity, new-hire experience — not just process completion</td></tr><tr><td class="rowlabel">Skills to build</td><td>Onboarding-platform proficiency; comfort with automated new-hire workflows handling the transactional steps</td><td>Program-design fluency; monitoring what an onboarding Superagent is actually delivering, not just whether the checklist got completed</td><td>Program-design judgment at the outcome level; fluency translating onboarding quality into business metrics an AI system can be measured against</td></tr><tr><td class="rowlabel">Common pitfalls</td><td>Treating onboarding as a checklist to complete rather than a program to own — checklist execution is exactly what a Superagent absorbs first</td><td>Assuming Superagent onboarding runs itself with no oversight — Bersin's own case studies involve his firm working directly with the companies deploying them</td><td>Measuring success by process completion once the process itself is autonomous — the real question becomes whether new hires actually ramp faster and stay longer</td></tr></tbody></table><p class="sources">Source: Josh Bersin, “The Great Reinvention of Human Resources Has Begun,” joshbersin.com, January 24, 2026 — the “AI Catalyst: From Record-Keeping to Agentic Action” section specifically, distinct from the sections already used for HRBP Manager, HRIS Analyst, and Compensation Analyst. Fetched and read in full for this profile.</p>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;&middot;&nbsp; Human Enterprise Architect &nbsp;&middot;&nbsp; August 2026<br>
+    Co-developed with Claude (Anthropic)<br>
+    <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
+    &nbsp;&middot;&nbsp; hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>
