@@ -3306,6 +3306,16 @@ function renderAbout() {
   // Scroll to top of page
   window.scrollTo(0, 0);
   document.getElementById('vs-bar').style.display = 'none';
+  // About isn't part of the PCF domain browsing UI — hide the whole lens
+  // tab bar and Process/People toggle, and reset back to the Maturity Table
+  // panel underneath. Without this, if the last domain view left the Value
+  // Stream Profile (or RACI Table, or People View) panel active, that stale
+  // domain content stays visible under the About page's title/text, since
+  // this function only ever writes into #table-body (the Maturity panel).
+  document.getElementById('lens-tabs').style.display = 'none';
+  document.getElementById('view-toggle').style.display = 'none';
+  setMainView('process');
+  showLens('maturity');
   // Deactivate all PCF nav items
   [...document.getElementById("sidebar-nav").children].forEach(li => li.classList.remove("active"));
   // Highlight About item
@@ -3941,22 +3951,57 @@ function renderRoleMixBar(l3s) {
 // not externally sourced, walked through with Tim (one correction made: Compensation
 // & Benefits Manager -> Director of TA). contextDependent flags Director of HR Ops's
 // placement, which Tim called genuinely ambiguous rather than confirmed.
-const ROLE_TAXONOMY = [
-  { name: "CHRO", tier: "Executive", reportsTo: null },
-  { name: "SVP Talent Management", tier: "Executive", reportsTo: "CHRO" },
-  { name: "VP People & Culture", tier: "Executive", reportsTo: "CHRO" },
-  { name: "Director of TA", tier: "Managerial", reportsTo: "SVP Talent Management" },
-  { name: "Director of L&D", tier: "Managerial", reportsTo: "SVP Talent Management" },
-  { name: "HRBP Manager", tier: "Managerial", reportsTo: "VP People & Culture" },
-  { name: "Compensation & Benefits Manager", tier: "Managerial", reportsTo: "Director of TA" },
-  { name: "Director of HR Ops", tier: "Managerial", reportsTo: "CHRO", contextDependent: true },
-  { name: "HR Generalist", tier: "Operational", reportsTo: "HRBP Manager" },
-  { name: "Recruiter", tier: "Operational", reportsTo: "Director of TA" },
-  { name: "L&D Specialist", tier: "Operational", reportsTo: "Director of L&D" },
-  { name: "Compensation Analyst", tier: "Operational", reportsTo: "Compensation & Benefits Manager" },
-  { name: "HRIS Analyst", tier: "Operational", reportsTo: "Director of HR Ops" },
-  { name: "Onboarding Coordinator", tier: "Operational", reportsTo: "HRBP Manager" },
-];
+const ROLE_TAXONOMY_BY_DOMAIN = {
+  "7.0": [
+    { name: "CHRO", tier: "Executive", reportsTo: null },
+    { name: "SVP Talent Management", tier: "Executive", reportsTo: "CHRO" },
+    { name: "VP People & Culture", tier: "Executive", reportsTo: "CHRO" },
+    { name: "Director of TA", tier: "Managerial", reportsTo: "SVP Talent Management" },
+    { name: "Director of L&D", tier: "Managerial", reportsTo: "SVP Talent Management" },
+    { name: "HRBP Manager", tier: "Managerial", reportsTo: "VP People & Culture" },
+    { name: "Compensation & Benefits Manager", tier: "Managerial", reportsTo: "Director of TA" },
+    { name: "Director of HR Ops", tier: "Managerial", reportsTo: "CHRO", contextDependent: true },
+    { name: "HR Generalist", tier: "Operational", reportsTo: "HRBP Manager" },
+    { name: "Recruiter", tier: "Operational", reportsTo: "Director of TA" },
+    { name: "L&D Specialist", tier: "Operational", reportsTo: "Director of L&D" },
+    { name: "Compensation Analyst", tier: "Operational", reportsTo: "Compensation & Benefits Manager" },
+    { name: "HRIS Analyst", tier: "Operational", reportsTo: "Director of HR Ops" },
+    { name: "Onboarding Coordinator", tier: "Operational", reportsTo: "HRBP Manager" },
+  ],
+  // First-pass, reasoned (not sourced) reporting structure for PCF 8.0's
+  // 15-role IT catalog — same status as HR's above: inferred from typical
+  // IT org design plus this domain's own RACI touch signals (e.g. Director
+  // of Cybersecurity/Director of Data & Analytics report directly to their
+  // matching Executive-tier apex role, mirroring the real 8.3/8.4 RACI
+  // ownership split), not sourced from any external org chart. CISO and
+  // Chief Data Officer are flagged context-dependent since many orgs have
+  // them report directly to CEO/Board instead of CIO for independence —
+  // same treatment as HR's Director of HR Ops. Awaiting a confirmation
+  // pass before being treated as settled, same as HR's structure was.
+  "8.0": [
+    { name: "CIO", tier: "Executive", reportsTo: null },
+    { name: "CISO", tier: "Executive", reportsTo: "CIO", contextDependent: true },
+    { name: "Chief Data Officer", tier: "Executive", reportsTo: "CIO", contextDependent: true },
+    { name: "SVP Technology", tier: "Executive", reportsTo: "CIO" },
+    { name: "IT Director", tier: "Managerial", reportsTo: "CIO" },
+    { name: "Enterprise Architect", tier: "Managerial", reportsTo: "CIO" },
+    { name: "IT Service Manager", tier: "Managerial", reportsTo: "IT Director" },
+    { name: "Director of Cybersecurity", tier: "Managerial", reportsTo: "CISO" },
+    { name: "Director of Data & Analytics", tier: "Managerial", reportsTo: "Chief Data Officer" },
+    { name: "Systems Administrator", tier: "Operational", reportsTo: "IT Director" },
+    { name: "Network Engineer", tier: "Operational", reportsTo: "Systems Administrator" },
+    { name: "Data Engineer", tier: "Operational", reportsTo: "Director of Data & Analytics" },
+    { name: "Cybersecurity Analyst", tier: "Operational", reportsTo: "Director of Cybersecurity" },
+    { name: "IT Support Specialist", tier: "Operational", reportsTo: "IT Service Manager" },
+    { name: "DevOps Engineer", tier: "Operational", reportsTo: "Enterprise Architect" },
+  ],
+};
+// Returns the role taxonomy for a given domain code, or an empty array for
+// any domain that doesn't have one yet — callers should treat [] as "People
+// View has nothing to show for this domain" rather than erroring.
+function getRoleTaxonomy(domainCode) {
+  return ROLE_TAXONOMY_BY_DOMAIN[domainCode] || [];
+}
 
 // Raw RACI text uses some abbreviated forms inconsistently with the
 // taxonomy's canonical names — normalize to the same 14 roles the
@@ -4043,11 +4088,11 @@ function roleLeafRows(l3s) {
 // Direct reports = roles whose reportsTo === this role's name. Total span
 // walks the whole subtree (direct + indirect reports), since a role's real
 // span of control includes everyone under it, not just direct reports.
-function computeSpanOfControl(roleName) {
-  const direct = ROLE_TAXONOMY.filter(r => r.reportsTo === roleName).map(r => r.name);
+function computeSpanOfControl(roleName, taxonomy) {
+  const direct = taxonomy.filter(r => r.reportsTo === roleName).map(r => r.name);
   const total = new Set();
   (function collect(name) {
-    ROLE_TAXONOMY.filter(r => r.reportsTo === name).forEach(r => {
+    taxonomy.filter(r => r.reportsTo === name).forEach(r => {
       if (!total.has(r.name)) { total.add(r.name); collect(r.name); }
     });
   })(roleName);
@@ -4058,8 +4103,8 @@ function computeSpanOfControl(roleName) {
 // Impact Table — reportsTo target (or "top of the org" for CHRO) plus
 // computed span of control, so this reads correctly even for the 3
 // zero-RACI-touch roles this was built to explain in the first place.
-function reportingLine(r) {
-  const span = computeSpanOfControl(r.name);
+function reportingLine(r, taxonomy) {
+  const span = computeSpanOfControl(r.name, taxonomy);
   const reportsToText = r.reportsTo
     ? `Reports to <strong>${r.reportsTo}</strong>${r.contextDependent ? ' <em>(context-dependent)</em>' : ''}`
     : 'Top of the org \u00b7 escalates to CEO/Board (outside role catalog)';
@@ -4072,12 +4117,13 @@ function reportingLine(r) {
 function renderRoleImpactTable(cat) {
   const tbody = document.getElementById('role-impact-table-body');
   if (!tbody) return;
-  if (!cat.lenses) { tbody.innerHTML = ''; return; }
+  const taxonomy = getRoleTaxonomy(cat.code);
+  if (!taxonomy.length) { tbody.innerHTML = ''; return; }
   const roleL3Map = computeRoleL3Map(cat);
   const tiers = ["Executive", "Managerial", "Operational"];
   let html = '';
   tiers.forEach(tier => {
-    const rolesInTier = ROLE_TAXONOMY.filter(r => r.tier === tier);
+    const rolesInTier = taxonomy.filter(r => r.tier === tier);
     html += `<tr class="row-l2"><td colspan="8">${tier} Tier</td></tr>`;
     rolesInTier.forEach(r => {
       const l3s = roleL3Map[r.name] || [];
@@ -4085,7 +4131,7 @@ function renderRoleImpactTable(cat) {
       const rowId = 'role-' + r.name.replace(/[^a-zA-Z0-9]/g, '');
       if (!stats.l3count) {
         html += `<tr class="row-l3">
-          <td class="indent-l3"><span class="row-text">${r.name}</span>${reportingLine(r)}</td>
+          <td class="indent-l3"><span class="row-text">${r.name}</span>${reportingLine(r, taxonomy)}</td>
           <td style="color:#B8C0CC;font-style:italic;font-size:11px">No R/A touches in current RACI data</td>
           <td colspan="6" style="text-align:center;color:#B8C0CC">\u2014</td>
         </tr>`;
@@ -4097,7 +4143,7 @@ function renderRoleImpactTable(cat) {
           <span class="role-toggle-icon" id="icon-${rowId}">+</span>
           <span class="row-text">${r.name}</span>
           <span style="color:var(--lgray);font-size:10px;margin-left:6px">${stats.l3count} process${stats.l3count === 1 ? '' : 'es'} · ${stats.groupsTouched} group${stats.groupsTouched === 1 ? '' : 's'}</span>
-          ${reportingLine(r)}
+          ${reportingLine(r, taxonomy)}
         </td>
         <td>${renderRoleMixBar(l3s)}</td>
         <td class="col-m1">${stats.mv[0]}%</td>
@@ -4156,17 +4202,19 @@ function populateLensTabs(cat) {
   const hasLenses = !!cat.lenses;
   descTab.style.display = hasLenses ? '' : 'none';
 
-  // People View (Role Impact Table) currently only works for domains whose
-  // RACI role names are in ROLE_TAXONOMY — today that's HR/PCF 7.0 only,
-  // since ROLE_TAXONOMY isn't yet domain-aware (see build notes). Gating on
-  // cat.lenses is a proxy for "the one domain that's fully wired up" until
-  // that architecture gap is fixed.
-  viewToggle.style.display = hasLenses ? 'flex' : 'none';
+  // People View (Role Impact Table) needs real RACI data plus a role
+  // taxonomy for this domain — now that ROLE_TAXONOMY is domain-aware
+  // (see build notes), this no longer needs to piggyback on cat.lenses as
+  // a proxy. It's independent of Value Stream Profile content.
+  const hasRoleTaxonomy = getRoleTaxonomy(cat.code).length > 0;
+  viewToggle.style.display = (hasRaci && hasRoleTaxonomy) ? 'flex' : 'none';
 
   showLens('maturity');
   if (hasRaci) renderRaciTable(cat);
   if (hasLenses) {
     renderDescriptionPanel(cat, 'all');
+  }
+  if (hasRaci && hasRoleTaxonomy) {
     renderRoleImpactTable(cat);
   }
 }
