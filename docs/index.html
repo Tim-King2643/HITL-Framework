@@ -45,6 +45,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .hal-quote { max-width: 760px; margin: 24px auto 0; background: var(--navy-d); border-radius: 8px; padding: 18px 24px; text-align: left; }
 .hal-quote .label { font-size: 11px; font-weight: 700; color: #7B9FD1; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
 .hal-quote p { font-size: 14px; color: #fff; line-height: 1.7; }
+.hal-quote a { display: inline-block; margin-top: 10px; font-size: 12.5px; font-weight: 600; color: #9FC2EE; text-decoration: none; border-bottom: 1px solid rgba(159,194,238,.4); }
+.hal-quote a:hover { color: #fff; border-bottom-color: #fff; }
 
 /* ── Section groups ─────────────────────────────────────────────────────── */
 .groups { max-width: 1000px; margin: 0 auto; padding: 28px 24px 64px; display: flex; flex-direction: column; gap: 32px; }
@@ -98,6 +100,7 @@ footer a { color: var(--navy); text-decoration: none; }
 <div class="hal-quote">
   <p class="label">Why We Built This</p>
   <p>HAL 9000, from 2001: A Space Odyssey, is arguably the most famous AI in history — and had no human oversight, no decision rights framework, no human in the loop, by design. This framework is the architectural answer.</p>
+  <a href="hitl_origin_story.html">Read the full story →</a>
 </div>
 
 <div class="groups">
@@ -108,6 +111,10 @@ footer a { color: var(--navy); text-decoration: none; }
       <p>The conceptual foundation — read these first.</p>
     </div>
     <div class="doc-list">
+      <a class="doc-card" href="hitl_origin_story.html">
+        <div class="doc-title">Why We Built This: The HAL 9000 Story</div>
+        <div class="doc-desc">The failure mode this framework exists to answer — and the real, shipped pieces that answer it, one at a time.</div>
+      </a>
       <a class="doc-card" href="hitl_methodology.html">
         <div class="doc-title">The HITL Design Methodology</div>
         <div class="doc-desc">The full methodology: the HITL Stack, the five pattern types, the ratio methodology, and the governance model.</div>
