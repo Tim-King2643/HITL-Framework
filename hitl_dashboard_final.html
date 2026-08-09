@@ -167,6 +167,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .desc-table-roles th:nth-child(1), .desc-table-roles td:nth-child(1) { width: 220px; }
 .desc-table-roles th:nth-child(2), .desc-table-roles td:nth-child(2) { width: 155px; white-space: nowrap; }
 .desc-table-pcf { font-family: 'DM Mono', monospace; font-size: 10.5px; color: var(--gray); white-space: normal; word-break: break-word; }
+.desc-table-note { font-family: 'DM Sans', sans-serif; font-size: 10px; font-style: italic; color: var(--lgray); margin-top: 3px; }
 .desc-card .lens-empty { padding: 14px 16px; text-align: left; font-size: 12px; }
 .lens-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .lens-table thead th { background: var(--navy); color: #fff; padding: 8px 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; text-align: left; }
@@ -4314,14 +4315,32 @@ function renderDescriptionPanel(cat, streamFilter) {
     // Process Accountability — per-role activity count and L3 coverage,
     // moved here from Process Specification's former "Process Ownership
     // Summary" (same underlying Accountable-role data, one location now).
+    // Bug fix (Aug 9, 2026): raci.A sometimes carries a parenthetical caveat
+    // baked into the string itself (e.g. "HRBP Manager (partial—see gap
+    // note)", "HRIS Analyst (HR-owned scope)") rather than as separate
+    // structured data. Using the raw string as a grouping/tier-lookup key
+    // fragmented these roles into a phantom second row that fell through to
+    // "External Participant" tier — wrong on both counts (found while
+    // building the People-side RTP retrofit). Strip the parenthetical for
+    // grouping/lookup, keep it as a scoped footnote instead of losing it.
+    function splitRoleAnnotation(raw) {
+      const m = raw.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+      return m ? { base: m[1].trim(), note: m[2].trim() } : { base: raw, note: null };
+    }
     const ownerData = {};
+    const roleNotes = {};
     if (stream) {
       getStreamL3s(cat, stream).forEach(l3 => {
-        const role = (l3.raci && l3.raci.A) || 'Unassigned';
+        const raw = (l3.raci && l3.raci.A) || 'Unassigned';
+        const { base: role, note } = splitRoleAnnotation(raw);
         const count = (l3.l4 && l3.l4.length) ? l3.l4.length : 1;
         if (!ownerData[role]) ownerData[role] = { steps: 0, l3s: [] };
         ownerData[role].steps += count;
         ownerData[role].l3s.push(l3.code);
+        if (note) {
+          if (!roleNotes[role]) roleNotes[role] = [];
+          roleNotes[role].push({ code: l3.code, note });
+        }
       });
     }
     const tierByRole = {};
@@ -4334,11 +4353,14 @@ function renderDescriptionPanel(cat, streamFilter) {
           ${Object.entries(ownerData).map(([role, data]) => {
             const tier = tierByRole[role] || tierByRole[role.replace(/\*$/, '')] || 'External Participant';
             const tc = TIER_COLORS[tier] || TIER_COLORS["External Participant"];
+            const notes = roleNotes[role] || [];
+            const l3Text = data.l3s.map(code => notes.some(n => n.code === code) ? code + '&dagger;' : code).join(', ');
+            const noteLines = notes.map(n => `<div class="desc-table-note">&dagger; ${n.code}: ${n.note}</div>`).join('');
             return `
             <tr>
               <td>${role}</td>
               <td class="desc-table-tier" style="background:${tc.fill};color:${tc.text}">${tier}</td>
-              <td class="desc-table-pcf">${data.l3s.join(', ')}</td>
+              <td class="desc-table-pcf">${l3Text}${noteLines}</td>
               <td style="text-align:left">${data.steps}</td>
             </tr>`;
           }).join('')}
