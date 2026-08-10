@@ -18,14 +18,15 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .masthead .tagline { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
 .masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
 .masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
-.breadcrumb { max-width: 800px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
+.breadcrumb { max-width: 900px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
 .breadcrumb a { color: var(--navy); text-decoration: none; }
-.doc { max-width: 800px; margin: 0 auto; padding: 24px 24px 80px; }
+.doc { max-width: 900px; margin: 0 auto; padding: 24px 24px 80px; }
 .doc h1.title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy-d); margin: 8px 0 6px; }
 .doc .subtitle { font-size: 13px; color: var(--lgray); font-style: italic; margin-bottom: 5px; }
 .doc .stats { font-size: 13px; color: var(--gray); margin-bottom: 22px; }
 .doc h2 { font-size: 16px; color: var(--navy-d); font-weight: 700; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
 .doc p { font-size: 13px; line-height: 1.7; color: var(--gray); margin-bottom: 12px; }
+.doc p.caption { font-size: 11.5px; color: var(--lgray); margin-bottom: 14px; }
 table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 12px; }
 th { background: var(--navy); color: #fff; text-align: left; padding: 7px 10px; font-size: 11px; }
 td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
@@ -34,8 +35,20 @@ tr:nth-child(even) td { background: #FAFBFD; }
 .kpi-formula { font-size: 12px; color: var(--lgray); font-style: italic; }
 .src-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: #DCFCE7; color: #166534; }
 .src-none { color: #B8C0CC; }
-.gdp-pcf { font-family: 'DM Mono', monospace; color: var(--navy); font-weight: 700; }
+.gdp-pcf { font-family: 'DM Mono', monospace; color: var(--navy); }
 .no-gdp { font-style: italic; color: var(--lgray); font-size: 13px; padding: 12px 0; }
+.capmap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 10px; margin: 14px 0 8px; }
+.capmap-card { border-radius: 8px; padding: 14px 14px; }
+.cm-name { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.cm-tagline { font-size: 10px; font-style: italic; opacity: .85; margin-bottom: 10px; line-height: 1.4; }
+.cm-count { font-weight: 700; font-size: 15px; }
+.cm-count span { font-weight: 400; font-size: 11px; }
+.cm-mvals { font-size: 11px; margin-top: 4px; }
+.cm-empty-note { font-size: 10.5px; font-style: italic; margin-top: 4px; }
+.acc-role { color: var(--navy-d); }
+.tier-badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 3px 10px; border-radius: 10px; }
+.acc-l3 { font-size: 11.5px; color: #666; }
+.acc-note { font-size: 10.5px; font-style: italic; color: var(--lgray); margin-top: 3px; }
 footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
 footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
 footer a { color: var(--navy); text-decoration: none; }
@@ -54,38 +67,24 @@ footer a { color: var(--navy); text-decoration: none; }
 <div class="breadcrumb"><a href="index.html">Documentation</a> / Process View / Move-to-Exit</div>
 <div class="doc">
 <h1 class="title">Move-to-Exit</h1>
-<p class="subtitle">PCF 7.6 · Transition Talent</p>
-<p class="stats">3 PCF processes · 4 roles involved · 1 governed decision point</p>
+<p class="subtitle">PCF 7.6 &middot; Transition Talent</p>
+<p class="stats">3 PCF processes &middot; 6 L4 activities &middot; M1 70% &rarr; M3 48% (&Delta; -22%)</p>
 <a class="pdflink" href="../pdfs/hitl_valuestream_move_to_exit_pcf7_final.pdf">&#8659; Download as PDF</a>
 <h2>Description</h2>
-<p>This value stream comprises one APQC PCF process group: 7.6 Redeploy and Retire Employees — spanning 3 Level 3 processes and 6 Level 4 activities.</p>
-<p>At the activity level, this value stream's work breaks down as 4 Transaction activities (rules-based processing suited to automation), 1 Decision activity (judgment-and-authority gates that stay human by design), and 1 Knowledge activity (judgment, synthesis, and interpretation-driven work). No Exception-pattern activity exists within this value stream.</p>
-<p>At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 48%, down from a 70% undesigned baseline — a 22-point AI convergence opportunity.</p>
-<h2>KPIs</h2>
-<table><tr><th>Business Impact Metric &amp; Formula (where confirmed)</th><th style="width:15%">Source</th></tr>
-<tr><td><div class="kpi-name">Separation cost</div><div class="kpi-formula">Total cost to perform “redeploy and retire employees” ÷ (Total business entity revenue × 0.001) — per-FTE and per-employee variants follow the same pattern</div></td><td><span class="src-badge">APQC OSB</span></td></tr>
-<tr><td><div class="kpi-name">Exit sentiment</div><div class="kpi-formula">Weighted average of favorable sentiment responses across exit interviews, by cycle</div></td><td><span class="src-none">—</span></td></tr>
-<tr><td><div class="kpi-name">Compliance / litigation exposure</div><div class="kpi-formula">Exit-related compliance incidents or claims ÷ total exits, measured annually</div></td><td><span class="src-none">—</span></td></tr>
-<tr><td><div class="kpi-name">Knowledge-loss risk</div><div class="kpi-formula">Departures from critical/single-point-of-failure roles ÷ total exits, per cycle</div></td><td><span class="src-none">—</span></td></tr>
-</table>
-<h2>Roles Involved</h2>
-<table><tr><th>Role</th><th style="width:20%">Tier</th></tr>
-<tr><td>HRBP Manager</td><td>Managerial</td></tr>
-<tr><td>Compensation &amp; Benefits Manager</td><td>Managerial</td></tr>
-<tr><td>HR Generalist</td><td>Operational</td></tr>
-<tr><td>Legal*</td><td>External</td></tr>
-</table>
-<h2>Governed Decision Points</h2>
-<table><tr><th style="width:10%">PCF</th><th>Decision</th><th>Authority</th><th>Escalates To</th></tr>
-<tr><td class="gdp-pcf">7.6.1</td><td>Approve an employee promotion or demotion</td><td>HRBP Manager</td><td>VP People &amp; Culture (Executive)</td></tr>
-</table>
+<p>This value stream comprises one APQC PCF process group: 7.6 Redeploy and Retire Employees — spanning 3 Level 3 processes and 6 Level 4 activities.</p><p>At the activity level, this value stream's work breaks down as 4 Transaction activities (rules-based processing suited to automation), 1 Decision activity (judgment-and-authority gates that stay human by design), and 1 Knowledge activity (judgment, synthesis, and interpretation-driven work). No Exception-pattern activity exists within this value stream.</p><p>At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 48%, down from a 70% undesigned baseline — a 22-point AI convergence opportunity.</p>
+<h2>KPIs</h2><table><tr><th>Business Impact Metric &amp; Formula (where confirmed)</th><th style="width:15%">Source</th></tr><tr><td><div class="kpi-name">Separation cost</div><div class="kpi-formula">Total cost to perform “redeploy and retire employees” ÷ (Total business entity revenue × 0.001) — per-FTE and per-employee variants follow the same pattern</div></td><td><span class="src-badge">APQC OSB</span></td></tr><tr><td><div class="kpi-name">Exit sentiment</div><div class="kpi-formula">Weighted average of favorable sentiment responses across exit interviews, by cycle</div></td><td><span class="src-none">&mdash;</span></td></tr><tr><td><div class="kpi-name">Compliance / litigation exposure</div><div class="kpi-formula">Exit-related compliance incidents or claims ÷ total exits, measured annually</div></td><td><span class="src-none">&mdash;</span></td></tr><tr><td><div class="kpi-name">Knowledge-loss risk</div><div class="kpi-formula">Departures from critical/single-point-of-failure roles ÷ total exits, per cycle</div></td><td><span class="src-none">&mdash;</span></td></tr></table>
+<h2>Design Narrative</h2><p>Move-to-Exit is the first value stream in this framework where a single role — HR Business Partner Manager — is Accountable for every L3 process, a confirmed structural finding rather than under-differentiation: published offboarding-process literature identifies diffused ownership as the primary failure mode for exit workflows, making concentrated single-role accountability the correct shape here. Human judgment stays most anchored in 7.6.1 (Manage Promotion and Demotion Process, Decision-pattern, the smallest Δ M1→M3 in the value stream at -12 points). This value stream also produced the framework's first confirmed specialist-role gap: 7.6.3's Accountable assignment is explicitly partial, since International HR Management is a recognized specialist discipline the current role catalog does not name — distinct in kind from Reward-to-Retain's HR/Finance boundary, which was a split between two existing roles rather than the absence of one.</p>
+<h2>AI Capability Map</h2><p class="caption">Pattern-type distribution across this value stream's activity units. H% figures are the pattern type's standard value at each maturity level, applied consistently across all PCF domains.</p><div class="capmap-grid"><div class="capmap-card" style="background:#EEF3FA;color:#1B4F8A"><div class="cm-name">Decision</div><div class="cm-tagline">Judgment &amp; Authority — gates that stay human by design</div><div class="cm-count">1 <span>L4 activities</span></div><div class="cm-mvals">M1 92%  &rarr;  M3 80%</div></div><div class="capmap-card" style="background:#F3F0FE;color:#534AB7"><div class="cm-name">Knowledge</div><div class="cm-tagline">Synthesis &amp; Interpretation — judgment-driven work</div><div class="cm-count">1 <span>L4 activities</span></div><div class="cm-mvals">M1 85%  &rarr;  M3 65%</div></div><div class="capmap-card" style="background:#E0F2FE;color:#0369A1"><div class="cm-name">Document</div><div class="cm-tagline">Content Generation — drafting and communication</div><div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities of this pattern in this value stream</div></div><div class="capmap-card" style="background:#DCFCE7;color:#166534"><div class="cm-name">Transaction</div><div class="cm-tagline">Rules-Based Processing — suited to automation</div><div class="cm-count">4 <span>L4 activities</span></div><div class="cm-mvals">M1 60%  &rarr;  M3 35%</div></div><div class="capmap-card" style="background:#FEE2E2;color:#991B1B"><div class="cm-name">Exception</div><div class="cm-tagline">Non-Standard Resolution — human-resolved by nature</div><div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities of this pattern in this value stream</div></div></div>
+<h2>Process Accountability</h2><table><tr><th>Process Accountability</th><th style="width:14%;text-align:center">Tier</th><th style="width:35%">L3 Processes</th><th style="width:12%;text-align:center">L4 Activities</th></tr><tr><td class="acc-role">HRBP Manager</td><td style="text-align:center"><span class="tier-badge" style="background:#EEF3FA;color:#1B4F8A">Managerial</span></td><td class="acc-l3">7.6.1, 7.6.2, 7.6.3&dagger;<div class="acc-note">&dagger; 7.6.3: partial—see gap note</div></td><td style="text-align:center">6</td></tr></table>
+<h2>Handoff Points</h2><p>Move-to-Exit is the framework's first value stream with a single Accountable role: HR Business Partner Manager is Accountable for all three L3s and every step in this process flow, consistent with the offboarding-literature finding that diffused ownership is the primary failure mode for exit processes.</p><p>The real handoffs in this value stream sit outside HR rather than between HR roles. 7.6.2 Manage Separation triggers coordinated workstreams with Payroll, IT/Security, and Facilities against a shared offboarding checklist — final pay, access removal, asset return — outside HR's accountability scope, and escalates to Legal only for contested or high-risk terminations, not as a routine participant.</p><p>7.6.3 Relocate Employees and Manage Assignments is the value stream's confirmed specialist-role gap: HR Business Partner Manager's ownership here is explicitly partial, since International HR Management is a recognized specialist discipline the current role catalog does not name.</p>
+<h2>Governed Decision Points</h2><p class="caption">Every Decision/Exception-pattern activity in the value stream, including those embedded inside Mixed-labeled steps.</p><table><tr><th style="width:8%">PCF</th><th>Decision</th><th>Authority</th><th>Impact</th><th>Escalates To</th><th>Trigger</th></tr><tr><td class="gdp-pcf">7.6.1</td><td>Approve an employee promotion or demotion</td><td>HRBP Manager</td><td>Career/compensation — affects employee title, band, and pay level</td><td>VP People & Culture (Executive)</td><td>Promotion/demotion involves a significant compensation-band change, a contested or disputed case, or falls outside standard promotion criteria</td></tr></table>
 </div>
 <footer>
   <p>
-    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect &nbsp;·&nbsp; August 2026<br>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;&middot;&nbsp; Human Enterprise Architect &nbsp;&middot;&nbsp; August 2026<br>
     Co-developed with Claude (Anthropic)<br>
     <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
-    &nbsp;·&nbsp; hitldrivenarchitecture.com
+    &nbsp;&middot;&nbsp; hitldrivenarchitecture.com
   </p>
 </footer>
 </body>
