@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Director of Data & Analytics — Role Transition Profile — The Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B4F8A; --navy-d: #0D2D4F; --navy-l: #EEF3FA; --dark: #0D1B2A;
+  --gray: #444; --lgray: #888; --bg: #F4F6FB; --border: #DDE3EE;
+  --c-dec:#1B4F8A; --bg-dec:#EEF3FA; --c-kno:#534AB7; --bg-kno:#F3F0FE;
+  --c-doc:#0369A1; --bg-doc:#E0F2FE; --c-tra:#166534; --bg-tra:#DCFCE7;
+  --c-exc:#991B1B; --bg-exc:#FEE2E2;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); }
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 4px; }
+.masthead .tagline { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+.breadcrumb { max-width: 860px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
+.breadcrumb a { color: var(--navy); text-decoration: none; }
+.doc { max-width: 860px; margin: 0 auto; padding: 24px 24px 80px; }
+.doc h1.title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy-d); margin: 8px 0 6px; }
+.doc .subtitle { font-size: 13px; color: var(--lgray); font-style: italic; margin-bottom: 24px; }
+.doc h2 { font-size: 16px; color: var(--navy-d); font-weight: 700; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
+.doc p { font-size: 13px; line-height: 1.7; color: var(--gray); margin-bottom: 12px; }
+.doc p.caption { font-size: 11.5px; color: var(--lgray); margin-bottom: 14px; }
+.doc p.framework-connection { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 0 6px 6px 0; padding: 14px 18px; font-size: 12.5px; color: #333; }
+.doc ul.skills { margin: 0 0 16px 0; padding: 0; list-style: none; }
+.doc ul.skills li { font-size: 13px; line-height: 1.65; color: var(--gray); margin-bottom: 7px; padding-left: 18px; position: relative; }
+.doc ul.skills li::before { content: "—"; position: absolute; left: 0; color: var(--navy); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 12px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 6px 8px; font-size: 10.5px; vertical-align: bottom; }
+.mh { font-weight: 400; font-size: 9px; display:block; opacity:.85; }
+td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.detail-table td.stat, .detail-table th { text-align: center; }
+.detail-table td.pcf { font-family: 'DM Mono', monospace; color: var(--navy); font-size: 11.5px; }
+.detail-table tr.l3-row td { background: #E8EEF7; font-weight: 700; color: var(--navy-d); }
+.detail-table tr.l3-row td.stat { color: var(--navy); }
+.detail-table tr.l4-row td.act { padding-left: 18px; color: var(--gray); font-weight: 400; }
+.detail-table td.m3 { background: #D6E8FF; font-weight: 700; color: var(--navy); }
+.detail-table tr.l3-row td.m3 { background: #C4DCFF; }
+.detail-table td.delta { color: #B45309; }
+.pat-badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+.mixbar { display: flex; height: 14px; width: 100%; border-radius: 3px; overflow: hidden; }
+.mixbar span { display: block; height: 100%; }
+.legend { font-size: 11.5px; color: var(--gray); margin: 10px 0 4px; line-height: 1.9; }
+.legend .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+.snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0 20px; }
+.snap-box { border: 1px solid #7AAED6; border-radius: 6px; padding: 12px 14px; background: #fff; }
+.snap-label { font-size: 12px; color: var(--lgray); margin-bottom: 4px; }
+.snap-value { font-size: 17px; font-weight: 700; color: var(--navy); font-family: 'DM Mono', monospace; }
+.scope-callout { background: #FEF3C7; border-top: 3px solid #F59E0B; border-radius: 4px; padding: 14px 18px; margin: 18px 0; }
+.scope-callout .label { font-size: 12px; font-weight: 700; color: #92400E; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 6px; }
+.scope-callout p { color: #333; font-size: 12.5px; margin-bottom: 0; }
+.prog-table th:first-child { background: var(--navy-d); }
+.prog-table td.rowlabel { font-weight: 700; color: var(--navy-d); background: var(--navy-l); width: 14%; }
+tr:nth-child(even) td { background: #FAFBFD; }
+.detail-table tr.l3-row:nth-child(even) td, .detail-table tr.l4-row:nth-child(even) td { background: inherit; }
+.detail-table tbody tr.l4-row td { background: #fff; }
+.detail-table tbody tr.l4-row:nth-child(odd) td { background: #FAFBFD; }
+.detail-table tbody tr.l4-row td.m3 { background: #D6E8FF; font-weight: 700; color: var(--navy); }
+p.sources { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 14px; }
+footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+.crosslink { display: block; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 24px 0; text-decoration: none; }
+.crosslink .ct { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.crosslink .cd { font-size: 12px; color: var(--lgray); }
+.capmap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 8px 0 18px; }
+.capmap-card { border-radius: 8px; padding: 12px 14px; }
+.capmap-card .cm-name { font-weight: 700; font-size: 12px; margin-bottom: 3px; text-transform: uppercase; letter-spacing: .03em; }
+.capmap-card .cm-tagline { font-style: italic; font-size: 10px; margin-bottom: 8px; }
+.capmap-card .cm-count { font-weight: 700; font-size: 17px; }
+.capmap-card .cm-count span { font-size: 11px; font-weight: 700; text-transform: none; letter-spacing: 0; }
+.capmap-card .cm-mvals { font-weight: 700; font-size: 11px; margin-top: 4px; }
+.capmap-card .cm-empty-note { font-style: italic; font-size: 11px; }
+p.caption-note { font-size: 12px; color: var(--lgray); font-style: italic; background: var(--navy-l); border-left: 3px solid var(--navy); border-radius: 0 4px 4px 0; padding: 8px 12px; margin-bottom: 14px; }
+.evo-timeline { display: flex; align-items: stretch; gap: 6px; margin: 18px 0 24px; }
+.evo-era { flex: 1; border-radius: 8px; padding: 12px 10px; display: flex; flex-direction: column; }
+.evo-era .era-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; opacity: .75; margin-bottom: 4px; }
+.evo-era .era-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+.evo-era .era-desc { font-size: 10.5px; line-height: 1.45; flex-grow: 1; }
+.evo-arrow { display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--lgray); flex: 0 0 auto; width: 10px; }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <h1>The Human-AI Partnership Framework</h1>
+  <div class="tagline">Where human judgment belongs</div>
+  <nav><a href="index.html">Documentation</a><a href="../hitl_dashboard_final.html">Dashboard</a></nav>
+</div>
+
+<div class="breadcrumb"><a href="index.html">Documentation</a> / <a href="role_taxonomy_pcf8.html">People View</a> / Director of Data & Analytics</div>
+
+<div class="doc">
+<h1 class="title">Director of Data & Analytics — Role Transition Profile</h1>
+<p class="subtitle">Managerial Tier &middot; 4 PCF processes across 1 process group</p>
+
+<h2>Role Impact Snapshot</h2>
+<p>Computed from 8.0's confirmed RACI data using the Responsible/Accountable touch rule (excludes Consulted/Informed).</p>
+<div class="snapshot-grid">
+<div class="snap-box"><div class="snap-label">L3 processes touched</div><div class="snap-value">4</div></div>
+<div class="snap-box"><div class="snap-label">L4 activity units</div><div class="snap-value">14</div></div>
+<div class="snap-box"><div class="snap-label">Process groups spanned</div><div class="snap-value">1 of 7</div></div>
+<div class="snap-box"><div class="snap-label">Aggregate M1 &rarr; M3</div><div class="snap-value">74% &rarr; 53%</div></div>
+<div class="snap-box"><div class="snap-label">Convergence gap</div><div class="snap-value">-21 pts</div></div>
+<div class="snap-box"><div class="snap-label">Dominant pattern</div><div class="snap-value">Transaction (43%)</div></div>
+</div>
+
+<h2>Role Pattern Mix</h2>
+<p>Pattern-type distribution across every L4 activity this role touches (Responsible or Accountable), with each pattern's standard M1&rarr;M3 convergence applied. Same card design as the Value Stream Profile docs' AI Capability Map, scoped to this role instead of a value stream.</p>
+<p class="caption-note">Each card shows that pattern's own standard M1&rarr;M3 value, not weighted by this role. The Snapshot's Aggregate M1&rarr;M3 above (74% &rarr; 53%) is the count-weighted blend across all 5 patterns present — Transaction dominates by volume (43% of activities), but its own M3 (35%) sits below the blend — higher-M3 patterns still in the mix pull the role-wide average up from Transaction’s own number.</p>
+<div class="capmap-grid"><div class="capmap-card" style="background:#EEF3FA;color:#1B4F8A"><div class="cm-name">Decision</div><div class="cm-tagline">Judgment & Authority — gates that stay human by design</div><div class="cm-count">2 <span>L4 activities</span></div><div class="cm-mvals">M1 92%  →  M3 80%</div></div><div class="capmap-card" style="background:#F3F0FE;color:#534AB7"><div class="cm-name">Knowledge</div><div class="cm-tagline">Synthesis & Interpretation — judgment-driven work</div><div class="cm-count">5 <span>L4 activities</span></div><div class="cm-mvals">M1 85%  →  M3 65%</div></div><div class="capmap-card" style="background:#E0F2FE;color:#0369A1"><div class="cm-name">Document</div><div class="cm-tagline">Content Generation — drafting and communication</div><div class="cm-count">1 <span>L4 activities</span></div><div class="cm-mvals">M1 72%  →  M3 40%</div></div><div class="capmap-card" style="background:#DCFCE7;color:#166534"><div class="cm-name">Transaction</div><div class="cm-tagline">Rules-Based Processing — suited to automation</div><div class="cm-count">6 <span>L4 activities</span></div><div class="cm-mvals">M1 60%  →  M3 35%</div></div><div class="capmap-card" style="background:#FEE2E2;color:#991B1B"><div class="cm-name">Exception</div><div class="cm-tagline">Non-Standard Resolution — human-resolved by nature</div><div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities of this pattern touched by this role</div></div></div>
+
+<h2>Role Impact Profile &mdash; Full Detail</h2>
+<p>Every L3 process this role holds Responsible or Accountable on. Each Mixed-pattern process is shown with its own aggregate rollup row (a proportional pattern-mix bar in place of a plain &ldquo;Mixed&rdquo; label), followed by its individual Level 4 activities.</p>
+<table class="detail-table">
+<thead><tr><th>PCF</th><th>Process/Activity</th><th>Pattern</th><th>M1<br><span class=mh>UNDESIGNED</span></th><th>M2<br><span class=mh>EMERGING</span></th><th>M3 &#9733;<br><span class=mh>DESIGN INTENT</span></th><th>M4<br><span class=mh>OPTIMIZED</span></th><th>M5<br><span class=mh>LEADING</span></th><th>&Delta; M1&rarr;M3</th></tr></thead>
+<tbody><tr class="l3-row"><td class="pcf">8.4.1</td><td class="act">Define business information and analytics strategy</td><td class="patcell"><span class="mixbar"><span style="width:33.3%;background:#7B9FD1" title="Decision (1)"></span><span style="width:33.3%;background:#A79AE0" title="Knowledge (1)"></span><span style="width:33.3%;background:#6FC48C" title="Transaction (1)"></span></span></td><td class="stat">79%</td><td class="stat">71%</td><td class="stat m3">60%</td><td class="stat">49%</td><td class="stat">40%</td><td class="stat delta">-19%</td></tr><tr class="l4-row"><td class="pcf">8.4.1.1</td><td class="act">Establish data, information, and analytic objectives</td><td class="patcell"><span class="pat-badge" style="color:#1B4F8A;background:#EEF3FA">Decision</span></td><td class="stat">92%</td><td class="stat">88%</td><td class="stat m3">80%</td><td class="stat">72%</td><td class="stat">65%</td><td class="stat delta">-12%</td></tr><tr class="l4-row"><td class="pcf">8.4.1.2</td><td class="act">Establish data, information, and analytic governance</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">8.4.1.3</td><td class="act">Access IT data/analytic capabilities</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l3-row"><td class="pcf">8.4.2</td><td class="act">Define and maintain business information architecture</td><td class="patcell"><span class="mixbar"><span style="width:80.0%;background:#A79AE0" title="Knowledge (4)"></span><span style="width:20.0%;background:#7B9FD1" title="Decision (1)"></span></span></td><td class="stat">86%</td><td class="stat">80%</td><td class="stat m3">68%</td><td class="stat">56%</td><td class="stat">47%</td><td class="stat delta">-18%</td></tr><tr class="l4-row"><td class="pcf">8.4.2.1</td><td class="act">Determine enterprise business information requirements</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">8.4.2.2</td><td class="act">Define enterprise data models</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">8.4.2.3</td><td class="act">Identify and understand external data sources</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">8.4.2.4</td><td class="act">Establish data ownership and stewardship responsibilities</td><td class="patcell"><span class="pat-badge" style="color:#1B4F8A;background:#EEF3FA">Decision</span></td><td class="stat">92%</td><td class="stat">88%</td><td class="stat m3">80%</td><td class="stat">72%</td><td class="stat">65%</td><td class="stat delta">-12%</td></tr><tr class="l4-row"><td class="pcf">8.4.2.5</td><td class="act">Maintain and evolve enterprise data and information architecture</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l3-row"><td class="pcf">8.4.3</td><td class="act">Define and execute business information lifecycle planning and control</td><td class="patcell"><span class="mixbar"><span style="width:50.0%;background:#5EB8E0" title="Document (1)"></span><span style="width:50.0%;background:#6FC48C" title="Transaction (1)"></span></span></td><td class="stat">66%</td><td class="stat">53%</td><td class="stat m3">38%</td><td class="stat">25%</td><td class="stat">15%</td><td class="stat delta">-28%</td></tr><tr class="l4-row"><td class="pcf">8.4.3.1</td><td class="act">Define and maintain enterprise information policies, standards, and procedures</td><td class="patcell"><span class="pat-badge" style="color:#0369A1;background:#E0F2FE">Document</span></td><td class="stat">72%</td><td class="stat">58%</td><td class="stat m3">40%</td><td class="stat">28%</td><td class="stat">18%</td><td class="stat delta">-32%</td></tr><tr class="l4-row"><td class="pcf">8.4.3.2</td><td class="act">Implement and execute data administration responsibilities</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l3-row"><td class="pcf">8.4.4</td><td class="act">Manage business information</td><td class="patcell"><span class="mixbar"><span style="width:100%;background:#6FC48C" title="Transaction"></span></span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">8.4.4.1</td><td class="act">Monitor and control business information</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">8.4.4.2</td><td class="act">Maintain business information feeds and repositories</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">8.4.4.3</td><td class="act">Perform internal usage audits</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">8.4.4.4</td><td class="act">Implement and administer business information access</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr></tbody>
+</table>
+<div class="legend"><span class="sw" style="background:var(--c-dec)"></span>Decision &mdash; Judgment &amp; Authority &nbsp; <span class="sw" style="background:var(--c-kno)"></span>Knowledge &mdash; Synthesis &amp; Interpretation &nbsp; <span class="sw" style="background:var(--c-doc)"></span>Document &mdash; Content Generation &nbsp; <span class="sw" style="background:var(--c-tra)"></span>Transaction &mdash; Rules-Based Processing<br><span class="sw" style="background:var(--c-exc)"></span>Exception &mdash; Non-Standard Resolution &nbsp;&middot;&nbsp; R/A-touch basis, not C/I &nbsp;&middot;&nbsp; Equal-weighted rollup across touched processes &nbsp;&middot;&nbsp; &copy; Timothy P. King &amp; Claude (Anthropic) 2026</div>
+
+<h2>Where CDO's Strategy Becomes Operating Reality</h2>
+<p>Director of Data &amp; Analytics is Responsible on the same L3 (8.4.1) that Chief Data Officer holds Accountable &mdash; the strategy-setting process &mdash; but this role's real footprint runs three L3s deeper into execution: defining enterprise data architecture (8.4.2), running information lifecycle control (8.4.3), and managing business information day to day (8.4.4, entirely Transaction-pattern: monitoring, maintaining repositories, auditing usage, administering access). That's the real shape of the role VentureBeat describes &mdash; a data analytics director who must first be conversant as a practitioner before leading the team, with responsibility running from strategy input down through operational data management. At 43% Transaction (the highest share of any PCF 8.0 role profiled so far), this is where the domain's information-governance strategy actually gets executed, not just defined.</p>
+
+<h2>Skills &amp; Competencies</h2>
+<p>Grounded in VentureBeat's &ldquo;Director of Data Analytics: Role and Key Skill Requirements&rdquo; (December 2025), citing Zippia's role-requirement research.</p>
+<ul class="skills">
+<li>Data visualization and executive communication &mdash; per VentureBeat, &ldquo;making data speak&rdquo; is a core function, translating rigorous analytics into insights stakeholders can act on</li>
+<li>SQL and data-platform fluency &mdash; hands-on proficiency remains expected even at the director level, since the role leads teams of practitioners directly</li>
+<li>Data governance, regulatory compliance, and privacy &mdash; deep understanding of consistent, ethical data management (GDPR, CCPA) and governance tooling</li>
+<li>Business process analysis &mdash; assessing business operations for efficiency and translating findings into data-driven recommendations</li>
+<li>Leadership and cross-functional collaboration &mdash; leading data analytics and data warehouse teams while partnering with product, operations, and executive stakeholders</li>
+</ul>
+<p class="framework-connection"><strong>Framework connection: </strong>The role's Transaction-heavy footprint (43% of activities, M1 60% &rarr; M3 35%, the steepest convergence gap of any pattern in its mix) matches VentureBeat's own emphasis on close attention to detail in day-to-day data operations &mdash; monitoring, auditing, and access administration are exactly the kind of rules-based work that converges fastest as tooling matures, distinct from the Knowledge-pattern architecture and governance work (8.4.2) that stays judgment-heavy.</p>
+
+<h2>Role Progression Framework</h2>
+<p>Three-stage structure follows the AIHR &ldquo;HR Business Partner Guide&rdquo; infographic's template (Getting Started / Established / Future-Focused) &mdash; structure only, no content reused. Column content grounded in VentureBeat (2025) and Built In's Director of Analytics career-path guide, both describing the real data analyst/engineer&rarr;manager&rarr;director progression.</p>
+<table class="prog-table">
+<thead><tr><th></th><th>Getting Started</th><th>Established</th><th>Future-Focused</th></tr></thead>
+<tbody>
+<tr><td class="rowlabel">Role focus</td><td>Building hands-on expertise as a data analyst, data engineer, or BI analyst &mdash; creating, maintaining, and integrating analytical tools and processes</td><td>Data/Analytics Manager transitioning into Director &mdash; leading teams, defining KPI frameworks, and driving data-informed initiatives against profitability targets</td><td>Director of Data &amp; Analytics: owning enterprise information architecture and lifecycle management, collaborating across department heads on data-driven strategy</td></tr>
+<tr><td class="rowlabel">Key activities</td><td>Building analytical tools, SQL/reporting work, foundational data governance exposure</td><td>Defining measurement frameworks and KPIs, supervising data analytics and warehouse teams, recommending new analytical methods</td><td>Setting enterprise data architecture standards, running information lifecycle planning, managing business information access and audits</td></tr>
+<tr><td class="rowlabel">Skills to build</td><td>SQL, SSRS, data visualization tools (Power BI, Tableau)</td><td>Team leadership, business process analysis, data governance tooling (IBM, Collibra)</td><td>Enterprise architecture design, cross-departmental influence, regulatory fluency (GDPR, CCPA) at the program level</td></tr>
+<tr><td class="rowlabel">Common pitfalls</td><td>Building technical depth without the communication skills needed to make data &ldquo;speak&rdquo; to non-technical stakeholders</td><td>Under-investing in governance discipline while scaling team output, creating the kind of dirty-data risk VentureBeat flags as capable of crippling large data systems</td><td>Treating information lifecycle management as a purely technical concern rather than the enterprise-wide accountability (audits, access administration) it actually is</td></tr>
+</tbody>
+</table>
+
+<h2>How the Role Has Evolved</h2>
+<div class="evo-timeline">
+<div class="evo-era" style="background:#EEF3FA;color:#33475B">
+<div class="era-label">1990s</div>
+<div class="era-title">IT-Controlled BI</div>
+<div class="era-desc">Data warehousing and OLAP tools emerge, but BI stays rigid and IT-controlled &mdash; SQL expertise and expensive infrastructure gatekeep who can actually get insight from enterprise data.</div>
+</div>
+<div class="evo-arrow">&rarr;</div>
+<div class="evo-era" style="background:#DCE6F5;color:#22405F">
+<div class="era-label">2000s</div>
+<div class="era-title">Self-Service Emerges</div>
+<div class="era-desc">Tableau, Power BI, and Qlik introduce drag-and-drop visualization, freeing business users from IT dependency &mdash; but without centralized governance, organizations trade one problem (access) for another (data chaos and conflicting reports).</div>
+</div>
+<div class="evo-arrow">&rarr;</div>
+<div class="evo-era" style="background:#B9CCEA;color:#173257">
+<div class="era-label">2010s</div>
+<div class="era-title">Governance Corrects the Swing</div>
+<div class="era-desc">Looker and dbt reintroduce data modeling and governed self-service, addressing the trust and consistency problems the self-service era created &mdash; the direct ancestor of this role's own architecture and stewardship mandate (8.4.2).</div>
+</div>
+<div class="evo-arrow">&rarr;</div>
+<div class="evo-era" style="background:#7FA3D6;color:#0D2340">
+<div class="era-label">2020s</div>
+<div class="era-title">Fragmentation, Then Convergence</div>
+<div class="era-desc">BI tooling fragments across dbt-modeled and BI-tool-native approaches; organizations struggle to unify a single source of truth as data volume and tool sprawl both grow.</div>
+</div>
+<div class="evo-arrow">&rarr;</div>
+<div class="evo-era" style="background:var(--navy-d);color:#fff">
+<div class="era-label">2026 &#9733;</div>
+<div class="era-title">AI-Augmented Analytics</div>
+<div class="era-desc">BI platforms add automation, natural-language query, and AI-driven insight generation &mdash; but per industry sources, AI struggles without the structured business logic and governance this role has spent three decades building.</div>
+</div>
+</div>
+<p style="font-size:11px;color:var(--lgray);font-style:italic;margin-top:-12px;margin-bottom:20px">Era framing follows the AIHR &ldquo;HR Business Partner Guide&rdquo; infographic's own historical structure; BI/analytics tooling history verified across multiple independent sources (Yellowfin BI, Dataversity, Omni Analytics), not reproduced from any single article's text.</p>
+<p class="framework-connection"><strong>A related pattern: </strong>McKinsey's Julie Goran, writing in July 2026, frames the scale of what's changing as comparable to the dawn of the Industrial Age &mdash; leaders are now asking whether AI agents belong on the org chart itself, and how to plan spans and layers around agent capacity alongside human capacity. For this role, that question maps almost exactly onto its own pattern mix: the Transaction-heavy work of monitoring and administering business information (8.4.4) is squarely in agent territory, while the Knowledge-heavy architecture and stewardship work (8.4.2) is the judgment layer AI still can't structure on its own.</p>
+<p class="sources">Sources: VentureBeat, &ldquo;Director of Data Analytics: Role and Key Skill Requirements,&rdquo; December 24, 2025 (citing Zippia role-requirement research); Built In, &ldquo;Director of Analytics&rdquo; career guide; Yellowfin BI, &ldquo;The History and Evolution of Business Intelligence Platforms,&rdquo; December 2025; Dataversity, &ldquo;A Brief History of Business Intelligence,&rdquo; April 2026; Omni Analytics, &ldquo;A Short History of Business Intelligence&rdquo;; Julie Goran, &ldquo;Rewired takes: How AI is unlocking creativity and heralding the rise of the agent manager,&rdquo; McKinsey &amp; Company, July 2026. AIHR &ldquo;HR Business Partner Guide&rdquo; infographic used as structural template only; no content reused.</p>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;&middot;&nbsp; Human Enterprise Architect &nbsp;&middot;&nbsp; August 2026<br>
+    Co-developed with Claude (Anthropic)<br>
+    <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
+    &nbsp;&middot;&nbsp; hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>
