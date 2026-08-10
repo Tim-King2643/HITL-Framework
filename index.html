@@ -596,7 +596,7 @@ tbody td.delta-cell { background: #fff; }
         <div class="lens-tabs" id="people-lens-tabs" style="display:flex">
           <button class="lens-tab active" id="tab-role-impact" onclick="showPeopleLens('role-impact')">Role Impact Table</button>
           <button class="lens-tab" id="tab-readiness" disabled title="Not yet built — needs the People-side readiness scoring work">Readiness Table</button>
-          <button class="lens-tab" id="tab-transition" disabled title="Not yet built — role-by-role research in progress">Role Transition Profile</button>
+          <button class="lens-tab" id="tab-transition" onclick="openRoleTransitionHub()" disabled title="Not yet built — role-by-role research in progress">Role Transition Profile</button>
         </div>
         <div class="lens-panel active" id="lens-panel-role-impact">
           <div class="lens-note">Derived from the same confirmed RACI data as the Process side's RACI Table — a role's row reflects every L3 process where it holds Responsible or Accountable. Consulted/Informed involvement isn't counted toward a role's pattern mix or maturity rollup, since R/A reflect who does or owns the work, not who's kept in the loop. Click a role to see the specific single-pattern processes driving its mix. Each role also shows who it reports to and its computed span of control — a first-pass reporting structure, reasoned rather than externally sourced, still awaiting a full confirmation pass.</div>
@@ -4210,6 +4210,18 @@ function populateLensTabs(cat) {
   const hasRoleTaxonomy = getRoleTaxonomy(cat.code).length > 0;
   viewToggle.style.display = (hasRaci && hasRoleTaxonomy) ? 'flex' : 'none';
 
+  // "Role Transition Profile" tab — tab-level link out to that domain's
+  // taxonomy hub page in docs/ (real RTP content lives there as static
+  // pages, not inline dashboard data — see roleTaxonomyHubMap). Gated
+  // strictly per domain: only PCF 7.0 and PCF 8.0 have any RTP content so
+  // far, every other domain stays disabled with the original tooltip.
+  const transitionTab = document.getElementById('tab-transition');
+  const hasRtpHub = !!roleTaxonomyHubMap[cat.code];
+  transitionTab.disabled = !hasRtpHub;
+  transitionTab.title = hasRtpHub
+    ? 'Opens the People-side role catalog and Role Transition Profiles for this domain in a new tab'
+    : 'Not yet built — role-by-role research in progress';
+
   showLens('maturity');
   if (hasRaci) renderRaciTable(cat);
   if (hasLenses) {
@@ -4231,6 +4243,14 @@ function setMainView(view) {
 function showPeopleLens(name) {
   document.getElementById('tab-role-impact').classList.toggle('active', name === 'role-impact');
   document.getElementById('lens-panel-role-impact').classList.toggle('active', name === 'role-impact');
+}
+
+function openRoleTransitionHub() {
+  const cat = PCF[window.currentDomainIdx];
+  if (!cat) return;
+  const url = roleTaxonomyHubMap[cat.code];
+  if (!url) return; // guard: button should already be disabled in this case
+  window.open(url, '_blank');
 }
 
 function showLens(name) {
@@ -4439,6 +4459,13 @@ const domainMaturityPdf = {
 // RACI Table lens) — only domains with confirmed RACI data have an entry.
 const domainRaciPdf = {
   '7.0': 'hitl_raci_pcf7_final.pdf',
+};
+// Role Transition Profile hub pages — only domains with real RTP content
+// get an entry here. Gates the People View's "Role Transition Profile" tab
+// in populateLensTabs(); every other domain keeps that tab disabled.
+const roleTaxonomyHubMap = {
+  '7.0': 'docs/role_taxonomy.html',
+  '8.0': 'docs/role_taxonomy_pcf8.html',
 };
 // Per-value-stream RACI-only PDFs — used by downloadPDF() when the RACI
 // Table or Value Stream Profile lens is active and a specific stream is

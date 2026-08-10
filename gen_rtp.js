@@ -153,6 +153,14 @@ const tierLabel = roleTier ? roleTier.tier : '[[TIER \u2014 fill in from roles/t
 
 const css = fs.readFileSync(path.join(__dirname, 'rtp_style.css'), 'utf8');
 
+// Domain-aware taxonomy hub link — PCF 7.0 uses the original role_taxonomy.html
+// (no suffix, predates this convention); every other domain gets its own
+// role_taxonomy_pcf<N>.html. Extend this map as more domains get a hub page.
+const TAXONOMY_HUB = { '7.0': 'role_taxonomy.html' };
+function taxonomyHubFor(domainCode) {
+  return TAXONOMY_HUB[domainCode] || `role_taxonomy_pcf${domainCode.replace('.0', '')}.html`;
+}
+
 const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -171,7 +179,7 @@ const html = `<!DOCTYPE html>
   <nav><a href="index.html">Documentation</a><a href="../hitl_dashboard_final.html">Dashboard</a></nav>
 </div>
 
-<div class="breadcrumb"><a href="index.html">Documentation</a> / <a href="role_taxonomy.html">People View</a> / ${ROLE_NAME}</div>
+<div class="breadcrumb"><a href="index.html">Documentation</a> / <a href="${taxonomyHubFor(cat.code)}">People View</a> / ${ROLE_NAME}</div>
 
 <div class="doc">
 <h1 class="title">${ROLE_NAME} \u2014 Role Transition Profile</h1>
