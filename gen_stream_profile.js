@@ -241,13 +241,30 @@ const capMapTable = new Table({ width: { size: 100, type: WidthType.PERCENTAGE }
 const capMapBlock = sectionHeading('AI Capability Map', "Pattern-type distribution across this value stream's activity units. H% figures are the pattern type's standard value at each maturity level, applied consistently across all PCF domains.").concat([capMapTable]);
 
 // ── 5. Process Accountability ───────────────────────────────────────────
+// Bug fix (Aug 9, 2026): raci.A sometimes carries a parenthetical caveat
+// baked into the string itself (e.g. "HRBP Manager (partial—see gap note)",
+// "HRIS Analyst (HR-owned scope)") rather than as separate structured data.
+// Using the raw string as a grouping/tier-lookup key fragmented these roles
+// into a phantom second row that fell through to "External Participant"
+// tier — wrong on both counts. Strip the parenthetical for grouping/lookup,
+// keep it as a scoped footnote instead of losing the information.
+function splitRoleAnnotation(raw) {
+  const m = raw.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+  return m ? { base: m[1].trim(), note: m[2].trim() } : { base: raw, note: null };
+}
 const ownerData = {};
+const roleNotes = {}; // base role -> [{code, note}]
 streamL3s.forEach(l3 => {
-  const role = (l3.raci && l3.raci.A) || 'Unassigned';
+  const raw = (l3.raci && l3.raci.A) || 'Unassigned';
+  const { base: role, note } = splitRoleAnnotation(raw);
   const count = (l3.l4 && l3.l4.length) ? l3.l4.length : 1;
   if (!ownerData[role]) ownerData[role] = { steps: 0, l3s: [] };
   ownerData[role].steps += count;
   ownerData[role].l3s.push(l3.code);
+  if (note) {
+    if (!roleNotes[role]) roleNotes[role] = [];
+    roleNotes[role].push({ code: l3.code, note });
+  }
 });
 const tierByRole = {};
 (d.roles || []).forEach(r => { tierByRole[r.role] = r.tier; });
@@ -268,6 +285,10 @@ if (Object.keys(ownerData).length) {
     const stripe = i % 2 === 1 ? 'FAFBFD' : 'FFFFFF';
     const tier = tierByRole[role] || tierByRole[role.replace(/\*$/, '')] || 'External Participant';
     const tc = TIER_COLORS[tier] || TIER_COLORS['External Participant'];
+    const notes = roleNotes[role] || [];
+    const l3Text = data.l3s.map(code => notes.some(n => n.code === code) ? code + '\u2020' : code).join(', ');
+    const l3Children = [new Paragraph({ children: [new TextRun({ text: l3Text, color: '666666', size: 13 })] })];
+    notes.forEach(n => l3Children.push(new Paragraph({ spacing: { before: 20 }, children: [new TextRun({ text: `\u2020 ${n.code}: ${n.note}`, italics: true, color: '888888', size: 11 })] })));
     rows.push(new TableRow({ children: [
       bodyCell([new Paragraph({ children: [new TextRun({ text: role, color: GRAY, size: 15 })] })], ACC_W.role, { fill: stripe }),
       new TableCell({
@@ -276,7 +297,7 @@ if (Object.keys(ownerData).length) {
         margins: { top: 80, bottom: 80, left: 100, right: 100 },
         children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: tier, bold: true, color: tc.text, size: 12 })] })],
       }),
-      bodyCell([new Paragraph({ children: [new TextRun({ text: data.l3s.join(', '), color: '666666', size: 13 })] })], ACC_W.l3, { fill: stripe }),
+      bodyCell(l3Children, ACC_W.l3, { fill: stripe }),
       new TableCell({
         width: { size: pct(ACC_W.l4), type: WidthType.PERCENTAGE }, borders: thinBorder(),
         shading: { type: ShadingType.CLEAR, fill: stripe }, verticalAlign: VerticalAlign.TOP,
