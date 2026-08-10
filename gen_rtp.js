@@ -1,263 +1,219 @@
 const fs = require('fs');
-const path = require('path');
 
-// ── HITL Role Transition Profile generator ──────────────────────────────
-// Usage: node gen_rtp.js <domain>.json "<Role Name>" <output-slug> [--abbrev=map.json]
-//
-// SCOPE (see HITL_RTP_Html_Spec.md for the full spec this implements):
-// This generator produces the MECHANICAL, fully data-driven ~60% of an RTP
-// page: masthead, Snapshot stats, Role Pattern Mix cards, the full L3/L4
-// detail table, and the legend — all computed directly from real RACI data,
-// nothing invented. It does NOT and cannot generate the researched ~40%:
-// the role's narrative "shape of transition" framing, Skills & Competencies,
-// Role Progression Framework, and the Evolution Timeline + McKinsey
-// connection under "How the Role Has Evolved" — those need a real external
-// source per role (one substantive, fully-fetched article minimum) and
-// honest synthesis, the same standard every role in this framework has been
-// held to. The output file has clearly marked TODO blocks for those
-// sections — never ship it with the placeholders still in place.
-
+// gen_vsp_html.js — per-stream Value Stream Profile HTML page generator
+// Usage: node gen_vsp_html.js <domain>.json "<Stream Name>" <slug> <domain-slug>
 const DOMAIN_JSON = process.argv[2];
-const ROLE_NAME = process.argv[3];
+const STREAM_NAME = process.argv[3];
 const OUT_SLUG = process.argv[4];
+const DOMAIN_SLUG = process.argv[5]; // e.g. 'pcf8' for pdf link paths
 const cat = JSON.parse(fs.readFileSync(DOMAIN_JSON, 'utf8'));
 
-// Known abbreviations seen in real RACI R-fields for this domain so far
-// (PCF 7.0). A NEW domain will have its own abbreviations — inspect the
-// domain JSON's raw R/A strings first (see spec §2) and extend this map,
-// don't assume it's empty.
-const ABBREV = {
-  'Dir. of L&D': 'Director of L&D',
-  'Comp & Benefits Mgr': 'Compensation & Benefits Manager',
-  'HRBP Mgr': 'HRBP Manager',
-};
-
 const PATTERN_META = {
-  Decision:    { fill: '#EEF3FA', text: '#1B4F8A', bar: '#7B9FD1', tagline: 'Judgment & Authority \u2014 gates that stay human by design', m1: 92, m3: 80 },
-  Knowledge:   { fill: '#F3F0FE', text: '#534AB7', bar: '#A79AE0', tagline: 'Synthesis & Interpretation \u2014 judgment-driven work', m1: 85, m3: 65 },
+  Decision:    { fill: '#EEF3FA', text: '#1B4F8A', bar: '#7B9FD1', tagline: 'Judgment &amp; Authority \u2014 gates that stay human by design', m1: 92, m3: 80 },
+  Knowledge:   { fill: '#F3F0FE', text: '#534AB7', bar: '#A79AE0', tagline: 'Synthesis &amp; Interpretation \u2014 judgment-driven work', m1: 85, m3: 65 },
   Document:    { fill: '#E0F2FE', text: '#0369A1', bar: '#5EB8E0', tagline: 'Content Generation \u2014 drafting and communication', m1: 72, m3: 40 },
   Transaction: { fill: '#DCFCE7', text: '#166534', bar: '#6FC48C', tagline: 'Rules-Based Processing \u2014 suited to automation', m1: 60, m3: 35 },
   Exception:   { fill: '#FEE2E2', text: '#991B1B', bar: '#E88A8A', tagline: 'Non-Standard Resolution \u2014 human-resolved by nature', m1: 95, m3: 82 },
 };
+const TIER_COLORS = {
+  Executive: { fill: '#FEE2E2', text: '#991B1B' },
+  Managerial: { fill: '#EEF3FA', text: '#1B4F8A' },
+  Operational: { fill: '#DCFCE7', text: '#166534' },
+  'External Participant': { fill: '#F5F5F5', text: '#666666' },
+};
 
-function normalizeRole(raw) {
-  const s = (raw || '').trim();
-  const m = s.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
-  const base = m ? m[1].trim() : s;
-  return { base: ABBREV[base] || base, note: m ? m[2].trim() : null };
-}
-
-// ── Gather every L3 this role holds Responsible OR Accountable on ───────
-// (the R/A-touch rule — broader than the print docs' Accountable-only
-// Process Accountability table; see spec §3 for why RTP uses this rule.)
-let l3s = [];
-let groupsTouched = new Set();
-cat.groups.forEach(g => {
-  g.l3.forEach(l3 => {
-    if (!l3.raci) return;
-    const a = normalizeRole(l3.raci.A);
-    const rParts = (l3.raci.R || '').split('\u00b7').map(normalizeRole);
-    const touches = a.base === ROLE_NAME || rParts.some(r => r.base === ROLE_NAME);
-    if (touches) { l3s.push({ ...l3, groupCode: g.code, groupName: g.name }); groupsTouched.add(g.code); }
+function getStreamL3s(cat, stream) {
+  const fullGroups = new Set(stream.l2codes || []);
+  const explicitL3 = new Set(stream.l3codes || []);
+  const result = [];
+  cat.groups.forEach(g => {
+    if (fullGroups.has(g.code)) g.l3.forEach(l3 => result.push(l3));
+    else if (explicitL3.size) g.l3.forEach(l3 => { if (explicitL3.has(l3.code)) result.push(l3); });
   });
+  return result;
+}
+function countPatternsForL3s(l3s) {
+  const counts = { Decision: 0, Knowledge: 0, Document: 0, Transaction: 0, Exception: 0 };
+  l3s.forEach(l3 => {
+    if (l3.l4 && l3.l4.length) l3.l4.forEach(a => { if (counts[a.pattern] !== undefined) counts[a.pattern]++; });
+    else if (counts[l3.pattern] !== undefined) counts[l3.pattern]++;
+  });
+  return counts;
+}
+function codeInStream(code, stream) {
+  if (!stream) return false;
+  if ((stream.l2codes || []).some(l2 => code === l2 || code.startsWith(l2 + '.'))) return true;
+  return (stream.l3codes || []).some(l3 => code === l3 || code.startsWith(l3 + '.'));
+}
+function splitRoleAnnotation(raw) {
+  const m = raw.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+  return m ? { base: m[1].trim(), note: m[2].trim() } : { base: raw, note: null };
+}
+
+const stream = cat.valueStreams.find(s => s.name === STREAM_NAME);
+if (!stream) { console.error('Stream not found:', STREAM_NAME); process.exit(1); }
+const d = cat.lenses.descriptions.find(x => x.stream === STREAM_NAME);
+if (!d) { console.error('No description entry for stream:', STREAM_NAME); process.exit(1); }
+const kpiEntry = (cat.lenses.kpis || []).find(k => k.stream === STREAM_NAME);
+const designNarrativeText = (cat.lenses.designNarrative && cat.lenses.designNarrative[STREAM_NAME]) || '';
+const handoffPoints = (cat.lenses.handoffPoints && cat.lenses.handoffPoints[STREAM_NAME]) || [];
+const streamL3s = getStreamL3s(cat, stream);
+const govItems = (cat.lenses.governance || []).filter(g => codeInStream(g.code, stream));
+
+// ── KPIs ──────────────────────────────────────────────────────────────────
+let kpiHtml = '';
+if (kpiEntry) {
+  const rows = kpiEntry.metrics.map(m => `<tr><td><div class="kpi-name">${m.name}</div>${m.formula ? `<div class="kpi-formula">${m.formula}</div>` : ''}</td><td>${m.source ? `<span class="src-badge">${m.source}</span>` : '<span class="src-none">&mdash;</span>'}</td></tr>`).join('');
+  kpiHtml = `<h2>KPIs</h2><table><tr><th>Business Impact Metric &amp; Formula (where confirmed)</th><th style="width:15%">Source</th></tr>${rows}</table>`;
+}
+
+// ── Design Narrative ──────────────────────────────────────────────────────
+let designHtml = '';
+if (designNarrativeText) {
+  designHtml = `<h2>Design Narrative</h2><p>${designNarrativeText}</p>`;
+}
+
+// ── AI Capability Map ─────────────────────────────────────────────────────
+const patternCounts = countPatternsForL3s(streamL3s);
+const patternOrder = ['Decision', 'Knowledge', 'Document', 'Transaction', 'Exception'];
+const capCards = patternOrder.map(p => {
+  const meta = PATTERN_META[p];
+  const count = patternCounts[p];
+  const body = count === 0
+    ? `<div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities of this pattern in this value stream</div>`
+    : `<div class="cm-count">${count} <span>L4 activities</span></div><div class="cm-mvals">M1 ${meta.m1}%  &rarr;  M3 ${meta.m3}%</div>`;
+  return `<div class="capmap-card" style="background:${meta.fill};color:${meta.text}"><div class="cm-name">${p}</div><div class="cm-tagline">${meta.tagline}</div>${body}</div>`;
+}).join('');
+const capMapHtml = `<h2>AI Capability Map</h2><p class="caption">Pattern-type distribution across this value stream's activity units. H% figures are the pattern type's standard value at each maturity level, applied consistently across all PCF domains.</p><div class="capmap-grid">${capCards}</div>`;
+
+// ── Process Accountability ────────────────────────────────────────────────
+const ownerData = {};
+const roleNotes = {};
+streamL3s.forEach(l3 => {
+  const raw = (l3.raci && l3.raci.A) || 'Unassigned';
+  const { base: role, note } = splitRoleAnnotation(raw);
+  const count = (l3.l4 && l3.l4.length) ? l3.l4.length : 1;
+  if (!ownerData[role]) ownerData[role] = { steps: 0, l3s: [] };
+  ownerData[role].steps += count;
+  ownerData[role].l3s.push(l3.code);
+  if (note) { if (!roleNotes[role]) roleNotes[role] = []; roleNotes[role].push({ code: l3.code, note }); }
 });
-if (l3s.length === 0) {
-  console.error(`WARNING: zero L3 R/A-touches found for "${ROLE_NAME}". If this is expected (a zero-touch role), build the page by hand per spec §7 — this generator assumes real touches exist.`);
-}
-
-let l4Count = 0;
-const patternCounts = { Decision: 0, Knowledge: 0, Document: 0, Transaction: 0, Exception: 0 };
-l3s.forEach(l3 => {
-  if (l3.l4 && l3.l4.length) { l4Count += l3.l4.length; l3.l4.forEach(a => patternCounts[a.pattern]++); }
-  else { l4Count += 1; patternCounts[l3.pattern]++; }
-});
-
-function weightedM1M3(counts) {
-  const total = Object.values(counts).reduce((a, b) => a + b, 0);
-  if (!total) return [0, 0];
-  const wm1 = Math.round(Object.entries(counts).reduce((s, [p, c]) => s + c * PATTERN_META[p].m1, 0) / total);
-  const wm3 = Math.round(Object.entries(counts).reduce((s, [p, c]) => s + c * PATTERN_META[p].m3, 0) / total);
-  return [wm1, wm3];
-}
-const [aggM1, aggM3] = weightedM1M3(patternCounts);
-const dominant = Object.entries(patternCounts).sort((a, b) => b[1] - a[1])[0];
-const dominantPct = l4Count ? Math.round(dominant[1] / l4Count * 100) : 0;
-
-// ── Role Pattern Mix caption note — handles BOTH directions correctly ───
-// (a real bug in the first version of this logic: only handled the case
-// where the dominant pattern's own M3 sits above the blend. For any
-// Transaction- or Document-dominant role, the dominant pattern's M3 is
-// BELOW the blend, and the old one-directional sentence template produced
-// a grammatically broken result. Fixed here — never regress this.)
-function captionNote() {
-  const domName = dominant[0];
-  const domM3 = PATTERN_META[domName].m3;
-  if (domM3 > aggM3) {
-    return `${domName} dominates by volume (${dominantPct}% of activities) but its own M3 (${domM3}%) sits above the blend because other, lower-M3 patterns still in the mix pull the role-wide average down.`;
-  } else if (domM3 < aggM3) {
-    return `${domName} dominates by volume (${dominantPct}% of activities), but its own M3 (${domM3}%) sits below the blend \u2014 higher-M3 patterns still in the mix pull the role-wide average up from ${domName}\u2019s own number.`;
-  }
-  return `${domName} dominates by volume (${dominantPct}% of activities); its own M3 (${domM3}%) happens to roughly match the role-wide blended average.`;
-}
-
-function capmapCardsHtml() {
-  const order = ['Decision', 'Knowledge', 'Document', 'Transaction', 'Exception'];
-  const cards = order.map(name => {
-    const meta = PATTERN_META[name];
-    const count = patternCounts[name];
-    const body = count === 0
-      ? `<div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities of this pattern touched by this role</div>`
-      : `<div class="cm-count">${count} <span>L4 activities</span></div><div class="cm-mvals">M1 ${meta.m1}%  \u2192  M3 ${meta.m3}%</div>`;
-    return `<div class="capmap-card" style="background:${meta.fill};color:${meta.text}"><div class="cm-name">${name}</div><div class="cm-tagline">${meta.tagline}</div>${body}</div>`;
+const tierByRole = {};
+(d.roles || []).forEach(r => { tierByRole[r.role] = r.tier; });
+let accHtml = '';
+if (Object.keys(ownerData).length) {
+  const rows = Object.entries(ownerData).map(([role, data]) => {
+    const tier = tierByRole[role] || tierByRole[role.replace(/\*$/, '')] || 'External Participant';
+    const tc = TIER_COLORS[tier] || TIER_COLORS['External Participant'];
+    const notes = roleNotes[role] || [];
+    const l3Text = data.l3s.map(code => notes.some(n => n.code === code) ? code + '&dagger;' : code).join(', ');
+    const noteLines = notes.map(n => `<div class="acc-note">&dagger; ${n.code}: ${n.note}</div>`).join('');
+    return `<tr><td class="acc-role">${role}</td><td style="text-align:center"><span class="tier-badge" style="background:${tc.fill};color:${tc.text}">${tier}</span></td><td class="acc-l3">${l3Text}${noteLines}</td><td style="text-align:center">${data.steps}</td></tr>`;
   }).join('');
-  return `<div class="capmap-grid">${cards}</div>`;
+  accHtml = `<h2>Process Accountability</h2><table><tr><th>Process Accountability</th><th style="width:14%;text-align:center">Tier</th><th style="width:35%">L3 Processes</th><th style="width:12%;text-align:center">L4 Activities</th></tr>${rows}</table>`;
 }
 
-// ── Full Detail table — L3 ALWAYS a bar (solid if single-pattern, segmented
-// if mixed), L4 ALWAYS a badge. This was the other real bug found this
-// session: an earlier draft used badges for single-pattern LEAF L3 rows,
-// copied from an old reference page that itself violated this rule. ─────
-function countL4Patterns(l4list) {
-  const c = {}; (l4list || []).forEach(a => { c[a.pattern] = (c[a.pattern] || 0) + 1; }); return c;
+// ── Handoff Points ─────────────────────────────────────────────────────────
+let handoffHtml = '';
+if (handoffPoints.length) {
+  handoffHtml = `<h2>Handoff Points</h2>` + handoffPoints.map(p => `<p>${p}</p>`).join('');
 }
-function patternBarL3(l3) {
-  if (l3.mixed && l3.l4 && l3.l4.length) {
-    const counts = countL4Patterns(l3.l4);
-    const total = Object.values(counts).reduce((a, b) => a + b, 0) || 1;
-    const spans = Object.entries(counts).map(([p, c]) =>
-      `<span style="width:${(c / total * 100).toFixed(1)}%;background:${PATTERN_META[p].bar}" title="${p} (${c})"></span>`).join('');
-    return `<span class="mixbar">${spans}</span>`;
-  }
-  return `<span class="mixbar"><span style="width:100%;background:${PATTERN_META[l3.pattern].bar}" title="${l3.pattern}"></span></span>`;
-}
-function patternBadgeL4(pattern) {
-  const meta = PATTERN_META[pattern];
-  return `<span class="pat-badge" style="color:${meta.text};background:${meta.fill}">${pattern}</span>`;
-}
-function statRow(mv) {
-  return `<td class="stat">${mv[0]}%</td><td class="stat">${mv[1]}%</td><td class="stat m3">${mv[2]}%</td><td class="stat">${mv[3]}%</td><td class="stat">${mv[4]}%</td><td class="stat delta">-${mv[0]-mv[2]}%</td>`;
-}
-let tableRows = '';
-l3s.forEach(l3 => {
-  tableRows += `<tr class="l3-row"><td class="pcf">${l3.code}</td><td class="act">${l3.name}</td><td class="patcell">${patternBarL3(l3)}</td>${statRow(l3.mv)}</tr>`;
-  if (l3.l4 && l3.l4.length) {
-    l3.l4.forEach(a => {
-      tableRows += `<tr class="l4-row"><td class="pcf">${a.code}</td><td class="act">${a.name}</td><td class="patcell">${patternBadgeL4(a.pattern)}</td>${statRow(a.mv)}</tr>`;
-    });
-  }
-});
 
-const groupsTotal = cat.groups.length;
-const roleTier = ((cat.lenses && cat.lenses.roles) || []).find(r => r.role === ROLE_NAME);
-const tierLabel = roleTier ? roleTier.tier : '[[TIER \u2014 fill in from roles/taxonomy]]';
-
-const css = fs.readFileSync(path.join(__dirname, 'rtp_style.css'), 'utf8');
-
-// Domain-aware taxonomy hub link — PCF 7.0 uses the original role_taxonomy.html
-// (no suffix, predates this convention); every other domain gets its own
-// role_taxonomy_pcf<N>.html. Extend this map as more domains get a hub page.
-const TAXONOMY_HUB = { '7.0': 'role_taxonomy.html' };
-function taxonomyHubFor(domainCode) {
-  return TAXONOMY_HUB[domainCode] || `role_taxonomy_pcf${domainCode.replace('.0', '')}.html`;
+// ── Governed Decision Points ────────────────────────────────────────────────
+let govHtml = '<h2>Governed Decision Points</h2>';
+if (govItems.length) {
+  govHtml += `<p class="caption">Every Decision/Exception-pattern activity in the value stream, including those embedded inside Mixed-labeled steps.</p>`;
+  const rows = govItems.map(g => `<tr><td class="gdp-pcf">${g.code}</td><td>${g.decision}</td><td>${g.authority}</td><td>${g.impact}</td><td>${g.escalates}</td><td>${g.trigger}</td></tr>`).join('');
+  govHtml += `<table><tr><th style="width:8%">PCF</th><th>Decision</th><th>Authority</th><th>Impact</th><th>Escalates To</th><th>Trigger</th></tr>${rows}</table>`;
+} else {
+  govHtml += `<p class="no-gdp">No Decision- or Exception-pattern activity in this value stream &mdash; every step here is Knowledge, Document, Transaction, or Mixed without an embedded Decision/Exception component.</p>`;
 }
+
+const narrativeHtml = d.narrative.map(p => `<p>${p}</p>`).join('');
+const pdfSlug = OUT_SLUG;
+const domainSuffix = DOMAIN_SLUG === 'pcf7' ? 'pcf7' : 'pcf8';
 
 const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>${ROLE_NAME} \u2014 Role Transition Profile \u2014 The Human-AI Partnership Framework</title>
+<title>${STREAM_NAME} — The Human-AI Partnership Framework</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>${css}</style>
+<style>
+:root {
+  --navy: #1B4F8A; --navy-d: #0D2D4F; --navy-l: #EEF3FA; --dark: #0D1B2A;
+  --gray: #444; --lgray: #888; --bg: #F4F6FB; --border: #DDE3EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); }
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 4px; }
+.masthead .tagline { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+.breadcrumb { max-width: 900px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
+.breadcrumb a { color: var(--navy); text-decoration: none; }
+.doc { max-width: 900px; margin: 0 auto; padding: 24px 24px 80px; }
+.doc h1.title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy-d); margin: 8px 0 6px; }
+.doc .subtitle { font-size: 13px; color: var(--lgray); font-style: italic; margin-bottom: 5px; }
+.doc .stats { font-size: 13px; color: var(--gray); margin-bottom: 22px; }
+.doc h2 { font-size: 16px; color: var(--navy-d); font-weight: 700; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
+.doc p { font-size: 13px; line-height: 1.7; color: var(--gray); margin-bottom: 12px; }
+.doc p.caption { font-size: 11.5px; color: var(--lgray); margin-bottom: 14px; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 12px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 7px 10px; font-size: 11px; }
+td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:nth-child(even) td { background: #FAFBFD; }
+.kpi-name { font-weight: 700; color: var(--navy-d); }
+.kpi-formula { font-size: 12px; color: var(--lgray); font-style: italic; }
+.src-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: #DCFCE7; color: #166534; }
+.src-none { color: #B8C0CC; }
+.gdp-pcf { font-family: 'DM Mono', monospace; color: var(--navy); }
+.no-gdp { font-style: italic; color: var(--lgray); font-size: 13px; padding: 12px 0; }
+.capmap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 10px; margin: 14px 0 8px; }
+.capmap-card { border-radius: 8px; padding: 14px 14px; }
+.cm-name { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.cm-tagline { font-size: 10px; font-style: italic; opacity: .85; margin-bottom: 10px; line-height: 1.4; }
+.cm-count { font-weight: 700; font-size: 15px; }
+.cm-count span { font-weight: 400; font-size: 11px; }
+.cm-mvals { font-size: 11px; margin-top: 4px; }
+.cm-empty-note { font-size: 10.5px; font-style: italic; margin-top: 4px; }
+.acc-role { color: var(--navy-d); }
+.tier-badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 3px 10px; border-radius: 10px; }
+.acc-l3 { font-size: 11.5px; color: #666; }
+.acc-note { font-size: 10.5px; font-style: italic; color: var(--lgray); margin-top: 3px; }
+footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+.pdflink { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--navy); text-decoration: none; background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 8px 14px; margin-top: 4px; }
+</style>
 </head>
 <body>
-
 <div class="masthead">
   <h1>The Human-AI Partnership Framework</h1>
   <div class="tagline">Where human judgment belongs</div>
-  <nav><a href="index.html">Documentation</a><a href="../hitl_dashboard_final.html">Dashboard</a></nav>
+  <nav>
+    <a href="index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+  </nav>
 </div>
-
-<div class="breadcrumb"><a href="index.html">Documentation</a> / <a href="${taxonomyHubFor(cat.code)}">People View</a> / ${ROLE_NAME}</div>
-
+<div class="breadcrumb"><a href="index.html">Documentation</a> / Process View / ${STREAM_NAME}</div>
 <div class="doc">
-<h1 class="title">${ROLE_NAME} \u2014 Role Transition Profile</h1>
-<p class="subtitle">${tierLabel} Tier &middot; ${l3s.length} PCF processes across ${groupsTouched.size} process group${groupsTouched.size === 1 ? '' : 's'}</p>
-
-<h2>Role Impact Snapshot</h2>
-<p>Computed from ${cat.code}'s confirmed RACI data using the Responsible/Accountable touch rule (excludes Consulted/Informed).</p>
-<div class="snapshot-grid">
-<div class="snap-box"><div class="snap-label">L3 processes touched</div><div class="snap-value">${l3s.length}</div></div>
-<div class="snap-box"><div class="snap-label">L4 activity units</div><div class="snap-value">${l4Count}</div></div>
-<div class="snap-box"><div class="snap-label">Process groups spanned</div><div class="snap-value">${groupsTouched.size} of ${groupsTotal}</div></div>
-<div class="snap-box"><div class="snap-label">Aggregate M1 &rarr; M3</div><div class="snap-value">${aggM1}% &rarr; ${aggM3}%</div></div>
-<div class="snap-box"><div class="snap-label">Convergence gap</div><div class="snap-value">-${aggM1-aggM3} pts</div></div>
-<div class="snap-box"><div class="snap-label">Dominant pattern</div><div class="snap-value">${dominant[0]} (${dominantPct}%)</div></div>
+<h1 class="title">${STREAM_NAME}</h1>
+<p class="subtitle">${d.pcf} &middot; ${d.subtitle}</p>
+<p class="stats">${d.l3Count} PCF processes &middot; ${d.activityUnits} L4 activities &middot; M1 ${d.m1}% &rarr; M3 ${d.m3}% (&Delta; ${d.delta}%)</p>
+<a class="pdflink" href="../pdfs/hitl_valuestream_${pdfSlug}_${domainSuffix}_final.pdf">&#8659; Download as PDF</a>
+<h2>Description</h2>
+${narrativeHtml}
+${kpiHtml}
+${designHtml}
+${capMapHtml}
+${accHtml}
+${handoffHtml}
+${govHtml}
 </div>
-
-<h2>Role Pattern Mix</h2>
-<p>Pattern-type distribution across every L4 activity this role touches (Responsible or Accountable), with each pattern's standard M1&rarr;M3 convergence applied. Same card design as the Value Stream Profile docs' AI Capability Map, scoped to this role instead of a value stream.</p>
-<p class="caption-note">Each card shows that pattern's own standard M1&rarr;M3 value, not weighted by this role. The Snapshot's Aggregate M1&rarr;M3 above (${aggM1}% &rarr; ${aggM3}%) is the count-weighted blend across all 5 patterns present \u2014 ${captionNote()}</p>
-${capmapCardsHtml()}
-
-<!-- TODO (requires real research \u2014 see spec \u00a74): a bespoke narrative
-     section here, titled to fit the role (not a generic heading \u2014 every
-     existing PCF 7.0 RTP page titles this uniquely). OPTIONAL \u2014 2 of the
-     11 real PCF 7.0 pages (HRBP Manager, HRIS Analyst) skip this section
-     entirely and go straight from the Full Detail table to Skills &
-     Competencies. Delete this block if the role doesn't need it; don't
-     force one to exist. -->
-<h2>Role Impact Profile &mdash; Full Detail</h2>
-<p>Every L3 process this role holds Responsible or Accountable on. Each Mixed-pattern process is shown with its own aggregate rollup row (a proportional pattern-mix bar in place of a plain &ldquo;Mixed&rdquo; label), followed by its individual Level 4 activities.</p>
-<table class="detail-table">
-<thead><tr><th>PCF</th><th>Process/Activity</th><th>Pattern</th><th>M1<br><span class=mh>UNDESIGNED</span></th><th>M2<br><span class=mh>EMERGING</span></th><th>M3 &#9733;<br><span class=mh>DESIGN INTENT</span></th><th>M4<br><span class=mh>OPTIMIZED</span></th><th>M5<br><span class=mh>LEADING</span></th><th>&Delta; M1&rarr;M3</th></tr></thead>
-<tbody>${tableRows}</tbody>
-</table>
-<div class="legend"><span class="sw" style="background:var(--c-dec)"></span>Decision &mdash; Judgment &amp; Authority &nbsp; <span class="sw" style="background:var(--c-kno)"></span>Knowledge &mdash; Synthesis &amp; Interpretation &nbsp; <span class="sw" style="background:var(--c-doc)"></span>Document &mdash; Content Generation &nbsp; <span class="sw" style="background:var(--c-tra)"></span>Transaction &mdash; Rules-Based Processing<br><span class="sw" style="background:var(--c-exc)"></span>Exception &mdash; Non-Standard Resolution &nbsp;&middot;&nbsp; R/A-touch basis, not C/I &nbsp;&middot;&nbsp; Equal-weighted rollup across touched processes &nbsp;&middot;&nbsp; &copy; Timothy P. King &amp; Claude (Anthropic) 2026</div>
-
-<h2>[[TODO: role-specific narrative section title \u2014 OR delete this whole h2+p block if this role doesn't need one]]</h2>
-<p>[[TODO: narrative content \u2014 what's distinctive about this role's real touch pattern, grounded in the table above, not invented]]</p>
-
-<!-- TODO (requires real research \u2014 see spec \u00a74): find and fully fetch
-     ONE substantive, real, named external source for this role (industry
-     research, a certification body's own career-path material, BLS-style
-     labor data, etc.) \u2014 never fabricate one. -->
-<h2>Skills &amp; Competencies</h2>
-<p>[[TODO: grounded in [SOURCE NAME], real bullet list of 5 skill areas]]</p>
-<ul class="skills">
-<li>[[TODO]]</li>
-</ul>
-<p class="framework-connection"><strong>Framework connection: </strong>[[TODO: tie back to the Role Pattern Mix finding above]]</p>
-
-<h2>Role Progression Framework</h2>
-<p>Three-stage structure follows the AIHR &ldquo;HR Business Partner Guide&rdquo; infographic's template (Getting Started / Established / Future-Focused) \u2014 structure only, no content reused. Column content grounded in [[TODO: source]].</p>
-<table class="prog-table">
-<thead><tr><th></th><th>Getting Started</th><th>Established</th><th>Future-Focused</th></tr></thead>
-<tbody>
-<tr><td class="rowlabel">Role focus</td><td>[[TODO]]</td><td>[[TODO]]</td><td>[[TODO]]</td></tr>
-<tr><td class="rowlabel">Key activities</td><td>[[TODO]]</td><td>[[TODO]]</td><td>[[TODO]]</td></tr>
-<tr><td class="rowlabel">Skills to build</td><td>[[TODO]]</td><td>[[TODO]]</td><td>[[TODO]]</td></tr>
-<tr><td class="rowlabel">Common pitfalls</td><td>[[TODO]]</td><td>[[TODO]]</td><td>[[TODO]]</td></tr>
-</tbody>
-</table>
-
-<h2>How the Role Has Evolved</h2>
-<!-- TODO (requires real research \u2014 see spec \u00a75): a real, independently-
-     verified 5-era timeline appropriate to THIS role's own domain (do NOT
-     reuse the HR-industry Ulrich/AIHR timeline for a non-HR role \u2014 find
-     the real history: e.g. ITIL versions for ITSM roles, NIST CSF/ISO 27001
-     for security roles, TOGAF for architecture roles). -->
-<div class="evo-timeline">
-[[TODO: 5 .evo-era divs \u2014 see spec \u00a75 for exact markup and the color
-progression (pale to var(--navy-d), "Now" era gets the \u2605 marker)]]
-</div>
-<p style="font-size:11px;color:var(--lgray);font-style:italic;margin-top:-12px;margin-bottom:20px">Era framing follows the AIHR &ldquo;HR Business Partner Guide&rdquo; infographic's own historical structure; [[TODO: domain]] facts verified independently, not reproduced from AIHR's text.</p>
-<p class="framework-connection"><strong>A related pattern${cat.code === '7.0' ? ' from outside HR' : ''}: </strong>McKinsey's Julie Goran, writing in July 2026, frames the scale of what's changing as comparable to the dawn of the Industrial Age \u2014 leaders are now asking whether AI agents belong on the org chart itself, and how to plan spans and layers around agent capacity alongside human capacity. [[TODO: one sentence tying this to what THIS role's own data already shows]]</p>
-<p class="sources">Sources: [[TODO: real source citation(s)]]; Julie Goran, &ldquo;Rewired takes: How AI is unlocking creativity and heralding the rise of the agent manager,&rdquo; McKinsey &amp; Company, July 2026. AIHR &ldquo;HR Business Partner Guide&rdquo; infographic used as structural template only; no content reused.</p>
-
-</div>
-
 <footer>
   <p>
     <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;&middot;&nbsp; Human Enterprise Architect &nbsp;&middot;&nbsp; August 2026<br>
@@ -266,11 +222,10 @@ progression (pale to var(--navy-d), "Now" era gets the \u2605 marker)]]
     &nbsp;&middot;&nbsp; hitldrivenarchitecture.com
   </p>
 </footer>
-
 </body>
 </html>
 `;
 
-const outPath = `rtp_${OUT_SLUG}.html`;
+const outPath = `vsp_${OUT_SLUG}.html`;
 fs.writeFileSync(outPath, html);
-console.log(`written ${outPath} \u2014 mechanical sections complete, TODO blocks need real research before this is shippable (see HITL_RTP_Html_Spec.md \u00a74-5)`);
+console.log(`written ${outPath} — ${streamL3s.length} L3s, ${Object.keys(ownerData).length} roles, ${govItems.length} governance rows`);

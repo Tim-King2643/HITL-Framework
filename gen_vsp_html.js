@@ -170,7 +170,7 @@ tr:nth-child(even) td { background: #FAFBFD; }
 .kpi-formula { font-size: 12px; color: var(--lgray); font-style: italic; }
 .src-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: #DCFCE7; color: #166534; }
 .src-none { color: #B8C0CC; }
-.gdp-pcf { font-family: 'DM Mono', monospace; color: var(--navy); font-weight: 700; }
+.gdp-pcf { font-family: 'DM Mono', monospace; color: var(--navy); }
 .no-gdp { font-style: italic; color: var(--lgray); font-size: 13px; padding: 12px 0; }
 .capmap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 10px; margin: 14px 0 8px; }
 .capmap-card { border-radius: 8px; padding: 14px 14px; }
@@ -180,7 +180,7 @@ tr:nth-child(even) td { background: #FAFBFD; }
 .cm-count span { font-weight: 400; font-size: 11px; }
 .cm-mvals { font-size: 11px; margin-top: 4px; }
 .cm-empty-note { font-size: 10.5px; font-style: italic; margin-top: 4px; }
-.acc-role { font-weight: 700; color: var(--navy-d); }
+.acc-role { color: var(--navy-d); }
 .tier-badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 3px 10px; border-radius: 10px; }
 .acc-l3 { font-size: 11.5px; color: #666; }
 .acc-note { font-size: 10.5px; font-style: italic; color: var(--lgray); margin-top: 3px; }
