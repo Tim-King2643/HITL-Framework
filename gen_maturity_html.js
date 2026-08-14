@@ -98,7 +98,7 @@ td { padding: 5px 8px; border-bottom: 1px solid var(--border); vertical-align: t
 .detail-table tr.l1-row td.stat { color: #C7DBF2; }
 .detail-table tr.l1-row td.m3 { color: #fff; }
 .detail-table tr.l2-row td { background: #EEF3FA; font-weight: 700; color: var(--navy-d); font-size: 11.5px; border-top: 2px solid #7AAED6; }
-.detail-table tr.l3-row td { background: #F5F8FC; font-weight: 700; color: var(--navy-d); }
+.detail-table tr.l3-row td { background: #F5F8FC; color: var(--navy-d); }
 .detail-table tr.l3-row td.stat { color: var(--navy); }
 .detail-table tr.l4-row td.act { padding-left: 18px; color: var(--gray); font-weight: 400; }
 .detail-table td.m3 { background: #D6E8FF; font-weight: 700; color: var(--navy); }
@@ -107,7 +107,7 @@ td { padding: 5px 8px; border-bottom: 1px solid var(--border); vertical-align: t
 .detail-table td.delta { color: #B45309; }
 .detail-table tr.l1-row td.delta { color: #FFD9A8; }
 .pat-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
-.mixbar { display: flex; height: 13px; width: 100%; min-width:50px; border-radius: 3px; overflow: hidden; }
+.mixbar { display: flex; height: 13px; width: 100%; min-width:50px; border-radius: 0; overflow: hidden; }
 .mixbar span { display: block; height: 100%; }
 .agg-tag { font-size: 9px; font-weight: 700; letter-spacing: .03em; opacity: .75; margin-left: 6px; }
 .legend { font-size: 11.5px; color: var(--gray); margin: 10px 0 24px; line-height: 1.9; }
@@ -151,13 +151,13 @@ footer a { color: var(--navy); text-decoration: none; }
     </colgroup>
     <thead>
       <tr>
-        <th>PCF</th><th>L1-Domain / L2-Process Group / L3-Process / L4-Activity</th><th>Pattern</th>
-        <th>M1<br><span class="mh">UNDESIGNED</span></th>
-        <th>M2<br><span class="mh">EMERGING</span></th>
-        <th>M3 ★<br><span class="mh">DESIGN INTENT</span></th>
-        <th>M4<br><span class="mh">OPTIMIZED</span></th>
-        <th>M5<br><span class="mh">LEADING</span></th>
-        <th>Δ M1→M3</th>
+        <th>PCF</th><th>L1-Domain / L2-Process Group / L3-Process / L4-Activity</th><th style="text-align:center">M3 &#9733;<br><span class="mh">PATTERN</span></th>
+        <th style="text-align:center">M1<br><span class="mh">UNDESIGNED</span></th>
+        <th style="text-align:center">M2<br><span class="mh">EMERGING</span></th>
+        <th style="text-align:center;background:#396CA7">M3 &#9733;<br><span class="mh">DESIGN INTENT</span></th>
+        <th style="text-align:center">M4<br><span class="mh">OPTIMIZED</span></th>
+        <th style="text-align:center">M5<br><span class="mh">LEADING</span></th>
+        <th style="text-align:center">Δ M1→M3</th>
       </tr>
     </thead>
     <tbody>
