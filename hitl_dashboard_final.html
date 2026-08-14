@@ -364,7 +364,7 @@ tbody td.delta-cell { background: #fff; }
   .toggle-icon, .card-header, .lens-tabs, .vs-bar { display: none !important; }
 
   /* Show all L3 rows regardless of collapsed state */
-  tr[data-parent] { display: table-row !important; }
+  tr[data-parent], tr[data-role-parent], tr[data-crud-parent] { display: table-row !important; }
 
   /* Reset layout to full width */
   body { display: block; background: #fff; font-family: Arial, sans-serif; }
@@ -463,7 +463,7 @@ tbody td.delta-cell { background: #fff; }
 
   <!-- Print-only header and reference tables -->
   <div class="print-header" style="display:none">
-    <div style="font-family:Georgia,serif;font-size:36pt;font-weight:700;color:#0D1B2A;line-height:1.1;margin-bottom:6px">HITL Maturity Ratios</div>
+    <div id="print-title" style="font-family:Georgia,serif;font-size:36pt;font-weight:700;color:#0D1B2A;line-height:1.1;margin-bottom:6px">HITL Maturity Ratios</div>
     <div id="print-subtitle" style="font-family:Georgia,serif;font-size:20pt;color:#1B4F8A;font-weight:400;margin-bottom:6px;padding-bottom:8px;border-bottom:3px solid #1B4F8A"></div>
     <div style="margin-bottom:14px">
       <span style="font-family:Arial,sans-serif;font-size:8pt;color:#888;font-style:italic">Human involvement H% at each of five HITL maturity levels &nbsp;·&nbsp; L3 Process &rarr; L2 Process Group &rarr; L1 Domain &nbsp;·&nbsp; Equal-weighted aggregation &nbsp;·&nbsp; Pattern types derived using HITL Verb Derivation Method from PCF Level 4 activities</span>
@@ -4377,12 +4377,35 @@ function populateLensTabs(cat) {
 
 // ── Process View / People View toggle ──────────────────────────────────
 function setMainView(view) {
+  window.currentMainView = view;
   document.getElementById('process-view').style.display = view === 'process' ? '' : 'none';
   document.getElementById('people-view').style.display = view === 'people' ? '' : 'none';
   document.getElementById('data-view').style.display = view === 'data' ? '' : 'none';
   document.getElementById('view-btn-process').classList.toggle('active', view === 'process');
   document.getElementById('view-btn-people').classList.toggle('active', view === 'people');
   document.getElementById('view-btn-data').classList.toggle('active', view === 'data');
+  const cat = PCF[window.currentDomainIdx];
+  if (cat) updatePrintHeader(cat, view);
+  updateDownloadPdfState();
+}
+
+// Print/PDF cover-page title — three real content types (Maturity, Role
+// Impact, CRUD Matrix) share the same pattern/maturity-level reference
+// table beneath this header, so only the title and subtitle need to change
+// per view. Previously this was static ("HITL Maturity Ratios" for every
+// case, subtitle never populated at all) — fixed as part of adding real
+// PDF support for People View and Data View.
+function updatePrintHeader(cat, view) {
+  const titleEl = document.getElementById('print-title');
+  const subEl = document.getElementById('print-subtitle');
+  if (!titleEl || !subEl) return;
+  const titles = {
+    process: 'HITL Maturity Ratios',
+    people: 'Role Impact Ratios',
+    data: 'CRUD Matrix — Data Entities & Systems of Record',
+  };
+  titleEl.textContent = titles[view] || titles.process;
+  subEl.textContent = cat.code + ' — ' + cat.name;
 }
 
 function showPeopleLens(name) {
@@ -4605,6 +4628,18 @@ const domainMaturityPdf = {
 const domainRaciPdf = {
   '7.0': 'hitl_raci_pcf7_final.pdf',
 };
+// People View's Role Impact Table PDF — one per domain that has both real
+// RACI data and a role taxonomy (the same two conditions viewToggle itself
+// is gated on in populateLensTabs).
+const domainRoleImpactPdf = {
+  '7.0': 'hitl_role_impact_pcf7_final.pdf',
+  '8.0': 'hitl_role_impact_pcf8_final.pdf',
+};
+// Data View's CRUD Matrix PDF — only domains with confirmed CRUD data have
+// an entry (currently PCF 7.0 only, same coverage as the live table itself).
+const domainCrudPdf = {
+  '7.0': 'hitl_crud_pcf7_final.pdf',
+};
 // Role Transition Profile hub pages — only domains with real RTP content
 // get an entry here. Gates the People View's "Role Transition Profile" tab
 // in populateLensTabs(); every other domain keeps that tab disabled.
@@ -4642,6 +4677,22 @@ const lensPdfMap = {
 function updateDownloadPdfState() {
   const btn = document.getElementById('download-pdf-btn');
   if (!btn || document.getElementById('about-nav-item').classList.contains('active')) return;
+  const cat = PCF[window.currentDomainIdx];
+  const view = window.currentMainView || 'process';
+
+  if (view === 'people') {
+    const shouldDisable = !cat || !domainRoleImpactPdf[cat.code];
+    btn.disabled = shouldDisable;
+    btn.title = shouldDisable ? 'No Role Impact Table PDF for this domain yet' : 'Download PDF';
+    return;
+  }
+  if (view === 'data') {
+    const shouldDisable = !cat || !domainCrudPdf[cat.code];
+    btn.disabled = shouldDisable;
+    btn.title = shouldDisable ? 'No CRUD Matrix PDF for this domain yet' : 'Download PDF';
+    return;
+  }
+
   const lensTabs = document.getElementById('lens-tabs');
   const activeTab = (lensTabs && lensTabs.style.display !== 'none') ? lensTabs.querySelector('.lens-tab.active') : null;
   const activeLensName = activeTab ? activeTab.textContent.trim() : null;
@@ -4661,6 +4712,17 @@ function downloadPDF() {
   if (btn && btn.disabled) return;
   const cat = PCF[window.currentDomainIdx];
   if (!cat) return;
+
+  const view = window.currentMainView || 'process';
+  if (view === 'people' || view === 'data') {
+    const filename = view === 'people' ? domainRoleImpactPdf[cat.code] : domainCrudPdf[cat.code];
+    if (!filename) return;
+    const a = document.createElement('a');
+    a.href = 'pdfs/' + filename;
+    a.download = filename;
+    a.click();
+    return;
+  }
 
   // Which lens tab is active (only domains with cat.lenses have more than one)
   const lensTabs = document.getElementById('lens-tabs');
