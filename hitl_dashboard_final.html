@@ -356,7 +356,7 @@ tbody td.delta-cell { background: #fff; }
 /* ── Print styles ─────────────────────────────────────────────────────────── */
 @media print {
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  @page { size: A4 landscape; margin: 18mm 10mm 14mm; }
+  @page { size: letter; margin: 18mm 12mm 14mm; }
   @page :first { margin-top: 10mm; }
 
   /* Hide screen-only elements */
@@ -374,7 +374,7 @@ tbody td.delta-cell { background: #fff; }
 
   /* Show print-only elements */
   .print-header { display: block !important; margin-bottom: 12px; }
-  .print-ref-table { display: block !important; page-break-after: always; margin-bottom: 0; }
+  .print-ref-table { display: block !important; margin-bottom: 14px; }
 
   /* Print header uses inline styles for font reliability */
 
@@ -395,9 +395,7 @@ tbody td.delta-cell { background: #fff; }
   /* Footer */
   .print-footer { display: block !important; margin-top: 8px; padding-top: 6px; border-top: 1px solid #ccc; font-size: 8px; color: #888; }
   /* Running header for pages 2+ */
-  .print-running-header { display: block !important; position: fixed; top: 0; left: 0; right: 0;
-    padding: 4px 10mm; border-bottom: 1px solid #1B4F8A; font-size: 8px; background: #fff;
-    font-family: Arial, sans-serif; }
+  .print-running-header { display: none !important; }
 
   /* Page breaks */
   tr { page-break-inside: avoid; }
