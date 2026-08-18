@@ -587,7 +587,7 @@ tbody td.delta-cell { background: #fff; }
             <tbody id="raci-table-body"></tbody>
           </table>
         </div>
-        <div class="lens-empty" id="raci-empty" style="display:none">RACI data for this domain hasn't been built yet — currently available for PCF 7.0 (Develop and Manage Human Resources) only.</div>
+        <div class="lens-empty" id="raci-empty" style="display:none">RACI data for this domain hasn't been built yet.</div>
         <div class="legend">
           <div class="legend-item"><div class="legend-dot" style="background:var(--mid-dec)"></div>Decision — Judgment & Authority</div>
           <div class="legend-item"><div class="legend-dot" style="background:var(--mid-kno)"></div>Knowledge — Synthesis & Interpretation</div>
@@ -2466,15 +2466,15 @@ const PCF = [
     ],
     groups:[
     { code:"9.1", name:"Perform planning and management accounting", mv:[74, 64, 51, 38, 28], l3:[
-      { code:"9.1.1", name:"Develop and manage financial resources strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, l4:[] },
-      { code:"9.1.2", name:"Perform planning/budgeting/forecasting", pattern:"Mixed", mv:[67, 56, 42, 29, 19], mixed:true, l4:[
+      { code:"9.1.1", name:"Develop and manage financial resources strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Director of FP&A",A:"CFO",C:"SVP Finance",I:"VP Controller · VP Treasury"}, l4:[] },
+      { code:"9.1.2", name:"Perform planning/budgeting/forecasting", pattern:"Mixed", mv:[67, 56, 42, 29, 19], mixed:true, raci:{R:"Budget Analyst · Financial Analyst",A:"Director of FP&A",C:"SVP Finance",I:"CFO"}, l4:[
         { code:"9.1.2.1", name:"Develop and maintain budget policies and procedures", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.1.2.2", name:"Prepare periodic budgets and plans", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.1.2.3", name:"Operationalize and implement plans to achieve budget", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.1.2.4", name:"Prepare periodic financial forecasts", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.1.2.5", name:"Perform variance analysis against forecasts and budgets", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"9.1.3", name:"Perform cost accounting and control", pattern:"Mixed", mv:[70, 60, 46, 33, 23], mixed:true, l4:[
+      { code:"9.1.3", name:"Perform cost accounting and control", pattern:"Mixed", mv:[70, 60, 46, 33, 23], mixed:true, raci:{R:"Financial Analyst (cost analysis) · Staff Accountant (postings)",A:"Director of FP&A",C:"VP Controller",I:"SVP Finance"}, l4:[
         { code:"9.1.3.1", name:"Perform inventory accounting", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.1.3.2", name:"Perform profit center accounting", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.1.3.3", name:"Perform cost of sales analysis", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2482,13 +2482,13 @@ const PCF = [
         { code:"9.1.3.5", name:"Perform variance analysis", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.1.3.6", name:"Report on profitability", pattern:"Document", mv:[72, 58, 40, 28, 18] },
       ]},
-      { code:"9.1.4", name:"Perform cost management", pattern:"Mixed", mv:[72, 63, 50, 37, 27], mixed:true, l4:[
+      { code:"9.1.4", name:"Perform cost management", pattern:"Mixed", mv:[72, 63, 50, 37, 27], mixed:true, raci:{R:"Financial Analyst",A:"Director of FP&A",C:"VP Controller",I:"SVP Finance"}, l4:[
         { code:"9.1.4.1", name:"Determine key cost drivers", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.1.4.2", name:"Measure cost drivers", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.1.4.3", name:"Determine critical activities", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.1.4.4", name:"Manage asset resource deployment and utilization", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.1.5", name:"Evaluate and manage financial performance", pattern:"Mixed", mv:[74, 65, 52, 39, 29], mixed:true, l4:[
+      { code:"9.1.5", name:"Evaluate and manage financial performance", pattern:"Mixed", mv:[74, 65, 52, 39, 29], mixed:true, raci:{R:"Financial Analyst",A:"SVP Finance",C:"Director of FP&A",I:"CFO"}, l4:[
         { code:"9.1.5.1", name:"Assess customer and product profitability", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.1.5.2", name:"Evaluate new products", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.1.5.3", name:"Perform life cycle costing", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2499,7 +2499,7 @@ const PCF = [
       ]},
     ]},
     { code:"9.2", name:"Perform revenue accounting", mv:[72, 61, 48, 36, 27], l3:[
-      { code:"9.2.1", name:"Process customer credit", pattern:"Mixed", mv:[75, 65, 51, 39, 30], mixed:true, l4:[
+      { code:"9.2.1", name:"Process customer credit", pattern:"Mixed", mv:[75, 65, 51, 39, 30], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"VP Controller",I:"Treasury Manager"}, l4:[
         { code:"9.2.1.1", name:"Establish credit policies", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.2.1.2", name:"Analyze/Approve new account applications", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.2.1.3", name:"Analyze credit scoring history", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2508,21 +2508,21 @@ const PCF = [
         { code:"9.2.1.6", name:"Produce credit/collection reports", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.2.1.7", name:"Reinstate or suspend accounts based on credit policies", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.2.2", name:"Invoice customer", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, l4:[
+      { code:"9.2.2", name:"Invoice customer", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"Staff Accountant"}, l4:[
         { code:"9.2.2.1", name:"Maintain customer/product master files", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.2.2.2", name:"Generate customer billing data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.2.2.3", name:"Transmit billing data to customers", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.2.2.4", name:"Post receivable entries", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.2.2.5", name:"Resolve customer billing inquiries", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.2.3", name:"Process accounts receivable (AR)", pattern:"Mixed", mv:[65, 52, 37, 24, 14], mixed:true, l4:[
+      { code:"9.2.3", name:"Process accounts receivable (AR)", pattern:"Mixed", mv:[65, 52, 37, 24, 14], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"Treasury Manager"}, l4:[
         { code:"9.2.3.1", name:"Establish AR policies", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.2.3.2", name:"Receive/Deposit customer payments", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.2.3.3", name:"Apply cash remittances", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.2.3.4", name:"Prepare AR reports", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.2.3.5", name:"Post AR activity to the general ledger", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.2.4", name:"Manage and process collections", pattern:"Mixed", mv:[83, 76, 64, 53, 45], mixed:true, l4:[
+      { code:"9.2.4", name:"Manage and process collections", pattern:"Mixed", mv:[83, 76, 64, 53, 45], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"VP Controller"}, l4:[
         { code:"9.2.4.1", name:"Establish policies for delinquent accounts", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.2.4.2", name:"Analyze delinquent account balances", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.2.4.3", name:"Correspond/Negotiate with delinquent accounts", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
@@ -2531,7 +2531,7 @@ const PCF = [
         { code:"9.2.4.6", name:"Perform recovery workout", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.2.4.7", name:"Manage default accounts", pattern:"Exception", mv:[95, 92, 82, 75, 68] },
       ]},
-      { code:"9.2.5", name:"Manage and process adjustments/deductions", pattern:"Mixed", mv:[76, 66, 53, 41, 32], mixed:true, l4:[
+      { code:"9.2.5", name:"Manage and process adjustments/deductions", pattern:"Mixed", mv:[76, 66, 53, 41, 32], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"Staff Accountant",I:"VP Controller"}, l4:[
         { code:"9.2.5.1", name:"Establish policies/procedures for adjustments", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.2.5.2", name:"Analyze adjustments", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.2.5.3", name:"Correspond/Negotiate with customer", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
@@ -2541,14 +2541,14 @@ const PCF = [
       ]},
     ]},
     { code:"9.3", name:"Perform general accounting and reporting", mv:[69, 58, 44, 32, 22], l3:[
-      { code:"9.3.1", name:"Manage financial policies and procedures", pattern:"Mixed", mv:[80, 72, 60, 49, 40], mixed:true, l4:[
+      { code:"9.3.1", name:"Manage financial policies and procedures", pattern:"Mixed", mv:[80, 72, 60, 49, 40], mixed:true, raci:{R:"Director of Accounting",A:"VP Controller",C:"Internal Audit Manager",I:"CFO"}, l4:[
         { code:"9.3.1.1", name:"Negotiate service-level agreements", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.3.1.2", name:"Establish accounting policies", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.3.1.3", name:"Publish accounting policies", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.3.1.4", name:"Set and enforce approval limits", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.3.1.5", name:"Establish common financial systems", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.3.2", name:"Perform general accounting", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, l4:[
+      { code:"9.3.2", name:"Perform general accounting", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"—",I:"VP Controller"}, l4:[
         { code:"9.3.2.1", name:"Maintain chart of accounts", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.3.2.2", name:"Process journal entries", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.3.2.3", name:"Process allocations", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2559,7 +2559,7 @@ const PCF = [
         { code:"9.3.2.8", name:"Prepare trial balance", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.3.2.9", name:"Prepare and post management adjustments", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.3.3", name:"Perform fixed-asset accounting", pattern:"Mixed", mv:[61, 49, 36, 23, 13], mixed:true, l4:[
+      { code:"9.3.3", name:"Perform fixed-asset accounting", pattern:"Mixed", mv:[61, 49, 36, 23, 13], mixed:true, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"—",I:"VP Controller"}, l4:[
         { code:"9.3.3.1", name:"Establish fixed-asset policies and procedures", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.3.3.2", name:"Maintain fixed-asset master data files", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.3.3.3", name:"Process and record fixed-asset additions and retires", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2570,7 +2570,7 @@ const PCF = [
         { code:"9.3.3.8", name:"Track fixed-assets including physical inventory", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.3.3.9", name:"Provide fixed-asset data to support tax, statutory, and regulatory reporting", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.3.4", name:"Perform financial reporting", pattern:"Mixed", mv:[74, 62, 46, 33, 23], mixed:true, l4:[
+      { code:"9.3.4", name:"Perform financial reporting", pattern:"Mixed", mv:[74, 62, 46, 33, 23], mixed:true, raci:{R:"Director of Accounting",A:"VP Controller",C:"SVP Finance",I:"CFO"}, l4:[
         { code:"9.3.4.1", name:"Prepare business unit financial statements", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.3.4.2", name:"Prepare consolidated financial statements", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.3.4.3", name:"Perform business unit reporting/review management reports", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2582,13 +2582,13 @@ const PCF = [
       ]},
     ]},
     { code:"9.4", name:"Manage fixed-asset project accounting", mv:[75, 66, 54, 42, 33], l3:[
-      { code:"9.4.1", name:"Perform capital planning and project approval", pattern:"Mixed", mv:[85, 78, 66, 56, 48], mixed:true, l4:[
+      { code:"9.4.1", name:"Perform capital planning and project approval", pattern:"Mixed", mv:[85, 78, 66, 56, 48], mixed:true, raci:{R:"Financial Analyst",A:"Director of FP&A",C:"CFO",I:"VP Controller"}, l4:[
         { code:"9.4.1.1", name:"Develop capital investment policies and procedures", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.4.1.2", name:"Develop and approve capital expenditure plans and budgets", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.4.1.3", name:"Review and approve capital projects and fixed-asset acquisitions", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.4.1.4", name:"Conduct financial justification for project approval", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"9.4.2", name:"Perform capital project accounting", pattern:"Mixed", mv:[65, 54, 41, 28, 18], mixed:true, l4:[
+      { code:"9.4.2", name:"Perform capital project accounting", pattern:"Mixed", mv:[65, 54, 41, 28, 18], mixed:true, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"Director of FP&A",I:"VP Controller"}, l4:[
         { code:"9.4.2.1", name:"Create project account codes", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.4.2.2", name:"Record project-related transactions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.4.2.3", name:"Monitor and track capital projects and budget spending", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2597,14 +2597,14 @@ const PCF = [
       ]},
     ]},
     { code:"9.5", name:"Process payroll", mv:[66, 55, 41, 28, 18], l3:[
-      { code:"9.5.1", name:"Report time", pattern:"Mixed", mv:[72, 62, 48, 35, 25], mixed:true, l4:[
+      { code:"9.5.1", name:"Report time", pattern:"Mixed", mv:[72, 62, 48, 35, 25], mixed:true, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"—",I:"HR Generalist*"}, l4:[
         { code:"9.5.1.1", name:"Establish policies and procedures", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.5.1.2", name:"Collect and record employee time worked", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.5.1.3", name:"Analyze and report paid and unpaid leave", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.5.1.4", name:"Monitor regular, overtime, and other hours", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.5.1.5", name:"Analyze and report employee utilization", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"9.5.2", name:"Manage pay", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, l4:[
+      { code:"9.5.2", name:"Manage pay", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"Treasury Manager",I:"HRIS Analyst*"}, l4:[
         { code:"9.5.2.1", name:"Enter employee time worked into payroll system", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.5.2.2", name:"Maintain and administer employee earnings information", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.5.2.3", name:"Maintain and administer applicable deductions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2614,7 +2614,7 @@ const PCF = [
         { code:"9.5.2.7", name:"Process period-end adjustments", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.5.2.8", name:"Respond to employee payroll inquiries", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.5.3", name:"Manage and process payroll taxes", pattern:"Mixed", mv:[65, 54, 41, 28, 18], mixed:true, l4:[
+      { code:"9.5.3", name:"Manage and process payroll taxes", pattern:"Mixed", mv:[65, 54, 41, 28, 18], mixed:true, raci:{R:"Tax Specialist",A:"Tax Manager",C:"Director of Accounting",I:"—"}, l4:[
         { code:"9.5.3.1", name:"Develop tax plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.5.3.2", name:"Manage tax plan", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.5.3.3", name:"Calculate and pay applicable payroll taxes", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2623,7 +2623,7 @@ const PCF = [
       ]},
     ]},
     { code:"9.6", name:"Process accounts payable and expense reimbursements", mv:[67, 57, 44, 32, 23], l3:[
-      { code:"9.6.1", name:"Process accounts payable (AP)", pattern:"Mixed", mv:[66, 56, 43, 31, 22], mixed:true, l4:[
+      { code:"9.6.1", name:"Process accounts payable (AP)", pattern:"Mixed", mv:[66, 56, 43, 31, 22], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"Treasury Manager"}, l4:[
         { code:"9.6.1.1", name:"Verify AP pay file with purchase order vendor master file", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.6.1.2", name:"Maintain/Manage electronic commerce", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.6.1.3", name:"Audit invoices and key data in AP system", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2636,14 +2636,14 @@ const PCF = [
         { code:"9.6.1.10", name:"Retain records", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.6.1.11", name:"Adjust accounting records", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.6.2", name:"Process expense reimbursements", pattern:"Mixed", mv:[69, 58, 45, 33, 24], mixed:true, l4:[
+      { code:"9.6.2", name:"Process expense reimbursements", pattern:"Mixed", mv:[69, 58, 45, 33, 24], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"—"}, l4:[
         { code:"9.6.2.1", name:"Establish and communicate expense reimbursement policies and approval limits", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.6.2.2", name:"Capture and report relevant tax data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.6.2.3", name:"Approve reimbursements and advances", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.6.2.4", name:"Process reimbursements and advances", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.6.2.5", name:"Manage personnel accounts", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.6.3", name:"Manage corporate credit cards", pattern:"Mixed", mv:[67, 56, 43, 31, 22], mixed:true, l4:[
+      { code:"9.6.3", name:"Manage corporate credit cards", pattern:"Mixed", mv:[67, 56, 43, 31, 22], mixed:true, raci:{R:"AP/AR Specialist",A:"Treasury Manager",C:"Director of Accounting",I:"—"}, l4:[
         { code:"9.6.3.1", name:"Establish corporate credit card policies and approval limits", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.6.3.2", name:"Process corporate credit card requests", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.6.3.3", name:"Order corporate credit cards", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2653,7 +2653,7 @@ const PCF = [
       ]},
     ]},
     { code:"9.7", name:"Manage treasury operations", mv:[75, 66, 54, 42, 32], l3:[
-      { code:"9.7.1", name:"Manage treasury policies and procedures", pattern:"Mixed", mv:[76, 66, 51, 38, 28], mixed:true, l4:[
+      { code:"9.7.1", name:"Manage treasury policies and procedures", pattern:"Mixed", mv:[76, 66, 51, 38, 28], mixed:true, raci:{R:"Treasury Manager",A:"VP Treasury",C:"Internal Audit Manager",I:"CFO"}, l4:[
         { code:"9.7.1.1", name:"Establish scope and governance of treasury operations", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.7.1.2", name:"Establish and publish treasury policies", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.7.1.3", name:"Develop treasury procedures", pattern:"Document", mv:[72, 58, 40, 28, 18] },
@@ -2663,7 +2663,7 @@ const PCF = [
         { code:"9.7.1.7", name:"Develop and confirm internal controls for treasury", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.7.1.8", name:"Define treasury security requirements", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"9.7.2", name:"Manage cash", pattern:"Mixed", mv:[70, 60, 48, 36, 26], mixed:true, l4:[
+      { code:"9.7.2", name:"Manage cash", pattern:"Mixed", mv:[70, 60, 48, 36, 26], mixed:true, raci:{R:"Treasury Manager",A:"VP Treasury",C:"—",I:"CFO"}, l4:[
         { code:"9.7.2.1", name:"Manage and reconcile cash positions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.7.2.2", name:"Manage cash equivalents", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.7.2.3", name:"Process and oversee electronic fund transfers (EFTs)", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2673,7 +2673,7 @@ const PCF = [
         { code:"9.7.2.7", name:"Manage and oversee banking relationships", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.7.2.8", name:"Analyze, negotiate, resolve, and confirm bank fees", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
       ]},
-      { code:"9.7.3", name:"Manage in-house bank accounts", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, l4:[
+      { code:"9.7.3", name:"Manage in-house bank accounts", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"—",I:"—"}, l4:[
         { code:"9.7.3.1", name:"Manage in-house bank accounts for subsidiaries", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.7.3.2", name:"Manage and facilitate inter-company borrowing transactions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.7.3.3", name:"Manage centralized outgoing payments on behalf of subsidiaries", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2682,7 +2682,7 @@ const PCF = [
         { code:"9.7.3.6", name:"Calculate interest and fees for in-house bank accounts", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.7.3.7", name:"Provide account statements for in-house bank accounts", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.7.4", name:"Manage debt and investment", pattern:"Mixed", mv:[72, 63, 50, 37, 27], mixed:true, l4:[
+      { code:"9.7.4", name:"Manage debt and investment", pattern:"Mixed", mv:[72, 63, 50, 37, 27], mixed:true, raci:{R:"Treasury Manager",A:"VP Treasury",C:"CFO",I:"SVP Finance"}, l4:[
         { code:"9.7.4.1", name:"Establish investment policy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.7.4.2", name:"Manage financial intermediary relationships", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.7.4.3", name:"Manage liquidity", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2692,7 +2692,7 @@ const PCF = [
         { code:"9.7.4.7", name:"Produce debt and investment accounting transaction reports", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.7.4.8", name:"Process and oversee interest rate transactions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.7.5", name:"Monitor and execute risk and hedging transactions", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, l4:[
+      { code:"9.7.5", name:"Monitor and execute risk and hedging transactions", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, raci:{R:"Treasury Manager",A:"VP Treasury",C:"CFO",I:"Internal Audit Manager"}, l4:[
         { code:"9.7.5.1", name:"Develop risk management/hedging strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.7.5.2", name:"Manage interest rate risk", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.7.5.3", name:"Manage foreign exchange risk", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2700,21 +2700,21 @@ const PCF = [
         { code:"9.7.5.5", name:"Execute hedging transactions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.7.5.6", name:"Produce hedge accounting transactions and reports", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.7.6", name:"Manage financial fraud/dispute cases", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, l4:[] },
+      { code:"9.7.6", name:"Manage financial fraud/dispute cases", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"Treasury Manager",A:"Internal Audit Manager",C:"VP Treasury",I:"CFO"}, l4:[] },
     ]},
     { code:"9.8", name:"Manage internal controls", mv:[79, 69, 56, 45, 36], l3:[
-      { code:"9.8.1", name:"Establish internal controls, policies, and procedures", pattern:"Mixed", mv:[87, 80, 69, 59, 51], mixed:true, l4:[
+      { code:"9.8.1", name:"Establish internal controls, policies, and procedures", pattern:"Mixed", mv:[87, 80, 69, 59, 51], mixed:true, raci:{R:"Internal Audit Manager",A:"VP Controller",C:"CFO",I:"Audit Analyst"}, l4:[
         { code:"9.8.1.1", name:"Establish board of directors and audit committee", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.8.1.2", name:"Define and communicate code of ethics", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.8.1.3", name:"Assign roles and responsibility for internal controls", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.8.1.4", name:"Define business process objectives and risks", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.8.1.5", name:"Define entity/unit risk tolerances", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
       ]},
-      { code:"9.8.2", name:"Operate controls and monitor compliance with internal controls policies and procedures", pattern:"Mixed", mv:[78, 70, 58, 48, 40], mixed:true, l4:[
+      { code:"9.8.2", name:"Operate controls and monitor compliance with internal controls policies and procedures", pattern:"Mixed", mv:[78, 70, 58, 48, 40], mixed:true, raci:{R:"Audit Analyst",A:"Internal Audit Manager",C:"VP Controller",I:"—"}, l4:[
         { code:"9.8.2.1", name:"Monitor control effectiveness", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.8.2.2", name:"Remediate control deficiencies", pattern:"Exception", mv:[95, 92, 82, 75, 68] },
       ]},
-      { code:"9.8.3", name:"Report on internal controls compliance", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, l4:[
+      { code:"9.8.3", name:"Report on internal controls compliance", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Audit Analyst",A:"Internal Audit Manager",C:"VP Controller",I:"CFO"}, l4:[
         { code:"9.8.3.1", name:"Report to external auditors", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.8.3.2", name:"Report to regulators, share-/debt-holders, securities exchanges, etc.", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.8.3.3", name:"Report to third parties", pattern:"Document", mv:[72, 58, 40, 28, 18] },
@@ -2722,12 +2722,12 @@ const PCF = [
       ]},
     ]},
     { code:"9.9", name:"Manage taxes", mv:[70, 60, 47, 34, 24], l3:[
-      { code:"9.9.1", name:"Develop tax strategy and plan", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, l4:[
+      { code:"9.9.1", name:"Develop tax strategy and plan", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, raci:{R:"Tax Manager",A:"CFO",C:"Tax Specialist",I:"SVP Finance"}, l4:[
         { code:"9.9.1.1", name:"Develop foreign, national, state, and local tax strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.9.1.2", name:"Consolidate and optimize total tax plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.9.1.3", name:"Maintain tax master data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.9.2", name:"Process taxes", pattern:"Mixed", mv:[64, 52, 39, 26, 16], mixed:true, l4:[
+      { code:"9.9.2", name:"Process taxes", pattern:"Mixed", mv:[64, 52, 39, 26, 16], mixed:true, raci:{R:"Tax Specialist",A:"Tax Manager",C:"—",I:"Director of Accounting"}, l4:[
         { code:"9.9.2.1", name:"Perform tax planning/strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.9.2.2", name:"Prepare tax returns", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.9.2.3", name:"Prepare foreign taxes", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2738,22 +2738,22 @@ const PCF = [
       ]},
     ]},
     { code:"9.10", name:"Manage international funds/consolidation", mv:[76, 66, 51, 38, 28], l3:[
-      { code:"9.10.1", name:"Monitor international rates", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, l4:[] },
-      { code:"9.10.2", name:"Manage transactions", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, l4:[] },
-      { code:"9.10.3", name:"Monitor currency exposure/hedge currency", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, l4:[] },
-      { code:"9.10.4", name:"Report results", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, l4:[] },
+      { code:"9.10.1", name:"Monitor international rates", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"—",I:"—"}, l4:[] },
+      { code:"9.10.2", name:"Manage transactions", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"—",I:"Staff Accountant"}, l4:[] },
+      { code:"9.10.3", name:"Monitor currency exposure/hedge currency", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"CFO",I:"—"}, l4:[] },
+      { code:"9.10.4", name:"Report results", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"Treasury Manager",I:"VP Controller"}, l4:[] },
     ]},
     { code:"9.11", name:"Perform global trade services", mv:[67, 55, 41, 29, 19], l3:[
-      { code:"9.11.1", name:"Screen sanctioned party list", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, l4:[] },
-      { code:"9.11.2", name:"Control exports and imports", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, l4:[] },
-      { code:"9.11.3", name:"Classify products", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, l4:[] },
-      { code:"9.11.4", name:"Perform currency conversion", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, l4:[] },
-      { code:"9.11.5", name:"Calculate duty", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, l4:[] },
-      { code:"9.11.6", name:"Communicate with customs", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, l4:[] },
-      { code:"9.11.7", name:"Document trade", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, l4:[] },
-      { code:"9.11.8", name:"Process trade preferences", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, l4:[] },
-      { code:"9.11.9", name:"Handle restitution", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, l4:[] },
-      { code:"9.11.10", name:"Prepare letter of credit", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, l4:[] },
+      { code:"9.11.1", name:"Screen sanctioned party list", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"Tax Manager",I:"VP Controller"}, l4:[] },
+      { code:"9.11.2", name:"Control exports and imports", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"—",I:"VP Controller"}, l4:[] },
+      { code:"9.11.3", name:"Classify products", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"—",I:"—"}, l4:[] },
+      { code:"9.11.4", name:"Perform currency conversion", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Staff Accountant",A:"Treasury Manager",C:"—",I:"—"}, l4:[] },
+      { code:"9.11.5", name:"Calculate duty", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Tax Manager",C:"Staff Accountant",I:"—"}, l4:[] },
+      { code:"9.11.6", name:"Communicate with customs", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"—",I:"VP Controller"}, l4:[] },
+      { code:"9.11.7", name:"Document trade", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"Staff Accountant",I:"—"}, l4:[] },
+      { code:"9.11.8", name:"Process trade preferences", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Tax Manager",C:"—",I:"—"}, l4:[] },
+      { code:"9.11.9", name:"Handle restitution", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"Trade Compliance*",A:"Internal Audit Manager",C:"Tax Manager",I:"CFO"}, l4:[] },
+      { code:"9.11.10", name:"Prepare letter of credit", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"Trade Compliance*",I:"CFO"}, l4:[] },
     ]},
   ]},
   { code:"10.0", name:"Acquire, Construct, and Manage Assets", l1mv:[70, 60, 47, 35, 26],
@@ -3615,6 +3615,17 @@ function formatRCell(raci) {
   return formatRaciCell(raci.A, true);
 }
 
+// Computed live from PCF rather than hand-maintained, so this list can
+// never go stale again the way the old hardcoded "PCF 7.0 only" copy did
+// (it was already wrong once PCF 8.0 shipped RACI data).
+function listRaciDomains() {
+  const withRaci = PCF.filter(d => d.groups.some(g => g.l3.some(l3 => l3.raci)));
+  const labels = withRaci.map(d => `PCF ${d.code} (${d.name})`);
+  if (labels.length === 0) return 'no domain yet';
+  if (labels.length === 1) return labels[0];
+  return labels.slice(0, -1).join(', ') + ', and ' + labels[labels.length - 1];
+}
+
 function renderRaciTable(cat) {
   const tbody = document.getElementById('raci-table-body');
   const wrap = document.querySelector('#lens-panel-raci .table-wrap');
@@ -3622,6 +3633,7 @@ function renderRaciTable(cat) {
   const hasRaci = cat.groups.some(g => g.l3.some(l3 => l3.raci));
   if (!hasRaci) {
     wrap.style.display = 'none';
+    empty.textContent = `RACI data for this domain hasn't been built yet — currently available for ${listRaciDomains()}.`;
     empty.style.display = 'block';
     return;
   }
@@ -4138,6 +4150,23 @@ const ROLE_TAXONOMY_BY_DOMAIN = {
     { name: "Cybersecurity Analyst", tier: "Operational", reportsTo: "Director of Cybersecurity" },
     { name: "IT Support Specialist", tier: "Operational", reportsTo: "IT Service Manager" },
     { name: "DevOps Engineer", tier: "Operational", reportsTo: "Enterprise Architect" },
+  ],
+  "9.0": [
+    { name: "CFO", tier: "Executive", reportsTo: null },
+    { name: "SVP Finance", tier: "Executive", reportsTo: "CFO" },
+    { name: "VP Controller", tier: "Executive", reportsTo: "CFO" },
+    { name: "VP Treasury", tier: "Executive", reportsTo: "CFO" },
+    { name: "Director of FP&A", tier: "Managerial", reportsTo: "SVP Finance" },
+    { name: "Director of Accounting", tier: "Managerial", reportsTo: "VP Controller" },
+    { name: "Tax Manager", tier: "Managerial", reportsTo: "VP Controller", contextDependent: true },
+    { name: "Internal Audit Manager", tier: "Managerial", reportsTo: "CFO", contextDependent: true },
+    { name: "Treasury Manager", tier: "Managerial", reportsTo: "VP Treasury" },
+    { name: "Financial Analyst", tier: "Operational", reportsTo: "Director of FP&A" },
+    { name: "Staff Accountant", tier: "Operational", reportsTo: "Director of Accounting" },
+    { name: "Tax Specialist", tier: "Operational", reportsTo: "Tax Manager" },
+    { name: "AP/AR Specialist", tier: "Operational", reportsTo: "Director of Accounting" },
+    { name: "Audit Analyst", tier: "Operational", reportsTo: "Internal Audit Manager" },
+    { name: "Budget Analyst", tier: "Operational", reportsTo: "Director of FP&A" },
   ],
 };
 // Returns the role taxonomy for a given domain code, or an empty array for
