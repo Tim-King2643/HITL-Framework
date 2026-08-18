@@ -2104,24 +2104,24 @@ const PCF = [
     ],
     groups:[
     { code:"8.1", name:"Develop and manage IT customer relationships", mv:[81, 73, 60, 47, 37], l3:[
-      { code:"8.1.1", name:"Understand IT customer needs", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"IT Support Specialist",A:"IT Service Manager",C:"IT Director",I:"—"}, l4:[
+      { code:"8.1.1", crud:{"create":["Customer Needs Assessment (CSM \u2014 ServiceNow CSM)"],"read":["Customer/Stakeholder Profile (CSM \u2014 ServiceNow CSM)","Business Requirements (PPM \u2014 ServiceNow SPM)"],"update":["Customer Needs Assessment (CSM \u2014 ServiceNow CSM)"],"delete":[]}, name:"Understand IT customer needs", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"IT Support Specialist",A:"IT Service Manager",C:"IT Director",I:"—"}, l4:[
         { code:"8.1.1.1", name:"Understand IT customer communities", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.1.1.2", name:"Assess IT customer operational capabilities", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"8.1.2", name:"Identify IT customer transformation needs", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"IT Service Manager",A:"IT Director",C:"Enterprise Architect · CIO",I:"—"}, l4:[
+      { code:"8.1.2", crud:{"create":["Transformation Opportunity (SPM \u2014 ServiceNow Strategic Portfolio Mgmt)"],"read":["Business Capability (EA \u2014 LeanIX/Ardoq)","Customer Needs Assessment (CSM \u2014 ServiceNow CSM)"],"update":["Transformation Opportunity (SPM \u2014 ServiceNow SPM)"],"delete":[]}, name:"Identify IT customer transformation needs", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"IT Service Manager",A:"IT Director",C:"Enterprise Architect · CIO",I:"—"}, l4:[
         { code:"8.1.2.1", name:"Understand business requirements for IT capabilities", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.1.2.2", name:"Understand IT landscape", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.1.2.3", name:"Develop IT visioning", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.1.2.4", name:"Outline IT service expectations", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"8.1.3", name:"Plan and communicate IT services", pattern:"Mixed", mv:[80, 70, 55, 42, 32], mixed:true, raci:{R:"IT Service Manager",A:"IT Service Manager",C:"IT Director",I:"Enterprise Architect"}, l4:[
+      { code:"8.1.3", crud:{"create":["Service Catalog Item (ITSM \u2014 ServiceNow Service Catalog)","Communication Plan (ITSM \u2014 ServiceNow)"],"read":["Business Service (CSDM \u2014 ServiceNow)","Service Offering (CSDM \u2014 ServiceNow)"],"update":["Service Catalog Item (ITSM \u2014 ServiceNow Service Catalog)"],"delete":[]}, name:"Plan and communicate IT services", pattern:"Mixed", mv:[80, 70, 55, 42, 32], mixed:true, raci:{R:"IT Service Manager",A:"IT Service Manager",C:"IT Director",I:"Enterprise Architect"}, l4:[
         { code:"8.1.3.1", name:"Manage IT customer expectations", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.1.3.2", name:"Define future IT services", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.1.3.3", name:"Determine IT performance indicators", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.1.3.4", name:"Create IT marketing messages", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"8.1.3.5", name:"Create IT service marketing plan", pattern:"Document", mv:[72, 58, 40, 28, 18] },
       ]},
-      { code:"8.1.4", name:"Provide IT transformation guidance", pattern:"Mixed", mv:[84, 77, 65, 53, 44], mixed:true, raci:{R:"Enterprise Architect",A:"IT Director",C:"CIO · IT Service Manager",I:"—"}, l4:[
+      { code:"8.1.4", crud:{"create":["Transformation Roadmap (SPM \u2014 ServiceNow SPM)"],"read":["Transformation Opportunity (SPM \u2014 ServiceNow SPM)","Business Capability (EA \u2014 LeanIX/Ardoq)"],"update":["Transformation Roadmap (SPM \u2014 ServiceNow SPM)"],"delete":[]}, name:"Provide IT transformation guidance", pattern:"Mixed", mv:[84, 77, 65, 53, 44], mixed:true, raci:{R:"Enterprise Architect",A:"IT Director",C:"CIO · IT Service Manager",I:"—"}, l4:[
         { code:"8.1.4.1", name:"Develop IT transformation plans", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.1.4.2", name:"Collect IT customer requirements", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.1.4.3", name:"Analyze IT customer requirements", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2132,7 +2132,7 @@ const PCF = [
         { code:"8.1.4.8", name:"Support business case", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.1.4.9", name:"Develop transformation roadmap", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"8.1.5", name:"Develop and manage IT service levels", pattern:"Mixed", mv:[79, 71, 59, 46, 37], mixed:true, raci:{R:"IT Service Manager",A:"IT Service Manager",C:"IT Director",I:"Systems Administrator"}, l4:[
+      { code:"8.1.5", crud:{"create":["SLA/OLA Definition (ITSM \u2014 ServiceNow Service Level Mgmt)"],"read":["Service Offering (CSDM \u2014 ServiceNow)","Business Service (CSDM \u2014 ServiceNow)"],"update":["SLA/OLA Definition (ITSM \u2014 ServiceNow Service Level Mgmt)"],"delete":[]}, name:"Develop and manage IT service levels", pattern:"Mixed", mv:[79, 71, 59, 46, 37], mixed:true, raci:{R:"IT Service Manager",A:"IT Service Manager",C:"IT Director",I:"Systems Administrator"}, l4:[
         { code:"8.1.5.1", name:"Understand IT service requirements", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.1.5.2", name:"Forecast IT service demand", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.1.5.3", name:"Maintain IT services catalog", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2141,14 +2141,14 @@ const PCF = [
         { code:"8.1.5.6", name:"Negotiate and establish service level agreements", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"8.1.5.7", name:"Develop and maintain improvement processes", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"8.1.6", name:"Manage IT customer relationships", pattern:"Mixed", mv:[77, 68, 54, 41, 31], mixed:true, raci:{R:"IT Service Manager",A:"IT Service Manager",C:"IT Director",I:"—"}, l4:[
+      { code:"8.1.6", crud:{"create":["Stakeholder Engagement Record (CSM \u2014 ServiceNow CSM)"],"read":["Customer/Stakeholder Profile (CSM \u2014 ServiceNow CSM)","SLA/OLA Definition (ITSM \u2014 ServiceNow)"],"update":["Stakeholder Engagement Record (CSM \u2014 ServiceNow CSM)"],"delete":[]}, name:"Manage IT customer relationships", pattern:"Mixed", mv:[77, 68, 54, 41, 31], mixed:true, raci:{R:"IT Service Manager",A:"IT Service Manager",C:"IT Director",I:"—"}, l4:[
         { code:"8.1.6.1", name:"Establish relationship management mechanisms", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.1.6.2", name:"Understand IT customer strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.1.6.3", name:"Understand IT customer environment", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.1.6.4", name:"Communicate IT capabilities", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"8.1.6.5", name:"Manage IT requirements", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.1.7", name:"Analyze service performance", pattern:"Mixed", mv:[75, 66, 54, 43, 34], mixed:true, raci:{R:"IT Support Specialist",A:"IT Service Manager",C:"IT Service Manager",I:"IT Director"}, l4:[
+      { code:"8.1.7", crud:{"create":["Service Performance Report (ITSM \u2014 ServiceNow Performance Analytics)"],"read":["SLA/OLA Definition (ITSM \u2014 ServiceNow)","Incident (ITSM \u2014 ServiceNow)","Service Offering (CSDM \u2014 ServiceNow)"],"update":["Service Performance Report (ITSM \u2014 ServiceNow Performance Analytics)"],"delete":[]}, name:"Analyze service performance", pattern:"Mixed", mv:[75, 66, 54, 43, 34], mixed:true, raci:{R:"IT Support Specialist",A:"IT Service Manager",C:"IT Service Manager",I:"IT Director"}, l4:[
         { code:"8.1.7.1", name:"Assess SLA compliance", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.1.7.2", name:"Triage SLA compliance issues", pattern:"Exception", mv:[95, 92, 82, 75, 68] },
         { code:"8.1.7.3", name:"Collect feedback about IT products and services", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2156,7 +2156,7 @@ const PCF = [
       ]},
     ]},
     { code:"8.2", name:"Develop and manage IT business strategy", mv:[80, 72, 59, 46, 36], l3:[
-      { code:"8.2.1", name:"Define business technology and governance strategy", pattern:"Mixed", mv:[79, 70, 56, 43, 33], mixed:true, raci:{R:"IT Director",A:"CIO",C:"Enterprise Architect",I:"IT Service Manager"}, l4:[
+      { code:"8.2.1", crud:{"create":["IT Governance Framework Doc (GRC \u2014 ServiceNow GRC/COBIT)"],"read":["Corporate Strategy (Board / Corporate Planning)","Business Capability (EA \u2014 LeanIX/Ardoq)"],"update":["IT Governance Framework Doc (GRC \u2014 ServiceNow GRC/COBIT)"],"delete":[]}, name:"Define business technology and governance strategy", pattern:"Mixed", mv:[79, 70, 56, 43, 33], mixed:true, raci:{R:"IT Director",A:"CIO",C:"Enterprise Architect",I:"IT Service Manager"}, l4:[
         { code:"8.2.1.1", name:"Build and maintain IT strategic intelligence", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.1.2", name:"Monitor and map current and emerging technologies", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.1.3", name:"Define and communicate digital transformation strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2164,7 +2164,7 @@ const PCF = [
         { code:"8.2.1.5", name:"Articulate IT alignment principles", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"8.2.1.6", name:"Maintain IT strategic alignment", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.2.2", name:"Manage IT portfolio strategy", pattern:"Mixed", mv:[86, 80, 68, 55, 46], mixed:true, raci:{R:"IT Director",A:"IT Director",C:"Enterprise Architect",I:"CIO"}, l4:[
+      { code:"8.2.2", crud:{"create":["IT Portfolio (SPM \u2014 ServiceNow SPM)","Investment Case (SPM \u2014 ServiceNow SPM)"],"read":["Business Capability (EA \u2014 LeanIX/Ardoq)","Application Inventory (EA \u2014 LeanIX/Ardoq)"],"update":["IT Portfolio (SPM \u2014 ServiceNow SPM)"],"delete":[]}, name:"Manage IT portfolio strategy", pattern:"Mixed", mv:[86, 80, 68, 55, 46], mixed:true, raci:{R:"IT Director",A:"IT Director",C:"Enterprise Architect",I:"CIO"}, l4:[
         { code:"8.2.2.1", name:"Establish and validate IT value criteria", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.2.2", name:"Determine IT portfolio investment balance", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.2.3", name:"Evaluate proposed IT investment projects", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2172,13 +2172,13 @@ const PCF = [
         { code:"8.2.2.5", name:"Align IT resources to strategic priorities", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.2.6", name:"Align IT portfolio to business objectives", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"8.2.3", name:"Define and maintain enterprise architecture", pattern:"Mixed", mv:[82, 73, 59, 46, 36], mixed:true, raci:{R:"Enterprise Architect",A:"Enterprise Architect",C:"IT Director",I:"CIO"}, l4:[
+      { code:"8.2.3", crud:{"create":["Application Inventory Record (EA \u2014 LeanIX/Ardoq)","Architecture Decision Record (EA \u2014 LeanIX/Ardoq)"],"read":["Business Capability (EA \u2014 LeanIX/Ardoq)","IT Component (EA \u2014 LeanIX/Ardoq)"],"update":["Application Inventory Record (EA \u2014 LeanIX/Ardoq)","Architecture Decision Record (EA \u2014 LeanIX/Ardoq)"],"delete":[]}, name:"Define and maintain enterprise architecture", pattern:"Mixed", mv:[82, 73, 59, 46, 36], mixed:true, raci:{R:"Enterprise Architect",A:"Enterprise Architect",C:"IT Director",I:"CIO"}, l4:[
         { code:"8.2.3.1", name:"Create and publish enterprise architecture principles", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"8.2.3.2", name:"Establish and operate enterprise architecture governance", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.3.3", name:"Research technologies to innovate IT services and solutions", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.3.4", name:"Provide input to definition and prioritization of IT projects", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"8.2.4", name:"Define IT service management strategy", pattern:"Mixed", mv:[71, 61, 48, 35, 25], mixed:true, raci:{R:"IT Service Manager",A:"IT Service Manager",C:"IT Director",I:"—"}, l4:[
+      { code:"8.2.4", crud:{"create":["ITSM Strategy Doc (ITSM \u2014 ServiceNow)"],"read":["Service Offering (CSDM \u2014 ServiceNow)","SLA/OLA Definition (ITSM \u2014 ServiceNow)"],"update":["ITSM Strategy Doc (ITSM \u2014 ServiceNow)"],"delete":[]}, name:"Define IT service management strategy", pattern:"Mixed", mv:[71, 61, 48, 35, 25], mixed:true, raci:{R:"IT Service Manager",A:"IT Service Manager",C:"IT Director",I:"—"}, l4:[
         { code:"8.2.4.1", name:"Establish IT service management strategy and goals", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.4.2", name:"Identify IT service operating and process requirements", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.4.3", name:"Define IT service catalog", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2187,7 +2187,7 @@ const PCF = [
         { code:"8.2.4.6", name:"Define and deploy support service management process tools and methods", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.2.4.7", name:"Monitor and report IT performance", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.2.5", name:"Control IT management system", pattern:"Mixed", mv:[81, 72, 59, 46, 36], mixed:true, raci:{R:"IT Service Manager",A:"IT Director",C:"—",I:"CIO"}, l4:[
+      { code:"8.2.5", crud:{"create":["IT Management Policy (GRC \u2014 ServiceNow GRC)"],"read":["IT Governance Framework Doc (GRC \u2014 ServiceNow GRC)","Control Library (GRC \u2014 ServiceNow GRC/Archer)"],"update":["IT Management Policy (GRC \u2014 ServiceNow GRC)"],"delete":[]}, name:"Control IT management system", pattern:"Mixed", mv:[81, 72, 59, 46, 36], mixed:true, raci:{R:"IT Service Manager",A:"IT Director",C:"—",I:"CIO"}, l4:[
         { code:"8.2.5.1", name:"Determine IT performance measures", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.5.2", name:"Define IT control points and assurance procedures governance model", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.5.3", name:"Monitor and analyze overall IT performance", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2198,13 +2198,13 @@ const PCF = [
         { code:"8.2.5.8", name:"Report IT service and project performance", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"8.2.5.9", name:"Select, deploy, and operate IT performance analytics tools", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.2.6", name:"Manage IT value portfolio", pattern:"Mixed", mv:[84, 76, 62, 51, 42], mixed:true, raci:{R:"IT Service Manager",A:"IT Director",C:"—",I:"CIO"}, l4:[
+      { code:"8.2.6", crud:{"create":["Value Portfolio Record (SPM \u2014 ServiceNow SPM)"],"read":["IT Portfolio (SPM \u2014 ServiceNow SPM)","Investment Case (SPM \u2014 ServiceNow SPM)"],"update":["Value Portfolio Record (SPM \u2014 ServiceNow SPM)"],"delete":[]}, name:"Manage IT value portfolio", pattern:"Mixed", mv:[84, 76, 62, 51, 42], mixed:true, raci:{R:"IT Service Manager",A:"IT Director",C:"—",I:"CIO"}, l4:[
         { code:"8.2.6.1", name:"Assess performance against IT service and project value criteria", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.6.2", name:"Quantify value of IT service and project portfolio investments", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.6.3", name:"Communicate business technology value contribution", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"8.2.6.4", name:"Determine and implement IT portfolio adjustments", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
       ]},
-      { code:"8.2.7", name:"Define and manage technology innovation", pattern:"Mixed", mv:[81, 74, 61, 48, 38], mixed:true, raci:{R:"Enterprise Architect",A:"Enterprise Architect",C:"CIO · SVP Technology",I:"—"}, l4:[
+      { code:"8.2.7", crud:{"create":["Innovation Initiative (SPM \u2014 ServiceNow SPM)"],"read":["Technology Category (EA \u2014 LeanIX/Ardoq)","Business Capability (EA \u2014 LeanIX/Ardoq)"],"update":["Innovation Initiative (SPM \u2014 ServiceNow SPM)"],"delete":[]}, name:"Define and manage technology innovation", pattern:"Mixed", mv:[81, 74, 61, 48, 38], mixed:true, raci:{R:"Enterprise Architect",A:"Enterprise Architect",C:"CIO · SVP Technology",I:"—"}, l4:[
         { code:"8.2.7.1", name:"Establish selection criteria for research initiatives", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.7.2", name:"Analyze emerging technology concepts", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.2.7.3", name:"Identify technology concepts and capabilities", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2215,7 +2215,7 @@ const PCF = [
       ]},
     ]},
     { code:"8.3", name:"Develop and manage IT resilience and risk", mv:[77, 68, 55, 43, 33], l3:[
-      { code:"8.3.1", name:"Develop IT compliance, risk, and security strategy", pattern:"Mixed", mv:[87, 81, 70, 58, 49], mixed:true, raci:{R:"Director of Cybersecurity",A:"CISO",C:"CIO",I:"—"}, l4:[
+      { code:"8.3.1", crud:{"create":["Risk & Security Strategy Doc (GRC \u2014 Archer/ServiceNow GRC)"],"read":["Regulatory Framework (external \u2014 NIST/ISO 27001)","Risk Register (GRC \u2014 Archer/ServiceNow GRC)"],"update":["Risk & Security Strategy Doc (GRC \u2014 Archer/ServiceNow GRC)"],"delete":[]}, name:"Develop IT compliance, risk, and security strategy", pattern:"Mixed", mv:[87, 81, 70, 58, 49], mixed:true, raci:{R:"Director of Cybersecurity",A:"CISO",C:"CIO",I:"—"}, l4:[
         { code:"8.3.1.1", name:"Determine and evaluate IT regulatory and audit requirements", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.3.1.2", name:"Understand business unit risk tolerance", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.3.1.3", name:"Establish IT risk tolerance", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
@@ -2227,13 +2227,13 @@ const PCF = [
         { code:"8.3.1.9", name:"Evaluate IT-related risks resiliency", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.3.1.10", name:"Create IT risk mitigation strategies and approaches", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"8.3.2", name:"Develop IT resilience strategy", pattern:"Mixed", mv:[87, 80, 69, 57, 48], mixed:true, raci:{R:"Director of Cybersecurity",A:"Director of Cybersecurity",C:"CISO",I:"—"}, l4:[
+      { code:"8.3.2", crud:{"create":["Resilience Strategy Doc (BCM \u2014 Fusion Risk Mgmt)"],"read":["Business Impact Analysis (BCM \u2014 Fusion Risk Mgmt)","IT Portfolio (SPM \u2014 ServiceNow SPM)"],"update":["Resilience Strategy Doc (BCM \u2014 Fusion Risk Mgmt)"],"delete":[]}, name:"Develop IT resilience strategy", pattern:"Mixed", mv:[87, 80, 69, 57, 48], mixed:true, raci:{R:"Director of Cybersecurity",A:"Director of Cybersecurity",C:"CISO",I:"—"}, l4:[
         { code:"8.3.2.1", name:"Determine IT delivery resiliency", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.3.2.2", name:"Determine critical IT risks", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.3.2.3", name:"Prioritize IT risks", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"8.3.2.4", name:"Establish mitigation approaches for IT risks", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"8.3.3", name:"Control IT risk, compliance, and security", pattern:"Mixed", mv:[79, 70, 56, 44, 34], mixed:true, raci:{R:"Cybersecurity Analyst",A:"Director of Cybersecurity",C:"CISO",I:"—"}, l4:[
+      { code:"8.3.3", crud:{"create":["Risk Register Entry (GRC \u2014 Archer/ServiceNow GRC)","Control Test Result (GRC \u2014 Archer/ServiceNow GRC)"],"read":["Control Library (GRC \u2014 Archer/ServiceNow GRC)","Risk & Security Strategy Doc (GRC \u2014 Archer/ServiceNow GRC)"],"update":["Risk Register Entry (GRC \u2014 Archer/ServiceNow GRC)","Control Test Result (GRC \u2014 Archer/ServiceNow GRC)"],"delete":[]}, name:"Control IT risk, compliance, and security", pattern:"Mixed", mv:[79, 70, 56, 44, 34], mixed:true, raci:{R:"Cybersecurity Analyst",A:"Director of Cybersecurity",C:"CISO",I:"—"}, l4:[
         { code:"8.3.3.1", name:"Evaluate enterprise regulatory and compliance obligations", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.3.3.2", name:"Analyze IT security threat impact", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.3.3.3", name:"Create and maintain IT compliance requirements", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2245,12 +2245,12 @@ const PCF = [
         { code:"8.3.3.9", name:"Monitor and manage IT activity risk", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.3.3.10", name:"Identify, supervise and monitor IT risk mitigation measures", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.3.4", name:"Plan and manage IT continuity", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, raci:{R:"Director of Cybersecurity",A:"Director of Cybersecurity",C:"IT Director",I:"—"}, l4:[
+      { code:"8.3.4", crud:{"create":["Business Continuity Plan (BCM \u2014 Fusion Risk Mgmt)","Business Impact Analysis (BCM \u2014 Fusion Risk Mgmt)"],"read":["Resilience Strategy Doc (BCM \u2014 Fusion Risk Mgmt)","Application Inventory (EA \u2014 LeanIX/Ardoq)"],"update":["Business Continuity Plan (BCM \u2014 Fusion Risk Mgmt)","Business Impact Analysis (BCM \u2014 Fusion Risk Mgmt)"],"delete":[]}, name:"Plan and manage IT continuity", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, raci:{R:"Director of Cybersecurity",A:"Director of Cybersecurity",C:"IT Director",I:"—"}, l4:[
         { code:"8.3.4.1", name:"Evaluate IT continuity", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.3.4.2", name:"Identify IT continuity gaps", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.3.4.3", name:"Manage IT business continuity", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.3.5", name:"Develop and manage IT security, privacy, and data protection", pattern:"Mixed", mv:[74, 64, 51, 39, 29], mixed:true, raci:{R:"Cybersecurity Analyst",A:"Director of Cybersecurity",C:"Chief Data Officer",I:"—"}, l4:[
+      { code:"8.3.5", crud:{"create":["Security Policy (GRC \u2014 ServiceNow GRC)","Data Protection Control (GRC \u2014 ServiceNow GRC)"],"read":["Risk & Security Strategy Doc (GRC \u2014 Archer/ServiceNow GRC)","Regulatory Framework (external \u2014 GDPR/CCPA)"],"update":["Security Policy (GRC \u2014 ServiceNow GRC)","Data Protection Control (GRC \u2014 ServiceNow GRC)"],"delete":[]}, name:"Develop and manage IT security, privacy, and data protection", pattern:"Mixed", mv:[74, 64, 51, 39, 29], mixed:true, raci:{R:"Cybersecurity Analyst",A:"Director of Cybersecurity",C:"Chief Data Officer",I:"—"}, l4:[
         { code:"8.3.5.1", name:"Assess IT regulatory and confidentiality requirements and policies", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.3.5.2", name:"Create IT security, privacy, and data protection risk governance", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.3.5.3", name:"Define IT data security and privacy policies, standards, and procedures", pattern:"Document", mv:[72, 58, 40, 28, 18] },
@@ -2259,14 +2259,14 @@ const PCF = [
         { code:"8.3.5.6", name:"Review and monitor IT physical environment security controls", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.3.5.7", name:"Monitor/analyze network intrusion detection data and resolve threats", pattern:"Exception", mv:[95, 92, 82, 75, 68] },
       ]},
-      { code:"8.3.6", name:"Conduct and analyze IT compliance assessments", pattern:"Mixed", mv:[74, 65, 51, 40, 30], mixed:true, raci:{R:"Cybersecurity Analyst",A:"Director of Cybersecurity",C:"—",I:"CISO"}, l4:[
+      { code:"8.3.6", crud:{"create":["Compliance Assessment Report (GRC \u2014 Archer/ServiceNow GRC)"],"read":["Control Test Result (GRC \u2014 Archer/ServiceNow GRC)","Risk Register Entry (GRC \u2014 Archer/ServiceNow GRC)"],"update":["Compliance Assessment Report (GRC \u2014 Archer/ServiceNow GRC)"],"delete":[]}, name:"Conduct and analyze IT compliance assessments", pattern:"Mixed", mv:[74, 65, 51, 40, 30], mixed:true, raci:{R:"Cybersecurity Analyst",A:"Director of Cybersecurity",C:"—",I:"CISO"}, l4:[
         { code:"8.3.6.1", name:"Conduct projects to enhance IT compliance and remediate risk", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.3.6.2", name:"Conduct IT compliance control auditing of internal and external services", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.3.6.3", name:"Perform IT compliance reporting", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"8.3.6.4", name:"Identify and escalate IT compliance issues and remediation requirements", pattern:"Exception", mv:[95, 92, 82, 75, 68] },
         { code:"8.3.6.5", name:"Support external audits and reports", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.3.7", name:"Develop and execute IT resilience and continuity operations", pattern:"Mixed", mv:[70, 60, 46, 33, 23], mixed:true, raci:{R:"Cybersecurity Analyst",A:"Director of Cybersecurity",C:"Systems Administrator",I:"—"}, l4:[
+      { code:"8.3.7", crud:{"create":["DR Test Record (BCM \u2014 Fusion Risk Mgmt)","Incident Response Record (SIEM \u2014 Splunk Enterprise Security)"],"read":["Business Continuity Plan (BCM \u2014 Fusion Risk Mgmt)","Security Event/Alert (SIEM/EDR \u2014 Splunk/CrowdStrike Falcon)"],"update":["DR Test Record (BCM \u2014 Fusion Risk Mgmt)","Incident Response Record (SIEM \u2014 Splunk Enterprise Security)"],"delete":[]}, name:"Develop and execute IT resilience and continuity operations", pattern:"Mixed", mv:[70, 60, 46, 33, 23], mixed:true, raci:{R:"Cybersecurity Analyst",A:"Director of Cybersecurity",C:"Systems Administrator",I:"—"}, l4:[
         { code:"8.3.7.1", name:"Conduct IT resilience improvement projects", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.3.7.2", name:"Develop, document, and maintain IT business continuity planning", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"8.3.7.3", name:"Implement and enforce change control procedures", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2274,7 +2274,7 @@ const PCF = [
         { code:"8.3.7.5", name:"Provide IT resilience training", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.3.7.6", name:"Execute recurring IT business operations continuity", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.3.8", name:"Manage IT user identity and authorization", pattern:"Mixed", mv:[64, 54, 41, 29, 19], mixed:true, raci:{R:"Cybersecurity Analyst",A:"Director of Cybersecurity",C:"—",I:"—"}, l4:[
+      { code:"8.3.8", crud:{"create":["Identity Record (IAM \u2014 SailPoint/Okta)","Access Request (IAM \u2014 SailPoint)","Entitlement (IAM \u2014 SailPoint)"],"read":["Access Profile (IAM \u2014 SailPoint)","Role (IAM \u2014 SailPoint)"],"update":["Identity Record (IAM \u2014 SailPoint/Okta)","Entitlement (IAM \u2014 SailPoint)","Access Certification (IAM \u2014 SailPoint)"],"delete":[]}, name:"Manage IT user identity and authorization", pattern:"Mixed", mv:[64, 54, 41, 29, 19], mixed:true, raci:{R:"Cybersecurity Analyst",A:"Director of Cybersecurity",C:"—",I:"—"}, l4:[
         { code:"8.3.8.1", name:"Support integration of identity and authorization policies", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.3.8.2", name:"Manage IT user directory", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.3.8.3", name:"Manage IT user authorization", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2286,23 +2286,23 @@ const PCF = [
       ]},
     ]},
     { code:"8.4", name:"Manage information", mv:[73, 63, 50, 38, 28], l3:[
-      { code:"8.4.1", name:"Define business information and analytics strategy", pattern:"Mixed", mv:[79, 71, 60, 49, 40], mixed:true, raci:{R:"Director of Data & Analytics",A:"Chief Data Officer",C:"CISO",I:"—"}, l4:[
+      { code:"8.4.1", crud:{"create":["Information & Analytics Strategy Doc (Data Governance \u2014 Collibra)"],"read":["Business Capability (EA \u2014 LeanIX/Ardoq)","Data Asset Inventory (Data Governance \u2014 Collibra/Alation)"],"update":["Information & Analytics Strategy Doc (Data Governance \u2014 Collibra)"],"delete":[]}, name:"Define business information and analytics strategy", pattern:"Mixed", mv:[79, 71, 60, 49, 40], mixed:true, raci:{R:"Director of Data & Analytics",A:"Chief Data Officer",C:"CISO",I:"—"}, l4:[
         { code:"8.4.1.1", name:"Establish data, information, and analytic objectives", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"8.4.1.2", name:"Establish data, information, and analytic governance", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.4.1.3", name:"Access IT data/analytic capabilities", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.4.2", name:"Define and maintain business information architecture", pattern:"Mixed", mv:[86, 80, 68, 56, 47], mixed:true, raci:{R:"Data Engineer",A:"Director of Data & Analytics",C:"Enterprise Architect",I:"Chief Data Officer"}, l4:[
+      { code:"8.4.2", crud:{"create":["Business Glossary Term (Data Governance \u2014 Collibra/Alation)","Data Lineage Record (Data Governance \u2014 Collibra/Alation)"],"read":["Data Asset Inventory (Data Governance \u2014 Collibra/Alation)","Application Inventory (EA \u2014 LeanIX/Ardoq)"],"update":["Business Glossary Term (Data Governance \u2014 Collibra/Alation)","Data Lineage Record (Data Governance \u2014 Collibra/Alation)"],"delete":[]}, name:"Define and maintain business information architecture", pattern:"Mixed", mv:[86, 80, 68, 56, 47], mixed:true, raci:{R:"Data Engineer",A:"Director of Data & Analytics",C:"Enterprise Architect",I:"Chief Data Officer"}, l4:[
         { code:"8.4.2.1", name:"Determine enterprise business information requirements", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.4.2.2", name:"Define enterprise data models", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.4.2.3", name:"Identify and understand external data sources", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.4.2.4", name:"Establish data ownership and stewardship responsibilities", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"8.4.2.5", name:"Maintain and evolve enterprise data and information architecture", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"8.4.3", name:"Define and execute business information lifecycle planning and control", pattern:"Mixed", mv:[66, 53, 38, 25, 15], mixed:true, raci:{R:"Data Engineer",A:"Director of Data & Analytics",C:"—",I:"—"}, l4:[
+      { code:"8.4.3", crud:{"create":["Data Lifecycle Policy (Data Governance \u2014 Collibra)","Retention Schedule (Data Governance \u2014 Collibra)"],"read":["Data Asset Inventory (Data Governance \u2014 Collibra/Alation)","Regulatory Framework (external \u2014 GDPR/CCPA)"],"update":["Data Lifecycle Policy (Data Governance \u2014 Collibra)","Retention Schedule (Data Governance \u2014 Collibra)"],"delete":[]}, name:"Define and execute business information lifecycle planning and control", pattern:"Mixed", mv:[66, 53, 38, 25, 15], mixed:true, raci:{R:"Data Engineer",A:"Director of Data & Analytics",C:"—",I:"—"}, l4:[
         { code:"8.4.3.1", name:"Define and maintain enterprise information policies, standards, and procedures", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"8.4.3.2", name:"Implement and execute data administration responsibilities", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.4.4", name:"Manage business information", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Data Engineer",A:"Director of Data & Analytics",C:"IT Support Specialist",I:"—"}, l4:[
+      { code:"8.4.4", crud:{"create":["Golden Record (MDM \u2014 Informatica/Reltio)","Master Data Entity (MDM \u2014 Informatica/Reltio)"],"read":["Data Asset Inventory (Data Governance \u2014 Collibra/Alation)","Business Glossary Term (Data Governance \u2014 Collibra/Alation)"],"update":["Golden Record (MDM \u2014 Informatica/Reltio)","Master Data Entity (MDM \u2014 Informatica/Reltio)"],"delete":[]}, name:"Manage business information", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Data Engineer",A:"Director of Data & Analytics",C:"IT Support Specialist",I:"—"}, l4:[
         { code:"8.4.4.1", name:"Monitor and control business information", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.4.4.2", name:"Maintain business information feeds and repositories", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.4.4.3", name:"Perform internal usage audits", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2310,7 +2310,7 @@ const PCF = [
       ]},
     ]},
     { code:"8.5", name:"Develop and manage services/solutions", mv:[73, 63, 50, 37, 28], l3:[
-      { code:"8.5.1", name:"Develop service/solution and integration strategy", pattern:"Mixed", mv:[77, 68, 55, 43, 33], mixed:true, raci:{R:"DevOps Engineer",A:"Enterprise Architect",C:"IT Director",I:"—"}, l4:[
+      { code:"8.5.1", crud:{"create":["Solution Strategy Doc (SPM \u2014 ServiceNow SPM)"],"read":["Business Capability (EA \u2014 LeanIX/Ardoq)","Application Inventory (EA \u2014 LeanIX/Ardoq)"],"update":["Solution Strategy Doc (SPM \u2014 ServiceNow SPM)"],"delete":[]}, name:"Develop service/solution and integration strategy", pattern:"Mixed", mv:[77, 68, 55, 43, 33], mixed:true, raci:{R:"DevOps Engineer",A:"Enterprise Architect",C:"IT Director",I:"—"}, l4:[
         { code:"8.5.1.1", name:"Determine IT service/solution development", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.5.1.2", name:"Define IT service/solution development processes/standards", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"8.5.1.3", name:"Identify, deploy, and support development methodologies and tools", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2319,14 +2319,14 @@ const PCF = [
         { code:"8.5.1.6", name:"Maintain service component portfolio", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.5.1.7", name:"Establish development standards exception governance", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"8.5.2", name:"Manage service/solution lifecycle planning", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"DevOps Engineer",A:"Enterprise Architect",C:"—",I:"—"}, l4:[
+      { code:"8.5.2", crud:{"create":["Product/Solution Roadmap (SPM \u2014 ServiceNow SPM)","Epic (SDLC \u2014 Jira/Azure DevOps)"],"read":["Solution Strategy Doc (SPM \u2014 ServiceNow SPM)","Business Capability (EA \u2014 LeanIX/Ardoq)"],"update":["Product/Solution Roadmap (SPM \u2014 ServiceNow SPM)"],"delete":[]}, name:"Manage service/solution lifecycle planning", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"DevOps Engineer",A:"Enterprise Architect",C:"—",I:"—"}, l4:[
         { code:"8.5.2.1", name:"Monitor and track emerging technology capabilities", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.5.2.2", name:"Identify IT services/solutions", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.5.2.3", name:"Determine IT service/solution approach", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.5.2.4", name:"Define IT solution lifecycle", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.5.2.5", name:"Develop IT service/solution \"sunset\" plans", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"8.5.3", name:"Develop and manage service/solution architecture", pattern:"Mixed", mv:[82, 74, 60, 48, 38], mixed:true, raci:{R:"Enterprise Architect",A:"Enterprise Architect",C:"—",I:"—"}, l4:[
+      { code:"8.5.3", crud:{"create":["Solution Architecture Doc (EA \u2014 LeanIX/Ardoq)","Architecture Decision Record (EA \u2014 LeanIX/Ardoq)"],"read":["Application Inventory (EA \u2014 LeanIX/Ardoq)","IT Component (EA \u2014 LeanIX/Ardoq)"],"update":["Solution Architecture Doc (EA \u2014 LeanIX/Ardoq)","Architecture Decision Record (EA \u2014 LeanIX/Ardoq)"],"delete":[]}, name:"Develop and manage service/solution architecture", pattern:"Mixed", mv:[82, 74, 60, 48, 38], mixed:true, raci:{R:"Enterprise Architect",A:"Enterprise Architect",C:"—",I:"—"}, l4:[
         { code:"8.5.3.1", name:"Assess IT application and infrastructure architecture constraints", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.5.3.2", name:"Assess business constraints on IT service/solution", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.5.3.3", name:"Determine IT component integration requirements", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2336,15 +2336,15 @@ const PCF = [
         { code:"8.5.3.7", name:"Assess IT service/solution architecture conformance", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.5.3.8", name:"Manage architectural exceptions", pattern:"Exception", mv:[95, 92, 82, 75, 68] },
       ]},
-      { code:"8.5.4", name:"Execute IT service/solution creation and testing", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"DevOps Engineer",A:"DevOps Engineer",C:"Enterprise Architect",I:"—"}, l4:[
+      { code:"8.5.4", crud:{"create":["User Story / Work Item (SDLC \u2014 Jira/Azure DevOps)","Test Case (QA \u2014 Azure Test Plans/TestRail)"],"read":["Epic (SDLC \u2014 Jira/Azure DevOps)","Solution Architecture Doc (EA \u2014 LeanIX/Ardoq)"],"update":["User Story / Work Item (SDLC \u2014 Jira/Azure DevOps)","Test Case (QA \u2014 Azure Test Plans/TestRail)"],"delete":[]}, name:"Execute IT service/solution creation and testing", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"DevOps Engineer",A:"DevOps Engineer",C:"Enterprise Architect",I:"—"}, l4:[
         { code:"8.5.4.1", name:"Execute IT service/solution development lifecycle", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.5.5", name:"Perform service/solution maintenance and testing", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"DevOps Engineer",A:"Systems Administrator",C:"—",I:"—"}, l4:[
+      { code:"8.5.5", crud:{"create":["Defect / Bug (SDLC \u2014 Jira/Azure DevOps)","Regression Test Result (QA \u2014 Azure Test Plans/TestRail)"],"read":["User Story / Work Item (SDLC \u2014 Jira/Azure DevOps)","Test Case (QA \u2014 Azure Test Plans/TestRail)"],"update":["Defect / Bug (SDLC \u2014 Jira/Azure DevOps)","Regression Test Result (QA \u2014 Azure Test Plans/TestRail)"],"delete":[]}, name:"Perform service/solution maintenance and testing", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"DevOps Engineer",A:"Systems Administrator",C:"—",I:"—"}, l4:[
         { code:"8.5.5.1", name:"Execute IT service/solution maintenance lifecycle", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
     ]},
     { code:"8.6", name:"Deploy services/solutions", mv:[72, 62, 49, 36, 26], l3:[
-      { code:"8.6.1", name:"Develop and manage service/solution deployment strategy", pattern:"Mixed", mv:[82, 73, 59, 47, 38], mixed:true, raci:{R:"DevOps Engineer",A:"IT Service Manager",C:"—",I:"—"}, l4:[
+      { code:"8.6.1", crud:{"create":["Deployment Strategy Doc (DevOps \u2014 Azure DevOps/GitHub)"],"read":["Solution Architecture Doc (EA \u2014 LeanIX/Ardoq)","Release Pipeline (CI/CD \u2014 Azure Pipelines/Jenkins)"],"update":["Deployment Strategy Doc (DevOps \u2014 Azure DevOps/GitHub)"],"delete":[]}, name:"Develop and manage service/solution deployment strategy", pattern:"Mixed", mv:[82, 73, 59, 47, 38], mixed:true, raci:{R:"DevOps Engineer",A:"IT Service Manager",C:"—",I:"—"}, l4:[
         { code:"8.6.1.1", name:"Assess IT deployment business impact", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.6.1.2", name:"Establish IT deployment policies", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.6.1.3", name:"Define and create deployment procedure workflow", pattern:"Document", mv:[72, 58, 40, 28, 18] },
@@ -2352,7 +2352,7 @@ const PCF = [
         { code:"8.6.1.5", name:"Assign deployment approval responsibilities", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"8.6.1.6", name:"Analyze deployments outcomes", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"8.6.2", name:"Plan service and solution implementation", pattern:"Mixed", mv:[76, 67, 53, 40, 30], mixed:true, raci:{R:"DevOps Engineer",A:"IT Service Manager",C:"IT Support Specialist",I:"—"}, l4:[
+      { code:"8.6.2", crud:{"create":["Implementation Plan (SPM \u2014 ServiceNow SPM)","Release Plan (DevOps \u2014 Azure DevOps)"],"read":["Deployment Strategy Doc (DevOps \u2014 Azure DevOps/GitHub)","User Story / Work Item (SDLC \u2014 Jira/Azure DevOps)"],"update":["Implementation Plan (SPM \u2014 ServiceNow SPM)","Release Plan (DevOps \u2014 Azure DevOps)"],"delete":[]}, name:"Plan service and solution implementation", pattern:"Mixed", mv:[76, 67, 53, 40, 30], mixed:true, raci:{R:"DevOps Engineer",A:"IT Service Manager",C:"IT Support Specialist",I:"—"}, l4:[
         { code:"8.6.2.1", name:"Assess IT deployment risk", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.6.2.2", name:"Define implementation schedule and roll-out sequence", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.6.2.3", name:"Determine implementation requirements", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2361,7 +2361,7 @@ const PCF = [
         { code:"8.6.2.6", name:"Create implementation communications", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"8.6.2.7", name:"Manage IT roll-back procedures", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.6.3", name:"Manage change deployment control", pattern:"Mixed", mv:[75, 65, 51, 39, 30], mixed:true, raci:{R:"IT Service Manager",A:"IT Service Manager",C:"Enterprise Architect",I:"—"}, l4:[
+      { code:"8.6.3", crud:{"create":["Change Request (ITSM \u2014 ServiceNow Change Mgmt)"],"read":["Release Plan (DevOps \u2014 Azure DevOps)","Configuration Item (CMDB \u2014 ServiceNow CMDB)"],"update":["Change Request (ITSM \u2014 ServiceNow Change Mgmt)"],"delete":[]}, name:"Manage change deployment control", pattern:"Mixed", mv:[75, 65, 51, 39, 30], mixed:true, raci:{R:"IT Service Manager",A:"IT Service Manager",C:"Enterprise Architect",I:"—"}, l4:[
         { code:"8.6.3.1", name:"Asses IT change/release impact", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.6.3.2", name:"Confirm change/release compliance", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.6.3.3", name:"Assess IT change/release risk", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2370,7 +2370,7 @@ const PCF = [
         { code:"8.6.3.6", name:"Approve change/release deployment", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"8.6.3.7", name:"Document IT change/release outcome", pattern:"Document", mv:[72, 58, 40, 28, 18] },
       ]},
-      { code:"8.6.4", name:"Implement technology solutions", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Systems Administrator",A:"DevOps Engineer",C:"—",I:"—"}, l4:[
+      { code:"8.6.4", crud:{"create":["Deployment Record (CI/CD \u2014 Azure Pipelines/Jenkins)","Configuration Item (CMDB \u2014 ServiceNow CMDB)"],"read":["Change Request (ITSM \u2014 ServiceNow Change Mgmt)","Release Plan (DevOps \u2014 Azure DevOps)"],"update":["Deployment Record (CI/CD \u2014 Azure Pipelines/Jenkins)","Configuration Item (CMDB \u2014 ServiceNow CMDB)"],"delete":[]}, name:"Implement technology solutions", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Systems Administrator",A:"DevOps Engineer",C:"—",I:"—"}, l4:[
         { code:"8.6.4.1", name:"Confirm hardware/software operational status", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.6.4.2", name:"Confirm operational availability", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.6.4.3", name:"Execute internal IT implementation plan", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2381,7 +2381,7 @@ const PCF = [
         { code:"8.6.4.8", name:"Verify change/release implementation success", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.6.4.9", name:"Execute roll-back plan", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.6.5", name:"Perform service and solution rollout", pattern:"Mixed", mv:[69, 58, 44, 31, 21], mixed:true, raci:{R:"IT Support Specialist",A:"IT Support Specialist",C:"IT Service Manager",I:"—"}, l4:[
+      { code:"8.6.5", crud:{"create":["Rollout Record (DevOps \u2014 Azure DevOps)","Release Notes (DevOps \u2014 Azure DevOps/GitHub)"],"read":["Deployment Record (CI/CD \u2014 Azure Pipelines/Jenkins)","Change Request (ITSM \u2014 ServiceNow Change Mgmt)"],"update":["Rollout Record (DevOps \u2014 Azure DevOps)"],"delete":[]}, name:"Perform service and solution rollout", pattern:"Mixed", mv:[69, 58, 44, 31, 21], mixed:true, raci:{R:"IT Support Specialist",A:"IT Support Specialist",C:"IT Service Manager",I:"—"}, l4:[
         { code:"8.6.5.1", name:"Conduct IT training", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.6.5.2", name:"Prepare and distribute service/solution communications", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"8.6.5.3", name:"Support organizational changes", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2392,14 +2392,14 @@ const PCF = [
       ]},
     ]},
     { code:"8.7", name:"Create and manage support services/solutions", mv:[76, 68, 55, 43, 33], l3:[
-      { code:"8.7.1", name:"Define and establish service delivery strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"IT Service Manager",A:"IT Service Manager",C:"—",I:"—"}, l4:[
+      { code:"8.7.1", crud:{"create":["Service Delivery Strategy Doc (ITSM \u2014 ServiceNow)"],"read":["Business Service (CSDM \u2014 ServiceNow)","SLA/OLA Definition (ITSM \u2014 ServiceNow)"],"update":["Service Delivery Strategy Doc (ITSM \u2014 ServiceNow)"],"delete":[]}, name:"Define and establish service delivery strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"IT Service Manager",A:"IT Service Manager",C:"—",I:"—"}, l4:[
         { code:"8.7.1.1", name:"Assess business objectives and IT service delivery", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.7.1.2", name:"Define IT service delivery portfolio", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.7.1.3", name:"Create and maintain IT service delivery model", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.7.1.4", name:"Determine IT service delivery locations and activities", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.7.1.5", name:"Define IT service delivery sourcing strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"8.7.2", name:"Define and develop service support strategy", pattern:"Mixed", mv:[81, 73, 60, 47, 37], mixed:true, raci:{R:"IT Support Specialist",A:"IT Service Manager",C:"—",I:"—"}, l4:[
+      { code:"8.7.2", crud:{"create":["Service Support Strategy Doc (ITSM \u2014 ServiceNow)"],"read":["Service Delivery Strategy Doc (ITSM \u2014 ServiceNow)","Incident (ITSM \u2014 ServiceNow)"],"update":["Service Support Strategy Doc (ITSM \u2014 ServiceNow)"],"delete":[]}, name:"Define and develop service support strategy", pattern:"Mixed", mv:[81, 73, 60, 47, 37], mixed:true, raci:{R:"IT Support Specialist",A:"IT Service Manager",C:"—",I:"—"}, l4:[
         { code:"8.7.2.1", name:"Assess business objectives and IT service support delivery", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.7.2.2", name:"Define IT service support portfolio", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.7.2.3", name:"Create and maintain IT support model", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2407,17 +2407,17 @@ const PCF = [
         { code:"8.7.2.5", name:"Establish support service framework", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.7.2.6", name:"Provide service support tools and technology", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.7.3", name:"Plan and manage service delivery control", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Systems Administrator",A:"Systems Administrator",C:"Network Engineer",I:"—"}, l4:[
+      { code:"8.7.3", crud:{"create":["Service Delivery Plan (ITSM \u2014 ServiceNow)"],"read":["Service Delivery Strategy Doc (ITSM \u2014 ServiceNow)","SLA/OLA Definition (ITSM \u2014 ServiceNow)"],"update":["Service Delivery Plan (ITSM \u2014 ServiceNow)"],"delete":[]}, name:"Plan and manage service delivery control", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Systems Administrator",A:"Systems Administrator",C:"Network Engineer",I:"—"}, l4:[
         { code:"8.7.3.1", name:"Plan operational activities for IT service delivery", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"8.7.4", name:"Develop and manage infrastructure resource planning", pattern:"Mixed", mv:[80, 72, 59, 46, 36], mixed:true, raci:{R:"Systems Administrator",A:"IT Director",C:"Enterprise Architect",I:"—"}, l4:[
+      { code:"8.7.4", crud:{"create":["Capacity Plan (ITOM \u2014 ServiceNow ITOM/Datadog)","Infrastructure Forecast (ITOM \u2014 ServiceNow ITOM)"],"read":["Configuration Item (CMDB \u2014 ServiceNow CMDB)","Observability Metric (Datadog/SolarWinds)"],"update":["Capacity Plan (ITOM \u2014 ServiceNow ITOM/Datadog)","Infrastructure Forecast (ITOM \u2014 ServiceNow ITOM)"],"delete":[]}, name:"Develop and manage infrastructure resource planning", pattern:"Mixed", mv:[80, 72, 59, 46, 36], mixed:true, raci:{R:"Systems Administrator",A:"IT Director",C:"Enterprise Architect",I:"—"}, l4:[
         { code:"8.7.4.1", name:"Develop IT service delivery strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.7.4.2", name:"Assess IT infrastructure business objectives", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.7.4.3", name:"Determine ongoing IT infrastructure capabilities", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.7.4.4", name:"Plan IT infrastructure change", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.7.4.5", name:"Plan and budget IT license usage volumes", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.7.5", name:"Define service support planning", pattern:"Mixed", mv:[75, 65, 52, 40, 30], mixed:true, raci:{R:"IT Support Specialist",A:"IT Service Manager",C:"—",I:"—"}, l4:[
+      { code:"8.7.5", crud:{"create":["Support Model Doc (ITSM \u2014 ServiceNow)"],"read":["Service Support Strategy Doc (ITSM \u2014 ServiceNow)","IT Asset (ITAM \u2014 ServiceNow ITAM)"],"update":["Support Model Doc (ITSM \u2014 ServiceNow)"],"delete":[]}, name:"Define service support planning", pattern:"Mixed", mv:[75, 65, 52, 40, 30], mixed:true, raci:{R:"IT Support Specialist",A:"IT Service Manager",C:"—",I:"—"}, l4:[
         { code:"8.7.5.1", name:"Understand IT support demand patterns", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.7.5.2", name:"Determine required support resource levels, responsibilities, and capabilities", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"8.7.5.3", name:"Maintain service support knowledge repository", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2429,7 +2429,7 @@ const PCF = [
         { code:"8.7.5.9", name:"Triage IT service delivery incidents", pattern:"Exception", mv:[95, 92, 82, 75, 68] },
         { code:"8.7.5.10", name:"Monitor IT service support performance", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.7.6", name:"Develop and manage service delivery operations", pattern:"Mixed", mv:[69, 59, 47, 35, 26], mixed:true, raci:{R:"Network Engineer",A:"Systems Administrator",C:"Cybersecurity Analyst",I:"—"}, l4:[
+      { code:"8.7.6", crud:{"create":["Service Request (ITSM \u2014 ServiceNow)","Operational Runbook (ITSM \u2014 ServiceNow Knowledge Mgmt)"],"read":["Service Delivery Plan (ITSM \u2014 ServiceNow)","Configuration Item (CMDB \u2014 ServiceNow CMDB)"],"update":["Service Request (ITSM \u2014 ServiceNow)","Operational Runbook (ITSM \u2014 ServiceNow Knowledge Mgmt)"],"delete":[]}, name:"Develop and manage service delivery operations", pattern:"Mixed", mv:[69, 59, 47, 35, 26], mixed:true, raci:{R:"Network Engineer",A:"Systems Administrator",C:"Cybersecurity Analyst",I:"—"}, l4:[
         { code:"8.7.6.1", name:"Operate and monitor online systems", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.7.6.2", name:"Run and monitor batch job schedule", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.7.6.3", name:"Manage service delivery workloads", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2439,7 +2439,7 @@ const PCF = [
         { code:"8.7.6.7", name:"Monitor IT infrastructure security", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.7.6.8", name:"Manage IT infrastructure/data recovery", pattern:"Exception", mv:[95, 92, 82, 75, 68] },
       ]},
-      { code:"8.7.7", name:"Manage infrastructure resource administration", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Network Engineer",A:"Systems Administrator",C:"—",I:"—"}, l4:[
+      { code:"8.7.7", crud:{"create":["IT Asset Record (ITAM \u2014 ServiceNow ITAM)","Configuration Item (CMDB \u2014 ServiceNow CMDB)"],"read":["Capacity Plan (ITOM \u2014 ServiceNow ITOM/Datadog)","Observability Metric (Datadog/SolarWinds)"],"update":["IT Asset Record (ITAM \u2014 ServiceNow ITAM)","Configuration Item (CMDB \u2014 ServiceNow CMDB)"],"delete":[]}, name:"Manage infrastructure resource administration", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Network Engineer",A:"Systems Administrator",C:"—",I:"—"}, l4:[
         { code:"8.7.7.1", name:"Manage infrastructure configuration", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.7.7.2", name:"Perform infrastructure component maintenance", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.7.7.3", name:"Install/configure/upgrade infrastructure components", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2447,7 +2447,7 @@ const PCF = [
         { code:"8.7.7.5", name:"Administer IT licenses/user agreements", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.7.7.6", name:"Provide IT infrastructure service and capabilities", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"8.7.8", name:"Operate IT user support", pattern:"Mixed", mv:[78, 70, 58, 48, 40], mixed:true, raci:{R:"IT Support Specialist",A:"IT Support Specialist",C:"Director of Cybersecurity",I:"—"}, l4:[
+      { code:"8.7.8", crud:{"create":["Incident (ITSM \u2014 ServiceNow)","Problem Record (ITSM \u2014 ServiceNow)"],"read":["Service Request (ITSM \u2014 ServiceNow)","Configuration Item (CMDB \u2014 ServiceNow CMDB)","Knowledge Article (ITSM \u2014 ServiceNow Knowledge Mgmt)"],"update":["Incident (ITSM \u2014 ServiceNow)","Problem Record (ITSM \u2014 ServiceNow)"],"delete":[]}, name:"Operate IT user support", pattern:"Mixed", mv:[78, 70, 58, 48, 40], mixed:true, raci:{R:"IT Support Specialist",A:"IT Support Specialist",C:"Director of Cybersecurity",I:"—"}, l4:[
         { code:"8.7.8.1", name:"Triage IT issues/requests", pattern:"Exception", mv:[95, 92, 82, 75, 68] },
         { code:"8.7.8.2", name:"Provide IT resolution capabilities", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"8.7.8.3", name:"Manage IT user requests", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
