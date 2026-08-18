@@ -131,7 +131,7 @@ if (govItems.length) {
 
 const narrativeHtml = d.narrative.map(p => `<p>${p}</p>`).join('');
 const pdfSlug = OUT_SLUG;
-const domainSuffix = DOMAIN_SLUG === 'pcf7' ? 'pcf7' : 'pcf8';
+const domainSuffix = DOMAIN_SLUG;
 
 const html = `<!DOCTYPE html>
 <html lang="en">
