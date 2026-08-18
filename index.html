@@ -136,10 +136,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .lens-tab:disabled { border-color: var(--border); color: #B8C0CC; cursor: not-allowed; background: #FAFBFD; }
 .lens-empty { padding: 24px 18px; text-align: center; color: var(--lgray); font-style: italic; font-size: 12px; }
 td.crud { font-size: 10.5px; vertical-align: top; }
+#crud-main-table tbody td { vertical-align: top; }
 td.crud-empty { color: #C8D0DC; text-align: center; font-size: 12px; }
 .crud-entry { margin-bottom: 4px; }
 .crud-entry:last-child { margin-bottom: 0; }
-.crud-entity { display: block; font-weight: 600; }
+.crud-entity { display: block; font-weight: 400; }
 .crud-sys { display: block; font-size: 9.5px; color: var(--lgray); font-style: italic; }
 td.crud-c .crud-entity { color: #166534; }
 td.crud-r .crud-entity { color: #1B4F8A; }
@@ -246,7 +247,7 @@ tbody tr:hover { background: #FAFBFF; }
 .row-l2 td { background: #EEF3FA; font-weight: 600; font-size: 12px; color: #0D2D4F; border-top: 2px solid #7AAED6; }
 .row-l2 td .pcf-ref { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--lgray); margin-left: 6px; }
 .row-l3 td .pcf-ref, .row-l4 td .pcf-ref { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gray); }
-.row-l3 td { border-bottom: 1px solid #F0F2F8; color: var(--gray); font-size: 12px; }
+.row-l3 td { border-bottom: 1px solid #C7D2E3; color: var(--gray); font-size: 12px; }
 .row-l3:nth-child(even) td { background: #F9FBFD; }
 
 td { padding: 8px 12px; vertical-align: middle; }
@@ -267,7 +268,7 @@ td:first-child { text-align: left; }
 .raci-entry-sub { font-size: 9.5px; color: var(--lgray); font-style: italic; line-height: 1.3; }
 .raci-entry-derived .raci-entry-name { color: var(--lgray); font-style: italic; }
 .raci-derived-note { font-size: 9px; color: var(--lgray); font-style: italic; margin-top: 2px; }
-.row-l4 td { border-bottom: 1px solid #F5F6FA; color: var(--gray); font-size: 12px; }
+.row-l4 td { border-bottom: 1px solid #E3E8F2; color: var(--gray); font-size: 12px; }
 .row-l4:nth-child(even) td { background: #FBFCFE; }
 .tag-avg {
   font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 700; color: #7A9CC6;
@@ -660,7 +661,11 @@ tbody td.delta-cell { background: #fff; }
           </div>
           <div class="lens-empty" id="crud-empty" style="display:none">CRUD data for this domain hasn't been built yet — currently available for PCF 7.0 (Develop and Manage Human Resources) only.</div>
           <div class="legend">
-            <div class="legend-item" style="color:#888">C = Create &middot; R = Read &middot; U = Update &middot; D = Delete &middot; CRUD carried from L3 to its L4 children &middot; &copy; Timothy P. King & Claude (Anthropic) 2026</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#166534"></div>Create</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#1B4F8A"></div>Read</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#B45309"></div>Update</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#991B1B"></div>Delete</div>
+            <div class="legend-item" style="margin-left:auto;color:#888">CRUD carried from L3 to its L4 children &middot; &copy; Timothy P. King & Claude (Anthropic) 2026</div>
           </div>
         </div>
       </div>
@@ -2466,15 +2471,15 @@ const PCF = [
     ],
     groups:[
     { code:"9.1", name:"Perform planning and management accounting", mv:[74, 64, 51, 38, 28], l3:[
-      { code:"9.1.1", name:"Develop and manage financial resources strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Director of FP&A",A:"CFO",C:"SVP Finance",I:"VP Controller · VP Treasury"}, l4:[] },
-      { code:"9.1.2", name:"Perform planning/budgeting/forecasting", pattern:"Mixed", mv:[67, 56, 42, 29, 19], mixed:true, raci:{R:"Budget Analyst · Financial Analyst",A:"Director of FP&A",C:"SVP Finance",I:"CFO"}, l4:[
+      { code:"9.1.1", crud:{"create":["Financial Strategy Plan (EPM \u2014 Corporate Planning)"],"read":["Corporate Strategy (Board / Corporate Planning)","Market & Economic Data (external \u2014 industry/analyst research)"],"update":["Financial Strategy Plan (EPM \u2014 Corporate Planning)"],"delete":[]}, name:"Develop and manage financial resources strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Director of FP&A",A:"CFO",C:"SVP Finance",I:"VP Controller · VP Treasury"}, l4:[] },
+      { code:"9.1.2", crud:{"create":["Budget Version (EPM \u2014 Anaplan/OneStream)","Forecast (EPM \u2014 Anaplan/OneStream)"],"read":["GL Actuals (ERP \u2014 FI-GL)","Cost Center Master (ERP \u2014 CO)","Driver Assumptions (EPM \u2014 Anaplan/OneStream)"],"update":["Budget Version (EPM \u2014 Anaplan/OneStream)","Forecast (EPM \u2014 Anaplan/OneStream)"],"delete":[]}, name:"Perform planning/budgeting/forecasting", pattern:"Mixed", mv:[67, 56, 42, 29, 19], mixed:true, raci:{R:"Budget Analyst · Financial Analyst",A:"Director of FP&A",C:"SVP Finance",I:"CFO"}, l4:[
         { code:"9.1.2.1", name:"Develop and maintain budget policies and procedures", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.1.2.2", name:"Prepare periodic budgets and plans", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.1.2.3", name:"Operationalize and implement plans to achieve budget", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.1.2.4", name:"Prepare periodic financial forecasts", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.1.2.5", name:"Perform variance analysis against forecasts and budgets", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"9.1.3", name:"Perform cost accounting and control", pattern:"Mixed", mv:[70, 60, 46, 33, 23], mixed:true, raci:{R:"Financial Analyst (cost analysis) · Staff Accountant (postings)",A:"Director of FP&A",C:"VP Controller",I:"SVP Finance"}, l4:[
+      { code:"9.1.3", crud:{"create":["Cost Center Posting (ERP \u2014 CO)","Profit Center Posting (ERP \u2014 CO)"],"read":["Inventory Valuation (ERP \u2014 MM/CO)","Standard Cost (ERP \u2014 CO)","Sales Data (ERP \u2014 SD)"],"update":["Cost Center Posting (ERP \u2014 CO)","Profit Center Posting (ERP \u2014 CO)"],"delete":[]}, name:"Perform cost accounting and control", pattern:"Mixed", mv:[70, 60, 46, 33, 23], mixed:true, raci:{R:"Financial Analyst (cost analysis) · Staff Accountant (postings)",A:"Director of FP&A",C:"VP Controller",I:"SVP Finance"}, l4:[
         { code:"9.1.3.1", name:"Perform inventory accounting", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.1.3.2", name:"Perform profit center accounting", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.1.3.3", name:"Perform cost of sales analysis", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2482,13 +2487,13 @@ const PCF = [
         { code:"9.1.3.5", name:"Perform variance analysis", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.1.3.6", name:"Report on profitability", pattern:"Document", mv:[72, 58, 40, 28, 18] },
       ]},
-      { code:"9.1.4", name:"Perform cost management", pattern:"Mixed", mv:[72, 63, 50, 37, 27], mixed:true, raci:{R:"Financial Analyst",A:"Director of FP&A",C:"VP Controller",I:"SVP Finance"}, l4:[
+      { code:"9.1.4", crud:{"create":["Cost Reduction Initiative (EPM \u2014 Cost Mgmt)"],"read":["Cost Center Actuals (ERP \u2014 CO)","Benchmark Data (external \u2014 industry survey)"],"update":["Cost Allocation Rules (ERP \u2014 CO)"],"delete":[]}, name:"Perform cost management", pattern:"Mixed", mv:[72, 63, 50, 37, 27], mixed:true, raci:{R:"Financial Analyst",A:"Director of FP&A",C:"VP Controller",I:"SVP Finance"}, l4:[
         { code:"9.1.4.1", name:"Determine key cost drivers", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.1.4.2", name:"Measure cost drivers", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.1.4.3", name:"Determine critical activities", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.1.4.4", name:"Manage asset resource deployment and utilization", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.1.5", name:"Evaluate and manage financial performance", pattern:"Mixed", mv:[74, 65, 52, 39, 29], mixed:true, raci:{R:"Financial Analyst",A:"SVP Finance",C:"Director of FP&A",I:"CFO"}, l4:[
+      { code:"9.1.5", crud:{"create":["Performance Scorecard / KPI Report (EPM \u2014 BI/Reporting)"],"read":["GL Actuals (ERP \u2014 FI-GL)","Budget Version (EPM)","Forecast (EPM)"],"update":["Performance Scorecard / KPI Report (EPM \u2014 BI/Reporting)"],"delete":[]}, name:"Evaluate and manage financial performance", pattern:"Mixed", mv:[74, 65, 52, 39, 29], mixed:true, raci:{R:"Financial Analyst",A:"SVP Finance",C:"Director of FP&A",I:"CFO"}, l4:[
         { code:"9.1.5.1", name:"Assess customer and product profitability", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.1.5.2", name:"Evaluate new products", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.1.5.3", name:"Perform life cycle costing", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2499,7 +2504,7 @@ const PCF = [
       ]},
     ]},
     { code:"9.2", name:"Perform revenue accounting", mv:[72, 61, 48, 36, 27], l3:[
-      { code:"9.2.1", name:"Process customer credit", pattern:"Mixed", mv:[75, 65, 51, 39, 30], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"VP Controller",I:"Treasury Manager"}, l4:[
+      { code:"9.2.1", crud:{"create":["Credit Limit Record (ERP \u2014 Credit Mgmt)","Credit Hold (ERP \u2014 Credit Mgmt)"],"read":["Customer Master (ERP \u2014 CRM)","Credit Bureau Report (external \u2014 D&B/Experian)","AR Aging (ERP \u2014 AR)"],"update":["Credit Limit Record (ERP \u2014 Credit Mgmt)"],"delete":[]}, name:"Process customer credit", pattern:"Mixed", mv:[75, 65, 51, 39, 30], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"VP Controller",I:"Treasury Manager"}, l4:[
         { code:"9.2.1.1", name:"Establish credit policies", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.2.1.2", name:"Analyze/Approve new account applications", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.2.1.3", name:"Analyze credit scoring history", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2531,7 +2536,7 @@ const PCF = [
         { code:"9.2.4.6", name:"Perform recovery workout", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.2.4.7", name:"Manage default accounts", pattern:"Exception", mv:[95, 92, 82, 75, 68] },
       ]},
-      { code:"9.2.5", name:"Manage and process adjustments/deductions", pattern:"Mixed", mv:[76, 66, 53, 41, 32], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"Staff Accountant",I:"VP Controller"}, l4:[
+      { code:"9.2.5", crud:{"create":["Deduction Case (AR \u2014 Deduction Mgmt/HighRadius)","Credit Memo (ERP \u2014 AR/Billing)"],"read":["AR Open Item (ERP \u2014 AR)","Customer Invoice (ERP \u2014 AR / Billing)","Proof of Delivery (ERP \u2014 WM)"],"update":["AR Open Item (ERP \u2014 AR)","Deduction Case (AR \u2014 Deduction Mgmt)"],"delete":[]}, name:"Manage and process adjustments/deductions", pattern:"Mixed", mv:[76, 66, 53, 41, 32], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"Staff Accountant",I:"VP Controller"}, l4:[
         { code:"9.2.5.1", name:"Establish policies/procedures for adjustments", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.2.5.2", name:"Analyze adjustments", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.2.5.3", name:"Correspond/Negotiate with customer", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
@@ -2541,14 +2546,14 @@ const PCF = [
       ]},
     ]},
     { code:"9.3", name:"Perform general accounting and reporting", mv:[69, 58, 44, 32, 22], l3:[
-      { code:"9.3.1", name:"Manage financial policies and procedures", pattern:"Mixed", mv:[80, 72, 60, 49, 40], mixed:true, raci:{R:"Director of Accounting",A:"VP Controller",C:"Internal Audit Manager",I:"CFO"}, l4:[
+      { code:"9.3.1", crud:{"create":["Accounting Policy Document (GRC \u2014 Workiva)"],"read":["Regulatory/GAAP Guidance (external \u2014 FASB/IFRS)"],"update":["Accounting Policy Document (GRC \u2014 Workiva)"],"delete":[]}, name:"Manage financial policies and procedures", pattern:"Mixed", mv:[80, 72, 60, 49, 40], mixed:true, raci:{R:"Director of Accounting",A:"VP Controller",C:"Internal Audit Manager",I:"CFO"}, l4:[
         { code:"9.3.1.1", name:"Negotiate service-level agreements", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.3.1.2", name:"Establish accounting policies", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.3.1.3", name:"Publish accounting policies", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.3.1.4", name:"Set and enforce approval limits", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.3.1.5", name:"Establish common financial systems", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.3.2", name:"Perform general accounting", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"—",I:"VP Controller"}, l4:[
+      { code:"9.3.2", crud:{"create":["Journal Entry (ERP \u2014 FI-GL)","Account Reconciliation (Close Mgmt \u2014 BlackLine)"],"read":["Chart of Accounts (ERP \u2014 FI-GL)","Sub-ledger Balances (AR/AP/Fixed Assets)"],"update":["GL Balance (ERP \u2014 FI-GL)","Journal Entry (ERP \u2014 FI-GL)"],"delete":[]}, name:"Perform general accounting", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"—",I:"VP Controller"}, l4:[
         { code:"9.3.2.1", name:"Maintain chart of accounts", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.3.2.2", name:"Process journal entries", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.3.2.3", name:"Process allocations", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2559,7 +2564,7 @@ const PCF = [
         { code:"9.3.2.8", name:"Prepare trial balance", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.3.2.9", name:"Prepare and post management adjustments", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.3.3", name:"Perform fixed-asset accounting", pattern:"Mixed", mv:[61, 49, 36, 23, 13], mixed:true, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"—",I:"VP Controller"}, l4:[
+      { code:"9.3.3", crud:{"create":["Asset Master Record (Fixed Assets \u2014 Sage Fixed Assets)","Depreciation Schedule (Fixed Assets \u2014 Sage Fixed Assets)"],"read":["Capital Project (PPM \u2014 Planview/Clarity)","Purchase Order (ERP \u2014 Procurement)"],"update":["Asset Master Record (Fixed Assets)","Depreciation Schedule (Fixed Assets)"],"delete":[]}, name:"Perform fixed-asset accounting", pattern:"Mixed", mv:[61, 49, 36, 23, 13], mixed:true, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"—",I:"VP Controller"}, l4:[
         { code:"9.3.3.1", name:"Establish fixed-asset policies and procedures", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.3.3.2", name:"Maintain fixed-asset master data files", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.3.3.3", name:"Process and record fixed-asset additions and retires", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2570,7 +2575,7 @@ const PCF = [
         { code:"9.3.3.8", name:"Track fixed-assets including physical inventory", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.3.3.9", name:"Provide fixed-asset data to support tax, statutory, and regulatory reporting", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.3.4", name:"Perform financial reporting", pattern:"Mixed", mv:[74, 62, 46, 33, 23], mixed:true, raci:{R:"Director of Accounting",A:"VP Controller",C:"SVP Finance",I:"CFO"}, l4:[
+      { code:"9.3.4", crud:{"create":["Financial Statement (Reporting \u2014 Workiva)","Consolidated Report (EPM \u2014 OneStream/SAP Group Reporting)"],"read":["GL Balances (ERP \u2014 FI-GL)","Consolidation Adjustments (EPM \u2014 OneStream)"],"update":["Financial Statement (Reporting \u2014 Workiva)"],"delete":[]}, name:"Perform financial reporting", pattern:"Mixed", mv:[74, 62, 46, 33, 23], mixed:true, raci:{R:"Director of Accounting",A:"VP Controller",C:"SVP Finance",I:"CFO"}, l4:[
         { code:"9.3.4.1", name:"Prepare business unit financial statements", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.3.4.2", name:"Prepare consolidated financial statements", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.3.4.3", name:"Perform business unit reporting/review management reports", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2582,13 +2587,13 @@ const PCF = [
       ]},
     ]},
     { code:"9.4", name:"Manage fixed-asset project accounting", mv:[75, 66, 54, 42, 33], l3:[
-      { code:"9.4.1", name:"Perform capital planning and project approval", pattern:"Mixed", mv:[85, 78, 66, 56, 48], mixed:true, raci:{R:"Financial Analyst",A:"Director of FP&A",C:"CFO",I:"VP Controller"}, l4:[
+      { code:"9.4.1", crud:{"create":["Capital Project Request (PPM \u2014 Planview/Clarity)","Business Case (PPM \u2014 Planview/Clarity)"],"read":["Budget Version (EPM)","Financial Strategy Plan (EPM)"],"update":["Capital Project Request (PPM \u2014 approval status)"],"delete":[]}, name:"Perform capital planning and project approval", pattern:"Mixed", mv:[85, 78, 66, 56, 48], mixed:true, raci:{R:"Financial Analyst",A:"Director of FP&A",C:"CFO",I:"VP Controller"}, l4:[
         { code:"9.4.1.1", name:"Develop capital investment policies and procedures", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.4.1.2", name:"Develop and approve capital expenditure plans and budgets", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.4.1.3", name:"Review and approve capital projects and fixed-asset acquisitions", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.4.1.4", name:"Conduct financial justification for project approval", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"9.4.2", name:"Perform capital project accounting", pattern:"Mixed", mv:[65, 54, 41, 28, 18], mixed:true, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"Director of FP&A",I:"VP Controller"}, l4:[
+      { code:"9.4.2", crud:{"create":["Capital Project Ledger (ERP \u2014 Project Systems/FI-AA)","Asset Under Construction Record (Fixed Assets)"],"read":["Capital Project Request (PPM \u2014 Planview/Clarity)","Purchase Order (ERP \u2014 Procurement)","Vendor Invoice (ERP \u2014 AP)"],"update":["Capital Project Ledger (ERP \u2014 Project Systems/FI-AA)","Asset Master Record (Fixed Assets \u2014 on capitalization)"],"delete":[]}, name:"Perform capital project accounting", pattern:"Mixed", mv:[65, 54, 41, 28, 18], mixed:true, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"Director of FP&A",I:"VP Controller"}, l4:[
         { code:"9.4.2.1", name:"Create project account codes", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.4.2.2", name:"Record project-related transactions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.4.2.3", name:"Monitor and track capital projects and budget spending", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2597,14 +2602,14 @@ const PCF = [
       ]},
     ]},
     { code:"9.5", name:"Process payroll", mv:[66, 55, 41, 28, 18], l3:[
-      { code:"9.5.1", name:"Report time", pattern:"Mixed", mv:[72, 62, 48, 35, 25], mixed:true, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"—",I:"HR Generalist*"}, l4:[
+      { code:"9.5.1", crud:{"create":["Timesheet (HCM \u2014 Workday/UKG)"],"read":["Employee Master (HCM \u2014 Workday)","Labor Schedule (HCM \u2014 Workday)"],"update":["Timesheet (HCM \u2014 Workday/UKG)"],"delete":[]}, name:"Report time", pattern:"Mixed", mv:[72, 62, 48, 35, 25], mixed:true, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"—",I:"HR Generalist*"}, l4:[
         { code:"9.5.1.1", name:"Establish policies and procedures", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.5.1.2", name:"Collect and record employee time worked", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.5.1.3", name:"Analyze and report paid and unpaid leave", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.5.1.4", name:"Monitor regular, overtime, and other hours", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.5.1.5", name:"Analyze and report employee utilization", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"9.5.2", name:"Manage pay", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"Treasury Manager",I:"HRIS Analyst*"}, l4:[
+      { code:"9.5.2", crud:{"create":["Pay Run (Payroll \u2014 Workday/ADP)","Paycheck / Payment Record (Payroll \u2014 Workday/ADP)"],"read":["Timesheet (HCM \u2014 Workday)","Employee Master (HCM)","Compensation Record (HCM)"],"update":["Pay Run (Payroll \u2014 Workday/ADP)"],"delete":[]}, name:"Manage pay", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"Treasury Manager",I:"HRIS Analyst*"}, l4:[
         { code:"9.5.2.1", name:"Enter employee time worked into payroll system", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.5.2.2", name:"Maintain and administer employee earnings information", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.5.2.3", name:"Maintain and administer applicable deductions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2614,7 +2619,7 @@ const PCF = [
         { code:"9.5.2.7", name:"Process period-end adjustments", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.5.2.8", name:"Respond to employee payroll inquiries", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.5.3", name:"Manage and process payroll taxes", pattern:"Mixed", mv:[65, 54, 41, 28, 18], mixed:true, raci:{R:"Tax Specialist",A:"Tax Manager",C:"Director of Accounting",I:"—"}, l4:[
+      { code:"9.5.3", crud:{"create":["Payroll Tax Filing (Payroll Tax Engine \u2014 ADP/Vertex)"],"read":["Pay Run (Payroll \u2014 Workday/ADP)","Tax Jurisdiction Rules (Tax Engine \u2014 Vertex/ONESOURCE)"],"update":["Payroll Tax Filing (Payroll Tax Engine)"],"delete":[]}, name:"Manage and process payroll taxes", pattern:"Mixed", mv:[65, 54, 41, 28, 18], mixed:true, raci:{R:"Tax Specialist",A:"Tax Manager",C:"Director of Accounting",I:"—"}, l4:[
         { code:"9.5.3.1", name:"Develop tax plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.5.3.2", name:"Manage tax plan", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.5.3.3", name:"Calculate and pay applicable payroll taxes", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2636,14 +2641,14 @@ const PCF = [
         { code:"9.6.1.10", name:"Retain records", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.6.1.11", name:"Adjust accounting records", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.6.2", name:"Process expense reimbursements", pattern:"Mixed", mv:[69, 58, 45, 33, 24], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"—"}, l4:[
+      { code:"9.6.2", crud:{"create":["Expense Report (Expense Mgmt \u2014 Concur)"],"read":["Corporate Card Transaction (Concur/Card Platform)","Receipt (Concur)","Travel Policy (Concur)"],"update":["Expense Report (Concur \u2014 approval/reimbursement status)"],"delete":[]}, name:"Process expense reimbursements", pattern:"Mixed", mv:[69, 58, 45, 33, 24], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"—"}, l4:[
         { code:"9.6.2.1", name:"Establish and communicate expense reimbursement policies and approval limits", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.6.2.2", name:"Capture and report relevant tax data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.6.2.3", name:"Approve reimbursements and advances", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.6.2.4", name:"Process reimbursements and advances", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.6.2.5", name:"Manage personnel accounts", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.6.3", name:"Manage corporate credit cards", pattern:"Mixed", mv:[67, 56, 43, 31, 22], mixed:true, raci:{R:"AP/AR Specialist",A:"Treasury Manager",C:"Director of Accounting",I:"—"}, l4:[
+      { code:"9.6.3", crud:{"create":["Corporate Card Account (Card Platform \u2014 Amex/Concur)"],"read":["Card Transaction Feed (Card Platform)","Employee Master (HCM)"],"update":["Corporate Card Account (Card Platform \u2014 limits/status)"],"delete":[]}, name:"Manage corporate credit cards", pattern:"Mixed", mv:[67, 56, 43, 31, 22], mixed:true, raci:{R:"AP/AR Specialist",A:"Treasury Manager",C:"Director of Accounting",I:"—"}, l4:[
         { code:"9.6.3.1", name:"Establish corporate credit card policies and approval limits", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.6.3.2", name:"Process corporate credit card requests", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.6.3.3", name:"Order corporate credit cards", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2653,7 +2658,7 @@ const PCF = [
       ]},
     ]},
     { code:"9.7", name:"Manage treasury operations", mv:[75, 66, 54, 42, 32], l3:[
-      { code:"9.7.1", name:"Manage treasury policies and procedures", pattern:"Mixed", mv:[76, 66, 51, 38, 28], mixed:true, raci:{R:"Treasury Manager",A:"VP Treasury",C:"Internal Audit Manager",I:"CFO"}, l4:[
+      { code:"9.7.1", crud:{"create":["Treasury Policy Document (GRC \u2014 Policy Mgmt)"],"read":["Regulatory Guidance (external)"],"update":["Treasury Policy Document (GRC \u2014 Policy Mgmt)"],"delete":[]}, name:"Manage treasury policies and procedures", pattern:"Mixed", mv:[76, 66, 51, 38, 28], mixed:true, raci:{R:"Treasury Manager",A:"VP Treasury",C:"Internal Audit Manager",I:"CFO"}, l4:[
         { code:"9.7.1.1", name:"Establish scope and governance of treasury operations", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.7.1.2", name:"Establish and publish treasury policies", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.7.1.3", name:"Develop treasury procedures", pattern:"Document", mv:[72, 58, 40, 28, 18] },
@@ -2663,7 +2668,7 @@ const PCF = [
         { code:"9.7.1.7", name:"Develop and confirm internal controls for treasury", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.7.1.8", name:"Define treasury security requirements", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"9.7.2", name:"Manage cash", pattern:"Mixed", mv:[70, 60, 48, 36, 26], mixed:true, raci:{R:"Treasury Manager",A:"VP Treasury",C:"—",I:"CFO"}, l4:[
+      { code:"9.7.2", crud:{"create":["Cash Position (TMS \u2014 Kyriba/GTreasury)","Cash Forecast (TMS \u2014 Kyriba/GTreasury)"],"read":["Bank Statement (TMS \u2014 Banking)","GL Cash Balance (ERP \u2014 FI-GL)"],"update":["Cash Position (TMS)","Cash Forecast (TMS)"],"delete":[]}, name:"Manage cash", pattern:"Mixed", mv:[70, 60, 48, 36, 26], mixed:true, raci:{R:"Treasury Manager",A:"VP Treasury",C:"—",I:"CFO"}, l4:[
         { code:"9.7.2.1", name:"Manage and reconcile cash positions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.7.2.2", name:"Manage cash equivalents", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.7.2.3", name:"Process and oversee electronic fund transfers (EFTs)", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2673,7 +2678,7 @@ const PCF = [
         { code:"9.7.2.7", name:"Manage and oversee banking relationships", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.7.2.8", name:"Analyze, negotiate, resolve, and confirm bank fees", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
       ]},
-      { code:"9.7.3", name:"Manage in-house bank accounts", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"—",I:"—"}, l4:[
+      { code:"9.7.3", crud:{"create":["In-House Bank Account Ledger (TMS \u2014 Kyriba)"],"read":["Cash Position (TMS)","Entity Cash Balances (ERP \u2014 FI-GL)"],"update":["In-House Bank Account Ledger (TMS)"],"delete":[]}, name:"Manage in-house bank accounts", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"—",I:"—"}, l4:[
         { code:"9.7.3.1", name:"Manage in-house bank accounts for subsidiaries", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.7.3.2", name:"Manage and facilitate inter-company borrowing transactions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.7.3.3", name:"Manage centralized outgoing payments on behalf of subsidiaries", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2682,7 +2687,7 @@ const PCF = [
         { code:"9.7.3.6", name:"Calculate interest and fees for in-house bank accounts", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.7.3.7", name:"Provide account statements for in-house bank accounts", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.7.4", name:"Manage debt and investment", pattern:"Mixed", mv:[72, 63, 50, 37, 27], mixed:true, raci:{R:"Treasury Manager",A:"VP Treasury",C:"CFO",I:"SVP Finance"}, l4:[
+      { code:"9.7.4", crud:{"create":["Debt Instrument Record (TMS \u2014 Kyriba/GTreasury)","Investment Instrument Record (TMS)"],"read":["Cash Forecast (TMS)","Market Rates (external \u2014 Bloomberg/Reuters)"],"update":["Debt Instrument Record (TMS)","Investment Instrument Record (TMS)"],"delete":[]}, name:"Manage debt and investment", pattern:"Mixed", mv:[72, 63, 50, 37, 27], mixed:true, raci:{R:"Treasury Manager",A:"VP Treasury",C:"CFO",I:"SVP Finance"}, l4:[
         { code:"9.7.4.1", name:"Establish investment policy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.7.4.2", name:"Manage financial intermediary relationships", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.7.4.3", name:"Manage liquidity", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2692,7 +2697,7 @@ const PCF = [
         { code:"9.7.4.7", name:"Produce debt and investment accounting transaction reports", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.7.4.8", name:"Process and oversee interest rate transactions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.7.5", name:"Monitor and execute risk and hedging transactions", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, raci:{R:"Treasury Manager",A:"VP Treasury",C:"CFO",I:"Internal Audit Manager"}, l4:[
+      { code:"9.7.5", crud:{"create":["FX / Interest Rate Hedge Position (TMS \u2014 Kyriba)"],"read":["Currency Exposure Report (TMS)","Market Rates (external)"],"update":["Hedge Position (TMS)"],"delete":[]}, name:"Monitor and execute risk and hedging transactions", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, raci:{R:"Treasury Manager",A:"VP Treasury",C:"CFO",I:"Internal Audit Manager"}, l4:[
         { code:"9.7.5.1", name:"Develop risk management/hedging strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.7.5.2", name:"Manage interest rate risk", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.7.5.3", name:"Manage foreign exchange risk", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -2700,21 +2705,21 @@ const PCF = [
         { code:"9.7.5.5", name:"Execute hedging transactions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.7.5.6", name:"Produce hedge accounting transactions and reports", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.7.6", name:"Manage financial fraud/dispute cases", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"Treasury Manager",A:"Internal Audit Manager",C:"VP Treasury",I:"CFO"}, l4:[] },
+      { code:"9.7.6", crud:{"create":["Fraud / Dispute Case (TMS/Banking)"],"read":["Payment Transaction (TMS)","Bank Statement (TMS)"],"update":["Fraud / Dispute Case (TMS/Banking)"],"delete":[]}, name:"Manage financial fraud/dispute cases", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"Treasury Manager",A:"Internal Audit Manager",C:"VP Treasury",I:"CFO"}, l4:[] },
     ]},
     { code:"9.8", name:"Manage internal controls", mv:[79, 69, 56, 45, 36], l3:[
-      { code:"9.8.1", name:"Establish internal controls, policies, and procedures", pattern:"Mixed", mv:[87, 80, 69, 59, 51], mixed:true, raci:{R:"Internal Audit Manager",A:"VP Controller",C:"CFO",I:"Audit Analyst"}, l4:[
+      { code:"9.8.1", crud:{"create":["Control Library / RCM Entry (GRC \u2014 Workiva/AuditBoard)"],"read":["Regulatory Framework (external \u2014 COSO/SOX)"],"update":["Control Library / RCM Entry (GRC)"],"delete":[]}, name:"Establish internal controls, policies, and procedures", pattern:"Mixed", mv:[87, 80, 69, 59, 51], mixed:true, raci:{R:"Internal Audit Manager",A:"VP Controller",C:"CFO",I:"Audit Analyst"}, l4:[
         { code:"9.8.1.1", name:"Establish board of directors and audit committee", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.8.1.2", name:"Define and communicate code of ethics", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.8.1.3", name:"Assign roles and responsibility for internal controls", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"9.8.1.4", name:"Define business process objectives and risks", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.8.1.5", name:"Define entity/unit risk tolerances", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
       ]},
-      { code:"9.8.2", name:"Operate controls and monitor compliance with internal controls policies and procedures", pattern:"Mixed", mv:[78, 70, 58, 48, 40], mixed:true, raci:{R:"Audit Analyst",A:"Internal Audit Manager",C:"VP Controller",I:"—"}, l4:[
+      { code:"9.8.2", crud:{"create":["Control Test Result (GRC \u2014 Workiva/AuditBoard)","Evidence Record (GRC)"],"read":["Control Library / RCM (GRC)","Transaction Data (ERP)"],"update":["Control Test Result (GRC)"],"delete":[]}, name:"Operate controls and monitor compliance with internal controls policies and procedures", pattern:"Mixed", mv:[78, 70, 58, 48, 40], mixed:true, raci:{R:"Audit Analyst",A:"Internal Audit Manager",C:"VP Controller",I:"—"}, l4:[
         { code:"9.8.2.1", name:"Monitor control effectiveness", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.8.2.2", name:"Remediate control deficiencies", pattern:"Exception", mv:[95, 92, 82, 75, 68] },
       ]},
-      { code:"9.8.3", name:"Report on internal controls compliance", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Audit Analyst",A:"Internal Audit Manager",C:"VP Controller",I:"CFO"}, l4:[
+      { code:"9.8.3", crud:{"create":["Deficiency / Issue Record (GRC \u2014 Workiva/AuditBoard)","Certification / Sign-off (GRC)"],"read":["Control Test Result (GRC)"],"update":["Deficiency / Issue Record (GRC)"],"delete":[]}, name:"Report on internal controls compliance", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Audit Analyst",A:"Internal Audit Manager",C:"VP Controller",I:"CFO"}, l4:[
         { code:"9.8.3.1", name:"Report to external auditors", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.8.3.2", name:"Report to regulators, share-/debt-holders, securities exchanges, etc.", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.8.3.3", name:"Report to third parties", pattern:"Document", mv:[72, 58, 40, 28, 18] },
@@ -2722,12 +2727,12 @@ const PCF = [
       ]},
     ]},
     { code:"9.9", name:"Manage taxes", mv:[70, 60, 47, 34, 24], l3:[
-      { code:"9.9.1", name:"Develop tax strategy and plan", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, raci:{R:"Tax Manager",A:"CFO",C:"Tax Specialist",I:"SVP Finance"}, l4:[
+      { code:"9.9.1", crud:{"create":["Tax Strategy Plan (Corporate Tax Dept)"],"read":["Tax Jurisdiction Rules (Tax Engine \u2014 ONESOURCE/Vertex)","Financial Forecast (EPM)"],"update":["Tax Strategy Plan (Corporate Tax Dept)"],"delete":[]}, name:"Develop tax strategy and plan", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, raci:{R:"Tax Manager",A:"CFO",C:"Tax Specialist",I:"SVP Finance"}, l4:[
         { code:"9.9.1.1", name:"Develop foreign, national, state, and local tax strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.9.1.2", name:"Consolidate and optimize total tax plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.9.1.3", name:"Maintain tax master data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.9.2", name:"Process taxes", pattern:"Mixed", mv:[64, 52, 39, 26, 16], mixed:true, raci:{R:"Tax Specialist",A:"Tax Manager",C:"—",I:"Director of Accounting"}, l4:[
+      { code:"9.9.2", crud:{"create":["Tax Return (Tax Engine \u2014 ONESOURCE)","Tax Calculation Result (Tax Engine \u2014 Vertex)"],"read":["GL Balances (ERP \u2014 FI-GL)","Tax Rate / Rule (Tax Engine \u2014 Vertex/ONESOURCE)"],"update":["Tax Return (Tax Engine \u2014 ONESOURCE)"],"delete":[]}, name:"Process taxes", pattern:"Mixed", mv:[64, 52, 39, 26, 16], mixed:true, raci:{R:"Tax Specialist",A:"Tax Manager",C:"—",I:"Director of Accounting"}, l4:[
         { code:"9.9.2.1", name:"Perform tax planning/strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.9.2.2", name:"Prepare tax returns", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.9.2.3", name:"Prepare foreign taxes", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -2738,22 +2743,22 @@ const PCF = [
       ]},
     ]},
     { code:"9.10", name:"Manage international funds/consolidation", mv:[76, 66, 51, 38, 28], l3:[
-      { code:"9.10.1", name:"Monitor international rates", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"—",I:"—"}, l4:[] },
-      { code:"9.10.2", name:"Manage transactions", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"—",I:"Staff Accountant"}, l4:[] },
-      { code:"9.10.3", name:"Monitor currency exposure/hedge currency", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"CFO",I:"—"}, l4:[] },
-      { code:"9.10.4", name:"Report results", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"Treasury Manager",I:"VP Controller"}, l4:[] },
+      { code:"9.10.1", crud:{"create":["FX Rate Feed Record (Market Data \u2014 Bloomberg/Reuters)"],"read":["Market Rates (external \u2014 Bloomberg/Reuters)"],"update":["FX Rate Feed Record (Market Data)"],"delete":[]}, name:"Monitor international rates", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"—",I:"—"}, l4:[] },
+      { code:"9.10.2", crud:{"create":["Intercompany Transaction (ERP \u2014 FI-GL / TMS)"],"read":["Entity Ledgers (ERP \u2014 FI-GL)","Intercompany Agreement (Legal/Contract Mgmt)"],"update":["Intercompany Transaction (ERP \u2014 FI-GL / TMS)"],"delete":[]}, name:"Manage transactions", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"—",I:"Staff Accountant"}, l4:[] },
+      { code:"9.10.3", crud:{"create":["Currency Exposure Report (TMS \u2014 Kyriba)","Hedge Position (TMS)"],"read":["FX Rate Feed (Market Data)","Entity Ledgers (ERP \u2014 FI-GL)"],"update":["Hedge Position (TMS)"],"delete":[]}, name:"Monitor currency exposure/hedge currency", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"CFO",I:"—"}, l4:[] },
+      { code:"9.10.4", crud:{"create":["Consolidated Financial Statement (EPM \u2014 OneStream/SAP Group Reporting)","Currency Translation Adjustment (EPM)"],"read":["Entity Ledgers (ERP \u2014 FI-GL)","FX Rate Feed (Market Data)"],"update":["Consolidated Financial Statement (EPM \u2014 OneStream/SAP Group Reporting)"],"delete":[]}, name:"Report results", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Staff Accountant",A:"Director of Accounting",C:"Treasury Manager",I:"VP Controller"}, l4:[] },
     ]},
     { code:"9.11", name:"Perform global trade services", mv:[67, 55, 41, 29, 19], l3:[
-      { code:"9.11.1", name:"Screen sanctioned party list", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"Tax Manager",I:"VP Controller"}, l4:[] },
-      { code:"9.11.2", name:"Control exports and imports", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"—",I:"VP Controller"}, l4:[] },
-      { code:"9.11.3", name:"Classify products", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"—",I:"—"}, l4:[] },
-      { code:"9.11.4", name:"Perform currency conversion", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Staff Accountant",A:"Treasury Manager",C:"—",I:"—"}, l4:[] },
-      { code:"9.11.5", name:"Calculate duty", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Tax Manager",C:"Staff Accountant",I:"—"}, l4:[] },
-      { code:"9.11.6", name:"Communicate with customs", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"—",I:"VP Controller"}, l4:[] },
-      { code:"9.11.7", name:"Document trade", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"Staff Accountant",I:"—"}, l4:[] },
-      { code:"9.11.8", name:"Process trade preferences", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Tax Manager",C:"—",I:"—"}, l4:[] },
-      { code:"9.11.9", name:"Handle restitution", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"Trade Compliance*",A:"Internal Audit Manager",C:"Tax Manager",I:"CFO"}, l4:[] },
-      { code:"9.11.10", name:"Prepare letter of credit", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"Trade Compliance*",I:"CFO"}, l4:[] },
+      { code:"9.11.1", crud:{"create":["Screening Result (GTS \u2014 SAP GTS/Descartes)"],"read":["Sanctioned Party List (GTS \u2014 OFAC/Denied Party Lists)","Customer/Vendor Master (ERP \u2014 CRM)"],"update":["Screening Result (GTS)"],"delete":[]}, name:"Screen sanctioned party list", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"Tax Manager",I:"VP Controller"}, l4:[] },
+      { code:"9.11.2", crud:{"create":["Export/Import License Record (GTS \u2014 SAP GTS)"],"read":["HS Classification Code (GTS)","Screening Result (GTS)"],"update":["Export/Import License Record (GTS)"],"delete":[]}, name:"Control exports and imports", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"—",I:"VP Controller"}, l4:[] },
+      { code:"9.11.3", crud:{"create":["HS Classification Code (GTS \u2014 Descartes CustomsInfo/ONESOURCE Global Classification)"],"read":["Product Master (ERP \u2014 PLM/Materials Mgmt)"],"update":["HS Classification Code (GTS)"],"delete":[]}, name:"Classify products", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"—",I:"—"}, l4:[] },
+      { code:"9.11.4", crud:{"create":["Currency Conversion Record (GTS/ERP)"],"read":["FX Rate Feed (Market Data)"],"update":["Currency Conversion Record (GTS/ERP)"],"delete":[]}, name:"Perform currency conversion", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Staff Accountant",A:"Treasury Manager",C:"—",I:"—"}, l4:[] },
+      { code:"9.11.5", crud:{"create":["Duty Calculation Record (GTS \u2014 SAP GTS)"],"read":["HS Classification Code (GTS)","Tariff Rate Table (external \u2014 customs authority)"],"update":["Duty Calculation Record (GTS)"],"delete":[]}, name:"Calculate duty", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Tax Manager",C:"Staff Accountant",I:"—"}, l4:[] },
+      { code:"9.11.6", crud:{"create":["Customs Declaration (GTS \u2014 SAP GTS)"],"read":["Duty Calculation Record (GTS)","Trade Document (GTS)"],"update":["Customs Declaration (GTS)"],"delete":[]}, name:"Communicate with customs", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"—",I:"VP Controller"}, l4:[] },
+      { code:"9.11.7", crud:{"create":["Trade Document (GTS \u2014 commercial invoice/packing list/bill of lading)"],"read":["Customs Declaration (GTS)","Sales Order (ERP \u2014 Order Mgmt)"],"update":["Trade Document (GTS)"],"delete":[]}, name:"Document trade", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Trade Compliance*",A:"Trade Compliance*",C:"Staff Accountant",I:"—"}, l4:[] },
+      { code:"9.11.8", crud:{"create":["Trade Preference Certificate (GTS \u2014 Certificate of Origin)"],"read":["HS Classification Code (GTS)","Free Trade Agreement Rules (external)"],"update":["Trade Preference Certificate (GTS)"],"delete":[]}, name:"Process trade preferences", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Trade Compliance*",A:"Tax Manager",C:"—",I:"—"}, l4:[] },
+      { code:"9.11.9", crud:{"create":["Restitution Claim (GTS)"],"read":["Customs Declaration (GTS)","Duty Calculation Record (GTS)"],"update":["Restitution Claim (GTS)"],"delete":[]}, name:"Handle restitution", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"Trade Compliance*",A:"Internal Audit Manager",C:"Tax Manager",I:"CFO"}, l4:[] },
+      { code:"9.11.10", crud:{"create":["Letter of Credit (Trade Finance \u2014 issuing/advising bank platform)"],"read":["Sales Order (ERP \u2014 Order Mgmt)","Trade Document (GTS)"],"update":["Letter of Credit (Trade Finance)"],"delete":[]}, name:"Prepare letter of credit", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"Treasury Manager",A:"VP Treasury",C:"Trade Compliance*",I:"CFO"}, l4:[] },
     ]},
   ]},
   { code:"10.0", name:"Acquire, Construct, and Manage Assets", l1mv:[70, 60, 47, 35, 26],
@@ -3724,7 +3729,7 @@ function toggleRaciL3(code, el) {
 // with Create/Read/Update/Delete columns (entity name + system of record)
 // instead of M1-M5 or R/A/C/I. Uses its own crud-scoped row classes/data
 // attributes so its toggle state never collides with the other two tables.
-function formatCrudCell(entries) {
+function formatCrudCell(entries, opClass) {
   if (!entries || !entries.length) return `<td class="crud crud-empty">&middot;</td>`;
   const items = entries.map(e => {
     const m = e.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
@@ -3732,7 +3737,7 @@ function formatCrudCell(entries) {
       ? `<div class="crud-entry"><span class="crud-entity">${m[1]}</span><span class="crud-sys">${m[2]}</span></div>`
       : `<div class="crud-entry"><span class="crud-entity">${e}</span></div>`;
   }).join('');
-  return `<td class="crud">${items}</td>`;
+  return `<td class="crud crud-${opClass}">${items}</td>`;
 }
 
 function renderCrudTable(cat) {
@@ -3771,13 +3776,13 @@ function renderCrudTable(cat) {
       html += `<tr class="row-l3" data-crud-parent="${g.code}" data-crud-l3code="${l3.code}">
         <td ${l3ToggleAttrs}><span class="row-flex"><span class="row-prefix">${l3Icon}<span class="pcf-ref">${l3.code}</span></span><span class="row-text">${l3.name}</span></span></td>
         <td>${patBadge}</td>
-        ${formatCrudCell(cr.create)}${formatCrudCell(cr.read)}${formatCrudCell(cr.update)}${formatCrudCell(cr.delete)}
+        ${formatCrudCell(cr.create,'c')}${formatCrudCell(cr.read,'r')}${formatCrudCell(cr.update,'u')}${formatCrudCell(cr.delete,'d')}
       </tr>`;
       (l3.l4 || []).forEach(l4 => {
         html += `<tr class="row-l4" data-crud-parent="${g.code}" data-crud-parent-l3="${l3.code}" style="display:none">
           <td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">${l4.code}</span></span><span class="row-text">${l4.name}</span></span></td>
           <td><span class="pat pat-${l4.pattern}">${l4.pattern}</span></td>
-          ${formatCrudCell(cr.create)}${formatCrudCell(cr.read)}${formatCrudCell(cr.update)}${formatCrudCell(cr.delete)}
+          ${formatCrudCell(cr.create,'c')}${formatCrudCell(cr.read,'r')}${formatCrudCell(cr.update,'u')}${formatCrudCell(cr.delete,'d')}
         </tr>`;
       });
     });
