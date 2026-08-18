@@ -659,7 +659,7 @@ tbody td.delta-cell { background: #fff; }
               <tbody id="crud-table-body"></tbody>
             </table>
           </div>
-          <div class="lens-empty" id="crud-empty" style="display:none">CRUD data for this domain hasn't been built yet — currently available for PCF 7.0 (Develop and Manage Human Resources) only.</div>
+          <div class="lens-empty" id="crud-empty" style="display:none">CRUD data for this domain hasn't been built yet.</div>
           <div class="legend">
             <div class="legend-item"><div class="legend-dot" style="background:#166534"></div>Create</div>
             <div class="legend-item"><div class="legend-dot" style="background:#1B4F8A"></div>Read</div>
@@ -3740,6 +3740,17 @@ function formatCrudCell(entries, opClass) {
   return `<td class="crud crud-${opClass}">${items}</td>`;
 }
 
+// Computed live from PCF, same fix as listRaciDomains() -- the old
+// hardcoded "currently available for PCF 7.0 ... only" copy went stale
+// the moment PCF 9.0 shipped CRUD data too.
+function listCrudDomains() {
+  const withCrud = PCF.filter(d => d.groups.some(g => g.l3.some(l3 => l3.crud)));
+  const labels = withCrud.map(d => `PCF ${d.code} (${d.name})`);
+  if (labels.length === 0) return 'no domain yet';
+  if (labels.length === 1) return labels[0];
+  return labels.slice(0, -1).join(', ') + ', and ' + labels[labels.length - 1];
+}
+
 function renderCrudTable(cat) {
   const tbody = document.getElementById('crud-table-body');
   const wrap = document.querySelector('#lens-panel-crud .table-wrap');
@@ -3747,6 +3758,7 @@ function renderCrudTable(cat) {
   const hasCrud = cat.groups.some(g => g.l3.some(l3 => l3.crud));
   if (!hasCrud) {
     wrap.style.display = 'none';
+    empty.textContent = `CRUD data for this domain hasn't been built yet — currently available for ${listCrudDomains()}.`;
     empty.style.display = 'block';
     return;
   }
