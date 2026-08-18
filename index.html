@@ -2508,21 +2508,21 @@ const PCF = [
         { code:"9.2.1.6", name:"Produce credit/collection reports", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.2.1.7", name:"Reinstate or suspend accounts based on credit policies", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.2.2", name:"Invoice customer", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"Staff Accountant"}, l4:[
+      { code:"9.2.2", crud:{"create":["Customer Invoice (ERP — AR / Billing)","AR Open Item (ERP — AR)"],"read":["Sales Order (ERP — Order Mgmt)","Billing Trigger (ERP — Finance)","Pricing Rules (ERP — Pricing)","Tax Rules (Tax Engine)","Customer Master (ERP — CRM)"],"update":["Customer Invoice (ERP — AR / Billing)"],"delete":[]}, name:"Invoice customer", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"Staff Accountant"}, l4:[
         { code:"9.2.2.1", name:"Maintain customer/product master files", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.2.2.2", name:"Generate customer billing data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.2.2.3", name:"Transmit billing data to customers", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.2.2.4", name:"Post receivable entries", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.2.2.5", name:"Resolve customer billing inquiries", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.2.3", name:"Process accounts receivable (AR)", pattern:"Mixed", mv:[65, 52, 37, 24, 14], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"Treasury Manager"}, l4:[
+      { code:"9.2.3", crud:{"create":["Aging Report (ERP — AR / BI)","Payment Receipt (Treasury / Banking)"],"read":["Customer Master (ERP — CRM)","AR Open Item (ERP — AR)","Bank Statements (Treasury / Banking)","Payment Receipt (Treasury / Banking)"],"update":["AR Open Item (ERP — AR)","AR Ledger (ERP — FI-GL / AR)"],"delete":[]}, name:"Process accounts receivable (AR)", pattern:"Mixed", mv:[65, 52, 37, 24, 14], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"Treasury Manager"}, l4:[
         { code:"9.2.3.1", name:"Establish AR policies", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.2.3.2", name:"Receive/Deposit customer payments", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.2.3.3", name:"Apply cash remittances", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.2.3.4", name:"Prepare AR reports", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.2.3.5", name:"Post AR activity to the general ledger", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"9.2.4", name:"Manage and process collections", pattern:"Mixed", mv:[83, 76, 64, 53, 45], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"VP Controller"}, l4:[
+      { code:"9.2.4", crud:{"create":["Dunning Notice (ERP — AR / Collections)"],"read":["AR Open Item (ERP — AR)","Customer Master (ERP — CRM)"],"update":[],"delete":[]}, name:"Manage and process collections", pattern:"Mixed", mv:[83, 76, 64, 53, 45], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"VP Controller"}, l4:[
         { code:"9.2.4.1", name:"Establish policies for delinquent accounts", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"9.2.4.2", name:"Analyze delinquent account balances", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"9.2.4.3", name:"Correspond/Negotiate with delinquent accounts", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
@@ -2623,7 +2623,7 @@ const PCF = [
       ]},
     ]},
     { code:"9.6", name:"Process accounts payable and expense reimbursements", mv:[67, 57, 44, 32, 23], l3:[
-      { code:"9.6.1", name:"Process accounts payable (AP)", pattern:"Mixed", mv:[66, 56, 43, 31, 22], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"Treasury Manager"}, l4:[
+      { code:"9.6.1", crud:{"create":["Invoice (AP Automation)","Payment (Treasury Platform)"],"read":["Purchase Order (ERP Procurement)","Receipt/GRN (ERP WM)","Bank Statements (Treasury)"],"update":["Invoice (AP Automation)","Payment (Treasury Platform)","AP Ledger (ERP FI-AP)"],"delete":[]}, name:"Process accounts payable (AP)", pattern:"Mixed", mv:[66, 56, 43, 31, 22], mixed:true, raci:{R:"AP/AR Specialist",A:"Director of Accounting",C:"—",I:"Treasury Manager"}, l4:[
         { code:"9.6.1.1", name:"Verify AP pay file with purchase order vendor master file", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.6.1.2", name:"Maintain/Manage electronic commerce", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"9.6.1.3", name:"Audit invoices and key data in AP system", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -4156,9 +4156,9 @@ const ROLE_TAXONOMY_BY_DOMAIN = {
     { name: "SVP Finance", tier: "Executive", reportsTo: "CFO" },
     { name: "VP Controller", tier: "Executive", reportsTo: "CFO" },
     { name: "VP Treasury", tier: "Executive", reportsTo: "CFO" },
-    { name: "Director of FP&A", tier: "Managerial", reportsTo: "SVP Finance" },
+    { name: "Director of FP&A", tier: "Managerial", reportsTo: "SVP Finance", contextDependent: true },
     { name: "Director of Accounting", tier: "Managerial", reportsTo: "VP Controller" },
-    { name: "Tax Manager", tier: "Managerial", reportsTo: "VP Controller", contextDependent: true },
+    { name: "Tax Manager", tier: "Managerial", reportsTo: "CFO", contextDependent: true },
     { name: "Internal Audit Manager", tier: "Managerial", reportsTo: "CFO", contextDependent: true },
     { name: "Treasury Manager", tier: "Managerial", reportsTo: "VP Treasury" },
     { name: "Financial Analyst", tier: "Operational", reportsTo: "Director of FP&A" },
