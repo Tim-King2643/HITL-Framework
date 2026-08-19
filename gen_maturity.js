@@ -39,9 +39,10 @@ function thinBorder() {
 const TOTAL = 13640;
 // PCF is its own column now (was merged into the name column before).
 // M columns widened (1080 -> 1250) so the "DESIGN INTENT" sub-label doesn't
-// wrap under LibreOffice's font substitution during docx->pdf conversion;
-// name/delta trimmed slightly to keep the row at the full page width.
-const COLW = { pcf: 900, name: 4000, pattern: 1400, m: 1250, delta: 1090 };
+// wrap under LibreOffice's font substitution during docx->pdf conversion.
+// PCF widened again (900 -> 1100) so 8-char L4 codes like "7.1.2.16" don't
+// wrap either; name trimmed to compensate so the row still fills the page.
+const COLW = { pcf: 1100, name: 3800, pattern: 1400, m: 1250, delta: 1090 };
 function pct(dxa) { return Math.round((dxa / TOTAL) * 100 * 100) / 100; }
 
 function headerCell(text, widthDxa, align, subText) {
