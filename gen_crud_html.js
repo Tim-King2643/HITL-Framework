@@ -112,7 +112,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .doc p { font-size: 13px; line-height: 1.7; color: var(--gray); margin-bottom: 12px; }
 .doc p.caption { font-size: 11.5px; color: var(--lgray); margin-bottom: 14px; }
 table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 12px; }
-th { background: var(--navy); color: #fff; text-align: left; padding: 7px 8px; font-size: 10.5px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 7px 8px; font-size: 10.5px; vertical-align: bottom; white-space: nowrap; }
 td { padding: 5px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
 .detail-table td.pcf { font-family: 'DM Mono', monospace; color: var(--navy); font-size: 11px; white-space: nowrap; }
 .detail-table tr.l2-row td { background: #0D2D4F; color: #fff; font-weight: 700; font-size: 11.5px; padding: 6px 8px; }
@@ -124,11 +124,11 @@ td { padding: 5px 8px; border-bottom: 1px solid var(--border); vertical-align: t
 .mixbar { display: flex; height: 12px; width: 100%; min-width:46px; border-radius: 0; overflow: hidden; margin-bottom: 3px; }
 .mixbar span { display: block; height: 100%; }
 .m3tag { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--lgray); margin-top: 2px; }
-td.crud { font-size: 10.5px; }
+td.crud { font-size: 10.5px; vertical-align: top; }
 td.crud-empty { color: #C8D0DC; text-align: center; font-size: 12px; }
 .crud-entry { margin-bottom: 4px; }
 .crud-entry:last-child { margin-bottom: 0; }
-.crud-entity { display: block; font-weight: 600; }
+.crud-entity { display: block; font-weight: 400; }
 .crud-sys { display: block; font-size: 9.5px; color: var(--lgray); font-style: italic; }
 td.crud-c .crud-entity { color: var(--c-c); }
 td.crud-r .crud-entity { color: var(--c-r); }
@@ -185,7 +185,8 @@ footer a { color: var(--navy); text-decoration: none; }
       ${rows}
     </tbody>
   </table>
-  <div class="legend"><span class="sw" style="background:var(--c-dec)"></span>Decision &nbsp; <span class="sw" style="background:var(--c-kno)"></span>Knowledge &nbsp; <span class="sw" style="background:var(--c-doc)"></span>Document &nbsp; <span class="sw" style="background:var(--c-tra)"></span>Transaction &nbsp; <span class="sw" style="background:var(--c-exc)"></span>Exception<br>CRUD carried from L3 to its L4 children &nbsp;&middot;&nbsp; &copy; Timothy P. King &amp; Claude (Anthropic) 2026</div>
+  <div class="legend"><span class="sw" style="background:var(--c-c)"></span>Create &nbsp; <span class="sw" style="background:var(--c-r)"></span>Read &nbsp; <span class="sw" style="background:var(--c-u)"></span>Update &nbsp; <span class="sw" style="background:var(--c-d)"></span>Delete</div>
+  <div class="legend"><span class="sw" style="background:var(--c-dec)"></span>Decision &nbsp; <span class="sw" style="background:var(--c-kno)"></span>Knowledge &nbsp; <span class="sw" style="background:var(--c-doc)"></span>Document &nbsp; <span class="sw" style="background:var(--c-tra)"></span>Transaction &nbsp; <span class="sw" style="background:var(--c-exc)"></span>Exception<br>CRUD carried from L3 to its L4 children &nbsp;&middot;&nbsp; &copy; Timothy P. King 2026 &middot; developed with the assistance of Claude (Anthropic)</div>
 
 </div>
 

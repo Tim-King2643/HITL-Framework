@@ -365,7 +365,7 @@ const doc = new Document({
       new Paragraph({
         spacing: { before: 100 },
         children: [new TextRun({
-          text: 'Full L1\u2192L2\u2192L3\u2192L4 hierarchy \u00b7 Mixed-pattern rows show an equal-weighted rollup of their real L4 children \u00b7 \u00a9 Timothy P. King & Claude (Anthropic) 2026',
+          text: 'Full L1\u2192L2\u2192L3\u2192L4 hierarchy \u00b7 Mixed-pattern rows show an equal-weighted rollup of their real L4 children \u00b7 \u00a9 Timothy P. King 2026 \u00b7 developed with the assistance of Claude (Anthropic)',
           italics: true, color: '888888', size: 13,
         })],
       }),

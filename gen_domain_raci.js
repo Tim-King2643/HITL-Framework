@@ -332,7 +332,7 @@ const doc = new Document({
       new Paragraph({
         spacing: { before: 100 },
         children: [new TextRun({
-          text: `\u2605 A = Accountable \u00b7 RACI grounded in real APQC L4 activity text \u00b7 ${l3Count} confirmed L3 assignments across ${d8.groups.length} process groups \u00b7 \u00a9 Timothy P. King & Claude (Anthropic) 2026`,
+          text: `\u2605 A = Accountable \u00b7 RACI grounded in real APQC L4 activity text \u00b7 ${l3Count} confirmed L3 assignments across ${d8.groups.length} process groups \u00b7 \u00a9 Timothy P. King 2026 \u00b7 developed with the assistance of Claude (Anthropic)`,
           italics: true, color: '888888', size: 13,
         })],
       }),

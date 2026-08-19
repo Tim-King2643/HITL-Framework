@@ -395,7 +395,7 @@ const doc = new Document({
       new Paragraph({
         spacing: { before: 260 },
         children: [new TextRun({
-          text: '\u00a9 Timothy P. King & Claude (Anthropic) 2026',
+          text: '\u00a9 Timothy P. King 2026 \u00b7 developed with the assistance of Claude (Anthropic)',
           italics: true, color: '888888', size: 13,
         })],
       }),
