@@ -47,9 +47,8 @@ cat.groups.forEach(g => {
         l4Count++;
         rows += `<tr class="l4-row"><td class="pcf">${a.code}</td><td class="act">${a.name}</td><td class="patcell">${patBadgeL4(a)}</td>${raciCell(r.R)}${raciCell(r.A, true)}${raciCell(r.C)}${raciCell(r.I)}</tr>`;
       });
-    } else {
-      l4Count++;
     }
+    // leaf L3 with no L4 children contributes 0 to the L4 total (raw explicit L4 count only)
   });
 });
 

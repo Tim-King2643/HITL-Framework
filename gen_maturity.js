@@ -260,7 +260,7 @@ function statCell(label, value, widthDxa) {
   });
 }
 const l3Count = d8.groups.reduce((s, g) => s + g.l3.length, 0);
-const l4Count = d8.groups.reduce((s, g) => s + g.l3.reduce((s2, l3) => s2 + (l3.l4 ? l3.l4.length : 1), 0), 0);
+const l4Count = d8.groups.reduce((s, g) => s + g.l3.reduce((s2, l3) => s2 + (l3.l4 ? l3.l4.length : 0), 0), 0);
 const statsTable = new Table({
   width: { size: 100, type: WidthType.PERCENTAGE },
   columnWidths: [4547, 4546, 4547],

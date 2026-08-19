@@ -46,9 +46,8 @@ cat.groups.forEach(g => {
         l4Count++;
         rows += `<tr class="l4-row"><td class="pcf">${a.code}</td><td class="act">${a.name}</td><td class="patcell">${patBadgeL4(a.pattern)}</td>${statRow(a.mv)}</tr>`;
       });
-    } else {
-      l4Count++; // leaf L3 with no children counted as its own unit (matches domain doc convention)
     }
+    // leaf L3 with no L4 children contributes 0 to the L4 total (raw explicit L4 count only)
   });
 });
 

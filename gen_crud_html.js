@@ -70,9 +70,8 @@ cat.groups.forEach(g => {
         l4Count++;
         rows += `<tr class="l4-row" data-crud-parent="${g.code}" data-crud-parent-l3="${l3.code}" style="display:none"><td class="pcf">${a.code}</td><td class="act">${a.name}</td><td class="patcell">${patBadgeL4(a)}</td>${crudCell(cr.create,'c')}${crudCell(cr.read,'r')}${crudCell(cr.update,'u')}${crudCell(cr.delete,'d')}</tr>`;
       });
-    } else {
-      l4Count++;
     }
+    // leaf L3 with no L4 children contributes 0 to the L4 total (raw explicit L4 count only)
   });
 });
 
