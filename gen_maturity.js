@@ -38,7 +38,10 @@ function thinBorder() {
 
 const TOTAL = 13640;
 // PCF is its own column now (was merged into the name column before).
-const COLW = { pcf: 900, name: 4160, pattern: 1400, m: 1080, delta: 1160 };
+// M columns widened (1080 -> 1250) so the "DESIGN INTENT" sub-label doesn't
+// wrap under LibreOffice's font substitution during docx->pdf conversion;
+// name/delta trimmed slightly to keep the row at the full page width.
+const COLW = { pcf: 900, name: 4000, pattern: 1400, m: 1250, delta: 1090 };
 function pct(dxa) { return Math.round((dxa / TOTAL) * 100 * 100) / 100; }
 
 function headerCell(text, widthDxa, align, subText) {
@@ -58,7 +61,7 @@ function headerRow() {
     children: [
       headerCell('PCF', COLW.pcf, AlignmentType.LEFT),
       headerCell('L1-Domain / L2-Process Group / L3-Process / L4-Activity', COLW.name, AlignmentType.LEFT),
-      headerCell('Pattern', COLW.pattern),
+      headerCell('M3 ★', COLW.pattern, null, 'Pattern'),
       headerCell('M1', COLW.m, null, 'Undesigned'),
       headerCell('M2', COLW.m, null, 'Emerging'),
       headerCell('M3 \u2605', COLW.m, null, 'Design Intent'),
