@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Role Transition Assessment</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+  body { font-family: 'IBM Plex Sans', ui-sans-serif, system-ui; margin: 0; }
+  .serif { font-family: 'Source Serif 4', Georgia, serif; }
+</style>
+</head>
+<body>
+<div id="root">
+  <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;color:#6B665F;font-size:14px;">
+    Loading…
+  </div>
+</div>
+<script type="text/babel" data-presets="react">
+const { useState, useMemo, useEffect } = React;
+
+/* ---------------------------------------------------------
+   Minimal inline icon set (replaces lucide-react for a
+   dependency-free standalone build)
+--------------------------------------------------------- */
+function Icon({ size = 16, color, className = "", style = {}, children }) {
+  const resolvedColor = color || style.color || "currentColor";
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={resolvedColor}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      style={{ ...style, display: "inline-block", verticalAlign: "middle" }}
+    >
+      {children}
+    </svg>
+  );
+}
+
+const Compass = (p) => <Icon {...p}><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></Icon>;
+const Target = (p) => <Icon {...p}><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></Icon>;
+const Scale = (p) => <Icon {...p}><path d="M12 3v18" /><path d="M5 7l-3 7a4 4 0 0 0 6 0Z" /><path d="M19 7l-3 7a4 4 0 0 0 6 0Z" /><path d="M6 21h12" /><path d="M5 7h14" /><path d="M12 3l3 4" /><path d="M12 3l-3 4" /></Icon>;
+const ShieldCheck = (p) => <Icon {...p}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" /><path d="M9 12l2 2 4-4" /></Icon>;
+const Users = (p) => <Icon {...p}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></Icon>;
+const Heart = (p) => <Icon {...p}><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z" /></Icon>;
+const RefreshCw = (p) => <Icon {...p}><polyline points="23 4 23 10 17 10" /><polyline points="1 20 1 14 7 14" /><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10" /><path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14" /></Icon>;
+const Flag = (p) => <Icon {...p}><path d="M4 22V4" /><path d="M4 4h11l-2 4 2 4H4" /></Icon>;
+const ChevronRight = (p) => <Icon {...p}><polyline points="9 18 15 12 9 6" /></Icon>;
+const ChevronLeft = (p) => <Icon {...p}><polyline points="15 18 9 12 15 6" /></Icon>;
+const RotateCcw = (p) => <Icon {...p}><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" /></Icon>;
+const CircleCheck = (p) => <Icon {...p}><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></Icon>;
+const Download = (p) => <Icon {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></Icon>;
+const Eye = (p) => <Icon {...p}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" /><circle cx="12" cy="12" r="3" /></Icon>;
+const Trash = (p) => <Icon {...p}><polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" /><path d="M10 11v6" /><path d="M14 11v6" /><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" /></Icon>;
+
+</script>
+<script type="text/babel" data-presets="react">
+
+/* ---------------------------------------------------------
+   Content: eight readiness dimensions, three statements each
+--------------------------------------------------------- */
+const SECTIONS = [
+  {
+    key: "clarity",
+    title: "Role Clarity",
+    prompt: "How well-defined is the role today, given current AI use?",
+    Icon: Compass,
+    items: [
+      "This person can clearly describe which parts of their job now involve AI and which don't.",
+      "Their manager and team share an explicit understanding of where AI ends and human judgment begins.",
+      "Recent changes to tools or workflow have been formally acknowledged, not just absorbed informally.",
+    ],
+  },
+  {
+    key: "confidence",
+    title: "Decision Confidence",
+    prompt: "Is this person making calls with the same confidence they had before?",
+    Icon: Target,
+    items: [
+      "They make routine decisions without seeking extra reassurance or sign-off compared to a year ago.",
+      "They can explain why they trust or override an AI-generated recommendation.",
+      "Escalations of previously routine decisions have not increased.",
+    ],
+  },
+  {
+    key: "accountability",
+    title: "Accountability",
+    prompt: "Is it still clear who owns the outcome when AI is part of the work?",
+    Icon: Flag,
+    items: [
+      "This person can name who is accountable for the outcome of a decision AI contributed to.",
+      "They have not been asked to sign off on AI-driven work without real authority to question or reject it.",
+      "Accountability for errors has stayed with the same role since AI was introduced, not silently drifted.",
+    ],
+  },
+  {
+    key: "workload",
+    title: "Workload & Sustainability",
+    prompt: "Has the shift changed the shape or intensity of their work?",
+    Icon: Scale,
+    items: [
+      "Time freed up by AI has been reallocated deliberately, not simply backfilled with more volume.",
+      "This person is not regularly working extra hours to review, correct, or double-check AI output.",
+      "Their workload feels sustainable to them, not just efficient on paper.",
+    ],
+  },
+  {
+    key: "trust",
+    title: "Trust",
+    prompt: "Does this person trust the AI-supported process — and does the process trust them back?",
+    Icon: Heart,
+    items: [
+      "This person trusts that AI-generated recommendations are reviewed, not just rubber-stamped, before decisions rely on them.",
+      "They feel the organization is using AI to support their judgment, not to monitor or replace it.",
+      "They would flag an AI error or blind spot without hesitating over how it might reflect on them.",
+    ],
+  },
+  {
+    key: "safety",
+    title: "Psychological Safety & Identity",
+    prompt: "How is this person experiencing the change personally?",
+    Icon: ShieldCheck,
+    items: [
+      "They feel comfortable raising concerns or confusion about AI-driven changes without fear of appearing behind.",
+      "They still see a clear connection between their skills and the value they bring.",
+      "They have shown no signs of quiet disengagement — withdrawing, doing the minimum, going quiet in discussions.",
+    ],
+  },
+  {
+    key: "changeCapacity",
+    title: "Change Capacity",
+    prompt: "Does this person have the bandwidth and disposition to absorb more change right now?",
+    Icon: RefreshCw,
+    items: [
+      "This person has capacity to take on a new change right now, separate from whether they're willing to.",
+      "Recent changes have had time to settle before the next one arrived.",
+      "They've shown they can adapt to a change in how they work without it derailing their other responsibilities.",
+    ],
+  },
+  {
+    key: "leadership",
+    title: "Leadership & Support Readiness",
+    prompt: "Is the surrounding leadership equipped to guide this transition?",
+    Icon: Users,
+    items: [
+      "Their manager has the skill and confidence to coach them through AI-related role changes.",
+      "There is a clear path to upskilling if new capabilities are needed.",
+      "Leadership has communicated proactively about what's changing and why, rather than leaving people to infer it.",
+    ],
+  },
+];
+
+/* ---------------------------------------------------------
+   One targeted next-step per dimension — used so "where to
+   focus first" gives real, distinct guidance for each low
+   score instead of one generic blended sentence.
+--------------------------------------------------------- */
+const FOCUS_GUIDANCE = {
+  clarity: "calls for a direct conversation about which tasks are now AI-assisted and where their judgment still governs — don't assume it's obvious from the tools alone.",
+  confidence: "calls for shadowing or paired decisions for a few cycles, not more documentation — confidence comes back through practice, not policy.",
+  accountability: "calls for explicitly naming who owns the outcome of AI-assisted decisions, in writing, before the next one is made.",
+  workload: "calls for auditing where the freed-up time actually went — if it was backfilled with more volume instead of reallocated, that's the fix, not a productivity tip.",
+  trust: "calls for making the review step visible — showing this person how AI output gets checked, not just telling them it is.",
+  safety: "calls for coaching and a genuine invitation to raise concerns, not retraining — the skills may be fine; the safety to use them may not be.",
+  changeCapacity: "calls for sequencing, not more support material — pause the next change until this one has actually settled.",
+  leadership: "calls for equipping the manager first — coaching them through the change before asking them to coach someone else through it.",
+};
+
+/* ---------------------------------------------------------
+   Organizational role catalog (PCF 7.0 / HR, from the
+   framework's master Organizational Role Taxonomy) — lets an
+   assessment be tagged with a canonical role rather than free
+   text, so results can later line up with that same role's
+   process-derived transition tier instead of drifting into
+   inconsistent naming across assessments.
+--------------------------------------------------------- */
+const ROLE_CATALOG = [
+  { key: "chro", title: "CHRO", tier: "Executive" },
+  { key: "svp-talent", title: "SVP Talent Management", tier: "Executive" },
+  { key: "vp-people-culture", title: "VP People & Culture", tier: "Executive" },
+  { key: "dir-ta", title: "Director of Talent Acquisition", tier: "Managerial" },
+  { key: "dir-ld", title: "Director of L&D", tier: "Managerial" },
+  { key: "hrbp-manager", title: "HRBP Manager", tier: "Managerial" },
+  { key: "comp-ben-manager", title: "Compensation & Benefits Manager", tier: "Managerial" },
+  { key: "dir-hr-ops", title: "Director of HR Ops", tier: "Managerial" },
+  { key: "hr-generalist", title: "HR Generalist", tier: "Operational" },
+  { key: "recruiter", title: "Recruiter", tier: "Operational" },
+  { key: "ld-specialist", title: "L&D Specialist", tier: "Operational" },
+  { key: "comp-analyst", title: "Compensation Analyst", tier: "Operational" },
+  { key: "hris-analyst", title: "HRIS Analyst", tier: "Operational" },
+  { key: "onboarding-coordinator", title: "Onboarding Coordinator", tier: "Operational" },
+];
+const ROLE_TIER_ORDER = ["Executive", "Managerial", "Operational"];
+
+const SCALE = [
+  { v: 1, label: "Rarely true" },
+  { v: 2, label: "Sometimes true" },
+  { v: 3, label: "Often true" },
+  { v: 4, label: "Consistently true" },
+];
+
+/* ---------------------------------------------------------
+   Tier bands — mirrors the AI Transition Pathways matrix
+--------------------------------------------------------- */
+const TIERS = [
+  {
+    key: "minor",
+    label: "Minor",
+    sub: "Task-level drift",
+    min: 81,
+    max: 96,
+    color: "#4F7A5E",
+    response:
+      "Communication only. Name the change, reassure, and set expectations — no formal plan is needed yet.",
+  },
+  {
+    key: "moderate",
+    label: "Moderate",
+    sub: "Role-level shift",
+    min: 59,
+    max: 80,
+    color: "#B08D57",
+    response:
+      "Upskilling. Provide targeted training on new tools and judgment calls, and check in on confidence — not just competence.",
+  },
+  {
+    key: "major",
+    label: "Major",
+    sub: "Function-level redesign",
+    min: 36,
+    max: 58,
+    color: "#C1793C",
+    response:
+      "Formal transition plan. Redefine scope, update role documentation, and set a timeline with clear success measures.",
+  },
+  {
+    key: "destabilizing",
+    label: "Destabilizing",
+    sub: "Identity-level disruption",
+    min: 24,
+    max: 35,
+    color: "#9C4A3C",
+    response:
+      "Intervention. Prioritize coaching, workload rebalancing, and psychological-safety support; consider reassignment.",
+  },
+];
+
+// 8 sections x 3 items, 1-4 scale each: min 24 (all 1s), max 96 (all 4s).
+// Tier bands re-derived from the original 5-section 15-60 scale by preserving
+// each tier's per-item average-score range (e.g. Minor = 3.40-4.00 avg/item),
+// then scaling to 24 items and rounding to contiguous integer bands.
+const MIN_TOTAL = 24;
+const MAX_TOTAL = 96;
+
+function tierForScore(total) {
+  return TIERS.find((t) => total >= t.min && total <= t.max) || TIERS[TIERS.length - 1];
+}
+
+function sectionLabel(subtotal) {
+  if (subtotal >= 10) return { text: "Strong", color: "#4F7A5E" };
+  if (subtotal >= 7) return { text: "Solid", color: "#B08D57" };
+  if (subtotal >= 5) return { text: "Watch", color: "#C1793C" };
+  return { text: "Priority", color: "#9C4A3C" };
+}
+
+// Returns EVERY section tied for the lowest subtotal, not just the first one
+// encountered — a plain reduce() silently drops ties in array order.
+function getLowestSections(subtotals) {
+  const entries = SECTIONS.map((s) => ({ ...s, subtotal: subtotals[s.key] || 0 }));
+  const min = Math.min(...entries.map((e) => e.subtotal));
+  return entries.filter((e) => e.subtotal === min);
+}
+
+// Natural-language join: "A" / "A and B" / "A, B, and C"
+function joinTitles(titles) {
+  if (titles.length === 1) return titles[0];
+  if (titles.length === 2) return `${titles[0]} and ${titles[1]}`;
+  return `${titles.slice(0, -1).join(", ")}, and ${titles[titles.length - 1]}`;
+}
+
+function formatDate(iso) {
+  try {
+    return new Date(iso).toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  } catch {
+    return "";
+  }
+}
+
+function hexToRgb(hex) {
+  const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return m ? [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16)] : [0, 0, 0];
+}
+
+// Combines the catalog role title (or a typed custom one) with an optional
+// person/team label for display — falls back gracefully if either is blank.
+function displayLabel(record) {
+  const parts = [];
+  if (record && record.roleTitle) parts.push(record.roleTitle);
+  if (record && record.personLabel) parts.push(record.personLabel);
+  return parts.length ? parts.join(" — ") : "Unnamed assessment";
+}
+
+/* ---------------------------------------------------------
+   Local persistence — saved assessments live in this browser's
+   localStorage only (no server, no sync). Every read/write is
+   wrapped in try/catch: localStorage can throw (private
+   browsing, disabled storage, file:// quirks in some browsers),
+   and a storage failure should never break the assessment flow.
+--------------------------------------------------------- */
+const STORAGE_KEY = "aiTransitionAssessments_v1";
+
+function loadSavedAssessments() {
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function persistAssessment(record) {
+  try {
+    const list = loadSavedAssessments();
+    list.push(record);
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function removeSavedAssessment(id) {
+  try {
+    const list = loadSavedAssessments().filter((r) => r.id !== id);
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    return list;
+  } catch {
+    return null;
+  }
+}
+
+function downloadRecord(record) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: "pt", format: "letter" });
+  const pageW = doc.internal.pageSize.getWidth();
+  const marginX = 54;
+  let y = 56;
+
+  const NAVY = hexToRgb("#1F3864");
+  const GOLD = hexToRgb("#B08D57");
+  const INK = hexToRgb("#262421");
+  const MUTED = hexToRgb("#6B665F");
+  const RULE = hexToRgb("#DDD8CE");
+
+  // Eyebrow + title
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9);
+  doc.setTextColor(...GOLD);
+  doc.text("HUMAN-AI PARTNERSHIP READINESS", marginX, y);
+  y += 20;
+  doc.setFont("times", "bold");
+  doc.setFontSize(22);
+  doc.setTextColor(...NAVY);
+  doc.text("AI Role Transition Assessment", marginX, y);
+  y += 22;
+
+  doc.setDrawColor(...RULE);
+  doc.line(marginX, y, pageW - marginX, y);
+  y += 22;
+
+  // Role / date
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(...MUTED);
+  const roleLine = displayLabel(record) +
+    (record.roleTier ? `  ·  ${record.roleTier} tier role` : "") +
+    (record.date ? "  ·  " + formatDate(record.date) : "");
+  doc.text(roleLine, marginX, y);
+  y += 26;
+
+  // Tier + score
+  const tier = tierForScore(record.total);
+  const tierRgb = hexToRgb(tier.color);
+  doc.setFont("times", "bold");
+  doc.setFontSize(17);
+  doc.setTextColor(...tierRgb);
+  doc.text(`${tier.label} tier`, marginX, y);
+  const tierLabelW = doc.getTextWidth(`${tier.label} tier`);
+  doc.setFont("times", "normal");
+  doc.setFontSize(13);
+  doc.setTextColor(...MUTED);
+  doc.text(`  — ${tier.sub}`, marginX + tierLabelW, y);
+  y += 18;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(...MUTED);
+  doc.text(`Total score: ${record.total} / ${MAX_TOTAL}`, marginX, y);
+  y += 20;
+
+  // Recommended response callout
+  doc.setFillColor(246, 244, 239);
+  const respLines = doc.splitTextToSize(tier.response, pageW - marginX * 2 - 24);
+  const respH = 30 + respLines.length * 13;
+  doc.rect(marginX, y, pageW - marginX * 2, respH, "F");
+  doc.setDrawColor(...tierRgb);
+  doc.setLineWidth(3);
+  doc.line(marginX, y, marginX, y + respH);
+  doc.setLineWidth(0.5);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
+  doc.setTextColor(...tierRgb);
+  doc.text("RECOMMENDED RESPONSE", marginX + 14, y + 16);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(...INK);
+  doc.text(respLines, marginX + 14, y + 30);
+  y += respH + 26;
+
+  // Section breakdown
+  doc.setFont("times", "bold");
+  doc.setFontSize(13);
+  doc.setTextColor(...NAVY);
+  doc.text("Section breakdown", marginX, y);
+  y += 8;
+  doc.setDrawColor(...RULE);
+  doc.line(marginX, y, pageW - marginX, y);
+  y += 18;
+
+  const barX = marginX + 190;
+  const barW = pageW - marginX - barX - 100;
+  SECTIONS.forEach((s) => {
+    const subtotal = record.subtotals[s.key] || 0;
+    const lbl = sectionLabel(subtotal);
+    const lblRgb = hexToRgb(lbl.color);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10.5);
+    doc.setTextColor(...INK);
+    doc.text(s.title, marginX, y);
+
+    doc.setDrawColor(...RULE);
+    doc.setFillColor(238, 234, 224);
+    doc.roundedRect(barX, y - 8, barW, 8, 2, 2, "F");
+    doc.setFillColor(...lblRgb);
+    doc.roundedRect(barX, y - 8, barW * (subtotal / 12), 8, 2, 2, "F");
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    doc.setTextColor(...lblRgb);
+    doc.text(`${lbl.text}`, pageW - marginX - 46, y, { align: "right" });
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(...MUTED);
+    doc.text(`${subtotal}/12`, pageW - marginX, y, { align: "right" });
+
+    y += 22;
+  });
+
+  // Where to focus first — one targeted recommendation per section tied for
+  // lowest, not a single blended sentence covering just the first one found.
+  const lowest = getLowestSections(record.subtotals);
+  const focusLabel = lowest.length > 1 ? `WHERE TO FOCUS FIRST — ${lowest.length} TIED` : "WHERE TO FOCUS FIRST";
+  const wrapW = pageW - marginX * 2 - 24;
+  const entryLines = lowest.map((s) => doc.splitTextToSize(`${s.title} (${s.subtotal}/12) ${FOCUS_GUIDANCE[s.key]}`, wrapW));
+  const tieNoteLines = lowest.length > 1
+    ? doc.splitTextToSize("These tied for lowest — worth addressing each on its own terms, not folding them into one response.", wrapW)
+    : [];
+  const bodyLineCount = entryLines.reduce((sum, lines) => sum + lines.length, 0) + (lowest.length - 1) * 0.4;
+  const focusH = 28 + bodyLineCount * 13 + tieNoteLines.length * 12 + (tieNoteLines.length ? 6 : 0);
+  y += 8;
+  doc.setFillColor(246, 244, 239);
+  doc.rect(marginX, y, pageW - marginX * 2, focusH, "F");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
+  doc.setTextColor(...MUTED);
+  doc.text(focusLabel, marginX + 14, y + 16);
+  let fy = y + 30;
+  doc.setFontSize(10);
+  entryLines.forEach((lines) => {
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(...INK);
+    doc.text(lines, marginX + 14, fy);
+    fy += lines.length * 13 + 5;
+  });
+  if (tieNoteLines.length) {
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(8.5);
+    doc.setTextColor(...MUTED);
+    doc.text(tieNoteLines, marginX + 14, fy);
+  }
+
+  // Footer
+  const pageH = doc.internal.pageSize.getHeight();
+  doc.setDrawColor(...RULE);
+  doc.line(marginX, pageH - 46, pageW - marginX, pageH - 46);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(...MUTED);
+  doc.text("Human-AI Partnership Readiness — Draft for discussion", marginX, pageH - 32);
+
+  const safeName = (record.roleTitle || record.personLabel || "assessment").replace(/[^a-z0-9-_]+/gi, "_");
+  doc.save(`${safeName}-${record.id}.pdf`);
+}
+
+/* ---------------------------------------------------------
+   Readiness dial — signature element
+--------------------------------------------------------- */
+function ReadinessDial({ total }) {
+  const pct = ((total - MIN_TOTAL) / (MAX_TOTAL - MIN_TOTAL)) * 100;
+  const segments = [...TIERS]
+    .sort((a, b) => a.min - b.min)
+    .map((t) => ({
+      ...t,
+      widthPct: ((t.max - t.min + 1) / (MAX_TOTAL - MIN_TOTAL + 1)) * 100,
+    }));
+
+  return (
+    <div className="w-full">
+      <div className="relative h-4 w-full rounded-full overflow-hidden flex shadow-inner">
+        {segments.map((s) => (
+          <div key={s.key} style={{ width: `${s.widthPct}%`, backgroundColor: s.color }} />
+        ))}
+      </div>
+      <div className="relative h-6">
+        <div
+          className="absolute -top-1 flex flex-col items-center transition-all duration-700 ease-out"
+          style={{ left: `${pct}%`, transform: "translateX(-50%)" }}
+        >
+          <div className="w-0 h-0 border-l-[7px] border-r-[7px] border-b-[9px] border-l-transparent border-r-transparent border-b-[#262421]" />
+        </div>
+      </div>
+      <div className="flex text-[11px] mt-1" style={{ color: "#6B665F" }}>
+        {segments.map((s) => (
+          <div key={s.key} style={{ width: `${s.widthPct}%` }} className="text-center px-0.5">
+            <div className="font-semibold" style={{ color: s.color }}>
+              {s.label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------
+   Results summary
+--------------------------------------------------------- */
+function ResultsSummary({ record, onRestart, onDownload }) {
+  const { roleTitle, roleTier, personLabel, date, total, subtotals } = record;
+  const tier = tierForScore(total);
+  const hasLabel = Boolean(roleTitle || personLabel);
+
+  const lowestSections = useMemo(() => getLowestSections(subtotals), [subtotals]);
+
+  return (
+    <div className="space-y-5">
+      <div className="rounded-lg p-6 sm:p-8" style={{ backgroundColor: "#FFFFFF", border: "1px solid #DDD8CE" }}>
+        <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center gap-2 flex-wrap">
+            <CircleCheck size={16} style={{ color: "#4F7A5E" }} />
+            <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#6B665F" }}>
+              Assessment complete{hasLabel ? ` — ${displayLabel(record)}` : ""}
+            </span>
+            {roleTier && (
+              <span
+                className="text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full"
+                style={{ backgroundColor: "#EEEAE0", color: "#6B665F" }}
+              >
+                {roleTier}
+              </span>
+            )}
+          </div>
+          {date && (
+            <span className="text-xs" style={{ color: "#A6A196" }}>
+              {formatDate(date)}
+            </span>
+          )}
+        </div>
+
+        <h2 className="serif text-2xl font-semibold mt-2" style={{ color: "#1F3864" }}>
+          {tier.label} tier
+          <span className="font-normal text-lg" style={{ color: "#6B665F" }}>
+            {" "}
+            — {tier.sub}
+          </span>
+        </h2>
+        <p className="text-sm mt-1" style={{ color: "#6B665F" }}>
+          Total score: <span className="font-semibold" style={{ color: "#262421" }}>{total} / {MAX_TOTAL}</span>
+        </p>
+
+        <div className="mt-6">
+          <ReadinessDial total={total} />
+        </div>
+
+        <div className="mt-6 rounded-md p-4" style={{ backgroundColor: "#F6F4EF", borderLeft: `4px solid ${tier.color}` }}>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: tier.color }}>
+            Recommended response
+          </p>
+          <p className="text-sm leading-relaxed" style={{ color: "#262421" }}>
+            {tier.response}
+          </p>
+        </div>
+      </div>
+
+      <div className="rounded-lg p-6 sm:p-8" style={{ backgroundColor: "#FFFFFF", border: "1px solid #DDD8CE" }}>
+        <h3 className="serif text-lg font-semibold mb-4" style={{ color: "#1F3864" }}>
+          Section breakdown
+        </h3>
+        <div className="space-y-4">
+          {SECTIONS.map((s) => {
+            const subtotal = subtotals[s.key] || 0;
+            const lbl = sectionLabel(subtotal);
+            const pct = (subtotal / 12) * 100;
+            return (
+              <div key={s.key}>
+                <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center gap-2">
+                    <s.Icon size={14} style={{ color: "#1F3864" }} />
+                    <span className="text-sm font-medium" style={{ color: "#262421" }}>
+                      {s.title}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="text-[11px] font-semibold px-2 py-0.5 rounded-full"
+                      style={{ backgroundColor: `${lbl.color}1A`, color: lbl.color }}
+                    >
+                      {lbl.text}
+                    </span>
+                    <span className="text-xs font-medium" style={{ color: "#6B665F" }}>
+                      {subtotal}/12
+                    </span>
+                  </div>
+                </div>
+                <div className="h-2 rounded-full w-full" style={{ backgroundColor: "#EEEAE0" }}>
+                  <div
+                    className="h-2 rounded-full transition-all duration-700"
+                    style={{ width: `${pct}%`, backgroundColor: lbl.color }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mt-6 rounded-md p-4 space-y-3" style={{ backgroundColor: "#F6F4EF" }}>
+          <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#6B665F" }}>
+            {lowestSections.length > 1 ? `Where to focus first — ${lowestSections.length} tied` : "Where to focus first"}
+          </p>
+          {lowestSections.map((s) => (
+            <p key={s.key} className="text-sm leading-relaxed" style={{ color: "#262421" }}>
+              <span className="font-semibold">{s.title}</span> ({s.subtotal}/12) {FOCUS_GUIDANCE[s.key]}
+            </p>
+          ))}
+          {lowestSections.length > 1 && (
+            <p className="text-xs italic" style={{ color: "#A6A196" }}>
+              These tied for lowest — worth addressing each on its own terms, not folding them into one response.
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="flex justify-center gap-3 pt-2">
+        <button
+          onClick={() => onDownload(record)}
+          className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-md text-white"
+          style={{ backgroundColor: "#1F3864" }}
+        >
+          <Download size={14} />
+          Download PDF report
+        </button>
+        <button
+          onClick={onRestart}
+          className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-md"
+          style={{ color: "#1F3864", border: "1px solid #DDD8CE" }}
+        >
+          <RotateCcw size={14} />
+          Start a new assessment
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------
+   Main component
+--------------------------------------------------------- */
+function AITransitionAssessment() {
+  const [step, setStep] = useState(0); // 0 = intro, 1..5 = sections, 6 = results
+  const [answers, setAnswers] = useState({});
+  const [roleKey, setRoleKey] = useState(""); // catalog key, or "other", or "" = unset
+  const [customRoleTitle, setCustomRoleTitle] = useState("");
+  const [personLabel, setPersonLabel] = useState("");
+  const [completedRecord, setCompletedRecord] = useState(null);
+  const [savedAssessments, setSavedAssessments] = useState([]);
+
+  const selectedCatalogEntry = ROLE_CATALOG.find((r) => r.key === roleKey) || null;
+  const roleTitle = roleKey === "other" ? customRoleTitle.trim() : selectedCatalogEntry ? selectedCatalogEntry.title : "";
+  const roleTier = selectedCatalogEntry ? selectedCatalogEntry.tier : "";
+
+  // Load any previously saved assessments once, on mount.
+  useEffect(() => {
+    setSavedAssessments(loadSavedAssessments());
+  }, []);
+
+  const totalSteps = SECTIONS.length;
+  const currentSection = step >= 1 && step <= totalSteps ? SECTIONS[step - 1] : null;
+
+  const sectionComplete = (section) =>
+    section.items.every((_, i) => answers[`${section.key}-${i}`] !== undefined);
+
+  const allComplete = SECTIONS.every(sectionComplete);
+
+  const setAnswer = (sectionKey, itemIndex, value) => {
+    setAnswers((prev) => ({ ...prev, [`${sectionKey}-${itemIndex}`]: value }));
+  };
+
+  const subtotals = useMemo(() => {
+    const out = {};
+    SECTIONS.forEach((s) => {
+      out[s.key] = s.items.reduce((sum, _, i) => sum + (answers[`${s.key}-${i}`] || 0), 0);
+    });
+    return out;
+  }, [answers]);
+
+  const total = useMemo(() => Object.values(subtotals).reduce((a, b) => a + b, 0), [subtotals]);
+
+  // Build the results record locally the moment the assessment is complete,
+  // then save it to this browser's local store.
+  useEffect(() => {
+    if (step === totalSteps + 1 && allComplete && !completedRecord) {
+      const rec = {
+        id: `${Date.now()}`,
+        roleTitle,
+        roleTier,
+        roleCatalogKey: roleKey && roleKey !== "other" ? roleKey : null,
+        personLabel: personLabel.trim(),
+        date: new Date().toISOString(),
+        total,
+        subtotals,
+      };
+      setCompletedRecord(rec);
+      persistAssessment(rec);
+      setSavedAssessments((prev) => [...prev, rec]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, allComplete]);
+
+  const restart = () => {
+    setAnswers({});
+    setRoleKey("");
+    setCustomRoleTitle("");
+    setPersonLabel("");
+    setCompletedRecord(null);
+    setStep(0);
+  };
+
+  // Open a previously saved assessment straight to its results — no need to
+  // re-answer anything, since ResultsSummary works entirely off the record.
+  const viewSaved = (record) => {
+    setCompletedRecord(record);
+    setStep(totalSteps + 1);
+  };
+
+  const deleteSaved = (id) => {
+    const updated = removeSavedAssessment(id);
+    if (updated) setSavedAssessments(updated);
+    if (completedRecord && completedRecord.id === id) setCompletedRecord(null);
+  };
+
+  return (
+    <div
+      className="min-h-screen w-full flex flex-col items-center"
+      style={{ backgroundColor: "#F6F4EF", fontFamily: "'IBM Plex Sans', ui-sans-serif, system-ui" }}
+    >
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+        .serif { font-family: 'Source Serif 4', Georgia, serif; }
+      `}</style>
+
+      <div className="w-full max-w-2xl px-5 sm:px-6 py-10">
+        {/* Header */}
+        <div className="mb-8">
+          <p className="text-xs font-semibold tracking-[0.18em] uppercase mb-2" style={{ color: "#B08D57" }}>
+            Human-AI Partnership Readiness
+          </p>
+          <h1 className="serif text-3xl sm:text-4xl font-semibold" style={{ color: "#1F3864" }}>
+            AI Role Transition Assessment
+          </h1>
+          <p className="mt-2 text-sm leading-relaxed" style={{ color: "#6B665F" }}>
+            Identify which transition-pathway tier a role has reached, and what response it calls for.
+          </p>
+        </div>
+
+        {/* Progress */}
+        {step >= 1 && step <= totalSteps && (
+          <div className="mb-8">
+            <div className="flex items-center gap-1.5">
+              {SECTIONS.map((s, i) => {
+                const done = sectionComplete(s);
+                const active = i === step - 1;
+                return (
+                  <div
+                    key={s.key}
+                    className="h-1.5 flex-1 rounded-full transition-colors"
+                    style={{ backgroundColor: active ? "#1F3864" : done ? "#B08D57" : "#DDD8CE" }}
+                  />
+                );
+              })}
+            </div>
+            <div className="mt-2 text-xs font-medium" style={{ color: "#6B665F" }}>
+              Section {step} of {totalSteps}
+            </div>
+          </div>
+        )}
+
+        {/* Intro */}
+        {step === 0 && (
+          <div className="rounded-lg p-6 sm:p-8" style={{ backgroundColor: "#FFFFFF", border: "1px solid #DDD8CE" }}>
+            <p className="text-sm leading-relaxed" style={{ color: "#262421" }}>
+              For each statement, rate how true it is of this role today. This can be completed by
+              the individual, their manager, or both — comparing perspectives often surfaces the
+              most useful conversation.
+            </p>
+
+            <label className="block mt-6">
+              <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#6B665F" }}>
+                Role (optional)
+              </span>
+              <select
+                value={roleKey}
+                onChange={(e) => setRoleKey(e.target.value)}
+                className="mt-2 w-full rounded-md px-3 py-2 text-sm outline-none focus:ring-2 bg-white"
+                style={{ border: "1px solid #DDD8CE", color: "#262421" }}
+              >
+                <option value="">— Select from the role catalog —</option>
+                {ROLE_TIER_ORDER.map((tierName) => (
+                  <optgroup key={tierName} label={tierName}>
+                    {ROLE_CATALOG.filter((r) => r.tier === tierName).map((r) => (
+                      <option key={r.key} value={r.key}>{r.title}</option>
+                    ))}
+                  </optgroup>
+                ))}
+                <option value="other">Not listed — type a role title</option>
+              </select>
+              <span className="block mt-1.5 text-[11px] leading-snug" style={{ color: "#A6A196" }}>
+                Matches the framework's PCF 7.0 HR role catalog, so this assessment can later line up
+                with that same role's process-derived transition tier.
+              </span>
+            </label>
+
+            {roleKey === "other" && (
+              <label className="block mt-4">
+                <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#6B665F" }}>
+                  Role title
+                </span>
+                <input
+                  type="text"
+                  value={customRoleTitle}
+                  onChange={(e) => setCustomRoleTitle(e.target.value)}
+                  placeholder="e.g., Claims Adjuster"
+                  className="mt-2 w-full rounded-md px-3 py-2 text-sm outline-none focus:ring-2"
+                  style={{ border: "1px solid #DDD8CE", color: "#262421" }}
+                />
+              </label>
+            )}
+
+            <label className="block mt-4">
+              <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#6B665F" }}>
+                Person or team (optional)
+              </span>
+              <input
+                type="text"
+                value={personLabel}
+                onChange={(e) => setPersonLabel(e.target.value)}
+                placeholder="e.g., Jane D., Claims Team"
+                className="mt-2 w-full rounded-md px-3 py-2 text-sm outline-none focus:ring-2"
+                style={{ border: "1px solid #DDD8CE", color: "#262421" }}
+              />
+            </label>
+
+            <div className="mt-6 flex flex-wrap gap-2">
+              {SECTIONS.map((s) => (
+                <div
+                  key={s.key}
+                  className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-full"
+                  style={{ backgroundColor: "#F6F4EF", color: "#1F3864" }}
+                >
+                  <s.Icon size={13} />
+                  {s.title}
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={() => setStep(1)}
+              className="mt-8 w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.02] active:scale-[0.99]"
+              style={{ backgroundColor: "#1F3864" }}
+            >
+              Begin assessment
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        )}
+
+        {/* Saved assessments — this browser's local store only */}
+        {step === 0 && savedAssessments.length > 0 && (
+          <div className="rounded-lg p-6 sm:p-8 mt-4" style={{ backgroundColor: "#FFFFFF", border: "1px solid #DDD8CE" }}>
+            <h3 className="serif text-lg font-semibold mb-1" style={{ color: "#1F3864" }}>
+              Saved assessments
+            </h3>
+            <p className="text-xs mb-4" style={{ color: "#6B665F" }}>
+              Stored in this browser only — not synced or shared. Moving or renaming this file starts a fresh, empty list.
+            </p>
+            <div className="space-y-2">
+              {[...savedAssessments]
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .map((r) => {
+                  const t = tierForScore(r.total);
+                  return (
+                    <div
+                      key={r.id}
+                      className="flex items-center justify-between gap-3 rounded-md px-3 py-2.5"
+                      style={{ border: "1px solid #EEEAE0" }}
+                    >
+                      <div className="min-w-0">
+                        <div className="text-sm font-medium truncate" style={{ color: "#262421" }}>
+                          {displayLabel(r)}
+                        </div>
+                        <div className="text-xs" style={{ color: "#6B665F" }}>
+                          {formatDate(r.date)} · <span style={{ color: t.color, fontWeight: 600 }}>{t.label}</span> · {r.total}/{MAX_TOTAL}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <button onClick={() => viewSaved(r)} className="p-2 rounded-md" style={{ color: "#1F3864" }} title="View">
+                          <Eye size={15} />
+                        </button>
+                        <button onClick={() => deleteSaved(r.id)} className="p-2 rounded-md" style={{ color: "#9C4A3C" }} title="Delete">
+                          <Trash size={15} />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        )}
+
+        {/* Section screens */}
+        {currentSection && (
+          <div className="rounded-lg p-6 sm:p-8" style={{ backgroundColor: "#FFFFFF", border: "1px solid #DDD8CE" }}>
+            <div className="flex items-start gap-3 mb-1">
+              <div
+                className="shrink-0 w-9 h-9 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: "#1F3864" }}
+              >
+                <currentSection.Icon size={17} color="#FFFFFF" />
+              </div>
+              <div>
+                <h2 className="serif text-xl font-semibold" style={{ color: "#1F3864" }}>
+                  {currentSection.title}
+                </h2>
+                <p className="text-sm mt-0.5" style={{ color: "#6B665F" }}>
+                  {currentSection.prompt}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 space-y-6">
+              {currentSection.items.map((statement, i) => {
+                const key = `${currentSection.key}-${i}`;
+                const value = answers[key];
+                return (
+                  <div key={key} className="pt-5 first:pt-0" style={{ borderTop: i > 0 ? "1px solid #EEEAE0" : "none" }}>
+                    <p className="text-sm mb-3" style={{ color: "#262421" }}>
+                      {statement}
+                    </p>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      {SCALE.map((opt) => {
+                        const selected = value === opt.v;
+                        return (
+                          <button
+                            key={opt.v}
+                            onClick={() => setAnswer(currentSection.key, i, opt.v)}
+                            className="rounded-md px-2 py-2.5 text-xs font-medium text-center transition-colors"
+                            style={{
+                              border: selected ? "1.5px solid #1F3864" : "1px solid #DDD8CE",
+                              backgroundColor: selected ? "#1F3864" : "#FFFFFF",
+                              color: selected ? "#FFFFFF" : "#262421",
+                            }}
+                          >
+                            <div className="font-semibold">{opt.v}</div>
+                            <div className="mt-0.5" style={{ fontSize: "10px", opacity: 0.9 }}>
+                              {opt.label}
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-8 flex items-center justify-between">
+              <button
+                onClick={() => setStep((s) => Math.max(0, s - 1))}
+                className="inline-flex items-center gap-1.5 text-sm font-medium px-4 py-2 rounded-md"
+                style={{ color: "#1F3864" }}
+              >
+                <ChevronLeft size={16} />
+                Back
+              </button>
+              <button
+                onClick={() => setStep((s) => Math.min(totalSteps + 1, s + 1))}
+                disabled={!sectionComplete(currentSection)}
+                className="inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-35 transition-transform enabled:hover:scale-[1.02]"
+                style={{ backgroundColor: "#1F3864" }}
+              >
+                {step === totalSteps ? "See results" : "Next"}
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Results — either a just-completed assessment or a saved one being reopened */}
+        {step === totalSteps + 1 && completedRecord && (
+          <ResultsSummary record={completedRecord} onRestart={restart} onDownload={downloadRecord} />
+        )}
+
+        <div className="mt-10 pt-4 text-center" style={{ borderTop: "1px solid #DDD8CE" }}>
+          <p className="text-[11px]" style={{ color: "#A6A196" }}>
+            Human-AI Partnership Readiness — Draft for discussion
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const rootEl = document.getElementById('root');
+ReactDOM.createRoot(rootEl).render(<AITransitionAssessment />);
+</script>
+</body>
+</html>
