@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Recruiter — Role Transition Profile — The Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B4F8A; --navy-d: #0D2D4F; --navy-l: #EEF3FA; --dark: #0D1B2A;
+  --gray: #444; --lgray: #888; --bg: #F4F6FB; --border: #DDE3EE;
+  --c-dec:#1B4F8A; --bg-dec:#EEF3FA; --c-kno:#534AB7; --bg-kno:#F3F0FE;
+  --c-doc:#0369A1; --bg-doc:#E0F2FE; --c-tra:#166534; --bg-tra:#DCFCE7;
+  --c-exc:#991B1B; --bg-exc:#FEE2E2;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); }
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 4px; }
+.masthead .tagline { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+.breadcrumb { max-width: 860px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
+.breadcrumb a { color: var(--navy); text-decoration: none; }
+.doc { max-width: 860px; margin: 0 auto; padding: 24px 24px 80px; }
+.doc h1.title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy-d); margin: 8px 0 6px; }
+.doc .subtitle { font-size: 13px; color: var(--lgray); font-style: italic; margin-bottom: 24px; }
+.doc h2 { font-size: 16px; color: var(--navy-d); font-weight: 700; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
+.doc p { font-size: 13px; line-height: 1.7; color: var(--gray); margin-bottom: 12px; }
+.doc p.caption { font-size: 11.5px; color: var(--lgray); margin-bottom: 14px; }
+.doc p.framework-connection { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 0 6px 6px 0; padding: 14px 18px; font-size: 12.5px; color: #333; }
+.doc ul.skills { margin: 0 0 16px 0; padding: 0; list-style: none; }
+.doc ul.skills li { font-size: 13px; line-height: 1.65; color: var(--gray); margin-bottom: 7px; padding-left: 18px; position: relative; }
+.doc ul.skills li::before { content: "—"; position: absolute; left: 0; color: var(--navy); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 12px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 6px 8px; font-size: 10.5px; vertical-align: bottom; }
+.mh { font-weight: 400; font-size: 9px; display:block; opacity:.85; }
+td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.detail-table td.stat, .detail-table th { text-align: center; }
+.detail-table td.pcf { font-family: 'DM Mono', monospace; color: var(--navy); font-size: 11.5px; }
+.detail-table tr.l3-row td { background: #E8EEF7; font-weight: 700; color: var(--navy-d); }
+.detail-table tr.l3-row td.stat { color: var(--navy); }
+.detail-table tr.l4-row td.act { padding-left: 18px; color: var(--gray); font-weight: 400; }
+.detail-table td.m3 { background: #D6E8FF; font-weight: 700; color: var(--navy); }
+.detail-table tr.l3-row td.m3 { background: #C4DCFF; }
+.detail-table td.delta { color: #B45309; }
+.pat-badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+.mixbar { display: flex; height: 14px; width: 100%; border-radius: 3px; overflow: hidden; }
+.mixbar span { display: block; height: 100%; }
+.legend { font-size: 11.5px; color: var(--gray); margin: 10px 0 4px; line-height: 1.9; }
+.legend .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+.snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0 20px; }
+.snap-box { border: 1px solid #7AAED6; border-radius: 6px; padding: 12px 14px; background: #fff; }
+.snap-label { font-size: 12px; color: var(--lgray); margin-bottom: 4px; }
+.snap-value { font-size: 17px; font-weight: 700; color: var(--navy); font-family: 'DM Mono', monospace; }
+.scope-callout { background: #FEF3C7; border-top: 3px solid #F59E0B; border-radius: 4px; padding: 14px 18px; margin: 18px 0; }
+.scope-callout .label { font-size: 12px; font-weight: 700; color: #92400E; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 6px; }
+.scope-callout p { color: #333; font-size: 12.5px; margin-bottom: 0; }
+.prog-table th:first-child { background: var(--navy-d); }
+.prog-table td.rowlabel { font-weight: 700; color: var(--navy-d); background: var(--navy-l); width: 14%; }
+tr:nth-child(even) td { background: #FAFBFD; }
+.detail-table tr.l3-row:nth-child(even) td, .detail-table tr.l4-row:nth-child(even) td { background: inherit; }
+.detail-table tbody tr.l4-row td { background: #fff; }
+.detail-table tbody tr.l4-row:nth-child(odd) td { background: #FAFBFD; }
+.detail-table tbody tr.l4-row td.m3 { background: #D6E8FF; font-weight: 700; color: var(--navy); }
+p.sources { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 14px; }
+footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+.crosslink { display: block; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 24px 0; text-decoration: none; }
+.crosslink .ct { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.crosslink .cd { font-size: 12px; color: var(--lgray); }
+.capmap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 8px 0 18px; }
+.capmap-card { border-radius: 8px; padding: 12px 14px; }
+.capmap-card .cm-name { font-weight: 700; font-size: 12px; margin-bottom: 3px; text-transform: uppercase; letter-spacing: .03em; }
+.capmap-card .cm-tagline { font-style: italic; font-size: 10px; margin-bottom: 8px; }
+.capmap-card .cm-count { font-weight: 700; font-size: 17px; }
+.capmap-card .cm-count span { font-size: 11px; font-weight: 700; text-transform: none; letter-spacing: 0; }
+.capmap-card .cm-mvals { font-weight: 700; font-size: 11px; margin-top: 4px; }
+.capmap-card .cm-empty-note { font-style: italic; font-size: 11px; }
+p.caption-note { font-size: 12px; color: var(--lgray); font-style: italic; background: var(--navy-l); border-left: 3px solid var(--navy); border-radius: 0 4px 4px 0; padding: 8px 12px; margin-bottom: 14px; }
+.evo-timeline { display: flex; align-items: stretch; gap: 6px; margin: 18px 0 24px; }
+.evo-era { flex: 1; border-radius: 8px; padding: 12px 10px; display: flex; flex-direction: column; }
+.evo-era .era-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; opacity: .75; margin-bottom: 4px; }
+.evo-era .era-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+.evo-era .era-desc { font-size: 10.5px; line-height: 1.45; flex-grow: 1; }
+.evo-arrow { display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--lgray); flex: 0 0 auto; width: 10px; }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <h1>The Human-AI Partnership Framework</h1>
+  <div class="tagline">Where human judgment belongs</div>
+  <nav><a href="index.html">Documentation</a><a href="../hitl_dashboard_final.html">Dashboard</a></nav>
+</div>
+
+<div class="breadcrumb"><a href="index.html">Documentation</a> / <a href="role_taxonomy.html">People View</a> / Recruiter</div>
+
+<div class="doc">
+<h1 class="title">Recruiter — Role Transition Profile</h1>
+<p class="subtitle">Operational Tier &middot; 5 PCF processes across 1 process group</p>
+
+<h2>Role Impact Snapshot</h2>
+<p>Computed from 7.0's confirmed RACI data using the Responsible/Accountable touch rule (excludes Consulted/Informed).
+</p>
+<div class="snapshot-grid">
+<div class="snap-box"><div class="snap-label">L3 processes touched</div><div class="snap-value">5</div></div>
+<div class="snap-box"><div class="snap-label">L4 activity units</div><div class="snap-value">24</div></div>
+<div class="snap-box"><div class="snap-label">Process groups spanned</div><div class="snap-value">1 of 8</div></div>
+<div class="snap-box"><div class="snap-label">Aggregate M1 &rarr; M3</div><div class="snap-value">70% &rarr; 47%</div></div>
+<div class="snap-box"><div class="snap-label">Convergence gap</div><div class="snap-value">-23 pts</div></div>
+<div class="snap-box"><div class="snap-label">Dominant pattern</div><div class="snap-value">Transaction (63%)</div></div>
+</div>
+
+<h2>Role Pattern Mix</h2>
+<p>Pattern-type distribution across every L4 activity this role touches (Responsible or Accountable), with each pattern's standard M1&rarr;M3 convergence applied. Same card design as the Value Stream Profile docs' AI Capability Map, scoped to this role instead of a value stream.</p>
+<p class="caption-note">Each card shows that pattern's own standard M1&rarr;M3 value, not weighted by this role. The Snapshot's Aggregate M1&rarr;M3 above (70% &rarr; 47%) is the count-weighted blend across all 5 patterns present — Transaction dominates by volume (63% of activities), but its own M3 (35%) sits below the blend — higher-M3 patterns still in the mix pull the role-wide average up from Transaction’s own number.</p>
+<div class="capmap-grid"><div class="capmap-card" style="background:#EEF3FA;color:#1B4F8A"><div class="cm-name">Decision</div><div class="cm-tagline">Judgment & Authority — gates that stay human by design</div><div class="cm-count">3 <span>L4 activities</span></div><div class="cm-mvals">M1 92%  →  M3 80%</div></div><div class="capmap-card" style="background:#F3F0FE;color:#534AB7"><div class="cm-name">Knowledge</div><div class="cm-tagline">Synthesis & Interpretation — judgment-driven work</div><div class="cm-count">5 <span>L4 activities</span></div><div class="cm-mvals">M1 85%  →  M3 65%</div></div><div class="capmap-card" style="background:#E0F2FE;color:#0369A1"><div class="cm-name">Document</div><div class="cm-tagline">Content Generation — drafting and communication</div><div class="cm-count">1 <span>L4 activities</span></div><div class="cm-mvals">M1 72%  →  M3 40%</div></div><div class="capmap-card" style="background:#DCFCE7;color:#166534"><div class="cm-name">Transaction</div><div class="cm-tagline">Rules-Based Processing — suited to automation</div><div class="cm-count">15 <span>L4 activities</span></div><div class="cm-mvals">M1 60%  →  M3 35%</div></div><div class="capmap-card" style="background:#FEE2E2;color:#991B1B"><div class="cm-name">Exception</div><div class="cm-tagline">Non-Standard Resolution — human-resolved by nature</div><div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities of this pattern touched by this role</div></div></div>
+
+<!-- TODO (requires real research — see spec §4): a bespoke narrative
+     section here, titled to fit the role (not a generic heading — every
+     existing PCF 7.0 RTP page titles this uniquely). OPTIONAL — 2 of the
+     11 real PCF 7.0 pages (HRBP Manager, HRIS Analyst) skip this section
+     entirely and go straight from the Full Detail table to Skills &
+     Competencies. Delete this block if the role doesn't need it; don't
+     force one to exist. -->
+<h2>Role Impact Profile &mdash; Full Detail</h2>
+<p>Every L3 process this role holds Responsible or Accountable on. Each Mixed-pattern process is shown with its own aggregate rollup row (a proportional pattern-mix bar in place of a plain &ldquo;Mixed&rdquo; label), followed by its individual Level 4 activities.</p>
+<table class="detail-table">
+<thead><tr><th>PCF</th><th>Process/Activity</th><th>Pattern</th><th>M1<br><span class=mh>UNDESIGNED</span></th><th>M2<br><span class=mh>EMERGING</span></th><th>M3 &#9733;<br><span class=mh>DESIGN INTENT</span></th><th>M4<br><span class=mh>OPTIMIZED</span></th><th>M5<br><span class=mh>LEADING</span></th><th>&Delta; M1&rarr;M3</th></tr></thead>
+<tbody><tr class="l3-row"><td class="pcf">7.2.1</td><td class="act">Manage employee requisitions</td><td class="patcell"><span class="mixbar"><span style="width:14.3%;background:#A79AE0" title="Knowledge (1)"></span><span style="width:71.4%;background:#6FC48C" title="Transaction (5)"></span><span style="width:14.3%;background:#7B9FD1" title="Decision (1)"></span></span></td><td class="stat">68%</td><td class="stat">58%</td><td class="stat m3">46%</td><td class="stat">33%</td><td class="stat">24%</td><td class="stat delta">-22%</td></tr><tr class="l4-row"><td class="pcf">7.2.1.1</td><td class="act">Align staffing plan to work force plan and business unit strategies/resource needs</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.2.1.2</td><td class="act">Open job requisitions</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.2.1.3</td><td class="act">Approve job requisition</td><td class="patcell"><span class="pat-badge" style="color:#1B4F8A;background:#EEF3FA">Decision</span></td><td class="stat">92%</td><td class="stat">88%</td><td class="stat m3">80%</td><td class="stat">72%</td><td class="stat">65%</td><td class="stat delta">-12%</td></tr><tr class="l4-row"><td class="pcf">7.2.1.4</td><td class="act">Post job requisitions</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.2.1.5</td><td class="act">Modify job requisitions</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.2.1.6</td><td class="act">Notify hiring manager</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.2.1.7</td><td class="act">Manage requisition dates</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l3-row"><td class="pcf">7.2.2</td><td class="act">Recruit/Source candidates</td><td class="patcell"><span class="mixbar"><span style="width:33.3%;background:#A79AE0" title="Knowledge (2)"></span><span style="width:66.7%;background:#6FC48C" title="Transaction (4)"></span></span></td><td class="stat">68%</td><td class="stat">58%</td><td class="stat m3">45%</td><td class="stat">32%</td><td class="stat">22%</td><td class="stat delta">-23%</td></tr><tr class="l4-row"><td class="pcf">7.2.2.1</td><td class="act">Determine recruitment methods and channels</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.2.2.2</td><td class="act">Perform recruiting activities/events</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.2.2.3</td><td class="act">Develop and maintain candidate pool</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.2.2.4</td><td class="act">Manage recruitment vendors</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.2.2.5</td><td class="act">Manage employee referral programs</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.2.2.6</td><td class="act">Manage recruitment channels</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l3-row"><td class="pcf">7.2.3</td><td class="act">Screen and select candidates</td><td class="patcell"><span class="mixbar"><span style="width:50.0%;background:#A79AE0" title="Knowledge (2)"></span><span style="width:25.0%;background:#6FC48C" title="Transaction (1)"></span><span style="width:25.0%;background:#7B9FD1" title="Decision (1)"></span></span></td><td class="stat">80%</td><td class="stat">73%</td><td class="stat m3">61%</td><td class="stat">50%</td><td class="stat">40%</td><td class="stat delta">-19%</td></tr><tr class="l4-row"><td class="pcf">7.2.3.1</td><td class="act">Identify and deploy candidate selection tools</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.2.3.2</td><td class="act">Interview candidates</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">7.2.3.3</td><td class="act">Test candidates</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.2.3.4</td><td class="act">Select and reject candidates</td><td class="patcell"><span class="pat-badge" style="color:#1B4F8A;background:#EEF3FA">Decision</span></td><td class="stat">92%</td><td class="stat">88%</td><td class="stat m3">80%</td><td class="stat">72%</td><td class="stat">65%</td><td class="stat delta">-12%</td></tr><tr class="l3-row"><td class="pcf">7.2.4</td><td class="act">Manage new hire/re-hire</td><td class="patcell"><span class="mixbar"><span style="width:33.3%;background:#5EB8E0" title="Document (1)"></span><span style="width:33.3%;background:#7B9FD1" title="Decision (1)"></span><span style="width:33.3%;background:#6FC48C" title="Transaction (1)"></span></span></td><td class="stat">75%</td><td class="stat">65%</td><td class="stat m3">52%</td><td class="stat">41%</td><td class="stat">32%</td><td class="stat delta">-23%</td></tr><tr class="l4-row"><td class="pcf">7.2.4.1</td><td class="act">Draw up and make offer</td><td class="patcell"><span class="pat-badge" style="color:#0369A1;background:#E0F2FE">Document</span></td><td class="stat">72%</td><td class="stat">58%</td><td class="stat m3">40%</td><td class="stat">28%</td><td class="stat">18%</td><td class="stat delta">-32%</td></tr><tr class="l4-row"><td class="pcf">7.2.4.2</td><td class="act">Negotiate offer</td><td class="patcell"><span class="pat-badge" style="color:#1B4F8A;background:#EEF3FA">Decision</span></td><td class="stat">92%</td><td class="stat">88%</td><td class="stat m3">80%</td><td class="stat">72%</td><td class="stat">65%</td><td class="stat delta">-12%</td></tr><tr class="l4-row"><td class="pcf">7.2.4.3</td><td class="act">Hire candidate</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l3-row"><td class="pcf">7.2.5</td><td class="act">Manage applicant information</td><td class="patcell"><span class="mixbar"><span style="width:100%;background:#6FC48C" title="Transaction"></span></span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.2.5.1</td><td class="act">Obtain candidate background information</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.2.5.2</td><td class="act">Create applicant record</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.2.5.3</td><td class="act">Manage/Track applicant data</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr><tr class="l4-row"><td class="pcf">7.2.5.4</td><td class="act">Archive and retain records of non-hires</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr></tbody>
+</table>
+<div class="legend"><span class="sw" style="background:var(--c-dec)"></span>Decision &mdash; Judgment &amp; Authority &nbsp; <span class="sw" style="background:var(--c-kno)"></span>Knowledge &mdash; Synthesis &amp; Interpretation &nbsp; <span class="sw" style="background:var(--c-doc)"></span>Document &mdash; Content Generation &nbsp; <span class="sw" style="background:var(--c-tra)"></span>Transaction &mdash; Rules-Based Processing<br><span class="sw" style="background:var(--c-exc)"></span>Exception &mdash; Non-Standard Resolution &nbsp;&middot;&nbsp; R/A-touch basis, not C/I &nbsp;&middot;&nbsp; Equal-weighted rollup across touched processes &nbsp;&middot;&nbsp; &copy; Timothy P. King 2026 &middot; developed with the assistance of Claude (Anthropic)</div>
+
+<h2>The Densest Judgment Profile in the Framework</h2><p>Every other role profiled has had at most one Decision-pattern touchpoint. Recruiter has three — a genuinely surprising finding given its Operational tier and Transaction-dominant (63%) overall profile. The role looks, on paper, like the most automatable in the framework; in practice, it's the role making the most individual judgment calls.</p><p>Josh Bersin Company's July 2026 talent acquisition research (with AMS) names this shift directly, in language specific to this exact role: “the recruiter's role is shifting from processor to strategic orchestrator,” with recruiters “becoming business advisors who influence workforce strategy, challenge hiring assumptions, identify internal talent opportunities, and coordinate the broader talent ecosystem.” The research also documents organizations moving away from time-to-fill and cost-per-hire toward business-outcome metrics — productivity, capability, and talent density — as leading indicators of TA success, and toward AI-enabled architectures that connect sourcing, hiring, mobility, and analytics into one system rather than isolated tools.</p>
+
+<!-- TODO (requires real research — see spec §4): find and fully fetch
+     ONE substantive, real, named external source for this role (industry
+     research, a certification body's own career-path material, BLS-style
+     labor data, etc.) — never fabricate one. -->
+<h2>Skills &amp; Competencies</h2><p>Bersin's July 2026 research names five trends; the ones most directly relevant to this role's actual data are below.</p><ul class="skills"><li>Judgment-call ownership — the 3 Decision-pattern activities (requisition approval, candidate selection, offer negotiation) are exactly the load-bearing moments Bersin's research says define the recruiter's real future value</li><li>Workforce-planning fluency — Bersin's research describes advanced organizations using AI to determine whether a role should be filled externally, redeployed internally, redesigned, or automated; this role is positioned to make that call first</li><li>Talent-architecture literacy — working inside a connected sourcing/hiring/mobility/analytics system rather than a standalone ATS, per the research's first named trend</li><li>Business-outcome metric fluency — productivity, capability, and talent density are replacing time-to-fill and cost-per-hire as how this role's impact gets measured</li><li>Internal-mobility awareness — identifying internal talent opportunities is named directly as part of the recruiter's shift from processor to advisor</li></ul><p class="framework-connection"><strong>Framework connection: </strong>The Role Impact Snapshot's Transaction-dominant (63%) profile could read as this role being the most automation-exposed in the framework — but its 3 Decision-pattern activities, the most of any role profiled, tell the opposite story Bersin's research describes: the transactional layer is what automates, while the judgment layer is exactly where this role's real value concentrates.</p>
+
+<h2>Role Progression Framework</h2><table class="prog-table"><thead><tr><th></th><th>Getting Started</th><th>Established</th><th>Future-Focused</th></tr></thead><tbody><tr><td class="rowlabel">Role focus</td><td>Executing the Recruit-to-Hire funnel end-to-end: opening/posting requisitions, sourcing, screening, offer paperwork, applicant data entry</td><td>Owning the three genuine judgment calls in the hiring funnel — approving requisitions, selecting/rejecting candidates, negotiating offers — while an AI-enabled architecture handles the surrounding transactional steps</td><td>Operating as a strategic orchestrator — Bersin's own term — coordinating sourcing, internal mobility, analytics, and workforce planning as one connected system, not a hiring pipeline</td></tr><tr><td class="rowlabel">Key activities</td><td>The Transaction-heavy majority of this role's activity units — exactly the layer Bersin's 2026 TA research expects AI-enabled talent architectures to absorb first</td><td>Advising hiring managers on workforce strategy questions, not just processing their requests</td><td>Determining whether a role should be filled externally, redeployed internally, redesigned, or automated — a genuinely new kind of decision this role is positioned to make first</td></tr><tr><td class="rowlabel">Skills to build</td><td>ATS/sourcing-tool fluency; comfort with an AI-enabled talent architecture connecting sourcing, hiring, mobility, and analytics rather than a standalone ATS</td><td>Judgment-call ownership; enough workforce-planning fluency to challenge a hiring assumption rather than just fulfilling the requisition as written</td><td>Cross-functional workforce-planning judgment; fluency with business-outcome metrics (productivity, talent density) rather than operational hiring metrics</td></tr><tr><td class="rowlabel">Common pitfalls</td><td>Measuring the job by time-to-fill and cost-per-hire — Bersin's research says leading organizations have already moved past these as the primary success metrics</td><td>Treating the three Decision-pattern moments as just more steps in the process rather than the load-bearing judgment calls Bersin's research says define the role's real value</td><td>Staying anchored to ‘filling the req’ as the job's definition, when Bersin's research frames the role's future value as building long-term organizational capability</td></tr></tbody></table><p class="sources">Source: The Josh Bersin Company (with AMS), “Josh Bersin Company Research Shows Talent Acquisition Moving Beyond AI Experimentation,” PRNewswire, July 7, 2026. Fetched and read in full for this profile, not paraphrased from a snippet.</p>
+
+<h2>How the Role Has Evolved</h2>
+<div class="evo-timeline">
+<div class="evo-era" style="background:#EEF3FA;color:#33475B">
+<div class="era-label">1996&ndash;97</div>
+<div class="era-title">Transaction-Heavy</div>
+<div class="era-desc">Under Ulrich's model, recruiting is largely a Transaction-heavy administrative function — posting, scheduling, paperwork — not yet a judgment-centered discipline.</div>
+</div><div class="evo-arrow">&rarr;</div><div class="evo-era" style="background:#DCE6F5;color:#22405F">
+<div class="era-label">Mid-2000s</div>
+<div class="era-title">The ATS Shift</div>
+<div class="era-desc">Applicant tracking systems begin absorbing sourcing and scheduling logistics, the first wave of automation touching this role's own scope.</div>
+</div><div class="evo-arrow">&rarr;</div><div class="evo-era" style="background:#B9CCEA;color:#173257">
+<div class="era-label">2010s</div>
+<div class="era-title">The Sourcing Discipline</div>
+<div class="era-desc">LinkedIn-driven sourcing and structured interviewing convert recruiting into a more data-informed judgment discipline, not just a logistics function.</div>
+</div><div class="evo-arrow">&rarr;</div><div class="evo-era" style="background:#7FA3D6;color:#0D2340">
+<div class="era-label">2020s</div>
+<div class="era-title">The Automation Frontier</div>
+<div class="era-desc">AI-sourcing tools and resume-screening automation absorb the earliest Transaction-layer work, pushing recruiters toward final-round judgment and offer negotiation.</div>
+</div><div class="evo-arrow">&rarr;</div><div class="evo-era" style="background:var(--navy-d);color:#fff">
+<div class="era-label">2026 &#9733;</div>
+<div class="era-title">The Judgment Concentration</div>
+<div class="era-desc">This role's own data shows 3 Decision-pattern activities — more than any Managerial or Executive role in the framework. AI adoption doesn't flatten this role; it concentrates its highest-judgment moments.</div>
+</div>
+</div>
+<p style="font-size:11px;color:var(--lgray);font-style:italic;margin-top:-12px;margin-bottom:20px">Era framing follows the AIHR &ldquo;HR Business Partner Guide&rdquo; infographic's own historical structure; 1990s&ndash;2000s facts verified independently against real Ulrich-model sourcing, not reproduced from AIHR's text.</p>
+<p class="framework-connection"><strong>A related pattern from outside HR: </strong>McKinsey's Julie Goran describes AI unlocking creativity by removing lower-value tasks from a role's plate — asking what becomes possible once 40% of the work disappears. Recruiter is a concrete instance: as sourcing and screening automate, the role's real center of gravity shifts toward the Decision-pattern judgment calls its own data already shows it uniquely concentrated in.</p>
+<p class="sources">Sources: Julie Goran, &ldquo;Rewired takes: How AI is unlocking creativity and heralding the rise of the agent manager,&rdquo; McKinsey &amp; Company, July 2026. AIHR &ldquo;HR Business Partner Guide&rdquo; infographic used as structural template only; no content reused.</p>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;&middot;&nbsp; Human Enterprise Architect &nbsp;&middot;&nbsp; August 2026<br>
+    Co-developed with Claude (Anthropic)<br>
+    <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
+    &nbsp;&middot;&nbsp; hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>

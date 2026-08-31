@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Risk-to-Resilience — The Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B4F8A; --navy-d: #0D2D4F; --navy-l: #EEF3FA; --dark: #0D1B2A;
+  --gray: #444; --lgray: #888; --bg: #F4F6FB; --border: #DDE3EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); }
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 4px; }
+.masthead .tagline { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+.breadcrumb { max-width: 900px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
+.breadcrumb a { color: var(--navy); text-decoration: none; }
+.doc { max-width: 900px; margin: 0 auto; padding: 24px 24px 80px; }
+.doc h1.title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy-d); margin: 8px 0 6px; }
+.doc .subtitle { font-size: 13px; color: var(--lgray); font-style: italic; margin-bottom: 5px; }
+.doc .stats { font-size: 13px; color: var(--gray); margin-bottom: 22px; }
+.doc h2 { font-size: 16px; color: var(--navy-d); font-weight: 700; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
+.doc p { font-size: 13px; line-height: 1.7; color: var(--gray); margin-bottom: 12px; }
+.doc p.caption { font-size: 11.5px; color: var(--lgray); margin-bottom: 14px; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 12px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 7px 10px; font-size: 11px; }
+td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:nth-child(even) td { background: #FAFBFD; }
+.kpi-name { font-weight: 700; color: var(--navy-d); }
+.kpi-formula { font-size: 12px; color: var(--lgray); font-style: italic; }
+.src-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: #DCFCE7; color: #166534; }
+.src-none { color: #B8C0CC; }
+.gdp-pcf { font-family: 'DM Mono', monospace; color: var(--navy); }
+.no-gdp { font-style: italic; color: var(--lgray); font-size: 13px; padding: 12px 0; }
+.capmap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 10px; margin: 14px 0 8px; }
+.capmap-card { border-radius: 8px; padding: 14px 14px; }
+.cm-name { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.cm-tagline { font-size: 10px; font-style: italic; opacity: .85; margin-bottom: 10px; line-height: 1.4; }
+.cm-count { font-weight: 700; font-size: 15px; }
+.cm-count span { font-weight: 400; font-size: 11px; }
+.cm-mvals { font-size: 11px; margin-top: 4px; }
+.cm-empty-note { font-size: 10.5px; font-style: italic; margin-top: 4px; }
+.acc-role { color: var(--navy-d); }
+.tier-badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 3px 10px; border-radius: 10px; }
+.acc-l3 { font-size: 11.5px; color: #666; }
+.acc-note { font-size: 10.5px; font-style: italic; color: var(--lgray); margin-top: 3px; }
+footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+.pdflink { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--navy); text-decoration: none; background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 8px 14px; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="masthead">
+  <h1>The Human-AI Partnership Framework</h1>
+  <div class="tagline">Where human judgment belongs</div>
+  <nav>
+    <a href="index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+  </nav>
+</div>
+<div class="breadcrumb"><a href="index.html">Documentation</a> / Process View / Risk-to-Resilience</div>
+<div class="doc">
+<h1 class="title">Risk-to-Resilience</h1>
+<p class="subtitle">PCF 8.3 &middot; Security, compliance, continuity & identity</p>
+<p class="stats">8 PCF processes &middot; 53 L4 activities &middot; M1 77% &rarr; M3 55% (&Delta; -22%)</p>
+<a class="pdflink" href="../pdfs/hitl_valuestream_risk_to_resilience_pcf8_final.pdf">&#8659; Download as PDF</a>
+<h2>Description</h2>
+<p>This value stream comprises one APQC PCF process group: 8.3 Develop and Manage IT Resilience and Risk — spanning 8 Level 3 processes and 53 Level 4 activities, the largest value stream in PCF 8.0 by activity count.</p><p>At the activity level, this value stream's work breaks down as 24 Knowledge activities (judgment, synthesis, and interpretation-driven work), 18 Transaction activities (rules-based processing suited to automation), 4 Decision activities, 4 Document activities, and 3 Exception activities — the widest pattern spread of any PCF 8.0 value stream.</p><p>At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 55%, down from a 77% undesigned baseline — a 22-point AI convergence opportunity.</p>
+<h2>KPIs</h2><table><tr><th>Business Impact Metric &amp; Formula (where confirmed)</th><th style="width:15%">Source</th></tr><tr><td><div class="kpi-name">IT resilience/risk cost ratio</div><div class="kpi-formula">% of IT operating costs (excl. depreciation/amortization) dedicated to Manage IT Resilience and Risk</div></td><td><span class="src-badge">APQC OSB</span></td></tr><tr><td><div class="kpi-name">Mean Time to Detect (MTTD)</div><div class="kpi-formula">Total time between incident start and detection, summed across incidents ÷ number of incidents in the period</div></td><td><span class="src-badge">NIST SP 800-61r2</span></td></tr><tr><td><div class="kpi-name">Mean Time to Respond (MTTR)</div><div class="kpi-formula">Average time from detection to containment of a security incident</div></td><td><span class="src-badge">NIST SP 800-61r2</span></td></tr><tr><td><div class="kpi-name">% critical vulnerabilities remediated within SLA</div><div class="kpi-formula">Critical/high vulnerabilities remediated within the policy-defined window ÷ total critical/high vulnerabilities identified</div></td><td><span class="src-badge">NIST SP 800-55</span></td></tr></table>
+<h2>Design Narrative</h2><p>Risk-to-Resilience follows the same apex pattern as IT Vision-to-Strategy and Data-to-Insight: 8.3.1 (Develop IT compliance, risk, and security strategy) is CISO's own strategy-formation L3, with Director of Cybersecurity holding Accountable for the remaining 7 of 8 L3s — the strongest single-role concentration below the Executive apex of any PCF 8.0 value stream. Cybersecurity Analyst carries Responsible across most of that work, a consistent Managerial-owns/Operational-executes pattern throughout. This is the largest value stream in PCF 8.0 by both L3 count (8) and activity count (53), and carries the widest pattern spread in the domain — all five patterns appear, including 3 of PCF 8.0's total Exception-pattern activities clustered in threat detection/response (8.3.5.7), compliance escalation (8.3.6.4), and breach response (8.3.8.6). Its steepest AI-absorption opportunity sits in 8.3.3.4 (Create and maintain IT security policies, standards, and procedures, Document-pattern, -32 points).</p>
+<h2>AI Capability Map</h2><p class="caption">Pattern-type distribution across this value stream's activity units. H% figures are the pattern type's standard value at each maturity level, applied consistently across all PCF domains.</p><div class="capmap-grid"><div class="capmap-card" style="background:#EEF3FA;color:#1B4F8A"><div class="cm-name">Decision</div><div class="cm-tagline">Judgment &amp; Authority — gates that stay human by design</div><div class="cm-count">4 <span>L4 activities</span></div><div class="cm-mvals">M1 92%  &rarr;  M3 80%</div></div><div class="capmap-card" style="background:#F3F0FE;color:#534AB7"><div class="cm-name">Knowledge</div><div class="cm-tagline">Synthesis &amp; Interpretation — judgment-driven work</div><div class="cm-count">24 <span>L4 activities</span></div><div class="cm-mvals">M1 85%  &rarr;  M3 65%</div></div><div class="capmap-card" style="background:#E0F2FE;color:#0369A1"><div class="cm-name">Document</div><div class="cm-tagline">Content Generation — drafting and communication</div><div class="cm-count">4 <span>L4 activities</span></div><div class="cm-mvals">M1 72%  &rarr;  M3 40%</div></div><div class="capmap-card" style="background:#DCFCE7;color:#166534"><div class="cm-name">Transaction</div><div class="cm-tagline">Rules-Based Processing — suited to automation</div><div class="cm-count">18 <span>L4 activities</span></div><div class="cm-mvals">M1 60%  &rarr;  M3 35%</div></div><div class="capmap-card" style="background:#FEE2E2;color:#991B1B"><div class="cm-name">Exception</div><div class="cm-tagline">Non-Standard Resolution — human-resolved by nature</div><div class="cm-count">3 <span>L4 activities</span></div><div class="cm-mvals">M1 95%  &rarr;  M3 82%</div></div></div>
+<h2>Process Accountability</h2><table><tr><th>Process Accountability</th><th style="width:14%;text-align:center">Tier</th><th style="width:35%">L3 Processes</th><th style="width:12%;text-align:center">L4 Activities</th></tr><tr><td class="acc-role">CISO</td><td style="text-align:center"><span class="tier-badge" style="background:#FEE2E2;color:#991B1B">Executive</span></td><td class="acc-l3">8.3.1</td><td style="text-align:center">10</td></tr><tr><td class="acc-role">Director of Cybersecurity</td><td style="text-align:center"><span class="tier-badge" style="background:#EEF3FA;color:#1B4F8A">Managerial</span></td><td class="acc-l3">8.3.2, 8.3.3, 8.3.4, 8.3.5, 8.3.6, 8.3.7, 8.3.8</td><td style="text-align:center">43</td></tr></table>
+<h2>Handoff Points</h2><p>The stream opens with CISO-accountable strategy formation (8.3.1), then hands to Director of Cybersecurity for the remaining seven L3s — resilience strategy (8.3.2), risk/compliance/security control (8.3.3), continuity planning (8.3.4), security/privacy/data protection (8.3.5), compliance assessment (8.3.6), resilience and continuity operations (8.3.7), and identity/authorization management (8.3.8).</p><p>Cybersecurity Analyst carries Responsible across most of Director of Cybersecurity's lane, with the stream's three Exception-pattern activities — threat detection and response (8.3.5.7), compliance escalation (8.3.6.4), and breach response (8.3.8.6) — marking where routine monitoring hands off to non-standard, judgment-driven resolution.</p>
+<h2>Governed Decision Points</h2><p class="caption">Every Decision/Exception-pattern activity in the value stream, including those embedded inside Mixed-labeled steps.</p><table><tr><th style="width:8%">PCF</th><th>Decision</th><th>Authority</th><th>Impact</th><th>Escalates To</th><th>Trigger</th></tr><tr><td class="gdp-pcf">8.3.1.3</td><td>Establish IT risk tolerance</td><td>CISO</td><td>Strategic — sets the domain's acceptable risk posture</td><td>CEO / Board (outside the IT role catalog)</td><td>Risk tolerance decision has enterprise-wide financial or regulatory exposure implications</td></tr><tr><td class="gdp-pcf">8.3.1.4</td><td>Establish risk ownership</td><td>CISO</td><td>Governance — assigns accountability for IT risk categories</td><td>CEO / Board (outside the IT role catalog)</td><td>Ownership assignment spans multiple business units or existing role catalog gaps</td></tr><tr><td class="gdp-pcf">8.3.1.6</td><td>Establish compliance objectives</td><td>CISO</td><td>Strategic + Regulatory</td><td>CEO / Board (outside the IT role catalog)</td><td>Objectives involve new regulatory scope or conflict with existing enterprise compliance commitments</td></tr><tr><td class="gdp-pcf">8.3.2.3</td><td>Prioritize IT risks</td><td>Director of Cybersecurity</td><td>Strategic + Operational</td><td>CISO (Executive)</td><td>Risk prioritization affects enterprise-level resource allocation or conflicts with CISO-set risk tolerance</td></tr><tr><td class="gdp-pcf">8.3.5.7</td><td>Monitor/analyze network intrusion detection data and resolve threats</td><td>Director of Cybersecurity</td><td>Operational + Security — direct breach risk</td><td>CISO (Executive)</td><td>Detected threat indicates active compromise or exceeds standard incident-response procedures</td></tr><tr><td class="gdp-pcf">8.3.6.4</td><td>Identify and escalate IT compliance issues and remediation requirements</td><td>Director of Cybersecurity</td><td>Regulatory + Reputational</td><td>CISO (Executive)</td><td>Compliance issue involves potential regulatory violation or requires enterprise-level remediation budget</td></tr><tr><td class="gdp-pcf">8.3.8.6</td><td>Respond to IT information security and network breaches</td><td>Director of Cybersecurity</td><td>Security + Reputational + Regulatory — the domain's highest-severity incident type</td><td>CISO / CEO / Board (Executive)</td><td>Confirmed breach with data exposure, regulatory notification requirements, or material business impact</td></tr></table>
+</div>
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;&middot;&nbsp; Human Enterprise Architect &nbsp;&middot;&nbsp; August 2026<br>
+    Co-developed with Claude (Anthropic)<br>
+    <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
+    &nbsp;&middot;&nbsp; hitldrivenarchitecture.com
+  </p>
+</footer>
+</body>
+</html>
