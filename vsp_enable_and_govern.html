@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Enable & Govern — The Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B4F8A; --navy-d: #0D2D4F; --navy-l: #EEF3FA; --dark: #0D1B2A;
+  --gray: #444; --lgray: #888; --bg: #F4F6FB; --border: #DDE3EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); }
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 4px; }
+.masthead .tagline { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+.breadcrumb { max-width: 900px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
+.breadcrumb a { color: var(--navy); text-decoration: none; }
+.doc { max-width: 900px; margin: 0 auto; padding: 24px 24px 80px; }
+.doc h1.title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy-d); margin: 8px 0 6px; }
+.doc .subtitle { font-size: 13px; color: var(--lgray); font-style: italic; margin-bottom: 5px; }
+.doc .stats { font-size: 13px; color: var(--gray); margin-bottom: 22px; }
+.doc h2 { font-size: 16px; color: var(--navy-d); font-weight: 700; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
+.doc p { font-size: 13px; line-height: 1.7; color: var(--gray); margin-bottom: 12px; }
+.doc p.caption { font-size: 11.5px; color: var(--lgray); margin-bottom: 14px; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 12px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 7px 10px; font-size: 11px; }
+td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:nth-child(even) td { background: #FAFBFD; }
+.kpi-name { font-weight: 700; color: var(--navy-d); }
+.kpi-formula { font-size: 12px; color: var(--lgray); font-style: italic; }
+.src-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: #DCFCE7; color: #166534; }
+.src-none { color: #B8C0CC; }
+.gdp-pcf { font-family: 'DM Mono', monospace; color: var(--navy); }
+.no-gdp { font-style: italic; color: var(--lgray); font-size: 13px; padding: 12px 0; }
+.capmap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 10px; margin: 14px 0 8px; }
+.capmap-card { border-radius: 8px; padding: 14px 14px; }
+.cm-name { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.cm-tagline { font-size: 10px; font-style: italic; opacity: .85; margin-bottom: 10px; line-height: 1.4; }
+.cm-count { font-weight: 700; font-size: 15px; }
+.cm-count span { font-weight: 400; font-size: 11px; }
+.cm-mvals { font-size: 11px; margin-top: 4px; }
+.cm-empty-note { font-size: 10.5px; font-style: italic; margin-top: 4px; }
+.acc-role { color: var(--navy-d); }
+.tier-badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 3px 10px; border-radius: 10px; }
+.acc-l3 { font-size: 11.5px; color: #666; }
+.acc-note { font-size: 10.5px; font-style: italic; color: var(--lgray); margin-top: 3px; }
+footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+.pdflink { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--navy); text-decoration: none; background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 8px 14px; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="masthead">
+  <h1>The Human-AI Partnership Framework</h1>
+  <div class="tagline">Where human judgment belongs</div>
+  <nav>
+    <a href="index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+  </nav>
+</div>
+<div class="breadcrumb"><a href="index.html">Documentation</a> / Process View / Enable & Govern</div>
+<div class="doc">
+<h1 class="title">Enable & Govern</h1>
+<p class="subtitle">PCF 7.4, 7.7–7.8 &middot; Cross-cutting — compliance, data, communication</p>
+<p class="stats">16 PCF processes &middot; 22 L4 activities &middot; M1 79% &rarr; M3 57% (&Delta; -22%)</p>
+<a class="pdflink" href="../pdfs/hitl_valuestream_enable_and_govern_pcf7_final.pdf">&#8659; Download as PDF</a>
+<h2>Description</h2>
+<p>This value stream spans 3 APQC PCF process groups: 7.4 Manage Employee Relations, 7.7 Manage Employee Information, and 7.8 Manage Employee Communication — together comprising 16 Level 3 processes and 22 Level 4 activities.</p><p>At the activity level, this value stream's work breaks down as 8 Knowledge activities (judgment, synthesis, and interpretation-driven work), 5 Transaction activities (rules-based processing suited to automation), 4 Document activities (content generation), 3 Decision activities (judgment-and-authority gates that stay human by design), and 2 Exception activities (non-standard cases requiring human resolution).</p><p>At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 57%, down from a 79% undesigned baseline — a 22-point AI convergence opportunity.</p>
+<h2>KPIs</h2><table><tr><th>Business Impact Metric &amp; Formula (where confirmed)</th><th style="width:15%">Source</th></tr><tr><td><div class="kpi-name">HR cost-to-serve</div><div class="kpi-formula">4 variants: personnel cost as % of total HR cost; personnel cost per HR-function FTE; personnel cost per business-entity FTE; overhead cost per business-entity employee</div></td><td><span class="src-badge">APQC OSB</span></td></tr><tr><td><div class="kpi-name">ER case cycle time</div><div class="kpi-formula">Time from grievance/complaint intake to case resolution, per case, averaged per period</div></td><td><span class="src-none">&mdash;</span></td></tr><tr><td><div class="kpi-name">Compliance incident rate</div><div class="kpi-formula">Confirmed compliance incidents ÷ total headcount, per period</div></td><td><span class="src-none">&mdash;</span></td></tr><tr><td><div class="kpi-name">Data quality / audit findings</div><div class="kpi-formula">Data-quality audit findings requiring remediation ÷ total audit checks performed, per audit cycle</div></td><td><span class="src-none">&mdash;</span></td></tr></table>
+<h2>Design Narrative</h2><p>Enable & Govern is the first value stream spanning multiple PCF L2 groups rather than one, and its accountability pattern reflects that structure: three distinct role clusters emerge along the underlying group boundaries instead of a single dominant owner — HR Business Partner Manager holds the case-based, relationship-driven work (7.4.1–7.4.4, 7.8.1, 7.8.3), HRIS Analyst holds systems and data infrastructure (the majority of 7.7), and Director of HR Operations sits above both as the cross-domain governance layer, directly Accountable for compliance monitoring (7.4.5). This value stream also carries the framework's two Exception-pattern activities (7.4.4 grievances, 7.7.2 employee inquiries), and its steepest AI-absorption opportunities cluster in Document-pattern content — 7.7.1 reporting, 7.8.2 survey administration, and 7.8.3 communication delivery all sit at -32 points. 7.8.2 carries forward its Reward-to-Retain assignment unchanged, since APQC names the same underlying activity separately under two different L2 groups.</p>
+<h2>AI Capability Map</h2><p class="caption">Pattern-type distribution across this value stream's activity units. H% figures are the pattern type's standard value at each maturity level, applied consistently across all PCF domains.</p><div class="capmap-grid"><div class="capmap-card" style="background:#EEF3FA;color:#1B4F8A"><div class="cm-name">Decision</div><div class="cm-tagline">Judgment &amp; Authority — gates that stay human by design</div><div class="cm-count">3 <span>L4 activities</span></div><div class="cm-mvals">M1 92%  &rarr;  M3 80%</div></div><div class="capmap-card" style="background:#F3F0FE;color:#534AB7"><div class="cm-name">Knowledge</div><div class="cm-tagline">Synthesis &amp; Interpretation — judgment-driven work</div><div class="cm-count">8 <span>L4 activities</span></div><div class="cm-mvals">M1 85%  &rarr;  M3 65%</div></div><div class="capmap-card" style="background:#E0F2FE;color:#0369A1"><div class="cm-name">Document</div><div class="cm-tagline">Content Generation — drafting and communication</div><div class="cm-count">4 <span>L4 activities</span></div><div class="cm-mvals">M1 72%  &rarr;  M3 40%</div></div><div class="capmap-card" style="background:#DCFCE7;color:#166534"><div class="cm-name">Transaction</div><div class="cm-tagline">Rules-Based Processing — suited to automation</div><div class="cm-count">5 <span>L4 activities</span></div><div class="cm-mvals">M1 60%  &rarr;  M3 35%</div></div><div class="capmap-card" style="background:#FEE2E2;color:#991B1B"><div class="cm-name">Exception</div><div class="cm-tagline">Non-Standard Resolution — human-resolved by nature</div><div class="cm-count">2 <span>L4 activities</span></div><div class="cm-mvals">M1 95%  &rarr;  M3 82%</div></div></div>
+<h2>Process Accountability</h2><table><tr><th>Process Accountability</th><th style="width:14%;text-align:center">Tier</th><th style="width:35%">L3 Processes</th><th style="width:12%;text-align:center">L4 Activities</th></tr><tr><td class="acc-role">HRBP Manager</td><td style="text-align:center"><span class="tier-badge" style="background:#EEF3FA;color:#1B4F8A">Managerial</span></td><td class="acc-l3">7.4.1, 7.4.2, 7.4.3, 7.4.4, 7.8.1, 7.8.3</td><td style="text-align:center">6</td></tr><tr><td class="acc-role">Director of HR Ops</td><td style="text-align:center"><span class="tier-badge" style="background:#EEF3FA;color:#1B4F8A">Managerial</span></td><td class="acc-l3">7.4.5</td><td style="text-align:center">1</td></tr><tr><td class="acc-role">HRIS Analyst</td><td style="text-align:center"><span class="tier-badge" style="background:#DCFCE7;color:#166534">Operational</span></td><td class="acc-l3">7.7.1, 7.7.3, 7.7.4, 7.7.5, 7.7.6, 7.7.7, 7.7.8</td><td style="text-align:center">13</td></tr><tr><td class="acc-role">HR Generalist</td><td style="text-align:center"><span class="tier-badge" style="background:#DCFCE7;color:#166534">Operational</span></td><td class="acc-l3">7.7.2, 7.8.2</td><td style="text-align:center">2</td></tr></table>
+<h2>Handoff Points</h2><p>Enable & Govern is the first value stream in this framework to span multiple PCF L2 groups rather than one, and its ownership split reflects that structure directly: HRBP Manager owns the case-based, relationship-driven work clustered in 7.4 (labor relations, bargaining, partnerships, grievances) plus the communication bookends in 7.8, while HRIS Analyst owns the systems and data infrastructure that makes up the majority of 7.7 — the largest single ownership share in the framework so far.</p><p>Director of HR Ops holds a single step (7.4.5 Monitor Legal and Regulatory Environment) but sits above both other owners as the cross-domain governance layer — Consulted or Informed across most of the remaining steps even without direct Accountable ownership of them, reflecting the value stream's own "enable and govern" purpose.</p><p>HR Generalist's two steps (7.7.2 Manage Employee Inquiry Process, 7.8.2 Conduct Employee Engagement Surveys) form the value stream's operational-delivery layer. 7.8.2 carries forward its Reward-to-Retain assignment unchanged, since APQC names the same underlying activity separately under two different L2 groups — the framework's first confirmed content overlap across value streams.</p>
+<h2>Governed Decision Points</h2><p class="caption">Every Decision/Exception-pattern activity in the value stream, including those embedded inside Mixed-labeled steps.</p><table><tr><th style="width:8%">PCF</th><th>Decision</th><th>Authority</th><th>Impact</th><th>Escalates To</th><th>Trigger</th></tr><tr><td class="gdp-pcf">7.4.4</td><td>Investigate and resolve employee complaint or grievance</td><td>HRBP Manager</td><td>Legal + People — litigation and reputational exposure</td><td>Director of HR Ops / Legal / CHRO (Managerial → Executive)</td><td>Case involves potential litigation, an executive-level employee, or regulatory exposure</td></tr><tr><td class="gdp-pcf">7.7.7.3</td><td>Select the methodology used for workforce analytics (embedded in Manage HR Reporting & Analytics)</td><td>HRIS Analyst</td><td>Operational + Strategic — informs downstream restructuring or board reporting</td><td>Director of HR Ops (Managerial)</td><td>Methodology output will inform headcount, restructuring, or board-level reporting decisions</td></tr></table>
+</div>
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;&middot;&nbsp; Human Enterprise Architect &nbsp;&middot;&nbsp; August 2026<br>
+    Co-developed with Claude (Anthropic)<br>
+    <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
+    &nbsp;&middot;&nbsp; hitldrivenarchitecture.com
+  </p>
+</footer>
+</body>
+</html>

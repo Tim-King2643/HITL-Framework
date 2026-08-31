@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CIO — Role Transition Profile — The Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B4F8A; --navy-d: #0D2D4F; --navy-l: #EEF3FA; --dark: #0D1B2A;
+  --gray: #444; --lgray: #888; --bg: #F4F6FB; --border: #DDE3EE;
+  --c-dec:#1B4F8A; --bg-dec:#EEF3FA; --c-kno:#534AB7; --bg-kno:#F3F0FE;
+  --c-doc:#0369A1; --bg-doc:#E0F2FE; --c-tra:#166534; --bg-tra:#DCFCE7;
+  --c-exc:#991B1B; --bg-exc:#FEE2E2;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); }
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 4px; }
+.masthead .tagline { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+.breadcrumb { max-width: 860px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
+.breadcrumb a { color: var(--navy); text-decoration: none; }
+.doc { max-width: 860px; margin: 0 auto; padding: 24px 24px 80px; }
+.doc h1.title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy-d); margin: 8px 0 6px; }
+.doc .subtitle { font-size: 13px; color: var(--lgray); font-style: italic; margin-bottom: 24px; }
+.doc h2 { font-size: 16px; color: var(--navy-d); font-weight: 700; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
+.doc p { font-size: 13px; line-height: 1.7; color: var(--gray); margin-bottom: 12px; }
+.doc p.caption { font-size: 11.5px; color: var(--lgray); margin-bottom: 14px; }
+.doc p.framework-connection { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 0 6px 6px 0; padding: 14px 18px; font-size: 12.5px; color: #333; }
+.doc ul.skills { margin: 0 0 16px 0; padding: 0; list-style: none; }
+.doc ul.skills li { font-size: 13px; line-height: 1.65; color: var(--gray); margin-bottom: 7px; padding-left: 18px; position: relative; }
+.doc ul.skills li::before { content: "—"; position: absolute; left: 0; color: var(--navy); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 12px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 6px 8px; font-size: 10.5px; vertical-align: bottom; }
+.mh { font-weight: 400; font-size: 9px; display:block; opacity:.85; }
+td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.detail-table td.stat, .detail-table th { text-align: center; }
+.detail-table td.pcf { font-family: 'DM Mono', monospace; color: var(--navy); font-size: 11.5px; }
+.detail-table tr.l3-row td { background: #E8EEF7; font-weight: 700; color: var(--navy-d); }
+.detail-table tr.l3-row td.stat { color: var(--navy); }
+.detail-table tr.l4-row td.act { padding-left: 18px; color: var(--gray); font-weight: 400; }
+.detail-table td.m3 { background: #D6E8FF; font-weight: 700; color: var(--navy); }
+.detail-table tr.l3-row td.m3 { background: #C4DCFF; }
+.detail-table td.delta { color: #B45309; }
+.pat-badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+.mixbar { display: flex; height: 14px; width: 100%; border-radius: 3px; overflow: hidden; }
+.mixbar span { display: block; height: 100%; }
+.legend { font-size: 11.5px; color: var(--gray); margin: 10px 0 4px; line-height: 1.9; }
+.legend .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+.snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0 20px; }
+.snap-box { border: 1px solid #7AAED6; border-radius: 6px; padding: 12px 14px; background: #fff; }
+.snap-label { font-size: 12px; color: var(--lgray); margin-bottom: 4px; }
+.snap-value { font-size: 17px; font-weight: 700; color: var(--navy); font-family: 'DM Mono', monospace; }
+.scope-callout { background: #FEF3C7; border-top: 3px solid #F59E0B; border-radius: 4px; padding: 14px 18px; margin: 18px 0; }
+.scope-callout .label { font-size: 12px; font-weight: 700; color: #92400E; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 6px; }
+.scope-callout p { color: #333; font-size: 12.5px; margin-bottom: 0; }
+.prog-table th:first-child { background: var(--navy-d); }
+.prog-table td.rowlabel { font-weight: 700; color: var(--navy-d); background: var(--navy-l); width: 14%; }
+tr:nth-child(even) td { background: #FAFBFD; }
+.detail-table tr.l3-row:nth-child(even) td, .detail-table tr.l4-row:nth-child(even) td { background: inherit; }
+.detail-table tbody tr.l4-row td { background: #fff; }
+.detail-table tbody tr.l4-row:nth-child(odd) td { background: #FAFBFD; }
+.detail-table tbody tr.l4-row td.m3 { background: #D6E8FF; font-weight: 700; color: var(--navy); }
+p.sources { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 14px; }
+footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+.crosslink { display: block; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 24px 0; text-decoration: none; }
+.crosslink .ct { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.crosslink .cd { font-size: 12px; color: var(--lgray); }
+.capmap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 8px 0 18px; }
+.capmap-card { border-radius: 8px; padding: 12px 14px; }
+.capmap-card .cm-name { font-weight: 700; font-size: 12px; margin-bottom: 3px; text-transform: uppercase; letter-spacing: .03em; }
+.capmap-card .cm-tagline { font-style: italic; font-size: 10px; margin-bottom: 8px; }
+.capmap-card .cm-count { font-weight: 700; font-size: 17px; }
+.capmap-card .cm-count span { font-size: 11px; font-weight: 700; text-transform: none; letter-spacing: 0; }
+.capmap-card .cm-mvals { font-weight: 700; font-size: 11px; margin-top: 4px; }
+.capmap-card .cm-empty-note { font-style: italic; font-size: 11px; }
+p.caption-note { font-size: 12px; color: var(--lgray); font-style: italic; background: var(--navy-l); border-left: 3px solid var(--navy); border-radius: 0 4px 4px 0; padding: 8px 12px; margin-bottom: 14px; }
+.evo-timeline { display: flex; align-items: stretch; gap: 6px; margin: 18px 0 24px; }
+.evo-era { flex: 1; border-radius: 8px; padding: 12px 10px; display: flex; flex-direction: column; }
+.evo-era .era-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; opacity: .75; margin-bottom: 4px; }
+.evo-era .era-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+.evo-era .era-desc { font-size: 10.5px; line-height: 1.45; flex-grow: 1; }
+.evo-arrow { display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--lgray); flex: 0 0 auto; width: 10px; }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <h1>The Human-AI Partnership Framework</h1>
+  <div class="tagline">Where human judgment belongs</div>
+  <nav><a href="index.html">Documentation</a><a href="../hitl_dashboard_final.html">Dashboard</a></nav>
+</div>
+
+<div class="breadcrumb"><a href="index.html">Documentation</a> / <a href="role_taxonomy_pcf8.html">People View</a> / CIO</div>
+
+<div class="doc">
+<h1 class="title">CIO — Role Transition Profile</h1>
+<p class="subtitle">Executive Tier &middot; 1 PCF processes across 1 process group</p>
+
+<h2>Role Impact Snapshot</h2>
+<p>Computed from 8.0's confirmed RACI data using the Responsible/Accountable touch rule (excludes Consulted/Informed).</p>
+<div class="snapshot-grid">
+<div class="snap-box"><div class="snap-label">L3 processes touched</div><div class="snap-value">1</div></div>
+<div class="snap-box"><div class="snap-label">L4 activity units</div><div class="snap-value">6</div></div>
+<div class="snap-box"><div class="snap-label">Process groups spanned</div><div class="snap-value">1 of 7</div></div>
+<div class="snap-box"><div class="snap-label">Aggregate M1 &rarr; M3</div><div class="snap-value">79% &rarr; 56%</div></div>
+<div class="snap-box"><div class="snap-label">Convergence gap</div><div class="snap-value">-23 pts</div></div>
+<div class="snap-box"><div class="snap-label">Dominant pattern</div><div class="snap-value">Knowledge (67%)</div></div>
+</div>
+
+<h2>Role Pattern Mix</h2>
+<p>Pattern-type distribution across every L4 activity this role touches (Responsible or Accountable), with each pattern's standard M1&rarr;M3 convergence applied. Same card design as the Value Stream Profile docs' AI Capability Map, scoped to this role instead of a value stream.</p>
+<p class="caption-note">Each card shows that pattern's own standard M1&rarr;M3 value, not weighted by this role. The Snapshot's Aggregate M1&rarr;M3 above (79% &rarr; 56%) is the count-weighted blend across all 5 patterns present — Knowledge dominates by volume (67% of activities) but its own M3 (65%) sits above the blend because other, lower-M3 patterns still in the mix pull the role-wide average down.</p>
+<div class="capmap-grid"><div class="capmap-card" style="background:#EEF3FA;color:#1B4F8A"><div class="cm-name">Decision</div><div class="cm-tagline">Judgment & Authority — gates that stay human by design</div><div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities of this pattern touched by this role</div></div><div class="capmap-card" style="background:#F3F0FE;color:#534AB7"><div class="cm-name">Knowledge</div><div class="cm-tagline">Synthesis & Interpretation — judgment-driven work</div><div class="cm-count">4 <span>L4 activities</span></div><div class="cm-mvals">M1 85%  →  M3 65%</div></div><div class="capmap-card" style="background:#E0F2FE;color:#0369A1"><div class="cm-name">Document</div><div class="cm-tagline">Content Generation — drafting and communication</div><div class="cm-count">1 <span>L4 activities</span></div><div class="cm-mvals">M1 72%  →  M3 40%</div></div><div class="capmap-card" style="background:#DCFCE7;color:#166534"><div class="cm-name">Transaction</div><div class="cm-tagline">Rules-Based Processing — suited to automation</div><div class="cm-count">1 <span>L4 activities</span></div><div class="cm-mvals">M1 60%  →  M3 35%</div></div><div class="capmap-card" style="background:#FEE2E2;color:#991B1B"><div class="cm-name">Exception</div><div class="cm-tagline">Non-Standard Resolution — human-resolved by nature</div><div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities of this pattern touched by this role</div></div></div>
+
+<h2>Role Impact Profile &mdash; Full Detail</h2>
+<p>Every L3 process this role holds Responsible or Accountable on. Each Mixed-pattern process is shown with its own aggregate rollup row (a proportional pattern-mix bar in place of a plain &ldquo;Mixed&rdquo; label), followed by its individual Level 4 activities.</p>
+<table class="detail-table">
+<thead><tr><th>PCF</th><th>Process/Activity</th><th>Pattern</th><th>M1<br><span class=mh>UNDESIGNED</span></th><th>M2<br><span class=mh>EMERGING</span></th><th>M3 &#9733;<br><span class=mh>DESIGN INTENT</span></th><th>M4<br><span class=mh>OPTIMIZED</span></th><th>M5<br><span class=mh>LEADING</span></th><th>&Delta; M1&rarr;M3</th></tr></thead>
+<tbody><tr class="l3-row"><td class="pcf">8.2.1</td><td class="act">Define business technology and governance strategy</td><td class="patcell"><span class="mixbar"><span style="width:66.7%;background:#A79AE0" title="Knowledge (4)"></span><span style="width:16.7%;background:#5EB8E0" title="Document (1)"></span><span style="width:16.7%;background:#6FC48C" title="Transaction (1)"></span></span></td><td class="stat">79%</td><td class="stat">70%</td><td class="stat m3">56%</td><td class="stat">43%</td><td class="stat">33%</td><td class="stat delta">-23%</td></tr><tr class="l4-row"><td class="pcf">8.2.1.1</td><td class="act">Build and maintain IT strategic intelligence</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">8.2.1.2</td><td class="act">Monitor and map current and emerging technologies</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">8.2.1.3</td><td class="act">Define and communicate digital transformation strategy</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">8.2.1.4</td><td class="act">Develop IT strategic alignment</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">8.2.1.5</td><td class="act">Articulate IT alignment principles</td><td class="patcell"><span class="pat-badge" style="color:#0369A1;background:#E0F2FE">Document</span></td><td class="stat">72%</td><td class="stat">58%</td><td class="stat m3">40%</td><td class="stat">28%</td><td class="stat">18%</td><td class="stat delta">-32%</td></tr><tr class="l4-row"><td class="pcf">8.2.1.6</td><td class="act">Maintain IT strategic alignment</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr></tbody>
+</table>
+<div class="legend"><span class="sw" style="background:var(--c-dec)"></span>Decision &mdash; Judgment &amp; Authority &nbsp; <span class="sw" style="background:var(--c-kno)"></span>Knowledge &mdash; Synthesis &amp; Interpretation &nbsp; <span class="sw" style="background:var(--c-doc)"></span>Document &mdash; Content Generation &nbsp; <span class="sw" style="background:var(--c-tra)"></span>Transaction &mdash; Rules-Based Processing<br><span class="sw" style="background:var(--c-exc)"></span>Exception &mdash; Non-Standard Resolution &nbsp;&middot;&nbsp; R/A-touch basis, not C/I &nbsp;&middot;&nbsp; Equal-weighted rollup across touched processes &nbsp;&middot;&nbsp; &copy; Timothy P. King 2026 &middot; developed with the assistance of Claude (Anthropic)</div>
+
+<h2>One Process, the Entire Mandate</h2>
+<p>CIO's footprint in this domain is deliberately narrow: a single L3, 8.2.1 &ldquo;Define business technology and governance strategy,&rdquo; held Accountable while IT Director carries Responsible. That's the framework's multi-executive rule at work &mdash; CIO, CISO, and Chief Data Officer each own exactly one Strategy-tier L3 matching their own governance mandate, rather than one executive holding Accountable across the whole domain. Within that single process, the mix is heavily Knowledge-weighted (67% of activities: building strategic intelligence, mapping emerging technology, defining transformation strategy, developing alignment), with one Document activity (articulating alignment principles) and one Transaction activity (maintaining alignment day to day) rounding it out. It's a small footprint by process count, but it's the apex strategy-setting process the rest of the domain's IT Vision-to-Strategy value stream flows from.</p>
+
+<h2>Skills &amp; Competencies</h2>
+<p>Grounded in CIO Index's &ldquo;How to Become a CIO&rdquo; career-path guide (Sourabh Hajela, 2026), which frames C-suite readiness around a &ldquo;Skill Triumvirate&rdquo; of business acumen, leadership, and technological fluency.</p>
+<ul class="skills">
+<li>Financial management and ROI justification &mdash; fluency in P&amp;L, CapEx/OpEx, and building the business case for every major technology investment</li>
+<li>Strategic planning and roadmapping &mdash; a multi-year technology strategy fully integrated with the corporate business plan, not a standalone IT plan</li>
+<li>IT governance and risk oversight &mdash; the CIO is, per CIO Index, &ldquo;the ultimate owner of technology risk,&rdquo; from regulatory frameworks to portfolio-wide risk mitigation</li>
+<li>Executive communication and stakeholder management &mdash; translating technical complexity into business narratives for the CEO, CFO, and Board, while balancing conflicting C-suite priorities</li>
+<li>AI governance leadership &mdash; per CIO Index's &ldquo;CIO 5.0&rdquo; framing, an expanding mandate covering regulatory compliance, data stewardship, and explainable-AI frameworks that keep AI decisions auditable to the Board</li>
+</ul>
+<p class="framework-connection"><strong>Framework connection: </strong>The Knowledge-dominant mix in 8.2.1 (M1 85% &rarr; M3 65%, the highest-retained pattern in this role's touch set) is exactly the synthesis-and-interpretation work CIO Index describes as strategic planning and technology-trend monitoring &mdash; work that stays judgment-heavy even as the Document and Transaction activities beneath it (articulating and maintaining alignment) converge faster.</p>
+
+<h2>Role Progression Framework</h2>
+<p>Three-stage structure follows the AIHR &ldquo;HR Business Partner Guide&rdquo; infographic's template (Getting Started / Established / Future-Focused) &mdash; structure only, no content reused. Column content grounded in CIO Index's real 15&ndash;20 year career-path data (2026), including its accelerated 10&ndash;14 year alternative track.</p>
+<table class="prog-table">
+<thead><tr><th></th><th>Getting Started</th><th>Established</th><th>Future-Focused</th></tr></thead>
+<tbody>
+<tr><td class="rowlabel">Role focus</td><td>Building technical depth as an entry-level specialist (Systems Analyst, Network Engineer, Application Developer), gaining the &ldquo;360-degree view&rdquo; across infrastructure, applications, and security</td><td>Pivoting from technical expert to business leader &mdash; IT Team Leader, Project/Functional Manager, then Director of a major IT function or VP of IT, owning budget and cross-functional delivery</td><td>Full enterprise technology strategy ownership as CIO, operating as CIO Index's &ldquo;CIO 5.0&rdquo;: AI orchestrator, ethical steward, and Board-level Changemaker</td></tr>
+<tr><td class="rowlabel">Key activities</td><td>Hands-on system/application work; early cloud and project-management certifications; cross-functional project rotations</td><td>Budget ownership (OpEx/CapEx), vendor negotiation, translating ROI into business metrics, first Board exposure alongside the sitting CIO</td><td>Setting multi-year technology strategy integrated with corporate strategy, governing enterprise AI adoption, representing technology directly to the Board</td></tr>
+<tr><td class="rowlabel">Skills to build</td><td>Cloud platform fluency, CompTIA Security+, PMP/Agile fundamentals</td><td>MBA or Executive MBA, ITIL 4, CISSP-level security fluency, PMP; the shift from &ldquo;how a system works&rdquo; to &ldquo;why it exists&rdquo;</td><td>CGEIT (IT governance), executive education (finance/strategy), AI governance and regulatory fluency (EU AI Act and equivalents)</td></tr>
+<tr><td class="rowlabel">Common pitfalls</td><td>Optimizing for the deepest technical specialization rather than the breadth needed to eventually lead across the whole stack</td><td>Staying in &ldquo;tech-speak&rdquo; instead of learning to quantify technology value in revenue, margin, and shareholder terms the CFO and CEO respond to</td><td>Treating AI governance as a compliance checkbox rather than the expanding strategic mandate CIO Index frames it as &mdash; prioritizing novelty over measurable business ROI</td></tr>
+</tbody>
+</table>
+
+<h2>How the Role Has Evolved</h2>
+<div class="evo-timeline">
+<div class="evo-era" style="background:#EEF3FA;color:#33475B">
+<div class="era-label">1981</div>
+<div class="era-title">The Title Is Coined</div>
+<div class="era-desc">William Synnott coins &ldquo;Chief Information Officer&rdquo; in 1981. Early adoption is slow and utility-focused &mdash; IT as infrastructure to keep running, not yet a strategy seat.</div>
+</div>
+<div class="evo-arrow">&rarr;</div>
+<div class="evo-era" style="background:#DCE6F5;color:#22405F">
+<div class="era-label">Late 1980s&ndash;90s</div>
+<div class="era-title">A Real C-Suite Seat</div>
+<div class="era-desc">By 1989, roughly 40% of Business Week's top 1,000 companies have a CIO. The role becomes a recognized executive title, but the mandate is still largely Business-IT Alignment &mdash; making sure IT supports goals set elsewhere.</div>
+</div>
+<div class="evo-arrow">&rarr;</div>
+<div class="evo-era" style="background:#B9CCEA;color:#173257">
+<div class="era-label">2015</div>
+<div class="era-title">Named Strategic Patterns</div>
+<div class="era-desc">Deloitte's &ldquo;Creating Legacy&rdquo; global CIO survey names three CIO patterns &mdash; trusted operator, change instigator, business cocreator &mdash; formally distinguishing operational CIOs from those actively driving business strategy.</div>
+</div>
+<div class="evo-arrow">&rarr;</div>
+<div class="evo-era" style="background:#7FA3D6;color:#0D2340">
+<div class="era-label">2020&ndash;2023</div>
+<div class="era-title">The Strategic Pivot Accelerates</div>
+<div class="era-desc">State of the CIO survey data shows a multi-year shift away from purely functional focus toward strategic and transformational work, accelerated by pandemic-era digital transformation pressure.</div>
+</div>
+<div class="evo-arrow">&rarr;</div>
+<div class="evo-era" style="background:var(--navy-d);color:#fff">
+<div class="era-label">2026 &#9733;</div>
+<div class="era-title">The AI Orchestrator</div>
+<div class="era-desc">CIO Index frames the emerging &ldquo;CIO 5.0&rdquo; model: the CIO as primary Changemaker for ethical AI adoption, governance, and monetization. Gartner projects 70% of CIO success will hinge on leading high-performing teams with emotional intelligence, not technical authority alone.</div>
+</div>
+</div>
+<p style="font-size:11px;color:var(--lgray);font-style:italic;margin-top:-12px;margin-bottom:20px">Era framing follows the AIHR &ldquo;HR Business Partner Guide&rdquo; infographic's own historical structure; CIO-role dates verified independently against CIO Wiki and primary CIO-history sources, not reproduced from CIO Index's text.</p>
+<p class="framework-connection"><strong>A related pattern: </strong>McKinsey's Julie Goran, writing in July 2026, frames the scale of what's changing as comparable to the dawn of the Industrial Age &mdash; leaders are now asking whether AI agents belong on the org chart itself, and how to plan spans and layers around agent capacity alongside human capacity. For CIO, that's not a future question: 8.2.1's own Knowledge-heavy mix (M1 85% &rarr; M3 65%) is precisely the synthesis-and-interpretation work this role would need to decide whether, and how, to delegate to agents first.</p>
+<p class="sources">Sources: Sourabh Hajela, &ldquo;How To Become A CIO: The 7-Step Career Path &amp; Qualifications Guide,&rdquo; CIO Index, updated August 3, 2026; &ldquo;Chief Information Officer (CIO),&rdquo; CIO Wiki; Deloitte, &ldquo;Manifesting Legacy: 2018 Global CIO Survey&rdquo; (citing the 2015 &ldquo;Creating Legacy&rdquo; survey's three CIO patterns); Deloitte, &ldquo;2020 State of the CIO&rdquo;; Julie Goran, &ldquo;Rewired takes: How AI is unlocking creativity and heralding the rise of the agent manager,&rdquo; McKinsey &amp; Company, July 2026. AIHR &ldquo;HR Business Partner Guide&rdquo; infographic used as structural template only; no content reused.</p>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;&middot;&nbsp; Human Enterprise Architect &nbsp;&middot;&nbsp; August 2026<br>
+    Co-developed with Claude (Anthropic)<br>
+    <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
+    &nbsp;&middot;&nbsp; hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>

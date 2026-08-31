@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chief Data Officer — Role Transition Profile — The Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B4F8A; --navy-d: #0D2D4F; --navy-l: #EEF3FA; --dark: #0D1B2A;
+  --gray: #444; --lgray: #888; --bg: #F4F6FB; --border: #DDE3EE;
+  --c-dec:#1B4F8A; --bg-dec:#EEF3FA; --c-kno:#534AB7; --bg-kno:#F3F0FE;
+  --c-doc:#0369A1; --bg-doc:#E0F2FE; --c-tra:#166534; --bg-tra:#DCFCE7;
+  --c-exc:#991B1B; --bg-exc:#FEE2E2;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); }
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 4px; }
+.masthead .tagline { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+.breadcrumb { max-width: 860px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
+.breadcrumb a { color: var(--navy); text-decoration: none; }
+.doc { max-width: 860px; margin: 0 auto; padding: 24px 24px 80px; }
+.doc h1.title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy-d); margin: 8px 0 6px; }
+.doc .subtitle { font-size: 13px; color: var(--lgray); font-style: italic; margin-bottom: 24px; }
+.doc h2 { font-size: 16px; color: var(--navy-d); font-weight: 700; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
+.doc p { font-size: 13px; line-height: 1.7; color: var(--gray); margin-bottom: 12px; }
+.doc p.caption { font-size: 11.5px; color: var(--lgray); margin-bottom: 14px; }
+.doc p.framework-connection { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 0 6px 6px 0; padding: 14px 18px; font-size: 12.5px; color: #333; }
+.doc ul.skills { margin: 0 0 16px 0; padding: 0; list-style: none; }
+.doc ul.skills li { font-size: 13px; line-height: 1.65; color: var(--gray); margin-bottom: 7px; padding-left: 18px; position: relative; }
+.doc ul.skills li::before { content: "—"; position: absolute; left: 0; color: var(--navy); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 12px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 6px 8px; font-size: 10.5px; vertical-align: bottom; }
+.mh { font-weight: 400; font-size: 9px; display:block; opacity:.85; }
+td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.detail-table td.stat, .detail-table th { text-align: center; }
+.detail-table td.pcf { font-family: 'DM Mono', monospace; color: var(--navy); font-size: 11.5px; }
+.detail-table tr.l3-row td { background: #E8EEF7; font-weight: 700; color: var(--navy-d); }
+.detail-table tr.l3-row td.stat { color: var(--navy); }
+.detail-table tr.l4-row td.act { padding-left: 18px; color: var(--gray); font-weight: 400; }
+.detail-table td.m3 { background: #D6E8FF; font-weight: 700; color: var(--navy); }
+.detail-table tr.l3-row td.m3 { background: #C4DCFF; }
+.detail-table td.delta { color: #B45309; }
+.pat-badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+.mixbar { display: flex; height: 14px; width: 100%; border-radius: 3px; overflow: hidden; }
+.mixbar span { display: block; height: 100%; }
+.legend { font-size: 11.5px; color: var(--gray); margin: 10px 0 4px; line-height: 1.9; }
+.legend .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+.snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0 20px; }
+.snap-box { border: 1px solid #7AAED6; border-radius: 6px; padding: 12px 14px; background: #fff; }
+.snap-label { font-size: 12px; color: var(--lgray); margin-bottom: 4px; }
+.snap-value { font-size: 17px; font-weight: 700; color: var(--navy); font-family: 'DM Mono', monospace; }
+.scope-callout { background: #FEF3C7; border-top: 3px solid #F59E0B; border-radius: 4px; padding: 14px 18px; margin: 18px 0; }
+.scope-callout .label { font-size: 12px; font-weight: 700; color: #92400E; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 6px; }
+.scope-callout p { color: #333; font-size: 12.5px; margin-bottom: 0; }
+.prog-table th:first-child { background: var(--navy-d); }
+.prog-table td.rowlabel { font-weight: 700; color: var(--navy-d); background: var(--navy-l); width: 14%; }
+tr:nth-child(even) td { background: #FAFBFD; }
+.detail-table tr.l3-row:nth-child(even) td, .detail-table tr.l4-row:nth-child(even) td { background: inherit; }
+.detail-table tbody tr.l4-row td { background: #fff; }
+.detail-table tbody tr.l4-row:nth-child(odd) td { background: #FAFBFD; }
+.detail-table tbody tr.l4-row td.m3 { background: #D6E8FF; font-weight: 700; color: var(--navy); }
+p.sources { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 14px; }
+footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+.crosslink { display: block; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 24px 0; text-decoration: none; }
+.crosslink .ct { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.crosslink .cd { font-size: 12px; color: var(--lgray); }
+.capmap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 8px 0 18px; }
+.capmap-card { border-radius: 8px; padding: 12px 14px; }
+.capmap-card .cm-name { font-weight: 700; font-size: 12px; margin-bottom: 3px; text-transform: uppercase; letter-spacing: .03em; }
+.capmap-card .cm-tagline { font-style: italic; font-size: 10px; margin-bottom: 8px; }
+.capmap-card .cm-count { font-weight: 700; font-size: 17px; }
+.capmap-card .cm-count span { font-size: 11px; font-weight: 700; text-transform: none; letter-spacing: 0; }
+.capmap-card .cm-mvals { font-weight: 700; font-size: 11px; margin-top: 4px; }
+.capmap-card .cm-empty-note { font-style: italic; font-size: 11px; }
+p.caption-note { font-size: 12px; color: var(--lgray); font-style: italic; background: var(--navy-l); border-left: 3px solid var(--navy); border-radius: 0 4px 4px 0; padding: 8px 12px; margin-bottom: 14px; }
+.evo-timeline { display: flex; align-items: stretch; gap: 6px; margin: 18px 0 24px; }
+.evo-era { flex: 1; border-radius: 8px; padding: 12px 10px; display: flex; flex-direction: column; }
+.evo-era .era-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; opacity: .75; margin-bottom: 4px; }
+.evo-era .era-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+.evo-era .era-desc { font-size: 10.5px; line-height: 1.45; flex-grow: 1; }
+.evo-arrow { display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--lgray); flex: 0 0 auto; width: 10px; }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <h1>The Human-AI Partnership Framework</h1>
+  <div class="tagline">Where human judgment belongs</div>
+  <nav><a href="index.html">Documentation</a><a href="../hitl_dashboard_final.html">Dashboard</a></nav>
+</div>
+
+<div class="breadcrumb"><a href="index.html">Documentation</a> / <a href="role_taxonomy_pcf8.html">People View</a> / Chief Data Officer</div>
+
+<div class="doc">
+<h1 class="title">Chief Data Officer — Role Transition Profile</h1>
+<p class="subtitle">Executive Tier &middot; 1 PCF processes across 1 process group</p>
+
+<h2>Role Impact Snapshot</h2>
+<p>Computed from 8.0's confirmed RACI data using the Responsible/Accountable touch rule (excludes Consulted/Informed).</p>
+<div class="snapshot-grid">
+<div class="snap-box"><div class="snap-label">L3 processes touched</div><div class="snap-value">1</div></div>
+<div class="snap-box"><div class="snap-label">L4 activity units</div><div class="snap-value">3</div></div>
+<div class="snap-box"><div class="snap-label">Process groups spanned</div><div class="snap-value">1 of 7</div></div>
+<div class="snap-box"><div class="snap-label">Aggregate M1 &rarr; M3</div><div class="snap-value">79% &rarr; 60%</div></div>
+<div class="snap-box"><div class="snap-label">Convergence gap</div><div class="snap-value">-19 pts</div></div>
+<div class="snap-box"><div class="snap-label">Dominant pattern</div><div class="snap-value">Decision (33%)</div></div>
+</div>
+
+<h2>Role Pattern Mix</h2>
+<p>Pattern-type distribution across every L4 activity this role touches (Responsible or Accountable), with each pattern's standard M1&rarr;M3 convergence applied. Same card design as the Value Stream Profile docs' AI Capability Map, scoped to this role instead of a value stream.</p>
+<p class="caption-note">Each card shows that pattern's own standard M1&rarr;M3 value, not weighted by this role. The Snapshot's Aggregate M1&rarr;M3 above (79% &rarr; 60%) is the count-weighted blend across all 5 patterns present — Decision dominates by volume (33% of activities) but its own M3 (80%) sits above the blend because other, lower-M3 patterns still in the mix pull the role-wide average down.</p>
+<div class="capmap-grid"><div class="capmap-card" style="background:#EEF3FA;color:#1B4F8A"><div class="cm-name">Decision</div><div class="cm-tagline">Judgment & Authority — gates that stay human by design</div><div class="cm-count">1 <span>L4 activities</span></div><div class="cm-mvals">M1 92%  →  M3 80%</div></div><div class="capmap-card" style="background:#F3F0FE;color:#534AB7"><div class="cm-name">Knowledge</div><div class="cm-tagline">Synthesis & Interpretation — judgment-driven work</div><div class="cm-count">1 <span>L4 activities</span></div><div class="cm-mvals">M1 85%  →  M3 65%</div></div><div class="capmap-card" style="background:#E0F2FE;color:#0369A1"><div class="cm-name">Document</div><div class="cm-tagline">Content Generation — drafting and communication</div><div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities of this pattern touched by this role</div></div><div class="capmap-card" style="background:#DCFCE7;color:#166534"><div class="cm-name">Transaction</div><div class="cm-tagline">Rules-Based Processing — suited to automation</div><div class="cm-count">1 <span>L4 activities</span></div><div class="cm-mvals">M1 60%  →  M3 35%</div></div><div class="capmap-card" style="background:#FEE2E2;color:#991B1B"><div class="cm-name">Exception</div><div class="cm-tagline">Non-Standard Resolution — human-resolved by nature</div><div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities of this pattern touched by this role</div></div></div>
+
+<h2>Role Impact Profile &mdash; Full Detail</h2>
+<p>Every L3 process this role holds Responsible or Accountable on. Each Mixed-pattern process is shown with its own aggregate rollup row (a proportional pattern-mix bar in place of a plain &ldquo;Mixed&rdquo; label), followed by its individual Level 4 activities.</p>
+<table class="detail-table">
+<thead><tr><th>PCF</th><th>Process/Activity</th><th>Pattern</th><th>M1<br><span class=mh>UNDESIGNED</span></th><th>M2<br><span class=mh>EMERGING</span></th><th>M3 &#9733;<br><span class=mh>DESIGN INTENT</span></th><th>M4<br><span class=mh>OPTIMIZED</span></th><th>M5<br><span class=mh>LEADING</span></th><th>&Delta; M1&rarr;M3</th></tr></thead>
+<tbody><tr class="l3-row"><td class="pcf">8.4.1</td><td class="act">Define business information and analytics strategy</td><td class="patcell"><span class="mixbar"><span style="width:33.3%;background:#7B9FD1" title="Decision (1)"></span><span style="width:33.3%;background:#A79AE0" title="Knowledge (1)"></span><span style="width:33.3%;background:#6FC48C" title="Transaction (1)"></span></span></td><td class="stat">79%</td><td class="stat">71%</td><td class="stat m3">60%</td><td class="stat">49%</td><td class="stat">40%</td><td class="stat delta">-19%</td></tr><tr class="l4-row"><td class="pcf">8.4.1.1</td><td class="act">Establish data, information, and analytic objectives</td><td class="patcell"><span class="pat-badge" style="color:#1B4F8A;background:#EEF3FA">Decision</span></td><td class="stat">92%</td><td class="stat">88%</td><td class="stat m3">80%</td><td class="stat">72%</td><td class="stat">65%</td><td class="stat delta">-12%</td></tr><tr class="l4-row"><td class="pcf">8.4.1.2</td><td class="act">Establish data, information, and analytic governance</td><td class="patcell"><span class="pat-badge" style="color:#534AB7;background:#F3F0FE">Knowledge</span></td><td class="stat">85%</td><td class="stat">78%</td><td class="stat m3">65%</td><td class="stat">52%</td><td class="stat">42%</td><td class="stat delta">-20%</td></tr><tr class="l4-row"><td class="pcf">8.4.1.3</td><td class="act">Access IT data/analytic capabilities</td><td class="patcell"><span class="pat-badge" style="color:#166534;background:#DCFCE7">Transaction</span></td><td class="stat">60%</td><td class="stat">48%</td><td class="stat m3">35%</td><td class="stat">22%</td><td class="stat">12%</td><td class="stat delta">-25%</td></tr></tbody>
+</table>
+<div class="legend"><span class="sw" style="background:var(--c-dec)"></span>Decision &mdash; Judgment &amp; Authority &nbsp; <span class="sw" style="background:var(--c-kno)"></span>Knowledge &mdash; Synthesis &amp; Interpretation &nbsp; <span class="sw" style="background:var(--c-doc)"></span>Document &mdash; Content Generation &nbsp; <span class="sw" style="background:var(--c-tra)"></span>Transaction &mdash; Rules-Based Processing<br><span class="sw" style="background:var(--c-exc)"></span>Exception &mdash; Non-Standard Resolution &nbsp;&middot;&nbsp; R/A-touch basis, not C/I &nbsp;&middot;&nbsp; Equal-weighted rollup across touched processes &nbsp;&middot;&nbsp; &copy; Timothy P. King 2026 &middot; developed with the assistance of Claude (Anthropic)</div>
+
+<h2>The Smallest Footprint, By Design</h2>
+<p>Chief Data Officer holds Accountable on a single L3, 8.4.1 &ldquo;Define business information and analytics strategy,&rdquo; with Director of Data &amp; Analytics carrying Responsible &mdash; the smallest activity count of any PCF 8.0 executive (3 L4 units). But the mix inside it is the most evenly split of any role profiled so far: one Decision activity (establishing data/analytic objectives, M1 92% &rarr; M3 80%), one Knowledge activity (establishing governance, M1 85% &rarr; M3 65%), and one Transaction activity (accessing IT data/analytic capabilities, M1 60% &rarr; M3 35%). That mirrors Databricks' own framing of the role almost exactly: CDO sits at the intersection of setting direction (Decision), defining governance (Knowledge), and depending on IT infrastructure it doesn't own (Transaction, consulted with CISO) &mdash; a role built to coordinate across boundaries, not just set strategy in isolation.</p>
+
+<h2>Skills &amp; Competencies</h2>
+<p>Grounded in Databricks' &ldquo;Chief Data Officer: Role, Responsibilities, and Career Guide&rdquo; (published July 2026, updated July 30, 2026).</p>
+<ul class="skills">
+<li>Systems thinking and cross-functional judgment &mdash; Databricks calls this the role's &ldquo;judgment layer&rdquo;: aligning data and AI initiatives with business outcomes and making sound tradeoffs under uncertainty, which increasingly separates successful CDOs from the rest</li>
+<li>Data governance and quality architecture &mdash; cataloging data assets, standardizing formats, and maintaining ownership across every major data domain</li>
+<li>AI-readiness and agent governance &mdash; per Databricks, the current frontier: unifying data foundations so AI agents can be deployed safely, then governing those agent systems once they're live</li>
+<li>Executive translation &mdash; converting governance concepts into language non-technical executives understand, while managing data engineers, analysts, and data scientists day to day</li>
+<li>Regulatory and privacy compliance &mdash; GDPR, HIPAA, and equivalent frameworks; Databricks reports 52% of CDOs now name data security as their primary responsibility, ahead of analytics enablement</li>
+</ul>
+<p class="framework-connection"><strong>Framework connection: </strong>The role's 3-activity split (Decision/Knowledge/Transaction, evenly weighted) is a small-scale mirror of Databricks' own five-domain framing of the CDO mandate &mdash; strategy, management, governance, analytics oversight, and organizational capability. Even at minimum footprint, this role's Accountable process still spans the judgment-to-execution range the rest of the domain runs on.</p>
+
+<h2>Role Progression Framework</h2>
+<p>Three-stage structure follows the AIHR &ldquo;HR Business Partner Guide&rdquo; infographic's template (Getting Started / Established / Future-Focused) &mdash; structure only, no content reused. Column content grounded in Databricks (2026) and Splunk's CDO career-path guide, both describing the real data analyst&rarr;architect/engineer&rarr;director&rarr;CDO progression.</p>
+<table class="prog-table">
+<thead><tr><th></th><th>Getting Started</th><th>Established</th><th>Future-Focused</th></tr></thead>
+<tbody>
+<tr><td class="rowlabel">Role focus</td><td>Building technical depth as a Data Analyst or Data Scientist, developing core data-management and statistical skills</td><td>Data Engineer, Database Administrator, or Director of Analytics &mdash; owning governance policy and team leadership at scale</td><td>Chief Data Officer: enterprise-wide data strategy, AI-readiness, and agent-orchestration governance, per Databricks now often reporting directly to the CEO</td></tr>
+<tr><td class="rowlabel">Key activities</td><td>Data collection, transformation, and quality-checking; foundational governance exposure</td><td>Building data governance frameworks, managing cross-functional data teams, aligning data programs to measurable business outcomes</td><td>Setting enterprise data/AI strategy, governing agentic AI systems, translating governance into board-level business language</td></tr>
+<tr><td class="rowlabel">Skills to build</td><td>Data modeling, programming, statistical analysis fundamentals</td><td>Governance framework design, regulatory compliance (GDPR/HIPAA), team leadership</td><td>AI/agent governance architecture, executive communication, cross-C-suite collaboration with CIO and CISO</td></tr>
+<tr><td class="rowlabel">Common pitfalls</td><td>Treating data work as purely technical without building the business-translation skills the role will eventually demand</td><td>Building governance in isolation from the CIO's infrastructure and the CISO's security posture, creating conflicting policy instead of coordinated ownership</td><td>Per Databricks, treating agent orchestration as just another technology rollout rather than a governance and architecture problem requiring new organizational capability</td></tr>
+</tbody>
+</table>
+
+<h2>How the Role Has Evolved</h2>
+<div class="evo-timeline">
+<div class="evo-era" style="background:#EEF3FA;color:#33475B">
+<div class="era-label">Pre-2012</div>
+<div class="era-title">Compliance-Driven Origins</div>
+<div class="era-desc">Early chief data officers are hired primarily to manage regulatory risk &mdash; a narrow, defensive mandate focused on data quality and compliance rather than business strategy.</div>
+</div>
+<div class="evo-arrow">&rarr;</div>
+<div class="evo-era" style="background:#DCE6F5;color:#22405F">
+<div class="era-label">2012</div>
+<div class="era-title">The Role Emerges</div>
+<div class="era-desc">Just 12% of organizations have a CDO. The title exists but is far from standard, still largely tied to its compliance-era origins.</div>
+</div>
+<div class="evo-arrow">&rarr;</div>
+<div class="evo-era" style="background:#B9CCEA;color:#173257">
+<div class="era-label">2022</div>
+<div class="era-title">Mainstream Adoption</div>
+<div class="era-desc">CDO adoption grows to 74% of organizations (27% of global firms), and the mandate shifts from compliance-focused to strategic &mdash; enterprise-wide governance, quality, and business value creation.</div>
+</div>
+<div class="evo-arrow">&rarr;</div>
+<div class="evo-era" style="background:#7FA3D6;color:#0D2340">
+<div class="era-label">2025</div>
+<div class="era-title">The CDAO Consolidation</div>
+<div class="era-desc">A Gartner survey finds 70% of Chief Data and Analytics Officers now own their organization's AI strategy and operating model, and 36% report directly to the CEO &mdash; up from 21% a year earlier. Data strategy and AI strategy become inseparable.</div>
+</div>
+<div class="evo-arrow">&rarr;</div>
+<div class="evo-era" style="background:var(--navy-d);color:#fff">
+<div class="era-label">2026 &#9733;</div>
+<div class="era-title">AI Transformation Leadership</div>
+<div class="era-desc">Deloitte's 2026 CDAO Survey finds 94% of Chief Data and Analytics Officers expect their influence to grow, and 78% say AI has already given them more decision-making power. The frontier shifts from data stewardship to governing autonomous agent systems.</div>
+</div>
+</div>
+<p style="font-size:11px;color:var(--lgray);font-style:italic;margin-top:-12px;margin-bottom:20px">Era framing follows the AIHR &ldquo;HR Business Partner Guide&rdquo; infographic's own historical structure; CDO-role adoption statistics and dates verified against the Databricks guide's own cited Gartner and Deloitte survey sources.</p>
+<p class="framework-connection"><strong>A related pattern: </strong>McKinsey's Julie Goran, writing in July 2026, frames the scale of what's changing as comparable to the dawn of the Industrial Age &mdash; leaders are now asking whether AI agents belong on the org chart itself, and how to plan spans and layers around agent capacity alongside human capacity. For CDO, Databricks frames this almost identically: the frontier is agent-led orchestration, where humans design and govern autonomous systems rather than operating every step &mdash; and this role's own Decision-pattern activity (establishing data/analytic objectives) is exactly the kind of direction-setting work that has to stay human even as the Transaction-pattern work beneath it (accessing IT data capabilities) becomes agent territory first.</p>
+<p class="sources">Sources: Databricks Staff, &ldquo;Chief Data Officer: Role, Responsibilities, and Career Guide,&rdquo; Databricks, published July 28, 2026, updated July 30, 2026 (citing Gartner's 2025 CDAO survey and Deloitte's 2026 CDAO Survey); Splunk, &ldquo;Chief Data Officer: Responsibilities and Skills,&rdquo; 2024; Julie Goran, &ldquo;Rewired takes: How AI is unlocking creativity and heralding the rise of the agent manager,&rdquo; McKinsey &amp; Company, July 2026. AIHR &ldquo;HR Business Partner Guide&rdquo; infographic used as structural template only; no content reused.</p>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;&middot;&nbsp; Human Enterprise Architect &nbsp;&middot;&nbsp; August 2026<br>
+    Co-developed with Claude (Anthropic)<br>
+    <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
+    &nbsp;&middot;&nbsp; hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>
