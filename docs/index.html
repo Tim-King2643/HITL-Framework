@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Documentation — The Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+/* ── Top banner (matches the dashboard sidebar's brand block) ─────────────── */
+.masthead {
+  background: var(--navy-d); color: #fff; padding: 32px 24px 28px;
+  text-align: center;
+}
+.masthead h1 {
+  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px;
+  margin-bottom: 4px;
+}
+.masthead .tagline1 { font-size: 13px; color: #9FC2EE; font-weight: 500; letter-spacing: .02em; margin-bottom: 4px; }
+.masthead .tagline2 { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead nav a {
+  color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600;
+  margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent;
+}
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: var(--mid, #7B9FD1); }
+
+/* ── Intro ──────────────────────────────────────────────────────────────── */
+.intro { max-width: 760px; margin: 0 auto; padding: 44px 24px 8px; text-align: center; }
+.intro p { font-size: 15px; color: var(--gray); line-height: 1.7; }
+.intro p.lead { font-size: 17px; color: var(--navy); font-style: italic; margin-bottom: 16px; line-height: 1.6; }
+.hal-quote { max-width: 760px; margin: 24px auto 0; background: var(--navy-d); border-radius: 8px; padding: 18px 24px; text-align: left; }
+.hal-quote .label { font-size: 11px; font-weight: 700; color: #7B9FD1; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+.hal-quote p { font-size: 14px; color: #fff; line-height: 1.7; }
+.hal-quote a { display: inline-block; margin-top: 10px; font-size: 12.5px; font-weight: 600; color: #9FC2EE; text-decoration: none; border-bottom: 1px solid rgba(159,194,238,.4); }
+.hal-quote a:hover { color: #fff; border-bottom-color: #fff; }
+
+/* ── Section groups ─────────────────────────────────────────────────────── */
+.groups { max-width: 1000px; margin: 0 auto; padding: 28px 24px 64px; display: flex; flex-direction: column; gap: 32px; }
+.group { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.group-header { background: var(--navy-l); padding: 18px 26px; border-bottom: 1px solid var(--border); }
+.group-header h2 { font-size: 17px; color: var(--navy-d); font-weight: 700; margin-bottom: 4px; }
+.group-header p { font-size: 13px; color: var(--lgray); }
+.doc-list { display: flex; flex-wrap: wrap; gap: 12px; padding: 16px 18px 20px; }
+.doc-card {
+  flex: 1 1 260px; background: #fff; border: 1px solid var(--border); border-radius: 8px;
+  padding: 18px 22px; text-decoration: none; display: block;
+  transition: background .12s, border-color .12s;
+}
+.doc-card:hover { background: var(--navy-l); border-color: #B8CCE8; }
+.doc-card .doc-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.doc-card .doc-desc { font-size: 12px; color: var(--lgray); line-height: 1.5; }
+.doc-card.disabled { cursor: default; }
+.doc-card.disabled:hover { background: #fff; }
+.doc-card.disabled .doc-title { color: #B8C0CC; }
+.doc-card.disabled .badge {
+  display: inline-block; margin-left: 8px; font-size: 9px; font-weight: 700; letter-spacing: .04em;
+  color: #B8873F; background: #FEF3C7; border-radius: 3px; padding: 1px 6px; vertical-align: middle;
+}
+.doc-card .filetype {
+  display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .04em;
+  color: var(--navy); background: var(--navy-l); border-radius: 3px; padding: 1px 6px; margin-left: 6px; vertical-align: middle;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+footer { text-align: center; padding: 0 24px 48px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <h1>The Human-AI Partnership Framework</h1>
+  <div class="tagline2">Where human judgment belongs</div>
+  <nav>
+    <a href="index.html" class="active">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+  </nav>
+</div>
+
+<div class="intro">
+  <p class="lead">HITL — Human-in-the-Loop — as an organizational design standard, not a safety checkpoint.</p>
+  <p>Everything below is the written record behind the interactive dashboard: the methodology itself, how it plays out across a real business domain, and what it means for the people doing the work. Start with Core Methodology if you're new here.</p>
+</div>
+
+<div class="hal-quote">
+  <p class="label">Why We Built This</p>
+  <p>HAL 9000, from 2001: A Space Odyssey, is arguably the most famous AI in history — and had no human oversight, no decision rights framework, no human in the loop, by design. This framework is the architectural answer.</p>
+  <a href="hitl_origin_story.html">Read the full story →</a>
+</div>
+
+<div class="groups">
+
+  <div class="group">
+    <div class="group-header">
+      <h2>Core Methodology</h2>
+      <p>The conceptual foundation — read these first.</p>
+    </div>
+    <div class="doc-list">
+      <a class="doc-card" href="hitl_origin_story.html">
+        <div class="doc-title">Why We Built This: The HAL 9000 Story</div>
+        <div class="doc-desc">The failure mode this framework exists to answer — and the real, shipped pieces that answer it, one at a time.</div>
+      </a>
+      <a class="doc-card" href="hitl_methodology.html">
+        <div class="doc-title">The HITL Design Methodology</div>
+        <div class="doc-desc">The full methodology: the HITL Stack, the five pattern types, the ratio methodology, and the governance model.</div>
+      </a>
+      <a class="doc-card" href="hitl_maturity_scale.html">
+        <div class="doc-title">Understanding the HITL Maturity Scale</div>
+        <div class="doc-desc">Why human involvement is measured on a five-point scale (M1–M5) — and why the goal isn't the top of it.</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-header">
+      <h2>Process View — Value Streams</h2>
+      <p>How AI-driven maturity reshapes each value stream's process flow, mapped end to end.</p>
+    </div>
+    <div class="doc-list">
+      <a class="doc-card" href="process_catalog_pcf7.html">
+        <div class="doc-title">PCF 7.0 — Human Resources</div>
+        <div class="doc-desc">6 value streams &middot; Maturity Assessment &middot; RACI reference</div>
+      </a>
+      <a class="doc-card" href="process_catalog_pcf8.html">
+        <div class="doc-title">PCF 8.0 — Information Technology</div>
+        <div class="doc-desc">8 value streams &middot; Maturity Assessment &middot; RACI reference</div>
+      </a>
+      <a class="doc-card" href="process_catalog_pcf9.html">
+        <div class="doc-title">PCF 9.0 — Finance</div>
+        <div class="doc-desc">9 value streams &middot; Maturity Assessment &middot; RACI reference</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect &nbsp;·&nbsp; August 2026<br>
+    Co-developed with Claude (Anthropic)<br>
+    <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
+    &nbsp;·&nbsp; hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>

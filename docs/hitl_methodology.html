@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The HITL Design Methodology — The Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B4F8A; --navy-d: #0D2D4F; --navy-l: #EEF3FA; --dark: #0D1B2A;
+  --gray: #444; --lgray: #888; --bg: #F4F6FB; --border: #DDE3EE;
+  --c-dec:#1B4F8A; --bg-dec:#EEF3FA; --c-kno:#534AB7; --bg-kno:#F3F0FE;
+  --c-doc:#0369A1; --bg-doc:#E0F2FE; --c-tra:#166534; --bg-tra:#DCFCE7;
+  --c-exc:#991B1B; --bg-exc:#FEE2E2;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); }
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 4px; }
+.masthead .tagline { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+.breadcrumb { max-width: 800px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
+.breadcrumb a { color: var(--navy); text-decoration: none; }
+.doc { max-width: 800px; margin: 0 auto; padding: 24px 24px 80px; }
+.doc h1.title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy-d); margin: 8px 0 6px; }
+.doc .subtitle { font-size: 13px; color: var(--lgray); font-style: italic; margin-bottom: 22px; }
+.doc h2 { font-size: 16px; color: var(--navy-d); font-weight: 700; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
+.doc h3 { font-size: 13.5px; color: var(--navy); font-weight: 700; margin: 16px 0 7px; }
+.doc p { font-size: 13px; line-height: 1.7; color: var(--gray); margin-bottom: 12px; }
+.callout { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; }
+.callout .label { font-size: 12px; font-weight: 700; color: var(--navy-d); text-transform: uppercase; letter-spacing: .03em; margin-bottom: 6px; }
+.callout p { color: #333; margin-bottom: 0; font-size: 12.5px; }
+table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 12px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 7px 10px; font-size: 11px; }
+td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:nth-child(even) td { background: #FAFBFD; }
+.pat-Decision { color: var(--c-dec); font-weight: 700; }
+.pat-Knowledge { color: var(--c-kno); font-weight: 700; }
+.pat-Document { color: var(--c-doc); font-weight: 700; }
+.pat-Transaction { color: var(--c-tra); font-weight: 700; }
+.pat-Exception { color: var(--c-exc); font-weight: 700; }
+.hier-l { font-family: 'DM Mono', monospace; color: var(--navy); font-weight: 600; }
+footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+.crosslink { display: block; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 24px 0; text-decoration: none; }
+.crosslink .ct { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.crosslink .cd { font-size: 12px; color: var(--lgray); }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <h1>The Human-AI Partnership Framework</h1>
+  <div class="tagline">Where human judgment belongs</div>
+  <nav>
+    <a href="index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+  </nav>
+</div>
+
+<div class="breadcrumb"><a href="index.html">Documentation</a> / Core Methodology / The HITL Design Methodology</div>
+
+<div class="doc">
+  <h1 class="title">The HITL Design Methodology</h1>
+  <p class="subtitle">A Framework for Human/AI Operating Model Design</p>
+
+  <p>This document describes the HITL Design Methodology — a structured approach for designing, measuring, and governing the optimal balance of human and AI involvement across any enterprise process taxonomy. The methodology is taxonomy-agnostic: it can be applied to APQC PCF, BizBOK, or any proprietary process framework an organization uses.</p>
+
+  <div class="callout"><div class="label">A Note on Authorship</div>
+    <p>The Human-AI Partnership Framework and this methodology document were co-developed by Timothy P. King and Claude (Anthropic) as a demonstration of effective human/AI partnership in knowledge work. The framework itself — its principles, pattern types, and governance approach — represents original intellectual work developed through that collaboration.</p>
+  </div>
+
+  <h2>1. The Problem</h2>
+  <p>Organizations are allowing the human/AI balance to shift by default rather than by design. As AI tools proliferate, work is migrating — but without a governing principle, the migration is random. Some processes are over-automated, with AI making decisions that require human judgment, accountability, or ethical oversight. Others are under-automated, with humans performing routine processing that AI could handle more reliably and at a fraction of the cost.</p>
+  <p>Both failure modes are costly. Over-automation creates risk, erodes accountability, and produces decisions that lack the context and wisdom that human judgment provides. Under-automation wastes human capacity on work that doesn't require it, crowding out the judgment-intensive work that humans uniquely do well.</p>
+  <p>Most organizations have no systematic way to identify which of their processes fall into which category. They have AI strategies, automation roadmaps, and workforce plans — but they don't have a design methodology for the human/AI operating model itself.</p>
+  <div class="callout"><div class="label">The Core Assertion</div>
+    <p>This is not a technology problem. It is a design problem. Every process in the enterprise has an optimal human/AI balance. The job of HITL design is to find it, define it, measure it, and govern it.</p>
+  </div>
+
+  <h2>2. The HITL Design Principle</h2>
+  <p>HITL — Human-in-the-Loop — is widely understood as a safety mechanism: the practice of keeping a human in the decision chain to catch AI errors before they cause harm. That understanding is correct, but incomplete.</p>
+  <p>In the Human-AI Partnership Framework, HITL is redefined as an organizational design standard. It is not a safety checkpoint added after the fact. It is the governing principle that determines, by design, where human involvement begins and ends in every process.</p>
+  <h3>What HITL design asks</h3>
+  <p>For any given process, HITL design asks three questions:</p>
+  <p><strong>What is the optimal level of human involvement in this process?</strong> Not the minimum required for safety, and not the maximum currently in use — but the level that produces the best outcomes given the nature of the work.</p>
+  <p><strong>How far is the current state from that optimal?</strong> The gap between current human involvement and design intent is the AI convergence opportunity — the work that current AI and automation capabilities are ready to absorb.</p>
+  <p><strong>How do we govern the transition?</strong> How do we track progress, measure outcomes, and ensure that as AI adoption matures, the operating model moves intentionally toward the designed state?</p>
+  <div class="callout"><div class="label">HITL Design vs. HITL Safety</div>
+    <p>HITL Safety asks: where must humans stay involved to prevent harm? HITL Design asks: where should humans stay involved to produce the best outcome? The design question is broader, more strategic, and more powerful as an organizational framework.</p>
+  </div>
+
+  <h2>3. The HITL Stack</h2>
+  <p>The HITL Stack is the foundational mental model of the methodology. It defines three distinct layers that together constitute a well-designed human/AI operating model. Every piece of enterprise work belongs in one of these layers.</p>
+  <table>
+    <tr><th style="width:22%">Layer</th><th>Description</th></tr>
+    <tr><td><strong>Human Layer</strong><br>Judgment &amp; Oversight</td><td>Approvals, interpretation, escalations, ethical decisions. The work that requires wisdom, context, and accountability.</td></tr>
+    <tr><td><strong>Automation Layer</strong><br>Execution</td><td>Routing, matching, scheduling, orchestration. Rules-based workflows that are consistent, reliable, and repeatable.</td></tr>
+    <tr><td><strong>AI Layer</strong><br>Prediction &amp; Generation</td><td>Drafting, summarizing, pattern detection, forecasting. Fast, scalable, tireless processing and generation.</td></tr>
+  </table>
+  <p>The most common failure in human/AI operating model design is work sitting in the wrong layer. Humans performing Transaction work that automation should handle. AI generating outputs for Decision processes where human judgment and accountability are non-negotiable. The HITL Stack makes the design question concrete: which layer does this work belong in, and is it there?</p>
+  <h3>Why the stack matters for design</h3>
+  <p>The stack is not a sequential pipeline — work does not flow from AI through Automation to Human in a linear chain. It is a classification framework. Each process in the enterprise can be evaluated against the stack to determine its primary layer and the appropriate level of human involvement within that layer.</p>
+  <p>The five HITL pattern types described in Section 4 operationalize this classification, providing specific design intent ratios for each type of work at each level of the stack.</p>
+
+  <h2>4. The Five HITL Pattern Types</h2>
+  <p>The five HITL pattern types are the classification engine of the methodology. Every process in any enterprise taxonomy can be assigned one of these five types based on the nature of the work it involves. The pattern type determines the process's design intent human involvement percentage (H%).</p>
+  <p>Pattern types are assigned based on what the work fundamentally requires — not what tools are currently used, and not what is possible with today's AI. The question is: what kind of human capability does this work call on?</p>
+  <table>
+    <tr><th>Pattern</th><th>Nature of work</th><th>Description</th><th>Current H%</th><th>Design Intent H%</th></tr>
+    <tr><td class="pat-Decision">Decision</td><td>Judgment</td><td>Work requiring human authority, accountability, or ethical judgment. Decisions that cannot be delegated to AI without significant risk.</td><td>90%</td><td>75%</td></tr>
+    <tr><td class="pat-Knowledge">Knowledge</td><td>Synthesis</td><td>Work requiring expert interpretation, analysis, or synthesis. AI can assist with research and pattern detection; humans lead the interpretation.</td><td>80%</td><td>60%</td></tr>
+    <tr><td class="pat-Document">Document</td><td>Generation</td><td>Work involving drafting, summarizing, or structured content creation. AI can produce first drafts; humans review, refine, and approve.</td><td>65%</td><td>35%</td></tr>
+    <tr><td class="pat-Transaction">Transaction</td><td>Processing</td><td>Rules-based, repeatable processing and routing work. High automation potential. Humans handle exceptions and quality oversight.</td><td>45%</td><td>30%</td></tr>
+    <tr><td class="pat-Exception">Exception</td><td>Resolution</td><td>Non-standard events, escalations, and edge cases requiring human resolution. AI flags and routes; humans investigate and decide.</td><td>92%</td><td>75%</td></tr>
+  </table>
+  <h3>How to assign pattern types</h3>
+  <p>Pattern type assignment is a judgment exercise, not a formula. For each process, ask: what does this work primarily require of the person doing it? A process that primarily requires a person to make a decision with authority and accountability is a Decision process, regardless of whether AI tools assist with analysis. A process that primarily involves generating a document from inputs is a Document process, regardless of whether a human or AI produces the first draft.</p>
+  <p>When a process has mixed characteristics, assign the pattern type that best represents the primary nature of the work. A process that involves both knowledge synthesis and a decision at the end is typically classified as Decision — the decision at the end determines the accountability and oversight requirement.</p>
+  <div class="callout"><div class="label">The Design Intent H% Is Not a Target to Minimize</div>
+    <p>A 75% design intent for Decision processes does not mean 25% of decisions should be made by AI. It means that in a well-designed operating model, AI should be handling approximately 25% of the supporting analysis, preparation, and documentation — while human judgment owns 75% of the actual decision-making. The goal is optimal balance, not maximum automation.</p>
+  </div>
+
+  <a class="crosslink" href="hitl_maturity_scale.html">
+    <div class="ct">→ How this becomes the M1–M5 maturity scale</div>
+    <div class="cd">This document defines the two-point Current H% / Design Intent H% model. The dashboard and every doc built since track the journey between those two points across five stages. See Understanding the HITL Maturity Scale for how the two connect.</div>
+  </a>
+
+  <h2>5. The HITL Ratio Methodology</h2>
+  <p>The HITL ratio methodology provides a structured approach to measuring current human involvement, setting design intent targets, and calculating the convergence opportunity gap. It operates at three levels: L3 subprocess, L2 process group, and L1 capability domain.</p>
+  <h3>Current H% — Establishing the Baseline</h3>
+  <p>The Current H% represents the estimated percentage of work in a given process that is currently performed by humans. This includes direct execution, review, approval, and oversight. It excludes work that is fully automated or AI-executed without human involvement.</p>
+  <p>Current H% can be established through organizational assessment — surveying process owners, reviewing workflow data, or applying industry benchmarks where individual assessment is not available. The pattern type table in Section 4 provides industry baseline estimates that can serve as a starting point before organizational data is available.</p>
+  <h3>Design Intent H% — Setting Targets</h3>
+  <p>The Design Intent H% represents the optimal level of human involvement in a process in a well-designed HITL operating model. It is derived from the process's pattern type using the design intent ratios in Section 4, adjusted as appropriate for the specific context, risk profile, and regulatory environment of the organization.</p>
+  <p>Design intent is not a prediction of where human involvement will land as AI matures. It is a deliberate design choice — a statement of where human judgment, oversight, and accountability should live in a well-governed operating model.</p>
+  <h3>The Convergence Opportunity Delta</h3>
+  <p>The Delta (Δ) is calculated as: <strong>Design Intent H% − Current H%</strong></p>
+  <p>A negative Delta indicates that humans are currently more involved than the design intent — representing an AI convergence opportunity. The magnitude of the negative Delta indicates the scale of the opportunity. A positive Delta would indicate under-reliance on human judgment relative to design intent, which is a risk signal rather than an opportunity.</p>
+  <h3>Aggregation Methodology</h3>
+  <p>Subprocess (L3) ratios aggregate to process group (L2) level using equal weighting across subprocesses within the group. L2 ratios aggregate to domain (L1) level using equal weighting across process groups within the domain. This produces a full organizational HITL profile from the subprocess level to the enterprise level.</p>
+  <div class="callout"><div class="label">The Enterprise HITL Profile</div>
+    <p>When the methodology is applied across all domains in an organization's process taxonomy, the result is an enterprise HITL profile: a single number representing the organization's current aggregate human involvement, compared to the aggregate design intent. Initial estimates suggest most organizations run 15–20 percentage points above design intent across all domains — representing a substantial and largely untapped AI convergence opportunity.</p>
+  </div>
+
+  <h2>6. Applying the Methodology — Worked Example</h2>
+  <p>The following example applies the HITL Design Methodology to the Talent Acquisition process group (L2 group 9.2) within the Human Capital Management domain. It demonstrates pattern type assignment, current state estimation, design intent target setting, and convergence opportunity identification at the subprocess level, with aggregation to the L2 group level.</p>
+  <h3>Step 1 — Identify subprocesses and assign pattern types</h3>
+  <p>List the subprocesses within the process group. For each subprocess, assign the HITL pattern type that best represents the primary nature of the work.</p>
+  <h3>Step 2 — Establish Current H% and Design Intent H%</h3>
+  <p>For each subprocess, record the current estimated human involvement percentage. Apply the pattern type design intent ratios from Section 4, adjusted for organizational context. Calculate the Delta for each subprocess.</p>
+  <table>
+    <tr><th>#</th><th>Subprocess</th><th>Pattern</th><th>Current H%</th><th>Design Intent H%</th><th>Δ</th><th>AI Opportunity</th></tr>
+    <tr><td>9.2.1</td><td>Job design &amp; role profiling</td><td class="pat-Knowledge">Knowledge</td><td>80%</td><td>60%</td><td>-20%</td><td>AI-assisted research &amp; synthesis</td></tr>
+    <tr><td>9.2.2</td><td>Candidate sourcing &amp; screening</td><td class="pat-Document">Document</td><td>65%</td><td>35%</td><td>-30%</td><td>AI drafts — human reviews &amp; approves</td></tr>
+    <tr><td>9.2.3</td><td>Interview &amp; assessment process</td><td class="pat-Transaction">Transaction</td><td>45%</td><td>30%</td><td>-15%</td><td>Automate routing &amp; scheduling</td></tr>
+    <tr><td>9.2.4</td><td>Hiring decision &amp; offer management</td><td class="pat-Decision">Decision</td><td>92%</td><td>75%</td><td>-17%</td><td>Human judgment retained — AI provides input</td></tr>
+    <tr><td>9.2.5</td><td>Onboarding program delivery</td><td class="pat-Knowledge">Knowledge</td><td>80%</td><td>60%</td><td>-20%</td><td>AI-assisted research &amp; synthesis</td></tr>
+    <tr style="font-weight:700"><td colspan="3">L2 Aggregate — Talent Acquisition</td><td>72%</td><td>52%</td><td>-20%</td><td></td></tr>
+  </table>
+  <h3>Step 3 — Interpret the results</h3>
+  <p>The Talent Acquisition L2 aggregate shows a current H% of approximately 72% against a design intent of 52% — a Delta of −20%. This means the process group is running approximately 20 percentage points more human than optimal HITL design intent.</p>
+  <p>The largest opportunities are in candidate sourcing &amp; screening (Document, −30%) and interview &amp; assessment process (Transaction, −15%). These are processes where AI-assisted tools are mature and deployable today. The hiring decision remains firmly human-owned (Decision, −17% gap but design intent at 75% human — human judgment is the design intent, not a constraint).</p>
+  <h3>Step 4 — Identify AI convergence priorities</h3>
+  <p>Order subprocesses by the magnitude of their negative Delta to prioritize AI investment. Processes with larger negative deltas represent greater convergence opportunity. Where the pattern type is Document or Transaction, the convergence path is typically well-established. Where the pattern type is Decision or Exception, the convergence opportunity is in AI-assisted preparation and analysis, not in replacing the human decision.</p>
+  <div class="callout"><div class="label">Applying This to Your Organization</div>
+    <p>Replace the example subprocesses with the processes from your own taxonomy. Assign pattern types using the criteria in Section 4. Establish current H% through organizational assessment or benchmark estimates. The methodology produces the same structured output regardless of which taxonomy you use.</p>
+  </div>
+
+  <h2>7. Governance and Progress Tracking</h2>
+  <p>HITL ratios are not a one-time assessment. They are a governance instrument — a set of metrics that can be tracked over time as AI adoption matures and the operating model evolves.</p>
+  <h3>Establishing a governance cadence</h3>
+  <p><strong>Baseline assessment</strong> — Conduct an initial HITL ratio assessment across all domains in the taxonomy. Establish current H% at the L3 subprocess level. Calculate L2 and L1 aggregates. Document the enterprise HITL profile.</p>
+  <p><strong>Quarterly tracking</strong> — Review H% changes at the domain level as AI tools are deployed and processes are redesigned. Track Delta reduction as a measure of AI adoption progress.</p>
+  <p><strong>Annual recalibration</strong> — Review design intent H% values as AI capabilities evolve. Pattern type design intent ratios should be revisited annually — as AI matures, what was once a 60% Knowledge process may become a 45% process as AI synthesis tools improve.</p>
+  <h3>Using the Delta to prioritize AI investment</h3>
+  <p>The convergence opportunity Delta provides a principled basis for AI investment prioritization. Processes and domains with the largest negative Deltas represent the greatest opportunity for AI to absorb human work without compromising quality, accountability, or oversight. This reframes AI investment from a technology roadmap to an operating model design question.</p>
+  <h3>Accountability and decision rights</h3>
+  <p>For each process at or near its design intent H%, establish clear decision rights: which decisions are human-owned, which are AI-generated with human review, and which are fully automated. Document these as part of the governance framework. The HITL ratio is a performance metric; the decision rights framework is the governance instrument that ensures the ratio is sustained.</p>
+  <div class="callout"><div class="label">HITL as a Maturity Model</div>
+    <p>An organization's enterprise HITL profile — the gap between current aggregate H% and design intent aggregate H% — is a measure of AI operating model maturity. Organizations at design intent are not over-automated or under-automated. They are optimized. The journey from current state to design intent is the AI transformation roadmap.</p>
+  </div>
+
+  <h2>8. The HITL-Driven Systems Hierarchy</h2>
+  <p>The HITL Design Methodology does not operate in isolation. It is one layer of a broader organizational architecture — the HITL-Driven Systems Hierarchy — that connects every design decision from the governing vision of the organization down to individual implementation choices.</p>
+  <p>The hierarchy ensures full traceability. A training requirement at Level 6 traces to a HITL ratio at Level 3, which traces to a capability domain at Level 2, which traces to the framework vision at Level 0. Nothing is disconnected. Nothing is arbitrary. Every component has a purpose traceable to the governing intent.</p>
+  <table>
+    <tr><th style="width:8%">Level</th><th>Layer</th></tr>
+    <tr><td class="hier-l">L0</td><td><strong>The HITL-Driven Organization</strong> — Vision: AI and humans in purposeful partnership, by design</td></tr>
+    <tr><td class="hier-l">L1</td><td><strong>The Human-AI Partnership Framework</strong> — Governing design philosophy · HITL as the organizing principle</td></tr>
+    <tr><td class="hier-l">L2</td><td><strong>Capability Architecture</strong> — Capability domains and environmental regions</td></tr>
+    <tr><td class="hier-l">L3</td><td><strong>Capability Domains with HITL Ratios</strong> — Domain-level H% targets · Each domain defined, measured, and governed</td></tr>
+    <tr><td class="hier-l">L4</td><td><strong>Enterprise Process Framework</strong> — Cross-industry process taxonomy · Any established framework (APQC, BizBOK, proprietary)</td></tr>
+    <tr><td class="hier-l">L5</td><td><strong>People · Process · Data · Technology</strong> — The four enabling dimensions of every capability</td></tr>
+    <tr><td class="hier-l">L6</td><td><strong>Implementation Layer</strong> — HITL ratios · Decision rights · Governance · Workforce planning · AI Capability Profile</td></tr>
+  </table>
+  <p>Level 4 is where the HITL Design Methodology connects to the organization's process taxonomy — whether that is APQC PCF, BizBOK, or a proprietary framework. The methodology is designed to plug into this level regardless of which taxonomy is in use. The HITL ratios calculated at L4 feed upward into the domain-level governance at L3 and the enterprise HITL profile at L2.</p>
+  <p>This architecture is what separates HITL design from a standalone analytics exercise. It is a full governance system — from the organization's articulated vision of human/AI partnership at L0, through the framework principles at L1, to the measurable, trackable ratios at L3 and L4, to the individual workforce and technology decisions at L6.</p>
+  <div class="callout"><div class="label">The Design Principle That Holds It Together</div>
+    <p>Full traceability is the integrity test of HITL design. If a HITL ratio cannot be traced to the organization's governing vision of human/AI partnership, it is not a design decision — it is an arbitrary number. The hierarchy ensures that every ratio has a purpose, and that purpose is visible from every level of the organization.</p>
+  </div>
+
+  <h2>A Note on the Framework's Status</h2>
+  <p>The Human-AI Partnership Framework and this methodology document represent work in progress. The design intent H% values for each pattern type are informed estimates — developed through research, reasoning, and cross-reference with comparable frameworks. They have not yet been validated against large-scale organizational data.</p>
+  <p>The framework is actively seeking benchmarking partnership with APQC — the American Productivity &amp; Quality Center — to validate and enrich the industry baseline layer with verified cross-industry process performance data. When that validation is complete, the methodology will be updated to reflect empirically grounded baselines.</p>
+  <p>In the meantime, the methodology is offered as a practitioner's tool — a rigorous but accessible framework that any organization can apply to its own process taxonomy using its own assessment data. The pattern types, the ratio methodology, the aggregation approach, and the governance framework are ready to use today.</p>
+  <div class="callout"><div class="label">Using This Methodology</div>
+    <p>Organizations wishing to apply the HITL Design Methodology to their process taxonomy are encouraged to contact Timothy P. King at timothy.king@hitldrivenarchitecture.com. The methodology is designed to be applied collaboratively, with the pattern type assignments and design intent ratios calibrated to the specific context, industry, and risk profile of the organization.</p>
+  </div>
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect &nbsp;·&nbsp; May 2026<br>
+    Co-developed with Claude (Anthropic)<br>
+    <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
+    &nbsp;·&nbsp; hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>
