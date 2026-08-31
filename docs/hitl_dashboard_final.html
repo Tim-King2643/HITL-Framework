@@ -5690,12 +5690,6 @@ const domainStreamProfilePdfMap = {
           'hitl_valuestream_acquire_to_retire_pcf9_final.pdf','hitl_valuestream_time_to_pay_pcf9_final.pdf','hitl_valuestream_procure_to_pay_pcf9_final.pdf',
           'hitl_valuestream_treasury_and_risk_pcf9_final.pdf','hitl_valuestream_tax_strategy_to_compliance_pcf9_final.pdf','hitl_valuestream_global_trade_and_currency_pcf9_final.pdf'],
 };
-// Lens-tab PDFs (Maturity Table and HITL Design use
-// the stream-aware logic below instead)
-const lensPdfMap = {
-  'Value Stream Profile': 'hitl_valuestream_description_pcf7_final.pdf',
-};
-
 // Value Stream Profile has no "All Processes" PDF — the doc type is
 // inherently stream-scoped (KPIs/Roles/Governance all aggregate per
 // stream), so there's nothing valid to download in that combination.
@@ -5767,9 +5761,11 @@ function downloadPDF() {
     const vsSelect = document.getElementById("vs-select");
     const streamIdx = (vsSelect && vsSelect.value !== 'all') ? parseInt(vsSelect.value, 10) : null;
     const profileFiles = domainStreamProfilePdfMap[cat.code];
+    // "All Processes" has no valid PDF for this lens — the download button is
+    // disabled in that state (see updateDownloadPdfState), so this path never runs.
     filename = (streamIdx !== null && profileFiles && profileFiles[streamIdx])
       ? profileFiles[streamIdx]
-      : lensPdfMap['Value Stream Profile'];
+      : undefined;
   } else if (activeLensName === 'RACI Table') {
     // Context-aware, same pattern as Value Stream Profile: a specific stream
     // selected downloads that stream's RACI-only PDF; "All Processes" downloads
@@ -5780,8 +5776,6 @@ function downloadPDF() {
     filename = (streamIdx !== null && raciFiles && raciFiles[streamIdx])
       ? raciFiles[streamIdx]
       : domainRaciPdf[cat.code];
-  } else if (activeLensName && lensPdfMap[activeLensName]) {
-    filename = lensPdfMap[activeLensName];
   } else {
     // Maturity Table (default view). No per-stream Maturity PDF is built —
     // HITL Design (the doc type that used to serve this) was retired and
