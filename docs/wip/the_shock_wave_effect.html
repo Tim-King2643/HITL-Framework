@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] The Shock Wave Effect — The Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead {
+  background: var(--navy-d); color: #fff; padding: 32px 24px 28px;
+  text-align: center;
+}
+.masthead .eyebrow { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9FC2EE; margin-bottom: 10px; }
+.masthead h1 {
+  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 28px;
+  margin-bottom: 8px;
+}
+.masthead .tagline2 { font-size: 14px; color: #9FC2EE; font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a {
+  color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600;
+  margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent;
+}
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center;
+  font-size: 12.5px; color: #7A5A1E;
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: #7A5A1E; font-weight: 600; }
+
+.wrap { max-width: 780px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.callout {
+  background: var(--amber-bg); border-left: 4px solid var(--amber); border-radius: 6px;
+  padding: 16px 20px; margin: 0 0 32px; font-size: 13.5px; color: #7A5A1E; font-style: italic; line-height: 1.6;
+}
+
+h2 {
+  font-family: 'Playfair Display', serif; font-weight: 700; color: var(--navy-d);
+  font-size: 20px; margin: 40px 0 12px;
+}
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+
+blockquote {
+  border-left: 3px solid var(--navy); margin: 16px 0 24px; padding: 4px 20px;
+  font-style: italic; color: var(--navy-d); font-size: 15px; line-height: 1.7;
+}
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 10px 12px; font-size: 12px; letter-spacing: .02em; }
+td { border: 1px solid var(--border); padding: 10px 12px; vertical-align: top; color: #222; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.ring-name { color: var(--navy); font-weight: 600; white-space: nowrap; }
+
+.term-box {
+  background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 6px;
+  padding: 14px 20px; margin: 0 0 28px; font-size: 13.5px; color: #333; line-height: 1.65;
+}
+.term-box strong { color: var(--navy); }
+
+.open-q { margin-bottom: 14px; }
+.open-q strong { color: var(--navy-d); }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing on this page is official yet.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">HITL-Driven Architecture</div>
+  <h1>The Shock Wave Effect</h1>
+  <div class="tagline2">How change propagates through an organization — and what happens when it hits multiple domains at once</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <div class="callout">
+    Working idea, not yet part of the built framework. This page exists to sharpen a concept, not to report a finished metric or feature — for joint discussion, not a settled position.
+  </div>
+
+  <h2>Where This Started</h2>
+  <p>The Working Collaboration &amp; Co-Development Principles document's Shared Vision paragraph names the real question underneath this whole partnership: when AI, or any other force, materially changes the work, what happens to the role, the person performing it, the manager leading it, the team around it, and the accountability for what follows?</p>
+  <blockquote>&ldquo;Our working vision is to create an integrated architecture for Human + AI Work — one that connects the architecture of work with the human consequences of changing that work.&rdquo;</blockquote>
+  <p>That question has a shape worth naming directly: it widens outward, ring by ring, from the point of impact. That's the shock wave — and once you see the org that way, two things follow. First, a single role's transformation propagates through five distinct rings, not one. Second, when several parts of the organization transform at once, those individual waves don't stay separate.</p>
+
+  <h2>The Blast Radius of a Single Role</h2>
+  <table>
+    <thead>
+      <tr><th>Ring</th><th>What Changes</th><th>Measured Today?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="ring-name">Role</td><td>The work itself — which activities shift, how much, on which pattern (Decision, Knowledge, Document, Transaction, Exception)</td><td>Yes — Maturity Table, M1→M5 pattern mix</td></tr>
+      <tr><td class="ring-name">Person</td><td>What the shift actually means for the person doing the work</td><td>Yes — Pattern Transition Narratives (this is where the work-transition side hands off to the human-transition side)</td></tr>
+      <tr><td class="ring-name">Manager</td><td>The manager who has to lead someone through the change, redistribute what's left, and absorb the disruption to their own span of control</td><td>Partial — reportsTo and span of control exist; the force of the impact does not</td></tr>
+      <tr><td class="ring-name">Team</td><td>The team around the role, absorbing whatever gets redistributed once the role itself changes</td><td>No — not yet built</td></tr>
+      <tr><td class="ring-name">Accountability</td><td>Who remains answerable for the decision or outcome, no matter how the underlying work changes</td><td>Yes — RACI Accountable, Governed Decision Points. Held fixed by design, not expected to move</td></tr>
+    </tbody>
+  </table>
+
+  <div class="term-box">
+    <strong>Governed Decision Point (GDP):</strong> a specific activity where a role holds real decision-making authority, recorded with three things — who decides normally, who it escalates to, and the trigger condition that moves a decision up past them. It's the mechanism behind &ldquo;accountability is held fixed&rdquo; — proof that the accountable person for the real judgment call hasn't changed, even as the surrounding work does.
+  </div>
+
+  <p>The pattern worth noticing: the two rings the framework already measures well — Role and Accountability — sit at the two ends of the wave, not in the middle. Accountability is deliberately built to hold its shape regardless of how hard the wave hits everything around it; that's the framework's own founding thesis (&ldquo;AI can redistribute work. It cannot redistribute accountability.&rdquo;) restated in blast-radius terms. The middle three rings — Person, Manager, Team — are where the actual human cost of the wave is absorbed, and it's exactly those rings where the framework is thinnest today.</p>
+
+  <h2>When Multiple Domains Detonate at Once</h2>
+  <p>A single role's transformation is a contained event — hard at the center, weaker with distance, absorbable. The real risk sharpens when AI transformation hits several functional domains at the same time, uncoordinated, without any sequencing between them.</p>
+  <p>Overlapping shock waves don't simply add together — where two waves cross, they interfere, and the combined force at that intersection can exceed either wave alone. The organizational parallel is precise: a manager, a shared-services team, or a role sitting at the intersection of two or three functions transforming simultaneously doesn't experience double the disruption. They experience the interference pattern — no recovery time between hits, no slack nearby to borrow from, and the people and trust at exactly those overlap points failing first, before the damage is even visible anywhere else.</p>
+
+  <h2>From Metaphor to Mechanism: Cascade, Not Annihilation</h2>
+  <p>&ldquo;Total nuclear destruction&rdquo; is the right image for how it feels from inside an uncoordinated, multi-domain change effort — but the more precise and more defensible failure mode is cascading failure, the same vocabulary systems engineering and financial-contagion analysis use for interconnected systems. An isolated failure is absorbable. A failure that hits multiple interconnected nodes at once, with nothing containing it, cascades: trust erodes organization-wide rather than locally, decision-making seizes up because accountability itself is overwhelmed, and the damage compounds faster than the organization can respond to any single piece of it.</p>
+  <p>That's a real and severe failure mode — and, importantly, a survivable and preventable one, which &ldquo;total destruction&rdquo; as a literal claim is not. The nuclear image works to make the stakes vivid; cascading failure is the mechanism to point to if the argument ever needs to hold up analytically rather than just land emotionally.</p>
+
+  <h2>The Framework's Answer: Containment Through Sequencing</h2>
+  <p>This isn't a hypothetical the framework has no response to. Governed Decision Points holding accountability fixed at every stage, and a phased, one-domain-at-a-time rollout rather than a simultaneous org-wide push, are together a containment strategy against exactly this failure mode — even though nothing built so far has been described in those terms. Sequencing keeps the shock waves from overlapping in the first place; governance keeps accountability from being one of the things that erodes if they do.</p>
+
+  <h2>Open Questions</h2>
+  <p class="open-q"><strong>Manager and Team as measured rings.</strong> Both rings currently have structural data (reportsTo, span of control) but no measure of force or load — this is the same open ground as the framework's existing Trust and load/sustainability gaps, just named from a different direction.</p>
+  <p class="open-q"><strong>Whether interference is measurable, not just descriptive.</strong> Could the framework ever flag a real overlap — a manager or team sitting at the intersection of two simultaneously-transforming domains — before it happens, rather than only naming the concept after the fact?</p>
+  <p class="open-q"><strong>Scope.</strong> Right now this is written from PCF 7.0 (HR) outward. Whether it stays a narrative frame or becomes something closer to a formal cross-domain lens is undecided.</p>
+
+</div>
+
+<footer>
+  <p>
+    For joint review — <strong style="color:var(--navy)">Tim King</strong> and <strong style="color:var(--navy)">GiGi Garcia</strong><br>
+    HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    A matching PDF sits alongside this file in the same folder, if a downloadable copy is easier to mark up. &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+</body>
+</html>

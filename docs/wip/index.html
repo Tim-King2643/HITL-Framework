@@ -53,7 +53,28 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .intro p.lead { font-size: 17px; color: var(--navy); font-style: italic; margin-bottom: 10px; line-height: 1.6; }
 .intro p { font-size: 14px; color: var(--gray); line-height: 1.7; }
 
-.groups { max-width: 900px; margin: 0 auto; padding: 28px 24px 64px; display: flex; flex-direction: column; gap: 20px; }
+.stage-legend {
+  max-width: 760px; margin: 18px auto 0; padding: 14px 20px; background: #fff;
+  border: 1px solid var(--border); border-radius: 8px; text-align: left;
+}
+.stage-legend .legend-title {
+  font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--navy); margin-bottom: 8px;
+}
+.stage-legend .legend-steps { display: flex; flex-wrap: wrap; gap: 6px 10px; margin-bottom: 8px; }
+.stage-legend .step-chip {
+  font-size: 10.5px; font-family: 'DM Mono', monospace; color: var(--navy-d);
+  background: var(--navy-l); border-radius: 4px; padding: 3px 8px;
+}
+.stage-legend .step-chip.current { background: var(--navy); color: #fff; font-weight: 600; }
+.stage-legend p { font-size: 11.5px; color: var(--lgray); line-height: 1.6; margin: 0; }
+
+.groups { max-width: 900px; margin: 0 auto; padding: 28px 24px 64px; display: flex; flex-direction: column; gap: 36px; }
+.group-title {
+  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 16px; color: var(--navy-d);
+  margin-bottom: 4px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+}
+.group-note { font-size: 11.5px; color: var(--lgray); margin: -2px 0 14px; }
 .doc-list { display: flex; flex-wrap: wrap; gap: 12px; }
 .doc-card {
   flex: 1 1 260px; background: #fff; border: 1px solid var(--border); border-radius: 8px;
@@ -63,9 +84,14 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .doc-card:hover { background: var(--navy-l); border-color: #B8CCE8; }
 .doc-card .doc-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
 .doc-card .doc-desc { font-size: 12px; color: var(--lgray); line-height: 1.5; }
+.doc-card .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .doc-card .status {
-  display: inline-block; margin-top: 8px; font-size: 9px; font-weight: 700; letter-spacing: .04em;
+  display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .04em;
   text-transform: uppercase; color: var(--amber); background: var(--amber-bg); border-radius: 3px; padding: 2px 7px;
+}
+.doc-card .stage {
+  display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .03em;
+  color: var(--navy); background: var(--navy-l); border-radius: 3px; padding: 2px 7px;
 }
 
 .empty-state {
@@ -103,6 +129,20 @@ footer a { color: var(--navy); text-decoration: none; }
   <p>Each item below is real, working HTML — viewable and commentable just like the rest of the site — but deliberately not linked from Documentation, the Dashboard, or any nav. Nothing moves into the framework proper until it's been reviewed and both of you are ready to make it official.</p>
 </div>
 
+<div class="stage-legend">
+  <div class="legend-title">Development stage (per Section 5, Working Collaboration &amp; Co-Development Principles — &ldquo;How We Develop It&rdquo;)</div>
+  <div class="legend-steps">
+    <span class="step-chip">Concept</span>
+    <span class="step-chip">Step 1 · Prototype</span>
+    <span class="step-chip">Step 2 · Pressure Test</span>
+    <span class="step-chip">Step 3 · Refine</span>
+    <span class="step-chip">Step 4 · Pilot</span>
+    <span class="step-chip">Step 5 · Validate</span>
+    <span class="step-chip">Step 6 · Commercialize</span>
+  </div>
+  <p>Every card below carries a stage tag showing where it actually sits in this sequence today — a separate thing from the amber &ldquo;review status&rdquo; badge, which just tracks whether it's ready for a read-through.</p>
+</div>
+
 <div class="groups">
 
   <!--
@@ -128,33 +168,81 @@ footer a { color: var(--navy); text-decoration: none; }
        That's what makes a draft unmistakable even if someone opens it directly
        (a shared link, a bookmark, browser history) without going through this
        hub page first.
-    4. Copy one <a class="doc-card"> block below, point href at the new filename,
-       and write a one-line title + description.
-    5. Leave it OUT of docs/index.html, hitl_dashboard_final.html, and any other
+    4. Decide which group it belongs in — "Role Pattern Transition Narratives"
+       (built-and-applied content, scoped to one specific role) or "Concepts &
+       Design Principles" (a framework-level idea/mechanism, not yet applied to
+       any specific role or dataset). Add a new group if neither fits; copy the
+       <div class="group-title">/<div class="group-note"> pair above a group's
+       <div class="doc-list">.
+    5. Copy one <a class="doc-card"> block below, point href at the new filename,
+       write a one-line title + description, and set BOTH badges honestly:
+         - class="status": editorial readiness ("Ready for review", "Drafting",
+           "Needs data").
+         - class="stage": where it actually sits against the Section 5 steps in
+           the legend above. A framework-level idea that hasn't been applied to
+           specific roles yet is "Concept," not "Step 1" — don't round up.
+    6. Leave it OUT of docs/index.html, hitl_dashboard_final.html, and any other
        nav until it's approved — that's what keeps it "WIP."
-    6. Once approved: remove the ribbon and the [DRAFT] title prefix, move the
+    7. Once approved: remove the ribbon and the [DRAFT] title prefix, move the
        file into its real home in docs/, add it to the real navigation, then
        delete its card from this page.
   -->
 
-  <div class="doc-list">
-    <a class="doc-card" href="chro_pattern_transition_stagefirst.html">
-      <div class="doc-title">CHRO — Pattern Transition Narratives</div>
-      <div class="doc-desc">Stage-first view of how the CHRO's remaining human work shifts across M1 &rarr; M3 &rarr; M5 as AI matures, by HITL pattern.</div>
-      <div class="status">Ready for review</div>
-    </a>
-    <a class="doc-card" href="hrbp_manager_pattern_transition_stagefirst.html">
-      <div class="doc-title">HRBP Manager — Pattern Transition Narratives</div>
-      <div class="doc-desc">Same stage-first view for the HRBP Manager role — 22 real L4 activities across 10 Accountable processes.</div>
-      <div class="status">Ready for review</div>
-    </a>
-    <a class="doc-card" href="recruiter_pattern_transition_stagefirst.html">
-      <div class="doc-title">Recruiter — Pattern Transition Narratives</div>
-      <div class="doc-desc">Same stage-first view for the Recruiter role, the third of the three roles walked through on the Aug 31 call.</div>
-      <div class="status">Ready for review</div>
-    </a>
+  <div>
+    <div class="group-title">Role Pattern Transition Narratives</div>
+    <div class="group-note">Stage-first M1 → M3 → M5 views, per role, grounded in real Accountable-process data.</div>
+    <div class="doc-list">
+      <a class="doc-card" href="chro_pattern_transition_stagefirst.html">
+        <div class="doc-title">CHRO — Pattern Transition Narratives</div>
+        <div class="doc-desc">Stage-first view of how the CHRO's remaining human work shifts across M1 &rarr; M3 &rarr; M5 as AI matures, by HITL pattern.</div>
+        <div class="badges">
+          <span class="status">Ready for review</span>
+          <span class="stage">Step 1 · Prototype</span>
+        </div>
+      </a>
+      <a class="doc-card" href="hrbp_manager_pattern_transition_stagefirst.html">
+        <div class="doc-title">HRBP Manager — Pattern Transition Narratives</div>
+        <div class="doc-desc">Same stage-first view for the HRBP Manager role — 22 real L4 activities across 10 Accountable processes.</div>
+        <div class="badges">
+          <span class="status">Ready for review</span>
+          <span class="stage">Step 1 · Prototype</span>
+        </div>
+      </a>
+      <a class="doc-card" href="recruiter_pattern_transition_stagefirst.html">
+        <div class="doc-title">Recruiter — Pattern Transition Narratives</div>
+        <div class="doc-desc">Same stage-first view for the Recruiter role, the third of the three roles walked through on the Aug 31 call.</div>
+        <div class="badges">
+          <span class="status">Ready for review</span>
+          <span class="stage">Step 1 · Prototype</span>
+        </div>
+      </a>
+    </div>
+    <p style="font-size:11.5px;color:var(--lgray);margin-top:10px;">A matching PDF sits alongside each HTML file in this same folder, if a downloadable copy is easier to mark up.</p>
   </div>
-  <p style="font-size:11.5px;color:var(--lgray);text-align:center;margin-top:-6px;">A matching PDF sits alongside each HTML file in this same folder, if a downloadable copy is easier to mark up.</p>
+
+  <div>
+    <div class="group-title">Concepts &amp; Design Principles</div>
+    <div class="group-note">Framework-level ideas and mechanisms — not yet applied to a specific role, dataset, or dashboard lens.</div>
+    <div class="doc-list">
+      <a class="doc-card" href="the_shock_wave_effect.html">
+        <div class="doc-title">The Shock Wave Effect</div>
+        <div class="doc-desc">How change propagates through an organization in five rings (Role, Person, Manager, Team, Accountability) — and what happens when multiple domains transform at once.</div>
+        <div class="badges">
+          <span class="status">Ready for review</span>
+          <span class="stage">Concept</span>
+        </div>
+      </a>
+      <a class="doc-card" href="from_concept_to_principle.html">
+        <div class="doc-title">From Concept to Principle</div>
+        <div class="doc-desc">A proposed governance layer: how an idea moves from Concept through Claude's feasibility review to Approved, requiring sign-off from both Tim and GiGi.</div>
+        <div class="badges">
+          <span class="status">Ready for review</span>
+          <span class="stage">Concept</span>
+        </div>
+      </a>
+    </div>
+    <p style="font-size:11.5px;color:var(--lgray);margin-top:10px;">A matching PDF sits alongside each HTML file in this same folder, if a downloadable copy is easier to mark up.</p>
+  </div>
 
 </div>
 
