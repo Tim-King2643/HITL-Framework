@@ -40,11 +40,14 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 }
 .masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
 
-.notice {
-  max-width: 760px; margin: 24px auto 0; padding: 12px 20px;
-  background: var(--amber-bg); border: 1px solid #F2D9A6; border-radius: 8px;
-  font-size: 12.5px; color: #7A5A1E; text-align: center;
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center;
+  font-size: 12.5px; color: #7A5A1E;
 }
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: #7A5A1E; font-weight: 600; }
 
 .intro { max-width: 760px; margin: 0 auto; padding: 24px 24px 8px; text-align: center; }
 .intro p.lead { font-size: 17px; color: var(--navy); font-style: italic; margin-bottom: 10px; line-height: 1.6; }
@@ -79,6 +82,12 @@ footer a { color: var(--navy); text-decoration: none; }
 </head>
 <body>
 
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing on this page is official yet.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
+
 <div class="masthead">
   <h1>The Human-AI Partnership Framework</h1>
   <div class="tagline2">Where human judgment belongs</div>
@@ -87,10 +96,6 @@ footer a { color: var(--navy); text-decoration: none; }
     <a href="../hitl_dashboard_final.html">Dashboard</a>
     <a href="index.html" class="active">Work in Progress</a>
   </nav>
-</div>
-
-<div class="notice">
-  This page is intentionally unlinked from the main site navigation — it exists for Tim and GiGi to review drafts before anything here becomes part of the published framework. Nothing on this page should be treated as final.
 </div>
 
 <div class="intro">
@@ -103,12 +108,33 @@ footer a { color: var(--navy); text-decoration: none; }
   <!--
     HOW TO ADD A NEW WIP ITEM
     1. Drop the draft HTML file in this same docs/wip/ folder.
-    2. Copy one <a class="doc-card"> block below, point href at the new filename,
+    2. Prefix its <title> with "[DRAFT] " — a second signal, visible in the
+       browser tab, that survives even if someone bookmarks or shares the link.
+    3. Paste this exact block as the FIRST thing inside that page's <body>,
+       before its own masthead/header — it's self-contained (inline styles),
+       so it renders correctly no matter what that page's own CSS does:
+
+         <div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+         border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+         font-family:'DM Sans',sans-serif;font-size:12.5px;color:#7A5A1E;">
+           <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+           — Not Yet Part of the Framework</strong>
+           &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing
+           here is official yet.
+           &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+           Back to WIP hub</a>
+         </div>
+
+       That's what makes a draft unmistakable even if someone opens it directly
+       (a shared link, a bookmark, browser history) without going through this
+       hub page first.
+    4. Copy one <a class="doc-card"> block below, point href at the new filename,
        and write a one-line title + description.
-    3. Leave it OUT of docs/index.html, hitl_dashboard_final.html, and any other
+    5. Leave it OUT of docs/index.html, hitl_dashboard_final.html, and any other
        nav until it's approved — that's what keeps it "WIP."
-    4. Once approved, move the file into its real home in docs/ and add it to
-       the real navigation — then delete its card from this page.
+    6. Once approved: remove the ribbon and the [DRAFT] title prefix, move the
+       file into its real home in docs/, add it to the real navigation, then
+       delete its card from this page.
   -->
 
   <div class="empty-state">
