@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>[DRAFT] HRBP Manager — Pattern Transition Narratives (Stage-First View)</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    color: #1A1A1A;
+  }
+  .sheet-frame { padding: 28px 36px 34px 36px; }
+  .page { max-width: 900px; margin: 0 auto; }
+  @media print { .sheet-frame { padding: 0; } }
+
+  .banner { width: 100%; background: #0D2D4F; padding: 14pt 16pt; text-align: center; }
+  .banner .b1 { font-family: Georgia, "Times New Roman", serif; font-size: 11pt; font-weight: 700; color: #FFFFFF; margin: 0 0 2pt 0; }
+  .banner .b2 { font-family: Georgia, "Times New Roman", serif; font-size: 9pt; font-style: italic; color: #9FC0E8; margin: 0; }
+
+  .title-block { padding: 14pt 0 0 0; }
+  h1.doc-title { font-family: Georgia, "Times New Roman", serif; font-size: 16pt; font-weight: 700; color: #0D2D4F; margin: 0 0 3pt 0; }
+  p.doc-sub { font-size: 9.5pt; font-style: italic; color: #888888; margin: 0 0 10pt 0; }
+  p.doc-intro { font-size: 10pt; color: #444444; line-height: 1.5; margin: 0 0 8pt 0; }
+
+  h2.role-heading { font-size: 13.5pt; font-weight: 700; color: #0D2D4F; border-bottom: 1pt solid #0D2D4F; padding-bottom: 4pt; margin: 16pt 0 5pt 0; }
+  p.role-intro { font-size: 9.5pt; font-style: italic; color: #888888; margin: 0 0 12pt 0; line-height: 1.4; }
+
+  .exhibit { width: 100%; margin: 0 0 14pt 0; break-inside: avoid-page; }
+  .exhibit-rule { border: none; border-top: 2pt solid #21365E; margin: 12pt 0 12pt 0; }
+  h3.exhibit-headline { width: 100%; font-size: 12.5pt; line-height: 1.35; font-weight: 800; color: #1a1a1a; margin: 0 0 5pt 0; }
+  p.exhibit-subcaption { width: 100%; font-size: 8.5pt; color: #58585a; margin: 0 0 16pt 0; }
+
+  .cols { display: flex; gap: 24px; width: 100%; }
+  .col { flex: 1 1 0; min-width: 0; }
+  .col-head { font-size: 9.5pt; font-weight: 700; color: #1a1a1a; margin-bottom: 7pt; }
+  .col-head .sub { display: block; font-weight: 400; color: #555555; font-size: 8pt; margin-top: 1pt; }
+
+  .map { position: relative; width: 100%; break-inside: avoid-page; }
+  .box { position: absolute; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+  .box .name { display: block; width: 100%; box-sizing: border-box; font-size: 7pt; font-weight: 700; color: #fff; line-height: 1.2; padding: 5pt 4pt 0 4pt; overflow-wrap: break-word; }
+  .box .val { display: block; width: 100%; box-sizing: border-box; font-size: 8pt; font-weight: 700; color: #fff; text-align: right; font-variant-numeric: tabular-nums; padding: 0 4pt 4pt 0; }
+
+  .exhibit-footer { break-inside: avoid-page; }
+  .exhibit-footprint { font-size: 7.5pt; color: #8a8a8c; margin-top: 10pt; line-height: 1.6; border-top: 0.75pt solid #d9d9d9; padding-top: 7pt; }
+
+  .stage { break-inside: avoid-page; }
+  h3.stage-heading { font-size: 13pt; font-weight: 700; color: #0D2D4F; border-bottom: 1pt solid #D9D9D9; padding-bottom: 2pt; margin: 15pt 0 1pt 0; }
+  p.stage-state { font-size: 8.5pt; font-style: italic; color: #555555; margin: 0 0 8pt 0; }
+
+  .pattern-block { break-inside: avoid-page; margin: 0 0 8pt 5pt; }
+  p.pattern-heading { font-size: 10pt; font-weight: 700; margin: 0 0 3pt 0; }
+  p.pattern-heading .pct { font-weight: 400; font-size: 8.5pt; color: #888888; }
+  p.pattern-narrative { font-size: 10pt; color: #1A1A1A; line-height: 1.45; margin: 0; }
+
+  p.doc-source-note { font-size: 8pt; font-style: italic; color: #888888; margin: 10pt 0 0 5pt; }
+  p.scope-note { font-size: 8pt; font-style: italic; color: #888888; margin: 2pt 0 0 5pt; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'DM Sans',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="sheet-frame">
+<div class="page">
+
+  <div class="banner">
+    <p class="b1">THE HUMAN-AI PARTNERSHIP FRAMEWORK</p>
+    <p class="b2">Pattern Transition Narratives — Stage-First View</p>
+  </div>
+
+  <div class="title-block">
+    <h1 class="doc-title">Role-Specific Pattern Transitions</h1>
+    <p class="doc-sub">What M1 → M3 → M5 actually means for the work — stage-first view, HRBP Manager</p>
+    <p class="doc-intro">The treemap exhibits show how the composition of each role's remaining human work shifts as AI matures, organized by <strong>maturity stage first, pattern second</strong> — the same M1/M3/M5 column structure as the treemap itself. This view answers: at this specific stage, across every pattern the role touches, what does the work actually look like? Note that two different percentages appear below: the treemap's box size is each pattern's share of the total remaining workload at that stage (the boxes in each column sum to 100%), while the percentage next to each pattern in the stage detail is that pattern's own human-involvement level, independent of the others.</p>
+
+    <h2 class="role-heading">HRBP Manager</h2>
+    <p class="role-intro">Accountable on 22 real L4 activities across 10 real Accountable processes (7.2.1 Manage requisitions, 7.3.2 Manage performance, 7.4.1 Labor relations, 7.4.2 Collective bargaining, 7.4.3 Labor-management partnerships, 7.4.4 Employee grievances, 7.6.1 Promotion/demotion, 7.6.2 Manage separation, 7.8.1 Communication plan, 7.8.3 Deliver communications). Excludes 7.6.3 (Relocate employees), flagged in the source data as a partial/gap-noted accountability.</p>
+
+    <div class="exhibit">
+      <hr class="exhibit-rule">
+      <h3 class="exhibit-headline">HRBP Manager's remaining human work concentrates in judgment and exception-handling as AI matures: Decision's share nearly doubles, Exception holds firm, and Transaction fades toward the margins.</h3>
+      <p class="exhibit-subcaption">Composition of HRBP Manager's real activity mix still requiring human involvement, by HITL pattern — area = share, %</p>
+      <div class="cols" id="cols"></div>
+      <div class="exhibit-footer">
+        <div class="exhibit-footprint">Built from HRBP Manager's real PCF 7.0 RACI data (hitl_dashboard_final.html) — 22 activities across its 10 real Accountable processes (7.2.1 Manage requisitions, 7.3.2 Manage performance, 7.4.1 Labor relations, 7.4.2 Collective bargaining, 7.4.3 Labor-management partnerships, 7.4.4 Employee grievances, 7.6.1 Promotion/demotion, 7.6.2 Manage separation, 7.8.1 Communication plan, 7.8.3 Deliver communications), weighted by activity count × each pattern's M1/M3/M5 human-involvement %. Excludes 7.6.3 (Relocate employees), flagged in the source data as a partial/gap-noted accountability. Layout: squarified treemap (Bruls/Huizing/van Wijk), each column laid out independently from its own sorted values — box area is the only encoded quantity, position and aspect ratio are layout artifacts.</div>
+      </div>
+    </div>
+
+    <div id="stages"></div>
+
+    <p class="doc-source-note">Source: hitl_dashboard_final.html, PCF 7.2–7.8 (real RACI/pattern data) — matches hrbp_manager_treemap_mckinsey.html (pattern-first companion view) and rtp_hrbp_manager.html.</p>
+    <p class="scope-note">Note: unlike the Recruiter stage-first view, this exhibit does not cite specific Governed Decision Point escalation targets for Decision-pattern work — that level of detail isn't yet confirmed against the live dashboard for this role, so it's left out rather than assumed.</p>
+  </div>
+
+</div>
+</div>
+
+<script>
+(function() {
+  const counts = { Knowledge: 7, Transaction: 8, Decision: 4, Document: 2, Exception: 1 };
+  const hpct = {
+    Knowledge:   { m1: 85, m3: 65, m5: 42 },
+    Transaction: { m1: 60, m3: 35, m5: 12 },
+    Decision:    { m1: 92, m3: 80, m5: 65 },
+    Document:    { m1: 72, m3: 40, m5: 18 },
+    Exception:   { m1: 95, m3: 82, m5: 68 },
+  };
+  const order = ["Decision", "Knowledge", "Document", "Transaction", "Exception"];
+  const colorMap = { Decision: "#21365E", Knowledge: "#5B3A9E", Document: "#0E7C86", Transaction: "#2F7D4F", Exception: "#8B2635" };
+  const patternHeadColor = { Decision: "#1B4F8A", Knowledge: "#534AB7", Document: "#0369A1", Transaction: "#166534", Exception: "#991B1B" };
+  const stageKeys = ["m1", "m3", "m5"];
+  const stageHead = {
+    m1: { title: "M1 — Undesigned", sub: "Current state" },
+    m3: { title: "M3 — HITL Design Intent", sub: "Target state" },
+    m5: { title: "M5 — Leading", sub: "Future state" },
+  };
+
+  const shares = {};
+  stageKeys.forEach(st => {
+    let total = 0; const w = {};
+    order.forEach(p => { w[p] = counts[p] * hpct[p][st]; total += w[p]; });
+    shares[st] = {};
+    order.forEach(p => { shares[st][p] = (w[p] / total) * 100; });
+  });
+
+  // --- squarified treemap (Bruls, Huizing & van Wijk, 1999) ---
+  function worse(row, side) {
+    const sum = row.reduce((s, r) => s + r.area, 0);
+    const maxA = Math.max(...row.map(r => r.area));
+    const minA = Math.min(...row.map(r => r.area));
+    return Math.max((side * side * maxA) / (sum * sum), (sum * sum) / (side * side * minA));
+  }
+  function layoutRowGetRest(row, x, y, w, h) {
+    const sum = row.reduce((s, r) => s + r.area, 0);
+    const placed = [];
+    if (w >= h) {
+      const stripW = sum / h;
+      let cy = y;
+      row.forEach(r => {
+        const itemH = r.area / stripW;
+        placed.push(Object.assign({}, r, { x, y: cy, w: stripW, h: itemH }));
+        cy += itemH;
+      });
+      return [placed, { x: x + stripW, y, w: Math.max(w - stripW, 0), h }];
+    } else {
+      const stripH = sum / w;
+      let cx = x;
+      row.forEach(r => {
+        const itemW = r.area / stripH;
+        placed.push(Object.assign({}, r, { x: cx, y: y, w: itemW, h: stripH }));
+        cx += itemW;
+      });
+      return [placed, { x, y: y + stripH, w, h: Math.max(h - stripH, 0) }];
+    }
+  }
+  function squarify(items, x, y, w, h) {
+    let results = [];
+    let remaining = items.slice();
+    let rect = { x, y, w, h };
+    let row = [];
+    while (remaining.length > 0) {
+      const side = Math.min(rect.w, rect.h);
+      const next = remaining[0];
+      const testRow = row.concat([next]);
+      if (row.length === 0 || worse(row, side) >= worse(testRow, side)) {
+        row.push(remaining.shift());
+      } else {
+        const [placed, rest] = layoutRowGetRest(row, rect.x, rect.y, rect.w, rect.h);
+        results = results.concat(placed);
+        rect = rest;
+        row = [];
+      }
+    }
+    if (row.length) {
+      const [placed] = layoutRowGetRest(row, rect.x, rect.y, rect.w, rect.h);
+      results = results.concat(placed);
+    }
+    return results;
+  }
+  function treemap(data, x, y, w, h) {
+    const total = data.reduce((s, d) => s + d.value, 0);
+    const scale = (w * h) / total;
+    const nodes = data.map(d => Object.assign({}, d, { area: d.value * scale }));
+    return squarify(nodes, x, y, w, h);
+  }
+
+  const colsEl = document.getElementById("cols");
+  const GAP_PX = 24;
+  const totalW = colsEl.getBoundingClientRect().width || 648;
+  const MAP_W = (totalW - GAP_PX * 2) / 3;
+  const MAP_H = MAP_W * (380 / 250);
+  const GAP = 2;
+
+  stageKeys.forEach(st => {
+    const data = order
+      .map(p => ({ name: p, value: shares[st][p] }))
+      .sort((a, b) => b.value - a.value);
+
+    const boxes = treemap(data, 0, 0, MAP_W, MAP_H);
+
+    const col = document.createElement("div");
+    col.className = "col";
+    col.innerHTML = `<div class="col-head">${stageHead[st].title}<span class="sub">${stageHead[st].sub}</span></div>`;
+    const map = document.createElement("div");
+    map.className = "map";
+    map.style.width = MAP_W + "px";
+    map.style.height = MAP_H + "px";
+
+    boxes.forEach(b => {
+      const div = document.createElement("div");
+      div.className = "box";
+      div.style.left = (b.x + GAP / 2) + "px";
+      div.style.top = (b.y + GAP / 2) + "px";
+      div.style.width = Math.max(b.w - GAP, 0) + "px";
+      div.style.height = Math.max(b.h - GAP, 0) + "px";
+      div.style.background = colorMap[b.name];
+      div.innerHTML = `<span class="name">${b.name}</span><span class="val">${b.value.toFixed(0)}%</span>`;
+      map.appendChild(div);
+    });
+
+    col.appendChild(map);
+    colsEl.appendChild(col);
+  });
+
+  // --- stage-first narrative sections ---
+  const stageNarrative = {
+    Knowledge: {
+      m1: "Building labor-relations strategy, negotiating collective bargaining positions, sustaining labor-management partnerships, and designing performance-management approaches — this is relationship-and-judgment work the HRBP Manager owns personally, with essentially no structured AI support underneath it at this stage.",
+      m3: "AI can surface bargaining-history patterns, grievance-trend data, and performance benchmarks, but the relationship work itself — building trust with labor representatives, reading a bargaining session, deciding how hard to push a position — stays with the HRBP Manager. AI narrows the research burden underneath the judgment, not the judgment itself.",
+      m5: "AI-assisted analysis of labor and performance trends is the default; the HRBP Manager's value narrows to what a system can't do — building trust across a bargaining table, sensing a partnership fraying before the data shows it.",
+    },
+    Transaction: {
+      m1: "Managing requisitions and delivering communications — at this stage the HRBP Manager is personally handling requisition paperwork and pushing communications out by hand.",
+      m3: "Most of this is now templated and system-driven — requisition routing, communication delivery — with the HRBP Manager mainly handling exceptions the system flags.",
+      m5: "This work is a rounding error at this stage: reserved for the rare case the process genuinely breaks — the pattern that shrinks fastest and furthest across every role in the framework.",
+    },
+    Decision: {
+      m1: "Deciding who gets promoted or separated, and how a grievance resolves — at this stage the HRBP Manager owns these calls almost entirely on personal judgment, with no structured AI input underneath them.",
+      m3: "AI can surface comparable-case data — prior promotion decisions, grievance-resolution precedent, performance history — but the actual call on promotion, separation, and grievance outcomes stays human. A wrong call here carries real legal and trust cost, which is why the framework keeps this pattern close to full human ownership even at design intent.",
+      m5: "Even at the framework's most mature state, most of the call on someone's career or employment status is still human — comparable to Decision's floor in other roles, and for the same reason: this is accountability that can't be delegated to a system.",
+    },
+    Document: {
+      m1: "Drafting the communication plan itself — largely manual writing work at this stage.",
+      m3: "Most of the plan's language now auto-generates from approved talking points and prior-plan templates, with the HRBP Manager reviewing and tailoring rather than drafting from scratch.",
+      m5: "Nearly fully automated: the HRBP Manager's role becomes a final check that tone and specifics match what leadership actually intends to communicate.",
+    },
+    Exception: {
+      m1: "The rare case that falls outside every normal process — a labor dispute that escalates, a grievance that doesn't resolve through standard channels — is handled almost entirely on the HRBP Manager's own judgment, since nothing structured yet exists to support it.",
+      m3: "AI can flag that a case doesn't fit the normal pattern and surface comparable past exceptions, but resolving it is still squarely human — Exception-pattern work resists structuring by design.",
+      m5: "Even at the framework's most mature state, Exception-pattern work stays close to fully human — the floor barely moves, consistent with the framework's broader point that Decision and Exception are the two patterns that resist automation longest.",
+    },
+  };
+  const narrativeOrder = ["Knowledge", "Transaction", "Decision", "Document", "Exception"];
+
+  const stagesEl = document.getElementById("stages");
+  stageKeys.forEach(st => {
+    const section = document.createElement("div");
+    section.className = "stage";
+    section.innerHTML = `<h3 class="stage-heading">${stageHead[st].title}</h3><p class="stage-state">(${stageHead[st].sub})</p>`;
+    narrativeOrder.forEach(p => {
+      const block = document.createElement("div");
+      block.className = "pattern-block";
+      block.innerHTML = `<p class="pattern-heading" style="color:${patternHeadColor[p]}">${p.toUpperCase()} <span class="pct">· ${hpct[p][st]}% human involvement</span></p>` +
+                         `<p class="pattern-narrative">${stageNarrative[p][st]}</p>`;
+      section.appendChild(block);
+    });
+    stagesEl.appendChild(section);
+  });
+})();
+</script>
+</body>
+</html>
