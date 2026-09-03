@@ -49,6 +49,33 @@ footer a { color: var(--navy); text-decoration: none; }
 .crosslink { display: block; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 24px 0; text-decoration: none; }
 .crosslink .ct { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
 .crosslink .cd { font-size: 12px; color: var(--lgray); }
+
+/* --- Organizational Level Maturity exhibit --- */
+.legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 4px 0 14px 2px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.chart-frame { margin: 8px 0 20px; }
+.chart-frame text { font-family: 'DM Sans', sans-serif; }
+.axis-pct { fill: var(--lgray); font-size: 9.5px; }
+.x-code { fill: var(--navy-d); font-size: 11px; font-weight: 700; font-family: 'DM Mono', monospace; }
+.x-name { fill: var(--gray); font-size: 9px; font-weight: 500; }
+.m3-tag { fill: var(--navy); font-size: 9.5px; font-weight: 700; letter-spacing: .02em; }
+.pt-label { font-size: 9px; font-weight: 700; }
+.levels { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0 4px; }
+.level-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px 12px; }
+.level-card .lc-pill { display: inline-block; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 700; color: #fff; background: var(--navy-d); border-radius: 10px; padding: 2px 9px; margin-bottom: 5px; }
+.level-card .lc-name { font-size: 11.5px; font-weight: 700; color: var(--navy-d); margin-bottom: 5px; }
+.level-card .lc-desc { font-size: 10px; color: var(--gray); line-height: 1.45; }
+.table-wrap { margin: 22px 0 4px; overflow-x: auto; }
+#data-table th { vertical-align: bottom; white-space: nowrap; font-size: 10.5px; }
+#data-table th.num, #data-table td.num { text-align: right; }
+#data-table .th-star-row th { padding-top: 6px; padding-bottom: 0; font-size: 10px; }
+#data-table .th-star-row + tr th { padding-top: 2px; }
+#data-table td.pattern-name { white-space: nowrap; }
+#data-table td.requires-cell { font-size: 10.8px; min-width: 200px; }
+.table-caption { font-size: 10.5px; color: var(--lgray); margin-top: 6px; }
+.reading { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 6px; padding: 14px 18px; margin: 18px 0 0; font-size: 12.5px; color: #24405E; line-height: 1.65; }
+.reading strong { color: var(--navy-d); }
 </style>
 </head>
 <body>
@@ -86,39 +113,58 @@ footer a { color: var(--navy); text-decoration: none; }
   </table>
   <p>The most common failure in human-AI operating model design is work sitting in the wrong layer — humans doing Transaction work that automation should handle, or AI generating outputs for Decision work where human judgment and accountability are non-negotiable. The five pattern types below are what determine which layer an activity actually belongs in. <a href="hitl_methodology.html" style="color:var(--navy)">Full detail in the HITL Design Methodology →</a></p>
 
-  <h2>The Five Patterns, and Two Numbers Per Pattern</h2>
-  <p>Every activity in the framework's process hierarchy gets classified into one of five patterns, based on what the work fundamentally requires — not what tools happen to be in use today. Each pattern carries two reference numbers: a typical current-state baseline, and where that pattern's design intent target sits.</p>
-  <table>
-    <tr><th>Pattern</th><th>Requires</th><th>Typical baseline → design intent</th></tr>
-    <tr><td class="pat-Decision">Decision</td><td>Judgment, authority, accountability — approvals, selections, sign-offs that can't be delegated without real risk.</td><td style="text-align:center">90% → 75%</td></tr>
-    <tr><td class="pat-Knowledge">Knowledge</td><td>Expert interpretation and synthesis — AI can assist with research and pattern detection; humans lead the interpretation.</td><td style="text-align:center">80% → 60%</td></tr>
-    <tr><td class="pat-Document">Document</td><td>Drafting, summarizing, structured content creation — AI can produce first drafts; humans review, refine, and approve.</td><td style="text-align:center">65% → 35%</td></tr>
-    <tr><td class="pat-Transaction">Transaction</td><td>Rules-based, repeatable processing and routing — high automation potential; humans handle exceptions and quality oversight.</td><td style="text-align:center">45% → 30%</td></tr>
-    <tr><td class="pat-Exception">Exception</td><td>Non-standard events and edge cases — AI flags and routes; humans investigate and decide.</td><td style="text-align:center">92% → 75%</td></tr>
-  </table>
-  <div class="callout"><div class="label">The Design Intent Number Is Not a Target to Minimize</div>
-    <p>A 75% design intent for Decision work doesn't mean 25% of decisions should be made by AI. It means AI should be handling roughly a quarter of the supporting analysis, preparation, and documentation — while human judgment still owns the actual decision. The goal is optimal balance, not maximum automation.</p>
+  <h2>Organizational Level Maturity</h2>
+  <p>Every activity in the framework's process hierarchy gets classified into one of five patterns, based on what the work fundamentally requires — not what tools happen to be in use today. Each pattern carries a full human-involvement curve across the scale, not just a single before/after number: an M1 baseline, an M3 design-intent target, and where the pattern lands at M2, M4, and M5 in between and beyond — so progress is a measured trajectory rather than a snapshot.</p>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="chart-frame">
+    <svg id="chart" viewBox="0 0 940 460" width="100%"></svg>
   </div>
 
-  <h2>From Two Numbers to a Five-Point Scale</h2>
-  <p>The two reference numbers above — baseline and design intent — are the anchor points. The five-level scale (M1–M5) is how the framework tracks the real, ongoing journey between and beyond those two points for every individual activity, so progress is a measured trajectory rather than a single before/after snapshot.</p>
-  <table>
-    <tr><th style="width:8%">Level</th><th style="width:18%">Name</th><th>What it means</th></tr>
-    <tr><td style="color:var(--navy);font-weight:700">M1</td><td style="font-weight:700">Undesigned</td><td>The Current H% baseline — human involvement exists because that's how the process happened to evolve, not because anyone decided it should sit there.</td></tr>
-    <tr><td style="color:var(--navy);font-weight:700">M2</td><td style="font-weight:700">Emerging</td><td>Automation has started to reduce human involvement, but piecemeal and reactively — individual tools bolted on, not a deliberate redesign.</td></tr>
-    <tr class="m3-row"><td style="color:var(--navy)">M3 ★</td><td>Design Intent</td><td>The Design Intent H% target — the point where human involvement is deliberately engineered, grounded in the activity's pattern type. This is the framework's actual target state, not a waypoint to M5.</td></tr>
-    <tr><td style="color:var(--navy);font-weight:700">M4</td><td style="font-weight:700">Optimized</td><td>The M3 design intent, refined and tuned — friction removed, workflows smoothed — without changing who's accountable for what.</td></tr>
-    <tr><td style="color:var(--navy);font-weight:700">M5</td><td style="font-weight:700">Leading</td><td>The technical ceiling: as much automation as the pattern type genuinely allows. For Decision- and Exception-pattern work, that ceiling stays close to M3, because it's bounded by what shouldn't be delegated, not by what's technically possible.</td></tr>
-  </table>
+  <div class="levels" id="levels"></div>
+
   <p>M1 is the baseline; M3 is the design intent target. M2 is the honest, often messy middle — automation arriving unevenly, before anyone's redesigned the work on purpose. M4 and M5 exist because design intent isn't the technical ceiling — once a process is deliberately designed at M3, it can still be refined (M4) and pushed toward its real limit (M5). For Transaction- and Document-pattern work, that limit is genuinely close to full automation. For Decision- and Exception-pattern work, it isn't — and that difference is the whole point of the next section.</p>
+
+  <div class="table-wrap">
+    <table id="data-table">
+      <thead>
+        <tr class="th-star-row">
+          <th></th><th></th><th></th><th></th>
+          <th class="num">★</th>
+          <th></th><th></th><th></th>
+        </tr>
+        <tr>
+          <th>Pattern</th>
+          <th>Requires</th>
+          <th class="num">M1</th>
+          <th class="num">M2</th>
+          <th class="num">M3</th>
+          <th class="num">M4</th>
+          <th class="num">M5</th>
+          <th class="num">Δ M1→M5</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+    <p class="table-caption">H% = share of that pattern's work still done by a human at that maturity level.</p>
+  </div>
+
+  <div class="callout"><div class="label">The Design Intent Number Is Not a Target to Minimize</div>
+    <p>An 80% design intent for Decision work doesn't mean 20% of decisions should be made by AI. It means AI should be handling roughly a fifth of the supporting analysis, preparation, and documentation — while human judgment still owns the actual decision. The goal is optimal balance, not maximum automation.</p>
+  </div>
+
+  <div class="reading">
+    <strong>What the numbers say:</strong> Decision and Exception — the two patterns tied to judgment and accountability rather than process — decline the least across the curve and stay above 65% human even at M5. Document and Transaction, the two most rules-based patterns, fall the furthest and fastest, both losing more than half their human share by M3 alone. That split is the framework's founding thesis in numeric form: AI can redistribute work, it cannot redistribute accountability.
+  </div>
 
   <h2>How the Human Role Is Guarded at Design Intent</h2>
   <p>This is the mechanism that makes M3 more than a label, and it's the piece most engagement and questions on this topic seem to miss: the pattern classification isn't a description added after the fact — it's the reason each activity's numbers land where they do, and it's what actively protects certain work from compressing toward M5 the way Transaction or Document work does.</p>
   <table>
     <tr><th style="width:18%">Pattern</th><th>How guarded, in practice</th></tr>
-    <tr><td class="pat-Decision">Decision</td><td>Most heavily guarded. Real examples from this framework's built roles: approving a job requisition, selecting a candidate, negotiating an offer, and establishing a succession plan all show gaps as shallow as 12 points — far tighter than the 90%→75% reference. The design intent barely moves these activities, because the judgment itself is the point.</td></tr>
+    <tr><td class="pat-Decision">Decision</td><td>Most heavily guarded. Real examples from this framework's built roles: approving a job requisition, selecting a candidate, negotiating an offer, and establishing a succession plan all show gaps as shallow as 12 points — far tighter than the 92%→80% reference. The design intent barely moves these activities, because the judgment itself is the point.</td></tr>
     <tr><td class="pat-Exception">Exception</td><td>Equally guarded, for a related reason: an Exception-pattern activity is, by definition, the case a standard workflow couldn't resolve. Automating the exception-handling would just move the exception up a level, not remove it. These activities carry the highest baselines found in the framework — up to 95% — and stay high through M5.</td></tr>
-    <tr><td class="pat-Knowledge">Knowledge</td><td>Partially guarded. Genuinely compresses with AI assistance (synthesis and drafting speed up), but the interpretive judgment underneath doesn't fully delegate — gaps land close to the 80%→60% reference.</td></tr>
+    <tr><td class="pat-Knowledge">Knowledge</td><td>Partially guarded. Genuinely compresses with AI assistance (synthesis and drafting speed up), but the interpretive judgment underneath doesn't fully delegate — gaps land close to the 85%→65% reference.</td></tr>
     <tr><td class="pat-Document">Document</td><td>Compresses the most of any pattern with real human accountability still attached — gaps of 30+ points are common, since generating a first draft is exactly what generative AI does well. A human still reviews and approves; the drafting labor largely moves.</td></tr>
     <tr><td class="pat-Transaction">Transaction</td><td>Compresses fastest and furthest. Least guarded by design, because it's rules-based by definition — there's no judgment being protected, just execution.</td></tr>
   </table>
@@ -154,5 +200,171 @@ footer a { color: var(--navy); text-decoration: none; }
   </p>
 </footer>
 
+<script>
+const mmLevels = [
+  { code: "M1", name: "Undesigned", short: "Undesigned",
+    desc: "The current baseline — human involvement exists because that's how the work happened to evolve, not because anyone decided it should sit there." },
+  { code: "M2", name: "Emerging", short: "Emerging",
+    desc: "Automation has started to reduce human involvement, but piecemeal and reactively — tools bolted on, not a deliberate redesign." },
+  { code: "M3", name: "HITL Design Intent", short: "Design Intent",
+    desc: "Human involvement is deliberately engineered, grounded in each activity's pattern type. The framework's actual target state — not a waypoint to M5." },
+  { code: "M4", name: "Optimized", short: "Optimized",
+    desc: "The M3 design intent, refined and tuned — friction removed, workflows smoothed — without changing who's accountable for what." },
+  { code: "M5", name: "Leading", short: "Leading",
+    desc: "The technical ceiling: as much automation as the pattern type genuinely allows. For Decision and Exception, that ceiling stays close to M3 by design." },
+];
+
+// Real per-pattern H% curves, M1→M5 — sourced from the live Maturity
+// Dashboard's own pattern reference data (PATTERN_META / mv baselines).
+const mmPatterns = [
+  { name: "Decision",    color: "#1B4F8A", h: [92, 88, 80, 72, 65],
+    requires: "Judgment, authority, accountability — approvals, selections, sign-offs that can't be delegated without real risk." },
+  { name: "Knowledge",   color: "#534AB7", h: [85, 78, 65, 52, 42],
+    requires: "Expert interpretation and synthesis — AI can assist with research and pattern detection; humans lead the interpretation." },
+  { name: "Document",    color: "#0369A1", h: [72, 58, 40, 28, 18],
+    requires: "Drafting, summarizing, structured content creation — AI can produce first drafts; humans review, refine, and approve." },
+  { name: "Transaction", color: "#166534", h: [60, 48, 35, 22, 12],
+    requires: "Rules-based, repeatable processing and routing — high automation potential; humans handle exceptions and quality oversight." },
+  { name: "Exception",   color: "#991B1B", h: [95, 92, 82, 75, 68],
+    requires: "Non-standard events and edge cases — AI flags and routes; humans investigate and decide." },
+];
+
+/* ---- Legend ---- */
+const mmLegendEl = document.getElementById("legend");
+mmPatterns.forEach(p => {
+  const item = document.createElement("div");
+  item.className = "legend-item";
+  item.style.color = p.color;
+  item.innerHTML = `<span class="legend-dot" style="background:${p.color}"></span>${p.name}`;
+  mmLegendEl.appendChild(item);
+});
+
+/* ---- Level reference strip ---- */
+const mmLevelsEl = document.getElementById("levels");
+mmLevels.forEach(lv => {
+  const card = document.createElement("div");
+  card.className = "level-card";
+  card.innerHTML = `<div class="lc-pill">${lv.code}</div><div class="lc-name">${lv.name}</div><div class="lc-desc">${lv.desc}</div>`;
+  mmLevelsEl.appendChild(card);
+});
+
+/* ---- Data table ---- */
+const mmTbody = document.getElementById("table-body");
+mmPatterns.forEach(p => {
+  const tr = document.createElement("tr");
+  const delta = p.h[4] - p.h[0];
+  tr.innerHTML = `<td class="pattern-name" style="color:${p.color}">${p.name}</td>` +
+    `<td class="requires-cell">${p.requires}</td>` +
+    p.h.map(v => `<td class="num">${v}%</td>`).join("") +
+    `<td class="num" style="color:${delta<0?'#991B1B':'#166534'}">${delta > 0 ? "+" : ""}${delta} pts</td>`;
+  mmTbody.appendChild(tr);
+});
+
+/* ---- Chart ----
+   The 5 M-points are centered on the same 5-column grid (repeat(5,1fr),
+   10px gap) that the level-description cards below use, so the chart runs
+   edge-to-edge on the full content width and each point sits directly
+   above its matching card. */
+const mmSvg = document.getElementById("chart");
+const mmW = 940, mmH = 460;
+const mmMarginTop = 40, mmMarginBottom = 58;
+const mmPlotH = mmH - mmMarginTop - mmMarginBottom;
+const mmGap = 10;
+const mmColW = (mmW - 4 * mmGap) / 5;
+
+function mmXPos(i) { return i * (mmColW + mmGap) + mmColW / 2; }
+function mmYPos(v) { return mmMarginTop + (1 - v / 100) * mmPlotH; }
+
+const mmNs = "http://www.w3.org/2000/svg";
+function mmEl(tag, attrs) {
+  const e = document.createElementNS(mmNs, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+// Gridlines + y-axis labels
+[0, 25, 50, 75, 100].forEach(v => {
+  const y = mmYPos(v);
+  mmSvg.appendChild(mmEl("line", { x1: 0, x2: mmW, y1: y, y2: y, stroke: "#E4E9F1", "stroke-width": 1 }));
+  const t = mmEl("text", { x: mmXPos(0) - 16, y: y + 3, class: "axis-pct", "text-anchor": "end" });
+  t.textContent = v + "%";
+  mmSvg.appendChild(t);
+});
+
+// Baseline (0%) a bit stronger
+mmSvg.appendChild(mmEl("line", { x1: 0, x2: mmW, y1: mmYPos(0), y2: mmYPos(0), stroke: "#C7D2E0", "stroke-width": 1.5 }));
+
+// M3 design-intent reference line
+const mmM3x = mmXPos(2);
+mmSvg.appendChild(mmEl("line", { x1: mmM3x, x2: mmM3x, y1: mmMarginTop - 6, y2: mmMarginTop + mmPlotH, stroke: "#B8CCE8", "stroke-width": 1.5, "stroke-dasharray": "3,4" }));
+const mmM3tag = mmEl("text", { x: mmM3x, y: mmMarginTop - 12, class: "m3-tag", "text-anchor": "middle" });
+mmM3tag.textContent = "★ M3 Design Intent";
+mmSvg.appendChild(mmM3tag);
+
+// X-axis tick labels
+mmLevels.forEach((lv, i) => {
+  const x = mmXPos(i);
+  const c = mmEl("text", { x, y: mmMarginTop + mmPlotH + 20, class: "x-code", "text-anchor": "middle" });
+  c.textContent = lv.code;
+  mmSvg.appendChild(c);
+  const n = mmEl("text", { x, y: mmMarginTop + mmPlotH + 34, class: "x-name", "text-anchor": "middle" });
+  n.textContent = lv.short;
+  mmSvg.appendChild(n);
+});
+
+function mmDeclutter(nodes, minGap) {
+  nodes.sort((a, b) => a.y - b.y);
+  for (let i = 1; i < nodes.length; i++) {
+    if (nodes[i].y - nodes[i - 1].y < minGap) nodes[i].y = nodes[i - 1].y + minGap;
+  }
+  return nodes;
+}
+
+// Lines + markers
+mmPatterns.forEach(p => {
+  const pts = p.h.map((v, i) => ({ x: mmXPos(i), y: mmYPos(v) }));
+  const d = "M " + pts.map(pt => `${pt.x},${pt.y}`).join(" L ");
+  mmSvg.appendChild(mmEl("path", { d, fill: "none", stroke: p.color, "stroke-width": 2.5, "stroke-linecap": "round", "stroke-linejoin": "round" }));
+  pts.forEach(pt => {
+    mmSvg.appendChild(mmEl("circle", { cx: pt.x, cy: pt.y, r: 4, fill: p.color, stroke: "#fff", "stroke-width": 1.5 }));
+  });
+});
+
+// Selective direct labels at the start (M1)
+const mmStartGroup = mmPatterns.map(p => ({
+  y: mmYPos(p.h[0]) + 3.5,
+  trueY: mmYPos(p.h[0]),
+  color: p.color,
+  text: p.h[0] + "%",
+  x: mmXPos(0) - 12,
+}));
+mmDeclutter(mmStartGroup, 13);
+mmStartGroup.forEach(g => {
+  if (Math.abs(g.y - (g.trueY + 3.5)) > 3) {
+    mmSvg.appendChild(mmEl("line", { x1: mmXPos(0) - 4, x2: g.x + 4, y1: g.trueY, y2: g.y - 3.5, stroke: "#C7D2E0", "stroke-width": 1 }));
+  }
+  const t = mmEl("text", { x: g.x, y: g.y, class: "pt-label", "text-anchor": "end", fill: g.color });
+  t.textContent = g.text;
+  mmSvg.appendChild(t);
+});
+
+// M5 end labels: value only
+const mmEndGroup = mmPatterns.map(p => ({
+  y: mmYPos(p.h[4]) + 3.5,
+  trueY: mmYPos(p.h[4]),
+  color: p.color,
+  text: `${p.h[4]}%`,
+  x: mmXPos(4) + 12,
+}));
+mmDeclutter(mmEndGroup, 13);
+mmEndGroup.forEach(g => {
+  if (Math.abs(g.y - (g.trueY + 3.5)) > 3) {
+    mmSvg.appendChild(mmEl("line", { x1: mmXPos(4) + 4, x2: g.x - 4, y1: g.trueY, y2: g.y - 3.5, stroke: "#C7D2E0", "stroke-width": 1 }));
+  }
+  const t = mmEl("text", { x: g.x, y: g.y, class: "pt-label", "text-anchor": "start", fill: g.color });
+  t.textContent = g.text;
+  mmSvg.appendChild(t);
+});
+</script>
 </body>
 </html>
