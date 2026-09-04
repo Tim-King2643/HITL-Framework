@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] HITL Website, Framework &amp; Human Readiness — Working Review Notes — The Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9FC2EE; margin-bottom: 10px; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 26px; margin-bottom: 8px; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.3; }
+.masthead .tagline2 { font-size: 14px; color: #9FC2EE; font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center; font-size: 12.5px; color: #7A5A1E;
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: #7A5A1E; font-weight: 600; }
+
+.wrap { max-width: 780px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.callout {
+  background: var(--amber-bg); border-left: 4px solid var(--amber); border-radius: 6px;
+  padding: 16px 20px; margin: 0 0 32px; font-size: 13.5px; color: #7A5A1E; font-style: italic; line-height: 1.6;
+}
+
+h2 { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 40px 0 12px; }
+h3 { font-family: 'DM Sans', sans-serif; font-weight: 600; color: var(--navy); font-size: 14.5px; margin: 26px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+ul { margin: 0 0 18px 22px; }
+li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.pull-quote {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 16px; line-height: 1.5;
+}
+.sequence {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 15px; line-height: 1.6;
+}
+
+.closing-quote {
+  background: var(--navy-d); color: #fff; border-radius: 8px; padding: 24px 28px; margin: 8px 0 8px;
+  text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 17px; line-height: 1.6;
+}
+.closing-line {
+  text-align: center; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--navy-d);
+  font-size: 16px; line-height: 1.6; margin: 22px 0 6px;
+}
+
+.section-num {
+  display: inline-block; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--navy);
+  background: var(--navy-l); border-radius: 4px; padding: 2px 8px; margin-right: 8px; vertical-align: middle;
+}
+
+.pdf-download {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px;
+  padding: 8px 14px; text-decoration: none; margin: 0 0 28px;
+}
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; External review notes from GiGi Garcia, for joint discussion with Tim. Nothing on this page is official yet.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">External Review · GiGi Garcia · September 2026</div>
+  <h1>HITL Website, Framework &amp; Human Readiness — Working Review Notes</h1>
+  <div class="tagline2">These are working observations intended to help pressure-test the framework, the website experience, and the People implications as the work develops.</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <div class="callout">
+    GiGi's own working notes, sent to Tim September 3, 2026, transcribed here in the site's visual language so they can be read and referenced alongside the rest of the framework. The words and observations below are hers, not Tim's or Claude's — this page is a faithful transcription of her review, not a response to it.
+  </div>
+
+  <a class="pdf-download" href="gigi_website_framework_review.pdf">⬇ Download PDF</a>
+
+  <h2><span class="section-num">1</span>Overall Reaction</h2>
+  <p>There is something real here. The framework is not starting with the usual AI question — &ldquo;What can we automate?&rdquo; It is starting with a better organizational question: where should human judgment deliberately remain, and how should that relationship be designed rather than allowed to evolve by accident.</p>
+  <p>That gives the work a stronger foundation than a typical AI maturity model. The best idea, in my view, is that maturity is not the same thing as maximum automation. The design target can intentionally preserve high human involvement where judgment, authority, risk, accountability or exception handling require it.</p>
+  <p>The opportunity I keep seeing is to extend the framework from work transition into organizational readiness. The architecture can tell us what changes. It should also help us understand whether people, leaders, roles, development paths and accountability structures are actually ready for that change.</p>
+
+  <h2><span class="section-num">2</span>My Reaction to the Website — Look, Feel and Experience</h2>
+  <p>My first reaction is that the site feels serious, intelligent and credible. It does not feel gimmicky or overly &ldquo;AI,&rdquo; which is a strength. The dark navy gives it authority and stability, the white space keeps it clean, and the pale blue callout areas soften what could otherwise become a very technical-looking experience.</p>
+  <p>The overall impression is thoughtful, structured, credible and research-driven. I would not dramatically change the visual identity. My instinct is refinement rather than redesign.</p>
+
+  <h3>The navy works</h3>
+  <p>I like the navy as the anchor color. It communicates trust, authority, intelligence and executive-level work without becoming flashy. I would keep navy, white and soft blue as the dominant visual system.</p>
+  <p>If another accent is introduced later, I would use it sparingly and only when it carries meaning. The sophistication of the current design comes partly from restraint, so I would be careful not to turn the site into a multicolor dashboard.</p>
+
+  <h3>Credible, but still slightly academic</h3>
+  <p>The site currently feels more like a serious methodology paper presented online than an executive advisory experience. That is not a criticism — the research-oriented quality gives the framework credibility. But as the site grows, I would want a senior executive to be able to scan a page quickly and understand: What is this telling me? Why should I care? What do I do with it?</p>
+  <p>I would keep the methodological depth available for people who want to go deep, while making the conclusion and practical implication easier to see first.</p>
+
+  <h3>Stronger visual hierarchy would help</h3>
+  <p>Some of the most important ideas are currently buried inside paragraphs. A major finding such as the 20-25 point convergence gap deserves visual weight. I would pull major conclusions out into clear numbers, headlines, short callouts or &ldquo;what this means&rdquo; panels, then place the supporting explanation underneath.</p>
+  <ul>
+    <li>Short pull statements</li>
+    <li>Key findings</li>
+    <li>Simple before/after states</li>
+    <li>&ldquo;What this means&rdquo; boxes</li>
+    <li>Clean diagrams</li>
+    <li>Executive summary callouts</li>
+  </ul>
+
+  <h3>The callout boxes work</h3>
+  <p>The HAL section and the HITL Design Principle treatment are good examples of where the eye can stop. The light-blue box around the design principle is especially effective. I would use that treatment selectively for the strongest principles across the site.</p>
+
+  <h3>The five work patterns are visually too quiet</h3>
+  <p>Decision, Knowledge, Document, Transaction and Exception are foundational to the methodology, but visually they currently behave more like a legend than intellectual building blocks. I would give them more deliberate identity across the site through consistent labels, subtle color cues and short definitions so that users begin to recognize them immediately.</p>
+
+  <h3>Typography and spacing</h3>
+  <p>The typography is professional and readable, but I would modernize the experience slightly with larger page titles, stronger section headings, more breathing room between major ideas, shorter paragraph widths and clearer emphasis on key phrases. Nothing dramatic — just enough to move the site from &ldquo;methodology document&rdquo; toward a modern executive digital experience.</p>
+
+  <h3>The tagline is strong</h3>
+  <div class="pull-quote">&ldquo;Where human judgment belongs.&rdquo;</div>
+  <p>I would protect this line. It is simple, curious and immediately signals that the framework is not about replacing humans with AI. I would consider giving it slightly more visual prominence.</p>
+
+  <h3>Navigation should move from &ldquo;study the architecture&rdquo; to &ldquo;solve my problem&rdquo;</h3>
+  <p>The &ldquo;See It in Action&rdquo; idea is useful, but I would eventually create more guided entry points so a visitor can come in through the problem they are trying to solve rather than through the taxonomy.</p>
+  <ul>
+    <li>I am a CHRO — show me HR.</li>
+    <li>I am a CFO — show me Finance.</li>
+    <li>I am redesigning a role — show me Role Transition.</li>
+    <li>I want to understand AI readiness — show me Maturity.</li>
+  </ul>
+  <p>Right now the site invites me to study the architecture. Eventually I would like it to also invite me to solve my problem.</p>
+
+  <h3>A simple visual could explain the whole idea quickly</h3>
+  <div class="sequence">Technology Capability &rarr; Work Design &rarr; Human Judgment &rarr; Accountability &rarr; Readiness</div>
+  <p>That sequence could explain a tremendous amount of the framework in a few seconds: What can AI do? What should AI do? What should remain human? Who owns the outcome? Can the organization actually operate this way?</p>
+
+  <h3>Overall design conclusion</h3>
+  <p>The foundation is strong. I would not over-design it. The site already feels trustworthy, disciplined and credible. The next design step should be about clarity, usability, executive interpretation and stronger visual hierarchy — not decoration.</p>
+
+  <h2><span class="section-num">3</span>&ldquo;About This Framework&rdquo; — What Works and What I Would Challenge</h2>
+  <p>The opening line &ldquo;Where human judgment belongs&rdquo; is excellent. It centers the conversation on judgment, not on technology. The statement that HITL should be treated as an organizational design standard rather than a safety checkpoint is also one of the strongest pieces of positioning on the page.</p>
+  <p>The explanation that organizations are allowing the human/AI balance to shift because of tool availability, cost pressure and urgency — rather than deliberate design — feels highly recognizable and commercially relevant.</p>
+
+  <h3>The 20-25 percentage point statement needs precision</h3>
+  <p>The page states that organizations are running 20-25 percentage points more human involvement than HITL design intent across the capability hierarchy. That is powerful, but executives could easily translate it into &ldquo;20-25% excess labor.&rdquo; I do not think the framework should allow that interpretation to go unchallenged.</p>
+  <p>I would explicitly say that a human-involvement gap is not a headcount-reduction estimate. It may represent work redesign, augmentation, workflow change, reduced repetitive effort, changed responsibility or different decision allocation.</p>
+  <p>I also want to clarify whether the 20-25 point finding is empirical or modeled. If it comes from comparing the framework's M1 assumptions to its M3 design target, the language should describe a modeled convergence gap rather than an observed fact about organizations generally.</p>
+
+  <h3>&ldquo;Optimal&rdquo; may be too absolute</h3>
+  <p>The language says every process has an optimal human/AI balance. I understand the intent, but I want to test whether &ldquo;optimal&rdquo; is too universal. The appropriate balance may vary by industry, regulation, risk tolerance, workforce capability, technology maturity, culture and operating model.</p>
+  <p>&ldquo;Designed&rdquo; or &ldquo;appropriate&rdquo; may ultimately be more defensible unless M3 is intentionally a universal normative standard.</p>
+
+  <h3>The value-stream view is commercially strong</h3>
+  <p>Regrouping the underlying activity data around end-to-end flows that business leaders recognize is one of the most commercially useful elements. Executives think in terms of Recruit-to-Hire, onboarding, close-to-report and procure-to-pay. They do not naturally think in APQC process codes. The value-stream lens can become the bridge from methodology to executive decision-making.</p>
+
+  <h3>The five work patterns deserve more visual weight</h3>
+  <p>Decision, Knowledge, Document, Transaction and Exception are core building blocks of the framework. I would eventually make them more recognizable throughout the site so the reader understands not only how much work remains human, but what kind of work it is and why.</p>
+
+  <h2><span class="section-num">4</span>The HAL 9000 Story</h2>
+  <p>The HAL story works because it gives the framework a memorable reason to exist. It turns a technical governance problem into a story people understand: unchecked AI authority, weak human governance, unclear decision rights and no effective challenge or escalation structure.</p>
+  <p>The strongest part of the story is the fact that the framework itself was co-developed with AI. That makes the human-AI partnership principle tangible rather than theoretical. The human provides vision, judgment and direction; AI accelerates synthesis, structure, drafting and production.</p>
+
+  <h3>Language I would tighten</h3>
+  <ul>
+    <li>&ldquo;No human in the loop&rdquo; is too broad. The more precise failure was operational authority without adequate governance, override, challenge, transparency and escalation.</li>
+    <li>&ldquo;Structurally impossible&rdquo; is too absolute. Better: make failure harder to occur, easier to detect, easier to challenge and easier to contain.</li>
+    <li>&ldquo;Nothing is a black box&rdquo; is too absolute. Better: decision ownership and escalation are designed to remain visible even when AI participates heavily in the work.</li>
+    <li>I prefer &ldquo;HAL was the warning. This framework is an attempt to build the answer.&rdquo; It feels confident without sounding self-congratulatory.</li>
+    <li>The 90% AI / 10% Human example is memorable, but should be clearly described as the way the framework was co-created, not a universal operating target.</li>
+  </ul>
+
+  <h2><span class="section-num">5</span>The Missing Layer: Human Operating Readiness</h2>
+  <p>This is the idea I keep coming back to. A technically sound HITL design can still fail if the human is not ready to be meaningfully in the loop.</p>
+  <p>A name in a RACI is not the same thing as meaningful human control. Someone can be Accountable on paper and still lack the authority, judgment, information, confidence, organizational support or psychological safety needed to challenge an AI recommendation.</p>
+
+  <h3>Human Readiness should test whether the person and organization can actually exercise the responsibility</h3>
+  <ul>
+    <li>Role clarity</li>
+    <li>Decision authority</li>
+    <li>Capability and judgment</li>
+    <li>Trust in AI</li>
+    <li>Psychological safety</li>
+    <li>Leadership readiness</li>
+    <li>Change capacity</li>
+    <li>Sustainable workload</li>
+    <li>Accountability</li>
+    <li>Career and development architecture</li>
+  </ul>
+  <p>This gives us an important distinction between Human Presence and Meaningful Human Control. A human can technically appear in a workflow and still have almost no practical control over the outcome.</p>
+
+  <h2><span class="section-num">6</span>Methodology Questions I Want to Pressure-Test</h2>
+
+  <h3>What exactly does H% measure?</h3>
+  <p>If the model says a role or activity is 65% human, what is the unit? Effort? Elapsed time? Task ownership? Decision authority? Cognitive contribution? FTE capacity? Number of steps? The answer matters because executives will interpret percentages in very different ways.</p>
+
+  <h3>RACI inheritance may create false precision</h3>
+  <p>Using L3 RACI as the baseline and inheriting it to L4 activities is scalable and logically clean, but real work often changes ownership at the activity level. If role transition profiles are calculated from Responsible and Accountable touches, an incorrect inherited assignment can flow through the whole role story.</p>
+  <p>I would consider an exception model rather than rebuilding every activity manually: L3 provides the baseline; L4 activities that materially change accountability or responsibility receive an override; the role profile then recalculates. That preserves scalability while recognizing how work actually operates.</p>
+
+  <h3>Human Criticality — not all &ldquo;human&rdquo; work is human for the same reason</h3>
+  <p>Two activities may both retain high human involvement for completely different reasons. One may require empathy and relationship judgment. Another may require legal accountability, risk acceptance, ethical judgment or exception authority. Eventually the model may need to explain not only how much human involvement remains, but why it remains.</p>
+
+  <h3>Consequence of error</h3>
+  <p>Not all Decision work carries the same stakes. AI helping select a training course is not equivalent to AI informing a termination or accommodation decision. A second axis such as Low / Moderate / High / Critical consequence could make the human-control design more defensible.</p>
+
+  <h2><span class="section-num">7</span>Second-Order Workforce Effects the Framework Should Watch</h2>
+
+  <h3>Judgment Density</h3>
+  <p>Removing routine work does not automatically make a job easier. If transactions, documentation and standard questions increasingly move to AI, the work left for humans may be disproportionately made up of difficult conversations, ambiguity, conflict, escalations and emotional labor.</p>
+  <p>That suggests a concept worth testing: Judgment Density — the concentration of high-cognitive, high-emotional and high-consequence work inside a role. A role could contain less total human work and still become harder to perform.</p>
+
+  <h3>The Experience Ladder Problem</h3>
+  <p>Many professionals develop judgment by first performing lower-level work. Recruiters learn through screening and candidate conversations. HR practitioners learn through transactions, employee questions, documentation and routine employee relations. If AI removes the work through which people historically learned, where do future senior practitioners develop pattern recognition and judgment?</p>
+  <p>This is not only an HR issue. It could affect finance, legal, consulting, engineering and other knowledge professions. The framework may eventually need to address development paths alongside future-state job design.</p>
+
+  <h3>Role evolution is not always role preservation</h3>
+  <p>The People View should eventually distinguish between roles that evolve, merge, split, disappear and emerge. A future operating model may not simply be today's hierarchy with fewer transactions. Capabilities may be deployed differently through strategic pods, specialist networks or new hybrid roles.</p>
+
+  <h2><span class="section-num">8</span>Accountability May Become More Important Than Responsibility</h2>
+  <p>As AI and agents perform more execution, Responsible can increasingly move toward the system. Accountable cannot disappear. The harder organizational question becomes: who owns the outcome when neither that person nor their team performed most of the underlying work?</p>
+  <p>Every AI-enabled workflow may ultimately need a visible Human Accountability Anchor — the role that remains answerable for the outcome, escalation, exception, override and ethical judgment.</p>
+
+  <h2><span class="section-num">9</span>Employee Voice and Reality Testing</h2>
+  <p>Documented process and actual work are rarely identical. The architecture will be stronger if real employees and managers can validate where judgment actually occurs, where AI creates rework, where exceptions live and where the designed workflow does not match practice.</p>
+  <p>I would eventually consider a Workforce Validation Gate before a major maturity transition. Questions could include:</p>
+  <ul>
+    <li>Where does the proposed design underestimate human judgment?</li>
+    <li>Where is AI creating rework or duplicate checking?</li>
+    <li>Which responsibilities have become unclear?</li>
+    <li>Where are exceptions happening that the model did not anticipate?</li>
+    <li>What knowledge is at risk of being lost?</li>
+    <li>Where are employees bypassing the designed process?</li>
+    <li>What work has become more difficult even though less work remains?</li>
+  </ul>
+
+  <h2><span class="section-num">10</span>Automation, Augmentation and Delegation Should Not Blur Together</h2>
+  <p>A single percentage can hide very different working relationships. I would eventually distinguish among:</p>
+  <ul>
+    <li>Automation — AI performs the work.</li>
+    <li>Augmentation — the human performs the work with AI assistance.</li>
+    <li>Agent delegation — the human sets the objective and the agent performs a sequence of actions.</li>
+    <li>Human oversight — AI performs and a human verifies or approves.</li>
+    <li>Human judgment — AI informs and the human decides.</li>
+    <li>Human-only — AI has no meaningful execution role.</li>
+  </ul>
+  <p>That would make the maturity model easier to translate into actual operating design.</p>
+
+  <h2><span class="section-num">11</span>What I Think the Commercial Product Could Become</h2>
+  <p>I do not think the dashboard itself is ultimately the product. The product is the executive decision process the architecture makes possible.</p>
+  <p>A CHRO should eventually be able to see not only that a role moves from one human-involvement level to another, but also what that means for the operating model:</p>
+  <ul>
+    <li>Work that can move to AI</li>
+    <li>Work that must remain human</li>
+    <li>Accountability that cannot disappear</li>
+    <li>People-readiness gaps</li>
+    <li>New capabilities required</li>
+    <li>Judgment density</li>
+    <li>Career-path implications</li>
+    <li>Risk and consequence of error</li>
+    <li>Recommended transition path rather than an immediate jump to the technical ceiling</li>
+  </ul>
+
+  <h2><span class="section-num">12</span>Language and Site Recommendations</h2>
+  <ul>
+    <li>Keep &ldquo;Where human judgment belongs.&rdquo; It is simple and strong.</li>
+    <li>Keep &ldquo;HITL as an organizational design standard, not a safety checkpoint.&rdquo;</li>
+    <li>Consider &ldquo;This is not only a technology problem. It is an organizational design problem.&rdquo;</li>
+    <li>Be precise about modeled versus observed findings.</li>
+    <li>Avoid absolute claims such as &ldquo;structurally impossible&rdquo; and &ldquo;nothing is a black box.&rdquo;</li>
+    <li>Clarify that H% is not a headcount-reduction metric.</li>
+    <li>Consider whether &ldquo;appropriate&rdquo; or &ldquo;designed&rdquo; human/AI balance is more defensible than &ldquo;optimal.&rdquo;</li>
+    <li>Give the five work patterns stronger visual identity because they are foundational to the methodology.</li>
+    <li>Use more executive-facing callouts so conclusions do not disappear inside methodology text.</li>
+    <li>Keep the site visually restrained; strengthen hierarchy and usability rather than adding decorative complexity.</li>
+  </ul>
+
+  <h2><span class="section-num">13</span>A Possible Evolution of the Core Design Principle</h2>
+  <p>The current principle says the job of HITL design is to find the human/AI balance, define it, measure it and govern it. I think the People work may add one important step: prepare the organization for it.</p>
+  <div class="sequence">Find it &rarr; Define it &rarr; Measure it &rarr; Prepare for it &rarr; Govern it</div>
+  <p>That one additional step captures the part of the transformation that technical architecture alone cannot guarantee.</p>
+
+  <h2><span class="section-num">14</span>Questions I Want to Carry Into My Work With Tim</h2>
+  <ul>
+    <li>When we use H%, what exactly are we measuring — and what do we explicitly not want executives to infer from it?</li>
+    <li>Is the 20-25 point convergence gap modeled from the maturity assumptions, or based on observed organizational data?</li>
+    <li>Is M3 meant to be a universal design target, or does organizational context alter the appropriate target?</li>
+    <li>Where do L4 activities materially break from the inherited L3 RACI?</li>
+    <li>Can we identify why human involvement remains — judgment, empathy, legal accountability, risk, authority, exception handling — rather than only how much remains?</li>
+    <li>Should consequence of error influence the required human-control level?</li>
+    <li>How do we distinguish human presence from meaningful human control?</li>
+    <li>What readiness conditions must be true before an organization moves from one maturity level to another?</li>
+    <li>How do we prevent routine-work automation from hollowing out the development path for future experts?</li>
+    <li>How do we account for roles that merge, disappear, split or emerge rather than simply transition?</li>
+    <li>How should employee voice be used to validate the designed future state against the reality of work?</li>
+    <li>How can the site make the most important conclusions easier for an executive to see without weakening the methodological rigor?</li>
+  </ul>
+
+  <h2><span class="section-num">15</span>How I See My Contribution</h2>
+  <p>I do not want my role in this work to be simply &ldquo;GiGi validates the HR content.&rdquo; That would undersell what the People side can contribute.</p>
+  <p>Tim's architecture is strongest at determining where work moves, what should remain human and where decision rights sit. I see my contribution as helping build the Human Operating Readiness layer: whether people, leaders, roles, capability, accountability and the organization itself are ready for the work model the technology enables.</p>
+  <p>I also see a practical role in helping translate the architecture into an experience executives can understand and use — making the human implications visible, testing whether the model holds up in real organizational life, and helping ensure the website communicates the strength of the thinking without becoming overly technical or difficult to navigate.</p>
+
+  <h2><span class="section-num">16</span>The Thought I Keep Coming Back To</h2>
+  <div class="closing-quote">&ldquo;A technically sound human-in-the-loop design can still fail if the human is not ready to be meaningfully in the loop.&rdquo;</div>
+  <div class="closing-line">AI can redistribute work. It cannot redistribute accountability.<br>And capability does not equal readiness.</div>
+
+</div>
+
+<footer>
+  <p>
+    Working review notes — <strong style="color:var(--navy)">GiGi Garcia</strong><br>
+    Shared with <strong style="color:var(--navy)">Tim King</strong>, September 2026 · HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="gigi_website_framework_review.pdf">Download PDF</a> &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+</body>
+</html>
