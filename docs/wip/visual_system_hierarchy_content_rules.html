@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Framework Content Generation Rules — Visual System & Hierarchy — The Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead {
+  background: var(--navy-d); color: #fff; padding: 34px 24px 30px;
+  text-align: center;
+}
+.masthead .eyebrow {
+  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--lightblue);
+  letter-spacing: .04em; margin-bottom: 12px;
+}
+.masthead h1 {
+  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px;
+  margin-bottom: 6px;
+}
+.masthead .subtitle {
+  font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; font-size: 16px;
+  color: var(--lightblue); margin-bottom: 14px;
+}
+.masthead .tagline2 { font-size: 13px; color: #9FC2EE; font-style: italic; margin-bottom: 18px; max-width: 560px; margin-left: auto; margin-right: auto; line-height: 1.5; }
+.masthead nav a {
+  color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600;
+  margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent;
+}
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.doc-wrap { max-width: 760px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.concept-flag {
+  background: var(--amber-bg); border-left: 3px solid var(--amber); border-radius: 4px;
+  padding: 16px 20px; font-size: 13px; font-style: italic; color: #7A5A1E;
+  line-height: 1.6; margin-bottom: 24px;
+}
+
+.doc-body p { font-size: 14px; color: var(--gray); line-height: 1.7; margin-bottom: 20px; }
+
+.rule {
+  margin: 30px 0;
+}
+.rule-heading {
+  display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px;
+}
+.rule-heading .tag {
+  font-family: 'DM Mono', monospace; font-size: 10.5px; font-weight: 700; color: var(--navy);
+  background: var(--navy-l); border-radius: 4px; padding: 3px 8px; white-space: nowrap;
+}
+.rule-heading .title {
+  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 16px; color: var(--navy-d);
+}
+.rule p.statement { font-size: 13.5px; color: var(--gray); line-height: 1.7; margin-bottom: 8px; }
+.rule p.applies { font-size: 12.5px; color: var(--lgray); margin-bottom: 6px; }
+.rule p.applies strong { color: var(--navy); font-weight: 700; }
+.rule p.example { font-size: 12.5px; color: var(--lgray); font-style: italic; }
+
+hr.rule-rule { border: none; border-top: 1px solid var(--border); margin: 30px 0; }
+
+.doc-meta {
+  font-size: 12px; color: var(--lgray); text-align: center;
+  padding-top: 20px; margin-top: 30px; border-top: 1px solid var(--border);
+}
+.note-pdf {
+  display: block; text-align: center; background: #fff; border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px; font-size: 13px; font-weight: 700; color: #7A5A1E;
+  text-decoration: none; margin-top: 18px;
+}
+.note-pdf:hover { background: var(--amber-bg); border-color: var(--amber); }
+.back-link { display: block; text-align: center; margin-top: 22px; }
+.back-link a { font-size: 12.5px; font-weight: 600; color: var(--navy); text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+
+footer { text-align: center; padding: 0 24px 48px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'DM Sans',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">CONCEPT &nbsp;·&nbsp; FOR JOINT REVIEW &nbsp;·&nbsp; TIM KING &amp; GIGI GARCIA &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>Framework Content Generation Rules</h1>
+  <div class="subtitle">Visual System &amp; Hierarchy</div>
+  <div class="tagline2">Formal, checkable rules — derived from GiGi's own site recommendations — meant to bind any future generator of framework content, human or AI-authored.</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div class="doc-wrap">
+
+  <div class="concept-flag">Concept stage — not yet part of the framework. Per the Concept &rarr; Feasibility Review &rarr; Approved lifecycle established in <em>From Concept to Principle</em>, this is Claude's feasibility pass only. Nothing here binds any actual content generation until both Tim and GiGi approve it.</div>
+
+  <div class="doc-body">
+    <p>These seven rules turn the six "Visual system &amp; hierarchy" recommendations from GiGi's review notes into something checkable — not just a style preference, but a set of constraints a content generator (Claude, building a new page or document) can actually be held to. Each rule names what it requires, what it applies to, and, where useful, points at a real page or decision already in the framework that shows the rule in action or in violation.</p>
+
+    <div class="rule">
+      <div class="rule-heading"><span class="tag">RULE 1</span><span class="title">Token Lock</span></div>
+      <p class="statement">Every framework artifact — HTML page, docx, or PDF — draws its colors and fonts exclusively from the standing token set. Colors: navy #1B4F8A, navy-d #0D2D4F, navy-l #EEF3FA, gray #444, light gray #888, border #DDE3EE, and amber #B8873F / amber-bg #FEF3C7 (reserved for draft/pending status only — never used decoratively). Fonts: Playfair Display for headlines and serif emphasis, DM Sans for body and UI text, DM Mono for labels, badges, and section numbers. A generator does not introduce a new color or font for a single artifact; a genuinely new visual need becomes its own proposal, not a local fix.</p>
+      <p class="applies"><strong>Applies to:</strong> Every new HTML page, docx build, or PDF the framework produces.</p>
+      <p class="example">Already the de facto practice across the dashboard, docs site, and every docx/PDF built to date — this rule just makes it binding rather than assumed.</p>
+    </div>
+    <hr class="rule-rule">
+
+    <div class="rule">
+      <div class="rule-heading"><span class="tag">RULE 2</span><span class="title">One Pattern Legend</span></div>
+      <p class="statement">Anywhere the five HITL patterns (Decision, Knowledge, Document, Transaction, Exception) are referenced beyond a single passing mention, the content uses one fixed color-and-label mapping and either displays or links to the canonical pattern legend. A generator does not invent a new shorthand, abbreviation, or color for a pattern, and does not assume the reader already knows the mapping.</p>
+      <p class="applies"><strong>Applies to:</strong> Any page or document referencing pattern types — the dashboard, methodology page, maturity/RACI docs, any future role or readiness page.</p>
+      <p class="example">Real gap today: patterns currently read "more like a legend than building blocks" (GiGi's own words) — no single reusable legend component exists yet.</p>
+    </div>
+    <hr class="rule-rule">
+
+    <div class="rule">
+      <div class="rule-heading"><span class="tag">RULE 3</span><span class="title">Extract the Load-Bearing Claim</span></div>
+      <p class="statement">Before finalizing any section of prose, the generator identifies that section's actual claim — a number, a finding, a governing statement — and renders it separately, in the standing pull-quote/callout treatment, rather than leaving it buried inside a paragraph.</p>
+      <p class="applies"><strong>Applies to:</strong> Any section built around a specific finding or number.</p>
+      <p class="example">Reference case: the 18–20 point convergence gap belongs in a callout, the way the HAL 9000 line already does — today it still sits in a sentence.</p>
+    </div>
+    <hr class="rule-rule">
+
+    <div class="rule">
+      <div class="rule-heading"><span class="tag">RULE 4</span><span class="title">Callout Budget</span></div>
+      <p class="statement">No single page or document carries more than three callout or pull-quote boxes. If a draft produces more candidates than that, the generator ranks them by how load-bearing the underlying claim actually is and demotes the rest back to plain prose — it does not keep all of them.</p>
+      <p class="applies"><strong>Applies to:</strong> Every generated page or document, without exception.</p>
+      <p class="example">A self-check worth running on our own recent work: an early draft of Talking Through Your Questions had four boxed callouts on one page before this rule existed.</p>
+    </div>
+    <hr class="rule-rule">
+
+    <div class="rule">
+      <div class="rule-heading"><span class="tag">RULE 5</span><span class="title">Standing Type Scale as Default</span></div>
+      <p class="statement">New content starts from the current, already-downsized type scale as its baseline — masthead H1 22–28px, H2 16–20px, body 13–14.5px, table header 11px, table body 12px, caption 12px — never a full-size print or Word default that then needs its own downsizing pass later.</p>
+      <p class="applies"><strong>Applies to:</strong> Any new document type: the Readiness Table, Trust-dimension work, remaining domain RACI docs, People-side extension pages.</p>
+      <p class="example">The August 5 downsizing pass across all 13 maturity docs and 7 RACI docs was this rule, applied reactively after the fact — the point is to stop needing that pass at all.</p>
+    </div>
+    <hr class="rule-rule">
+
+    <div class="rule">
+      <div class="rule-heading"><span class="tag">RULE 6</span><span class="title">Protect the Signature Line</span></div>
+      <p class="statement">Wherever the framework masthead appears, "Where human judgment belongs" is set on its own line, visually distinct in weight or color from the framework name beside it — never merged into the same sentence or run together with other boilerplate text.</p>
+      <p class="applies"><strong>Applies to:</strong> Every masthead: the live dashboard, the docs site, every WIP page.</p>
+    </div>
+    <hr class="rule-rule">
+
+    <div class="rule">
+      <div class="rule-heading"><span class="tag">RULE 7</span><span class="title">The Executive Layer Never Replaces the Technical Layer</span></div>
+      <p class="statement">Any simplified, executive-facing version of technical content — a briefing, a summary card, a pull-statement layer — links back to its full technical source. A generator may summarize; it may never publish a summary as a substitute with no path back to the underlying rigor.</p>
+      <p class="applies"><strong>Applies to:</strong> The CHRO-facing briefing series, and any future executive-summary layer built on top of existing technical pages.</p>
+      <p class="example">This is the concrete, already-designed answer to GiGi's own Question 12 — not yet shown to her.</p>
+    </div>
+
+    <p style="margin-top:30px;">If these seven are approved, the same treatment — specific, checkable rules rather than general advice — would follow for Navigation &amp; Structure and Language &amp; Precision next, completing the set drawn from GiGi's full site-recommendations summary.</p>
+  </div>
+
+  <div class="doc-meta">Tim King &amp; GiGi Garcia &nbsp;|&nbsp; Concept — For Joint Review &nbsp;|&nbsp; September 2026</div>
+
+  <a class="note-pdf" href="visual_system_hierarchy_content_rules.pdf">Download PDF ↓</a>
+
+  <div class="back-link"><a href="index.html">&larr; Back to WIP hub</a></div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect<br>
+    Private review area — not part of the published framework<br>
+    hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>
