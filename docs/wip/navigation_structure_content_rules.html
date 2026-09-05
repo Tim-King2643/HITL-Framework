@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Framework Content Generation Rules — Navigation & Structure — The Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead {
+  background: var(--navy-d); color: #fff; padding: 34px 24px 30px;
+  text-align: center;
+}
+.masthead .eyebrow {
+  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--lightblue);
+  letter-spacing: .04em; margin-bottom: 12px;
+}
+.masthead h1 {
+  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px;
+  margin-bottom: 6px;
+}
+.masthead .subtitle {
+  font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; font-size: 16px;
+  color: var(--lightblue); margin-bottom: 14px;
+}
+.masthead .tagline2 { font-size: 13px; color: #9FC2EE; font-style: italic; margin-bottom: 18px; max-width: 560px; margin-left: auto; margin-right: auto; line-height: 1.5; }
+.masthead nav a {
+  color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600;
+  margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent;
+}
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.doc-wrap { max-width: 760px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.concept-flag {
+  background: var(--amber-bg); border-left: 3px solid var(--amber); border-radius: 4px;
+  padding: 16px 20px; font-size: 13px; font-style: italic; color: #7A5A1E;
+  line-height: 1.6; margin-bottom: 24px;
+}
+
+.doc-body p { font-size: 14px; color: var(--gray); line-height: 1.7; margin-bottom: 20px; }
+
+.rule {
+  margin: 30px 0;
+}
+.rule-heading {
+  display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px;
+}
+.rule-heading .tag {
+  font-family: 'DM Mono', monospace; font-size: 10.5px; font-weight: 700; color: var(--navy);
+  background: var(--navy-l); border-radius: 4px; padding: 3px 8px; white-space: nowrap;
+}
+.rule-heading .title {
+  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 16px; color: var(--navy-d);
+}
+.rule p.statement { font-size: 13.5px; color: var(--gray); line-height: 1.7; margin-bottom: 8px; }
+.rule p.applies { font-size: 12.5px; color: var(--lgray); margin-bottom: 6px; }
+.rule p.applies strong { color: var(--navy); font-weight: 700; }
+.rule p.example { font-size: 12.5px; color: var(--lgray); font-style: italic; }
+
+hr.rule-rule { border: none; border-top: 1px solid var(--border); margin: 30px 0; }
+
+.doc-meta {
+  font-size: 12px; color: var(--lgray); text-align: center;
+  padding-top: 20px; margin-top: 30px; border-top: 1px solid var(--border);
+}
+.note-pdf {
+  display: block; text-align: center; background: #fff; border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px; font-size: 13px; font-weight: 700; color: #7A5A1E;
+  text-decoration: none; margin-top: 18px;
+}
+.note-pdf:hover { background: var(--amber-bg); border-color: var(--amber); }
+.back-link { display: block; text-align: center; margin-top: 22px; }
+.back-link a { font-size: 12.5px; font-weight: 600; color: var(--navy); text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+
+footer { text-align: center; padding: 0 24px 48px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'DM Sans',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">CONCEPT &nbsp;·&nbsp; FOR JOINT REVIEW &nbsp;·&nbsp; TIM KING &amp; GIGI GARCIA &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>Framework Content Generation Rules</h1>
+  <div class="subtitle">Navigation &amp; Structure</div>
+  <div class="tagline2">Formal, checkable rules — derived from GiGi's own site recommendations — meant to bind any future generator of framework content, human or AI-authored.</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div class="doc-wrap">
+
+  <div class="concept-flag">Concept stage — not yet part of the framework. Per the Concept &rarr; Feasibility Review &rarr; Approved lifecycle established in <em>From Concept to Principle</em>, this is Claude's feasibility pass only. Nothing here binds any actual content generation until both Tim and GiGi approve it.</div>
+
+  <div class="doc-body">
+    <p>These three rules turn the three "Navigation &amp; structure" recommendations from GiGi's review notes into something checkable — not just a style preference, but a set of constraints a content generator (Claude, building a new page or document) can actually be held to. Each rule names what it requires, what it applies to, and, where useful, points at a real page or decision already in the framework that shows the rule in action or in violation.</p>
+
+    <div class="rule">
+      <div class="rule-heading"><span class="tag">RULE 1</span><span class="title">Problem-First Entry Points, Additive</span></div>
+      <p class="statement">Primary navigation offers at least one problem-framed entry point — "I am a CHRO — show me HR," "I am a CFO — show me Finance," "I am redesigning a role — show me Role Transition," "I want to understand AI readiness — show me Maturity" — alongside, never instead of, the existing structural/taxonomy navigation. A generator building a new landing surface includes a problem-first path into the content; it does not remove or bury the structural path to make room for it.</p>
+      <p class="applies"><strong>Applies to:</strong> The docs site's primary landing/navigation surface; any new top-level page.</p>
+      <p class="example">Right now the site invites a visitor to "study the architecture" first — the fix adds a second door in, it doesn't replace the first one.</p>
+    </div>
+    <hr class="rule-rule">
+
+    <div class="rule">
+      <div class="rule-heading"><span class="tag">RULE 2</span><span class="title">One Canonical Explanatory Sequence</span></div>
+      <p class="statement">The five-step sequence — Technology Capability &rarr; Work Design &rarr; Human Judgment &rarr; Accountability &rarr; Readiness — is the framework's single canonical "explain it in a few seconds" statement. It appears verbatim, in this order, wherever the site attempts to summarize the whole framework in one line. A generator does not paraphrase, reorder, or invent a competing summary sequence.</p>
+      <p class="applies"><strong>Applies to:</strong> The site's homepage/landing hero, the About page, any executive briefing or summary card.</p>
+      <p class="example">The same line already got the boxed step-flow treatment in the Talking Through Your Questions document — this rule makes that the one and only version, not a first draft of several.</p>
+    </div>
+    <hr class="rule-rule">
+
+    <div class="rule">
+      <div class="rule-heading"><span class="tag">RULE 3</span><span class="title">Hierarchy Fix, Not Redesign</span></div>
+      <p class="statement">Navigation and structure changes are evaluated first as hierarchy and information-architecture adjustments — reordering, re-labeling, re-emphasizing what already exists — tested against whether a first-time CHRO or CFO reader would know what to click. A full visual redesign, or a new page type built from a blank layout, is out of scope for a navigation fix and requires its own separate proposal.</p>
+      <p class="applies"><strong>Applies to:</strong> Any navigation or information-architecture change to the docs site or dashboard.</p>
+      <p class="example">GiGi's own framing, kept as the rule's test: "the foundation is strong; the fix is hierarchy, not a redesign."</p>
+    </div>
+
+    <p style="margin-top:30px;">If these three are approved, the same treatment — specific, checkable rules rather than general advice — would follow for Language &amp; Precision next, completing the set drawn from GiGi's full site-recommendations summary.</p>
+  </div>
+
+  <div class="doc-meta">Tim King &amp; GiGi Garcia &nbsp;|&nbsp; Concept — For Joint Review &nbsp;|&nbsp; September 2026</div>
+
+  <a class="note-pdf" href="navigation_structure_content_rules.pdf">Download PDF ↓</a>
+
+  <div class="back-link"><a href="index.html">&larr; Back to WIP hub</a></div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect<br>
+    Private review area — not part of the published framework<br>
+    hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>
