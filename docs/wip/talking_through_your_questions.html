@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Talking Through Your Questions — The Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --lightblue: #9FC2EE;
+  --grey-callout: #F0F0F0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead {
+  background: var(--navy-d); color: #fff; padding: 34px 24px 30px;
+  text-align: center;
+}
+.masthead .eyebrow {
+  font-family: 'DM Mono', monospace; font-size: 12px; color: var(--lightblue);
+  letter-spacing: .04em; margin-bottom: 12px;
+}
+.masthead h1 {
+  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 26px;
+  margin-bottom: 10px;
+}
+.masthead .tagline2 { font-size: 14px; color: #9FC2EE; font-style: italic; margin-bottom: 18px; max-width: 560px; margin-left: auto; margin-right: auto; line-height: 1.5; }
+.masthead nav a {
+  color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600;
+  margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent;
+}
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.doc-wrap { max-width: 760px; margin: 0 auto; padding: 36px 24px 72px; }
+
+/* Callout family — light blue (navy-l), no border, bold italic navy-d,
+   matching GiGi's own step-flow / pull-quote convention. Each one gets a
+   thin rule directly above and below it. */
+.callout-box, .pull-quote-box, .flow-box {
+  background: var(--navy-l); border-radius: 4px; padding: 18px 22px;
+  font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 700;
+  color: var(--navy-d); font-size: 16px; line-height: 1.5; margin: 0;
+}
+.pull-quote-box, .flow-box { text-align: center; }
+.callout-box .salutation { text-align: center; margin-bottom: 10px; }
+.callout-box .body-text { text-align: left; }
+.callout-rule { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+
+.doc-body p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+.doc-body p.caption { font-size: 12px; color: var(--lgray); font-style: italic; margin-bottom: 18px; }
+.doc-body p.lean { font-size: 12px; color: var(--lgray); font-style: italic; margin: -6px 0 18px; }
+
+.doc-body h2 {
+  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 20px; color: var(--navy-d);
+  margin: 34px 0 12px;
+}
+.doc-body h3 {
+  font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14.5px; color: var(--navy);
+  margin: 22px 0 8px; line-height: 1.5;
+}
+
+.section-badge {
+  display: flex; align-items: baseline; gap: 12px; margin: 40px 0 18px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--border);
+}
+.section-badge .num {
+  font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; color: var(--navy);
+  background: var(--navy-l); border-radius: 4px; padding: 3px 9px;
+}
+.section-badge .title {
+  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 20px; color: var(--navy-d);
+}
+
+.q-quote {
+  font-family: 'DM Sans', sans-serif; font-style: italic; font-weight: 700; color: var(--navy-d);
+  font-size: 14.5px; margin-bottom: 10px; line-height: 1.6;
+}
+
+ul.bullets { list-style: none; margin: 0 0 16px; }
+ul.bullets li {
+  position: relative; padding-left: 18px; font-size: 14.5px; color: var(--gray);
+  line-height: 1.65; margin-bottom: 10px;
+}
+ul.bullets li::before { content: "–"; position: absolute; left: 0; color: var(--navy); }
+ul.bullets li strong { color: var(--navy); font-weight: 600; }
+
+.closing-quote {
+  background: var(--navy-d); color: #fff; text-align: center; border-radius: 4px;
+  padding: 26px 24px; margin: 34px 0 8px;
+  font-family: 'Playfair Display', serif; font-style: italic; font-size: 17px;
+}
+
+.doc-meta {
+  font-size: 12px; color: var(--lgray); text-align: center;
+  padding-top: 20px; margin-top: 30px; border-top: 1px solid var(--border);
+}
+
+.note-pdf {
+  display: block; text-align: center; background: #fff; border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px; font-size: 13px; font-weight: 700; color: #7A5A1E;
+  text-decoration: none; margin-top: 18px;
+}
+.note-pdf:hover { background: var(--amber-bg); border-color: var(--amber); }
+
+.back-link { display: block; text-align: center; margin-top: 22px; }
+.back-link a { font-size: 12.5px; font-weight: 600; color: var(--navy); text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+
+footer { text-align: center; padding: 0 24px 48px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'DM Sans',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">WORKING DISCUSSION &nbsp;·&nbsp; TIM KING &amp; GIGI GARCIA &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>Talking Through Your Questions</h1>
+  <div class="tagline2">A working discussion draft, for Tim and GiGi to review together — drawn from GiGi's September 3, 2026 review notes.</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div class="doc-wrap">
+
+  <hr class="callout-rule">
+  <div class="callout-box">
+    <div class="salutation">GiGi</div>
+    <div class="body-text">Thank you for your detailed and thoughtful feedback. Rather than hand back answers from behind a desk, I wanted to lay out where things actually stand today, and where they genuinely don't, so we can spend our time together deciding rather than discovering.</div>
+  </div>
+  <hr class="callout-rule">
+
+  <div class="doc-body">
+    <p>This starts with a summary of your own site and language recommendations — a quick reference for what you already told us, in your own words — and then walks through your questions one at a time: what you asked, where things actually stand, and the real options where nothing is decided yet.</p>
+
+    <h2>Summary of Your Site Recommendations</h2>
+    <p class="caption">Pulled directly from your notes — a working reference to bring into the room, not a rewrite of what you said.</p>
+
+    <h3>Visual system &amp; hierarchy</h3>
+    <ul class="bullets">
+      <li><strong>Keep navy, white, and soft blue as the dominant system</strong> — refinement over redesign. If a new accent is added later, use it sparingly and only when it carries real meaning.</li>
+      <li><strong>Give the five work patterns a stronger visual identity</strong> — Decision, Knowledge, Document, Transaction, Exception currently read more like a legend than building blocks — consistent labels, subtle color cues, short definitions.</li>
+      <li><strong>Pull major conclusions out of paragraph text</strong> — short pull statements, key findings, simple before/after states, "what this means" boxes, clean diagrams, executive summary callouts. The 20–25 point convergence finding especially deserves this treatment.</li>
+      <li><strong>Use the callout-box treatment more selectively</strong> — like the HAL section and the HITL Design Principle box — reserved for the framework's strongest principles specifically.</li>
+      <li><strong>Modernize typography and spacing slightly</strong> — larger page titles, stronger section headings, more breathing room between ideas, shorter paragraph widths, clearer emphasis on key phrases. Nothing dramatic.</li>
+      <li><strong>Protect "Where human judgment belongs"</strong> — consider giving it more visual prominence — it's simple, curious, and does real work.</li>
+    </ul>
+
+    <h3>Navigation &amp; structure</h3>
+    <ul class="bullets">
+      <li><strong>Move from "study the architecture" to "solve my problem"</strong> — guided entry points such as "I am a CHRO — show me HR," "I am a CFO — show me Finance," "I am redesigning a role — show me Role Transition," "I want to understand AI readiness — show me Maturity."</li>
+      <li><strong>Consider a simple explanatory sequence near the top of the site</strong> — could explain the whole framework in a few seconds:</li>
+    </ul>
+    <hr class="callout-rule">
+    <div class="flow-box">Technology Capability &rarr; Work Design &rarr; Human Judgment &rarr; Accountability &rarr; Readiness</div>
+    <hr class="callout-rule">
+    <ul class="bullets">
+      <li><strong>Prioritize clarity, usability, and executive interpretation</strong> — not decoration. The foundation is strong; the fix is hierarchy, not a redesign.</li>
+    </ul>
+
+    <h3>Language &amp; precision</h3>
+    <ul class="bullets">
+      <li><strong>Keep the two strongest lines as-is</strong> — "Where human judgment belongs" and "HITL as an organizational design standard, not a safety checkpoint."</li>
+      <li><strong>Consider adding</strong> — "This is not only a technology problem. It is an organizational design problem."</li>
+      <li><strong>Be precise about modeled versus observed findings</strong> — don't let the convergence gap read as an empirical fact if it's modeled.</li>
+      <li><strong>Avoid absolute claims</strong> — "structurally impossible" and "nothing is a black box" — prefer language about making failure harder to occur, easier to detect, easier to challenge and contain; decision ownership and escalation staying visible.</li>
+      <li><strong>Clarify explicitly that H% is not a headcount-reduction metric</strong> — the same point carried into the questions section below.</li>
+      <li><strong>Reconsider "optimal"</strong> — in favor of "designed" or "appropriate," unless M3 is deliberately meant as a universal standard.</li>
+      <li><strong>Reframe the HAL 90%/10% example</strong> — as describing how the framework was co-created, not a universal operating target. You proposed: "HAL was the warning. This framework is an attempt to build the answer."</li>
+    </ul>
+
+    <div class="section-badge"><span class="num">1</span><span class="title">Your Questions, Our Answers, and the Options</span></div>
+
+    <h3>Where to start: what does H% actually measure?</h3>
+    <p class="q-quote">"What exactly does H% measure? ... Effort? Elapsed time? Task ownership? Decision authority? Cognitive contribution? FTE capacity? Number of steps?"</p>
+    <p>This is really the question underneath several of the others, so it's worth starting here rather than burying it in the numbered list. You're right that we've never said out loud what H% is counting — the methodology material talks about "Current H%" and "Design Intent H%" per pattern, but it never names the unit. That's not a phrasing gap. It's a real one, and probably worth settling before we build much more on top of it.</p>
+    <p>Here's a concrete way to see it. Say a role has 5 Knowledge-pattern activities, 2 Document, and 2 Transaction. Today, the pipeline works by figuring out each pattern's share of the total activity count — Knowledge comes out to about 56%, Document and Transaction about 22% each — and then blends each pattern's own human-involvement reference number (Knowledge runs about 80% human at baseline, 60% at Design Intent; Document 65%→35%; Transaction 45%→30%), weighted by that share. Do the math and you land around 69% human at baseline, 48% at Design Intent — a roughly 21-point gap, which lines up with the framework's real headline convergence figure.</p>
+    <p>Here's the honest catch, and it's the same thing you're pointing at: every one of those 5 Knowledge activities counts identically in that math, whether it's a five-minute lookup or the most consequential judgment call in the role. The number tells us how much work is left. It doesn't tell us how much any of it matters.</p>
+
+    <h3>A few real ways we could define H% going forward:</h3>
+    <ul class="bullets">
+      <li><strong>Keep counting activities, but say so plainly</strong> — call it an "activity mix," not a stand-in for judgment or authority, and stop letting readers assume it's more than that.</li>
+      <li><strong>Anchor it to decision authority instead</strong> — tie H% to who holds Accountable in the RACI sense, so the number tracks retained authority rather than raw task count. This is where we'd lean, since it puts the metric and the framework's own central claim — AI can redistribute work, it cannot redistribute accountability — on the same footing.</li>
+      <li><strong>Weight it by judgment, not by count</strong> — give Decision- and Exception-pattern activities more pull in the blend than Transaction-pattern ones. Real design work, but closer to what the number is trying to mean.</li>
+      <li><strong>Weight it by effort or FTE-hours</strong> — the most intuitive read for an executive, and also the version we'd both want to avoid leading with, since it's the one most likely to get misread as a headcount number.</li>
+    </ul>
+    <hr class="callout-rule">
+    <div class="pull-quote-box">"It shouldn't read as "X% fewer people." The framework already treats a growing human-involvement gap as a risk signal, not a savings opportunity."</div>
+    <hr class="callout-rule">
+
+    <h3>1. "When we use H%, what exactly are we measuring — and what do we explicitly not want executives to infer from it?"</h3>
+    <p>The second half of this is the "not up for debate" point above — already a real, standing position, not just a hope. The first half is the open question we just walked through together above.</p>
+
+    <h3>2. "Is the 20-25 point convergence gap modeled from the maturity assumptions, or based on observed organizational data?"</h3>
+    <p>This one has a clean answer: modeled, not observed. It's the comparison between the current baseline and the Design Intent target, run per pattern and rolled up — and there's already an explicit internal note saying plainly that these are informed estimates, not something validated at scale. One thing worth flagging to each other while we're at it: the real, corrected enterprise-wide figure now runs closer to 18–20 points, not the 20-25 the site text currently says — that copy is probably just stale and worth a quick fix regardless of anything else we decide here.</p>
+
+    <h3>3. "Is M3 meant to be a universal design target, or does organizational context alter the appropriate target?"</h3>
+    <p>Right now, in practice, M3 is one universal curve applied the same way to every role — which is worth being honest about, since it's not quite what "design intent" implies. At the same time, wherever we've actually built real RACI data for a role, that real data already overrides the generic curve. So the instinct is already half-built into how we work; it's just never been named as the policy.</p>
+    <h3>A few ways to think about this together:</h3>
+    <ul class="bullets">
+      <li><strong>Keep it fully universal</strong> — and say so — one reference curve, positioned explicitly as a baseline rather than a claim about what's "optimal" for every context.</li>
+      <li><strong>Let real data lead, generic curve as fallback</strong> — this is closest to what already happens; it mostly just needs naming rather than building.</li>
+      <li><strong>Domain-level curves</strong> — HR, IT, and Finance each get their own reference curve rather than sharing one.</li>
+      <li><strong>A context-adjustment layer</strong> — regulation, risk tolerance, workforce capability shift the curve per organization. More design work, but probably the right long-term shape if this framework is ever licensed out rather than used just here.</li>
+    </ul>
+    <p>Your instinct that "optimal" may be too strong a word is probably right either way — "designed" or "appropriate" holds up better until we've actually built something that adjusts for context.</p>
+
+    <h3>4. "Where do L4 activities materially break from the inherited L3 RACI?"</h3>
+    <p>Yes — and we can point to exactly where: Payroll (7.5.4), where Accountable is scoped to the HR-owned slice only, Finance owns the rest outside the framework's view; and Global Mobility (7.6.3), where HRBP Manager holds Accountable but only partially, since no specialist role exists yet to take full ownership. Both are handled today as manual, footnoted overrides rather than anything systematic. Your instinct — L3 as the baseline, with L4 activities that materially change accountability getting an explicit override — is basically already how we've been handling these two cases by hand. Probably worth naming it as a real mechanism rather than two one-off patches.</p>
+
+    <h3>5. "Can we identify why human involvement remains — judgment, empathy, legal accountability, risk, authority, exception handling — rather than only how much remains?"</h3>
+    <p>This is a real, currently-missing layer, and "Human Criticality" is a good name for something that's been circling without one. Today the framework can tell you what kind of work remains and who's accountable for it, but not why a human needs to be there at all.</p>
+    <h3>A few ways we could build toward an answer:</h3>
+    <ul class="bullets">
+      <li><strong>Tag each activity with a reason</strong> — a short vocabulary (judgment, empathy, legal/regulatory accountability, risk, exception authority) attached alongside the existing pattern classification. Most complete, but a real hand-classification effort across the whole dataset.</li>
+      <li><strong>Infer it from what we already have</strong> — a Decision-pattern activity with an escalation point probably means authority; an Exception-pattern one probably means risk. Cheaper, but too blunt to separate empathy from legal exposure within the same pattern.</li>
+      <li><strong>Let this live on your side, as narrative rather than data</strong> — part of the Readiness work rather than a new structured field on the process side.</li>
+      <li><strong>A hybrid</strong> — tag only the highest-stakes activities (Decision, Exception), and let the narrative depth come from you where it matters most.</li>
+    </ul>
+    <p class="lean">The hybrid feels like the natural middle ground — real signal without hand-tagging everything, and it puts the qualitative half where it already belongs.</p>
+
+    <h3>6. "Should consequence of error influence the required human-control level?"</h3>
+    <p>Nothing like this exists today — every Decision-pattern activity is treated identically regardless of what's actually at stake, and your own example (a training-course recommendation vs. a termination decision) makes the gap obvious. This pairs naturally with the question above; the two would probably get designed together rather than separately.</p>
+    <h3>A few ways to build a consequence axis:</h3>
+    <ul class="bullets">
+      <li><strong>A four-tier scale (Low/Moderate/High/Critical)</strong> — hand-classified per activity — matches your own suggested shape directly.</li>
+      <li><strong>Derive it from escalation depth</strong> — activities with no governance escalation default to lower consequence, activities escalating to the executive tier default to higher. Reuses data we already have.</li>
+      <li><strong>Derive it from pattern type alone</strong> — a blunt default (Decision/Exception = higher stakes). Cheapest, but your own example shows why it's not accurate enough on its own.</li>
+      <li><strong>A computed default with manual override</strong> — start from the escalation-depth default, correct by hand only where it's clearly wrong. Same mechanism as the L3/L4 override idea above — it's nice when one idea covers two gaps.</li>
+    </ul>
+
+    <h3>7. "How do we distinguish human presence from meaningful human control?"</h3>
+    <p>RACI tells us who's present — who's R, A, C, or I — but nothing about whether that person actually has the standing, confidence, or authority to exercise real judgment. This is, honestly, the whole reason the Readiness Table exists as an idea rather than a shipped feature: it's been sitting there waiting on the eight dimensions you proposed yourself — trust, psychological safety, role clarity, leadership readiness, change capacity, decision confidence, sustainable workload, accountability. This question isn't really a new ask. It's the case for finishing the work already agreed to be yours to lead.</p>
+    <h3>A few ways we could shape it:</h3>
+    <ul class="bullets">
+      <li><strong>Build your eight dimensions as-is</strong> — into the Readiness Table's structure — no redesign needed, just building what's already agreed.</li>
+      <li><strong>A simple confirmed/not-confirmed flag</strong> — per role — faster to ship, but loses any sense of degree.</li>
+      <li><strong>A composite score across the eight dimensions</strong> — sitting alongside the existing Role Impact Table — comparable across roles, but needs a real instrument (survey, interview) to populate, which is the actual blocker either way.</li>
+      <li><strong>Narrative only, no scoring</strong> — qualitative write-ups per role, fastest to start, hardest to compare side by side.</li>
+    </ul>
+    <p class="lean">Probably: your eight dimensions as the structure now, with a composite score as the natural next layer once there's an instrument to feed it. Less a new decision, more a matter of sequencing.</p>
+
+    <h3>8. "What readiness conditions must be true before an organization moves from one maturity level to another?"</h3>
+    <p>Right now, moving from one maturity level to the next is just a target curve — nothing actually checks whether an organization is ready to make that move. Your own Workforce Validation Gate idea (see below) is the closest thing that exists to an answer already.</p>
+    <h3>A few shapes this could take:</h3>
+    <ul class="bullets">
+      <li><strong>A hard gate</strong> — can't be marked at a level until a checklist of conditions is confirmed. Clean in principle, but there's nothing built yet to check against.</li>
+      <li><strong>A soft flag</strong> — track progress either way, but visibly distinguish "claimed" maturity from "readiness-confirmed" maturity. Non-blocking, and probably the more realistic starting point.</li>
+      <li><strong>Use your own seven questions directly</strong> — as the check-in run at each transition, rather than inventing new criteria from nothing.</li>
+      <li><strong>Tie it to the Readiness Table dimensions</strong> — from the question above, once built — quantitative, but depends on that work landing first.</li>
+    </ul>
+    <p class="lean">A soft flag using your own questions seems like the right place to start — it doesn't ask us to build a hard gate before there's real readiness data to gate on, and it can tighten up once the Readiness Table exists.</p>
+
+    <h3>9. "How do we prevent routine-work automation from hollowing out the development path for future experts?"</h3>
+    <p>This one's already on our radar as a named risk — the same McKinsey piece we've both been drawing from puts real numbers on it: entry-level Transaction-pattern work shrinking from roughly 60% to 12% across the maturity curve, which quietly removes the on-the-job route junior people use today to build the judgment that senior, Accountable roles eventually require. It's flagged. Nothing's been designed against it yet.</p>
+    <h3>A few directions worth discussing:</h3>
+    <ul class="bullets">
+      <li><strong>Deliberately reserve some entry-level work</strong> — below the "optimal" automation level, purely so people have something to learn on — direct, but it cuts against the framework's own efficiency case.</li>
+      <li><strong>Redesign the apprenticeship path itself</strong> — structured exposure to Decision- and Exception-pattern work earlier (shadowing, reviewing AI output, escalation training) rather than trying to preserve the old transactional volume.</li>
+      <li><strong>Track it as a ninth Readiness dimension</strong> — alongside your eight, watched but not yet actively engineered against.</li>
+      <li><strong>Set it aside for now</strong> — on the record, until the Readiness work is further along — this genuinely sits downstream of the same accountability and trust layer.</li>
+    </ul>
+    <p class="lean">Tracking it now feels cheap and worth doing regardless of what else we decide; the apprenticeship redesign is the real fix, once there's room to build it.</p>
+
+    <h3>10. "How do we account for roles that merge, disappear, split or emerge rather than simply transition?"</h3>
+    <p>Genuinely new ground — everything built so far (the pattern-transition work, the role transition profiles) assumes one existing role shifting in place. None of it handles a role restructuring out of existence, splitting in two, or a new hybrid role forming that didn't exist before.</p>
+    <h3>A few ways we could start:</h3>
+    <ul class="bullets">
+      <li><strong>Add a "Role Fate" field</strong> — to the existing role-transition data — evolves, merges, splits, disappears, emerges — inferred by comparing a role's current and future activity footprints. Mostly computable from data we already have.</li>
+      <li><strong>Let a person call it, rather than the data</strong> — you or another domain expert making the judgment directly, which is probably more defensible for a genuinely new role the data has no way to predict.</li>
+      <li><strong>Look for orphaned clusters</strong> — activities left over across several roles' future footprints that don't map cleanly to anything current, as a signal a new role might be needed. Interesting, but speculative and a real build.</li>
+      <li><strong>Leave it out of scope for now</strong> — and just say plainly that the model currently assumes roles stay intact.</li>
+    </ul>
+    <p class="lean">The Role Fate field feels like a light lift worth doing soon, with your judgment as the real backstop wherever the data can't decide on its own.</p>
+
+    <h3>11. "How should employee voice be used to validate the designed future state against the reality of work?"</h3>
+    <p>Nothing today closes the loop between what we've designed and what people actually experience doing the work. Your own seven validation questions (below) are already the best starting instrument that exists for this.</p>
+    <h3>A few shapes for how it could run:</h3>
+    <ul class="bullets">
+      <li><strong>A periodic gate</strong> — using your seven questions, run at each major maturity transition — the same mechanism as the readiness gate above.</li>
+      <li><strong>A lighter, always-on channel</strong> — something like a short pulse check rather than a point-in-time event, catching drift sooner.</li>
+      <li><strong>Manager attestation</strong> — lower overhead than surveying everyone, but weaker specifically on "are people quietly working around the process," since a manager may not see that happening.</li>
+      <li><strong>A layered approach</strong> — attestation running continuously as the cheap default, escalating to real employee input at major transitions or whenever attestation itself raises a flag.</li>
+    </ul>
+    <p class="lean">The layered version feels like the natural fit — it's the same shape the framework already leans on elsewhere: a cheap default that escalates only when something needs a closer look.</p>
+
+    <h3>12. "How can the site make the most important conclusions easier for an executive to see without weakening the methodological rigor?"</h3>
+    <p>This one we actually have a working answer for already — we just haven't shown it to you yet. It's close to what your own site recommendations above are already asking for: pull statements, "what this means" callouts, stronger visual hierarchy. There's a real, built precedent in the CHRO-facing briefing series (short pieces like "Judgment, Mapped" and "Accountable, By Design") that sit alongside the full technical site rather than replacing it — rigor stays intact underneath, and an easier-to-scan layer sits on top. Feels like a good thing to actually walk through together rather than just describe.</p>
+
+    <h3>Your seven validation questions</h3>
+    <p style="font-style:italic;">Where does the proposed design underestimate human judgment? Where is AI creating rework or duplicate checking? Which responsibilities have become unclear? Where are exceptions happening that the model did not anticipate? What knowledge is at risk of being lost? Where are employees bypassing the designed process? What work has become more difficult even though less work remains?</p>
+    <p>These read less like questions for us to answer right now and more like the actual seed of a real instrument — the one we keep pointing back to above, for both the readiness-gate question and the employee-voice question. Worth keeping them exactly as you wrote them rather than reworking them in the abstract, and building the real gate around them when the time comes.</p>
+
+    <p>Two things are already settled and mostly just need a quick fix on the site (the convergence-gap figure, and naming the L3→L4 override pattern we're already using). One thing is a working answer we just haven't shown you yet (the executive-legibility question — happy to walk through the briefing series together). Everything else is genuinely open, and worth saying plainly: the H% definition, whether M3 should flex by context, human criticality, consequence of error, presence versus real control, readiness gates, role restructuring, and employee-voice validation.</p>
+    <p>One pattern worth naming out loud rather than treating as eight separate to-dos: several of these — trust, workload sustainability, human criticality, consequence of error — keep circling the same undesigned territory. It might be worth treating that as one connected piece of work we take on together, rather than four or five separate asks competing for attention.</p>
+
+    <hr class="callout-rule">
+    <div class="closing-quote">Looking forward to going through this with you.</div>
+  </div>
+
+  <div class="doc-meta">Tim King &amp; GiGi Garcia &nbsp;|&nbsp; Working Discussion Draft &nbsp;|&nbsp; September 2026</div>
+
+  <a class="note-pdf" href="talking_through_your_questions.pdf">Download PDF ↓</a>
+
+  <div class="back-link"><a href="index.html">&larr; Back to WIP hub</a></div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect<br>
+    Private review area — not part of the published framework<br>
+    hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>
