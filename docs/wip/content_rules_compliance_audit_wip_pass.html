@@ -45,7 +45,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 
 .callout {
   background: var(--amber-bg); border-left: 4px solid var(--amber); border-radius: 6px;
-  padding: 16px 20px; margin: 0 0 24px; font-size: 13.5px; color: var(--amber-text); line-height: 1.65;
+  padding: 16px 20px; margin: 0 0 24px; font-size: 13.5px; color: var(--amber-text); font-style: italic; line-height: 1.65;
 }
 .callout strong { color: var(--amber-text); }
 
@@ -74,9 +74,10 @@ td.rule-cell { font-weight: 600; color: var(--navy-d); white-space: nowrap; }
   display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .04em;
   text-transform: uppercase; border-radius: 3px; padding: 3px 8px; white-space: nowrap;
 }
-.verdict.clean { color: var(--navy-d); background: var(--navy-l); }
 .verdict.na    { color: var(--lgray); background: var(--border); }
-.verdict.mixed, .verdict.gap { color: var(--amber-text); background: var(--amber-bg); }
+.verdict.clean { color: var(--navy-d); background: var(--navy-l); }
+.verdict.mixed { color: var(--navy-d); background: var(--accent); }
+.verdict.gap   { color: var(--navy-d); background: #fff; border: 1.5px solid var(--navy); padding: 1.5px 6.5px; }
 
 .pdf-download {
   display: inline-flex; align-items: center; gap: 6px;
