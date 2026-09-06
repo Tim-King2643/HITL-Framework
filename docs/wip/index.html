@@ -74,7 +74,7 @@ body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--
 
 table.catalog { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 760px; }
 table.catalog thead th {
-  background: var(--navy-d); color: #fff; text-align: left; padding: 11px 14px;
+  background: var(--navy-d); color: #fff; text-align: left; vertical-align: bottom; padding: 11px 14px;
   font-family: 'Consolas', monospace; font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase;
   white-space: nowrap;
 }
@@ -160,7 +160,7 @@ footer a { color: var(--navy); text-decoration: none; }
 </div>
 
 <div class="catalog-wrap">
-  <p class="catalog-caption">15 items · sorted by group, oldest work first within each</p>
+  <p class="catalog-caption">13 items · sorted by group, oldest work first within each</p>
   <div class="table-scroll">
     <table class="catalog">
       <thead>
@@ -173,7 +173,7 @@ footer a { color: var(--navy); text-decoration: none; }
       </thead>
       <tbody>
 
-        <tr class="group-row"><td colspan="4">Role Pattern Transition Narratives <span class="g-note">Stage-first M1 → M3 → M5 views, per role, grounded in real Accountable-process data.</span></td></tr>
+        <tr class="group-row"><td colspan="4">Role Pattern Transition Narratives <span class="g-note">Stage-first M1 → M3 → M5 views, per role, grounded in real Accountable-process data. Live HTML rebuilt onto the standard site's own system (px-based Standing Type Scale, standard masthead/page chrome, live pattern legend) — see the Content Generation Rules compliance audit below; the Word/PDF exports keep their dedicated print layout, matched on fonts and colors only, per Token Lock.</span></td></tr>
 
         <tr class="item-row">
           <td>
@@ -217,50 +217,6 @@ footer a { color: var(--navy); text-decoration: none; }
           </td>
         </tr>
 
-        <tr class="group-row"><td colspan="4">Role Pattern Transition Narratives — Standard System Test <span class="g-note">Same 3 roles above, same real data and narrative text — restyled onto the standard site's page chrome, px-based Standing Type Scale, and Token Lock colors (pulled from the About page, the HAL origin story, the Methodology doc, and the Maturity Scale doc), with fonts set to Segoe UI/Georgia/Consolas rather than Google Fonts, per the no-Google-Fonts-in-WIP standard. A styling test, not a replacement for the originals — see the Content Generation Rules compliance audit below for why the print-pipeline/standard-system split exists in the first place.</span></td></tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="chro_pattern_transition_stagefirst_standardsystem.html">CHRO — Pattern Transition Narratives <span class="lock">(standard system test)</span></a></div>
-            <div class="item-desc">The CHRO stage-first exhibit, restyled: standard-site page chrome, px-based Standing Type Scale, Segoe UI/Georgia/Consolas (Word-compatible, no Google Fonts), and canonical five-pattern colors reused identically in the legend, headings, and treemap boxes.</div>
-          </td>
-          <td><span class="status">Drafting</span></td>
-          <td><span class="stage">Step 1 · Prototype</span></td>
-          <td class="fmt-links">
-            <span class="unavailable">Word n/a</span><span class="sep">·</span>
-            <a href="chro_pattern_transition_stagefirst_standardsystem.html">HTML</a><span class="sep">·</span>
-            <span class="unavailable">PDF n/a</span>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="hrbp_manager_pattern_transition_stagefirst_standardsystem.html">HRBP Manager — Pattern Transition Narratives <span class="lock">(standard system test)</span></a></div>
-            <div class="item-desc">Same restyle applied to the HRBP Manager exhibit — all 5 patterns, same legend-to-box color consistency.</div>
-          </td>
-          <td><span class="status">Drafting</span></td>
-          <td><span class="stage">Step 1 · Prototype</span></td>
-          <td class="fmt-links">
-            <span class="unavailable">Word n/a</span><span class="sep">·</span>
-            <a href="hrbp_manager_pattern_transition_stagefirst_standardsystem.html">HTML</a><span class="sep">·</span>
-            <span class="unavailable">PDF n/a</span>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="recruiter_pattern_transition_stagefirst_standardsystem.html">Recruiter — Pattern Transition Narratives <span class="lock">(standard system test)</span></a></div>
-            <div class="item-desc">Same restyle applied to the Recruiter exhibit — 4 patterns, same legend-to-box color consistency.</div>
-          </td>
-          <td><span class="status">Drafting</span></td>
-          <td><span class="stage">Step 1 · Prototype</span></td>
-          <td class="fmt-links">
-            <span class="unavailable">Word n/a</span><span class="sep">·</span>
-            <a href="recruiter_pattern_transition_stagefirst_standardsystem.html">HTML</a><span class="sep">·</span>
-            <span class="unavailable">PDF n/a</span>
-          </td>
-        </tr>
-
         <tr class="group-row"><td colspan="4">Concepts &amp; Design Principles <span class="g-note">Framework-level ideas and mechanisms — not yet applied to a specific role, dataset, or dashboard lens.</span></td></tr>
 
         <tr class="item-row">
@@ -294,7 +250,7 @@ footer a { color: var(--navy); text-decoration: none; }
         <tr class="item-row">
           <td>
             <div class="item-title"><a href="Visual_System_Hierarchy_Content_Rules.docx">Framework Content Generation Rules — Visual System &amp; Hierarchy</a></div>
-            <div class="item-desc">Seven formal, checkable rules turning GiGi's "Visual system &amp; hierarchy" site recommendations into constraints any future content generator can be held to: token lock, one pattern legend, callout budget, and more.</div>
+            <div class="item-desc">Eight formal, checkable rules turning GiGi's "Visual system &amp; hierarchy" site recommendations into constraints any future content generator can be held to: token lock, one pattern legend, callout budget, bottom-aligned column headings, and more.</div>
           </td>
           <td><span class="status">Ready for review</span></td>
           <td><span class="stage">Concept</span></td>
@@ -336,7 +292,7 @@ footer a { color: var(--navy); text-decoration: none; }
         <tr class="item-row">
           <td>
             <div class="item-title"><a href="Content_Rules_Compliance_Audit_WIP_Pass.docx">Content Generation Rules — Compliance Audit (WIP Hub Pass)</a></div>
-            <div class="item-desc">A proof-of-concept pressure-test of the 17 proposed rules above against the WIP hub's own 9 documents. No real violations found; surfaces a Token Lock color-list gap (partially fixed), a Rule 2 content gap (fixed in the docx companions), and a real open decision on the 3 role-narrative pages' print-pipeline design system.</div>
+            <div class="item-desc">A proof-of-concept pressure-test of the 17 proposed rules above against the WIP hub's own 9 documents. No real violations found; surfaced a Token Lock color-list gap (mostly fixed — 2 colors still open), a Rule 2 content gap (now fixed everywhere), and the 3 role-narrative pages' print-pipeline design system, since resolved by rebuilding them onto the standard system.</div>
           </td>
           <td><span class="status">Ready for review</span></td>
           <td><span class="stage">Step 2 · Pressure Test</span></td>

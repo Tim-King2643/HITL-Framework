@@ -1,110 +1,142 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>[DRAFT] CHRO — Pattern Transition Narratives (Stage-First View)</title>
 <style>
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; background: #ffffff; }
-  body {
-    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-    color: #1A1A1A;
-  }
-  .sheet-frame { padding: 28px 36px 34px 36px; }
-  .page { max-width: 900px; margin: 0 auto; }
-  @media print { .sheet-frame { padding: 0; } }
+:root {
+  --navy: #1B4F8A; --navy-d: #0D2D4F; --navy-l: #EEF3FA; --dark: #0D1B2A;
+  --gray: #444; --lgray: #888; --bg: #F4F6FB; --border: #DDE3EE;
+  --amber: #B8873F; --amber-bg: #FEF3C7; --amber-text: #7A5A1E;
+  --c-dec:#1B4F8A; --bg-dec:#EEF3FA; --c-kno:#534AB7; --bg-kno:#F3F0FE;
+  --c-doc:#0369A1; --bg-doc:#E0F2FE; --c-tra:#166534; --bg-tra:#DCFCE7;
+  --c-exc:#991B1B; --bg-exc:#FEE2E2;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); }
 
-  .banner { width: 100%; background: #0D2D4F; padding: 14pt 16pt; text-align: center; }
-  .banner .b1 { font-family: Georgia, "Times New Roman", serif; font-size: 11pt; font-weight: 700; color: #FFFFFF; margin: 0 0 2pt 0; }
-  .banner .b2 { font-family: Georgia, "Times New Roman", serif; font-size: 9pt; font-style: italic; color: #9FC0E8; margin: 0; }
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center; font-size: 12.5px; color: var(--amber-text);
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: var(--amber-text); font-weight: 600; }
 
-  .title-block { padding: 14pt 0 0 0; }
-  h1.doc-title { font-family: Georgia, "Times New Roman", serif; font-size: 16pt; font-weight: 700; color: #0D2D4F; margin: 0 0 3pt 0; }
-  p.doc-sub { font-size: 9.5pt; font-style: italic; color: #888888; margin: 0 0 10pt 0; }
-  p.doc-intro { font-size: 10pt; color: #444444; line-height: 1.5; margin: 0 0 8pt 0; }
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9FC2EE; margin-bottom: 10px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 24px; margin-bottom: 8px; }
+.masthead .tagline2 { font-size: 14px; color: #9FC2EE; font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
 
-  h2.role-heading { font-size: 13.5pt; font-weight: 700; color: #0D2D4F; border-bottom: 1pt solid #0D2D4F; padding-bottom: 4pt; margin: 16pt 0 5pt 0; }
-  p.role-intro { font-size: 9.5pt; font-style: italic; color: #888888; margin: 0 0 12pt 0; line-height: 1.4; }
+.doc { max-width: 800px; margin: 0 auto; padding: 24px 24px 80px; }
+h1.doc-title { font-family: 'Georgia', serif; font-size: 22px; color: var(--navy-d); margin: 8px 0 6px; }
+p.doc-sub { font-size: 13px; color: var(--lgray); font-style: italic; margin-bottom: 18px; }
+p.doc-intro { font-size: 13px; line-height: 1.7; color: var(--gray); margin-bottom: 22px; }
 
-  .exhibit { width: 100%; margin: 0 0 14pt 0; break-inside: avoid-page; }
-  .exhibit-rule { border: none; border-top: 2pt solid #5B3A9E; margin: 12pt 0 12pt 0; }
-  h3.exhibit-headline { width: 100%; font-size: 12.5pt; line-height: 1.35; font-weight: 800; color: #1a1a1a; margin: 0 0 5pt 0; }
-  p.exhibit-subcaption { width: 100%; font-size: 8.5pt; color: #58585a; margin: 0 0 16pt 0; }
+h2.role-heading { font-size: 16px; color: var(--navy-d); font-weight: 700; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
+p.role-intro { font-size: 13px; color: var(--lgray); font-style: italic; line-height: 1.6; margin-bottom: 20px; }
 
-  .cols { display: flex; gap: 24px; width: 100%; }
-  .col { flex: 1 1 0; min-width: 0; }
-  .col-head { font-size: 9.5pt; font-weight: 700; color: #1a1a1a; margin-bottom: 7pt; }
-  .col-head .sub { display: block; font-weight: 400; color: #555555; font-size: 8pt; margin-top: 1pt; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 4px 0 16px 2px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
-  .map { position: relative; width: 100%; break-inside: avoid-page; }
-  .box { position: absolute; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
-  .box .name { display: block; width: 100%; box-sizing: border-box; font-size: 7.5pt; font-weight: 700; color: #fff; line-height: 1.15; padding: 3pt 5pt 0 5pt; overflow-wrap: break-word; }
-  .box .val { display: block; width: 100%; box-sizing: border-box; font-size: 8.5pt; font-weight: 700; color: #fff; text-align: right; font-variant-numeric: tabular-nums; padding: 0 5pt 3pt 0; }
+.exhibit { width: 100%; margin: 0 0 20px; }
+h3.exhibit-headline { font-family: 'Georgia', serif; font-size: 16px; font-weight: 700; line-height: 1.4; color: var(--navy-d); margin: 0 0 6px; }
+p.exhibit-subcaption { font-size: 12px; color: var(--lgray); margin: 0 0 16px; }
 
-  .exhibit-footer { break-inside: avoid-page; }
-  .exhibit-footprint { font-size: 7.5pt; color: #8a8a8c; margin-top: 10pt; line-height: 1.6; border-top: 0.75pt solid #d9d9d9; padding-top: 7pt; }
+.cols { display: flex; gap: 24px; width: 100%; }
+.col { flex: 1 1 0; min-width: 0; }
+.col-head { font-size: 11.5px; font-weight: 700; color: var(--dark); margin-bottom: 8px; font-family: 'Consolas', monospace; }
+.col-head .sub { display: block; font-weight: 400; color: var(--lgray); font-size: 10px; margin-top: 1px; font-family: 'Segoe UI', sans-serif; }
 
-  .stage { break-inside: avoid-page; }
-  h3.stage-heading { font-size: 13pt; font-weight: 700; color: #0D2D4F; border-bottom: 1pt solid #D9D9D9; padding-bottom: 2pt; margin: 15pt 0 1pt 0; }
-  p.stage-state { font-size: 8.5pt; font-style: italic; color: #555555; margin: 0 0 8pt 0; }
+.map { position: relative; width: 100%; }
+.box { position: absolute; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; border-radius: 3px; }
+.box .name { display: block; width: 100%; box-sizing: border-box; font-size: 10.5px; font-weight: 700; color: #fff; line-height: 1.2; padding: 6px 7px 0; overflow-wrap: break-word; }
+.box .val { display: block; width: 100%; box-sizing: border-box; font-size: 12px; font-weight: 700; color: #fff; text-align: right; font-variant-numeric: tabular-nums; padding: 0 7px 6px; }
 
-  .pattern-block { break-inside: avoid-page; margin: 0 0 8pt 5pt; }
-  p.pattern-heading { font-size: 10pt; font-weight: 700; margin: 0 0 3pt 0; }
-  p.pattern-heading .pct { font-weight: 400; font-size: 8.5pt; color: #888888; }
-  p.pattern-narrative { font-size: 10pt; color: #1A1A1A; line-height: 1.45; margin: 0; }
+.exhibit-footer { margin-top: 4px; }
+.exhibit-footprint { font-size: 11px; color: var(--lgray); margin-top: 12px; line-height: 1.65; border-top: 1px solid var(--border); padding-top: 10px; }
 
-  p.doc-source-note { font-size: 8pt; font-style: italic; color: #888888; margin: 10pt 0 0 5pt; }
-  p.scope-note { font-size: 8pt; font-style: italic; color: #888888; margin: 2pt 0 0 5pt; }
+.stage { margin-top: 8px; }
+h3.stage-heading { font-size: 14px; font-weight: 700; color: var(--navy-d); border-bottom: 1px solid var(--border); padding-bottom: 4px; margin: 26px 0 4px; }
+p.stage-state { font-size: 11px; font-style: italic; color: var(--lgray); margin: 0 0 12px; }
+
+.pattern-block { margin: 0 0 14px 4px; }
+p.pattern-heading { font-size: 13px; font-weight: 700; margin: 0 0 3px; }
+p.pattern-heading .pct { font-weight: 400; font-size: 11px; color: var(--lgray); }
+p.pattern-narrative { font-size: 13px; color: var(--gray); line-height: 1.65; margin: 0; }
+
+p.doc-source-note, p.scope-note { font-size: 11px; font-style: italic; color: var(--lgray); margin: 14px 0 0 4px; line-height: 1.6; }
+
+.pdf-download {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px;
+  padding: 8px 14px; text-decoration: none; margin: 0 0 8px;
+}
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
 </style>
 </head>
 <body>
 
-<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
-border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
-font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
-  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
-  — Not Yet Part of the Framework</strong>
-  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing
-  here is official yet.
-  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
-  Back to WIP hub</a>
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing on this page is official yet.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
 </div>
 
-<div class="sheet-frame">
-<div class="page">
+<div class="masthead">
+  <div class="eyebrow">HITL-Driven Architecture</div>
+  <h1>Pattern Transition Narratives</h1>
+  <div class="tagline2">Stage-first view — what M1 &rarr; M3 &rarr; M5 means for the role's real work</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
 
-  <div class="banner">
-    <p class="b1">THE HUMAN-AI PARTNERSHIP FRAMEWORK</p>
-    <p class="b2">Pattern Transition Narratives — Stage-First View</p>
-  </div>
+<div class="doc">
+  <h1 class="doc-title">Role-Specific Pattern Transitions</h1>
+  <p class="doc-sub">What M1 → M3 → M5 actually means for the work — stage-first view, CHRO</p>
 
-  <div class="title-block">
-    <h1 class="doc-title">Role-Specific Pattern Transitions</h1>
-    <p class="doc-sub">What M1 → M3 → M5 actually means for the work — stage-first view, CHRO</p>
-    <p style="margin:0 0 12pt 0;"><a href="chro_pattern_transition_stagefirst.pdf" style="display:inline-block;font-family:'Segoe UI',Arial,Helvetica,sans-serif;font-size:8.5pt;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#0D2D4F;background:#EEF3FA;border:1px solid #B8CCE8;border-radius:4px;padding:4px 10px;text-decoration:none;">Download PDF ↓</a></p>
-    <p class="doc-intro">The treemap exhibits show how the composition of each role's remaining human work shifts as AI matures, organized by <strong>maturity stage first, pattern second</strong> — the same M1/M3/M5 column structure as the treemap itself. This view answers: at this specific stage, across every pattern the role touches, what does the work actually look like? Note that two different percentages appear below: the treemap's box size is each pattern's share of the total remaining workload at that stage (the boxes in each column sum to 100%), while the percentage next to each pattern in the stage detail is that pattern's own human-involvement level, independent of the others.</p>
+  <a class="pdf-download" href="chro_pattern_transition_stagefirst.pdf">&#11015; Download PDF</a>
 
-    <h2 class="role-heading">CHRO</h2>
-    <p class="role-intro">Accountable on 10 real L4 activities, all under PCF 7.1.1 Develop human resources strategy — the only PCF 7.0 process this role is Accountable for in current RACI data. Executive-tier responsibilities likely extend into PCF 1.0 Develop Vision and Strategy, not yet built into the framework — a real, stated scope limit, not a gap in this exhibit.</p>
+  <p class="doc-intro">The treemap exhibits show how the composition of each role's remaining human work shifts as AI matures, organized by <strong>maturity stage first, pattern second</strong> — the same M1/M3/M5 column structure as the treemap itself. This view answers: at this specific stage, across every pattern the role touches, what does the work actually look like? Note that two different percentages appear below: the treemap's box size is each pattern's share of the total remaining workload at that stage (the boxes in each column sum to 100%), while the percentage next to each pattern in the stage detail is that pattern's own human-involvement level, independent of the others.</p>
 
-    <div class="exhibit">
-      <hr class="exhibit-rule">
-      <h3 class="exhibit-headline">CHRO's work stays almost entirely Knowledge-pattern at every maturity stage — AI shrinks the volume of strategic work, not its character.</h3>
-      <p class="exhibit-subcaption">Composition of CHRO's real activity mix still requiring human involvement, by HITL pattern — area = share, %</p>
-      <div class="cols" id="cols"></div>
-      <div class="exhibit-footer">
-        <div class="exhibit-footprint">Built from CHRO's real PCF 7.1.1 RACI data (hitl_dashboard_final.html) — 10 L4 activities, all under "Develop human resources strategy," the only PCF 7.0 process this role is Accountable for in current RACI data (Executive-tier responsibilities likely extend into PCF 1.0 Develop Vision and Strategy, not yet built — a real, stated scope limit, not an artifact of this chart). Weighted by activity count × each pattern's M1/M3/M5 human-involvement %. Layout: squarified treemap (Bruls/Huizing/van Wijk), each column laid out independently from its own sorted values — box area is the only encoded quantity, position and aspect ratio are layout artifacts.</div>
-      </div>
+  <h2 class="role-heading">CHRO</h2>
+  <p class="role-intro">Accountable on 10 real L4 activities, all under PCF 7.1.1 Develop human resources strategy — the only PCF 7.0 process this role is Accountable for in current RACI data. Executive-tier responsibilities likely extend into PCF 1.0 Develop Vision and Strategy, not yet built into the framework — a real, stated scope limit, not a gap in this exhibit.</p>
+
+  <div class="exhibit">
+    <h3 class="exhibit-headline">CHRO's work stays almost entirely Knowledge-pattern at every maturity stage — AI shrinks the volume of strategic work, not its character.</h3>
+    <p class="exhibit-subcaption">Composition of CHRO's real activity mix still requiring human involvement, by HITL pattern — area = share, %</p>
+    <div class="legend" id="legend"></div>
+    <div class="cols" id="cols"></div>
+    <div class="exhibit-footer">
+      <div class="exhibit-footprint">Built from CHRO's real PCF 7.1.1 RACI data (hitl_dashboard_final.html) — 10 L4 activities, all under "Develop human resources strategy," the only PCF 7.0 process this role is Accountable for in current RACI data (Executive-tier responsibilities likely extend into PCF 1.0 Develop Vision and Strategy, not yet built — a real, stated scope limit, not an artifact of this chart). Weighted by activity count × each pattern's M1/M3/M5 human-involvement %. Layout: squarified treemap (Bruls/Huizing/van Wijk), each column laid out independently from its own sorted values — box area is the only encoded quantity, position and aspect ratio are layout artifacts.</div>
     </div>
-
-    <div id="stages"></div>
-
-    <p class="doc-source-note">Source: hitl_dashboard_final.html, PCF 7.1.1 (real RACI/pattern data) — matches chro_treemap_mckinsey.html (pattern-first companion view) and rtp_chro.html.</p>
-    <p class="scope-note">Note: CHRO's current RACI footprint is narrow by design (a single L3 process), consistent with the standing one-Exec-Accountable-L3-per-mandate rule applied elsewhere in the framework — not an artifact of this exhibit.</p>
   </div>
 
+  <div id="stages"></div>
+
+  <p class="doc-source-note">Source: hitl_dashboard_final.html, PCF 7.1.1 (real RACI/pattern data) — matches chro_treemap_mckinsey.html (pattern-first companion view) and rtp_chro.html.</p>
+  <p class="scope-note">Note: CHRO's current RACI footprint is narrow by design (a single L3 process), consistent with the standing one-Exec-Accountable-L3-per-mandate rule applied elsewhere in the framework — not an artifact of this exhibit.</p>
 </div>
-</div>
+
+<footer>
+  <p>
+    For joint review — <strong style="color:var(--navy)">Tim King</strong> and <strong style="color:var(--navy)">GiGi Garcia</strong><br>
+    HITL-Driven Architecture &middot; developed with the assistance of Claude (Anthropic)<br>
+    <a href="chro_pattern_transition_stagefirst.pdf">Download PDF</a> &nbsp;&middot;&nbsp; <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
 
 <script>
 (function() {
@@ -114,14 +146,24 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
     Document:  { m1: 72, m3: 40, m5: 18 },
   };
   const order = ["Knowledge", "Document"];
-  const colorMap = { Knowledge: "#5B3A9E", Document: "#0E7C86" };
   const patternHeadColor = { Knowledge: "#534AB7", Document: "#0369A1" };
+  const colorMap = patternHeadColor; // Token Lock: box fills now match the same canonical pattern color used everywhere else (legend, headings) — no ad-hoc treemap palette.
   const stageKeys = ["m1", "m3", "m5"];
   const stageHead = {
     m1: { title: "M1 — Undesigned", sub: "Current state" },
     m3: { title: "M3 — HITL Design Intent", sub: "Target state" },
     m5: { title: "M5 — Leading", sub: "Future state" },
   };
+
+  // --- pattern legend (Rule 2: one legend per exhibit, sourced from the same colors as the boxes) ---
+  const legendEl = document.getElementById("legend");
+  order.forEach(p => {
+    const item = document.createElement("div");
+    item.className = "legend-item";
+    item.style.color = patternHeadColor[p];
+    item.innerHTML = `<span class="legend-dot" style="background:${patternHeadColor[p]}"></span>${p}`;
+    legendEl.appendChild(item);
+  });
 
   const shares = {};
   stageKeys.forEach(st => {
@@ -197,13 +239,10 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   const totalW = colsEl.getBoundingClientRect().width || 648;
   const MAP_W = (totalW - GAP_PX * 2) / 3;
   // CHRO has only 2 patterns, so squarify lays them out as a full-width vertical
-  // split rather than a grid — the minority box (Document) becomes a thin
-  // full-width strip. A modestly taller aspect ratio than the 3+ pattern roles
-  // (paired with tighter box padding above) keeps that thin strip tall enough
-  // to hold its label/value text legibly, without changing what's encoded
-  // (area is still the only encoded quantity) and without growing the exhibit
-  // so much it no longer fits on the first page next to the intro text.
-  const MAP_H = MAP_W * (480 / 250);
+  // split rather than a grid. Kept modestly tall (as in the original) so the
+  // thin minority box still holds its label/value text legibly at the new,
+  // slightly larger standard-system label sizes.
+  const MAP_H = MAP_W * (500 / 250);
   const GAP = 2;
 
   stageKeys.forEach(st => {

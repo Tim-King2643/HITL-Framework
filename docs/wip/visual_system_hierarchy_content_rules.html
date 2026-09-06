@@ -125,13 +125,13 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <div class="concept-flag">Concept stage — not yet part of the framework. Per the Concept &rarr; Feasibility Review &rarr; Approved lifecycle established in <em>From Concept to Principle</em>, this is Claude's feasibility pass only. Nothing here binds any actual content generation until both Tim and GiGi approve it.</div>
 
   <div class="doc-body">
-    <p>These seven rules turn the six "Visual system &amp; hierarchy" recommendations from GiGi's review notes into something checkable — not just a style preference, but a set of constraints a content generator (Claude, building a new page or document) can actually be held to. Each rule names what it requires, what it applies to, and, where useful, points at a real page or decision already in the framework that shows the rule in action or in violation.</p>
+    <p>These eight rules turn the six "Visual system &amp; hierarchy" recommendations from GiGi's review notes into something checkable — not just a style preference, but a set of constraints a content generator (Claude, building a new page or document) can actually be held to. Each rule names what it requires, what it applies to, and, where useful, points at a real page or decision already in the framework that shows the rule in action or in violation. Rule 8 was added afterward, from a real defect Tim caught in the WIP hub's own tables rather than from GiGi's original six recommendations, and folded in here the same way.</p>
 
     <div class="rule">
       <div class="rule-heading"><span class="tag">RULE 1</span><span class="title">Token Lock</span></div>
-      <p class="statement">Every framework artifact — HTML page, docx, or PDF — draws its colors and fonts exclusively from the standing token set. Colors: navy #1B4F8A, navy-d #0D2D4F, navy-l #EEF3FA, gray #444, light gray #888, border #DDE3EE, and amber #B8873F / amber-bg #FEF3C7 (reserved for draft/pending status only — never used decoratively). Fonts: Playfair Display for headlines and serif emphasis, DM Sans for body and UI text, DM Mono for labels, badges, and section numbers. A generator does not introduce a new color or font for a single artifact; a genuinely new visual need becomes its own proposal, not a local fix.</p>
+      <p class="statement">Every framework artifact — HTML page, docx, or PDF — draws its colors and fonts exclusively from the standing token set. Colors: navy #1B4F8A, navy-d #0D2D4F, navy-l #EEF3FA, gray #444, light gray #888, border #DDE3EE, amber #B8873F / amber-bg #FEF3C7 (reserved for draft/pending status only — never used decoratively), and light-blue #9FC2EE / #9FC0E8 (the nav-tagline and role-narrative banner accent). Fonts: Georgia for headlines and serif emphasis, Segoe UI for body and UI text, Consolas for labels, badges, and section numbers — genuine Microsoft Word-compatible fonts only, never Google Fonts or other web-only families, so every artifact renders identically whether it's opened as a live HTML page, a Word document, or a PDF. A generator does not introduce a new color or font for a single artifact; a genuinely new visual need becomes its own proposal, not a local fix.</p>
       <p class="applies"><strong>Applies to:</strong> Every new HTML page, docx build, or PDF the framework produces.</p>
-      <p class="example">Already the de facto practice across the dashboard, docs site, and every docx/PDF built to date — this rule just makes it binding rather than assumed.</p>
+      <p class="example">Already the de facto practice for colors across the dashboard, docs site, and every docx/PDF built to date — this rule just makes it binding rather than assumed. Corrected during the WIP compliance audit: the original list omitted the light-blue accent, which was already in universal, load-bearing use for nav taglines and role-narrative banners — now folded into the locked set instead of left as an unsanctioned extension. Fonts are the one place this rule is currently ahead of the live framework rather than describing it: every WIP HTML page and docx/PDF now uses this Word-compatible font set, but the live dashboard and docs site still run on the original Google-Fonts-based type system — extending this rule there is a separate, not-yet-made decision.</p>
     </div>
     <hr class="rule-rule">
 
@@ -180,8 +180,16 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
       <p class="applies"><strong>Applies to:</strong> The CHRO-facing briefing series, and any future executive-summary layer built on top of existing technical pages.</p>
       <p class="example">This is the concrete, already-designed answer to GiGi's own Question 12 — not yet shown to her.</p>
     </div>
+    <hr class="rule-rule">
 
-    <p style="margin-top:30px;">If these seven are approved, the same treatment — specific, checkable rules rather than general advice — would follow for Navigation &amp; Structure and Language &amp; Precision next, completing the set drawn from GiGi's full site-recommendations summary.</p>
+    <div class="rule">
+      <div class="rule-heading"><span class="tag">RULE 8</span><span class="title">Bottom-Align Column Headings</span></div>
+      <p class="statement">In any table, a column heading's text vertically aligns to the bottom of the header row, never the middle or top — so a short one-line label and a longer label that wraps to two lines still share the same baseline, and the header row reads as one clean line into the data below regardless of which columns wrap.</p>
+      <p class="applies"><strong>Applies to:</strong> Every table the framework builds — rule-gap and per-rule findings tables, per-document snapshots, composition/RACI/maturity tables, the WIP catalog.</p>
+      <p class="example">Corrected during the WIP compliance audit: browsers and Word both default a table header cell to middle/top alignment, not bottom, so this was a real gap rather than an assumed default — fixed across every WIP HTML and docx table with a real column-heading row (the CHRO/HRBP Manager/Recruiter composition tables, From Concept to Principle's and The Shock Wave Effect's tables, and this audit's own tables) as this rule was written.</p>
+    </div>
+
+    <p style="margin-top:30px;">If these eight are approved, the same treatment — specific, checkable rules rather than general advice — would follow for Navigation &amp; Structure and Language &amp; Precision next, completing the set drawn from GiGi's full site-recommendations summary.</p>
   </div>
 
   <div class="doc-meta">Tim King &amp; GiGi Garcia &nbsp;|&nbsp; Concept — For Joint Review &nbsp;|&nbsp; September 2026</div>
