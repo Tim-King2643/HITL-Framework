@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Work in Progress — The Human-AI Partnership Framework</title>
 <meta name="robots" content="noindex, nofollow"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
   --navy:   #1B4F8A;
@@ -23,14 +21,14 @@
   --amber-text: #7A5A1E;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
 
 .masthead {
   background: var(--navy-d); color: #fff; padding: 32px 24px 28px;
   text-align: center;
 }
 .masthead h1 {
-  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px;
+  font-family: 'Georgia', serif; font-weight: 700; font-size: 24px;
   margin-bottom: 4px;
 }
 .masthead .tagline1 { font-size: 13px; color: #9FC2EE; font-weight: 500; letter-spacing: .02em; margin-bottom: 4px; }
@@ -64,7 +62,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 }
 .stage-legend .legend-steps { display: flex; flex-wrap: wrap; gap: 6px 10px; margin-bottom: 8px; }
 .stage-legend .step-chip {
-  font-size: 10.5px; font-family: 'DM Mono', monospace; color: var(--navy-d);
+  font-size: 10.5px; font-family: 'Consolas', monospace; color: var(--navy-d);
   background: var(--navy-l); border-radius: 4px; padding: 3px 8px;
 }
 .stage-legend .step-chip.current { background: var(--navy); color: #fff; font-weight: 600; }
@@ -77,15 +75,15 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 table.catalog { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 760px; }
 table.catalog thead th {
   background: var(--navy-d); color: #fff; text-align: left; padding: 11px 14px;
-  font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase;
+  font-family: 'Consolas', monospace; font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase;
   white-space: nowrap;
 }
 table.catalog tbody tr.group-row td {
   background: var(--navy-l); padding: 9px 14px; border-top: 2px solid var(--border);
-  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 14px; color: var(--navy-d);
+  font-family: 'Georgia', serif; font-weight: 700; font-size: 14px; color: var(--navy-d);
 }
 table.catalog tbody tr.group-row .g-note {
-  font-family: 'DM Sans', sans-serif; font-weight: 400; font-style: italic; font-size: 11px;
+  font-family: 'Segoe UI', sans-serif; font-weight: 400; font-style: italic; font-size: 11px;
   color: var(--lgray); margin-left: 10px;
 }
 table.catalog tbody tr.item-row td {
@@ -219,12 +217,12 @@ footer a { color: var(--navy); text-decoration: none; }
           </td>
         </tr>
 
-        <tr class="group-row"><td colspan="4">Role Pattern Transition Narratives — Standard System Test <span class="g-note">Same 3 roles above, same real data and narrative text — restyled onto the live site's actual fonts, sizes, and Token Lock colors (pulled from the About page, the HAL origin story, the Methodology doc, and the Maturity Scale doc) instead of the print-pipeline system. A styling test, not a replacement for the originals — see the Content Generation Rules compliance audit below for why the print-pipeline/standard-system split exists in the first place.</span></td></tr>
+        <tr class="group-row"><td colspan="4">Role Pattern Transition Narratives — Standard System Test <span class="g-note">Same 3 roles above, same real data and narrative text — restyled onto the standard site's page chrome, px-based Standing Type Scale, and Token Lock colors (pulled from the About page, the HAL origin story, the Methodology doc, and the Maturity Scale doc), with fonts set to Segoe UI/Georgia/Consolas rather than Google Fonts, per the no-Google-Fonts-in-WIP standard. A styling test, not a replacement for the originals — see the Content Generation Rules compliance audit below for why the print-pipeline/standard-system split exists in the first place.</span></td></tr>
 
         <tr class="item-row">
           <td>
             <div class="item-title"><a href="chro_pattern_transition_stagefirst_standardsystem.html">CHRO — Pattern Transition Narratives <span class="lock">(standard system test)</span></a></div>
-            <div class="item-desc">The CHRO stage-first exhibit, restyled: DM Sans/Playfair Display/DM Mono, px-based Standing Type Scale, and canonical five-pattern colors reused identically in the legend, headings, and treemap boxes.</div>
+            <div class="item-desc">The CHRO stage-first exhibit, restyled: standard-site page chrome, px-based Standing Type Scale, Segoe UI/Georgia/Consolas (Word-compatible, no Google Fonts), and canonical five-pattern colors reused identically in the legend, headings, and treemap boxes.</div>
           </td>
           <td><span class="status">Drafting</span></td>
           <td><span class="stage">Step 1 · Prototype</span></td>
@@ -410,7 +408,7 @@ footer a { color: var(--navy); text-decoration: none; }
 
        <div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
        border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
-       font-family:'DM Sans',sans-serif;font-size:12.5px;color:#7A5A1E;">
+       font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
          <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
          — Not Yet Part of the Framework</strong>
          &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing

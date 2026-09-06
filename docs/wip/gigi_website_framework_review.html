@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>[DRAFT] HITL Website, Framework &amp; Human Readiness — Working Review Notes — The Human-AI Partnership Framework</title>
 <meta name="robots" content="noindex, nofollow"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
   --navy:   #1B4F8A;
@@ -22,11 +20,11 @@
   --amber-bg: #FEF3C7;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
 
 .masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
-.masthead .eyebrow { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9FC2EE; margin-bottom: 10px; }
-.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 26px; margin-bottom: 8px; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.3; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9FC2EE; margin-bottom: 10px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 8px; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.3; }
 .masthead .tagline2 { font-size: 14px; color: #9FC2EE; font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
 .masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
 .masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
@@ -46,40 +44,40 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
   padding: 16px 20px; margin: 0 0 32px; font-size: 13.5px; color: #7A5A1E; font-style: italic; line-height: 1.6;
 }
 
-h2 { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 40px 0 12px; }
-h3 { font-family: 'DM Sans', sans-serif; font-weight: 600; color: var(--navy); font-size: 14.5px; margin: 26px 0 8px; }
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 40px 0 12px; }
+h3 { font-family: 'Segoe UI', sans-serif; font-weight: 600; color: var(--navy); font-size: 14.5px; margin: 26px 0 8px; }
 p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
 ul { margin: 0 0 18px 22px; }
 li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
 
 .pull-quote {
   background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
-  text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
   color: var(--navy-d); font-size: 16px; line-height: 1.5;
 }
 .sequence {
   background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
-  text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
   color: var(--navy-d); font-size: 15px; line-height: 1.6;
 }
 
 .closing-quote {
   background: var(--navy-d); color: #fff; border-radius: 8px; padding: 24px 28px; margin: 8px 0 8px;
-  text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 17px; line-height: 1.6;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-size: 17px; line-height: 1.6;
 }
 .closing-line {
-  text-align: center; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--navy-d);
+  text-align: center; font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d);
   font-size: 16px; line-height: 1.6; margin: 22px 0 6px;
 }
 
 .section-num {
-  display: inline-block; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--navy);
+  display: inline-block; font-family: 'Consolas', monospace; font-size: 11px; color: var(--navy);
   background: var(--navy-l); border-radius: 4px; padding: 2px 8px; margin-right: 8px; vertical-align: middle;
 }
 
 .pdf-download {
   display: inline-flex; align-items: center; gap: 6px;
-  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
   color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px;
   padding: 8px 14px; text-decoration: none; margin: 0 0 28px;
 }
