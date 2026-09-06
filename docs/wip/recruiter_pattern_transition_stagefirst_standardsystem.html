@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT · TEST] Recruiter — Pattern Transition Narratives (Standard System)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B4F8A; --navy-d: #0D2D4F; --navy-l: #EEF3FA; --dark: #0D1B2A;
+  --gray: #444; --lgray: #888; --bg: #F4F6FB; --border: #DDE3EE;
+  --amber: #B8873F; --amber-bg: #FEF3C7; --amber-text: #7A5A1E;
+  --c-dec:#1B4F8A; --bg-dec:#EEF3FA; --c-kno:#534AB7; --bg-kno:#F3F0FE;
+  --c-doc:#0369A1; --bg-doc:#E0F2FE; --c-tra:#166534; --bg-tra:#DCFCE7;
+  --c-exc:#991B1B; --bg-exc:#FEE2E2;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); }
+
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center; font-size: 12.5px; color: var(--amber-text);
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: var(--amber-text); font-weight: 600; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 4px; }
+.masthead .tagline { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.breadcrumb { max-width: 800px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
+.breadcrumb a { color: var(--navy); text-decoration: none; }
+
+.doc { max-width: 800px; margin: 0 auto; padding: 24px 24px 80px; }
+h1.doc-title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy-d); margin: 8px 0 6px; }
+p.doc-sub { font-size: 13px; color: var(--lgray); font-style: italic; margin-bottom: 18px; }
+p.doc-intro { font-size: 13px; line-height: 1.7; color: var(--gray); margin-bottom: 22px; }
+
+h2.role-heading { font-size: 16px; color: var(--navy-d); font-weight: 700; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
+p.role-intro { font-size: 13px; color: var(--lgray); font-style: italic; line-height: 1.6; margin-bottom: 20px; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 4px 0 16px 2px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+.exhibit { width: 100%; margin: 0 0 20px; }
+h3.exhibit-headline { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; line-height: 1.4; color: var(--navy-d); margin: 0 0 6px; }
+p.exhibit-subcaption { font-size: 12px; color: var(--lgray); margin: 0 0 16px; }
+
+.cols { display: flex; gap: 24px; width: 100%; }
+.col { flex: 1 1 0; min-width: 0; }
+.col-head { font-size: 11.5px; font-weight: 700; color: var(--dark); margin-bottom: 8px; font-family: 'DM Mono', monospace; }
+.col-head .sub { display: block; font-weight: 400; color: var(--lgray); font-size: 10px; margin-top: 1px; font-family: 'DM Sans', sans-serif; }
+
+.map { position: relative; width: 100%; }
+.box { position: absolute; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; border-radius: 3px; }
+.box .name { display: block; width: 100%; box-sizing: border-box; font-size: 10px; font-weight: 700; color: #fff; line-height: 1.2; padding: 6px 6px 0; overflow-wrap: break-word; }
+.box .val { display: block; width: 100%; box-sizing: border-box; font-size: 11.5px; font-weight: 700; color: #fff; text-align: right; font-variant-numeric: tabular-nums; padding: 0 6px 6px; }
+
+.exhibit-footer { margin-top: 4px; }
+.exhibit-footprint { font-size: 11px; color: var(--lgray); margin-top: 12px; line-height: 1.65; border-top: 1px solid var(--border); padding-top: 10px; }
+
+.stage { margin-top: 8px; }
+h3.stage-heading { font-size: 14px; font-weight: 700; color: var(--navy-d); border-bottom: 1px solid var(--border); padding-bottom: 4px; margin: 26px 0 4px; }
+p.stage-state { font-size: 11px; font-style: italic; color: var(--lgray); margin: 0 0 12px; }
+
+.pattern-block { margin: 0 0 14px 4px; }
+p.pattern-heading { font-size: 13px; font-weight: 700; margin: 0 0 3px; }
+p.pattern-heading .pct { font-weight: 400; font-size: 11px; color: var(--lgray); }
+p.pattern-narrative { font-size: 13px; color: var(--gray); line-height: 1.65; margin: 0; }
+
+p.doc-source-note, p.scope-note { font-size: 11px; font-style: italic; color: var(--lgray); margin: 14px 0 0 4px; line-height: 1.6; }
+
+footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Standard-system styling test — recreated using the live site's fonts, sizes, and color tokens instead of the print-pipeline system. Not a replacement for the original.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <h1>The Human-AI Partnership Framework</h1>
+  <div class="tagline">Where human judgment belongs</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div class="breadcrumb"><a href="index.html">Work in Progress</a> / Role Pattern Transition Narratives / Recruiter (Standard System Test)</div>
+
+<div class="doc">
+  <h1 class="doc-title">Role-Specific Pattern Transitions</h1>
+  <p class="doc-sub">What M1 → M3 → M5 actually means for the work — stage-first view, Recruiter · standard-system styling test</p>
+  <p class="doc-intro">The treemap exhibits show how the composition of each role's remaining human work shifts as AI matures, organized by <strong>maturity stage first, pattern second</strong> — the same M1/M3/M5 column structure as the treemap itself. This view answers: at this specific stage, across every pattern the role touches, what does the work actually look like? Note that two different percentages appear below: the treemap's box size is each pattern's share of the total remaining workload at that stage (the boxes in each column sum to 100%), while the percentage next to each pattern in the stage detail is that pattern's own human-involvement level, independent of the others.</p>
+
+  <h2 class="role-heading">Recruiter</h2>
+  <p class="role-intro">Accountable on 13 real L4 activities across Recruit/Source (7.2.2), Screen and Select (7.2.3), and Manage New Hire (7.2.4) — no Exception-pattern activities in this role's current RACI footprint.</p>
+
+  <div class="exhibit">
+    <h3 class="exhibit-headline">As AI matures, Recruiter's remaining human work reshapes: Decision claims a growing share, Transaction shrinks toward the margins.</h3>
+    <p class="exhibit-subcaption">Composition of Recruiter's real activity mix still requiring human involvement, by HITL pattern — area = share, %</p>
+    <div class="legend" id="legend"></div>
+    <div class="cols" id="cols"></div>
+    <div class="exhibit-footer">
+      <div class="exhibit-footprint">Built from Recruiter's real PCF 7.2 RACI data (hitl_dashboard_final.html) — 13 L4 activities across its 3 Accountable processes (7.2.2 Recruit/Source, 7.2.3 Screen and select, 7.2.4 Manage new hire), weighted by activity count × each pattern's M1/M3/M5 human-involvement %. Recruiter has no Exception-pattern activities in current RACI data. Layout: squarified treemap (Bruls/Huizing/van Wijk), each column laid out independently from its own sorted values — box area is the only encoded quantity, position and aspect ratio are layout artifacts.</div>
+    </div>
+  </div>
+
+  <div id="stages"></div>
+
+  <p class="doc-source-note">Source: hitl_dashboard_final.html, PCF 7.2.2–7.2.4 (real RACI/pattern data) — matches Recruiter_Job_Description.docx, recruiter_treemap_mckinsey.html, and pattern_transition_narratives.docx (pattern-first companion view).</p>
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect<br>
+    Standard-system styling test — private review area, not part of the published framework<br>
+    hitldrivenarchitecture.com
+  </p>
+</footer>
+
+<script>
+(function() {
+  const counts = { Knowledge: 4, Transaction: 6, Decision: 2, Document: 1 };
+  const hpct = {
+    Knowledge:   { m1: 85, m3: 65, m5: 42 },
+    Transaction: { m1: 60, m3: 35, m5: 12 },
+    Decision:    { m1: 92, m3: 80, m5: 65 },
+    Document:    { m1: 72, m3: 40, m5: 18 },
+  };
+  const order = ["Decision", "Knowledge", "Document", "Transaction"];
+  const patternHeadColor = { Decision: "#1B4F8A", Knowledge: "#534AB7", Document: "#0369A1", Transaction: "#166534" };
+  const colorMap = patternHeadColor; // Token Lock: box fills now match the same canonical pattern color used everywhere else (legend, headings) — no ad-hoc treemap palette.
+  const stageKeys = ["m1", "m3", "m5"];
+  const stageHead = {
+    m1: { title: "M1 — Undesigned", sub: "Current state" },
+    m3: { title: "M3 — HITL Design Intent", sub: "Target state" },
+    m5: { title: "M5 — Leading", sub: "Future state" },
+  };
+
+  // --- pattern legend (Rule 2: one legend per exhibit, sourced from the same colors as the boxes) ---
+  const legendEl = document.getElementById("legend");
+  order.forEach(p => {
+    const item = document.createElement("div");
+    item.className = "legend-item";
+    item.style.color = patternHeadColor[p];
+    item.innerHTML = `<span class="legend-dot" style="background:${patternHeadColor[p]}"></span>${p}`;
+    legendEl.appendChild(item);
+  });
+
+  const shares = {};
+  stageKeys.forEach(st => {
+    let total = 0; const w = {};
+    order.forEach(p => { w[p] = counts[p] * hpct[p][st]; total += w[p]; });
+    shares[st] = {};
+    order.forEach(p => { shares[st][p] = (w[p] / total) * 100; });
+  });
+
+  // --- squarified treemap (Bruls, Huizing & van Wijk, 1999) ---
+  function worse(row, side) {
+    const sum = row.reduce((s, r) => s + r.area, 0);
+    const maxA = Math.max(...row.map(r => r.area));
+    const minA = Math.min(...row.map(r => r.area));
+    return Math.max((side * side * maxA) / (sum * sum), (sum * sum) / (side * side * minA));
+  }
+  function layoutRowGetRest(row, x, y, w, h) {
+    const sum = row.reduce((s, r) => s + r.area, 0);
+    const placed = [];
+    if (w >= h) {
+      const stripW = sum / h;
+      let cy = y;
+      row.forEach(r => {
+        const itemH = r.area / stripW;
+        placed.push(Object.assign({}, r, { x, y: cy, w: stripW, h: itemH }));
+        cy += itemH;
+      });
+      return [placed, { x: x + stripW, y, w: Math.max(w - stripW, 0), h }];
+    } else {
+      const stripH = sum / w;
+      let cx = x;
+      row.forEach(r => {
+        const itemW = r.area / stripH;
+        placed.push(Object.assign({}, r, { x: cx, y, w: itemW, h: stripH }));
+        cx += itemW;
+      });
+      return [placed, { x, y: y + stripH, w, h: Math.max(h - stripH, 0) }];
+    }
+  }
+  function squarify(items, x, y, w, h) {
+    let results = [];
+    let remaining = items.slice();
+    let rect = { x, y, w, h };
+    let row = [];
+    while (remaining.length > 0) {
+      const side = Math.min(rect.w, rect.h);
+      const next = remaining[0];
+      const testRow = row.concat([next]);
+      if (row.length === 0 || worse(row, side) >= worse(testRow, side)) {
+        row.push(remaining.shift());
+      } else {
+        const [placed, rest] = layoutRowGetRest(row, rect.x, rect.y, rect.w, rect.h);
+        results = results.concat(placed);
+        rect = rest;
+        row = [];
+      }
+    }
+    if (row.length) {
+      const [placed] = layoutRowGetRest(row, rect.x, rect.y, rect.w, rect.h);
+      results = results.concat(placed);
+    }
+    return results;
+  }
+  function treemap(data, x, y, w, h) {
+    const total = data.reduce((s, d) => s + d.value, 0);
+    const scale = (w * h) / total;
+    const nodes = data.map(d => Object.assign({}, d, { area: d.value * scale }));
+    return squarify(nodes, x, y, w, h);
+  }
+
+  const colsEl = document.getElementById("cols");
+  const GAP_PX = 24;
+  const totalW = colsEl.getBoundingClientRect().width || 648;
+  const MAP_W = (totalW - GAP_PX * 2) / 3;
+  const MAP_H = MAP_W * (400 / 250);
+  const GAP = 2;
+
+  stageKeys.forEach(st => {
+    const data = order
+      .map(p => ({ name: p, value: shares[st][p] }))
+      .sort((a, b) => b.value - a.value);
+
+    const boxes = treemap(data, 0, 0, MAP_W, MAP_H);
+
+    const col = document.createElement("div");
+    col.className = "col";
+    col.innerHTML = `<div class="col-head">${stageHead[st].title}<span class="sub">${stageHead[st].sub}</span></div>`;
+    const map = document.createElement("div");
+    map.className = "map";
+    map.style.width = MAP_W + "px";
+    map.style.height = MAP_H + "px";
+
+    boxes.forEach(b => {
+      const div = document.createElement("div");
+      div.className = "box";
+      div.style.left = (b.x + GAP / 2) + "px";
+      div.style.top = (b.y + GAP / 2) + "px";
+      div.style.width = Math.max(b.w - GAP, 0) + "px";
+      div.style.height = Math.max(b.h - GAP, 0) + "px";
+      div.style.background = colorMap[b.name];
+      div.innerHTML = `<span class="name">${b.name}</span><span class="val">${b.value.toFixed(0)}%</span>`;
+      map.appendChild(div);
+    });
+
+    col.appendChild(map);
+    colsEl.appendChild(col);
+  });
+
+  // --- stage-first narrative sections ---
+  const stageNarrative = {
+    Knowledge: {
+      m1: "Determining recruitment channels, building and maintaining the candidate pool, choosing selection tools, and interviewing — at this stage the Recruiter owns essentially all of this judgment personally, with no structured AI support underneath it.",
+      m3: "AI is doing more of the pattern-matching underneath the work — surfacing likely-fit candidates, suggesting channel mix from historical fill-rate data, prepping interview guides — while the Recruiter still owns the synthesis: does this pool actually match what the hiring manager needs, is this candidate right beyond what a resume score shows.",
+      m5: "AI-assisted sourcing and structured interview scoring are the default; the Recruiter's value narrows to judgment calls AI can't make — reading real motivation, catching a mismatch the data missed, overriding a confident recommendation that's wrong.",
+    },
+    Transaction: {
+      m1: "Recruiting events, vendor management, referral programs, channel administration, candidate testing, and hire processing — the Recruiter is personally running job fairs, updating vendor contracts, and processing the mechanics of a hire.",
+      m3: "Most of this work is now templated and system-driven — automated test administration, self-service vendor portals, workflow-triggered hire processing — with the Recruiter mainly handling exceptions the system flags.",
+      m5: "This work is a rounding error at this stage: the Recruiter should rarely be touching it directly, reserved for the rare case the process genuinely breaks — the pattern that shrinks fastest and furthest of anything in the role.",
+    },
+    Decision: {
+      m1: "Selecting and rejecting candidates, and negotiating the offer — the Recruiter's core identity. At this stage it's almost entirely a personal judgment call, with no structured AI input.",
+      m3: "AI can flag background-check concerns or suggest a competitive offer range from comp data, but committing to hire someone and negotiating their terms stays fundamentally human. This is also where the role holds its two Governed Decision Points — Select/reject escalates to CHRO, Negotiate offer escalates to Director of TA — a real accountability boundary, not just a percentage.",
+      m5: "Even at the framework's most mature state, nearly two-thirds of the call to say yes or no to a specific person, and what it takes to close them, is still human — the highest floor of any pattern this role touches.",
+    },
+    Document: {
+      m1: "Drawing up and making the offer — largely manual drafting work at this stage, the kind of generative, templated writing AI absorbs quickly once introduced.",
+      m3: "Most of the language now auto-generates from approved comp data and role terms, with the Recruiter reviewing rather than drafting.",
+      m5: "Nearly fully automated: the Recruiter's role becomes a final check that the specific terms match what was actually negotiated one pattern up, in Decision.",
+    },
+  };
+  const narrativeOrder = ["Knowledge", "Transaction", "Decision", "Document"];
+
+  const stagesEl = document.getElementById("stages");
+  stageKeys.forEach(st => {
+    const section = document.createElement("div");
+    section.className = "stage";
+    section.innerHTML = `<h3 class="stage-heading">${stageHead[st].title}</h3><p class="stage-state">(${stageHead[st].sub})</p>`;
+    narrativeOrder.forEach(p => {
+      const block = document.createElement("div");
+      block.className = "pattern-block";
+      block.innerHTML = `<p class="pattern-heading" style="color:${patternHeadColor[p]}">${p.toUpperCase()} <span class="pct">· ${hpct[p][st]}% human involvement</span></p>` +
+                         `<p class="pattern-narrative">${stageNarrative[p][st]}</p>`;
+      section.appendChild(block);
+    });
+    stagesEl.appendChild(section);
+  });
+})();
+</script>
+</body>
+</html>
