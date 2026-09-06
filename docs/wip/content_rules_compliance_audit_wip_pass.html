@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Content Generation Rules — Compliance Audit — The Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --accent: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 26px; margin-bottom: 8px; }
+.masthead .tagline2 { font-size: 14px; color: var(--accent); font-style: italic; max-width: 660px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center; font-size: 12.5px; color: var(--amber-text);
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: var(--amber-text); font-weight: 600; }
+
+.wrap { max-width: 820px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.callout {
+  background: var(--amber-bg); border-left: 4px solid var(--amber); border-radius: 6px;
+  padding: 16px 20px; margin: 0 0 24px; font-size: 13.5px; color: var(--amber-text); line-height: 1.65;
+}
+.callout strong { color: var(--amber-text); }
+
+.term-box {
+  background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 6px;
+  padding: 16px 20px; margin: 0 0 32px; font-size: 13.5px; color: #333; line-height: 1.65;
+}
+.term-box p { font-size: 13.5px; color: #333; margin-bottom: 10px; }
+.term-box p:last-child { margin-bottom: 0; }
+.term-box strong { color: var(--navy); }
+
+h2 { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 40px 0 12px; }
+h3.rule-h { font-family: 'DM Sans', sans-serif; font-weight: 600; color: var(--navy-d); font-size: 14.5px; margin: 22px 0 6px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+p.note { font-size: 13px; color: var(--lgray); font-style: italic; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 10px 12px; font-size: 12px; letter-spacing: .02em; }
+td { border: 1px solid var(--border); padding: 10px 12px; vertical-align: top; color: #222; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.row-name { color: var(--navy); font-weight: 600; white-space: nowrap; }
+td.verdict-cell { white-space: nowrap; width: 90px; }
+td.rule-cell { font-weight: 600; color: var(--navy-d); white-space: nowrap; }
+
+.verdict {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; border-radius: 3px; padding: 3px 8px; white-space: nowrap;
+}
+.verdict.clean { color: var(--navy-d); background: var(--navy-l); }
+.verdict.na    { color: var(--lgray); background: var(--border); }
+.verdict.mixed, .verdict.gap { color: var(--amber-text); background: var(--amber-bg); }
+
+.pdf-download {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px;
+  padding: 8px 14px; text-decoration: none; margin: 0 0 28px;
+}
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing on this page is official yet.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">HITL-Driven Architecture · Read-Only · Diagnostic · Not a Content Change</div>
+  <h1>Content Generation Rules — Compliance Audit</h1>
+  <div class="tagline2">WIP Hub Pass (proof-of-concept) — checking the 17 proposed rules against the WIP hub's own 9 documents, before any rule is approved and before anything is applied to the live framework.</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <div class="term-box">
+    <p><strong>Scope:</strong> the 9 documents in the WIP hub that are Tim/Claude's own generated content — the 3 role pattern-transition narratives, The Shock Wave Effect, From Concept to Principle, the 3 rules docs themselves, and Talking Through Your Questions. GiGi's 2 review notes are excluded, same reasoning as the Word-doc backfill: they're her own words, not ours to audit against our own house rules. Nothing on the live, published framework was touched or scored in this pass.</p>
+    <p><strong>Method:</strong> mechanically checkable rules (colors/fonts, callout counts, banned phrases, H% proximity, etc.) were run through a script against the raw source of each document; every hit was then read in context by hand — a keyword match is not the same as a violation, and several of the strongest-looking hits below turned out to be the rules docs themselves quoting the phrase as an example. Rules that require actual judgment (does this page link a pattern legend? is the load-bearing claim pulled out?) were assessed by a direct read, not a script.</p>
+  </div>
+
+  <a class="pdf-download" href="content_rules_compliance_audit_wip_pass.pdf">⬇ Download PDF</a>
+
+  <div class="callout">
+    <strong>Update since this audit was first run:</strong> three of the findings below have already been fixed, as a proof-of-concept for what bringing a document into compliance actually looks like. (1) Token Lock's color list now includes the light-blue accent — the pattern-palette and background gaps noted below are still open. (2) All 3 role-narrative Word docs now display the canonical pattern legend directly above their composition table. (3) The one under-labeled convergence-gap mention in Talking Through Your Questions now carries an explicit "modeled, not observed" note. Each fixed finding below is marked accordingly. The bigger open question — the two-design-systems finding itself, and what to do about the 3 role-narrative pages' font stack and type scale — was deliberately left untouched: this remediation pass touched only the Word-doc companions and the rule text, never the live, published HTML.
+  </div>
+
+  <h2>Headline Finding: Two Design Systems Are Currently Coexisting</h2>
+  <p>The 3 role pattern-transition narratives (CHRO, HRBP Manager, Recruiter) were built for a print/PDF export pipeline and use a genuinely different system than the rest of the WIP hub: Segoe UI and Georgia instead of DM Sans/Playfair Display/DM Mono, point-based sizing instead of the standard px scale, no callout boxes, and no pattern legend anywhere on the page. The other 6 documents already follow the site's native HTML masthead system closely. This isn't a defect in either set — the print system was a deliberate, reasoned choice for a PDF export pipeline — but it means Token Lock and the Standing Type Scale, as currently worded, would need an explicit carve-out for print-oriented exhibit pages, or those 3 pages would need to be rebuilt onto the standard system. That's a real decision, not a bug to quietly fix.</p>
+
+  <h2>Rule-Gap Findings: the Rules Themselves Need a Small Fix</h2>
+  <p>Token Lock's written color list (navy, navy-d, navy-l, gray, light gray, border, amber, amber-bg) omitted several colors that are already in universal, load-bearing use across every document in the framework — not just these 9. As literally worded, the rule would flag nearly every page in the WIP hub, and the live site too. That's a sign the rule's list was incomplete, not that the content is wrong. One of the three has since been folded into the rule; two remain open:</p>
+  <table>
+    <thead><tr><th>Color</th><th>Where it's used</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Light-blue accent<br>(#9FC2EE / #9FC0E8)</td><td>Every masthead tagline and nav element across all 9 documents</td><td><span class="verdict clean">Fixed</span> — Rule 1 now explicitly lists it as locked</td></tr>
+      <tr><td class="row-name">Five-pattern color palette</td><td>Decision / Knowledge / Document / Transaction / Exception, both box and text variants — already locked in as the dashboard's standard, used throughout the role-narrative pages</td><td><span class="verdict gap">Open</span></td></tr>
+      <tr><td class="row-name">Page background<br>(#F4F6FB)</td><td>The standard body background on every one of these pages</td><td><span class="verdict gap">Open</span></td></tr>
+    </tbody>
+  </table>
+  <p class="note">Remaining recommendation: extend Rule 1 to whitelist the pattern palette and the standard page background too, the same way the light-blue accent was just folded in — rather than leaving Token Lock in a state where compliant, well-established pages still read as violations.</p>
+
+  <h2>Visual System &amp; Hierarchy — 7 Rules</h2>
+  <table>
+    <thead><tr><th>Verdict</th><th>Rule</th><th>Finding</th></tr></thead>
+    <tbody>
+      <tr><td class="verdict-cell"><span class="verdict gap">Gap</span></td><td class="rule-cell">Rule 1 — Token Lock</td><td>The light-blue portion of the rule-gap finding above is now fixed — Rule 1 explicitly lists it as locked. The pattern-palette and background gaps remain open. Separately, the 3 role-narrative pages still use an entirely different font stack on the live HTML (Segoe UI / Georgia) rather than DM Sans / Playfair Display / DM Mono — untouched by this remediation pass, which deliberately stayed inside the Word-doc companions.</td></tr>
+      <tr><td class="verdict-cell"><span class="verdict mixed">Mixed</span></td><td class="rule-cell">Rule 2 — One Pattern Legend</td><td>Fixed in the Word-doc companions: all 3 role-narrative docx now display the canonical pattern legend — the same fixed color-and-label mapping used by the live dashboard — directly above their composition table. The live HTML pages for these 3 roles still don't display or link one; this pass deliberately touched only the docx, so that gap stays open until a live-site pass is authorized.</td></tr>
+      <tr><td class="verdict-cell"><span class="verdict mixed">Mixed</span></td><td class="rule-cell">Rule 3 — Extract the Load-Bearing Claim</td><td>The role-narrative pages already do this reasonably well (bold exhibit headlines carry the finding). Talking Through Your Questions works through the ~21-point convergence-gap math in dense prose rather than a callout — a real candidate for extraction, though it's a working discussion draft rather than a polished deliverable.</td></tr>
+      <tr><td class="verdict-cell"><span class="verdict clean">Clean</span></td><td class="rule-cell">Rule 4 — Callout Budget</td><td>No document exceeds 3. (An earlier automated pass mis-flagged Talking Through Your Questions at 8 by matching "callout-rule," a plain divider, as if it were a callout — corrected on inspection; its real count is 3, right at the limit.)</td></tr>
+      <tr><td class="verdict-cell"><span class="verdict mixed">Mixed</span></td><td class="rule-cell">Rule 5 — Standing Type Scale as Default</td><td>The 6 standard-system documents track the locked scale closely (H1 22–28px, H2 16–20px, body 13–14.5px). The 3 role-narrative pages use a smaller, point-based scale from their print pipeline that doesn't map onto these px ranges at all — same root cause as the headline finding.</td></tr>
+      <tr><td class="verdict-cell"><span class="verdict clean">Clean</span></td><td class="rule-cell">Rule 6 — Protect the Signature Line</td><td>"Where human judgment belongs" appears twice, both times as an isolated tagline element, never merged into a sentence.</td></tr>
+      <tr><td class="verdict-cell"><span class="verdict na">N/A</span></td><td class="rule-cell">Rule 7 — The Executive Layer Never Replaces the Technical Layer</td><td>None of these 9 documents are executive-summary/briefing content sitting alongside a technical source — this rule targets the CHRO-facing briefing series specifically, which isn't part of the WIP set. Nothing to check here yet.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Navigation &amp; Structure — 3 Rules</h2>
+  <table>
+    <thead><tr><th>Verdict</th><th>Rule</th><th>Finding</th></tr></thead>
+    <tbody>
+      <tr><td class="verdict-cell"><span class="verdict na">N/A</span></td><td class="rule-cell">Rule 1 — Problem-First Entry Points, Additive</td><td>This rule governs the site's primary navigation (docs/index.html), which is out of scope for a WIP-only pass — none of these 9 documents have their own independent top-level nav to check.</td></tr>
+      <tr><td class="verdict-cell"><span class="verdict clean">Clean</span></td><td class="rule-cell">Rule 2 — One Canonical Explanatory Sequence</td><td>"Technology Capability → Work Design → Human Judgment → Accountability → Readiness" appears verbatim, in order, in the 2 documents that use it (the Navigation rules doc and Talking Through Your Questions) — no drift or paraphrase found. (Two other apparent hits, in The Shock Wave Effect and the Visual System rules doc, turned out to be coincidental reuse of single words — "Accountability" as a Shock Wave ring name, "Readiness" inside "Readiness Table" — not the sequence itself.)</td></tr>
+      <tr><td class="verdict-cell"><span class="verdict na">N/A</span></td><td class="rule-cell">Rule 3 — Hierarchy Fix Not Redesign</td><td>A process constraint on how navigation changes get evaluated, not a property existing content can be checked against.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Language &amp; Precision — 7 Rules</h2>
+  <table>
+    <thead><tr><th>Verdict</th><th>Rule</th><th>Finding</th></tr></thead>
+    <tbody>
+      <tr><td class="verdict-cell"><span class="verdict clean">Clean</span></td><td class="rule-cell">Rule 1 — Protect the Proven Lines</td><td>Both protected lines appear only where quoted verbatim (inside the rules docs themselves, describing the rule) — no paraphrased or reworded variant found anywhere in scope.</td></tr>
+      <tr><td class="verdict-cell"><span class="verdict na">N/A</span></td><td class="rule-cell">Rule 2 — Name the Organizational Framing Explicitly</td><td>No introductory/overview section in this document set summarizes the framework from scratch — the phrase appears only inside the rules docs' own discussion of the rule.</td></tr>
+      <tr><td class="verdict-cell"><span class="verdict clean">Clean</span></td><td class="rule-cell">Rule 3 — Modeled vs. Observed, Always Labeled</td><td>Fixed: the one "20–25" mention that sat outside the disclaimer's reach — in the site-recommendations summary near the top of Talking Through Your Questions — now carries an explicit bracketed note pointing to the full "modeled, not observed" answer in Q2. Every convergence-gap mention in the document is labeled.</td></tr>
+      <tr><td class="verdict-cell"><span class="verdict clean">Clean</span></td><td class="rule-cell">Rule 4 — No Absolute Claims About Safety or Control</td><td>Every appearance of "structurally impossible" / "nothing is a black box" in scope is the rules docs quoting the banned phrase as the example of what to avoid — zero instances of the framework actually making either claim.</td></tr>
+      <tr><td class="verdict-cell"><span class="verdict mixed">Mixed</span></td><td class="rule-cell">Rule 5 — H% Carries Its Disclaimer</td><td>The disclaimer appears multiple times across Talking Through Your Questions, but several individual "H%" mentions inside its long methodology discussion sit outside a tight proximity window. The rule's "displayed in isolation" framing fits a report figure better than a multi-paragraph discussion analyzing the metric itself — an applicability-boundary question worth naming, not a violation.</td></tr>
+      <tr><td class="verdict-cell"><span class="verdict clean">Clean</span></td><td class="rule-cell">Rule 6 — "Designed," Not "Optimal," Unless Earned</td><td>Every "optimal" in scope appears only inside the rules docs' own discussion of the rule — no document in this set actually describes a maturity target as "optimal." (Live-site usage, e.g. on hitl_methodology.html, is out of scope for this pass.)</td></tr>
+      <tr><td class="verdict-cell"><span class="verdict na">N/A</span></td><td class="rule-cell">Rule 7 — Frame HAL as Origin Story, Not Operating Target</td><td>Every HAL mention in scope is the rules docs discussing the rule itself — none of these 9 documents contain an actual HAL example to frame one way or the other yet.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Per-Document Snapshot</h2>
+  <table>
+    <thead><tr><th>Document</th><th>Design system</th><th>Notable finding(s)</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">CHRO — Pattern Transition Narrative</td><td>Print/PDF (Segoe UI, pt-based)</td><td>Pattern legend now included (Word doc); live HTML type scale still doesn't map to the standard px ranges</td></tr>
+      <tr><td class="row-name">HRBP Manager — Pattern Transition Narrative</td><td>Print/PDF (Segoe UI, pt-based)</td><td>Same as CHRO</td></tr>
+      <tr><td class="row-name">Recruiter — Pattern Transition Narrative</td><td>Print/PDF (Segoe UI, pt-based)</td><td>Same as CHRO</td></tr>
+      <tr><td class="row-name">The Shock Wave Effect</td><td>Standard site (DM Sans/Playfair)</td><td>Callout budget 2/3; type scale compliant</td></tr>
+      <tr><td class="row-name">From Concept to Principle</td><td>Standard site (DM Sans/Playfair)</td><td>Callout budget 2/3; type scale compliant</td></tr>
+      <tr><td class="row-name">Visual System &amp; Hierarchy rules</td><td>Standard site (DM Sans/Playfair)</td><td>Callout budget 1/3; contains the HAL/optimal/canonical-sequence mentions that are examples, not violations</td></tr>
+      <tr><td class="row-name">Navigation &amp; Structure rules</td><td>Standard site (DM Sans/Playfair)</td><td>Only document where the canonical sequence appears both verbatim and on-topic</td></tr>
+      <tr><td class="row-name">Language &amp; Precision rules</td><td>Standard site (DM Sans/Playfair)</td><td>Contains every "banned phrase" hit — all of them the rule quoting its own example</td></tr>
+      <tr><td class="row-name">Talking Through Your Questions</td><td>Standard site (DM Sans/Playfair)</td><td>Callout budget exactly 3/3 (at the limit); richest H%/modeled-vs-observed discussion in scope</td></tr>
+    </tbody>
+  </table>
+
+  <h2>What This Means for the Feasibility Review</h2>
+  <p>Taken together: none of the 17 rules turned up a real violation inside this document set. What the pass did surface is more useful than a clean bill of health would have been — a concrete color-list gap in Rule 1 (partially fixed already), a real fixable content gap in Rule 2, and a real, structural question (what to do about the print-system pages) that's worth deciding deliberately rather than discovering later once more print-oriented pages exist. Both are good, specific material for the actual Feasibility Review conversation with GiGi, and neither required rewriting anything to find.</p>
+  <p>A small remediation pass followed this audit, as a proof-of-concept for what compliance actually looks like once a gap is confirmed real: the light-blue accent was folded into Rule 1, all 3 role-narrative Word docs now carry the canonical pattern legend, and the one under-labeled convergence-gap mention was tightened. All three fixes stayed inside the Word-doc companions and the rule text itself — nothing on the live, published framework was touched.</p>
+  <p>Next step, per the staged approach: once the rules themselves move past Concept and both Tim and GiGi approve them, the same treatment extends to the live framework itself — every published HTML page, not just these 9 WIP documents — starting with the two-design-systems decision above, since that one question drives most of the remaining Rule 1 and Rule 5 findings. This POC pass already shows what that full audit would look like: run the same 17 rules against the whole site, confirm each hit by hand before calling it a violation, and fix only what's real.</p>
+
+</div>
+
+<footer>
+  <p>
+    Diagnostic pass — nothing rewritten<br>
+    HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="content_rules_compliance_audit_wip_pass.pdf">Download PDF</a> &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+</body>
+</html>
