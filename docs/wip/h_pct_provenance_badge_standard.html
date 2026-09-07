@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] H% Provenance Badge — Naming &amp; Placement Standard — The Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 800px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.concept-flag { background: var(--amber-bg); border-left: 3px solid var(--amber); border-radius: 4px; padding: 16px 20px; font-size: 13px; font-style: italic; color: var(--amber-text); line-height: 1.6; margin-bottom: 28px; }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 36px 0 12px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 12px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 10px 12px; vertical-align: top; color: #222; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.row-name { font-weight: 700; white-space: nowrap; }
+
+.mock-panel { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; margin: 8px 0 24px; }
+.panel-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.panel-title { font-family: 'Georgia', serif; font-size: 16px; color: var(--navy-d); margin: 0; }
+.badge { display: inline-flex; align-items: center; gap: 5px; font-weight: 700; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+.badge.directional { background: var(--amber-bg); color: var(--amber-text); border: 1px solid #E7CFA0; }
+.badge.grounded { background: var(--navy-l); color: var(--navy); border: 1px solid #C6D8EE; }
+.sources-link { font-size: 11.5px; color: var(--navy); text-decoration: none; border-bottom: 1px dotted var(--navy); margin-left: 8px; }
+
+.pdf-download { display: inline-flex; align-items: center; gap: 6px; font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px; padding: 8px 14px; text-decoration: none; margin: 0 0 28px; }
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">CONCEPT &nbsp;·&nbsp; TIM KING &amp; CLAUDE &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>H% Provenance Badge</h1>
+  <div class="subtitle">A naming and placement standard for the Maturity Table's H% figures — every state is modeled, distinguished by how well-grounded the model is</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <div class="concept-flag">Concept stage — not yet part of the framework. Directly operationalizes Rule 3 (Modeled vs. Observed, Always Labeled) and Rule 5 (H% Carries Its Disclaimer) from the Language &amp; Precision content rules, for the one place those rules matter most concretely: the Maturity Table's H% figures. Nothing here changes live dashboard behavior until approved.</div>
+
+  <a class="pdf-download" href="h_pct_provenance_badge_standard.pdf">⬇ Download PDF</a>
+
+  <h2>Why This Now</h2>
+  <p>Tim saw a CHRO Office Substack dashboard example tagging compensation figures &ldquo;DIRECTIONAL&rdquo; and &ldquo;AI-INFERRED — FROM DIRECTIONAL P50&rdquo; with a sources link, and liked the pattern of surfacing data provenance visibly rather than in a footnote. GiGi had separately flagged, in her September 3 review, that H% needs precision about whether it's modeled or observed — exactly what Rule 3 and Rule 5 of the Language &amp; Precision content rules already require. This standard is the concrete mechanism that satisfies both.</p>
+
+  <h2>The Real Distinction</h2>
+  <p>The badge is per-domain, not per-row. Only PCF 7.0 and 8.0 carry RACI-grounded pattern assignments traced to real APQC L4 activity text. The other 11 domains carry draft M1–M5 values that have never been run through that validation pass. Every row within one domain's table already shares the same status, so tagging each row individually would be redundant.</p>
+
+  <h2>Placement Decided</h2>
+  <p>A status chip in the panel's top-right corner, next to the table title, plus a &ldquo;sources ▾&rdquo; link that expands into the existing &ldquo;Note on Where the Numbers Come From&rdquo; methodology text at the point of use — rather than leaving it in a separate document. Two alternatives were sketched and set aside: a header-only chip with no expansion, and badging the M1/M3/M5 column headers directly (solves scroll-visibility, but adds a redundant sixth column for a value that's constant per domain).</p>
+
+  <div class="mock-panel">
+    <div class="panel-top">
+      <h3 class="panel-title">Maturity Table — Domain 3.0</h3>
+      <div><span class="badge directional">Modeled — Pattern-Reference Estimate</span> <a class="sources-link">sources ▾</a></div>
+    </div>
+    <div class="panel-top" style="margin-bottom:0;">
+      <h3 class="panel-title">Maturity Table — Domain 7.0</h3>
+      <div><span class="badge grounded">Modeled — RACI-Grounded</span> <a class="sources-link">sources ▾</a></div>
+    </div>
+  </div>
+
+  <h2>Naming Standard</h2>
+  <p>Matches the house style already locked in on the WIP ribbon (&ldquo;Draft — Not Yet Part of the Framework&rdquo;) and the RACI table's own footer (&ldquo;RACI grounded in real APQC L4 activity text&rdquo;): ALL-CAPS keyword, em dash, plain-language qualifier. &ldquo;MODELED&rdquo; is the umbrella word on every state, since nothing in the framework today is empirically observed &mdash; every H% figure is a reasoned estimate, whether from a generic pattern-type reference or from real RACI assignment against actual activity text. The qualifier carries the real distinction: how well-grounded that model is, not whether it's a model at all. &ldquo;Observed&rdquo; is deliberately reserved, unused until the framework ever ingests genuinely measured data (real time-tracking, an employee survey) &mdash; the same distinction the CHRO Office example draws between real (if paywalled) market survey data and a derived, AI-inferred chart built on top of it.</p>
+  <table>
+    <thead><tr><th>State</th><th>Badge Text</th><th>Domains Today</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name" style="color:var(--amber-text)">Not RACI-validated</td><td>MODELED — Pattern-Reference Estimate</td><td>11 domains</td><td>Derived from generic pattern-type references, not yet checked against real activity data</td></tr>
+      <tr><td class="row-name" style="color:var(--navy)">RACI-grounded</td><td>MODELED — RACI-Grounded</td><td>PCF 7.0, 8.0</td><td>Still a reasoned estimate, not measured data — but traced to real RACI assignment against actual APQC L4 activity text</td></tr>
+      <tr><td class="row-name" style="color:var(--lgray)"><em>Reserved</em></td><td><em>MODELED — RACI Assignment Underway</em></td><td><em>None yet</em></td><td><em>For a domain mid-RACI-build — happened once already with 8.0</em></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Build Note</h2>
+  <p>Whenever this is implemented: the badge should flip automatically once a domain's <code>lenses.raci</code> is present, not require a manual per-domain flag — the same self-updating pattern already used by the People View toggle's <code>hasRaci && hasRoleTaxonomy</code> gate.</p>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;·&nbsp; Concept — For Review<br>
+    HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="h_pct_provenance_badge_standard.pdf">Download PDF</a> &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+</body>
+</html>
