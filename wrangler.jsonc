@@ -1,7 +1,19 @@
 {
-  "name": "hitl-driven-architecture",
+  // Fixed to match the live Worker service — confirmed via Compute → Workers
+  // & Pages that "hitl-framework" (not "hitl-driven-architecture") is the
+  // service with hitldrivenarchitecture.com attached as a custom domain,
+  // from the Aug 26, 2026 Cloudflare migration.
+  "name": "hitl-framework",
   "compatibility_date": "2026-08-26",
+  "main": "src/index.js",
   "assets": {
-    "directory": "./docs"
-  }
+    "directory": "./docs",
+    "binding": "ASSETS"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "WIP_VOTES",
+      "id": "62fb45a66d684249abba30153cec43a8"
+    }
+  ]
 }
