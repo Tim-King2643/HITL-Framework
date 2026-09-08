@@ -60,6 +60,19 @@ body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--
 .intro p.lead { font-size: 17px; color: var(--navy); font-style: italic; margin-bottom: 10px; line-height: 1.6; }
 .intro p { font-size: 14px; color: var(--gray); line-height: 1.7; }
 
+.review-board-cta { max-width: 760px; margin: 20px auto 0; padding: 0 24px; text-align: center; }
+.review-board-cta .rb-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Segoe UI', sans-serif; font-size: 15px; font-weight: 700;
+  color: #fff; background: var(--navy); text-decoration: none;
+  padding: 13px 26px; border-radius: 8px; box-shadow: 0 2px 6px rgba(27,79,138,.25);
+}
+.review-board-cta .rb-btn:hover { background: var(--navy-d); }
+.review-board-cta .rb-btn .rb-icon { font-size: 18px; }
+.review-board-cta p {
+  font-size: 12px; color: var(--lgray); margin-top: 9px; line-height: 1.6;
+}
+
 .stage-legend {
   max-width: 1000px; margin: 18px auto 0; padding: 14px 24px; background: #fff;
   border: 1px solid var(--border); border-radius: 8px; text-align: left;
@@ -151,6 +164,13 @@ footer a { color: var(--navy); text-decoration: none; }
 <div class="intro">
   <p class="lead">Drafts, in one place, without bolting them onto the framework early.</p>
   <p>Each item below is real, working content — viewable and commentable just like the rest of the site — but deliberately not linked from Documentation, the Dashboard, or any nav. Nothing moves into the framework proper until it's been reviewed and both of you are ready to make it official. This catalog is the single "what's the state of everything" view: every item's title links straight to its Word document for a proper review read, with the HTML page and PDF alongside it.</p>
+</div>
+
+<div class="review-board-cta">
+  <a class="rb-btn" href="https://claude.ai/code/artifact/201f006d-5bc0-4d05-a9cd-8a303df6d48d" target="_blank" rel="noopener">
+    <span class="rb-icon">⚖️</span> Open the WIP Review Board
+  </a>
+  <p>Cast your Approve / Needs Revision / Park / Deny vote on your own time — Tim and GiGi review independently, and an item only resolves once both have weighed in.</p>
 </div>
 
 <div class="stage-legend">
