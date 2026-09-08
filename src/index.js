@@ -10,7 +10,8 @@
 // which already authenticated them before the request reaches this Worker.
 // The Cf-Access-Authenticated-User-Email header is set by Access itself and
 // cannot be spoofed by a client bypassing Access, so no extra verification
-return json({ ok: true, item: itemPayload(itemId, votes) });
+// of that header is done here.
+
 const REVIEWERS = {
   'timothy.king@hitldrivenarchitecture.com': 'Tim',
   'mmg0802@yahoo.com': 'GiGi'
