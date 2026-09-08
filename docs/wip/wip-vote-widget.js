@@ -52,8 +52,8 @@
     if (document.getElementById('wip-vote-widget-styles')) return;
     var style = el('style', { id: 'wip-vote-widget-styles' });
     style.textContent = [
-      '.wip-vote-card{background:var(--surface,#fff);border:1px solid var(--border,#DDE3EE);border-radius:10px;',
-      'padding:18px 22px;margin:0 0 28px;box-shadow:0 1px 2px rgba(13,45,79,.06),0 1px 1px rgba(13,45,79,.04);font-family:"Segoe UI",sans-serif;}',
+      '.wip-vote-card{box-sizing:border-box;max-width:800px;background:var(--surface,#fff);border:1px solid var(--border,#DDE3EE);border-radius:10px;',
+      'padding:18px 22px;margin:20px auto 28px;box-shadow:0 1px 2px rgba(13,45,79,.06),0 1px 1px rgba(13,45,79,.04);font-family:"Segoe UI",sans-serif;}',
       '.wip-vote-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px;}',
       '.wip-vote-eyebrow{font-family:Consolas,monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--lgray,#888);}',
       '.wip-vote-pill{font-size:11px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;padding:5px 12px;border-radius:20px;white-space:nowrap;}',
@@ -106,6 +106,7 @@
   }
 
   function renderVoteMount(mount, itemId, itemData) {
+    mount.classList.add('wip-vote-card');
     var meta = DECISION_META[itemData.decision] || DECISION_META.pending;
     var myVote = identity === 'Tim' ? itemData.tim : identity === 'GiGi' ? itemData.gigi : null;
 
