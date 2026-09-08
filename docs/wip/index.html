@@ -60,18 +60,12 @@ body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--
 .intro p.lead { font-size: 17px; color: var(--navy); font-style: italic; margin-bottom: 10px; line-height: 1.6; }
 .intro p { font-size: 14px; color: var(--gray); line-height: 1.7; }
 
-.review-board-cta { max-width: 760px; margin: 20px auto 0; padding: 0 24px; text-align: center; }
-.review-board-cta .rb-btn {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: 'Segoe UI', sans-serif; font-size: 15px; font-weight: 700;
-  color: #fff; background: var(--navy); text-decoration: none;
-  padding: 13px 26px; border-radius: 8px; box-shadow: 0 2px 6px rgba(27,79,138,.25);
+.vote-note { max-width: 760px; margin: 18px auto 0; padding: 12px 24px; text-align: center; }
+.vote-note p {
+  font-size: 12.5px; color: var(--lgray); line-height: 1.6;
 }
-.review-board-cta .rb-btn:hover { background: var(--navy-d); }
-.review-board-cta .rb-btn .rb-icon { font-size: 18px; }
-.review-board-cta p {
-  font-size: 12px; color: var(--lgray); margin-top: 9px; line-height: 1.6;
-}
+
+.wip-status-badge { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; border-radius: 3px; padding: 3px 7px; white-space: nowrap; }
 
 .stage-legend {
   max-width: 1000px; margin: 18px auto 0; padding: 14px 24px; background: #fff;
@@ -166,11 +160,8 @@ footer a { color: var(--navy); text-decoration: none; }
   <p>Each item below is real, working content — viewable and commentable just like the rest of the site — but deliberately not linked from Documentation, the Dashboard, or any nav. Nothing moves into the framework proper until it's been reviewed and both of you are ready to make it official. This catalog is the single "what's the state of everything" view: every item's title links straight to its Word document for a proper review read, with the HTML page and PDF alongside it.</p>
 </div>
 
-<div class="review-board-cta">
-  <a class="rb-btn" href="review_board.html">
-    <span class="rb-icon">⚖️</span> Open the WIP Review Board
-  </a>
-  <p>Cast your Approve / Needs Revision / Park / Deny vote on your own time — Tim and GiGi review independently, and an item only resolves once both have weighed in.</p>
+<div class="vote-note">
+  <p>Voting happens directly on each votable item's own page now — open it, and the Approve / Needs Revision / Park / Deny controls are right there, along with both reviewers' current picks. The Status column below stays live, straight from the same vote data.</p>
 </div>
 
 <div class="stage-legend">
@@ -202,13 +193,12 @@ footer a { color: var(--navy); text-decoration: none; }
       <tbody>
 
         <tr class="group-row"><td colspan="4">Role Pattern Transition Narratives <span class="g-note">Stage-first M1 → M3 → M5 views, per role, grounded in real Accountable-process data. Live HTML rebuilt onto the standard site's own system (px-based Standing Type Scale, standard masthead/page chrome, live pattern legend) — see the Content Generation Rules compliance audit below; the Word/PDF exports keep their dedicated print layout, matched on fonts and colors only, per Token Lock.</span></td></tr>
-
         <tr class="item-row">
           <td>
             <div class="item-title"><a href="CHRO_Pattern_Transition_Narrative.docx">CHRO — Pattern Transition Narratives</a></div>
-            <div class="item-desc">Stage-first view of how the CHRO's remaining human work shifts across M1 &rarr; M3 &rarr; M5 as AI matures, by HITL pattern.</div>
+            <div class="item-desc">Stage-first view of how the CHRO's remaining human work shifts across M1 → M3 → M5 as AI matures, by HITL pattern.</div>
           </td>
-          <td><span class="status">Ready for review</span></td>
+          <td><span class="status" data-wip-status="chro-narratives">Loading…</span></td>
           <td><span class="stage">Step 1 · Prototype</span></td>
           <td class="fmt-links">
             <a href="CHRO_Pattern_Transition_Narrative.docx">Word</a><span class="sep">·</span>
@@ -222,7 +212,7 @@ footer a { color: var(--navy); text-decoration: none; }
             <div class="item-title"><a href="HRBP_Manager_Pattern_Transition_Narrative.docx">HRBP Manager — Pattern Transition Narratives</a></div>
             <div class="item-desc">Same stage-first view for the HRBP Manager role — 22 real L4 activities across 10 Accountable processes.</div>
           </td>
-          <td><span class="status">Ready for review</span></td>
+          <td><span class="status" data-wip-status="hrbp-narratives">Loading…</span></td>
           <td><span class="stage">Step 1 · Prototype</span></td>
           <td class="fmt-links">
             <a href="HRBP_Manager_Pattern_Transition_Narrative.docx">Word</a><span class="sep">·</span>
@@ -230,13 +220,12 @@ footer a { color: var(--navy); text-decoration: none; }
             <a class="pdf" href="hrbp_manager_pattern_transition_stagefirst.pdf">PDF</a>
           </td>
         </tr>
-
         <tr class="item-row">
           <td>
             <div class="item-title"><a href="Recruiter_Pattern_Transition_Narrative.docx">Recruiter — Pattern Transition Narratives</a></div>
             <div class="item-desc">Same stage-first view for the Recruiter role, the third of the three roles walked through on the Aug 31 call.</div>
           </td>
-          <td><span class="status">Ready for review</span></td>
+          <td><span class="status" data-wip-status="recruiter-narratives">Loading…</span></td>
           <td><span class="stage">Step 1 · Prototype</span></td>
           <td class="fmt-links">
             <a href="Recruiter_Pattern_Transition_Narrative.docx">Word</a><span class="sep">·</span>
@@ -252,7 +241,7 @@ footer a { color: var(--navy); text-decoration: none; }
             <div class="item-title"><a href="H_Pct_Provenance_Badge_Standard.docx">H% Provenance Badge — Naming &amp; Placement Standard</a></div>
             <div class="item-desc">A per-domain status badge (MODELED — Pattern-Reference Estimate / MODELED — RACI-Grounded) for the Maturity Table's H% figures, operationalizing Rule 14 and Rule 16 of the unified Framework Content Generation Rules.</div>
           </td>
-          <td><span class="status">Ready for review</span></td>
+          <td><span class="status" data-wip-status="hpct-badge">Loading…</span></td>
           <td><span class="stage">Concept</span></td>
           <td class="fmt-links">
             <a href="H_Pct_Provenance_Badge_Standard.docx">Word</a><span class="sep">·</span>
@@ -266,7 +255,7 @@ footer a { color: var(--navy); text-decoration: none; }
             <div class="item-title"><a href="Work_Pattern_Color_Standard.docx">Work Pattern Color Standard</a></div>
             <div class="item-desc">A validated, colorblind-safe color mapping for the five work patterns (Decision/Knowledge/Document/Transaction/Exception) — fixes a real CVD accessibility failure in the current palette and operationalizes Rule 2 of the unified Framework Content Generation Rules.</div>
           </td>
-          <td><span class="status">Ready for review</span></td>
+          <td><span class="status" data-wip-status="pattern-color">Loading…</span></td>
           <td><span class="stage">Concept</span></td>
           <td class="fmt-links">
             <a href="Work_Pattern_Color_Standard.docx">Word</a><span class="sep">·</span>
@@ -280,7 +269,7 @@ footer a { color: var(--navy); text-decoration: none; }
             <div class="item-title"><a href="The_Shock_Wave_Effect.docx">The Shock Wave Effect</a></div>
             <div class="item-desc">How change propagates through an organization in five rings (Role, Person, Manager, Team, Accountability) — and what happens when multiple domains transform at once.</div>
           </td>
-          <td><span class="status">Ready for review</span></td>
+          <td><span class="status" data-wip-status="shock-wave">Loading…</span></td>
           <td><span class="stage">Concept</span></td>
           <td class="fmt-links">
             <a href="The_Shock_Wave_Effect.docx">Word</a><span class="sep">·</span>
@@ -294,7 +283,7 @@ footer a { color: var(--navy); text-decoration: none; }
             <div class="item-title"><a href="From_Concept_to_Principle.docx">From Concept to Principle</a></div>
             <div class="item-desc">A proposed governance layer: how an idea moves from Concept through Claude's feasibility review to Approved, requiring sign-off from both Tim and GiGi.</div>
           </td>
-          <td><span class="status">Ready for review</span></td>
+          <td><span class="status" data-wip-status="concept-to-principle">Loading…</span></td>
           <td><span class="stage">Concept</span></td>
           <td class="fmt-links">
             <a href="From_Concept_to_Principle.docx">Word</a><span class="sep">·</span>
@@ -308,7 +297,7 @@ footer a { color: var(--navy); text-decoration: none; }
             <div class="item-title"><a href="Framework_Content_Generation_Rules.docx">Framework Content Generation Rules — The Complete Catalog</a></div>
             <div class="item-desc">One continuously numbered catalog, currently Rule 1 through Rule 19, replacing what were three separately-numbered documents (Visual System &amp; Hierarchy, Navigation &amp; Structure, Language &amp; Precision) so a rule number means the same thing everywhere it's cited. Includes Rule 19 (One Shape for Every WIP Proposal), setting the standard five-section structure — Why This Now, The Problem, The Recommendation, Proposed Tokens, Build Note — for every future WIP proposal.</div>
           </td>
-          <td><span class="status">Ready for review</span></td>
+          <td><span class="status" data-wip-status="rule-catalog">Loading…</span></td>
           <td><span class="stage">Concept</span></td>
           <td class="fmt-links">
             <a href="Framework_Content_Generation_Rules.docx">Word</a><span class="sep">·</span>
@@ -383,6 +372,14 @@ footer a { color: var(--navy); text-decoration: none; }
 
 <!--
   HOW TO ADD A NEW WIP ITEM
+
+  Two kinds of items live in this catalog: VOTABLE items (need an actual
+  Tim + GiGi Approve/Revise/Park/Deny decision before they can graduate) and
+  REFERENCE-ONLY items (working notes, review replies — nothing to vote on,
+  just tracked here so the catalog stays complete). Steps 1-5 and 7 apply to
+  both; step 3a and the "status" line in step 6 differ by kind, per the
+  branches below.
+
   1. Drop the draft HTML file in this same docs/wip/ folder.
   2. Prefix its <title> with "[DRAFT] " — a second signal, visible in the
      browser tab, that survives even if someone bookmarks or shares the link.
@@ -404,6 +401,22 @@ footer a { color: var(--navy); text-decoration: none; }
      That's what makes a draft unmistakable even if someone opens it directly
      (a shared link, a bookmark, browser history) without going through this
      hub page first.
+  3a. VOTABLE items only — wire up the embedded voting widget (there is no
+     separate review-board page; voting happens right on the item's own
+     page):
+       - Pick an itemId (short, kebab-case, e.g. "shock-wave").
+       - Immediately after the page's own masthead <div> closes, add:
+           <div data-wip-vote-mount data-item="ITEMID"></div>
+       - Immediately before </body>, add:
+           <script src="wip-vote-widget.js"></script>
+       - In src/index.js, add "ITEMID": "YYYY-MM-DD" (today's date) to the
+         VOTABLE_ITEMS map — this is the SINGLE source of truth for both the
+         item's content version (bump it later if the doc changes materially,
+         so stale votes get flagged) and which items the API and hub will
+         serve. No other file needs a version number.
+     Reference-only items skip this step entirely — no vote mount, no script
+     tag, no VOTABLE_ITEMS entry.
+
   4. Build a matching Word document (.docx) for the item — the format this
      catalog links to first — UNLESS the item is another partner's own
      original words (like GiGi's review notes), in which case it stays
@@ -417,9 +430,14 @@ footer a { color: var(--navy); text-decoration: none; }
      (someone else's own words). Add a new group row if none fit.
   6. Add one <tr class="item-row"> to the table below: the item-title link
      points at the Word doc (or the HTML page if there isn't one), the
-     item-desc is a one-line summary, and BOTH badges are set honestly:
-       - class="status": editorial readiness ("Ready for review", "Drafting",
-         "Needs data").
+     item-desc is a one-line summary, and:
+       - "status" cell — VOTABLE items: <span class="status"
+         data-wip-status="ITEMID">Loading…</span> (same itemId as step 3a;
+         the widget fills in the live Approved/Needs Revision/Parked/Denied/
+         Pending/Needs Discussion label from actual vote data — never
+         hand-type this one). REFERENCE-ONLY items: hand-typed editorial
+         readiness, plain <span class="status">Ready for review</span> (or
+         "Drafting", "Needs data") — there's no vote to sync to.
        - class="stage": where it actually sits against the Section 5 steps in
          the legend above. A framework-level idea that hasn't been applied to
          specific roles yet is "Concept," not "Step 1" — don't round up.
@@ -428,9 +446,15 @@ footer a { color: var(--navy); text-decoration: none; }
      content with no Word doc.
   7. Leave it OUT of docs/index.html, hitl_dashboard_final.html, and any other
      nav until it's approved — that's what keeps it "WIP."
-  8. Once approved: remove the ribbon and the [DRAFT] title prefix, move the
-     file(s) into their real home in docs/, add it to the real navigation,
-     then delete its row from this table.
+  8. Once Approved (both Tim and GiGi picked Approve — check the live status,
+     or wait for the scheduled Approved-item check to flag it): remove the
+     draft ribbon and the [DRAFT] title prefix; for a formerly-votable item
+     also strip the <div data-wip-vote-mount ...></div> and the
+     wip-vote-widget.js <script> tag, and delete its entry from
+     VOTABLE_ITEMS in src/index.js (leaving a stale entry there just wastes a
+     KV read — it's harmless but pointless once nothing links to it); move
+     the file(s) into their real home in docs/, add it to the real
+     navigation, then delete its row from this table.
 -->
 
 <footer>
@@ -441,5 +465,6 @@ footer a { color: var(--navy); text-decoration: none; }
   </p>
 </footer>
 
+<script src="wip-vote-widget.js"></script>
 </body>
 </html>
