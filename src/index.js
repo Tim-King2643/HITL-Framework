@@ -33,6 +33,23 @@ const VOTABLE_ITEMS = {
   'rule-catalog': '2026-09-08'
 };
 
+// Friendly titles for notification emails — falls back to the raw itemId if
+// a new votable item is added here without a title yet.
+const ITEM_TITLES = {
+  'chro-narratives': 'CHRO — Pattern Transition Narratives',
+  'hrbp-narratives': 'HRBP Manager — Pattern Transition Narratives',
+  'recruiter-narratives': 'Recruiter — Pattern Transition Narratives',
+  'hpct-badge': 'H% Provenance Badge — Naming & Placement Standard',
+  'pattern-color': 'Work Pattern Color Standard',
+  'shock-wave': 'The Shock Wave Effect',
+  'concept-to-principle': 'From Concept to Principle',
+  'rule-catalog': 'Framework Content Generation Rules — The Complete Catalog'
+};
+
+// Only Tim can request/complete a publish — GiGi reviews and votes, but
+// promoting an approved item into the live framework stays Tim's call.
+const ADMIN_REVIEWERS = new Set(['Tim']);
+
 const CHOICES = new Set(['approve', 'revise', 'park', 'deny']);
 
 function json(data, init) {
@@ -49,7 +66,7 @@ function reviewerFromRequest(request) {
 
 async function readVotes(env, itemId) {
   const raw = await env.WIP_VOTES.get(`votes:${itemId}`);
-  return raw ? JSON.parse(raw) : { Tim: null, GiGi: null };
+  return raw ? JSON.parse(raw) : { Tim: null, GiGi: null, publish: null };
 }
 
 async function writeVotes(env, itemId, votes) {
@@ -77,11 +94,46 @@ function decisionFrom(timAnn, gigiAnn) {
   return 'discuss';
 }
 
+// `voteDecision` is the raw reconciliation of Tim's + GiGi's votes, unchanged
+// by publishing. `decision` is what the UI should actually show: once an
+// approved item has a `publish` record attached, it overrides 'approve' with
+// 'pending-publish' or 'published' so every page (item pages + hub) reflects
+// the publish workflow without re-deriving this logic client-side.
 function itemPayload(itemId, votes) {
   const version = VOTABLE_ITEMS[itemId];
   const tim = annotate(votes.Tim, version);
   const gigi = annotate(votes.GiGi, version);
-  return { tim, gigi, decision: decisionFrom(tim, gigi) };
+  const voteDecision = decisionFrom(tim, gigi);
+  const publish = votes.publish || null;
+  let decision = voteDecision;
+  if (voteDecision === 'approve' && publish) {
+    decision = publish.status === 'published' ? 'published' : 'pending-publish';
+  }
+  return { tim, gigi, voteDecision, decision, publish };
+}
+
+// Best-effort notification — a failed email should never block the publish
+// request itself, so this is always wrapped in try/catch by its caller.
+async function sendPublishEmail(env, itemId, requestedBy) {
+  const title = ITEM_TITLES[itemId] || itemId;
+  const siteUrl = 'https://hitldrivenarchitecture.com/wip/index.html';
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      from: env.RESEND_FROM || 'HITL Framework <notifications@hitldrivenarchitecture.com>',
+      to: ['timothy.king@hitldrivenarchitecture.com'],
+      subject: `WIP Catalog: "${title}" is Pending Publish`,
+      text: `"${title}" (${itemId}) is Pending Publish.\n\nRequested by ${requestedBy}. Both reviewers have approved — open a chat with Claude to walk through publishing it, then mark it Published when done.\n\nReview it here: ${siteUrl}`
+    })
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`Resend API error ${res.status}: ${body}`);
+  }
 }
 
 async function handleApi(request, env, url) {
@@ -137,6 +189,60 @@ async function handleApi(request, env, url) {
       return json({ error: 'cast a vote before saving a note' }, { status: 400 });
     }
     votes[reviewer] = Object.assign({}, existing, { notes });
+    await writeVotes(env, itemId, votes);
+    return json({ ok: true, item: itemPayload(itemId, votes) });
+  }
+
+  if (url.pathname === '/wip-api/publish' && request.method === 'POST') {
+    if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
+    if (!ADMIN_REVIEWERS.has(reviewer)) return json({ error: 'only an admin reviewer can request publish' }, { status: 403 });
+
+    let body;
+    try { body = await request.json(); } catch (e) { return json({ error: 'invalid JSON body' }, { status: 400 }); }
+    const itemId = body && body.itemId;
+    if (!VOTABLE_ITEMS[itemId]) return json({ error: 'unknown item' }, { status: 400 });
+
+    const votes = await readVotes(env, itemId);
+    const payload = itemPayload(itemId, votes);
+    if (payload.voteDecision !== 'approve') {
+      return json({ error: 'item is not approved yet' }, { status: 400 });
+    }
+
+    // Idempotent — a second click on an already-requested item just returns
+    // the current state rather than re-sending the email.
+    if (!votes.publish) {
+      votes.publish = {
+        status: 'requested',
+        requestedAt: new Date().toISOString(),
+        requestedBy: reviewer
+      };
+      await writeVotes(env, itemId, votes);
+      try {
+        await sendPublishEmail(env, itemId, reviewer);
+      } catch (e) {
+        console.error('publish email failed', e);
+      }
+    }
+    return json({ ok: true, item: itemPayload(itemId, votes) });
+  }
+
+  if (url.pathname === '/wip-api/mark-published' && request.method === 'POST') {
+    if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
+    if (!ADMIN_REVIEWERS.has(reviewer)) return json({ error: 'only an admin reviewer can mark an item published' }, { status: 403 });
+
+    let body;
+    try { body = await request.json(); } catch (e) { return json({ error: 'invalid JSON body' }, { status: 400 }); }
+    const itemId = body && body.itemId;
+    if (!VOTABLE_ITEMS[itemId]) return json({ error: 'unknown item' }, { status: 400 });
+
+    const votes = await readVotes(env, itemId);
+    if (!votes.publish || votes.publish.status !== 'requested') {
+      return json({ error: 'item is not pending publish' }, { status: 400 });
+    }
+    votes.publish = Object.assign({}, votes.publish, {
+      status: 'published',
+      publishedAt: new Date().toISOString()
+    });
     await writeVotes(env, itemId, votes);
     return json({ ok: true, item: itemPayload(itemId, votes) });
   }
