@@ -1,23 +1,26 @@
 // HITL-Driven Architecture — Worker
 //
 // Serves the static site (./docs, via the ASSETS binding) and a small JSON
-// API under /wip-api/* backing the WIP Review Board (docs/wip/review_board.html).
+// API under /wip-api/* backing the in-page WIP voting widget
+// (docs/wip/wip-vote-widget.js), embedded directly on each votable WIP
+// item's own page, plus the docs/wip/index.html hub (status-sync only —
+// there is no separate review-board page anymore).
 //
 // Identity is never picked by the user — it comes from Cloudflare Access,
 // which already authenticated them before the request reaches this Worker.
 // The Cf-Access-Authenticated-User-Email header is set by Access itself and
 // cannot be spoofed by a client bypassing Access, so no extra verification
-// of that header is done here.
-
+return json({ ok: true, item: itemPayload(itemId, votes) });
 const REVIEWERS = {
   'timothy.king@hitldrivenarchitecture.com': 'Tim',
   'mmg0802@yahoo.com': 'GiGi'
 };
 
-// itemId -> contentVersion, for every votable item in review_board.html's
-// ITEMS array. Keep this in sync with that file: bump the version here (and
-// there) whenever a WIP doc is materially revised, so stale votes are
-// flagged rather than silently carried forward.
+// itemId -> contentVersion, for every votable WIP item. This is the SINGLE
+// source of truth for versions — item pages and the hub no longer carry
+// their own copy. Bump the version here whenever a WIP doc is materially
+// revised, so stale votes are flagged rather than silently carried forward.
+// No HTML file needs to change for a version bump.
 const VOTABLE_ITEMS = {
   'chro-narratives': '2026-09-08',
   'hrbp-narratives': '2026-09-08',
@@ -52,6 +55,34 @@ async function writeVotes(env, itemId, votes) {
   await env.WIP_VOTES.put(`votes:${itemId}`, JSON.stringify(votes));
 }
 
+// Attach a `stale` flag (vote was cast against an older content version)
+// without discarding the vote itself — the UI can still show what was
+// voted, just marked stale.
+function annotate(raw, currentVersion) {
+  if (!raw) return null;
+  const stale = !!(raw.votedOnVersion && raw.votedOnVersion !== currentVersion);
+  return Object.assign({}, raw, { stale });
+}
+
+// A stale vote does not count toward the decision — treated as
+// not-yet-reviewed until re-cast against the current version. Computed
+// server-side so every page (item pages + hub) shares one implementation
+// instead of each re-deriving it client-side.
+function decisionFrom(timAnn, gigiAnn) {
+  const tim = timAnn && !timAnn.stale ? timAnn : null;
+  const gigi = gigiAnn && !gigiAnn.stale ? gigiAnn : null;
+  if (!tim || !gigi) return 'pending';
+  if (tim.choice === gigi.choice) return tim.choice;
+  return 'discuss';
+}
+
+function itemPayload(itemId, votes) {
+  const version = VOTABLE_ITEMS[itemId];
+  const tim = annotate(votes.Tim, version);
+  const gigi = annotate(votes.GiGi, version);
+  return { tim, gigi, decision: decisionFrom(tim, gigi) };
+}
+
 async function handleApi(request, env, url) {
   const reviewer = reviewerFromRequest(request);
 
@@ -62,9 +93,9 @@ async function handleApi(request, env, url) {
   if (url.pathname === '/wip-api/votes' && request.method === 'GET') {
     const itemIds = Object.keys(VOTABLE_ITEMS);
     const entries = await Promise.all(itemIds.map(async (itemId) => [itemId, await readVotes(env, itemId)]));
-    const votes = {};
-    entries.forEach(([itemId, v]) => { votes[itemId] = v; });
-    return json({ reviewer, votes });
+    const items = {};
+    entries.forEach(([itemId, raw]) => { items[itemId] = itemPayload(itemId, raw); });
+    return json({ reviewer, items });
   }
 
   if (url.pathname === '/wip-api/vote' && request.method === 'POST') {
@@ -87,7 +118,7 @@ async function handleApi(request, env, url) {
       votedOnVersion: VOTABLE_ITEMS[itemId]
     };
     await writeVotes(env, itemId, votes);
-    return json({ ok: true, votes });
+    return json({ ok: true, item: itemPayload(itemId, votes) });
   }
 
   if (url.pathname === '/wip-api/note' && request.method === 'POST') {
@@ -106,7 +137,7 @@ async function handleApi(request, env, url) {
     }
     votes[reviewer] = Object.assign({}, existing, { notes });
     await writeVotes(env, itemId, votes);
-    return json({ ok: true, votes });
+    return json({ ok: true, item: itemPayload(itemId, votes) });
   }
 
   return json({ error: 'not found' }, { status: 404 });
