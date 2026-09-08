@@ -24,7 +24,9 @@
     revise: { label: 'Needs Revision', fg: '#9A6B12', bg: '#FDF1D9' },
     park: { label: 'Parked', fg: '#55607A', bg: '#EDEFF5' },
     deny: { label: 'Denied', fg: '#A23B3B', bg: '#FBEAEA' },
-    discuss: { label: 'Needs Discussion', fg: '#9A6B12', bg: '#FDF1D9' }
+    discuss: { label: 'Needs Discussion', fg: '#9A6B12', bg: '#FDF1D9' },
+    'pending-publish': { label: 'Pending Publish', fg: '#5A3FA6', bg: '#EEE7FA' },
+    published: { label: 'Published', fg: '#0F6B3F', bg: '#D7F3E3' }
   };
   var CHOICE_LABEL = { approve: 'Approve', revise: 'Needs Revision', park: 'Park', deny: 'Deny' };
   var CHOICE_TAG = { approve: 'Approved', revise: 'Needs Revision', park: 'Parked', deny: 'Denied' };
@@ -74,7 +76,15 @@
       '.wip-vote-saved{font-size:11px;color:#1B7A4C;margin-top:6px;}',
       '.wip-vote-unrecognized{font-size:12px;color:var(--lgray,#888);font-style:italic;padding-top:12px;border-top:1px dashed var(--border,#DDE3EE);}',
       '.wip-status-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;',
-      'border-radius:3px;padding:3px 7px;white-space:nowrap;}'
+      'border-radius:3px;padding:3px 7px;white-space:nowrap;}',
+      '.wip-publish-row{margin-top:12px;padding-top:12px;border-top:1px dashed var(--border,#DDE3EE);',
+      'display:flex;align-items:center;gap:12px;flex-wrap:wrap;}',
+      '.wip-publish-btn{font-family:"Segoe UI",sans-serif;font-size:12.5px;font-weight:700;padding:7px 16px;',
+      'border-radius:6px;cursor:pointer;border:1px solid #5A3FA6;background:#5A3FA6;color:#fff;}',
+      '.wip-publish-btn:hover{background:#472F87;border-color:#472F87;}',
+      '.wip-publish-hint{font-size:12px;color:var(--lgray,#888);}',
+      '.wip-publish-status{font-size:12.5px;font-weight:700;color:#5A3FA6;}',
+      '.wip-publish-status-done{color:#0F6B3F;}'
     ].join('');
     document.head.appendChild(style);
   }
@@ -128,6 +138,24 @@
       html += '<div class="wip-vote-unrecognized">Signed in, but not a recognized reviewer — no vote available.</div>';
     }
 
+    if (identity === 'Tim' && itemData.voteDecision === 'approve') {
+      html += '<div class="wip-publish-row">';
+      if (!itemData.publish) {
+        html += '<button class="wip-publish-btn" data-publish>Publish</button>';
+        html += '<div class="wip-publish-hint">Both reviewers have approved — click to notify yourself and flag this item Pending Publish.</div>';
+      } else if (itemData.publish.status === 'requested') {
+        var reqWhen = '';
+        try { reqWhen = new Date(itemData.publish.requestedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }); } catch (e) {}
+        html += '<span class="wip-publish-status">Pending Publish' + (reqWhen ? ' · requested ' + reqWhen : '') + '</span>';
+        html += '<button class="wip-publish-btn" data-mark-published>Mark Published</button>';
+      } else if (itemData.publish.status === 'published') {
+        var pubWhen = '';
+        try { pubWhen = new Date(itemData.publish.publishedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }); } catch (e) {}
+        html += '<span class="wip-publish-status wip-publish-status-done">Published' + (pubWhen ? ' · ' + pubWhen : '') + '</span>';
+      }
+      html += '</div>';
+    }
+
     mount.innerHTML = html;
 
     mount.querySelectorAll('[data-choice]').forEach(function (btn) {
@@ -140,6 +168,18 @@
       saveBtn.addEventListener('click', function () {
         var ta = mount.querySelector('textarea');
         saveNote(itemId, ta ? ta.value : '');
+      });
+    }
+    var publishBtn = mount.querySelector('[data-publish]');
+    if (publishBtn) {
+      publishBtn.addEventListener('click', function () {
+        requestPublish(itemId);
+      });
+    }
+    var markPublishedBtn = mount.querySelector('[data-mark-published]');
+    if (markPublishedBtn) {
+      markPublishedBtn.addEventListener('click', function () {
+        markPublished(itemId);
       });
     }
   }
@@ -204,6 +244,32 @@
       }
     }).catch(function (e) {
       console.error('wip-vote-widget: note save failed', e);
+    });
+  }
+
+  function requestPublish(itemId) {
+    api('/wip-api/publish', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ itemId: itemId })
+    }).then(function (res) {
+      latestItems[itemId] = res.item;
+      renderAll();
+    }).catch(function (e) {
+      console.error('wip-vote-widget: publish request failed', e);
+    });
+  }
+
+  function markPublished(itemId) {
+    api('/wip-api/mark-published', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ itemId: itemId })
+    }).then(function (res) {
+      latestItems[itemId] = res.item;
+      renderAll();
+    }).catch(function (e) {
+      console.error('wip-vote-widget: mark-published failed', e);
     });
   }
 
