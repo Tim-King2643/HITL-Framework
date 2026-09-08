@@ -3,573 +3,96 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>WIP Review Board — The Human-AI Partnership Framework</title>
+<title>WIP Review Board (Moved) — The Human-AI Partnership Framework</title>
 <meta name="robots" content="noindex, nofollow"/>
+<meta http-equiv="refresh" content="8;url=index.html"/>
 <style>
 :root {
-  --bg: #F4F6FB;
-  --surface: #FFFFFF;
-  --surface-2: #EEF3FA;
-  --ink: #0D1B2A;
-  --ink-soft: #444444;
-  --muted: #74839B;
-  --border: #DDE3EE;
-  --navy: #1B4F8A;
+  --navy:   #1B4F8A;
   --navy-d: #0D2D4F;
-  --navy-tint: #EEF3FA;
-
-  --pending-ink: #4E5D78;
-  --pending-bg: #ECEFF5;
-  --approved-ink: #1B7A4C;
-  --approved-bg: #E4F5EC;
-  --revision-ink: #9A6B12;
-  --revision-bg: #FDF1D9;
-  --parked-ink: #55607A;
-  --parked-bg: #EDEFF5;
-  --denied-ink: #A23B3B;
-  --denied-bg: #FBEAEA;
-  --discuss-ink: #9A6B12;
-  --discuss-bg: #FDF1D9;
-
-  --shadow: 0 1px 2px rgba(13,45,79,.06), 0 1px 1px rgba(13,45,79,.04);
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0B1420;
-    --surface: #101D2E;
-    --surface-2: #16263B;
-    --ink: #E8EEF7;
-    --ink-soft: #C2CCDC;
-    --muted: #8695AE;
-    --border: #223148;
-    --navy: #6E9FDB;
-    --navy-d: #0A1729;
-    --navy-tint: #16263B;
-
-    --pending-ink: #AEBAD1;
-    --pending-bg: #18233A;
-    --approved-ink: #6FD19E;
-    --approved-bg: #12271F;
-    --revision-ink: #E4B75B;
-    --revision-bg: #2B2312;
-    --parked-ink: #A6B0C6;
-    --parked-bg: #1B2338;
-    --denied-ink: #E48A8A;
-    --denied-bg: #2B1717;
-    --discuss-ink: #E4B75B;
-    --discuss-bg: #2B2312;
-
-    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 1px 1px rgba(0,0,0,.3);
-  }
-}
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
-}
-h1, h2, h3 { font-family: 'Georgia', 'Times New Roman', serif; }
-code, .mono { font-family: 'Consolas', 'SFMono-Regular', monospace; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
 
-a { color: var(--navy); }
+.masthead {
+  background: var(--navy-d); color: #fff; padding: 32px 24px 28px;
+  text-align: center;
+}
+.masthead h1 {
+  font-family: 'Georgia', serif; font-weight: 700; font-size: 24px;
+  margin-bottom: 8px;
+}
+.masthead nav a {
+  color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600;
+  margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent;
+}
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+.wrap { max-width: 620px; margin: 0 auto; padding: 56px 24px 72px; text-align: center; }
 
-.draft-ribbon {
-  position: sticky; top: 0; z-index: 1000;
-  background: #FEF3C7; border-bottom: 2px solid #B8873F;
-  padding: 10px 20px; text-align: center;
-  font-size: 12.5px; color: #7A5A1E;
+.notice {
+  background: #fff; border: 1px solid var(--border); border-radius: 10px;
+  padding: 32px 28px; box-shadow: 0 1px 2px rgba(13,45,79,.06), 0 1px 1px rgba(13,45,79,.04);
 }
-.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
-.draft-ribbon a { color: #7A5A1E; font-weight: 600; }
+.notice .eyebrow {
+  font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--amber-text); background: var(--amber-bg);
+  border-radius: 4px; padding: 4px 10px; display: inline-block; margin-bottom: 16px;
+}
+.notice h2 {
+  font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d);
+  font-size: 20px; margin-bottom: 14px;
+}
+.notice p { font-size: 14px; color: var(--gray); line-height: 1.7; margin-bottom: 14px; }
+.notice a.cta {
+  display: inline-block; margin-top: 8px; font-size: 13.5px; font-weight: 700;
+  color: #fff; background: var(--navy); border-radius: 6px; padding: 10px 20px;
+  text-decoration: none;
+}
+.notice a.cta:hover { background: var(--navy-d); }
+.notice .fine { font-size: 11.5px; color: var(--lgray); margin-top: 20px; }
 
-.topbar {
-  position: sticky; top: 33px; z-index: 20;
-  background: var(--navy-d); color: #fff;
-  padding: 16px 24px;
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  flex-wrap: wrap;
-}
-.topbar .brand .eyebrow {
-  font-family: 'Consolas', monospace; font-size: 10.5px; letter-spacing: .1em;
-  color: #9FC2EE; text-transform: uppercase; margin-bottom: 4px;
-}
-.topbar .brand h1 { margin: 0; font-size: 20px; font-weight: 700; }
-.identity-pill {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 13px; color: #CFE0F5;
-}
-.identity-pill .who {
-  font-weight: 700; color: #fff; background: rgba(255,255,255,.12);
-  padding: 5px 12px; border-radius: 20px;
-}
-.identity-pill .unrecognized {
-  font-weight: 700; color: #FBEAEA; background: rgba(200,80,80,.35);
-  padding: 5px 12px; border-radius: 20px;
-}
-
-.wrap { max-width: 920px; margin: 0 auto; padding: 28px 24px 80px; }
-
-.intro { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin: 0 0 24px; max-width: 62ch; }
-.intro strong { color: var(--ink-soft); }
-
-.load-error {
-  background: var(--denied-bg); color: var(--denied-ink); border: 1px solid var(--denied-ink);
-  border-radius: 8px; padding: 12px 16px; font-size: 13px; margin-bottom: 20px; display: none;
-}
-.load-error.active { display: block; }
-
-.summary {
-  display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
-  margin-bottom: 32px;
-}
-.stat {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
-  padding: 12px 10px; text-align: center; box-shadow: var(--shadow);
-}
-.stat .n { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; font-family: 'Georgia', serif; }
-.stat .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-top: 2px; }
-
-.stat.pending .n { color: var(--pending-ink); }
-.stat.approved .n { color: var(--approved-ink); }
-.stat.revision .n { color: var(--revision-ink); }
-.stat.discuss .n { color: var(--discuss-ink); }
-.stat.parked .n { color: var(--parked-ink); }
-.stat.denied .n { color: var(--denied-ink); }
-
-.group-heading {
-  font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
-  font-family: 'Consolas', monospace; margin: 32px 0 12px; padding-bottom: 8px;
-  border-bottom: 1px solid var(--border);
-}
-.group-heading:first-of-type { margin-top: 0; }
-
-.card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
-  padding: 16px 20px; margin-bottom: 12px; box-shadow: var(--shadow);
-}
-.card.reference { opacity: .82; }
-
-.card-top {
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-}
-.card-title { font-size: 15.5px; font-weight: 700; color: var(--ink); margin: 0 0 4px; }
-.card-title a { color: inherit; text-decoration: none; }
-.card-title a:hover { text-decoration: underline; }
-.card-meta { font-size: 11.5px; color: var(--muted); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.stage-chip {
-  font-family: 'Consolas', monospace; font-size: 10px; letter-spacing: .02em;
-  background: var(--surface-2); color: var(--navy); padding: 2px 8px; border-radius: 4px;
-  white-space: nowrap;
-}
-.formats a { font-size: 11.5px; margin-right: 8px; }
-
-.decision-pill {
-  font-size: 11px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase;
-  padding: 5px 12px; border-radius: 20px; white-space: nowrap;
-}
-.decision-pill.pending { color: var(--pending-ink); background: var(--pending-bg); }
-.decision-pill.approved { color: var(--approved-ink); background: var(--approved-bg); }
-.decision-pill.revision { color: var(--revision-ink); background: var(--revision-bg); }
-.decision-pill.parked { color: var(--parked-ink); background: var(--parked-bg); }
-.decision-pill.denied { color: var(--denied-ink); background: var(--denied-bg); }
-.decision-pill.discuss { color: var(--discuss-ink); background: var(--discuss-bg); }
-
-.votes-row { display: flex; gap: 18px; margin-top: 12px; flex-wrap: wrap; }
-.vote-status {
-  font-size: 12px; color: var(--ink-soft); display: flex; align-items: center; gap: 6px;
-}
-.vote-status .reviewer-name { font-weight: 700; color: var(--ink); }
-.vote-status .choice-tag { font-family: 'Consolas', monospace; font-size: 11px; }
-.vote-status .stale { color: var(--muted); font-style: italic; }
-.vote-status .empty { color: var(--muted); }
-
-.vote-controls {
-  margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border);
-  display: none;
-}
-.vote-controls.active { display: block; }
-.vote-controls .prompt { font-size: 11.5px; color: var(--muted); margin-bottom: 8px; }
-.vote-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
-.vote-btn {
-  font-family: 'Segoe UI', sans-serif; font-size: 12.5px; font-weight: 600;
-  padding: 7px 14px; border-radius: 6px; cursor: pointer; border: 1px solid var(--border);
-  background: var(--surface); color: var(--ink-soft);
-}
-.vote-btn:hover { border-color: var(--navy); color: var(--navy); }
-.vote-btn.selected.approve { background: var(--approved-bg); color: var(--approved-ink); border-color: var(--approved-ink); }
-.vote-btn.selected.revise { background: var(--revision-bg); color: var(--revision-ink); border-color: var(--revision-ink); }
-.vote-btn.selected.park { background: var(--parked-bg); color: var(--parked-ink); border-color: var(--parked-ink); }
-.vote-btn.selected.deny { background: var(--denied-bg); color: var(--denied-ink); border-color: var(--denied-ink); }
-
-.note-row { margin-top: 10px; display: flex; gap: 8px; align-items: flex-start; }
-.note-row textarea {
-  flex: 1; font-family: 'Segoe UI', sans-serif; font-size: 12.5px; color: var(--ink);
-  background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px;
-  resize: vertical; min-height: 34px;
-}
-.note-row textarea:focus { outline: 2px solid var(--navy); outline-offset: 1px; }
-.note-row button {
-  font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 600;
-  padding: 8px 12px; border-radius: 6px; border: 1px solid var(--navy); background: var(--navy);
-  color: #fff; cursor: pointer; white-space: nowrap;
-}
-.note-row button:hover { background: var(--navy-d); }
-.note-saved { font-size: 11px; color: var(--approved-ink); margin-top: 4px; display: none; }
-
-.no-vote-note { font-size: 12px; color: var(--muted); font-style: italic; margin-top: 12px; }
-
-[hidden] { display: none !important; }
-
-@media (max-width: 640px) {
-  .summary { grid-template-columns: repeat(3, 1fr); }
-  .card-top { flex-direction: column; }
-  .topbar { top: 66px; }
-}
+footer { text-align: center; padding: 32px 24px 48px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
 </style>
 </head>
 <body>
-
-<div class="draft-ribbon">
-  <strong>Draft Tool — Not Yet Part of the Framework</strong>
-  &nbsp;·&nbsp; Review interface only. Nothing here publishes to the framework by itself.
-  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
-</div>
-
-<div class="topbar">
-  <div class="brand">
-    <div class="eyebrow">HITL-Driven Architecture</div>
-    <h1>WIP Review Board</h1>
-  </div>
-  <div class="identity-pill" id="identity-pill">
-    <span>Signed in as</span>
-    <span class="who" id="who-label">…</span>
-  </div>
+<div class="masthead">
+  <h1>The Human-AI Partnership Framework</h1>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
 </div>
 
 <div class="wrap">
-  <p class="intro">
-    Independent review, on your own time. A decision needs <strong>both</strong> of you —
-    a single vote shows as <strong>Pending Review</strong>, and if your picks disagree the item
-    shows as <strong>Needs Discussion</strong> until you talk it through. Reference-only items
-    (GiGi's own notes, the compliance audit) aren't proposals and carry no vote. Your identity
-    comes from your Cloudflare Access sign-in — there's nothing to pick and no way to vote as
-    the other person.
-  </p>
-
-  <p class="load-error" id="load-error">Couldn't reach the review API — votes may be out of date. Reload to try again.</p>
-
-  <div class="summary" id="summary"></div>
-
-  <div id="item-list">
-    <p style="color:var(--muted);font-size:13px;">Loading catalog…</p>
+  <div class="notice">
+    <span class="eyebrow">This page has moved</span>
+    <h2>The Review Board moved onto each item's own page</h2>
+    <p>There's no separate review-board page anymore. Voting — Approve / Needs Revision / Park / Deny, and both reviewers' current picks — now lives directly on each WIP item's own page, right where you're already reading it.</p>
+    <p>Open the WIP hub below and click into any item to vote on it.</p>
+    <a class="cta" href="index.html">Go to the WIP hub</a>
+    <p class="fine">You'll be redirected there automatically in a few seconds.</p>
   </div>
 </div>
 
-<script>
-(function () {
-  var POLL_MS = 20000;
-
-  var ITEMS = [
-    { id: 'chro-narratives', order: 0, category: 'Role Pattern Transition Narratives',
-      title: 'CHRO — Pattern Transition Narratives', stage: 'Step 1 · Prototype', votable: true,
-      docLink: 'CHRO_Pattern_Transition_Narrative.docx', htmlLink: 'chro_pattern_transition_stagefirst.html',
-      pdfLink: 'chro_pattern_transition_stagefirst.pdf', contentVersion: '2026-09-08' },
-    { id: 'hrbp-narratives', order: 1, category: 'Role Pattern Transition Narratives',
-      title: 'HRBP Manager — Pattern Transition Narratives', stage: 'Step 1 · Prototype', votable: true,
-      docLink: 'HRBP_Manager_Pattern_Transition_Narrative.docx', htmlLink: 'hrbp_manager_pattern_transition_stagefirst.html',
-      pdfLink: 'hrbp_manager_pattern_transition_stagefirst.pdf', contentVersion: '2026-09-08' },
-    { id: 'recruiter-narratives', order: 2, category: 'Role Pattern Transition Narratives',
-      title: 'Recruiter — Pattern Transition Narratives', stage: 'Step 1 · Prototype', votable: true,
-      docLink: 'Recruiter_Pattern_Transition_Narrative.docx', htmlLink: 'recruiter_pattern_transition_stagefirst.html',
-      pdfLink: 'recruiter_pattern_transition_stagefirst.pdf', contentVersion: '2026-09-08' },
-
-    { id: 'hpct-badge', order: 3, category: 'Concepts & Design Principles',
-      title: 'H% Provenance Badge — Naming & Placement Standard', stage: 'Concept', votable: true,
-      docLink: 'H_Pct_Provenance_Badge_Standard.docx', htmlLink: 'h_pct_provenance_badge_standard.html',
-      pdfLink: 'h_pct_provenance_badge_standard.pdf', contentVersion: '2026-09-08' },
-    { id: 'pattern-color', order: 4, category: 'Concepts & Design Principles',
-      title: 'Work Pattern Color Standard', stage: 'Concept', votable: true,
-      docLink: 'Work_Pattern_Color_Standard.docx', htmlLink: 'work_pattern_color_standard.html',
-      pdfLink: 'work_pattern_color_standard.pdf', contentVersion: '2026-09-08' },
-    { id: 'shock-wave', order: 5, category: 'Concepts & Design Principles',
-      title: 'The Shock Wave Effect', stage: 'Concept', votable: true,
-      docLink: 'The_Shock_Wave_Effect.docx', htmlLink: 'the_shock_wave_effect.html',
-      pdfLink: 'the_shock_wave_effect.pdf', contentVersion: '2026-09-08' },
-    { id: 'concept-to-principle', order: 6, category: 'Concepts & Design Principles',
-      title: 'From Concept to Principle', stage: 'Concept', votable: true,
-      docLink: 'From_Concept_to_Principle.docx', htmlLink: 'from_concept_to_principle.html',
-      pdfLink: 'from_concept_to_principle.pdf', contentVersion: '2026-09-08' },
-    { id: 'rule-catalog', order: 7, category: 'Concepts & Design Principles',
-      title: 'Framework Content Generation Rules — The Complete Catalog', stage: 'Concept', votable: true,
-      docLink: 'Framework_Content_Generation_Rules.docx', htmlLink: 'framework_content_generation_rules.html',
-      pdfLink: 'framework_content_generation_rules.pdf', contentVersion: '2026-09-08' },
-    { id: 'compliance-audit', order: 8, category: 'Concepts & Design Principles',
-      title: 'Content Generation Rules — Compliance Audit (WIP Hub Pass)', stage: 'Step 2 · Pressure Test', votable: false,
-      docLink: 'Content_Rules_Compliance_Audit_WIP_Pass.docx', htmlLink: 'content_rules_compliance_audit_wip_pass.html',
-      pdfLink: 'content_rules_compliance_audit_wip_pass.pdf', contentVersion: '2026-09-08' },
-
-    { id: 'gigi-website-review', order: 9, category: 'External & Partner Review Notes',
-      title: "HITL Website, Framework & Human Readiness — Working Review Notes", stage: 'External Review', votable: false,
-      docLink: null, htmlLink: 'gigi_website_framework_review.html',
-      pdfLink: 'gigi_website_framework_review.pdf', contentVersion: '2026-09-08' },
-    { id: 'gigi-lifelabs-note', order: 10, category: 'External & Partner Review Notes',
-      title: 'Why I Felt Compelled to Share This Report', stage: 'External Review', votable: false,
-      docLink: null, htmlLink: 'gigi_lifelabs_report_note.html',
-      pdfLink: 'gigi_lifelabs_report_note.pdf', contentVersion: '2026-09-08' },
-    { id: 'talking-through-questions', order: 11, category: 'External & Partner Review Notes',
-      title: 'Talking Through Your Questions', stage: 'External Review', votable: false,
-      docLink: 'Talking_Through_Your_Questions.docx', htmlLink: 'talking_through_your_questions.html',
-      pdfLink: 'talking_through_your_questions.pdf', contentVersion: '2026-09-08' }
-  ];
-
-  var CHOICE_LABEL = { approve: 'Approve', revise: 'Needs Revision', park: 'Park', deny: 'Deny' };
-  var CHOICE_TAG = { approve: 'Approved', revise: 'Needs Revision', park: 'Parked', deny: 'Denied' };
-  var DECISION_CLASS = { pending: 'pending', approve: 'approved', revise: 'revision', park: 'parked', deny: 'denied', discuss: 'discuss' };
-  var DECISION_LABEL = {
-    pending: 'Pending Review', approve: 'Approved', revise: 'Needs Revision',
-    park: 'Parked', deny: 'Denied', discuss: 'Needs Discussion'
-  };
-
-  var identity = null;          // 'Tim' | 'GiGi' | null (not recognized)
-  var identityKnown = false;    // whether /wip-api/me has responded yet
-  var votesByItem = {};         // itemId -> { Tim: voteDoc|null, GiGi: voteDoc|null }
-  var pollTimer = null;
-
-  function baseUrl(item, which) {
-    var link = item[which];
-    if (!link) return null;
-    return link; // same-origin, relative to /wip/
-  }
-
-  function effectiveVote(item, raw) {
-    if (!raw) return null;
-    if (raw.votedOnVersion && raw.votedOnVersion !== item.contentVersion) return null;
-    return raw;
-  }
-
-  function computeDecision(item, votes) {
-    if (!item.votable) return null;
-    var tim = effectiveVote(item, votes.Tim);
-    var gigi = effectiveVote(item, votes.GiGi);
-    if (!tim && !gigi) return 'pending';
-    if (!tim || !gigi) return 'pending';
-    if (tim.choice === gigi.choice) return tim.choice;
-    return 'discuss';
-  }
-
-  function renderSummary() {
-    var counts = { pending: 0, approve: 0, revise: 0, park: 0, deny: 0, discuss: 0 };
-    ITEMS.filter(function (i) { return i.votable; }).forEach(function (item) {
-      var d = computeDecision(item, votesByItem[item.id] || {});
-      counts[d] = (counts[d] || 0) + 1;
-    });
-    var el = document.getElementById('summary');
-    el.innerHTML = [
-      ['pending', 'Pending'], ['approve', 'Approved'], ['discuss', 'Discuss'],
-      ['revise', 'Revision'], ['park', 'Parked'], ['deny', 'Denied']
-    ].map(function (pair) {
-      var key = pair[0], label = pair[1];
-      var cls = key === 'approve' ? 'approved' : key === 'revise' ? 'revision' : key === 'park' ? 'parked' : key === 'deny' ? 'denied' : key;
-      return '<div class="stat ' + cls + '"><div class="n">' + counts[key] + '</div><div class="lbl">' + label + '</div></div>';
-    }).join('');
-  }
-
-  function voteStatusHtml(reviewerName, item, raw) {
-    if (!raw) {
-      return '<span class="vote-status"><span class="reviewer-name">' + reviewerName + ':</span> <span class="empty">not yet reviewed</span></span>';
-    }
-    var stale = raw.votedOnVersion && raw.votedOnVersion !== item.contentVersion;
-    var tag = CHOICE_TAG[raw.choice] || raw.choice;
-    var when = '';
-    try { when = new Date(raw.votedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }); } catch (e) {}
-    var staleNote = stale ? ' <span class="stale">(item updated since — please take another look)</span>' : '';
-    return '<span class="vote-status"><span class="reviewer-name">' + reviewerName + ':</span> ' +
-      '<span class="choice-tag">' + tag + '</span>' +
-      (when ? ' <span style="color:var(--muted)">· ' + when + '</span>' : '') +
-      staleNote + '</span>';
-  }
-
-  function renderItemCard(item) {
-    var votes = votesByItem[item.id] || {};
-    var decision = computeDecision(item, votes);
-    var pillHtml = item.votable
-      ? '<span class="decision-pill ' + DECISION_CLASS[decision] + '">' + DECISION_LABEL[decision] + '</span>'
-      : '<span class="decision-pill pending" style="opacity:.6">Reference Only</span>';
-
-    var htmlUrl = baseUrl(item, 'htmlLink');
-    var pdfUrl = baseUrl(item, 'pdfLink');
-
-    var formatLinks = [];
-    if (item.docLink) formatLinks.push('<a href="' + baseUrl(item, 'docLink') + '" target="_blank" rel="noopener">Word</a>');
-    if (htmlUrl) formatLinks.push('<a href="' + htmlUrl + '" target="_blank" rel="noopener">HTML</a>');
-    if (pdfUrl) formatLinks.push('<a href="' + pdfUrl + '" target="_blank" rel="noopener">PDF</a>');
-
-    var votesRowHtml = item.votable
-      ? '<div class="votes-row">' + voteStatusHtml('Tim', item, votes.Tim) + voteStatusHtml('GiGi', item, votes.GiGi) + '</div>'
-      : '';
-
-    var myVote = identity ? votes[identity] : null;
-    var controlsHtml = '';
-    if (item.votable) {
-      var isActive = !!identity;
-      controlsHtml =
-        '<div class="vote-controls' + (isActive ? ' active' : '') + '" data-item="' + item.id + '">' +
-        '<div class="prompt">Your review, ' + (identity || '') + ':</div>' +
-        '<div class="vote-buttons">' +
-        ['approve', 'revise', 'park', 'deny'].map(function (c) {
-          var sel = myVote && myVote.choice === c ? ' selected ' + c : '';
-          return '<button class="vote-btn' + sel + '" data-choice="' + c + '" data-item="' + item.id + '">' + CHOICE_LABEL[c] + '</button>';
-        }).join('') +
-        '</div>' +
-        '<div class="note-row">' +
-        '<textarea placeholder="Optional note…" data-note-for="' + item.id + '">' + (myVote && myVote.notes ? escapeHtml(myVote.notes) : '') + '</textarea>' +
-        '<button data-save-note="' + item.id + '">Save note</button>' +
-        '</div>' +
-        '<div class="note-saved" data-saved-for="' + item.id + '">Saved.</div>' +
-        '</div>';
-    }
-
-    return (
-      '<div class="card' + (item.votable ? '' : ' reference') + '">' +
-      '<div class="card-top">' +
-      '<div>' +
-      '<h3 class="card-title">' + (htmlUrl ? '<a href="' + htmlUrl + '" target="_blank" rel="noopener">' + item.title + '</a>' : item.title) + '</h3>' +
-      '<div class="card-meta"><span class="stage-chip">' + item.stage + '</span><span class="formats">' + formatLinks.join(' ') + '</span></div>' +
-      '</div>' +
-      pillHtml +
-      '</div>' +
-      votesRowHtml +
-      controlsHtml +
-      (item.votable ? '' : '<div class="no-vote-note">Reference-only — not a proposal, no vote needed.</div>') +
-      '</div>'
-    );
-  }
-
-  function escapeHtml(s) {
-    var d = document.createElement('div');
-    d.textContent = s;
-    return d.innerHTML;
-  }
-
-  function renderAll() {
-    renderSummary();
-    var groups = {};
-    var order = [];
-    ITEMS.forEach(function (item) {
-      if (!groups[item.category]) { groups[item.category] = []; order.push(item.category); }
-      groups[item.category].push(item);
-    });
-    var html = order.map(function (cat) {
-      return '<div class="group-heading">' + cat + '</div>' + groups[cat].map(renderItemCard).join('');
-    }).join('');
-    document.getElementById('item-list').innerHTML = html;
-    attachHandlers();
-  }
-
-  function attachHandlers() {
-    document.querySelectorAll('.vote-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        if (!identity) return;
-        var itemId = btn.getAttribute('data-item');
-        var choice = btn.getAttribute('data-choice');
-        castVote(itemId, choice);
-      });
-    });
-    document.querySelectorAll('[data-save-note]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        if (!identity) return;
-        var itemId = btn.getAttribute('data-save-note');
-        var ta = document.querySelector('[data-note-for="' + itemId + '"]');
-        saveNote(itemId, ta ? ta.value : '');
-      });
-    });
-  }
-
-  function showLoadError(active) {
-    var el = document.getElementById('load-error');
-    if (el) el.classList.toggle('active', !!active);
-  }
-
-  function api(path, opts) {
-    return fetch(path, Object.assign({ credentials: 'same-origin' }, opts || {})).then(function (res) {
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      return res.json();
-    });
-  }
-
-  function loadMe() {
-    return api('/wip-api/me').then(function (data) {
-      identity = data.reviewer || null;
-      identityKnown = true;
-      var pill = document.getElementById('identity-pill');
-      if (identity) {
-        pill.innerHTML = '<span>Signed in as</span><span class="who" id="who-label">' + identity + '</span>';
-      } else {
-        pill.innerHTML = '<span class="unrecognized">Signed in, but not a recognized reviewer</span>';
-      }
-    });
-  }
-
-  function loadVotes() {
-    return api('/wip-api/votes').then(function (data) {
-      votesByItem = data.votes || {};
-      showLoadError(false);
-      renderAll();
-    }).catch(function (e) {
-      console.error('votes load failed', e);
-      showLoadError(true);
-    });
-  }
-
-  function castVote(itemId, choice) {
-    api('/wip-api/vote', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ itemId: itemId, choice: choice })
-    }).then(function () {
-      return loadVotes();
-    }).catch(function (e) {
-      console.error('vote failed', e);
-      showLoadError(true);
-    });
-  }
-
-  function saveNote(itemId, notes) {
-    api('/wip-api/note', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ itemId: itemId, notes: notes })
-    }).then(function () {
-      var marker = document.querySelector('[data-saved-for="' + itemId + '"]');
-      if (marker) {
-        marker.style.display = 'block';
-        setTimeout(function () { marker.style.display = 'none'; }, 1800);
-      }
-      return loadVotes();
-    }).catch(function (e) {
-      console.error('note save failed', e);
-      showLoadError(true);
-    });
-  }
-
-  function startPolling() {
-    if (pollTimer) clearInterval(pollTimer);
-    pollTimer = setInterval(loadVotes, POLL_MS);
-  }
-
-  function init() {
-    renderAll(); // render immediately with an empty state so the page is never blank
-    loadMe().finally(function () {
-      renderAll();
-      loadVotes().finally(startPolling);
-    });
-  }
-
-  init();
-})();
-</script>
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect<br>
+    Private review area — not part of the published framework<br>
+    hitldrivenarchitecture.com
+  </p>
+</footer>
 
 </body>
 </html>
