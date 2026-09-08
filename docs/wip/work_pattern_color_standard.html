@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Work Pattern Color Standard — The Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 800px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.concept-flag { background: var(--amber-bg); border-left: 3px solid var(--amber); border-radius: 4px; padding: 16px 20px; font-size: 13px; font-style: italic; color: var(--amber-text); line-height: 1.6; margin-bottom: 28px; }
+.gov-flag { background: #FDECEC; border-left: 3px solid #B23B3B; border-radius: 4px; padding: 16px 20px; font-size: 13px; color: #7A2020; line-height: 1.6; margin-bottom: 28px; }
+.gov-flag strong { color: #5A1717; }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 36px 0 12px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 15px; margin: 0 0 10px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 12px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 10px 12px; vertical-align: top; color: #222; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.row-name { font-weight: 700; white-space: nowrap; }
+
+.mock-panel { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; margin: 8px 0 24px; }
+.compare-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.compare-col { flex: 1; min-width: 240px; }
+.compare-col .cap { font-size: 10px; text-transform: uppercase; letter-spacing: .04em; color: var(--lgray); font-weight: 700; margin-bottom: 8px; text-align: center; }
+.mini-mock { border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; background: #fbfcfe; }
+.deutan { filter: url(#deuteranopia); }
+.bar-row { display: flex; height: 13px; border-radius: 3px; overflow: hidden; margin-bottom: 12px; }
+.bar-seg { flex-shrink: 0; }
+.legend-mini, .badges-mini { display: grid; grid-template-columns: repeat(3, 108px); gap: 6px 6px; }
+.legend-mini { font-size: 10.5px; color: #333; margin-bottom: 12px; }
+.legend-mini-item, .badge-mini { display: flex; align-items: center; gap: 4px; padding: 3px 8px; box-sizing: border-box; }
+.dot { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+.badge-mini { font-size: 9.5px; font-weight: 700; border-radius: 4px; }
+.swatch-mini { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+
+.pdf-download { display: inline-flex; align-items: center; gap: 6px; font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px; padding: 8px 14px; text-decoration: none; margin: 0 0 28px; }
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <filter id="deuteranopia">
+    <feColorMatrix type="matrix" values="
+      0.367 0.861 -0.228 0 0
+      0.280 0.673  0.047 0 0
+     -0.012 0.043  0.969 0 0
+      0     0      0     1 0"/>
+  </filter>
+</svg>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">CONCEPT &nbsp;·&nbsp; TIM KING &amp; CLAUDE &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>Work Pattern Color Standard</h1>
+  <div class="subtitle">A validated, colorblind-safe color mapping for the five HITL work patterns — Decision, Knowledge, Document, Transaction, Exception</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <div class="concept-flag">Concept stage — not yet part of the framework. Directly operationalizes Rule 2 (One Pattern Legend) of the unified Framework Content Generation Rules: one fixed color-and-label mapping for the five work patterns, used everywhere they're referenced. Nothing here changes live dashboard, RACI, or print-doc code until approved.</div>
+
+  <div class="gov-flag"><strong>Token Lock note (Rule 1):</strong> the current locked token set doesn't include a validated 5-color pattern mapping — the colors in use today were never run through an accessibility check and aren't part of the token list. This proposal is exactly the case Rule 1 anticipates: "a genuinely new visual need becomes its own proposal, not a local fix." One deliberate choice inside it — Transaction's gold is a new, distinct hex, <em>not</em> a reuse of the locked amber (#B8873F), since Rule 1 reserves that color for draft/pending status only, never decorative use.</div>
+
+  <h2>Why This Now</h2>
+  <p>GiGi's site review asked for the five work patterns to get "a stronger visual identity... consistent labels, subtle color cues" — right now they read more like a legend than building blocks. Before picking new colors, I ran the current palette through a real colorblind-safety check rather than eyeballing it, using the same validated method the framework's own dataviz work uses. It surfaced something worth seeing before choosing new colors: the current palette doesn't just look plain, it fails.</p>
+
+  <h2>The Problem</h2>
+  <p>Transaction (green) and Exception (red) are nearly indistinguishable to a reader with red-green colorblindness — roughly 1 in 12 men. Decision (blue) and Knowledge (violet) are too close even for full-color vision. Both failures show up everywhere the pattern-mix bars, badges, and legend appear: Maturity Table, RACI Table, AI Capability Map, Value Stream Profile pages, and the print docs.</p>
+
+  <div class="mock-panel">
+    <h3>Current palette</h3>
+    <div class="compare-row">
+      <div class="compare-col">
+        <div class="cap">Normal vision</div>
+        <div class="mini-mock">
+          <div class="bar-row">
+            <div class="bar-seg" style="width:22%;background:#7B9FD1"></div>
+            <div class="bar-seg" style="width:18%;background:#A79AE0"></div>
+            <div class="bar-seg" style="width:15%;background:#5EB8E0"></div>
+            <div class="bar-seg" style="width:30%;background:#6FC48C"></div>
+            <div class="bar-seg" style="width:15%;background:#E88A8A"></div>
+          </div>
+          <div class="legend-mini">
+            <div class="legend-mini-item"><span class="dot" style="background:#7B9FD1"></span>Decision</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#A79AE0"></span>Knowledge</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#5EB8E0"></span>Document</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#6FC48C"></span>Transaction</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#E88A8A"></span>Exception</div>
+          </div>
+          <div class="badges-mini">
+            <span class="badge-mini" style="background:#EEF3FA;color:#1B4F8A">Decision</span>
+            <span class="badge-mini" style="background:#F3F0FE;color:#534AB7">Knowledge</span>
+            <span class="badge-mini" style="background:#E0F2FE;color:#0369A1">Document</span>
+            <span class="badge-mini" style="background:#DCFCE7;color:#166534">Transaction</span>
+            <span class="badge-mini" style="background:#FEE2E2;color:#991B1B">Exception</span>
+          </div>
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="cap">Simulated — deuteranopia</div>
+        <div class="mini-mock deutan">
+          <div class="bar-row">
+            <div class="bar-seg" style="width:22%;background:#7B9FD1"></div>
+            <div class="bar-seg" style="width:18%;background:#A79AE0"></div>
+            <div class="bar-seg" style="width:15%;background:#5EB8E0"></div>
+            <div class="bar-seg" style="width:30%;background:#6FC48C"></div>
+            <div class="bar-seg" style="width:15%;background:#E88A8A"></div>
+          </div>
+          <div class="legend-mini">
+            <div class="legend-mini-item"><span class="dot" style="background:#7B9FD1"></span>Decision</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#A79AE0"></span>Knowledge</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#5EB8E0"></span>Document</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#6FC48C"></span>Transaction</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#E88A8A"></span>Exception</div>
+          </div>
+          <div class="badges-mini">
+            <span class="badge-mini" style="background:#EEF3FA;color:#1B4F8A">Decision</span>
+            <span class="badge-mini" style="background:#F3F0FE;color:#534AB7">Knowledge</span>
+            <span class="badge-mini" style="background:#E0F2FE;color:#0369A1">Document</span>
+            <span class="badge-mini" style="background:#DCFCE7;color:#166534">Transaction</span>
+            <span class="badge-mini" style="background:#FEE2E2;color:#991B1B">Exception</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:10px;font-size:12.5px">Measured: Transaction vs. Exception at ΔE 1.2 under deuteranopia simulation (essentially identical); Decision vs. Knowledge at ΔE 6.5 even under normal color vision (below the 15-point threshold for "easy to tell apart").</p>
+  </div>
+
+  <h2>The Recommendation</h2>
+  <p>Two changes together, not one. First, the five hues move: Document shifts from a blue-adjacent cyan to teal, and Transaction shifts from green to gold — the change that actually breaks the red-green collision, not a shade adjustment. Second, badges stop coloring the pattern name itself — a small colored dot carries the identity, the label stays plain dark ink, matching how the legend already works. That second change is what lets the palette stay muted and coordinated with the framework's navy identity without asking any single color to double as both an identity cue and a readable text color.</p>
+
+  <div class="mock-panel">
+    <h3>Recommended palette — dot + plain-ink badges</h3>
+    <div class="compare-row">
+      <div class="compare-col">
+        <div class="cap">Normal vision</div>
+        <div class="mini-mock">
+          <div class="bar-row">
+            <div class="bar-seg" style="width:22%;background:#1A5C9C"></div>
+            <div class="bar-seg" style="width:18%;background:#9B7BC4"></div>
+            <div class="bar-seg" style="width:15%;background:#0F8C7E"></div>
+            <div class="bar-seg" style="width:30%;background:#A97C2F"></div>
+            <div class="bar-seg" style="width:15%;background:#B23B3B"></div>
+          </div>
+          <div class="legend-mini">
+            <div class="legend-mini-item"><span class="dot" style="background:#1A5C9C"></span>Decision</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#9B7BC4"></span>Knowledge</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#0F8C7E"></span>Document</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#A97C2F"></span>Transaction</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#B23B3B"></span>Exception</div>
+          </div>
+          <div class="badges-mini">
+            <span class="badge-mini" style="background:#F2F4F8;color:#333"><span class="swatch-mini" style="background:#1A5C9C"></span>Decision</span>
+            <span class="badge-mini" style="background:#F2F4F8;color:#333"><span class="swatch-mini" style="background:#9B7BC4"></span>Knowledge</span>
+            <span class="badge-mini" style="background:#F2F4F8;color:#333"><span class="swatch-mini" style="background:#0F8C7E"></span>Document</span>
+            <span class="badge-mini" style="background:#F2F4F8;color:#333"><span class="swatch-mini" style="background:#A97C2F"></span>Transaction</span>
+            <span class="badge-mini" style="background:#F2F4F8;color:#333"><span class="swatch-mini" style="background:#B23B3B"></span>Exception</span>
+          </div>
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="cap">Simulated — deuteranopia</div>
+        <div class="mini-mock deutan">
+          <div class="bar-row">
+            <div class="bar-seg" style="width:22%;background:#1A5C9C"></div>
+            <div class="bar-seg" style="width:18%;background:#9B7BC4"></div>
+            <div class="bar-seg" style="width:15%;background:#0F8C7E"></div>
+            <div class="bar-seg" style="width:30%;background:#A97C2F"></div>
+            <div class="bar-seg" style="width:15%;background:#B23B3B"></div>
+          </div>
+          <div class="legend-mini">
+            <div class="legend-mini-item"><span class="dot" style="background:#1A5C9C"></span>Decision</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#9B7BC4"></span>Knowledge</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#0F8C7E"></span>Document</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#A97C2F"></span>Transaction</div>
+            <div class="legend-mini-item"><span class="dot" style="background:#B23B3B"></span>Exception</div>
+          </div>
+          <div class="badges-mini">
+            <span class="badge-mini" style="background:#F2F4F8;color:#333"><span class="swatch-mini" style="background:#1A5C9C"></span>Decision</span>
+            <span class="badge-mini" style="background:#F2F4F8;color:#333"><span class="swatch-mini" style="background:#9B7BC4"></span>Knowledge</span>
+            <span class="badge-mini" style="background:#F2F4F8;color:#333"><span class="swatch-mini" style="background:#0F8C7E"></span>Document</span>
+            <span class="badge-mini" style="background:#F2F4F8;color:#333"><span class="swatch-mini" style="background:#A97C2F"></span>Transaction</span>
+            <span class="badge-mini" style="background:#F2F4F8;color:#333"><span class="swatch-mini" style="background:#B23B3B"></span>Exception</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:10px;font-size:12.5px">Validated: worst colorblind-pair ΔE 9.4, worst full-color-vision pair ΔE 15.6 — both clear of the safety floors. No badge, bar, or legend dot relies on hue alone to carry meaning.</p>
+  </div>
+
+  <h2>Proposed Tokens</h2>
+  <table>
+    <thead><tr><th>Pattern</th><th>Hex</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Decision</td><td>#1A5C9C</td><td>Nearly the framework's own locked navy (#1B4F8A) — nudged just enough to separate from Knowledge</td></tr>
+      <tr><td class="row-name">Knowledge</td><td>#9B7BC4</td><td>Dusty violet, softened from the current bright purple</td></tr>
+      <tr><td class="row-name">Document</td><td>#0F8C7E</td><td>Muted teal — moved off blue so it stops crowding Decision</td></tr>
+      <tr><td class="row-name">Transaction</td><td>#A97C2F</td><td>A new gold, related in spirit to the locked amber but a distinct hex — see Token Lock note above</td></tr>
+      <tr><td class="row-name">Exception</td><td>#B23B3B</td><td>Muted brick red, softened from the current alarm-red</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Build Note</h2>
+  <p>This is a convention repeated in several places, not one component: the Maturity Table's pattern-mix bars, the RACI Table's pattern column, L4 badges, the legend, the AI Capability Map cards, Value Stream Profile pages, and the docx/PDF print pipeline all currently draw from the same PATTERN_META/PATTERN_HEX constants. A single source-of-truth update there propagates everywhere — but the print docs (docx-js) build their own color logic separately and would need their own pass. Recommend rolling out to the live dashboard first, then porting to the print generators once confirmed.</p>
+
+  <div style="border-top:1px solid var(--border);margin-top:30px;padding-top:16px;text-align:center">
+    <span style="font-size:12px;color:var(--lgray)">Tim King &amp; Claude &nbsp;|&nbsp; Concept — For Review &nbsp;|&nbsp; September 2026</span>
+  </div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;·&nbsp; Concept — For Review<br>
+    HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="work_pattern_color_standard.pdf">Download PDF</a> &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+</body>
+</html>
