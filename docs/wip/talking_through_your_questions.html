@@ -150,7 +150,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
 <div class="doc-wrap">
 
   <div class="doc-body">
-    <p>This starts with a summary of your own site and language recommendations — a quick reference for what you already told us, in your own words — and then walks through your questions one at a time: what you asked, where things actually stand, and the real options where nothing is decided yet.</p>
+    <p>This starts with a summary of your own site and language recommendations — a quick reference for what you already told us, in your own words — and then walks through your questions one at a time: the original twelve from your website and framework review, plus three more from your LifeLabs report note, what you asked, where things actually stand, and the real options where nothing is decided yet.</p>
 
     <h2>Summary of Your Site Recommendations</h2>
     <p class="caption">Pulled directly from your notes — a working reference to bring into the room, not a rewrite of what you said.</p>
@@ -312,6 +312,42 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
 
     <p>Two things are already settled and mostly just need a quick fix on the site (the convergence-gap figure, and naming the L3→L4 override pattern we're already using). One thing is a working answer we just haven't shown you yet (the executive-legibility question — happy to walk through the briefing series together). Everything else is genuinely open, and worth saying plainly: the H% definition, whether M3 should flex by context, human criticality, consequence of error, presence versus real control, readiness gates, role restructuring, and employee-voice validation.</p>
     <p>One pattern worth naming out loud rather than treating as eight separate to-dos: several of these — trust, workload sustainability, human criticality, consequence of error — keep circling the same undesigned territory. It might be worth treating that as one connected piece of work we take on together, rather than four or five separate asks competing for attention.</p>
+
+    <div class="section-badge"><span class="num">2</span><span class="title">Three More Questions — From the LifeLabs Report</span></div>
+
+    <p>Six days after the review notes above, GiGi sent something else: the LifeLabs Learning 2026 Mid-Year Workplace Trends Report, with her own strategic note attached, posing three more questions. They're really asking the same thing the twelve above ask, from outside evidence rather than from the site itself — whether the model is built to see the whole system of work, and whether it knows when to say no.</p>
+
+    <h3>13. "Are we mapping jobs, or the full system of work — tasks, handoffs, decisions, dependencies, exceptions, and accountability?"</h3>
+    <p>Four of the six things you named are already real, structured layers: tasks (the L1–L4 process taxonomy), decisions (the Decision pattern plus RACI's Accountable field), exceptions (its own HITL pattern, not folded into anything else), and accountability (RACI end to end). Two are not: handoffs and dependencies between activities and roles exist implicitly in how the process taxonomy sequences work, but neither is tracked as its own explicit field today. So the honest answer is that we're mapping most of the system, not just job titles — but handoffs and dependencies are the real gap, not a rounding error.</p>
+    <h3>A few ways we could close that gap:</h3>
+    <ul class="bullets">
+      <li><strong>Formalize handoffs where they already coincide with a Governed Decision Point</strong> — tie each governed handoff to its sending and receiving role. Cheap, since the underlying data already exists.</li>
+      <li><strong>Model dependencies as edges between L4 activities</strong> — a real extension to the process taxonomy, not a small one.</li>
+      <li><strong>Leave both as narrative rather than structured data for now</strong> — this may be exactly the connective tissue your Readiness and transition work already needs to cover from the people side, rather than something the process side should own.</li>
+    </ul>
+    <p class="lean">Probably a hybrid: handoffs formalized where a Governed Decision Point already exists, dependencies left as real future work rather than guessed at.</p>
+
+    <h3>14. "Can the model identify where not to deploy AI yet because role clarity, manager capacity, trust, workflow maturity, or change capacity is too weak?"</h3>
+    <p>Not yet — and this is the same gap Q7 and Q8 above are already circling: human presence versus real control, and what conditions must be true before an organization moves to the next maturity level. Today the framework can show you where the human-involvement gap is largest (Δ M1→M3, by pattern, by role), which is useful for spotting where deployment would touch the most human judgment. It cannot yet tell you role clarity, manager capacity, trust, or change capacity are too weak to deploy safely there, because none of those are measured today. That's your eight Readiness dimensions again, doing the same job a third time from a third angle.</p>
+    <h3>This one probably doesn't need new options so much as recognition:</h3>
+    <ul class="bullets">
+      <li><strong>Same shape as Q8's readiness gate</strong> — a soft flag distinguishing "claimed" maturity from "readiness-confirmed" maturity, using your eight dimensions as the check.</li>
+      <li><strong>A dedicated "not ready" flag per role or value stream</strong> — computed once the Readiness Table exists, sitting alongside the existing Δ M1→M3 figures as a second axis rather than replacing them.</li>
+      <li><strong>Treat the repetition itself as the finding</strong> — three separate questions (yours here, Q7, Q8) converging on the same missing layer from three different doors is a strong signal about what to build next, more than it's three separate asks.</li>
+    </ul>
+    <p class="lean">Third time the same gap has come up from a different door. Worth treating as one piece of work, not three.</p>
+
+    <h3>15. "Can we measure readiness debt and manager complexity load, then prescribe the intervention — not merely display the risk?"</h3>
+    <p>Same territory as Q8's hard-gate-versus-soft-flag discussion, one step further downstream. Today, wherever the framework shows a gap — the Δ M1→M3 figures, an under-resourced value stream, a role carrying disproportionate Decision/Exception load — it's descriptive: it shows you where the strain is. Nothing today computes a debt figure, and nothing recommends what to do about it. Prescriptive recommendation is a different kind of feature than anything built so far — closer to expert-system logic than a maturity curve.</p>
+    <h3>A few ways we could build toward prescription:</h3>
+    <ul class="bullets">
+      <li><strong>Rule-based recommendations tied to readiness thresholds</strong> — once your dimensions are scored (e.g., low manager capacity plus high Decision/Exception load → recommend delaying, not blocking, deployment).</li>
+      <li><strong>Keep the actual intervention as narrative guidance from you</strong> — at least until there's real data to validate any rule against, rather than shipping an untested automated recommendation.</li>
+      <li><strong>A hybrid</strong> — the model flags where debt is highest (computable from existing data), a person supplies the actual intervention. Same computed-default-with-manual-override shape already proposed for the consequence-of-error question above.</li>
+    </ul>
+    <p class="lean">Consistent with everything else here: descriptive is buildable now, prescriptive needs your instrument first. Worth sequencing honestly rather than promising both at once.</p>
+
+    <p>All three of these land on ground her own review already opened. That's worth saying plainly rather than treating as a coincidence: the same three or four gaps — trust, workload, role clarity, prescriptive readiness — keep resurfacing no matter which direction we come at this from.</p>
 
     <hr class="callout-rule">
     <div class="closing-quote">Looking forward to going through this with you.</div>
