@@ -14,6 +14,10 @@
     {
       "binding": "WIP_VOTES",
       "id": "62fb45a66d684249abba30153cec43a8"
+    },
+    {
+      "binding": "SANDBOX_NOTES",
+      "id": "ffc71cb9ef594a67926fa737c3ac0b7f"
     }
   ]
 }

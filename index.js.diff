@@ -1,0 +1,115 @@
+--- a/src/index.js	2026-09-14 15:24:04.837919694 +0000
++++ b/src/index.js	2026-09-14 15:37:35.038195473 +0000
+@@ -11,12 +11,26 @@
+ // The Cf-Access-Authenticated-User-Email header is set by Access itself and
+ // cannot be spoofed by a client bypassing Access, so no extra verification
+ // of that header is done here.
++//
++// Also serves a small JSON API under /sandbox-api/* backing the reactions-
++// and-notes widget on the PCF sandbox pages (docs/sandbox/*.html,
++// docs/sandbox/sandbox-notes-widget.js). Same identity pattern as /wip-api/*
++// above, reusing REVIEWERS, but a separate KV namespace (SANDBOX_NOTES) and
++// a different shape: many free-form notes per item rather than one vote per
++// reviewer, keyed by scope (one sandbox page = one scope) so future sandbox
++// pages for other PCF domains can reuse this without colliding.
+ 
+ const REVIEWERS = {
+   'timothy.king@hitldrivenarchitecture.com': 'Tim',
+   'mmg0802@yahoo.com': 'GiGi'
+ };
+ 
++// One scope per sandbox page. Add the next PCF domain's sandbox here when it's
++// built, rather than letting scope be an arbitrary client-supplied string.
++const SANDBOX_SCOPES = new Set(['pcf7']);
++
++const REACTIONS = new Set(['agree', 'question', 'flag', null]);
++
+ // itemId -> contentVersion, for every votable WIP item. This is the SINGLE
+ // source of truth for versions — item pages and the hub no longer carry
+ // their own copy. Bump the version here whenever a WIP doc is materially
+@@ -73,6 +87,15 @@
+   await env.WIP_VOTES.put(`votes:${itemId}`, JSON.stringify(votes));
+ }
+ 
++async function readSandboxNotes(env, scope) {
++  const raw = await env.SANDBOX_NOTES.get(`notes:${scope}`);
++  return raw ? JSON.parse(raw) : {};
++}
++
++async function writeSandboxNotes(env, scope, notes) {
++  await env.SANDBOX_NOTES.put(`notes:${scope}`, JSON.stringify(notes));
++}
++
+ // Attach a `stale` flag (vote was cast against an older content version)
+ // without discarding the vote itself — the UI can still show what was
+ // voted, just marked stale.
+@@ -250,12 +273,69 @@
+   return json({ error: 'not found' }, { status: 404 });
+ }
+ 
++// A note is { reviewer, reaction, text, postedAt }. reaction is one of
++// 'agree' | 'question' | 'flag' | null — a quick tag GiGi or Tim can add
++// with or without free text. Notes are append-only: no edit/delete yet,
++// same "working notes, not a formal record" spirit as everything else in
++// docs/wip/ — this can grow an edit/delete path later if it turns out to
++// be needed.
++async function handleSandboxApi(request, env, url) {
++  const reviewer = reviewerFromRequest(request);
++
++  if (url.pathname === '/sandbox-api/me') {
++    return json({ reviewer });
++  }
++
++  if (url.pathname === '/sandbox-api/notes-all' && request.method === 'GET') {
++    const scope = url.searchParams.get('scope') || 'pcf7';
++    if (!SANDBOX_SCOPES.has(scope)) return json({ error: 'unknown scope' }, { status: 400 });
++    const notes = await readSandboxNotes(env, scope);
++    return json({ reviewer, notes });
++  }
++
++  if (url.pathname === '/sandbox-api/notes' && request.method === 'GET') {
++    const scope = url.searchParams.get('scope') || 'pcf7';
++    const itemId = url.searchParams.get('itemId');
++    if (!SANDBOX_SCOPES.has(scope)) return json({ error: 'unknown scope' }, { status: 400 });
++    if (!itemId) return json({ error: 'itemId required' }, { status: 400 });
++    const notes = await readSandboxNotes(env, scope);
++    return json({ reviewer, notes: notes[itemId] || [] });
++  }
++
++  if (url.pathname === '/sandbox-api/note' && request.method === 'POST') {
++    if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
++
++    let body;
++    try { body = await request.json(); } catch (e) { return json({ error: 'invalid JSON body' }, { status: 400 }); }
++    const scope = (body && body.scope) || 'pcf7';
++    const itemId = body && body.itemId;
++    const reaction = (body && body.reaction) ? String(body.reaction) : null;
++    const text = typeof (body && body.text) === 'string' ? body.text.slice(0, 2000) : '';
++
++    if (!SANDBOX_SCOPES.has(scope)) return json({ error: 'unknown scope' }, { status: 400 });
++    if (!itemId || typeof itemId !== 'string') return json({ error: 'itemId required' }, { status: 400 });
++    if (!REACTIONS.has(reaction)) return json({ error: 'unknown reaction' }, { status: 400 });
++    if (!text && !reaction) return json({ error: 'a note needs a reaction or some text' }, { status: 400 });
++
++    const allNotes = await readSandboxNotes(env, scope);
++    const entry = { reviewer, reaction, text, postedAt: new Date().toISOString() };
++    allNotes[itemId] = (allNotes[itemId] || []).concat([entry]);
++    await writeSandboxNotes(env, scope, allNotes);
++    return json({ ok: true, notes: allNotes[itemId] });
++  }
++
++  return json({ error: 'not found' }, { status: 404 });
++}
++
+ export default {
+   async fetch(request, env) {
+     const url = new URL(request.url);
+     if (url.pathname.startsWith('/wip-api/')) {
+       return handleApi(request, env, url);
+     }
++    if (url.pathname.startsWith('/sandbox-api/')) {
++      return handleSandboxApi(request, env, url);
++    }
+     return env.ASSETS.fetch(request);
+   }
+ };

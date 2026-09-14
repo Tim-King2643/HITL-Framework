@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] PCF 7.0 Sandbox — Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --m1: #F0F7FF; --m2: #E6F1FF; --m3: #D6E8FF; --m4: #C4DCFF; --m5: #B0CEFF;
+  --m-text: #1B4F8A;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+/* ── Draft ribbon — exact required block per docs/wip/index.html's
+     "HOW TO ADD A NEW WIP ITEM" instructions ───────────────────────────── */
+.draft-ribbon {
+  position:sticky; top:0; z-index:1000; background:#FEF3C7;
+  border-bottom:2px solid #B8873F; padding:10px 20px; text-align:center;
+  font-family:'Segoe UI',sans-serif; font-size:12.5px; color:#7A5A1E;
+}
+.draft-ribbon strong { letter-spacing:.04em; text-transform:uppercase; }
+.draft-ribbon a { color:#7A5A1E; font-weight:600; }
+
+.sandbox-banner {
+  background: #EEF3FA; border-bottom: 1px solid var(--border);
+  padding: 14px 24px; font-size: 12.5px; color: var(--navy-d); line-height: 1.6;
+}
+.sandbox-banner strong { color: var(--navy-d); }
+.sandbox-banner .tag {
+  display:inline-block; font-family:'DM Mono',monospace; font-size:9px; font-weight:700;
+  color:#7A9CC6; background:var(--navy-d); padding:2px 8px; border-radius:4px;
+  letter-spacing:.06em; text-transform:uppercase; margin-right:8px; vertical-align:middle;
+}
+
+.main { max-width: 1400px; margin: 0 auto; }
+
+/* ── Topbar ───────────────────────────────────────────────────────────── */
+.topbar {
+  background: #fff; border-bottom: 1px solid var(--border);
+  padding: 18px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+}
+.topbar h2 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--navy-d); }
+.topbar p { font-size: 12px; color: var(--lgray); margin-top: 3px; }
+.topbar-pills { display: flex; gap: 6px; }
+.pill {
+  font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+  text-transform: uppercase; letter-spacing: .06em; white-space: nowrap;
+}
+.pill-m1 { background: var(--m1); color: var(--m-text); border: 1px solid var(--m3); }
+.pill-m3 { background: var(--m3); color: var(--m-text); border: 1px solid var(--m5); font-weight: 700; }
+.pill-m5 { background: var(--m5); color: var(--m-text); border: 1px solid var(--m5); }
+
+/* ── View toggle ──────────────────────────────────────────────────────── */
+.view-toggle { display: flex; gap: 8px; padding: 16px 24px 4px; align-items:center; flex-wrap:wrap; }
+.view-toggle-label { font-size: 10px; font-weight: 700; text-transform:uppercase; letter-spacing:.06em; color:var(--lgray); margin-right:6px; }
+.view-toggle-btn {
+  background: #fff; border: 1px solid var(--border); border-radius: 6px;
+  padding: 7px 16px; font-size: 12px; font-weight: 600; color: var(--lgray);
+  cursor: pointer;
+}
+.view-toggle-btn.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+.view-note { font-size: 11px; color: var(--lgray); font-style: italic; padding: 6px 24px 0; }
+
+.content { padding: 16px 24px 60px; }
+.card { background: #fff; border-radius: 10px; border: 1px solid var(--border); overflow: hidden; }
+.card-header { padding: 14px 18px; border-bottom: 1px solid var(--border); }
+.card-header h3 { font-size: 14px; font-weight: 600; color: var(--dark); }
+.card-header span { font-size: 11px; color: var(--lgray); }
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+thead tr { background: var(--navy-d); }
+thead th {
+  padding: 9px 10px; text-align: left; color: #fff;
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
+  vertical-align: bottom; white-space: normal; line-height: 1.25;
+}
+thead th.nowrap { white-space: nowrap; }
+#main-table thead th:not(:first-child):not(:nth-child(2)) { text-align: center; }
+thead th:first-child { text-align: left; min-width: 300px; }
+thead th:nth-child(2) { min-width: 90px; }
+thead th.col-m1, thead th.col-m2, thead th.col-m3,
+thead th.col-m4, thead th.col-m5, thead th.delta-cell { color: #fff !important; font-weight: 600; }
+thead th.col-m3 { background: rgba(147,197,253,.25) !important; }
+tbody tr:hover { background: #FAFBFF; }
+
+/* Level rows */
+.row-l1 td { background: #0D2D4F; color: #fff; font-weight: 700; font-size: 12px; border-top: 2px solid #1B4F8A; border-bottom: 2px solid #1B4F8A; }
+.row-l1 td .pcf-ref { font-family: 'DM Mono', monospace; font-size: 10px; color: #7A9CC6; margin-left: 6px; }
+.row-l2 td { background: #EEF3FA; font-weight: 600; font-size: 12px; color: #0D2D4F; border-top: 2px solid #7AAED6; }
+.row-l2 td .pcf-ref { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--lgray); margin-left: 6px; }
+.row-l3 td .pcf-ref, .row-l4 td .pcf-ref { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gray); }
+.row-l3 td { border-bottom: 1px solid #C7D2E3; color: var(--gray); font-size: 12px; }
+.row-l3:nth-child(even) td { background: #F9FBFD; }
+.row-l4 td { border-bottom: 1px solid #E3E8F2; color: var(--gray); font-size: 12px; }
+.row-l4:nth-child(even) td { background: #FBFCFE; }
+
+td { padding: 8px 10px; vertical-align: middle; }
+td:first-child { text-align: left; }
+#main-table td:not(:first-child):not(:nth-child(2)) { text-align: center; font-family: 'DM Mono', monospace; font-size: 12px; }
+
+.indent-l2 { padding-left: 16px; }
+.indent-l3 { padding-left: 32px; font-size: 11px; }
+.indent-l4 { padding-left: 48px; font-size: 11px; }
+.row-flex { display: flex; align-items: flex-start; }
+.row-prefix { flex: 0 0 auto; white-space: nowrap; margin-right: 6px; }
+.row-text { flex: 1 1 auto; min-width: 0; }
+
+/* Pattern badge (legacy, M1-M5 view) */
+.pat { display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: .05em; white-space: nowrap; }
+.pat-Decision   { background: #7B9FD1; color: #fff; }
+.pat-Knowledge  { background: #A79AE0; color: #fff; }
+.pat-Document   { background: #5EB8E0; color: #fff; }
+.pat-Transaction{ background: #6FC48C; color: #fff; }
+.pat-Exception  { background: #E88A8A; color: #fff; }
+
+/* Maturity cells (legacy M1-M5) */
+.col-m1 { color: var(--m-text); }
+.col-m2 { color: var(--m-text); }
+.col-m3 { color: var(--m-text); font-weight: 700; }
+.col-m4 { color: var(--m-text); }
+.col-m5 { color: var(--m-text); font-weight: 600; }
+tbody td.col-m1 { background: var(--m1) !important; color: var(--m-text); }
+tbody td.col-m2 { background: var(--m2) !important; color: var(--m-text); }
+tbody td.col-m3 { background: var(--m3) !important; color: var(--m-text); font-weight: 700; }
+tbody td.col-m4 { background: var(--m4) !important; color: var(--m-text); }
+tbody td.col-m5 { background: var(--m5) !important; color: var(--m-text); font-weight: 600; }
+tbody td.delta-cell { background: #fff; }
+.row-l1 td.col-m1, .row-l1 td.col-m2, .row-l1 td.col-m3,
+.row-l1 td.col-m4, .row-l1 td.col-m5, .row-l1 td.m3-col, .row-l1 td.delta-cell {
+  background: #0D2D4F !important; color: #A8C4E0 !important; font-weight: 700; text-align:center !important; font-family:'DM Mono',monospace;
+}
+.row-l2 td.m3-col, .row-l3 td.m3-col, .row-l4 td.m3-col { background: var(--m3) !important; }
+.delta-cell { font-weight: 600; }
+.delta-neg { color: #B45309; }
+
+/* Expand toggle */
+.toggle-l2, .toggle-l3 { cursor: pointer; user-select: none; }
+.toggle-icon { display: inline-block; width: 14px; text-align: center; margin-right: 4px; font-weight: 800; font-size: 12px; color: var(--navy-d); }
+.toggle-icon.placeholder { visibility: hidden; }
+
+/* ── Working-Relationship view ───────────────────────────────────────── */
+.wr-badge { display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:600; white-space:nowrap; }
+.wr-swatch { width:9px; height:9px; border-radius:2px; display:inline-block; flex:0 0 auto; }
+.wr-h { font-family:'DM Mono',monospace; font-size:10px; color:var(--lgray); margin-left:2px; }
+.wr-blank { color:#B8C0CC; font-style:italic; font-size:11px; }
+.wr-open { color:#B8873F; font-style:italic; font-size:11px; font-weight:600; }
+.wr-cons { font-weight:600; font-size:11px; }
+.wr-note-icon { cursor:help; color:#B8C0CC; font-size:11px; margin-left:4px; }
+.wr-prov { font-family:'DM Mono',monospace; font-size:9px; font-weight:700; padding:2px 7px; border-radius:4px; letter-spacing:.04em; text-transform:uppercase; white-space:nowrap; display:inline-block; }
+.wr-prov-classified { background:rgba(30,63,110,.10); color:#1E3F6E; border:1px solid rgba(30,63,110,.3); }
+.wr-prov-pattern { background:rgba(122,156,198,.12); color:#5B7A9C; border:1px solid rgba(122,156,198,.3); }
+th.wr-col { min-width: 108px; }
+
+/* ── Notes / reactions widget ────────────────────────────────────────── */
+.notes-cell { min-width: 150px; }
+.notes-toggle {
+  font-size:10.5px; font-weight:600; color:var(--navy); background:#fff; border:1px solid var(--border);
+  border-radius:5px; padding:3px 9px; cursor:pointer; white-space:nowrap;
+}
+.notes-toggle.has-notes { background:#EEF3FA; border-color:#B8CDE0; }
+.notes-count { font-family:'DM Mono',monospace; font-size:9.5px; color:var(--lgray); margin-left:4px; }
+.notes-panel {
+  display:none; margin-top:6px; background:#FAFBFD; border:1px solid var(--border); border-radius:7px; padding:8px 10px; text-align:left;
+}
+.notes-panel.open { display:block; }
+.notes-list { margin-bottom:6px; max-height:180px; overflow-y:auto; }
+.note-entry { font-size:11px; padding:5px 0; border-bottom:1px solid var(--border); }
+.note-entry:last-child { border-bottom:none; }
+.note-entry .who { font-weight:700; color:var(--navy-d); }
+.note-entry .react { font-size:9.5px; padding:1px 6px; border-radius:9px; margin-left:5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; }
+.react-agree { background:#DCFCE7; color:#166534; }
+.react-question { background:#FEF3C7; color:#7A5A1E; }
+.react-flag { background:#FEE2E2; color:#991B1B; }
+.note-entry .when { color:var(--lgray); font-size:9.5px; margin-left:5px; }
+.note-entry .txt { margin-top:2px; color:var(--dark); line-height:1.4; }
+.note-form { display:flex; flex-direction:column; gap:6px; }
+.note-reacts { display:flex; gap:5px; }
+.note-react-btn { font-size:10px; padding:3px 8px; border-radius:9px; border:1px solid var(--border); background:#fff; cursor:pointer; font-weight:600; }
+.note-react-btn.sel-agree { background:#DCFCE7; border-color:#166534; color:#166534; }
+.note-react-btn.sel-question { background:#FEF3C7; border-color:#7A5A1E; color:#7A5A1E; }
+.note-react-btn.sel-flag { background:#FEE2E2; border-color:#991B1B; color:#991B1B; }
+.note-form textarea { font-family:'DM Sans',sans-serif; font-size:11px; border:1px solid var(--border); border-radius:5px; padding:6px 8px; resize:vertical; min-height:44px; }
+.note-form-row { display:flex; gap:6px; align-items:center; justify-content:space-between; }
+.note-submit { font-size:10.5px; font-weight:700; background:var(--navy); color:#fff; border:none; border-radius:5px; padding:5px 12px; cursor:pointer; }
+.note-submit:disabled { background:#C7D2E3; cursor:not-allowed; }
+.note-identity { font-size:10px; color:var(--lgray); }
+.note-identity strong { color:var(--navy-d); }
+
+.legend { display:flex; gap:14px; flex-wrap:wrap; padding: 12px 18px; border-top:1px solid var(--border); background:#FAFBFD; }
+.legend-item { display:flex; align-items:center; gap:6px; font-size:10.5px; color:var(--dark); }
+.legend-swatch { width:10px; height:10px; border-radius:2px; }
+
+@media (max-width: 820px) {
+  .topbar, .content { padding-left: 14px; padding-right: 14px; }
+}
+
+/* ── Added for RACI / Data View / Value Stream Profile / People View
+     (Sept 14, 2026) — ported from the live dashboard's own CSS system,
+     same tokens/classes, scoped to this single-domain sandbox page ───── */
+.lens-section { margin-top: 16px; }
+.pat-Mixed { background: #94A3B8; color: #fff; }
+
+/* Summary bar (Value Stream Profile) */
+.summary-bar { display: flex; gap: 12px; padding: 14px 18px; background: var(--navy-l); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.summary-card { background: #fff; border-radius: 8px; border: 1px solid var(--border); padding: 10px 16px; flex: 1; min-width: 90px; text-align: center; }
+.summary-card .label { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--lgray); margin-bottom: 4px; white-space: nowrap; }
+.summary-card .value { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--navy); }
+.summary-card .sub { font-size: 10px; color: var(--lgray); margin-top: 2px; }
+
+/* Value-stream selector */
+.vs-bar { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-bottom: 1px solid var(--border); background: #fff; flex-wrap: wrap; }
+.vs-bar label { font-size: 11px; font-weight: 700; color: var(--navy-d); text-transform: uppercase; letter-spacing: .04em; flex: 0 0 auto; }
+.vs-bar select {
+  font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--dark);
+  background: #fff; border: 1px solid var(--border); border-radius: 5px; padding: 5px 10px; cursor: pointer;
+  flex: 0 0 auto; width: 280px; max-width: 100%; box-sizing: border-box;
+}
+
+.lens-empty { padding: 24px 18px; text-align: center; color: var(--lgray); font-style: italic; font-size: 12px; }
+
+/* CRUD cells (Data View) */
+td.crud { font-size: 10.5px; vertical-align: top; text-align: left !important; font-family: 'DM Sans', sans-serif !important; }
+td.crud-empty { color: #C8D0DC; text-align: center !important; font-size: 12px; }
+.crud-entry { margin-bottom: 4px; }
+.crud-entry:last-child { margin-bottom: 0; }
+.crud-entity { display: block; font-weight: 400; }
+.crud-sys { display: block; font-size: 9.5px; color: var(--lgray); font-style: italic; }
+td.crud-c .crud-entity { color: #166534; }
+td.crud-r .crud-entity { color: #1B4F8A; }
+td.crud-u .crud-entity { color: #B45309; }
+td.crud-d .crud-entity { color: #991B1B; }
+
+/* RACI cells */
+.raci-entry { margin-bottom: 6px; text-align: left; }
+.raci-entry:last-child { margin-bottom: 0; }
+.raci-entry-name { font-size: 11px; color: var(--dark); line-height: 1.3; }
+.raci-entry-sub { font-size: 9.5px; color: var(--lgray); font-style: italic; line-height: 1.3; }
+.raci-entry-derived .raci-entry-name { color: var(--lgray); font-style: italic; }
+.raci-derived-note { font-size: 9px; color: var(--lgray); font-style: italic; margin-top: 2px; }
+#raci-main-table td:not(:first-child), #crud-main-table td:not(:first-child) { text-align: left; font-family: inherit; font-size: 11px; }
+
+/* Pattern mix bar (thin segmented bar, used on RACI/Data/People rows) */
+.pat-mix-bar { display:inline-flex; width:56px; height:10px; overflow:hidden; vertical-align:middle; border-radius:2px; }
+.pat-mix-bar span { display:block; height:100%; box-sizing:border-box; border-right:1px solid #CBD5E1; }
+.pat-mix-bar span:last-child { border-right:none; }
+
+/* Value Stream Profile description cards */
+.description-grid { display: grid; grid-template-columns: 1fr; gap: 14px; padding: 18px; }
+.desc-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.desc-card-head { background: var(--navy-d); color: #fff; padding: 10px 16px; }
+.desc-card-head .desc-pcf { font-family: 'DM Mono', monospace; font-size: 11px; color: #A8C4E0; display: block; margin-bottom: 2px; }
+.desc-card-head .desc-name { font-size: 15px; font-weight: 700; }
+.desc-card-head .desc-subtitle { font-size: 11px; font-style: italic; color: #C7D8EA; margin-top: 2px; }
+.desc-card-body { padding: 14px 16px; }
+.desc-card-body p { font-size: 12px; color: var(--dark); line-height: 1.6; margin: 0 0 10px; }
+.desc-card-body p:last-child { margin-bottom: 0; }
+.desc-stats { display: flex; gap: 18px; padding: 10px 16px; background: #FAFBFD; border-top: 1px solid var(--border); flex-wrap: wrap; }
+.desc-stat { font-size: 11px; color: var(--lgray); }
+.desc-stat strong { color: var(--navy-d); font-size: 13px; display: block; }
+.desc-section-heading { font-size: 13px; font-weight: 700; color: var(--navy-d); padding: 14px 16px 8px; border-top: 1px solid var(--border); }
+.desc-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.desc-table-gov { table-layout: fixed; }
+.desc-table-gov th:nth-child(1), .desc-table-gov td:nth-child(1) { width: 9%; }
+.desc-table-gov th:nth-child(2), .desc-table-gov td:nth-child(2) { width: 20%; }
+.desc-table-gov th:nth-child(3), .desc-table-gov td:nth-child(3) { width: 14%; }
+.desc-table-gov th:nth-child(4), .desc-table-gov td:nth-child(4) { width: 16%; }
+.desc-table-gov th:nth-child(5), .desc-table-gov td:nth-child(5) { width: 15%; }
+.desc-table-gov th:nth-child(6), .desc-table-gov td:nth-child(6) { width: 26%; }
+.desc-table th { background: var(--navy); color: #fff; font-size: 11px; font-weight: 700; text-align: left; padding: 8px 16px; }
+.desc-table td { padding: 8px 16px; border-top: 1px solid var(--border); color: var(--dark); vertical-align: top; text-align: left; font-family: inherit; }
+.desc-table-formula { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--lgray); font-style: italic; margin-top: 4px; }
+.desc-table-source { font-size: 10px; font-weight: 700; color: #166534; text-align: left; }
+.desc-table-tier { font-size: 10px; font-weight: 700; text-align: left; }
+.desc-table-roles { table-layout: fixed; }
+.desc-table-roles th:nth-child(1), .desc-table-roles td:nth-child(1) { width: 220px; }
+.desc-table-roles th:nth-child(2), .desc-table-roles td:nth-child(2) { width: 150px; white-space: nowrap; }
+.desc-table-pcf { font-family: 'DM Mono', monospace; font-size: 10.5px; color: var(--gray); white-space: normal; word-break: break-word; }
+.desc-table-note { font-family: 'DM Sans', sans-serif; font-size: 10px; font-style: italic; color: var(--lgray); margin-top: 3px; }
+.desc-card .lens-empty { padding: 14px 16px; text-align: left; font-size: 12px; }
+.lens-note { font-size: 10px; color: var(--lgray); font-style: italic; padding: 10px 18px; }
+.narrative-block { padding: 14px 18px; font-size: 12px; color: var(--dark); line-height: 1.6; background: #FAFBFD; border-bottom: 1px solid var(--border); }
+.narrative-block p { margin: 0 0 10px; }
+.narrative-block p:last-child { margin-bottom: 0; }
+.capmap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 8px 18px 18px; }
+.capmap-card { border-radius: 8px; padding: 12px 14px; }
+.capmap-card .cm-name { font-weight: 700; font-size: 12px; margin-bottom: 3px; text-transform: uppercase; letter-spacing: .03em; }
+.capmap-card .cm-tagline { font-style: italic; font-size: 10px; margin-bottom: 8px; }
+.capmap-card .cm-count { font-weight: 700; font-size: 17px; }
+.capmap-card .cm-count span { font-size: 11px; font-weight: 700; text-transform: none; letter-spacing: 0; }
+.capmap-card .cm-mvals { font-weight: 700; font-size: 11px; margin-top: 4px; }
+.capmap-card .cm-empty-note { font-style: italic; font-size: 11px; }
+
+/* People View (Role Impact Table) */
+.role-toggle-icon { display: inline-block; width: 12px; font-weight: 700; color: var(--navy); margin-right: 4px; }
+#people-main-table td:not(:first-child) { text-align: center; font-family: 'DM Mono', monospace; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; A working sandbox for exploring PCF 7.0 with Tim and GiGi. Nothing here is official yet.
+  &nbsp;·&nbsp; <a href="../wip/index.html">Back to WIP hub</a>
+</div>
+
+<div class="sandbox-banner">
+  <span class="tag">Sandbox</span>
+  <strong>PCF 7.0 — Develop and Manage Human Resources.</strong>
+  This is a live working copy of the full PCF 7.0 content — Maturity Table, RACI Table, Value Stream Profile, Data View (CRUD Matrix), and
+  People View — with a second, integrated view laid over the Maturity Table: the
+  <strong>Current State &rarr; Future State &rarr; Progression Ceiling</strong> model (replacing M1&ndash;M5) plus Consequence of Error,
+  for the 53 activities that have been hand-classified by working relationship so far. Everything here is real data pulled from the
+  live framework &mdash; nothing is simulated. Leave a reaction or a note on any Maturity/Working-Relationship row using the <strong>Notes</strong> button; GiGi and Tim can both see
+  and add to them here.
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div>
+      <h2>7.0 &mdash; Develop and Manage Human Resources</h2>
+      <p>Sandbox &middot; toggle between the legacy Maturity Curve and the Working-Relationship view</p>
+    </div>
+    <div class="topbar-pills" id="topbar-pills"></div>
+  </div>
+
+  <div class="view-toggle">
+    <span class="view-toggle-label">View</span>
+    <button class="view-toggle-btn active" id="btn-legacy" onclick="setView('legacy')">Maturity Curve (M1&ndash;M5)</button>
+    <button class="view-toggle-btn" id="btn-wr" onclick="setView('wr')">Working Relationship</button>
+    <button class="view-toggle-btn" id="btn-raci" onclick="setView('raci')">RACI Table</button>
+    <button class="view-toggle-btn" id="btn-vsp" onclick="setView('vsp')">Value Stream Profile</button>
+    <button class="view-toggle-btn" id="btn-data" onclick="setView('data')">Data View (CRUD)</button>
+    <button class="view-toggle-btn" id="btn-people" onclick="setView('people')">People View</button>
+  </div>
+  <div class="view-note" id="view-note"></div>
+
+  <div class="content">
+    <div class="card lens-section" id="panel-maturity">
+      <div class="card-header">
+        <h3>HITL Maturity Assessment &mdash; PCF 7.0</h3>
+        <span>100 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 53 working-relationship classified</span>
+      </div>
+      <div class="table-wrap">
+        <table id="main-table">
+          <thead id="thead-legacy">
+            <tr>
+              <th>Process</th>
+              <th>Pattern</th>
+              <th class="col-m1">M1<br>Undesigned</th>
+              <th class="col-m2">M2<br>Ad Hoc</th>
+              <th class="col-m3">M3<br>Defined</th>
+              <th class="col-m4">M4<br>Managed</th>
+              <th class="col-m5">M5<br>Leading</th>
+              <th>M1&rarr;M3<br>Delta</th>
+            </tr>
+          </thead>
+          <thead id="thead-wr" style="display:none">
+            <tr>
+              <th>Process</th>
+              <th class="nowrap">Current<br>State</th>
+              <th class="nowrap">Future<br>State</th>
+              <th class="nowrap">Progression<br>Ceiling</th>
+              <th class="nowrap">Consequence<br>of Error</th>
+              <th class="nowrap">Provenance</th>
+              <th class="notes-cell">Reactions<br>&amp; Notes</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+      <div class="legend" id="legend-wr" style="display:none">
+        <span style="font-size:10.5px;font-weight:700;color:var(--navy-d);text-transform:uppercase;letter-spacing:.05em;">Working relationship</span>
+        <!-- populated by JS from WR_CATS -->
+      </div>
+    </div>
+
+    <div class="card lens-section" id="panel-raci" style="display:none">
+      <div class="card-header">
+        <h3>RACI Table &mdash; PCF 7.0</h3>
+        <span>Responsible / Accountable / Consulted / Informed, per L3 process &mdash; real reasoned-match RACI, grounded in APQC L4 activity text</span>
+      </div>
+      <div class="table-wrap">
+        <table id="raci-main-table">
+          <thead>
+            <tr>
+              <th>Process</th>
+              <th>Pattern</th>
+              <th>R</th>
+              <th>A &#9733;</th>
+              <th>C</th>
+              <th>I</th>
+            </tr>
+          </thead>
+          <tbody id="raci-table-body"></tbody>
+        </table>
+      </div>
+      <div style="padding:8px 18px 14px;font-size:10px;color:var(--lgray);font-style:italic;">&#9733; A = Accountable &middot; RACI grounded in real APQC L4 activity text. Where no separate Responsible was identified, R shows the Accountable role instead, marked <em>from Accountable</em>.</div>
+    </div>
+
+    <div class="card lens-section" id="panel-data" style="display:none">
+      <div class="card-header">
+        <h3>Data View (CRUD Matrix) &mdash; PCF 7.0</h3>
+        <span>Entity &times; process CRUD, per L3 process &mdash; real data ported from the live dashboard's Data View lens</span>
+      </div>
+      <div class="table-wrap">
+        <table id="crud-main-table">
+          <thead>
+            <tr>
+              <th>Process</th>
+              <th>Pattern</th>
+              <th>Create</th>
+              <th>Read</th>
+              <th>Update</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody id="crud-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card lens-section" id="panel-vsp" style="display:none">
+      <div class="card-header">
+        <h3>Value Stream Profile &mdash; PCF 7.0</h3>
+        <span>Description, KPIs, Design Narrative, AI Capability Map, Process Accountability, Handoff Points, Governed Decision Points &mdash; per value stream</span>
+      </div>
+      <div class="vs-bar" id="vs-bar">
+        <label for="vs-select">Value Stream</label>
+        <select id="vs-select" onchange="applyValueStream(this.value === 'all' ? 'all' : Number(this.value))"></select>
+      </div>
+      <div class="summary-bar" id="summary-bar"></div>
+      <div class="description-grid" id="description-grid"></div>
+    </div>
+
+    <div class="card lens-section" id="panel-people" style="display:none">
+      <div class="card-header">
+        <h3>People View (Role Impact Table) &mdash; PCF 7.0</h3>
+        <span>14-role catalog &middot; derived live from RACI R/A touches &mdash; reportsTo/span of control is a first-pass reasoned structure, not yet externally sourced</span>
+      </div>
+      <div class="table-wrap">
+        <table id="people-main-table">
+          <thead>
+            <tr>
+              <th>Role</th>
+              <th>Pattern Mix</th>
+              <th class="col-m1">M1</th>
+              <th class="col-m2">M2</th>
+              <th class="col-m3">M3</th>
+              <th class="col-m4">M4</th>
+              <th class="col-m5">M5</th>
+              <th>&Delta; M1&rarr;M3</th>
+            </tr>
+          </thead>
+          <tbody id="role-impact-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="sandbox-notes-widget.js"></script>
+<script>
+/* ── Real PCF 7.0 data, extracted from the live dashboard ────────────── */
+const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 68, 55, 43, 33],
+    valueStreams:[
+      { name:"HR Vision-to-Strategy", subtitle:"Set HR direction & workforce strategy", l2codes:["7.1"], tier:"Strategy" },
+      { name:"Recruit-to-Hire", subtitle:"Acquire Talent", l2codes:["7.2"], tier:"Operational" },
+      { name:"Perform-to-Grow", subtitle:"Develop Talent", l2codes:["7.3"], tier:"Operational" },
+      { name:"Reward-to-Retain", subtitle:"Reward & Retain Talent", l2codes:["7.5"], tier:"Operational" },
+      { name:"Move-to-Exit", subtitle:"Transition Talent", l2codes:["7.6"], tier:"Operational" },
+      { name:"Enable & Govern", subtitle:"Cross-cutting — compliance, data, communication", l2codes:["7.4","7.7","7.8"], tier:"Enablement" },
+    ],
+    lenses: {
+      kpis: [
+      { stream:"HR Vision-to-Strategy", pcf:"PCF 7.1", metrics:[
+        {name:"Workforce plan accuracy", formula:"1 \u2212 |Actual headcount \u2212 Planned headcount| \u00f7 Planned headcount, measured at each planning-cycle close", source:null},
+        {name:"HR strategy-to-execution lag", formula:"Time from HR strategy/policy approval (7.1.1\u20137.1.3) to operational rollout across affected value streams", source:null},
+        {name:"Competency model coverage", formula:"Roles mapped to an approved competency model \u00f7 Total roles in scope", source:null},
+        {name:"Policy currency", formula:"HR policies reviewed within their scheduled review cycle \u00f7 Total active HR policies", source:null},
+      ]},
+      { stream:"Recruit-to-Hire", pcf:"PCF 7.2", metrics:[
+        {name:"Time-to-hire", formula:"Sum of 3 cycle-time stages: need-to-hire → requisition approval, approval → offer acceptance, acceptance → start date", source:"APQC OSB"},
+        {name:"Cost-per-hire", formula:"Total cost to perform \u201crecruit, source, and select employees\u201d \u00f7 Total number of new hires", source:"APQC OSB"},
+        {name:"Offer-acceptance rate", formula:null, source:null},
+        {name:"Quality-of-hire / early attrition", formula:"100% \u2212 new hire retention rate at 12 months (tracked by tier)", source:"APQC OSB"},
+      ]},
+      { stream:"Perform-to-Grow", pcf:"PCF 7.3", metrics:[
+        {name:"Engagement score", formula:"No single standardized formula \u2014 SHRM: \u201cthere is no one way to measure Engagement.\u201d Measured as weighted average of favorable (Agree/Strongly Agree) responses across an engagement survey, per cycle", source:"SHRM"},
+        {name:"Internal mobility rate", formula:"Employees moving to a new internal role \u00f7 total headcount, measured annually", source:null},
+        {name:"Manager effectiveness", formula:"Weighted average of manager-effectiveness survey/360-review items (0\u2013100 scale), by review cycle", source:null},
+        {name:"Revenue / productivity per employee", formula:"Total revenue (or output value) \u00f7 average headcount, per fiscal period", source:null},
+      ]},
+      { stream:"Reward-to-Retain", pcf:"PCF 7.5", metrics:[
+        {name:"Regrettable turnover rate", formula:"Voluntary exits of high-performing/critical-skill employees \u00f7 average headcount, measured annually", source:"SHRM"},
+        {name:"Compensation competitiveness", formula:"Pay rate \u00f7 pay range midpoint (compa-ratio), aggregated as average compa-ratio across employees in scope", source:"SHRM"},
+        {name:"Benefits cost trend", formula:"Total benefits spend this period \u00f7 total benefits spend prior period \u2212 1, tracked year-over-year", source:null},
+      ]},
+      { stream:"Move-to-Exit", pcf:"PCF 7.6", metrics:[
+        {name:"Separation cost", formula:"Total cost to perform \u201credeploy and retire employees\u201d \u00f7 (Total business entity revenue \u00d7 0.001) \u2014 per-FTE and per-employee variants follow the same pattern", source:"APQC OSB"},
+        {name:"Exit sentiment", formula:"Weighted average of favorable sentiment responses across exit interviews, by cycle", source:null},
+        {name:"Compliance / litigation exposure", formula:"Exit-related compliance incidents or claims \u00f7 total exits, measured annually", source:null},
+        {name:"Knowledge-loss risk", formula:"Departures from critical/single-point-of-failure roles \u00f7 total exits, per cycle", source:null},
+      ]},
+      { stream:"Enable & Govern", pcf:"PCF 7.4, 7.7–7.8", metrics:[
+        {name:"HR cost-to-serve", formula:"4 variants: personnel cost as % of total HR cost; personnel cost per HR-function FTE; personnel cost per business-entity FTE; overhead cost per business-entity employee", source:"APQC OSB"},
+        {name:"ER case cycle time", formula:"Time from grievance/complaint intake to case resolution, per case, averaged per period", source:null},
+        {name:"Compliance incident rate", formula:"Confirmed compliance incidents \u00f7 total headcount, per period", source:null},
+        {name:"Data quality / audit findings", formula:"Data-quality audit findings requiring remediation \u00f7 total audit checks performed, per audit cycle", source:null},
+      ]}
+    ],
+      roles: [
+      { role:"HR Business Partner Manager", tier:"Managerial", steps:11, mix:"7.2.1 · 7.3.2 · 7.4.1–7.4.4 · 7.6.1–7.6.3 (7.6.3 partial) · 7.8.1 · 7.8.3" },
+      { role:"HRIS Analyst", tier:"Operational", steps:9, mix:"7.2.5 · 7.5.4 (partial) · 7.7.1 · 7.7.3–7.7.8" },
+      { role:"Director of HR Operations", tier:"Managerial", steps:3, mix:"7.1.2 · 7.1.3 · 7.4.5" },
+      { role:"Director of L&D", tier:"Managerial", steps:3, mix:"7.1.4 · 7.3.3 · 7.3.4" },
+      { role:"Recruiter", tier:"Operational", steps:3, mix:"7.2.2 · 7.2.3 · 7.2.4" },
+      { role:"HR Generalist", tier:"Operational", steps:4, mix:"7.5.3 · 7.5.5 · 7.7.2 · 7.8.2" },
+      { role:"CHRO", tier:"Executive", steps:1, mix:"7.1.1 — the only L3 across PCF 7.0 that constitutes domain strategy formation itself" },
+      { role:"Onboarding Coordinator", tier:"Operational", steps:1, mix:"7.3.1" },
+      { role:"Compensation & Benefits Manager", tier:"Managerial", steps:1, mix:"7.5.1 · Value Stream Owner, Reward-to-Retain" },
+      { role:"Compensation Analyst", tier:"Operational", steps:1, mix:"7.5.2" },
+      { role:"Director of Talent Acquisition", tier:"Managerial", steps:0, mix:"Value Stream Owner, Recruit-to-Hire — aggregates 7.1–7.2 rather than holding direct L3 accountability" },
+      { role:"VP People & Culture", tier:"Executive", steps:0, mix:"Consulted / Informed across 7.1.x, 7.3.x, 7.5.x — Executive oversight, not direct accountability" },
+      { role:"SVP Talent Management", tier:"Executive", steps:0, mix:"Not yet assigned within PCF 7.0" },
+      { role:"L&D Specialist", tier:"Operational", steps:0, mix:"Responsible: 7.3.3 · 7.3.4" },
+    ],
+      governance: [
+      { code:"7.1.1", decision:"Approve the enterprise HR strategy", authority:"CHRO", tier:"Executive", impact:"Strategic — sets direction and resource allocation for every downstream HR value stream", escalates:"CEO / Board (outside the HR role catalog)", trigger:"Strategy requires enterprise-level budget commitment beyond CHRO's authority, or conflicts with board-approved workforce or financial constraints" },
+      { code:"7.2.1.3", decision:"Authorize a job requisition against budget and approved headcount plan", authority:"HRBP Manager, Finance", tier:"Managerial", impact:"Financial — budget commitment", escalates:"CHRO (Executive)", trigger:"Requisition falls outside the approved headcount plan or requires cross-functional budget reallocation" },
+      { code:"7.2.3.4", decision:"Select and reject candidates; commit to a hire", authority:"Recruiter, Hiring Managers*", tier:"Operational", impact:"Financial + People — compensation commitment, team composition", escalates:"CHRO (Executive)", trigger:"Role is senior/leadership-level, or offer terms exceed standard compensation band" },
+      { code:"7.2.4.2", decision:"Negotiate final offer terms with candidate (embedded in Manage New Hire / Rehire)", authority:"Recruiter, Compensation & Benefits Manager", tier:"Operational · Managerial", impact:"Financial — compensation exception", escalates:"Director of Talent Acquisition (Managerial)", trigger:"Negotiated terms exceed standard offer parameters — comp above band, signing bonus, relocation" },
+      { code:"7.3.3.4", decision:"Establish succession plan for a role or individual (embedded in Manage Career Development)", authority:"Director of L&D, HRBP Manager", tier:"Managerial", impact:"People + Strategic — talent/continuity risk", escalates:"VP People & Culture (Executive)", trigger:"Succession plan concerns a business-critical or executive-level role" },
+      { code:"7.6.1", decision:"Approve an employee promotion or demotion", authority:"HRBP Manager", tier:"Managerial", impact:"Career/compensation — affects employee title, band, and pay level", escalates:"VP People & Culture (Executive)", trigger:"Promotion/demotion involves a significant compensation-band change, a contested or disputed case, or falls outside standard promotion criteria" },
+      { code:"7.4.4", decision:"Investigate and resolve employee complaint or grievance", authority:"HRBP Manager", tier:"Managerial", impact:"Legal + People — litigation and reputational exposure", escalates:"Director of HR Ops / Legal / CHRO (Managerial → Executive)", trigger:"Case involves potential litigation, an executive-level employee, or regulatory exposure" },
+      { code:"7.7.7.3", decision:"Select the methodology used for workforce analytics (embedded in Manage HR Reporting & Analytics)", authority:"HRIS Analyst", tier:"Operational", impact:"Operational + Strategic — informs downstream restructuring or board reporting", escalates:"Director of HR Ops (Managerial)", trigger:"Methodology output will inform headcount, restructuring, or board-level reporting decisions" }
+    ],
+      descriptions: [
+      { stream:"HR Vision-to-Strategy", pcf:"PCF 7.1", subtitle:"Set HR direction & workforce strategy", l3Count:4, activityUnits:31, m1:80, m3:58, delta:-22, narrative:["This value stream comprises one APQC PCF process group: 7.1 Develop and Manage HR Planning, Policies, and Strategies — spanning 4 Level 3 processes and 31 Level 4 activities.", "At the activity level, this value stream's work breaks down as 23 Knowledge activities (judgment, synthesis, and interpretation-driven work), 4 Document activities (content generation), and 4 Transaction activities (rules-based processing suited to automation). No Decision- or Exception-pattern activity exists within this value stream.", "At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 58%, down from an 80% undesigned baseline — a 22-point AI convergence opportunity."],
+        roles:[
+          {role:"CHRO", tier:"Executive"},
+          {role:"VP People & Culture", tier:"Executive"},
+          {role:"Director of HR Ops", tier:"Managerial"},
+          {role:"Director of L&D", tier:"Managerial"},
+          {role:"Director of Talent Acquisition", tier:"Managerial"},
+          {role:"HRBP Manager", tier:"Managerial"},
+          {role:"Compensation & Benefits Manager", tier:"Managerial"},
+          {role:"HR Generalist", tier:"Operational"},
+        ] },
+      { stream:"Recruit-to-Hire", pcf:"PCF 7.2", subtitle:"Acquire Talent", l3Count:5, activityUnits:24, m1:70, m3:47, delta:-23, narrative:["This value stream comprises one APQC PCF process group: 7.2 Recruit, Source, and Select Employees — spanning 5 Level 3 processes and 24 Level 4 activities.", "At the activity level, this value stream's work breaks down as 15 Transaction activities (rules-based processing suited to automation), 5 Knowledge activities (judgment, synthesis, and interpretation-driven work), 3 Decision activities (judgment-and-authority gates that stay human by design), and 1 Document activity (content generation). No Exception-pattern activity exists within this value stream.", "At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 47%, down from a 70% undesigned baseline — a 23-point AI convergence opportunity."],
+        roles:[
+          {role:"Director of Talent Acquisition", tier:"Managerial"},
+          {role:"HRBP Manager", tier:"Managerial"},
+          {role:"Compensation & Benefits Manager", tier:"Managerial"},
+          {role:"Director of HR Ops", tier:"Managerial"},
+          {role:"Recruiter", tier:"Operational"},
+          {role:"HR Generalist", tier:"Operational"},
+          {role:"HRIS Analyst", tier:"Operational"},
+          {role:"Hiring Managers*", tier:"External Participant"},
+        ] },
+      { stream:"Perform-to-Grow", pcf:"PCF 7.3", subtitle:"Develop Talent", l3Count:4, activityUnits:18, m1:79, m3:58, delta:-21, narrative:["This value stream comprises one APQC PCF process group: 7.3 Develop and Counsel Employees — spanning 4 Level 3 processes and 18 Level 4 activities.", "At the activity level, this value stream's work breaks down as 12 Knowledge activities (judgment, synthesis, and interpretation-driven work), 4 Transaction activities (rules-based processing suited to automation), 1 Document activity (content generation), and 1 Decision activity (judgment-and-authority gates that stay human by design). No Exception-pattern activity exists within this value stream.", "At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 58%, down from a 79% undesigned baseline — a 21-point AI convergence opportunity."],
+        roles:[
+          {role:"CHRO", tier:"Executive"},
+          {role:"VP People & Culture", tier:"Executive"},
+          {role:"Director of Talent Acquisition", tier:"Managerial"},
+          {role:"Director of HR Ops", tier:"Managerial"},
+          {role:"Director of L&D", tier:"Managerial"},
+          {role:"HRBP Manager", tier:"Managerial"},
+          {role:"HR Generalist", tier:"Operational"},
+          {role:"L&D Specialist", tier:"Operational"},
+          {role:"Onboarding Coordinator", tier:"Operational"},
+          {role:"Managers*", tier:"External Participant"},
+        ] },
+      { stream:"Reward-to-Retain", pcf:"PCF 7.5", subtitle:"Reward & Retain Talent", l3Count:5, activityUnits:17, m1:74, m3:51, delta:-23, narrative:["This value stream comprises one APQC PCF process group: 7.5 Reward and Retain Employees — spanning 5 Level 3 processes and 17 Level 4 activities.", "At the activity level, this value stream's work breaks down as 9 Knowledge activities (judgment, synthesis, and interpretation-driven work), 7 Transaction activities (rules-based processing suited to automation), and 1 Document activity (content generation). No Exception-pattern activity exists within this value stream.", "At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 51%, down from a 74% undesigned baseline — a 23-point AI convergence opportunity."],
+        roles:[
+          {role:"Compensation & Benefits Manager", tier:"Managerial"},
+          {role:"Director of HR Ops", tier:"Managerial"},
+          {role:"HRBP Manager", tier:"Managerial"},
+          {role:"Compensation Analyst", tier:"Operational"},
+          {role:"HR Generalist", tier:"Operational"},
+          {role:"HRIS Analyst", tier:"Operational"},
+          {role:"Finance*", tier:"External Participant"},
+        ] },
+      { stream:"Move-to-Exit", pcf:"PCF 7.6", subtitle:"Transition Talent", l3Count:3, activityUnits:6, m1:70, m3:48, delta:-22, narrative:["This value stream comprises one APQC PCF process group: 7.6 Redeploy and Retire Employees — spanning 3 Level 3 processes and 6 Level 4 activities.", "At the activity level, this value stream's work breaks down as 4 Transaction activities (rules-based processing suited to automation), 1 Decision activity (judgment-and-authority gates that stay human by design), and 1 Knowledge activity (judgment, synthesis, and interpretation-driven work). No Exception-pattern activity exists within this value stream.", "At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 48%, down from a 70% undesigned baseline — a 22-point AI convergence opportunity."],
+        roles:[
+          {role:"HRBP Manager", tier:"Managerial"},
+          {role:"Compensation & Benefits Manager", tier:"Managerial"},
+          {role:"HR Generalist", tier:"Operational"},
+          {role:"Legal*", tier:"External Participant"},
+        ] },
+      { stream:"Enable & Govern", pcf:"PCF 7.4, 7.7–7.8", subtitle:"Cross-cutting — compliance, data, communication", l3Count:16, activityUnits:22, m1:79, m3:57, delta:-22, narrative:["This value stream spans 3 APQC PCF process groups: 7.4 Manage Employee Relations, 7.7 Manage Employee Information, and 7.8 Manage Employee Communication — together comprising 16 Level 3 processes and 22 Level 4 activities.", "At the activity level, this value stream's work breaks down as 8 Knowledge activities (judgment, synthesis, and interpretation-driven work), 5 Transaction activities (rules-based processing suited to automation), 4 Document activities (content generation), 3 Decision activities (judgment-and-authority gates that stay human by design), and 2 Exception activities (non-standard cases requiring human resolution).", "At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 57%, down from a 79% undesigned baseline — a 22-point AI convergence opportunity."],
+        roles:[
+          {role:"CHRO", tier:"Executive"},
+          {role:"Director of HR Ops", tier:"Managerial"},
+          {role:"HRBP Manager", tier:"Managerial"},
+          {role:"HR Generalist", tier:"Operational"},
+          {role:"HRIS Analyst", tier:"Operational"},
+          {role:"Legal*", tier:"External Participant"},
+        ] },
+    ],
+      designNarrative: {
+        "HR Vision-to-Strategy": "HR Vision-to-Strategy is the framework's only Executive-tier value stream in PCF 7.0: 7.1.1 (Develop human resources strategy) is the domain's single Executive-Accountable L3, with CHRO holding formal Accountability while HRBP Manager and Director of HR Ops carry the Responsible drafting work. Director of HR Ops then holds Accountable for translating that strategy into workforce planning and keeping it current (7.1.2, 7.1.3), while Director of L&D owns competency model design (7.1.4) as an adjacent step. Every other PCF 7.0 value stream operates downstream of this one — its outputs (approved strategy, workforce plans, policies, competency models) are the direct inputs the operational and enablement streams execute against. Its steepest AI-absorption opportunities cluster in Document-pattern content — 7.1.1.7 (communicating HR strategy) and 7.1.2.16 (maintaining job descriptions) both sit at -32 points.",
+        "Recruit-to-Hire": "Recruit-to-Hire, now scoped to candidate acquisition alone, keeps human judgment concentrated at two points: candidate selection itself (7.2.3, the interview and select/reject decision) and final hire commitment (7.2.4, offer negotiation) — both Accountable to Recruiter. Everything else in the value stream — requisition administration (7.2.1), sourcing-channel execution (7.2.2), applicant data management (7.2.5) — carries real AI-absorption opportunity at M3, reflected in the value stream's steepest single gap sitting in 7.2.4.1 (Draw up and make offer, Document-pattern, -32 points), with 7.2.5's entirely Transaction-pattern applicant-information work close behind at -25.",
+        "Perform-to-Grow": "Perform-to-Grow's HITL design keeps human judgment concentrated at two points: succession-plan decisions (7.3.3.4, Decision-pattern, the smallest Δ M1→M3 in the value stream at -12 points) and the performance review conversation itself (7.3.2.2), which sits outside the HR role catalog entirely and is conducted by the employee's direct manager rather than an HR role. Everything else in the value stream — onboarding implementation, performance documentation, skill and competency execution, training delivery and certifications — carries real AI-absorption opportunity at M3, reflected in the value stream's largest single Δ M1→M3 gap sitting in 7.3.2.3 (Document employee performance, Document-pattern, -32 points).",
+        "Reward-to-Retain": "Reward-to-Retain has no Decision-pattern activity and no Executive-tier accountability anywhere in this value stream — human judgment here is concentrated in Knowledge-pattern program design and review work (7.5.1's compensation-structure design and recurring plan-review cadence, 7.5.3's work/life balance and family-support program delivery) rather than in formal approval gates. The value stream also introduces its first genuine cross-functional accountability boundary: 7.5.4 Administer Payroll is Accountable to HRIS Analyst but explicitly scoped to HR-owned personnel data, with Finance owning the payroll run itself as an external participant. The steepest AI-absorption opportunity sits in 7.5.5 (Manage/Collect Employee Suggestions and Research, Document-pattern, -32 points), the value stream's only Document-pattern content.",
+        "Move-to-Exit": "Move-to-Exit is the first value stream in this framework where a single role — HR Business Partner Manager — is Accountable for every L3 process, a confirmed structural finding rather than under-differentiation: published offboarding-process literature identifies diffused ownership as the primary failure mode for exit workflows, making concentrated single-role accountability the correct shape here. Human judgment stays most anchored in 7.6.1 (Manage Promotion and Demotion Process, Decision-pattern, the smallest Δ M1→M3 in the value stream at -12 points). This value stream also produced the framework's first confirmed specialist-role gap: 7.6.3's Accountable assignment is explicitly partial, since International HR Management is a recognized specialist discipline the current role catalog does not name — distinct in kind from Reward-to-Retain's HR/Finance boundary, which was a split between two existing roles rather than the absence of one.",
+        "Enable & Govern": "Enable & Govern is the first value stream spanning multiple PCF L2 groups rather than one, and its accountability pattern reflects that structure: three distinct role clusters emerge along the underlying group boundaries instead of a single dominant owner — HR Business Partner Manager holds the case-based, relationship-driven work (7.4.1–7.4.4, 7.8.1, 7.8.3), HRIS Analyst holds systems and data infrastructure (the majority of 7.7), and Director of HR Operations sits above both as the cross-domain governance layer, directly Accountable for compliance monitoring (7.4.5). This value stream also carries the framework's two Exception-pattern activities (7.4.4 grievances, 7.7.2 employee inquiries), and its steepest AI-absorption opportunities cluster in Document-pattern content — 7.7.1 reporting, 7.8.2 survey administration, and 7.8.3 communication delivery all sit at -32 points. 7.8.2 carries forward its Reward-to-Retain assignment unchanged, since APQC names the same underlying activity separately under two different L2 groups.",
+      },
+      handoffPoints: {
+        "HR Vision-to-Strategy": [
+          "HR Vision-to-Strategy opens with CHRO-accountable strategy formation (7.1.1), then hands to Director of HR Ops for workforce planning, policy administration, and ongoing strategy monitoring (7.1.2, 7.1.3) — the value stream's design-and-governance layer. Director of L&D holds competency management models (7.1.4) as a single adjacent step within this same design-tier group, closing the value stream before its outputs hand off downstream to every operational and enablement stream in the domain.",
+        ],
+        "Recruit-to-Hire": [
+          "Recruit-to-Hire opens with HRBP Manager on requisition management (7.2.1), then hands to Recruiter for the full candidate lifecycle: sourcing (7.2.2), screening and selection (7.2.3), and new hire/offer management (7.2.4) — the value stream's largest single lane.",
+          "The funnel closes with HRIS Analyst, Accountable for applicant information management (7.2.5) — background checks, records, tracking, archiving — entirely Transaction-pattern, one of the value stream's largest AI-absorption opportunities (Δ -25 points).",
+        ],
+        "Perform-to-Grow": [
+          "The value stream opens with the Onboarding Coordinator (7.3.1), who owns the employee's entry into the organization end to end — program design, implementation, and monitoring all sit in one lane, the cleanest single-owner match in Perform-to-Grow.",
+          "7.3.2 Manage Employee Performance is owned by the HRBP Manager, but the process itself hands off outside the HR role catalog: 7.3.2.2 Review employee performance is executed by the employee's direct manager, an external participant rather than an HR role. The HRBP Manager lane picks the process back up for objective-setting, documentation, and program monitoring around that handoff.",
+          "7.3.3 and 7.3.4 both sit in the Director of L&D lane — the largest lane in this value stream. The handoff into this lane from 7.3.2 is a shift from performance administration to development: guideline-setting and succession work (7.3.3) flow directly into training design and delivery (7.3.4).",
+        ],
+        "Reward-to-Retain": [
+          "The value stream opens with Compensation & Benefits Manager (7.5.1), who owns the largest single L3 in Reward-to-Retain — compensation structure design, administration, and the recurring review cadence all sit in one lane.",
+          "7.5.2 Manage and Administer Benefits hands off to Compensation Analyst for fully operational, Transaction-pattern execution — enrollment, claims processing, and reconciliation — with Compensation & Benefits Manager retained as Consulted.",
+          "HR Generalist owns two separate pieces of the value stream — employee assistance and retention program delivery (7.5.3) and employee suggestion/research program administration (7.5.5). HRIS Analyst's single step (7.5.4 Administer Payroll) marks the value stream's only genuine cross-functional boundary: HR's accountability there is explicitly scoped to personnel data, with Finance owning the payroll run and payroll accounting outside this process flow entirely.",
+        ],
+        "Move-to-Exit": [
+          "Move-to-Exit is the framework's first value stream with a single Accountable role: HR Business Partner Manager is Accountable for all three L3s and every step in this process flow, consistent with the offboarding-literature finding that diffused ownership is the primary failure mode for exit processes.",
+          "The real handoffs in this value stream sit outside HR rather than between HR roles. 7.6.2 Manage Separation triggers coordinated workstreams with Payroll, IT/Security, and Facilities against a shared offboarding checklist — final pay, access removal, asset return — outside HR's accountability scope, and escalates to Legal only for contested or high-risk terminations, not as a routine participant.",
+          "7.6.3 Relocate Employees and Manage Assignments is the value stream's confirmed specialist-role gap: HR Business Partner Manager's ownership here is explicitly partial, since International HR Management is a recognized specialist discipline the current role catalog does not name.",
+        ],
+        "Enable & Govern": [
+          "Enable & Govern is the first value stream in this framework to span multiple PCF L2 groups rather than one, and its ownership split reflects that structure directly: HRBP Manager owns the case-based, relationship-driven work clustered in 7.4 (labor relations, bargaining, partnerships, grievances) plus the communication bookends in 7.8, while HRIS Analyst owns the systems and data infrastructure that makes up the majority of 7.7 — the largest single ownership share in the framework so far.",
+          "Director of HR Ops holds a single step (7.4.5 Monitor Legal and Regulatory Environment) but sits above both other owners as the cross-domain governance layer — Consulted or Informed across most of the remaining steps even without direct Accountable ownership of them, reflecting the value stream's own \"enable and govern\" purpose.",
+          "HR Generalist's two steps (7.7.2 Manage Employee Inquiry Process, 7.8.2 Conduct Employee Engagement Surveys) form the value stream's operational-delivery layer. 7.8.2 carries forward its Reward-to-Retain assignment unchanged, since APQC names the same underlying activity separately under two different L2 groups — the framework's first confirmed content overlap across value streams.",
+        ],
+      },
+    },
+    groups:[
+    { code:"7.1", name:"Develop and Manage HR Planning, Policies, and Strategies", mv:[82, 74, 60, 47, 37], l3:[
+      { code:"7.1.1",crud:{"create":["Workforce Plan (Workday HCM)"],"read":[],"update":[],"delete":[]}, name:"Develop human resources strategy", pattern:"Mixed", mv:[82, 74, 60, 47, 37], mixed:true, raci:{R:"HRBP Manager · Director of HR Ops",A:"CHRO",C:"Director of TA",I:"All Managerial-tier"}, l4:[
+        { code:"7.1.1.1", name:"Identify strategic HR needs", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.1.2", name:"Define HR and business function roles and accountability", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.1.3", name:"Determine HR function roles and structure", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.1.4", name:"Determine HR delivery model", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.1.5", name:"Determine HR costs", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.1.6", name:"Establish HR measures", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.1.7", name:"Communicate HR strategies", pattern:"Document", mv:[72, 58, 40, 28, 18] },
+        { code:"7.1.1.8", name:"Develop strategy for HR systems/technologies/tools", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.1.9", name:"Manage employer branding", pattern:"Document", mv:[72, 58, 40, 28, 18] },
+        { code:"7.1.1.10", name:"Design the employee experience", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+      ]},
+      { code:"7.1.2",crud:{"create":["Requisition Record (iCIMS)"],"read":["Workforce Plan (Workday HCM)"],"update":[],"delete":[]}, name:"Develop and implement workforce planning, policies, and strategies", pattern:"Mixed", mv:[78, 69, 56, 43, 33], mixed:true, raci:{R:"Comp & Benefits Mgr · HRBP Mgr · Dir. of L&D · HR Generalist",A:"Director of HR Ops",C:"VP People & Culture",I:"CHRO · Director of TA"}, l4:[
+        { code:"7.1.2.1", name:"Perform strategic workforce planning", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.2.2", name:"Develop total compensation and rewards strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.2.3", name:"Develop succession plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.2.4", name:"Develop high performers/leadership programs", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.2.5", name:"Develop diversity, equity, and inclusion plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.2.6", name:"Implement diversity, equity, and inclusion plan", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.1.2.7", name:"Design talent acquisition program", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.2.8", name:"Design talent development program", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.2.9", name:"Develop other HR programs", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.2.10", name:"Develop HR policies", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.2.11", name:"Administer HR policies", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.1.2.12", name:"Plan employee benefits", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.2.13", name:"Develop workforce strategy models", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.2.14", name:"Implement workforce strategy models", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.1.2.15", name:"Manage job families", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.1.2.16", name:"Develop and maintain job descriptions", pattern:"Document", mv:[72, 58, 40, 28, 18] },
+      ]},
+      { code:"7.1.3", crud:{"create":["Policy Update Record (UKG HR Service Delivery)"],"read":["Workforce Plan (Workday HCM)","Regulatory Alert (XpertHR)"],"update":["Workforce Plan (Workday HCM)","Policy Update Record (UKG HR Service Delivery)"],"delete":[]}, name:"Monitor and update HR strategies, plans, and policies", pattern:"Mixed", mv:[82, 73, 59, 46, 36], mixed:true, raci:{R:"HRBP Manager",A:"Director of HR Ops",C:"VP People & Culture",I:"CHRO · All Managerial-tier"}, l4:[
+        { code:"7.1.3.1", name:"Measure realization of HR objectives", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.3.2", name:"Measure contribution of HR to business strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.1.3.3", name:"Communicate HR plans and provide updates to stakeholders", pattern:"Document", mv:[72, 58, 40, 28, 18] },
+        { code:"7.1.3.4", name:"Review and revise HR plans", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+      ]},
+      { code:"7.1.4", crud:{"create":["Competency Model (Workday Skills Cloud)"],"read":["Workforce Plan (Workday HCM)"],"update":["Competency Model (Workday Skills Cloud)"],"delete":[]}, name:"Develop competency management models", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Comp & Benefits Mgr · HRBP Manager",A:"Director of L&D",C:"VP People & Culture · CHRO",I:"Director of TA"}, l4:[] },
+    ]},
+    { code:"7.2", name:"Recruit, Source, and Select Employees", mv:[70, 60, 48, 36, 26], l3:[
+      { code:"7.2.1",crud:{"create":["Job Posting (iCIMS / LinkedIn Recruiter)"],"read":["Requisition Record (iCIMS)"],"update":["Requisition Record (iCIMS)"],"delete":[]}, name:"Manage employee requisitions", pattern:"Mixed", mv:[68, 58, 46, 33, 24], mixed:true, raci:{R:"HR Generalist · Recruiter",A:"HRBP Manager",C:"Director of TA",I:"Hiring Managers*"}, l4:[
+        { code:"7.2.1.1", name:"Align staffing plan to work force plan and business unit strategies/resource needs", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.2.1.2", name:"Open job requisitions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.2.1.3", name:"Approve job requisition", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
+        { code:"7.2.1.4", name:"Post job requisitions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.2.1.5", name:"Modify job requisitions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.2.1.6", name:"Notify hiring manager", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.2.1.7", name:"Manage requisition dates", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+      ]},
+      { code:"7.2.2",crud:{"create":["Candidate Profile (iCIMS)"],"read":["Requisition Record (iCIMS)"],"update":[],"delete":[]}, name:"Recruit/Source candidates", pattern:"Mixed", mv:[68, 58, 45, 32, 22], mixed:true, raci:{R:"HR Generalist (referrals)",A:"Recruiter",C:"Director of TA",I:"HRBP Manager"}, l4:[
+        { code:"7.2.2.1", name:"Determine recruitment methods and channels", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.2.2.2", name:"Perform recruiting activities/events", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.2.2.3", name:"Develop and maintain candidate pool", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.2.2.4", name:"Manage recruitment vendors", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.2.2.5", name:"Manage employee referral programs", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.2.2.6", name:"Manage recruitment channels", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+      ]},
+      { code:"7.2.3",crud:{"create":["Offer Letter (iCIMS / DocuSign)"],"read":["Requisition Record (iCIMS)"],"update":["Candidate Profile (iCIMS)"],"delete":[]}, name:"Screen and select candidates", pattern:"Mixed", mv:[80, 73, 61, 50, 40], mixed:true, raci:{R:"Hiring Managers*",A:"Recruiter",C:"Director of TA",I:"HRBP Manager"}, l4:[
+        { code:"7.2.3.1", name:"Identify and deploy candidate selection tools", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.2.3.2", name:"Interview candidates", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.2.3.3", name:"Test candidates", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.2.3.4", name:"Select and reject candidates", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
+      ]},
+      { code:"7.2.4",crud:{"create":["Background Check Record (HireRight)"],"read":["Requisition Record (iCIMS)"],"update":["Candidate Profile (iCIMS)","Offer Letter (iCIMS / DocuSign)"],"delete":[]}, name:"Manage new hire/re-hire", pattern:"Mixed", mv:[75, 65, 52, 41, 32], mixed:true, raci:{R:"Comp & Benefits Mgr (offer terms)",A:"Recruiter",C:"Director of TA",I:"HRIS Analyst"}, l4:[
+        { code:"7.2.4.1", name:"Draw up and make offer", pattern:"Document", mv:[72, 58, 40, 28, 18] },
+        { code:"7.2.4.2", name:"Negotiate offer", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
+        { code:"7.2.4.3", name:"Hire candidate", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+      ]},
+      { code:"7.2.5",crud:{"create":["Applicant Record (iCIMS)"],"read":[],"update":[],"delete":[]}, name:"Manage applicant information", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Recruiter (data entry)",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[
+        { code:"7.2.5.1", name:"Obtain candidate background information", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.2.5.2", name:"Create applicant record", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.2.5.3", name:"Manage/Track applicant data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.2.5.4", name:"Archive and retain records of non-hires", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+      ]},
+    ]},
+    { code:"7.3", name:"Develop and Counsel Employees", mv:[79, 71, 58, 45, 35], l3:[
+      { code:"7.3.1",crud:{"create":["Onboarding Record (Workday HCM)","System Access Profile (Okta)"],"read":["Employee Master Record (Workday HCM)"],"update":[],"delete":[]}, name:"Manage employee onboarding", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, raci:{R:"—",A:"Onboarding Coordinator",C:"Director of HR Ops",I:"HRBP Manager"}, l4:[
+        { code:"7.3.1.1", name:"Develop employee onboarding program", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.3.1.2", name:"Implement employee onboarding program", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.3.1.3", name:"Monitor and update employee onboarding program", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+      ]},
+      { code:"7.3.2",crud:{"create":["Performance Review (Lattice)"],"read":[],"update":["Performance Review (Lattice)"],"delete":[]}, name:"Manage employee performance", pattern:"Mixed", mv:[82, 73, 59, 46, 36], mixed:true, raci:{R:"HR Generalist (documentation) · Managers* (review conduct)",A:"HRBP Manager",C:"Director of HR Ops",I:"CHRO"}, l4:[
+        { code:"7.3.2.1", name:"Define employee performance objectives", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.3.2.2", name:"Review employee performance", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.3.2.3", name:"Document employee performance", pattern:"Document", mv:[72, 58, 40, 28, 18] },
+        { code:"7.3.2.4", name:"Monitor and update performance program", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+      ]},
+      { code:"7.3.3",crud:{"create":["Development Plan (Cornerstone OnDemand)"],"read":[],"update":["Performance Review (Lattice)"],"delete":[]}, name:"Manage employee career development", pattern:"Mixed", mv:[80, 73, 61, 50, 40], mixed:true, raci:{R:"HRBP Manager (guidelines/succession) · L&D Specialist (skill execution)",A:"Director of L&D",C:"VP People & Culture",I:"Director of TA"}, l4:[
+        { code:"7.3.3.1", name:"Define employee development guidelines", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.3.3.2", name:"Develop employee career plans and career paths", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.3.3.3", name:"Manage employee skill and competency development", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.3.3.4", name:"Establish succession plans", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
+      ]},
+      { code:"7.3.4",crud:{"create":["Training Record (Cornerstone OnDemand)"],"read":[],"update":["Development Plan (Cornerstone OnDemand)"],"delete":[]}, name:"Develop and train employees", pattern:"Mixed", mv:[78, 69, 56, 43, 33], mixed:true, raci:{R:"Director of L&D (strategy) · L&D Specialist (execution)",A:"Director of L&D",C:"HRBP Manager",I:"CHRO"}, l4:[
+        { code:"7.3.4.1", name:"Align organizational development needs to employees", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.3.4.2", name:"Define employees competencies and skills", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.3.4.3", name:"Align learning programs with competencies and skills", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.3.4.4", name:"Establish training needs by analysis of required and available skills", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.3.4.5", name:"Develop, conduct, and manage employee training programs", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.3.4.6", name:"Manage examinations and certifications", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.3.4.7", name:"Monitor and evaluate learning programs", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+      ]},
+    ]},
+    { code:"7.4", name:"Manage Employee Relations", mv:[90, 85, 74, 65, 56], l3:[
+      { code:"7.4.1",crud:{"create":["ER Case Record (UKG HR Service Delivery)"],"read":["Performance Review (Lattice)"],"update":[],"delete":[]}, name:"Manage labor relations", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal*",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.4.2", crud:{"create":["Collective Bargaining Agreement (CobbleStone CLM)"],"read":["ER Case Record (UKG HR Service Delivery)"],"update":["Collective Bargaining Agreement (CobbleStone CLM)"],"delete":[]}, name:"Manage collective bargaining process", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal*",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.4.3", crud:{"create":["Labor Partnership Record (CobbleStone CLM)"],"read":["Collective Bargaining Agreement (CobbleStone CLM)"],"update":["Labor Partnership Record (CobbleStone CLM)"],"delete":[]}, name:"Manage labor management partnerships", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"—",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.4.4", crud:{"create":["Grievance Case (NAVEX EthicsPoint)"],"read":["ER Case Record (UKG HR Service Delivery)","Collective Bargaining Agreement (CobbleStone CLM)"],"update":["Grievance Case (NAVEX EthicsPoint)"],"delete":[]}, name:"Manage employee grievances", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"—",I:"Legal* · Director of HR Ops"}, l4:[] },
+      { code:"7.4.5", crud:{"create":["Regulatory Alert (XpertHR)"],"read":[],"update":["Regulatory Alert (XpertHR)"],"delete":[]}, name:"Monitor legal and regulatory environment", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"Director of HR Ops",C:"Legal*",I:"CHRO"}, l4:[] },
+    ]},
+    { code:"7.5", name:"Reward and Retain Employees", mv:[71, 61, 47, 34, 24], l3:[
+      { code:"7.5.1",crud:{"create":["Compensation Record (beqom)","Payroll Record (ADP Workforce Now)"],"read":["Performance Review (Lattice)"],"update":[],"delete":[]}, name:"Develop and manage reward, recognition, and motivation programs", pattern:"Mixed", mv:[79, 71, 58, 45, 35], mixed:true, raci:{R:"Compensation Analyst (admin-tier activities)",A:"Compensation & Benefits Manager",C:"—",I:"HRBP Manager"}, l4:[
+        { code:"7.5.1.1", name:"Develop salary/compensation structure and plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.5.1.2", name:"Develop benefits and rewards plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.5.1.3", name:"Perform competitive analysis of benefits and rewards", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.5.1.4", name:"Identify compensation requirements based on financial, benefits, and HR policies", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.5.1.5", name:"Administer compensation and rewards to employees", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.5.1.6", name:"Reward and motivate employees", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.5.1.7", name:"Review engagement and retention indicators", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.5.1.8", name:"Review compensation plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.5.1.9", name:"Review benefits and rewards plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+      ]},
+      { code:"7.5.2",crud:{"create":["Benefits Enrollment (Businessolver)"],"read":[],"update":[],"delete":[]}, name:"Manage and administer benefits", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"Compensation Analyst",C:"Compensation & Benefits Manager",I:"HRIS Analyst"}, l4:[
+        { code:"7.5.2.1", name:"Deliver employee benefits program", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.5.2.2", name:"Administer benefit enrollment", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.5.2.3", name:"Process benefits claims", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.5.2.4", name:"Perform benefit reconciliation", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+      ]},
+      { code:"7.5.3", crud:{"create":["EAP Referral (Lyra Health)","Retention Risk Score (Visier)"],"read":["Performance Review (Lattice)","Employee Master Record (Workday HCM)"],"update":["EAP Referral (Lyra Health)","Retention Risk Score (Visier)"],"delete":[]}, name:"Manage employee assistance and retention", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HR Generalist",C:"HRBP Manager",I:"Director of HR Ops"}, l4:[
+        { code:"7.5.3.1", name:"Deliver programs to support work/life balance for employees", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.5.3.2", name:"Develop employee and family support systems", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+      ]},
+      { code:"7.5.4",crud:{"create":["Payroll Record (ADP Workforce Now)"],"read":["Compensation Record (beqom)","Benefits Enrollment (Businessolver)"],"update":[],"delete":[]}, name:"Administer Payroll", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst (HR-owned scope)",C:"Compensation Analyst",I:"Finance*"}, l4:[] },
+      { code:"7.5.5", crud:{"create":["Employee Suggestion (Qualtrics EmployeeXM)"],"read":["Employee Master Record (Workday HCM)"],"update":["Employee Suggestion (Qualtrics EmployeeXM)"],"delete":[]}, name:"Manage/collect employee suggestions and perform employee research", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HRIS Analyst (data/survey tooling)",A:"HR Generalist",C:"—",I:"HRBP Manager"}, l4:[] },
+    ]},
+    { code:"7.6", name:"Redeploy and Retire Employees", mv:[73, 64, 52, 41, 32], l3:[
+      { code:"7.6.1", crud:{"create":["Position Change Record (Workday HCM)"],"read":["Performance Review (Lattice)","Competency Model (Workday Skills Cloud)"],"update":["Position Change Record (Workday HCM)","Compensation Record (beqom)","Employee Master Record (Workday HCM)"],"delete":[]}, name:"Manage promotion and demotion process", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Compensation & Benefits Manager",I:"—"}, l4:[] },
+      { code:"7.6.2",crud:{"create":["Separation Record (Workday HCM)"],"read":["Compensation Record (beqom)","Benefits Enrollment (Businessolver)","Payroll Record (ADP Workforce Now)","T&A Record (UKG Pro Workforce Management)"],"update":["Benefits Enrollment (Businessolver)","ER Case Record (UKG HR Service Delivery)","Separation Record (Workday HCM)","Employee Master Record (Workday HCM)"],"delete":["System Access Profile (Okta)"]}, name:"Manage separation", pattern:"Mixed", mv:[66, 56, 42, 30, 20], mixed:true, raci:{R:"HR Generalist",A:"HRBP Manager",C:"Compensation & Benefits Manager",I:"Legal*"}, l4:[
+        { code:"7.6.2.1", name:"Manage retirement", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.6.2.2", name:"Manage leave of absence", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.6.2.3", name:"Manage offboarding", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.6.2.4", name:"Develop and implement employee outplacement", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+      ]},
+      { code:"7.6.3", crud:{"create":["Relocation Case (Equus Software)","Assignment Letter (Equus Software)"],"read":["Employee Master Record (Workday HCM)","Compensation Record (beqom)"],"update":["Relocation Case (Equus Software)","Employee Master Record (Workday HCM)"],"delete":[]}, name:"Relocate employees and manage assignments", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"HR Generalist (logistics)",A:"HRBP Manager (partial—see gap note)",C:"—",I:"—"}, l4:[
+        { code:"7.6.3.1", name:"Manage expatriates", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+      ]},
+    ]},
+    { code:"7.7", name:"Manage Employee Information", mv:[73, 63, 50, 38, 29], l3:[
+      { code:"7.7.1", crud:{"create":["HR Report (Workday Prism Analytics)"],"read":["Employee Master Record (Workday HCM)","HR Analytics Report (Visier)"],"update":["HR Report (Workday Prism Analytics)"],"delete":[]}, name:"Manage reporting processes", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.7.2", crud:{"create":["HR Inquiry Case (UKG HR Service Delivery)"],"read":["Employee Master Record (Workday HCM)"],"update":["HR Inquiry Case (UKG HR Service Delivery)"],"delete":[]}, name:"Manage employee inquiry process", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"—",A:"HR Generalist",C:"HRBP Manager",I:"—"}, l4:[] },
+      { code:"7.7.3",crud:{"create":["Employee Master Record (Workday HCM)"],"read":["T&A Record (UKG Pro Workforce Management)"],"update":[],"delete":[]}, name:"Manage and maintain employee data", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"—"}, l4:[] },
+      { code:"7.7.4", crud:{"create":["System Configuration Record (Workday HCM)"],"read":["Employee Master Record (Workday HCM)"],"update":["System Configuration Record (Workday HCM)"],"delete":[]}, name:"Manage human resource information systems", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.7.5", crud:{"create":["HR Metric Definition (Visier)"],"read":["Employee Master Record (Workday HCM)","HR Analytics Report (Visier)"],"update":["HR Metric Definition (Visier)"],"delete":[]}, name:"Develop and manage employee measures", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"Director of HR Ops",I:"—"}, l4:[] },
+      { code:"7.7.6",crud:{"create":["T&A Record (UKG Pro Workforce Management)"],"read":["Employee Master Record (Workday HCM)"],"update":[],"delete":[]}, name:"Develop and manage time and attendance systems", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"—"}, l4:[] },
+      { code:"7.7.7",crud:{"create":["HR Analytics Report (Visier)"],"read":["Employee Master Record (Workday HCM)"],"update":[],"delete":[]}, name:"Develop workforce analytics", pattern:"Mixed", mv:[81, 74, 62, 50, 41], mixed:true, raci:{R:"—",A:"HRIS Analyst",C:"Director of HR Ops",I:"—"}, l4:[
+        { code:"7.7.7.1", name:"Determine stakeholder requirements", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.7.7.2", name:"Identify research questions", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.7.7.3", name:"Select workforce analysis methodology", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
+        { code:"7.7.7.4", name:"Identify workforce data sources", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.7.7.5", name:"Gather workforce data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+      ]},
+      { code:"7.7.8",crud:{"create":["HR Analytics Report (Visier)"],"read":["Employee Master Record (Workday HCM)"],"update":[],"delete":[]}, name:"Implement workforce analytics", pattern:"Mixed", mv:[72, 61, 47, 34, 24], mixed:true, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[
+        { code:"7.7.8.1", name:"Transform workforce analysis data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
+        { code:"7.7.8.2", name:"Develop insights into workforce analytics outcomes", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
+        { code:"7.7.8.3", name:"Communicate workforce analysis outcomes", pattern:"Document", mv:[72, 58, 40, 28, 18] },
+      ]},
+    ]},
+    { code:"7.8", name:"Manage Employee Communication", mv:[76, 65, 48, 36, 26], l3:[
+      { code:"7.8.1", crud:{"create":["Communication Plan (Staffbase)"],"read":["Employee Master Record (Workday HCM)"],"update":["Communication Plan (Staffbase)"],"delete":[]}, name:"Develop employee communication plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Director of HR Ops",I:"—"}, l4:[] },
+      { code:"7.8.2",crud:{"create":["Survey Response (Qualtrics EmployeeXM)"],"read":["Employee Master Record (Workday HCM)"],"update":[],"delete":[]}, name:"Conduct employee engagement surveys", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HRIS Analyst (data/survey tooling)",A:"HR Generalist",C:"—",I:"HRBP Manager"}, l4:[] },
+      { code:"7.8.3",crud:{"create":["Communication Record (Staffbase)"],"read":["Employee Master Record (Workday HCM)"],"update":[],"delete":[]}, name:"Deliver employee communications", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HR Generalist (delivery execution)",A:"HRBP Manager",C:"—",I:"—"}, l4:[] },
+    ]},
+  ]};
+
+/* ── Real working-relationship classification data ───────────────────── */
+// Real working-relationship classification data — hand-classified and
+// Tim-confirmed (per Human_Pct_Working_Relationship_Model.html /
+// Interpreting_L4_Activities.html / Working_Relationship_Progression_Methodology.docx).
+// Keys are PCF codes: L4 codes, or a leaf-L3 code (7.4.4) for the 18 real
+// leaf L3s in PCF 7.0 that have no L4 children.
+//
+// rel   = Current State working-relationship category
+// h     = Current State H% (fixed per category: Automation 10, Agent-delegation 28,
+//         Augmentation 48, Oversight 62, Judgment 82, Human-only 95+)
+// cons  = Consequence of Error tag (Low/Moderate/High/Critical) — GiGi's
+//         Human Criticality axis; every tag here is a starting position for
+//         her to own and refine, not a settled call. null = not yet tagged.
+// future / ceiling / note = only set for the 5 real worked examples in the
+// methodology doc. Every other classified item has NOT had Future State /
+// Progression Ceiling reasoning done yet — left honestly null rather than
+// guessed, same convention as the rest of this framework.
+
+const WR_CATS = {
+  "Automation":       { color:"#7DAEE0", h:10 },
+  "Agent-delegation":  { color:"#5A8DC4", h:28 },
+  "Augmentation":      { color:"#3D6FA8", h:48 },
+  "Oversight":         { color:"#29528A", h:62 },
+  "Judgment":          { color:"#1E3F6E", h:82 },
+  "Human-only":        { color:"#0D2D4F", h:95 },
+};
+
+const CONS_COLOR = { Low:"#166534", Moderate:"#7A5A1E", High:"#9A3412", Critical:"#991B1B" };
+
+const WR_DATA = {
+  // ── CHRO / PCF 7.1.1 — Develop human resources strategy (10 L4s) ──────────
+  // Piloted alongside HRBP Manager and Recruiter; consequence tags here are
+  // CHRO's own pilot pass, not yet given the individual-walkthrough scrutiny
+  // 7.2 and 7.3's tags received on Sept 14, 2026.
+  "7.1.1.1":  { rel:"Judgment",         cons:"Moderate" },
+  "7.1.1.2":  { rel:"Judgment",         cons:"High",
+                future:"Judgment", ceiling:"Judgment",
+                note:"Already at ceiling — Executive tier. Defining the domain's own accountability structure isn't a decision to hand to an AI proposal." },
+  "7.1.1.3":  { rel:"Judgment",         cons:"Moderate" },
+  "7.1.1.4":  { rel:"Judgment",         cons:"Moderate" },
+  "7.1.1.5":  { rel:"Oversight",        cons:"Moderate",
+                note:"Close call, flagged honestly: cost models are treated as a draft CHRO edits or a recommendation CHRO approves." },
+  "7.1.1.6":  { rel:"Judgment",         cons:"Moderate" },
+  "7.1.1.7":  { rel:"Augmentation",     cons:"Low" },
+  "7.1.1.8":  { rel:"Judgment",         cons:"High" },
+  "7.1.1.9":  { rel:"Augmentation",     cons:"Moderate" },
+  "7.1.1.10": { rel:"Judgment",         cons:"Moderate" },
+
+  // ── PCF 7.2 — Recruit and select employees (24 L4s, 5 L3s) ────────────────
+  "7.2.1.1":  { rel:"Judgment",         cons:"Moderate",
+                future:"Judgment", ceiling:"Open / undecided",
+                note:"No settled ceiling — could stay Judgment permanently as a strategic/budget call. Flagged as Tim's call, not invented." },
+  "7.2.1.2":  { rel:"Automation",       cons:"Low" },
+  "7.2.1.3":  { rel:"Oversight",        cons:"High",
+                future:"Oversight", ceiling:"Agent-delegation",
+                note:"Ceiling is knowable, but reaching it is a governance choice (removing human sign-off), not only a technical one." },
+  "7.2.1.4":  { rel:"Automation",       cons:"Low" },
+  "7.2.1.5":  { rel:"Automation",       cons:"Low" },
+  "7.2.1.6":  { rel:"Automation",       cons:"Low" },
+  "7.2.1.7":  { rel:"Automation",       cons:"Low" },
+  "7.2.2.1":  { rel:"Augmentation",     cons:"Low" },
+  "7.2.2.2":  { rel:"Augmentation",     cons:"Low" },
+  "7.2.2.3":  { rel:"Agent-delegation", cons:"Low" },
+  "7.2.2.4":  { rel:"Augmentation",     cons:"Moderate" },
+  "7.2.2.5":  { rel:"Agent-delegation", cons:"Low" },
+  "7.2.2.6":  { rel:"Agent-delegation", cons:"Low" },
+  "7.2.3.1":  { rel:"Judgment",         cons:"Moderate" },
+  "7.2.3.2":  { rel:"Judgment",         cons:"High" },
+  "7.2.3.3":  { rel:"Agent-delegation", cons:"High",
+                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — compliance/litigation exposure." },
+  "7.2.3.4":  { rel:"Judgment",         cons:"Critical",
+                future:"Judgment", ceiling:"Judgment",
+                note:"Already at ceiling, a different reason than 7.4.4's — EEOC/adverse-impact liability on the hiring decision itself." },
+  "7.2.4.1":  { rel:"Agent-delegation", cons:"Moderate" },
+  "7.2.4.2":  { rel:"Judgment",         cons:"High" },
+  "7.2.4.3":  { rel:"Oversight",        cons:"Moderate" },
+  "7.2.5.1":  { rel:"Automation",       cons:"High",
+                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — compliance/litigation exposure, same pattern as 7.3.4.6." },
+  "7.2.5.2":  { rel:"Automation",       cons:"Low" },
+  "7.2.5.3":  { rel:"Automation",       cons:"Low" },
+  "7.2.5.4":  { rel:"Automation",       cons:"Moderate" },
+
+  // ── PCF 7.3 — Develop and counsel employees (18 L4s, 4 L3s) ───────────────
+  "7.3.1.1":  { rel:"Augmentation",     cons:"Moderate" },
+  "7.3.1.2":  { rel:"Agent-delegation", cons:"Low" },
+  "7.3.1.3":  { rel:"Augmentation",     cons:"Low" },
+  "7.3.2.1":  { rel:"Judgment",         cons:"Moderate" },
+  "7.3.2.2":  { rel:"Judgment",         cons:"High",
+                note:"Feeds pay/promotion/termination decisions and carries real discrimination exposure if done badly." },
+  "7.3.2.3":  { rel:"Augmentation",     cons:"High",
+                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — documentation quality is a common deciding factor in wrongful-termination litigation." },
+  "7.3.2.4":  { rel:"Agent-delegation", cons:"Low" },
+  "7.3.3.1":  { rel:"Augmentation",     cons:"Low" },
+  "7.3.3.2":  { rel:"Judgment",         cons:"Moderate" },
+  "7.3.3.3":  { rel:"Agent-delegation", cons:"Low" },
+  "7.3.3.4":  { rel:"Judgment",         cons:"High",
+                note:"A wrong call on a critical role is a continuity risk and can shade into perceived-favoritism exposure." },
+  "7.3.4.1":  { rel:"Augmentation",     cons:"Low" },
+  "7.3.4.2":  { rel:"Agent-delegation", cons:"Low" },
+  "7.3.4.3":  { rel:"Agent-delegation", cons:"Low" },
+  "7.3.4.4":  { rel:"Augmentation",     cons:"Low" },
+  "7.3.4.5":  { rel:"Augmentation",     cons:"High",
+                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — covers legally mandated training with real statutory deadlines." },
+  "7.3.4.6":  { rel:"Automation",       cons:"High",
+                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — classified Automation, but the one step with real regulatory teeth, same pattern as 7.2.5.1." },
+  "7.3.4.7":  { rel:"Agent-delegation", cons:"Low" },
+
+  // ── PCF 7.4.4 — Manage employee grievances (leaf L3, no L4 children) ─────
+  "7.4.4":    { rel:"Judgment", cons:null,
+                future:"Judgment", ceiling:"Judgment",
+                note:"Already at its human-side ceiling. The Accountable role (HRBP Manager) never changes across the real M1→M5 curve (95%→68%) — the mirror case to an activity already at Automation with no further runway. Consequence-of-error not yet tagged for this one — left blank rather than guessed." },
+};
+
+
+
+/* ── Added for RACI / Data View / Value Stream Profile / People View
+   (Sept 14, 2026) — ported from the live dashboard's own render functions,
+   same logic, scoped to this single-domain (PCF 7.0) sandbox page. ────── */
+
+const TIER_COLORS = {
+  "Executive": { fill: "#FEE2E2", text: "#991B1B" },
+  "Managerial": { fill: "#EEF3FA", text: "#1B4F8A" },
+  "Operational": { fill: "#DCFCE7", text: "#166534" },
+  "External Participant": { fill: "#F5F5F5", text: "#666666" },
+};
+const PATTERN_META = {
+  Decision:    { fill: "#EEF3FA", text: "#1B4F8A", tagline: "Judgment & Authority — gates that stay human by design", m1: 92, m3: 80 },
+  Knowledge:   { fill: "#F3F0FE", text: "#534AB7", tagline: "Synthesis & Interpretation — judgment-driven work", m1: 85, m3: 65 },
+  Document:    { fill: "#E0F2FE", text: "#0369A1", tagline: "Content Generation — drafting and communication", m1: 72, m3: 40 },
+  Transaction: { fill: "#DCFCE7", text: "#166534", tagline: "Rules-Based Processing — suited to automation", m1: 60, m3: 35 },
+  Exception:   { fill: "#FEE2E2", text: "#991B1B", tagline: "Non-Standard Resolution — human-resolved by nature", m1: 95, m3: 82 },
+};
+const PATTERN_HEX = { Decision: '#7B9FD1', Knowledge: '#A79AE0', Document: '#5EB8E0', Transaction: '#6FC48C', Exception: '#E88A8A' };
+
+function countPatternsForL3s(l3s) {
+  const counts = { Decision: 0, Knowledge: 0, Document: 0, Transaction: 0, Exception: 0 };
+  l3s.forEach(l3 => {
+    if (l3.l4 && l3.l4.length) {
+      l3.l4.forEach(a => { if (counts[a.pattern] !== undefined) counts[a.pattern]++; });
+    } else if (counts[l3.pattern] !== undefined) {
+      counts[l3.pattern]++;
+    }
+  });
+  return counts;
+}
+function renderPatternMixBarForL3s(l3s) {
+  const counts = countPatternsForL3s(l3s);
+  const total = Object.values(counts).reduce((a, b) => a + b, 0) || 1;
+  const present = Object.entries(counts).filter(([, c]) => c > 0);
+  const segs = present.map(([p, c]) => '<span style="width:' + (c / total * 100).toFixed(1) + '%;background:' + PATTERN_HEX[p] + '" title="' + p + ' ' + c + '"></span>').join('');
+  const label = present.length === 1 ? present[0][0] + ' pattern' : 'Mixed pattern';
+  return '<span class="pat-mix-bar" role="img" aria-label="' + label + '">' + segs + '</span>';
+}
+function renderPatternMixBar(l3) { return renderPatternMixBarForL3s([l3]); }
+function renderRoleMixBar(l3s) {
+  const counts = countPatternsForL3s(l3s);
+  const total = Object.values(counts).reduce((a, b) => a + b, 0);
+  if (!total) return '<span style="color:#B8C0CC;font-style:italic;font-size:11px">—</span>';
+  return renderPatternMixBarForL3s(l3s);
+}
+
+/* ── RACI Table ───────────────────────────────────────────────────────── */
+function formatRaciCell(value, derived) {
+  if (!value || value === '—') return '—';
+  const parts = value.split(' · ').map(p => p.trim()).filter(Boolean);
+  const cls = derived ? 'raci-entry raci-entry-derived' : 'raci-entry';
+  return parts.map(part => {
+    const m = part.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+    if (m) return '<div class="' + cls + '"><div class="raci-entry-name">' + m[1] + '</div><div class="raci-entry-sub">' + m[2] + '</div></div>';
+    return '<div class="' + cls + '"><div class="raci-entry-name">' + part + '</div></div>';
+  }).join('') + (derived ? '<div class="raci-derived-note">from Accountable</div>' : '');
+}
+function formatRCell(raci) {
+  if (raci.R && raci.R !== '—') return formatRaciCell(raci.R);
+  return formatRaciCell(raci.A, true);
+}
+
+function renderRaciTable(cat) {
+  const tbody = document.getElementById('raci-table-body');
+  let html = '';
+  cat.groups.forEach(g => {
+    html += '<tr class="row-l2 toggle-row" data-raci-group="' + g.code + '">' +
+      '<td class="indent-l2 toggle-l2" colspan="6" data-raci-group="' + g.code + '" onclick="toggleRaciGroup(\'' + g.code + '\',this)">' +
+      '<span class="row-flex"><span class="row-prefix"><span class="toggle-icon" title="Click to collapse">&minus;</span>' + g.code + '</span>' +
+      '<span class="row-text">' + g.name + '</span></span></td></tr>';
+    g.l3.forEach(l3 => {
+      const hasL4 = l3.l4 && l3.l4.length > 0;
+      const patBadge = renderPatternMixBar(l3);
+      const l3ToggleAttrs = hasL4
+        ? 'class="indent-l3 toggle-l3 collapsed" data-raci-l3code="' + l3.code + '" onclick="toggleRaciL3(\'' + l3.code + '\',this)"'
+        : 'class="indent-l3"';
+      const l3Icon = hasL4 ? '<span class="toggle-icon" title="Click to expand">+</span>' : '<span class="toggle-icon placeholder"></span>';
+      const raci = l3.raci || { R: '—', A: '—', C: '—', I: '—' };
+      html += '<tr class="row-l3" data-raci-parent="' + g.code + '" data-raci-l3code="' + l3.code + '">' +
+        '<td ' + l3ToggleAttrs + '><span class="row-flex"><span class="row-prefix">' + l3Icon + '<span class="pcf-ref">' + l3.code + '</span></span><span class="row-text">' + l3.name + '</span></span></td>' +
+        '<td>' + patBadge + '</td>' +
+        '<td>' + formatRCell(raci) + '</td>' +
+        '<td>' + formatRaciCell(raci.A) + '</td>' +
+        '<td>' + formatRaciCell(raci.C) + '</td>' +
+        '<td>' + formatRaciCell(raci.I) + '</td></tr>';
+      (l3.l4 || []).forEach(l4 => {
+        html += '<tr class="row-l4" data-raci-parent="' + g.code + '" data-raci-parent-l3="' + l3.code + '" style="display:none">' +
+          '<td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + l4.code + '</span></span><span class="row-text">' + l4.name + '</span></span></td>' +
+          '<td><span class="pat pat-' + l4.pattern + '">' + l4.pattern + '</span></td>' +
+          '<td>' + formatRCell(raci) + '</td>' +
+          '<td>' + formatRaciCell(raci.A) + '</td>' +
+          '<td>' + formatRaciCell(raci.C) + '</td>' +
+          '<td>' + formatRaciCell(raci.I) + '</td></tr>';
+      });
+    });
+  });
+  tbody.innerHTML = html;
+}
+function setRaciGroupExpanded(code, expanded) {
+  const td = document.querySelector('td.toggle-l2[data-raci-group="' + code + '"]');
+  if (!td) return;
+  td.classList.toggle('collapsed', !expanded);
+  setIcon(td, expanded);
+  document.querySelectorAll('tr.row-l3[data-raci-parent="' + code + '"]').forEach(r => { r.style.display = expanded ? '' : 'none'; });
+  if (!expanded) {
+    document.querySelectorAll('tr.row-l3.toggle-l3[data-raci-parent="' + code + '"]').forEach(l3row => { l3row.classList.add('collapsed'); setIcon(l3row, false); });
+    document.querySelectorAll('tr.row-l4[data-raci-parent="' + code + '"]').forEach(l4row => { l4row.style.display = 'none'; });
+  }
+}
+function setRaciL3Expanded(code, expanded) {
+  const td = document.querySelector('td.toggle-l3[data-raci-l3code="' + code + '"]');
+  if (!td) return;
+  td.classList.toggle('collapsed', !expanded);
+  setIcon(td, expanded);
+  document.querySelectorAll('tr.row-l4[data-raci-parent-l3="' + code + '"]').forEach(r => { r.style.display = expanded ? '' : 'none'; });
+}
+function toggleRaciGroup(code, el) { setRaciGroupExpanded(code, el.classList.contains('collapsed')); }
+function toggleRaciL3(code, el) { setRaciL3Expanded(code, el.classList.contains('collapsed')); }
+
+/* ── Data View (CRUD Matrix) ──────────────────────────────────────────── */
+function formatCrudCell(entries, opClass) {
+  if (!entries || !entries.length) return '<td class="crud crud-empty">&middot;</td>';
+  const items = entries.map(e => {
+    const m = e.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+    return m
+      ? '<div class="crud-entry"><span class="crud-entity">' + m[1] + '</span><span class="crud-sys">' + m[2] + '</span></div>'
+      : '<div class="crud-entry"><span class="crud-entity">' + e + '</span></div>';
+  }).join('');
+  return '<td class="crud crud-' + opClass + '">' + items + '</td>';
+}
+function renderCrudTable(cat) {
+  const tbody = document.getElementById('crud-table-body');
+  let html = '';
+  cat.groups.forEach(g => {
+    html += '<tr class="row-l2 toggle-row" data-crud-group="' + g.code + '">' +
+      '<td class="indent-l2 toggle-l2" colspan="6" data-crud-group="' + g.code + '" onclick="toggleCrudGroup(\'' + g.code + '\',this)">' +
+      '<span class="row-flex"><span class="row-prefix"><span class="toggle-icon" title="Click to collapse">&minus;</span>' + g.code + '</span>' +
+      '<span class="row-text">' + g.name + '</span></span></td></tr>';
+    g.l3.forEach(l3 => {
+      const hasL4 = l3.l4 && l3.l4.length > 0;
+      const patBadge = renderPatternMixBar(l3);
+      const l3ToggleAttrs = hasL4
+        ? 'class="indent-l3 toggle-l3 collapsed" data-crud-l3code="' + l3.code + '" onclick="toggleCrudL3(\'' + l3.code + '\',this)"'
+        : 'class="indent-l3"';
+      const l3Icon = hasL4 ? '<span class="toggle-icon" title="Click to expand">+</span>' : '<span class="toggle-icon placeholder"></span>';
+      const cr = l3.crud || {};
+      html += '<tr class="row-l3" data-crud-parent="' + g.code + '" data-crud-l3code="' + l3.code + '">' +
+        '<td ' + l3ToggleAttrs + '><span class="row-flex"><span class="row-prefix">' + l3Icon + '<span class="pcf-ref">' + l3.code + '</span></span><span class="row-text">' + l3.name + '</span></span></td>' +
+        '<td>' + patBadge + '</td>' +
+        formatCrudCell(cr.create, 'c') + formatCrudCell(cr.read, 'r') + formatCrudCell(cr.update, 'u') + formatCrudCell(cr.delete, 'd') + '</tr>';
+      (l3.l4 || []).forEach(l4 => {
+        html += '<tr class="row-l4" data-crud-parent="' + g.code + '" data-crud-parent-l3="' + l3.code + '" style="display:none">' +
+          '<td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + l4.code + '</span></span><span class="row-text">' + l4.name + '</span></span></td>' +
+          '<td><span class="pat pat-' + l4.pattern + '">' + l4.pattern + '</span></td>' +
+          formatCrudCell(cr.create, 'c') + formatCrudCell(cr.read, 'r') + formatCrudCell(cr.update, 'u') + formatCrudCell(cr.delete, 'd') + '</tr>';
+      });
+    });
+  });
+  tbody.innerHTML = html;
+}
+function setCrudGroupExpanded(code, expanded) {
+  const td = document.querySelector('td.toggle-l2[data-crud-group="' + code + '"]');
+  if (!td) return;
+  td.classList.toggle('collapsed', !expanded);
+  setIcon(td, expanded);
+  document.querySelectorAll('tr.row-l3[data-crud-parent="' + code + '"]').forEach(r => { r.style.display = expanded ? '' : 'none'; });
+  if (!expanded) {
+    document.querySelectorAll('tr.row-l3.toggle-l3[data-crud-parent="' + code + '"]').forEach(l3row => { l3row.classList.add('collapsed'); setIcon(l3row, false); });
+    document.querySelectorAll('tr.row-l4[data-crud-parent="' + code + '"]').forEach(l4row => { l4row.style.display = 'none'; });
+  }
+}
+function setCrudL3Expanded(code, expanded) {
+  const td = document.querySelector('td.toggle-l3[data-crud-l3code="' + code + '"]');
+  if (!td) return;
+  td.classList.toggle('collapsed', !expanded);
+  setIcon(td, expanded);
+  document.querySelectorAll('tr.row-l4[data-crud-parent-l3="' + code + '"]').forEach(r => { r.style.display = expanded ? '' : 'none'; });
+}
+function toggleCrudGroup(code, el) { setCrudGroupExpanded(code, el.classList.contains('collapsed')); }
+function toggleCrudL3(code, el) { setCrudL3Expanded(code, el.classList.contains('collapsed')); }
+
+/* ── People View (Role Impact Table) ─────────────────────────────────────
+   Anchored on the Organizational Role Taxonomy's PCF 7.0 catalog (14 roles,
+   3 tiers). Every role's row is derived live from the same RACI data the
+   RACI Table above renders — no separate data entry. A role "touches" an
+   L3 when it holds R or A on it; C/I are excluded, since this measures
+   whose work actually changes as a process's pattern automates. reportsTo
+   is a first-pass reasoned structure (July 31, 2026), not externally
+   sourced — carried over unchanged from the live dashboard. ─────────────── */
+const ROLE_TAXONOMY = [
+  { name: "CHRO", tier: "Executive", reportsTo: null },
+  { name: "SVP Talent Management", tier: "Executive", reportsTo: "CHRO" },
+  { name: "VP People & Culture", tier: "Executive", reportsTo: "CHRO" },
+  { name: "Director of TA", tier: "Managerial", reportsTo: "SVP Talent Management" },
+  { name: "Director of L&D", tier: "Managerial", reportsTo: "SVP Talent Management" },
+  { name: "HRBP Manager", tier: "Managerial", reportsTo: "VP People & Culture" },
+  { name: "Compensation & Benefits Manager", tier: "Managerial", reportsTo: "Director of TA" },
+  { name: "Director of HR Ops", tier: "Managerial", reportsTo: "CHRO", contextDependent: true },
+  { name: "HR Generalist", tier: "Operational", reportsTo: "HRBP Manager" },
+  { name: "Recruiter", tier: "Operational", reportsTo: "Director of TA" },
+  { name: "L&D Specialist", tier: "Operational", reportsTo: "Director of L&D" },
+  { name: "Compensation Analyst", tier: "Operational", reportsTo: "Compensation & Benefits Manager" },
+  { name: "HRIS Analyst", tier: "Operational", reportsTo: "Director of HR Ops" },
+  { name: "Onboarding Coordinator", tier: "Operational", reportsTo: "HRBP Manager" },
+];
+const ROLE_RACI_ALIASES = {
+  "HRBP Mgr": "HRBP Manager",
+  "Comp & Benefits Mgr": "Compensation & Benefits Manager",
+  "Dir. of L&D": "Director of L&D",
+};
+function normalizeRaciToken(base) {
+  if (base === "—" || base === "") return null;
+  if (base.endsWith("*")) return null;
+  if (base === "Legal") return null;
+  if (base === "All Managerial-tier") return null;
+  return ROLE_RACI_ALIASES[base] || base;
+}
+function parseRaciField(str) {
+  if (!str) return [];
+  return str.split('·').map(tok => normalizeRaciToken(tok.replace(/\s*\([^)]*\)\s*$/, '').trim())).filter(Boolean);
+}
+function computeRoleL3Map(cat) {
+  const map = {};
+  cat.groups.forEach(g => {
+    g.l3.forEach(l3 => {
+      if (!l3.raci) return;
+      const touchedRoles = new Set([...parseRaciField(l3.raci.R), ...parseRaciField(l3.raci.A)]);
+      touchedRoles.forEach(role => { if (!map[role]) map[role] = []; map[role].push(l3); });
+    });
+  });
+  return map;
+}
+function computeRoleStats(l3s) {
+  const groupsTouched = new Set();
+  let mixedL3 = 0;
+  const units = [];
+  l3s.forEach(l3 => {
+    groupsTouched.add(l3.code.split('.').slice(0, 2).join('.'));
+    if (l3.mixed) mixedL3++;
+    if (l3.l4 && l3.l4.length) l3.l4.forEach(l4 => units.push(l4.mv)); else units.push(l3.mv);
+  });
+  const n = units.length;
+  const mv = n ? [0, 1, 2, 3, 4].map(i => Math.round(units.reduce((s, x) => s + x[i], 0) / n)) : [0, 0, 0, 0, 0];
+  return { l3count: l3s.length, groupsTouched: groupsTouched.size, mixedL3, activityUnits: n, mv };
+}
+function roleLeafRows(l3s) {
+  const rows = [];
+  l3s.forEach(l3 => {
+    if (l3.mixed && l3.l4 && l3.l4.length) l3.l4.forEach(l4 => rows.push({ code: l4.code, name: l4.name, pattern: l4.pattern, mv: l4.mv }));
+    else rows.push({ code: l3.code, name: l3.name, pattern: l3.pattern, mv: l3.mv });
+  });
+  rows.sort((a, b) => a.code.localeCompare(b.code, undefined, { numeric: true }));
+  return rows;
+}
+function computeSpanOfControl(roleName, taxonomy) {
+  const direct = taxonomy.filter(r => r.reportsTo === roleName).map(r => r.name);
+  const total = new Set();
+  (function collect(name) {
+    taxonomy.filter(r => r.reportsTo === name).forEach(r => { if (!total.has(r.name)) { total.add(r.name); collect(r.name); } });
+  })(roleName);
+  return { direct: direct.length, total: total.size };
+}
+function reportingLine(r, taxonomy) {
+  const span = computeSpanOfControl(r.name, taxonomy);
+  const reportsToText = r.reportsTo
+    ? 'Reports to <strong>' + r.reportsTo + '</strong>' + (r.contextDependent ? ' <em>(context-dependent)</em>' : '')
+    : 'Top of the org · escalates to CEO/Board (outside role catalog)';
+  const spanText = span.direct ? ' · ' + span.direct + ' direct report' + (span.direct === 1 ? '' : 's') + ', ' + span.total + ' total in span' : '';
+  return '<div style="color:var(--lgray);font-size:10px;margin-top:2px">' + reportsToText + spanText + '</div>';
+}
+function renderRoleImpactTable(cat) {
+  const tbody = document.getElementById('role-impact-table-body');
+  const taxonomy = ROLE_TAXONOMY;
+  const roleL3Map = computeRoleL3Map(cat);
+  const tiers = ["Executive", "Managerial", "Operational"];
+  let html = '';
+  tiers.forEach(tier => {
+    const rolesInTier = taxonomy.filter(r => r.tier === tier);
+    html += '<tr class="row-l2"><td colspan="8">' + tier + ' Tier</td></tr>';
+    rolesInTier.forEach(r => {
+      const l3s = roleL3Map[r.name] || [];
+      const stats = computeRoleStats(l3s);
+      const rowId = 'role-' + r.name.replace(/[^a-zA-Z0-9]/g, '');
+      if (!stats.l3count) {
+        html += '<tr class="row-l3"><td class="indent-l3"><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + '</td>' +
+          '<td style="color:#B8C0CC;font-style:italic;font-size:11px">No R/A touches in current RACI data</td>' +
+          '<td colspan="6" style="text-align:center;color:#B8C0CC">—</td></tr>';
+        return;
+      }
+      const delta = stats.mv[2] - stats.mv[0];
+      html += '<tr class="row-l3 toggle-role" data-role="' + rowId + '" onclick="toggleRoleRow(\'' + rowId + '\')" style="cursor:pointer">' +
+        '<td class="indent-l3"><span class="role-toggle-icon" id="icon-' + rowId + '">+</span><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + '</td>' +
+        '<td>' + renderRoleMixBar(l3s) + '</td>' +
+        '<td class="col-m1">' + stats.mv[0] + '%</td>' +
+        '<td class="col-m2">' + stats.mv[1] + '%</td>' +
+        '<td class="col-m3 m3-col">' + stats.mv[2] + '%</td>' +
+        '<td class="col-m4">' + stats.mv[3] + '%</td>' +
+        '<td class="col-m5">' + stats.mv[4] + '%</td>' +
+        '<td class="delta-cell">' + delta + '%</td></tr>';
+      roleLeafRows(l3s).forEach(row => {
+        html += '<tr class="row-l4 role-leaf" data-role-parent="' + rowId + '" style="display:none">' +
+          '<td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + row.code + '</span></span><span class="row-text">' + row.name + '</span></span></td>' +
+          '<td><span class="pat pat-' + row.pattern + '">' + row.pattern + '</span></td>' +
+          '<td class="col-m1">' + row.mv[0] + '%</td>' +
+          '<td class="col-m2">' + row.mv[1] + '%</td>' +
+          '<td class="col-m3 m3-col">' + row.mv[2] + '%</td>' +
+          '<td class="col-m4">' + row.mv[3] + '%</td>' +
+          '<td class="col-m5">' + row.mv[4] + '%</td>' +
+          '<td class="delta-cell">' + (row.mv[2] - row.mv[0]) + '%</td></tr>';
+      });
+    });
+  });
+  tbody.innerHTML = html;
+}
+function toggleRoleRow(rowId) {
+  const icon = document.getElementById('icon-' + rowId);
+  const collapsed = icon.textContent === '+';
+  icon.textContent = collapsed ? '−' : '+';
+  document.querySelectorAll('tr.role-leaf[data-role-parent="' + rowId + '"]').forEach(r => { r.style.display = collapsed ? '' : 'none'; });
+}
+
+/* ── Value Stream Profile ────────────────────────────────────────────── */
+function codeInStream(code, stream) {
+  if (!stream) return false;
+  const l2Match = (stream.l2codes || []).some(l2 => code === l2 || code.startsWith(l2 + '.'));
+  if (l2Match) return true;
+  return (stream.l3codes || []).some(l3 => code === l3 || code.startsWith(l3 + '.'));
+}
+function getStreamL3s(cat, stream) {
+  const fullGroups = new Set(stream.l2codes || []);
+  const explicitL3 = new Set(stream.l3codes || []);
+  const result = [];
+  cat.groups.forEach(g => {
+    if (fullGroups.has(g.code)) g.l3.forEach(l3 => result.push(l3));
+    else if (explicitL3.size) g.l3.forEach(l3 => { if (explicitL3.has(l3.code)) result.push(l3); });
+  });
+  return result;
+}
+function computeStreamStats(cat, streamIdx) {
+  const stream = cat.valueStreams[streamIdx];
+  const fullGroups = new Set(stream.l2codes || []);
+  const explicitL3 = new Set(stream.l3codes || []);
+  let l3count = 0, mixedL3 = 0, units = [];
+  const groupCodesTouched = new Set();
+  cat.groups.forEach(g => {
+    const isFull = fullGroups.has(g.code);
+    g.l3.forEach(l3 => {
+      if (!isFull && !explicitL3.has(l3.code)) return;
+      l3count++;
+      groupCodesTouched.add(g.code);
+      if (l3.mixed) mixedL3++;
+      if (l3.l4.length) l3.l4.forEach(l4 => units.push(l4.mv)); else units.push(l3.mv);
+    });
+  });
+  const n = units.length;
+  const mv = [0, 1, 2, 3, 4].map(i => Math.round(units.reduce((s, x) => s + x[i], 0) / n));
+  return { l3count, activityUnits: n, mixedL3, mv, groupsTouched: groupCodesTouched.size };
+}
+function renderSummaryBar(s) {
+  const sb = document.getElementById('summary-bar');
+  sb.innerHTML =
+    '<div class="summary-card"><div class="label">L3 Processes</div><div class="value">' + s.l3 + '</div><div class="sub">' + s.l3sub + '</div></div>' +
+    '<div class="summary-card"><div class="label">L4 Activities</div><div class="value">' + s.l4 + '</div><div class="sub">' + s.l4sub + '</div></div>' +
+    '<div class="summary-card"><div class="label">M1 Baseline H%</div><div class="value">' + s.m1 + '%</div><div class="sub">Undesigned state</div></div>' +
+    '<div class="summary-card" style="flex:1.3"><div class="label">M3 Design Intent H%</div><div class="value" style="color:var(--navy)">' + s.m3 + '%</div><div class="sub">&#9733; HITL design intent</div></div>' +
+    '<div class="summary-card"><div class="label">M5 Leading H%</div><div class="value" style="color:var(--navy-d)">' + s.m5 + '%</div><div class="sub">North star target</div></div>' +
+    '<div class="summary-card"><div class="label">&Delta; M1 &rarr; M3</div><div class="value" style="color:#B45309">' + s.delta + '%</div><div class="sub">AI convergence opportunity</div></div>';
+}
+function populateValueStreamBar(cat) {
+  const select = document.getElementById('vs-select');
+  const hasTiers = cat.valueStreams.some(vs => vs.tier);
+  let optionsHtml = '<option value="all">All Processes</option>';
+  if (hasTiers) {
+    ["Strategy", "Operational", "Enablement"].forEach(tier => {
+      const inTier = cat.valueStreams.map((vs, i) => ({ vs, i })).filter(({ vs }) => vs.tier === tier);
+      if (!inTier.length) return;
+      optionsHtml += '<optgroup label="' + tier + '">' +
+        inTier.map(({ vs, i }) => '<option value="' + i + '">' + vs.name + (vs.subtitle ? ' &mdash; ' + vs.subtitle : '') + '</option>').join('') +
+        '</optgroup>';
+    });
+  }
+  select.innerHTML = optionsHtml;
+  select.value = 'all';
+}
+function applyValueStream(val) {
+  if (val === 'all') {
+    renderDescriptionPanel(cat, 'all');
+    renderSummaryBar({ l3: 37, l3sub: cat.groups.length + ' process groups', l4: 100, l4sub: cat.groups.reduce((n, g) => n + g.l3.filter(l3 => l3.mixed).length, 0) + ' mixed-pattern L3s',
+      m1: cat.l1mv[0], m3: cat.l1mv[2], m5: cat.l1mv[4], delta: cat.l1mv[2] - cat.l1mv[0] });
+    return;
+  }
+  const stats = computeStreamStats(cat, val);
+  renderSummaryBar({ l3: stats.l3count, l3sub: stats.groupsTouched + ' process group' + (stats.groupsTouched === 1 ? '' : 's'),
+    l4: stats.activityUnits, l4sub: stats.mixedL3 + ' mixed-pattern L3s',
+    m1: stats.mv[0], m3: stats.mv[2], m5: stats.mv[4], delta: stats.mv[2] - stats.mv[0] });
+  renderDescriptionPanel(cat, cat.valueStreams[val]);
+}
+function splitRoleAnnotation(raw) {
+  const m = raw.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+  return m ? { base: m[1].trim(), note: m[2].trim() } : { base: raw, note: null };
+}
+function renderDescriptionPanel(cat, streamFilter) {
+  const grid = document.getElementById('description-grid');
+  const descs = (!streamFilter || streamFilter === 'all')
+    ? cat.lenses.descriptions
+    : cat.lenses.descriptions.filter(d => d.stream === streamFilter.name);
+  grid.innerHTML = descs.map(d => {
+    const kpiEntry = (cat.lenses.kpis || []).find(k => k.stream === d.stream);
+    const kpiSection = kpiEntry ? (
+      '<div class="desc-section-heading">KPIs</div>' +
+      '<table class="desc-table"><thead><tr><th>Business Impact Metric &amp; Formula (where confirmed)</th><th>Source</th></tr></thead><tbody>' +
+      kpiEntry.metrics.map(m => '<tr><td><strong>' + m.name + '</strong>' + (m.formula ? '<div class="desc-table-formula">' + m.formula + '</div>' : '') + '</td>' +
+        '<td class="desc-table-source">' + (m.source || '—') + '</td></tr>').join('') + '</tbody></table>'
+    ) : '';
+
+    const stream = (cat.valueStreams || []).find(s => s.name === d.stream);
+
+    const designNarrativeText = (stream && cat.lenses.designNarrative && cat.lenses.designNarrative[stream.name]) || '';
+    const designNarrativeSection = designNarrativeText ? '<div class="desc-section-heading">Design Narrative</div><div class="narrative-block" style="padding:0 16px 14px"><p>' + designNarrativeText + '</p></div>' : '';
+
+    const capabilityMapSection = stream ? (() => {
+      const counts = countPatternsForL3s(getStreamL3s(cat, stream));
+      const order = ['Decision', 'Knowledge', 'Document', 'Transaction', 'Exception'];
+      const cards = order.map(name => {
+        const meta = PATTERN_META[name];
+        const count = counts[name];
+        const body = count === 0
+          ? '<div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities of this pattern in this value stream</div>'
+          : '<div class="cm-count">' + count + ' <span>L4 activities</span></div><div class="cm-mvals">M1 ' + meta.m1 + '%  &rarr;  M3 ' + meta.m3 + '%</div>';
+        return '<div class="capmap-card" style="background:' + meta.fill + ';color:' + meta.text + '"><div class="cm-name">' + name + '</div><div class="cm-tagline">' + meta.tagline + '</div>' + body + '</div>';
+      }).join('');
+      return '<div class="desc-section-heading">AI Capability Map</div>' +
+        '<div class="lens-note" style="padding:0 16px 10px">Pattern-type distribution across this value stream’s activity units. H% figures are the pattern type’s standard value at each maturity level, applied consistently across all PCF domains.</div>' +
+        '<div class="capmap-grid">' + cards + '</div>';
+    })() : '';
+
+    const ownerData = {};
+    const roleNotes = {};
+    if (stream) {
+      getStreamL3s(cat, stream).forEach(l3 => {
+        const raw = (l3.raci && l3.raci.A) || 'Unassigned';
+        const { base: role, note } = splitRoleAnnotation(raw);
+        const count = (l3.l4 && l3.l4.length) ? l3.l4.length : 1;
+        if (!ownerData[role]) ownerData[role] = { steps: 0, l3s: [] };
+        ownerData[role].steps += count;
+        ownerData[role].l3s.push(l3.code);
+        if (note) { if (!roleNotes[role]) roleNotes[role] = []; roleNotes[role].push({ code: l3.code, note }); }
+      });
+    }
+    const tierByRole = {};
+    (d.roles || []).forEach(r => { tierByRole[r.role] = r.tier; });
+    const accountabilitySection = Object.keys(ownerData).length ? (
+      '<div class="desc-section-heading">Process Accountability</div>' +
+      '<table class="desc-table desc-table-roles"><thead><tr><th>Process Accountability</th><th>Tier</th><th>L3 Processes</th><th>L4 Activities</th></tr></thead><tbody>' +
+      Object.entries(ownerData).map(([role, data]) => {
+        const tier = tierByRole[role] || tierByRole[role.replace(/\*$/, '')] || 'External Participant';
+        const tc = TIER_COLORS[tier] || TIER_COLORS["External Participant"];
+        const notes = roleNotes[role] || [];
+        const l3Text = data.l3s.map(code => notes.some(n => n.code === code) ? code + '&dagger;' : code).join(', ');
+        const noteLines = notes.map(n => '<div class="desc-table-note">&dagger; ' + n.code + ': ' + n.note + '</div>').join('');
+        return '<tr><td>' + role + '</td><td class="desc-table-tier" style="background:' + tc.fill + ';color:' + tc.text + '">' + tier + '</td>' +
+          '<td class="desc-table-pcf">' + l3Text + noteLines + '</td><td style="text-align:left">' + data.steps + '</td></tr>';
+      }).join('') + '</tbody></table>'
+    ) : '';
+
+    const handoffPoints = (stream && cat.lenses.handoffPoints && cat.lenses.handoffPoints[stream.name]) || [];
+    const handoffSection = handoffPoints.length ? '<div class="desc-section-heading">Handoff Points</div><div class="narrative-block" style="padding:0 16px 14px">' + handoffPoints.map(p => '<p>' + p + '</p>').join('') + '</div>' : '';
+
+    const govItems = stream ? (cat.lenses.governance || []).filter(g => codeInStream(g.code, stream)) : [];
+    const govSection = '<div class="desc-section-heading">Governed Decision Points</div>' + (govItems.length ? (
+      '<div class="lens-note" style="padding:0 16px 10px">Every Decision/Exception-pattern activity in the value stream, including those embedded inside Mixed-labeled steps.</div>' +
+      '<table class="desc-table desc-table-gov"><thead><tr><th>PCF</th><th>Decision</th><th>Authority</th><th>Impact</th><th>Escalates To</th><th>Trigger</th></tr></thead><tbody>' +
+      govItems.map(g => '<tr><td class="pcf-code">' + g.code + '</td><td>' + g.decision + '</td><td>' + g.authority + '</td><td>' + g.impact + '</td><td>' + g.escalates + '</td><td>' + g.trigger + '</td></tr>').join('') +
+      '</tbody></table>'
+    ) : '<div class="lens-empty">No Decision- or Exception-pattern activity in this value stream — every step here is Knowledge, Document, Transaction, or Mixed without an embedded Decision/Exception component.</div>');
+
+    return '<div class="desc-card"><div class="desc-card-head"><span class="desc-pcf">' + d.pcf + '</span><span class="desc-name">' + d.stream + '</span><div class="desc-subtitle">' + d.subtitle + '</div></div>' +
+      '<div class="desc-card-body">' + d.narrative.map(p => '<p>' + p + '</p>').join('') + '</div>' +
+      '<div class="desc-stats"><div class="desc-stat"><strong>' + d.l3Count + '</strong>L3 Processes</div><div class="desc-stat"><strong>' + d.activityUnits + '</strong>Activities</div>' +
+      '<div class="desc-stat"><strong>' + d.m1 + '%</strong>M1 Baseline</div><div class="desc-stat"><strong>' + d.m3 + '%</strong>M3 Design Intent</div><div class="desc-stat"><strong>' + d.delta + '%</strong>&Delta; M1&rarr;M3</div></div>' +
+      kpiSection + designNarrativeSection + capabilityMapSection + accountabilitySection + handoffSection + govSection + '</div>';
+  }).join('');
+}
+
+/* ── State ─────────────────────────────────────────────────────────────── */
+let currentView = 'legacy';
+const cat = PCF7;
+
+function fmtDelta(a, b) {
+  const d = b - a;
+  const sign = d >= 0 ? '+' : '';
+  const cls = d < 0 ? 'delta-neg' : '';
+  return '<span class="' + cls + '">' + sign + d + ' pts</span>';
+}
+
+function renderTopPills() {
+  document.getElementById('topbar-pills').innerHTML =
+    '<span class="pill pill-m1">M1 ' + cat.l1mv[0] + '%</span>' +
+    '<span class="pill pill-m3">M3 ' + cat.l1mv[2] + '%</span>' +
+    '<span class="pill pill-m5">M5 ' + cat.l1mv[4] + '%</span>';
+}
+
+function wrCell(code) {
+  const d = WR_DATA[code];
+  if (!d) return { current: null, future: null, ceiling: null, cons: null, note: null, classified: false };
+  return {
+    current: d.rel,
+    future: d.future || null,
+    ceiling: d.ceiling || null,
+    cons: d.cons || null,
+    note: d.note || null,
+    classified: true,
+  };
+}
+
+function wrBadge(catName) {
+  if (!catName) return '<span class="wr-blank">&mdash; not yet reasoned &mdash;</span>';
+  if (catName === 'Open / undecided') return '<span class="wr-open">Open / undecided</span>';
+  const c = WR_CATS[catName];
+  if (!c) return '<span class="wr-blank">' + catName + '</span>';
+  return '<span class="wr-badge"><span class="wr-swatch" style="background:' + c.color + '"></span>' + catName + '<span class="wr-h">' + c.h + '%</span></span>';
+}
+
+function consCell(cons) {
+  if (!cons) return '<span class="wr-blank">&mdash; not yet tagged &mdash;</span>';
+  return '<span class="wr-cons" style="color:' + CONS_COLOR[cons] + '">' + cons + '</span>';
+}
+
+function provBadge(classified) {
+  return classified
+    ? '<span class="wr-prov wr-prov-classified">MODELED &mdash; Working-Relationship Classified</span>'
+    : '<span class="wr-prov wr-prov-pattern">MODELED &mdash; Pattern-Reference Estimate</span>';
+}
+
+function noteTitle(note) {
+  return note ? ' title="' + note.replace(/"/g, '&quot;') + '"' : '';
+}
+
+function legacyRowCells(codeAttrs, mv, isL1) {
+  const cls = isL1 ? ' class="m3-col"' : '';
+  return '<td class="col-m1">' + mv[0] + '%</td>' +
+    '<td class="col-m2">' + mv[1] + '%</td>' +
+    '<td class="col-m3 m3-col"><strong>' + mv[2] + '%</strong></td>' +
+    '<td class="col-m4">' + mv[3] + '%</td>' +
+    '<td class="col-m5">' + mv[4] + '%</td>' +
+    '<td class="delta-cell">' + fmtDelta(mv[0], mv[2]) + '</td>';
+}
+
+function wrRowCells(code) {
+  const w = wrCell(code);
+  return '<td' + noteTitle(w.note) + '>' + wrBadge(w.current) + (w.note ? '<span class="wr-note-icon">&#9432;</span>' : '') + '</td>' +
+    '<td>' + wrBadge(w.future) + '</td>' +
+    '<td>' + wrBadge(w.ceiling) + '</td>' +
+    '<td>' + consCell(w.cons) + '</td>' +
+    '<td>' + provBadge(w.classified) + '</td>' +
+    '<td class="notes-cell">' + notesWidget(code) + '</td>';
+}
+
+function render() {
+  renderTopPills();
+  const tbody = document.getElementById('table-body');
+  let html = '';
+
+  html += '<tr class="row-l1">' +
+    '<td><div style="font-weight:700;font-size:13px;">' + cat.code + ' &nbsp;' + cat.name + '<span class="pcf-ref">L1 Domain</span></div></td>' +
+    (currentView === 'legacy' ? '<td></td>' + legacyRowCells(null, cat.l1mv, true) : '<td colspan="6" style="background:#0D2D4F;"></td>') +
+    '</tr>';
+
+  cat.groups.forEach(g => {
+    html += '<tr class="row-l2 toggle-row" data-group="' + g.code + '">' +
+      '<td class="indent-l2 toggle-l2" data-group="' + g.code + '" onclick="toggleGroup(\'' + g.code + '\',this)">' +
+      '<span class="row-flex"><span class="row-prefix"><span class="toggle-icon" title="Click to collapse">&minus;</span>' + g.code + '</span>' +
+      '<span class="row-text">' + g.name + '</span></span></td>' +
+      (currentView === 'legacy' ? '<td></td>' + legacyRowCells(null, g.mv, false) : '<td colspan="6"></td>') +
+      '</tr>';
+
+    g.l3.forEach(l3 => {
+      const hasL4 = l3.l4.length > 0;
+      const l3ToggleAttrs = hasL4
+        ? 'class="indent-l3 toggle-l3 collapsed" data-l3code="' + l3.code + '" onclick="toggleL3(\'' + l3.code + '\',this)"'
+        : 'class="indent-l3"';
+      const l3Icon = hasL4
+        ? '<span class="toggle-icon" title="Click to expand">+</span>'
+        : '<span class="toggle-icon placeholder"></span>';
+      html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
+        '<td ' + l3ToggleAttrs + '><span class="row-flex"><span class="row-prefix">' + l3Icon + '<span class="pcf-ref">' + l3.code + '</span></span>' +
+        '<span class="row-text">' + l3.name + '</span></span></td>' +
+        (currentView === 'legacy'
+          ? '<td><span class="pat pat-' + (l3.mixed ? 'Mixed' : l3.pattern) + '">' + (l3.mixed ? 'Mixed' : l3.pattern) + '</span></td>' + legacyRowCells(null, l3.mv, false)
+          : wrRowCells(l3.code)) +
+        '</tr>';
+
+      l3.l4.forEach(l4 => {
+        html += '<tr class="row-l4" data-parent="' + g.code + '" data-parent-l3="' + l3.code + '" style="display:none">' +
+          '<td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + l4.code + '</span></span>' +
+          '<span class="row-text">' + l4.name + '</span></span></td>' +
+          (currentView === 'legacy'
+            ? '<td><span class="pat pat-' + l4.pattern + '">' + l4.pattern + '</span></td>' + legacyRowCells(null, l4.mv, false)
+            : wrRowCells(l4.code)) +
+          '</tr>';
+      });
+    });
+  });
+
+  tbody.innerHTML = html;
+  renderNotesFromCache();
+}
+
+function setIcon(el, expanded) {
+  const icon = el.querySelector('.toggle-icon');
+  if (!icon || icon.classList.contains('placeholder')) return;
+  icon.textContent = expanded ? '−' : '+';
+  icon.title = expanded ? 'Click to collapse' : 'Click to expand';
+}
+function setGroupExpanded(code, expanded) {
+  const td = document.querySelector('td.toggle-l2[data-group="' + code + '"]');
+  if (!td) return;
+  td.classList.toggle('collapsed', !expanded);
+  setIcon(td, expanded);
+  document.querySelectorAll('tr.row-l3[data-parent="' + code + '"]').forEach(r => { r.style.display = expanded ? '' : 'none'; });
+  if (!expanded) {
+    document.querySelectorAll('tr.row-l3.toggle-l3[data-parent="' + code + '"]').forEach(l3row => { l3row.classList.add('collapsed'); setIcon(l3row, false); });
+    document.querySelectorAll('tr.row-l4[data-parent="' + code + '"]').forEach(l4row => { l4row.style.display = 'none'; });
+  }
+}
+function setL3Expanded(code, expanded) {
+  const td = document.querySelector('td.toggle-l3[data-l3code="' + code + '"]');
+  if (!td) return;
+  td.classList.toggle('collapsed', !expanded);
+  setIcon(td, expanded);
+  document.querySelectorAll('tr.row-l4[data-parent-l3="' + code + '"]').forEach(r => { r.style.display = expanded ? '' : 'none'; });
+}
+function toggleGroup(code, el) { setGroupExpanded(code, el.classList.contains('collapsed')); }
+function toggleL3(code, el) { setL3Expanded(code, el.classList.contains('collapsed')); }
+
+function setView(v) {
+  currentView = v;
+  ['legacy', 'wr', 'raci', 'vsp', 'data', 'people'].forEach(name => {
+    const btn = document.getElementById('btn-' + name);
+    if (btn) btn.classList.toggle('active', v === name);
+  });
+  document.getElementById('panel-maturity').style.display = (v === 'legacy' || v === 'wr') ? '' : 'none';
+  document.getElementById('panel-raci').style.display = v === 'raci' ? '' : 'none';
+  document.getElementById('panel-vsp').style.display = v === 'vsp' ? '' : 'none';
+  document.getElementById('panel-data').style.display = v === 'data' ? '' : 'none';
+  document.getElementById('panel-people').style.display = v === 'people' ? '' : 'none';
+
+  document.getElementById('thead-legacy').style.display = v === 'legacy' ? '' : 'none';
+  document.getElementById('thead-wr').style.display = v === 'wr' ? '' : 'none';
+  document.getElementById('legend-wr').style.display = v === 'wr' ? 'flex' : 'none';
+
+  const notes = {
+    legacy: 'The original pattern-derived Maturity Table, unchanged.',
+    wr: 'Current State / Future State / Progression Ceiling replace the M1–M5 curve for classified activities — the real model from Working_Relationship_Progression_Methodology.docx. Blank cells mean that reasoning hasn’t been done yet, not that the answer is zero.',
+    raci: 'Real reasoned-match RACI, same data the live dashboard’s RACI Table renders. R falls back to the Accountable role (marked "from Accountable") wherever no separate Responsible was identified.',
+    vsp: 'Description, KPIs, Design Narrative, AI Capability Map, Process Accountability, Handoff Points, and Governed Decision Points — select a value stream, or leave it on All Processes.',
+    data: 'Entity × process CRUD — 22 of 37 L3s have real confirmed CRUD data, ported unchanged from the live dashboard’s Data View lens.',
+    people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced.',
+  };
+  document.getElementById('view-note').textContent = notes[v] || '';
+
+  if (v === 'legacy' || v === 'wr') render();
+}
+
+function buildLegend() {
+  const el = document.getElementById('legend-wr');
+  Object.keys(WR_CATS).forEach(name => {
+    const c = WR_CATS[name];
+    const span = document.createElement('span');
+    span.className = 'legend-item';
+    span.innerHTML = '<span class="legend-swatch" style="background:' + c.color + '"></span>' + name;
+    el.appendChild(span);
+  });
+}
+
+
+
+
+renderTopPills();
+buildLegend();
+renderRaciTable(cat);
+renderCrudTable(cat);
+renderRoleImpactTable(cat);
+populateValueStreamBar(cat);
+applyValueStream('all');
+setView('legacy');
+</script>
+</body>
+</html>

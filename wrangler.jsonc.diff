@@ -1,0 +1,13 @@
+--- a/wrangler.jsonc	2026-09-14 15:24:05.069745963 +0000
++++ b/wrangler.jsonc	2026-09-14 15:37:43.954195269 +0000
+@@ -14,6 +14,10 @@
+     {
+       "binding": "WIP_VOTES",
+       "id": "62fb45a66d684249abba30153cec43a8"
++    },
++    {
++      "binding": "SANDBOX_NOTES",
++      "id": "REPLACE_WITH_ID_FROM_WRANGLER_KV_NAMESPACE_CREATE"
+     }
+   ]
+ }
