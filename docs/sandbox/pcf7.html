@@ -163,7 +163,9 @@ tbody td.delta-cell { background: #fff; }
 .wr-prov { font-family:'DM Mono',monospace; font-size:9px; font-weight:400; padding:2px 7px; border-radius:4px; letter-spacing:.04em; text-transform:uppercase; white-space:nowrap; display:inline-block; }
 .wr-prov-classified { background:rgba(30,63,110,.10); color:#1E3F6E; border:1px solid rgba(30,63,110,.3); }
 .wr-prov-pattern { background:rgba(122,156,198,.12); color:#5B7A9C; border:1px solid rgba(122,156,198,.3); }
-#thead-wr th.wr-col { min-width: 190px; }
+#thead-wr th.wr-col { min-width: 168px; }
+#thead-wr th.wr-col-pc { min-width: 190px; }
+#main-table td.wr-left { text-align: left !important; }
 #thead-wr th { text-align: left !important; }
 
 /* ── Notes / reactions widget ────────────────────────────────────────── */
@@ -375,7 +377,7 @@ td.crud-d .crud-entity { color: #991B1B; }
               <th>L1-Domain/L2-Process Group/L3-Process/L4-Activity</th>
               <th class="nowrap wr-col">Current<br>State</th>
               <th class="nowrap wr-col">Future<br>State</th>
-              <th class="nowrap">Progression<br>Ceiling</th>
+              <th class="nowrap wr-col-pc">Progression<br>Ceiling</th>
               <th class="nowrap">Consequence<br>of Error</th>
               <th class="nowrap">Provenance</th>
               <th class="notes-cell">Reactions<br>&amp; Notes</th>
@@ -1491,10 +1493,10 @@ function legacyRowCells(codeAttrs, mv, isL1) {
 
 function wrRowCells(code) {
   const w = wrCell(code);
-  return '<td>' + wrBadge(w.current) + '</td>' +
-    '<td' + noteTitle(w.note) + '>' + wrBadge(w.future) + (w.note ? '<span class="wr-note-icon">&#9432;</span>' : '') + '</td>' +
-    '<td>' + wrBadge(w.ceiling) + '</td>' +
-    '<td>' + consCell(w.cons) + '</td>' +
+  return '<td class="wr-left">' + wrBadge(w.current) + '</td>' +
+    '<td class="wr-left"' + noteTitle(w.note) + '>' + wrBadge(w.future) + (w.note ? '<span class="wr-note-icon">&#9432;</span>' : '') + '</td>' +
+    '<td class="wr-left">' + wrBadge(w.ceiling) + '</td>' +
+    '<td class="wr-left">' + consCell(w.cons) + '</td>' +
     '<td>' + provBadge(w.classified) + '</td>' +
     '<td class="notes-cell">' + notesWidget(code) + '</td>';
 }
