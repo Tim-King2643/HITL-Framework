@@ -180,6 +180,11 @@ tbody td.delta-cell { background: #fff; }
 .gate-axis-cell { color:#B8C0CC; font-style:italic; font-size:10.5px; }
 .gate-status { font-family:'DM Mono',monospace; font-size:9.5px; font-weight:400; padding:2px 7px; border-radius:4px; letter-spacing:.04em; text-transform:uppercase; white-space:nowrap; display:inline-block; }
 .gate-status-unknown { background:#F1F3F6; color:#8A93A0; border:1px solid #DCE1E8; }
+#people-main-table thead th.wr-col { min-width: 168px; }
+#people-main-table thead th.wr-col-pc { min-width: 190px; }
+#people-main-table thead th { text-align: left !important; }
+#people-main-table td.wr-left { text-align: left !important; }
+.wr-cons-worst-note { font-size: 9px; color: var(--lgray); font-style: italic; margin-left: 4px; }
 
 /* ── Notes / reactions widget ────────────────────────────────────────── */
 .notes-cell { min-width: 150px; }
@@ -467,20 +472,18 @@ td.crud-d .crud-entity { color: #991B1B; }
     <div class="card lens-section" id="panel-people" style="display:none">
       <div class="card-header">
         <h3>People View (Role Impact Table) &mdash; PCF 7.0</h3>
-        <span>14-role catalog &middot; derived live from RACI R/A touches &mdash; reportsTo/span of control is a first-pass reasoned structure, not yet externally sourced</span>
+        <span>14-role catalog &middot; reportsTo/span of control is a first-pass reasoned structure, not yet externally sourced &middot; Current State/Future State/Progression Ceiling/Consequence of Error are the same Working-Relationship columns as the process view, equal-weighted across each role&rsquo;s RACI-Accountable L3s &mdash; a role clicks open to show each underlying process&rsquo;s own real value</span>
       </div>
       <div class="table-wrap">
         <table id="people-main-table">
           <thead>
             <tr>
               <th>Role</th>
-              <th>Pattern Mix</th>
-              <th class="col-m1">M1</th>
-              <th class="col-m2">M2</th>
-              <th class="col-m3">M3</th>
-              <th class="col-m4">M4</th>
-              <th class="col-m5">M5</th>
-              <th>&Delta; M1&rarr;M3</th>
+              <th class="nowrap wr-col">Current<br>State</th>
+              <th class="nowrap wr-col">Future<br>State</th>
+              <th class="nowrap wr-col-pc">Progression<br>Ceiling</th>
+              <th class="nowrap">Consequence<br>of Error</th>
+              <th class="nowrap">Provenance</th>
             </tr>
           </thead>
           <tbody id="role-impact-table-body"></tbody>
@@ -1165,15 +1168,21 @@ function toggleCrudGroup(code, el) { setCrudGroupExpanded(code, el.classList.con
 function toggleCrudL3(code, el) { setCrudL3Expanded(code, el.classList.contains('collapsed')); }
 
 /* ── Aggregation (WR Rollup) ──────────────────────────────────────────────
-   Per Working_Relationship_Progression_Methodology.docx §4/§8 — a role's
-   WR rollup is the equal-weighted mean, across its Accountable L3s, of each
-   L3's own mean Current-State H% (averaged over its L4s, or the L3 itself
-   for a leaf). It's a real number only once EVERY one of that role's
-   Accountable L3s is fully classified — this is the exact rule the doc's
-   pilot figures (CHRO 73.2, Recruiter 54.6 from 38.0/68.5/57.3, HRBP
-   Manager "not yet aggregated — only 7.4.4 classified") were checked
-   against and reproduce from real WR_DATA. Nothing here is invented:
-   partial coverage shows its real count, never a guessed number. ───────── */
+   Per Working_Relationship_Progression_Methodology.docx §4/§8 — the People
+   View shows the same Current State / Future State / Progression Ceiling /
+   Consequence of Error / Provenance columns as the Working-Relationship
+   process view, pivoted to the role level: each cell is the equal-weighted
+   mean, across a role's Accountable L3s, of each L3's own mean value for
+   that field (averaged over its L4s, or the L3 itself for a leaf). A cell
+   is a real number only once EVERY one of that role's Accountable L3s has
+   that field reasoned end-to-end — this is the exact rule the doc's pilot
+   figures (CHRO 73.2, Recruiter 54.6 from 38.0/68.5/57.3) were checked
+   against and reproduce from real WR_DATA. Partial coverage shows its real
+   count, never a guessed number. A role's row clicks open to show each
+   underlying L3/L4's own real (non-aggregated) value. Consequence of Error
+   is categorical, so its rollup is worst-case (highest severity present)
+   across the same Accountable L3s, once every one is tagged. ──────────── */
+const CONS_ORDER = ["Low", "Moderate", "High", "Critical"];
 function computeRoleAccountableL3Map(cat) {
   const map = {};
   cat.groups.forEach(g => {
@@ -1185,34 +1194,72 @@ function computeRoleAccountableL3Map(cat) {
   });
   return map;
 }
-function l3WrCoverage(l3) {
+// L3-level coverage for one WR field ('rel' | 'future' | 'ceiling'; default
+// 'rel'). A unit (an L4, or the L3 itself if it's a leaf) is "reasoned"
+// once that field is set to anything real — a WR_CATS category, or the
+// literal "Open / undecided" answer (a real decision, just not numeric).
+function l3WrCoverage(l3, field) {
+  field = field || 'rel';
   const units = (l3.l4 && l3.l4.length) ? l3.l4.map(l4 => l4.code) : [l3.code];
-  let classifiedCount = 0, hSum = 0;
+  let reasoned = 0, numeric = 0, open = 0, hSum = 0;
   units.forEach(code => {
     const d = WR_DATA[code];
-    if (d && d.rel && WR_CATS[d.rel]) { classifiedCount++; hSum += WR_CATS[d.rel].h; }
+    const val = d ? d[field] : null;
+    if (val === undefined || val === null) return;
+    reasoned++;
+    if (val === 'Open / undecided') open++;
+    else if (WR_CATS[val]) { numeric++; hSum += WR_CATS[val].h; }
   });
   const total = units.length;
-  const fullyClassified = total > 0 && classifiedCount === total;
-  return { total, classifiedCount, fullyClassified, mean: fullyClassified ? hSum / classifiedCount : null };
+  const fullyReasoned = total > 0 && reasoned === total;
+  return {
+    total, reasoned, numeric, open, fullyReasoned, mean: numeric ? hSum / numeric : null,
+    // aliases kept for the Readiness Gate view, which reads Current State only
+    fullyClassified: fullyReasoned, classifiedCount: numeric,
+  };
 }
-function computeWrRollup(l3s) {
-  if (!l3s || !l3s.length) return { ready: false, l3total: 0, l3classified: 0, mean: null };
-  const coverages = l3s.map(l3 => l3WrCoverage(l3));
-  const l3classified = coverages.filter(c => c.fullyClassified).length;
+function computeWrRollup(l3s, field) {
+  if (!l3s || !l3s.length) return { ready: false, l3total: 0, l3ready: 0, mean: null };
+  const coverages = l3s.map(l3 => l3WrCoverage(l3, field));
+  const l3ready = coverages.filter(c => c.fullyReasoned).length;
   const l3total = coverages.length;
-  if (l3classified < l3total) return { ready: false, l3total, l3classified, mean: null };
-  const mean = coverages.reduce((s, c) => s + c.mean, 0) / l3total;
-  return { ready: true, l3total, l3classified, mean };
+  if (l3ready < l3total) return { ready: false, l3total, l3ready, mean: null };
+  const numericCovs = coverages.filter(c => c.numeric > 0);
+  const anyOpen = coverages.some(c => c.open > 0);
+  const mean = numericCovs.length ? numericCovs.reduce((s, c) => s + c.mean, 0) / numericCovs.length : null;
+  return { ready: true, l3total, l3ready, mean, anyOpen, allOpen: numericCovs.length === 0 };
 }
-function wrRollupLine(roleName, accountableL3Map) {
-  const l3s = accountableL3Map[roleName] || [];
-  if (!l3s.length) return '';
-  const rollup = computeWrRollup(l3s);
-  if (!rollup.ready) {
-    return '<div class="wr-rollup-line wr-rollup-pending">WR rollup: not yet aggregated &mdash; ' + rollup.l3classified + ' of ' + rollup.l3total + ' Accountable L3' + (rollup.l3total === 1 ? '' : 's') + ' classified</div>';
-  }
-  return '<div class="wr-rollup-line wr-rollup-ready">WR rollup (Current State): <strong>' + rollup.mean.toFixed(1) + '% H</strong> &middot; equal-weighted across ' + rollup.l3total + ' Accountable L3' + (rollup.l3total === 1 ? '' : 's') + '</div>';
+function wrRollupCell(l3s, field) {
+  if (!l3s || !l3s.length) return '<span class="wr-blank">no Accountable L3s</span>';
+  const rollup = computeWrRollup(l3s, field);
+  if (!rollup.ready) return '<span class="wr-blank">not yet aggregated &mdash; ' + rollup.l3ready + ' of ' + rollup.l3total + ' reasoned</span>';
+  if (rollup.allOpen) return '<span class="wr-open">Open / undecided</span>';
+  const openNote = rollup.anyOpen ? ' <span class="wr-cons-worst-note">(some open/undecided)</span>' : '';
+  return '<span class="wr-rollup-ready"><strong>' + rollup.mean.toFixed(1) + '% H</strong></span>' + openNote;
+}
+function l3ConsCoverage(l3) {
+  const units = (l3.l4 && l3.l4.length) ? l3.l4.map(l4 => l4.code) : [l3.code];
+  let reasoned = 0, worst = null;
+  units.forEach(code => {
+    const d = WR_DATA[code];
+    const val = d ? d.cons : null;
+    if (!val) return;
+    reasoned++;
+    if (worst === null || CONS_ORDER.indexOf(val) > CONS_ORDER.indexOf(worst)) worst = val;
+  });
+  const total = units.length;
+  return { total, reasoned, fullyReasoned: total > 0 && reasoned === total, worst };
+}
+function consRollupCell(l3s) {
+  if (!l3s || !l3s.length) return '<span class="wr-blank">no Accountable L3s</span>';
+  const coverages = l3s.map(l3 => l3ConsCoverage(l3));
+  const l3ready = coverages.filter(c => c.fullyReasoned).length;
+  const l3total = coverages.length;
+  if (l3ready < l3total) return '<span class="wr-blank">not yet aggregated &mdash; ' + l3ready + ' of ' + l3total + ' reasoned</span>';
+  let worst = null;
+  coverages.forEach(c => { if (c.worst && (worst === null || CONS_ORDER.indexOf(c.worst) > CONS_ORDER.indexOf(worst))) worst = c.worst; });
+  if (!worst) return '<span class="wr-blank">&mdash; not yet tagged &mdash;</span>';
+  return '<span class="wr-cons" style="color:' + CONS_COLOR[worst] + '">' + worst + '</span><span class="wr-cons-worst-note">worst case</span>';
 }
 
 /* ── People View (Role Impact Table) ─────────────────────────────────────
@@ -1313,37 +1360,32 @@ function renderRoleImpactTable(cat) {
   let html = '';
   tiers.forEach(tier => {
     const rolesInTier = taxonomy.filter(r => r.tier === tier);
-    html += '<tr class="row-l2"><td colspan="8">' + tier + ' Tier</td></tr>';
+    html += '<tr class="row-l2"><td colspan="6">' + tier + ' Tier</td></tr>';
     rolesInTier.forEach(r => {
       const l3s = roleL3Map[r.name] || [];
-      const stats = computeRoleStats(l3s);
+      const accL3s = accountableL3Map[r.name] || [];
       const rowId = 'role-' + r.name.replace(/[^a-zA-Z0-9]/g, '');
-      if (!stats.l3count) {
+      if (!l3s.length) {
         html += '<tr class="row-l3"><td class="indent-l3"><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + '</td>' +
-          '<td style="color:#B8C0CC;font-style:italic;font-size:11px">No R/A touches in current RACI data</td>' +
-          '<td colspan="6" style="text-align:center;color:#B8C0CC">—</td></tr>';
+          '<td colspan="5" style="color:#B8C0CC;font-style:italic;font-size:11px">No R/A touches in current RACI data</td></tr>';
         return;
       }
-      const delta = stats.mv[2] - stats.mv[0];
       html += '<tr class="row-l3 toggle-role" data-role="' + rowId + '" onclick="toggleRoleRow(\'' + rowId + '\')" style="cursor:pointer">' +
-        '<td class="indent-l3"><span class="role-toggle-icon" id="icon-' + rowId + '">+</span><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + wrRollupLine(r.name, accountableL3Map) + '</td>' +
-        '<td>' + renderRoleMixBar(l3s) + '</td>' +
-        '<td class="col-m1">' + stats.mv[0] + '%</td>' +
-        '<td class="col-m2">' + stats.mv[1] + '%</td>' +
-        '<td class="col-m3 m3-col">' + stats.mv[2] + '%</td>' +
-        '<td class="col-m4">' + stats.mv[3] + '%</td>' +
-        '<td class="col-m5">' + stats.mv[4] + '%</td>' +
-        '<td class="delta-cell">' + delta + '%</td></tr>';
+        '<td class="indent-l3"><span class="role-toggle-icon" id="icon-' + rowId + '">+</span><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + '</td>' +
+        '<td class="wr-left">' + wrRollupCell(accL3s, 'rel') + '</td>' +
+        '<td class="wr-left">' + wrRollupCell(accL3s, 'future') + '</td>' +
+        '<td class="wr-left">' + wrRollupCell(accL3s, 'ceiling') + '</td>' +
+        '<td class="wr-left">' + consRollupCell(accL3s) + '</td>' +
+        '<td>' + (accL3s.length ? provBadge(true) : '<span class="wr-blank">&mdash;</span>') + '</td></tr>';
       roleLeafRows(l3s).forEach(row => {
+        const w = wrCell(row.code);
         html += '<tr class="row-l4 role-leaf" data-role-parent="' + rowId + '" style="display:none">' +
           '<td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + row.code + '</span></span><span class="row-text">' + row.name + '</span></span></td>' +
-          '<td><span class="pat pat-' + row.pattern + '">' + row.pattern + '</span></td>' +
-          '<td class="col-m1">' + row.mv[0] + '%</td>' +
-          '<td class="col-m2">' + row.mv[1] + '%</td>' +
-          '<td class="col-m3 m3-col">' + row.mv[2] + '%</td>' +
-          '<td class="col-m4">' + row.mv[3] + '%</td>' +
-          '<td class="col-m5">' + row.mv[4] + '%</td>' +
-          '<td class="delta-cell">' + (row.mv[2] - row.mv[0]) + '%</td></tr>';
+          '<td class="wr-left">' + wrBadge(w.current) + '</td>' +
+          '<td class="wr-left">' + wrBadge(w.future) + '</td>' +
+          '<td class="wr-left">' + wrBadge(w.ceiling) + '</td>' +
+          '<td class="wr-left">' + consCell(w.cons) + '</td>' +
+          '<td>' + provBadge(w.classified) + '</td></tr>';
       });
     });
   });
