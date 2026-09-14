@@ -152,17 +152,18 @@ tbody td.delta-cell { background: #fff; }
 .toggle-icon.placeholder { visibility: hidden; }
 
 /* ── Working-Relationship view ───────────────────────────────────────── */
-.wr-badge { display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:600; white-space:nowrap; }
+.wr-badge { display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:400; white-space:nowrap; }
 .wr-swatch { width:9px; height:9px; border-radius:2px; display:inline-block; flex:0 0 auto; }
 .wr-h { font-family:'DM Mono',monospace; font-size:10px; color:var(--lgray); margin-left:2px; }
 .wr-blank { color:#B8C0CC; font-style:italic; font-size:11px; }
-.wr-open { color:#B8873F; font-style:italic; font-size:11px; font-weight:600; }
-.wr-cons { font-weight:600; font-size:11px; }
+.wr-open { color:#B8873F; font-style:italic; font-size:11px; font-weight:400; }
+.wr-cons { font-weight:400; font-size:11px; }
 .wr-note-icon { cursor:help; color:#B8C0CC; font-size:11px; margin-left:4px; }
-.wr-prov { font-family:'DM Mono',monospace; font-size:9px; font-weight:700; padding:2px 7px; border-radius:4px; letter-spacing:.04em; text-transform:uppercase; white-space:nowrap; display:inline-block; }
+.wr-prov { font-family:'DM Mono',monospace; font-size:9px; font-weight:400; padding:2px 7px; border-radius:4px; letter-spacing:.04em; text-transform:uppercase; white-space:nowrap; display:inline-block; }
 .wr-prov-classified { background:rgba(30,63,110,.10); color:#1E3F6E; border:1px solid rgba(30,63,110,.3); }
 .wr-prov-pattern { background:rgba(122,156,198,.12); color:#5B7A9C; border:1px solid rgba(122,156,198,.3); }
 th.wr-col { min-width: 108px; }
+#thead-wr th { text-align: left !important; }
 
 /* ── Notes / reactions widget ────────────────────────────────────────── */
 .notes-cell { min-width: 150px; }
@@ -369,7 +370,7 @@ td.crud-d .crud-entity { color: #991B1B; }
           </thead>
           <thead id="thead-wr" style="display:none">
             <tr>
-              <th>Process</th>
+              <th>L1-Domain/L2-Process Group/L3-Process/L4-Activity</th>
               <th class="nowrap">Current<br>State</th>
               <th class="nowrap">Future<br>State</th>
               <th class="nowrap">Progression<br>Ceiling</th>
@@ -1468,8 +1469,8 @@ function consCell(cons) {
 
 function provBadge(classified) {
   return classified
-    ? '<span class="wr-prov wr-prov-classified">MODELED &mdash; Working-Relationship Classified</span>'
-    : '<span class="wr-prov wr-prov-pattern">MODELED &mdash; Pattern-Reference Estimate</span>';
+    ? '<span class="wr-prov wr-prov-classified">Modeled &mdash; Working Relationship</span>'
+    : '<span class="wr-prov wr-prov-pattern">Modeled</span>';
 }
 
 function noteTitle(note) {
