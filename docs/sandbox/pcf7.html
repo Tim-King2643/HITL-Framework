@@ -168,6 +168,19 @@ tbody td.delta-cell { background: #fff; }
 #main-table td.wr-left { text-align: left !important; }
 #thead-wr th { text-align: left !important; }
 
+/* ── Aggregation (People View rollup) + Readiness Gate view ─────────────
+   (Sept 14, 2026, per Working_Relationship_Progression_Methodology.docx)
+   .wr-rollup-* is the real, live-computed WR rollup; .gate-axis-cell /
+   .gate-status-unknown are honest placeholders — no instrument exists yet
+   for those axes, so they are never styled to imply a real reading. ──── */
+.wr-rollup-line { font-family:'DM Mono',monospace; font-size:10px; margin-top:3px; }
+.wr-rollup-pending { color:#B8C0CC; font-style:italic; }
+.wr-rollup-ready { color:var(--navy-d); }
+.wr-rollup-ready strong { color:var(--navy); }
+.gate-axis-cell { color:#B8C0CC; font-style:italic; font-size:10.5px; }
+.gate-status { font-family:'DM Mono',monospace; font-size:9.5px; font-weight:400; padding:2px 7px; border-radius:4px; letter-spacing:.04em; text-transform:uppercase; white-space:nowrap; display:inline-block; }
+.gate-status-unknown { background:#F1F3F6; color:#8A93A0; border:1px solid #DCE1E8; }
+
 /* ── Notes / reactions widget ────────────────────────────────────────── */
 .notes-cell { min-width: 150px; }
 .notes-toggle {
@@ -349,6 +362,7 @@ td.crud-d .crud-entity { color: #991B1B; }
     <button class="view-toggle-btn" id="btn-vsp" onclick="setView('vsp')">Value Stream Profile</button>
     <button class="view-toggle-btn" id="btn-data" onclick="setView('data')">Data View (CRUD)</button>
     <button class="view-toggle-btn" id="btn-people" onclick="setView('people')">People View</button>
+    <button class="view-toggle-btn" id="btn-gates" onclick="setView('gates')">Readiness Gate</button>
   </div>
   <div class="view-note" id="view-note"></div>
 
@@ -470,6 +484,32 @@ td.crud-d .crud-entity { color: #991B1B; }
             </tr>
           </thead>
           <tbody id="role-impact-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card lens-section" id="panel-gates" style="display:none">
+      <div class="card-header">
+        <h3>Readiness Gate &mdash; PCF 7.0</h3>
+        <span>Per Working_Relationship_Progression_Methodology.docx &sect;5 &mdash; an activity advances toward its Future State only once all three independent axes clear, gated at L3 via its RACI Accountable role</span>
+      </div>
+      <div class="lens-empty" style="text-align:left;padding:14px 18px;border-bottom:1px solid var(--border);font-style:normal;">
+        <strong style="color:var(--navy-d);">None of the three axes has a real instrument yet.</strong> Technical/Process and Organizational-level have no instrument anywhere in the framework (per &sect;5/&sect;9). Role-level is meant to reuse the AI Transition Pathways self-assessment / TMI tier output, joined by this L3&rsquo;s Accountable role &mdash; but those per-role results haven&rsquo;t been ported into this sandbox yet. Every cell below is an honest blank, not a zero &mdash; this view exists to hold the shape of the gate, not to imply readiness has been measured.
+      </div>
+      <div class="table-wrap">
+        <table id="gates-main-table">
+          <thead>
+            <tr>
+              <th>L3 Process</th>
+              <th class="nowrap">Accountable<br>Role</th>
+              <th class="nowrap">WR Rollup<br>(Current State)</th>
+              <th class="nowrap">Technical /<br>Process</th>
+              <th class="nowrap">Role-level</th>
+              <th class="nowrap">Organizational-<br>level</th>
+              <th>Gate Status</th>
+            </tr>
+          </thead>
+          <tbody id="gates-table-body"></tbody>
         </table>
       </div>
     </div>
@@ -1124,6 +1164,57 @@ function setCrudL3Expanded(code, expanded) {
 function toggleCrudGroup(code, el) { setCrudGroupExpanded(code, el.classList.contains('collapsed')); }
 function toggleCrudL3(code, el) { setCrudL3Expanded(code, el.classList.contains('collapsed')); }
 
+/* ── Aggregation (WR Rollup) ──────────────────────────────────────────────
+   Per Working_Relationship_Progression_Methodology.docx §4/§8 — a role's
+   WR rollup is the equal-weighted mean, across its Accountable L3s, of each
+   L3's own mean Current-State H% (averaged over its L4s, or the L3 itself
+   for a leaf). It's a real number only once EVERY one of that role's
+   Accountable L3s is fully classified — this is the exact rule the doc's
+   pilot figures (CHRO 73.2, Recruiter 54.6 from 38.0/68.5/57.3, HRBP
+   Manager "not yet aggregated — only 7.4.4 classified") were checked
+   against and reproduce from real WR_DATA. Nothing here is invented:
+   partial coverage shows its real count, never a guessed number. ───────── */
+function computeRoleAccountableL3Map(cat) {
+  const map = {};
+  cat.groups.forEach(g => {
+    g.l3.forEach(l3 => {
+      if (!l3.raci) return;
+      const accountableRoles = new Set(parseRaciField(l3.raci.A));
+      accountableRoles.forEach(role => { if (!map[role]) map[role] = []; map[role].push(l3); });
+    });
+  });
+  return map;
+}
+function l3WrCoverage(l3) {
+  const units = (l3.l4 && l3.l4.length) ? l3.l4.map(l4 => l4.code) : [l3.code];
+  let classifiedCount = 0, hSum = 0;
+  units.forEach(code => {
+    const d = WR_DATA[code];
+    if (d && d.rel && WR_CATS[d.rel]) { classifiedCount++; hSum += WR_CATS[d.rel].h; }
+  });
+  const total = units.length;
+  const fullyClassified = total > 0 && classifiedCount === total;
+  return { total, classifiedCount, fullyClassified, mean: fullyClassified ? hSum / classifiedCount : null };
+}
+function computeWrRollup(l3s) {
+  if (!l3s || !l3s.length) return { ready: false, l3total: 0, l3classified: 0, mean: null };
+  const coverages = l3s.map(l3 => l3WrCoverage(l3));
+  const l3classified = coverages.filter(c => c.fullyClassified).length;
+  const l3total = coverages.length;
+  if (l3classified < l3total) return { ready: false, l3total, l3classified, mean: null };
+  const mean = coverages.reduce((s, c) => s + c.mean, 0) / l3total;
+  return { ready: true, l3total, l3classified, mean };
+}
+function wrRollupLine(roleName, accountableL3Map) {
+  const l3s = accountableL3Map[roleName] || [];
+  if (!l3s.length) return '';
+  const rollup = computeWrRollup(l3s);
+  if (!rollup.ready) {
+    return '<div class="wr-rollup-line wr-rollup-pending">WR rollup: not yet aggregated &mdash; ' + rollup.l3classified + ' of ' + rollup.l3total + ' Accountable L3' + (rollup.l3total === 1 ? '' : 's') + ' classified</div>';
+  }
+  return '<div class="wr-rollup-line wr-rollup-ready">WR rollup (Current State): <strong>' + rollup.mean.toFixed(1) + '% H</strong> &middot; equal-weighted across ' + rollup.l3total + ' Accountable L3' + (rollup.l3total === 1 ? '' : 's') + '</div>';
+}
+
 /* ── People View (Role Impact Table) ─────────────────────────────────────
    Anchored on the Organizational Role Taxonomy's PCF 7.0 catalog (14 roles,
    3 tiers). Every role's row is derived live from the same RACI data the
@@ -1217,6 +1308,7 @@ function renderRoleImpactTable(cat) {
   const tbody = document.getElementById('role-impact-table-body');
   const taxonomy = ROLE_TAXONOMY;
   const roleL3Map = computeRoleL3Map(cat);
+  const accountableL3Map = computeRoleAccountableL3Map(cat);
   const tiers = ["Executive", "Managerial", "Operational"];
   let html = '';
   tiers.forEach(tier => {
@@ -1234,7 +1326,7 @@ function renderRoleImpactTable(cat) {
       }
       const delta = stats.mv[2] - stats.mv[0];
       html += '<tr class="row-l3 toggle-role" data-role="' + rowId + '" onclick="toggleRoleRow(\'' + rowId + '\')" style="cursor:pointer">' +
-        '<td class="indent-l3"><span class="role-toggle-icon" id="icon-' + rowId + '">+</span><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + '</td>' +
+        '<td class="indent-l3"><span class="role-toggle-icon" id="icon-' + rowId + '">+</span><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + wrRollupLine(r.name, accountableL3Map) + '</td>' +
         '<td>' + renderRoleMixBar(l3s) + '</td>' +
         '<td class="col-m1">' + stats.mv[0] + '%</td>' +
         '<td class="col-m2">' + stats.mv[1] + '%</td>' +
@@ -1262,6 +1354,49 @@ function toggleRoleRow(rowId) {
   const collapsed = icon.textContent === '+';
   icon.textContent = collapsed ? '−' : '+';
   document.querySelectorAll('tr.role-leaf[data-role-parent="' + rowId + '"]').forEach(r => { r.style.display = collapsed ? '' : 'none'; });
+}
+
+/* ── Readiness Gate ────────────────────────────────────────────────────
+   Per Working_Relationship_Progression_Methodology.docx §5 — an activity
+   only advances toward its Future State once THREE independent axes all
+   clear: Technical/Process (per L4/leaf-L3, per transition), Role-level
+   (per role, via RACI Responsible touches — meant to reuse the AI
+   Transition Pathways self-assessment / TMI tier), and Organizational-
+   level (domain/company-wide). Gated here at L3 via its RACI Accountable
+   role, per Tim's Sept 14, 2026 confirmation. Technical/Process and
+   Organizational-level have no instrument anywhere in the framework yet
+   (§5/§9); Role-level's source instrument exists (per the AI Transition
+   Pathways work) but its per-role numeric output hasn't been ported into
+   this sandbox. So all three axis cells are honest placeholders — never
+   a fabricated reading. Only the WR Rollup column is real, computed live
+   from WR_DATA with the same l3WrCoverage() rule the People View
+   Aggregation rollup uses. ─────────────────────────────────────────── */
+function gateAxisCell(text) {
+  return '<td class="gate-axis-cell">' + text + '</td>';
+}
+function renderGatesTable(cat) {
+  const tbody = document.getElementById('gates-table-body');
+  let html = '';
+  cat.groups.forEach(g => {
+    html += '<tr class="row-l2"><td colspan="7"><span class="row-flex"><span class="row-prefix">' + g.code + '</span><span class="row-text">' + g.name + '</span></span></td></tr>';
+    g.l3.forEach(l3 => {
+      const raci = l3.raci || { A: '—' };
+      const cov = l3WrCoverage(l3);
+      const rollupCell = cov.fullyClassified
+        ? '<span class="wr-rollup-ready"><strong>' + cov.mean.toFixed(1) + '% H</strong></span>'
+        : '<span class="wr-blank">' + cov.classifiedCount + ' of ' + cov.total + ' classified</span>';
+      html += '<tr class="row-l3">' +
+        '<td class="indent-l3"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + l3.code + '</span></span><span class="row-text">' + l3.name + '</span></span></td>' +
+        '<td>' + formatRaciCell(raci.A) + '</td>' +
+        '<td>' + rollupCell + '</td>' +
+        gateAxisCell('<span class="wr-blank">not yet instrumented</span>') +
+        gateAxisCell('<span class="wr-blank">not yet ported</span>') +
+        gateAxisCell('<span class="wr-blank">not yet instrumented</span>') +
+        '<td><span class="gate-status gate-status-unknown">Not yet gateable</span></td>' +
+        '</tr>';
+    });
+  });
+  tbody.innerHTML = html;
 }
 
 /* ── Value Stream Profile ────────────────────────────────────────────── */
@@ -1580,7 +1715,7 @@ function toggleL3(code, el) { setL3Expanded(code, el.classList.contains('collaps
 
 function setView(v) {
   currentView = v;
-  ['legacy', 'wr', 'raci', 'vsp', 'data', 'people'].forEach(name => {
+  ['legacy', 'wr', 'raci', 'vsp', 'data', 'people', 'gates'].forEach(name => {
     const btn = document.getElementById('btn-' + name);
     if (btn) btn.classList.toggle('active', v === name);
   });
@@ -1589,6 +1724,7 @@ function setView(v) {
   document.getElementById('panel-vsp').style.display = v === 'vsp' ? '' : 'none';
   document.getElementById('panel-data').style.display = v === 'data' ? '' : 'none';
   document.getElementById('panel-people').style.display = v === 'people' ? '' : 'none';
+  document.getElementById('panel-gates').style.display = v === 'gates' ? '' : 'none';
 
   document.getElementById('thead-legacy').style.display = v === 'legacy' ? '' : 'none';
   document.getElementById('thead-wr').style.display = v === 'wr' ? '' : 'none';
@@ -1600,7 +1736,8 @@ function setView(v) {
     raci: 'Real reasoned-match RACI, same data the live dashboard’s RACI Table renders. R falls back to the Accountable role (marked "from Accountable") wherever no separate Responsible was identified.',
     vsp: 'Description, KPIs, Design Narrative, AI Capability Map, Process Accountability, Handoff Points, and Governed Decision Points — select a value stream, or leave it on All Processes.',
     data: 'Entity × process CRUD — 22 of 37 L3s have real confirmed CRUD data, ported unchanged from the live dashboard’s Data View lens.',
-    people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced.',
+    people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced. Each role’s WR rollup (Current State) is real — an equal-weighted mean across its Accountable L3s, shown only once every one of them is fully classified.',
+    gates: 'Per Working_Relationship_Progression_Methodology.docx §5 — three independent axes (Technical/Process, Role-level, Organizational-level) must all clear before an activity advances, gated here at L3 via its RACI Accountable role. Only the WR Rollup column is real; no instrument exists yet for any of the three gate axes, so those cells are honest placeholders, not a status.',
   };
   document.getElementById('view-note').textContent = notes[v] || '';
 
@@ -1626,6 +1763,7 @@ buildLegend();
 renderRaciTable(cat);
 renderCrudTable(cat);
 renderRoleImpactTable(cat);
+renderGatesTable(cat);
 populateValueStreamBar(cat);
 applyValueStream('all');
 setView('legacy');
