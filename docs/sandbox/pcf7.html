@@ -1335,6 +1335,19 @@ function roleLeafRows(l3s) {
   rows.sort((a, b) => a.code.localeCompare(b.code, undefined, { numeric: true }));
   return rows;
 }
+// Like roleLeafRows, but keeps every touched L3 visible as its own row
+// (grouping its L4 children under it) instead of flattening straight past
+// it — so a role's expanded breakdown always shows which L3 each L4
+// belongs to, the same L3→L4 nesting the process view uses.
+function roleTouchRows(l3s) {
+  const sorted = [...l3s].sort((a, b) => a.code.localeCompare(b.code, undefined, { numeric: true }));
+  const rows = [];
+  sorted.forEach(l3 => {
+    rows.push({ level: 'l3', code: l3.code, name: l3.name });
+    if (l3.l4 && l3.l4.length) l3.l4.forEach(l4 => rows.push({ level: 'l4', code: l4.code, name: l4.name }));
+  });
+  return rows;
+}
 function computeSpanOfControl(roleName, taxonomy) {
   const direct = taxonomy.filter(r => r.reportsTo === roleName).map(r => r.name);
   const total = new Set();
@@ -1377,10 +1390,14 @@ function renderRoleImpactTable(cat) {
         '<td class="wr-left">' + wrRollupCell(accL3s, 'ceiling') + '</td>' +
         '<td class="wr-left">' + consRollupCell(accL3s) + '</td>' +
         '<td>' + (accL3s.length ? provBadge(true) : '<span class="wr-blank">&mdash;</span>') + '</td></tr>';
-      roleLeafRows(l3s).forEach(row => {
+      roleTouchRows(l3s).forEach(row => {
         const w = wrCell(row.code);
-        html += '<tr class="row-l4 role-leaf" data-role-parent="' + rowId + '" style="display:none">' +
-          '<td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + row.code + '</span></span><span class="row-text">' + row.name + '</span></span></td>' +
+        const isL3 = row.level === 'l3';
+        const indentCls = isL3 ? 'indent-l3' : 'indent-l4';
+        const nameStyle = isL3 ? ' style="font-weight:600;color:var(--navy-d)"' : '';
+        const rowBg = isL3 ? 'background:#F7F9FC;' : '';
+        html += '<tr class="row-l4 role-leaf" data-role-parent="' + rowId + '" style="display:none;' + rowBg + '">' +
+          '<td class="' + indentCls + '"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + row.code + '</span></span><span class="row-text"' + nameStyle + '>' + row.name + '</span></span></td>' +
           '<td class="wr-left">' + wrBadge(w.current) + '</td>' +
           '<td class="wr-left">' + wrBadge(w.future) + '</td>' +
           '<td class="wr-left">' + wrBadge(w.ceiling) + '</td>' +
