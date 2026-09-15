@@ -1,10 +1,14 @@
 --- /tmp/claude-0/-home-claude/1e8af207-9430-570b-bf45-b54ec92625bc/scratchpad/register/live/index.js	2026-09-15 18:30:15.292436606 +0000
-+++ /tmp/claude-0/-home-claude/1e8af207-9430-570b-bf45-b54ec92625bc/scratchpad/register/live/index_patched.js	2026-09-15 18:34:37.161643227 +0000
-@@ -30,7 +30,8 @@
++++ /tmp/claude-0/-home-claude/1e8af207-9430-570b-bf45-b54ec92625bc/scratchpad/register/live/index_patched.js	2026-09-15 18:51:43.956878597 +0000
+@@ -28,9 +28,10 @@
+   'recruiter-narratives': '2026-09-08',
+   'hpct-badge': '2026-09-08',
    'pattern-color': '2026-09-08',
-   'shock-wave': '2026-09-08',
-   'concept-to-principle': '2026-09-08',
+-  'shock-wave': '2026-09-08',
+-  'concept-to-principle': '2026-09-08',
 -  'rule-catalog': '2026-09-08'
++  'shock-wave': '2026-09-15',
++  'concept-to-principle': '2026-09-15',
 +  'rule-catalog': '2026-09-08',
 +  'wrpm': '2026-09-15'
  };

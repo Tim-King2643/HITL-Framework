@@ -28,8 +28,8 @@ const VOTABLE_ITEMS = {
   'recruiter-narratives': '2026-09-08',
   'hpct-badge': '2026-09-08',
   'pattern-color': '2026-09-08',
-  'shock-wave': '2026-09-08',
-  'concept-to-principle': '2026-09-08',
+  'shock-wave': '2026-09-15',
+  'concept-to-principle': '2026-09-15',
   'rule-catalog': '2026-09-08',
   'wrpm': '2026-09-15'
 };
