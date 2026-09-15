@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Documentation — The Human-AI Partnership Framework</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Work in Progress — The Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
 <style>
 :root {
   --navy:   #1B4F8A;
@@ -17,146 +16,488 @@
   --white:  #fff;
   --bg:     #F4F6FB;
   --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
 
-/* ── Top banner (matches the dashboard sidebar's brand block) ─────────────── */
 .masthead {
   background: var(--navy-d); color: #fff; padding: 32px 24px 28px;
   text-align: center;
 }
 .masthead h1 {
-  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px;
+  font-family: 'Georgia', serif; font-weight: 700; font-size: 24px;
   margin-bottom: 4px;
 }
 .masthead .tagline1 { font-size: 13px; color: #9FC2EE; font-weight: 500; letter-spacing: .02em; margin-bottom: 4px; }
-.masthead .tagline2 { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead .tagline2 {
+  font-family: 'Georgia', serif; font-style: italic; font-weight: 400;
+  font-size: 18px; color: #FFFFFF; letter-spacing: .01em;
+  margin: 8px 0 4px;
+}
+.masthead .tagline2::after {
+  content: ''; display: block; width: 36px; height: 2px;
+  background: #7B9FD1; border-radius: 1px; margin: 12px auto 18px;
+}
 .masthead nav a {
   color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600;
   margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent;
 }
-.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: var(--mid, #7B9FD1); }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
 
-/* ── Intro ──────────────────────────────────────────────────────────────── */
-.intro { max-width: 760px; margin: 0 auto; padding: 44px 24px 8px; text-align: center; }
-.intro p { font-size: 15px; color: var(--gray); line-height: 1.7; }
-.intro p.lead { font-size: 17px; color: var(--navy); font-style: italic; margin-bottom: 16px; line-height: 1.6; }
-.hal-quote { max-width: 760px; margin: 24px auto 0; background: var(--navy-d); border-radius: 8px; padding: 18px 24px; text-align: left; }
-.hal-quote .label { font-size: 11px; font-weight: 700; color: #7B9FD1; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
-.hal-quote p { font-size: 14px; color: #fff; line-height: 1.7; }
-.hal-quote a { display: inline-block; margin-top: 10px; font-size: 12.5px; font-weight: 600; color: #9FC2EE; text-decoration: none; border-bottom: 1px solid rgba(159,194,238,.4); }
-.hal-quote a:hover { color: #fff; border-bottom-color: #fff; }
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center;
+  font-size: 12.5px; color: var(--amber-text);
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: var(--amber-text); font-weight: 600; }
 
-/* ── Section groups ─────────────────────────────────────────────────────── */
-.groups { max-width: 1000px; margin: 0 auto; padding: 28px 24px 64px; display: flex; flex-direction: column; gap: 32px; }
-.group { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-.group-header { background: var(--navy-l); padding: 18px 26px; border-bottom: 1px solid var(--border); }
-.group-header h2 { font-size: 17px; color: var(--navy-d); font-weight: 700; margin-bottom: 4px; }
-.group-header p { font-size: 13px; color: var(--lgray); }
-.doc-list { display: flex; flex-wrap: wrap; gap: 12px; padding: 16px 18px 20px; }
-.doc-card {
-  flex: 1 1 260px; background: #fff; border: 1px solid var(--border); border-radius: 8px;
-  padding: 18px 22px; text-decoration: none; display: block;
-  transition: background .12s, border-color .12s;
+.intro { max-width: 760px; margin: 0 auto; padding: 24px 24px 8px; text-align: center; }
+.intro p.lead { font-size: 17px; color: var(--navy); font-style: italic; margin-bottom: 10px; line-height: 1.6; }
+.intro p { font-size: 14px; color: var(--gray); line-height: 1.7; }
+
+.vote-note { max-width: 760px; margin: 18px auto 0; padding: 12px 24px; text-align: center; }
+.vote-note p {
+  font-size: 12.5px; color: var(--lgray); line-height: 1.6;
 }
-.doc-card:hover { background: var(--navy-l); border-color: #B8CCE8; }
-.doc-card .doc-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
-.doc-card .doc-desc { font-size: 12px; color: var(--lgray); line-height: 1.5; }
-.doc-card.disabled { cursor: default; }
-.doc-card.disabled:hover { background: #fff; }
-.doc-card.disabled .doc-title { color: #B8C0CC; }
-.doc-card.disabled .badge {
-  display: inline-block; margin-left: 8px; font-size: 9px; font-weight: 700; letter-spacing: .04em;
-  color: #B8873F; background: #FEF3C7; border-radius: 3px; padding: 1px 6px; vertical-align: middle;
+
+.wip-status-badge { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; border-radius: 3px; padding: 3px 7px; white-space: nowrap; }
+
+.stage-legend {
+  max-width: 1000px; margin: 18px auto 0; padding: 14px 24px; background: #fff;
+  border: 1px solid var(--border); border-radius: 8px; text-align: left;
 }
-.doc-card .filetype {
+.stage-legend .legend-title {
+  font-size: 14px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+  color: var(--navy); margin-bottom: 10px;
+}
+.stage-legend .legend-steps { display: flex; flex-wrap: wrap; gap: 6px 10px; margin-bottom: 8px; }
+.stage-legend .step-chip {
+  font-size: 10.5px; font-family: 'Consolas', monospace; color: var(--navy-d);
+  background: var(--navy-l); border-radius: 4px; padding: 3px 8px;
+}
+.stage-legend .step-chip.current { background: var(--navy); color: #fff; font-weight: 600; }
+.stage-legend p { font-size: 12px; color: var(--lgray); line-height: 1.6; margin: 0; }
+
+.catalog-wrap { max-width: 1000px; margin: 0 auto; padding: 28px 0 20px; }
+.catalog-caption { font-size: 11.5px; color: var(--lgray); margin-bottom: 10px; text-align: right; }
+.table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
+
+table.catalog { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 760px; }
+table.catalog thead th {
+  background: var(--navy-d); color: #fff; text-align: left; vertical-align: bottom; padding: 16px 14px 8px;
+  font-family: 'Consolas', monospace; font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase;
+  white-space: nowrap;
+}
+table.catalog tbody tr.group-row td {
+  background: var(--navy-l); padding: 9px 14px; border-top: 2px solid var(--border);
+  font-family: 'Georgia', serif; font-weight: 700; font-size: 14px; color: var(--navy-d);
+}
+table.catalog tbody tr.group-row .g-note {
+  font-family: 'Segoe UI', sans-serif; font-weight: 400; font-style: italic; font-size: 11px;
+  color: var(--lgray); margin-left: 10px;
+}
+table.catalog tbody tr.item-row td {
+  padding: 13px 14px; border-top: 1px solid var(--border); vertical-align: top;
+}
+table.catalog tbody tr.item-row:hover td { background: #FAFBFD; }
+.item-title a { color: var(--navy); font-weight: 600; font-size: 13.5px; text-decoration: none; }
+.item-title a:hover { text-decoration: underline; }
+.item-title .lock { font-size: 11px; color: var(--lgray); font-weight: 400; font-style: italic; margin-left: 4px; }
+.item-desc { font-size: 11.5px; color: var(--lgray); line-height: 1.55; margin-top: 4px; max-width: 460px; }
+
+.status {
   display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .04em;
-  color: var(--navy); background: var(--navy-l); border-radius: 3px; padding: 1px 6px; margin-left: 6px; vertical-align: middle;
+  text-transform: uppercase; color: var(--amber); background: var(--amber-bg); border-radius: 3px; padding: 3px 7px;
+  white-space: nowrap;
+}
+.stage {
+  display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .03em;
+  color: var(--navy); background: var(--navy-l); border-radius: 3px; padding: 3px 7px;
+  white-space: nowrap;
 }
 
-/* ── Footer ─────────────────────────────────────────────────────────────── */
-footer { text-align: center; padding: 0 24px 48px; }
+.fmt-links { white-space: nowrap; font-size: 11.5px; }
+.fmt-links a { font-weight: 700; letter-spacing: .01em; text-decoration: none; color: var(--navy); }
+.fmt-links a:hover { text-decoration: underline; }
+.fmt-links a.pdf { color: var(--amber-text); }
+.fmt-links .sep { color: var(--border); margin: 0 6px; }
+.fmt-links .unavailable { color: var(--lgray); font-style: italic; font-weight: 400; }
+
+.catalog-footnote {
+  max-width: 1000px; margin: 14px auto 0; font-size: 11.5px; color: var(--lgray); line-height: 1.7;
+}
+
+footer { text-align: center; padding: 40px 24px 48px; }
 footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
 footer a { color: var(--navy); text-decoration: none; }
 </style>
 </head>
 <body>
 
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing on this page is official yet.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
+
 <div class="masthead">
   <h1>The Human-AI Partnership Framework</h1>
   <div class="tagline2">Where human judgment belongs</div>
   <nav>
-    <a href="index.html" class="active">Documentation</a>
+    <a href="../index.html">Documentation</a>
     <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
   </nav>
 </div>
 
 <div class="intro">
-  <p class="lead">HITL — Human-in-the-Loop — as an organizational design standard, not a safety checkpoint.</p>
-  <p>Everything below is the written record behind the interactive dashboard: the methodology itself, how it plays out across a real business domain, and what it means for the people doing the work. Start with Core Methodology if you're new here.</p>
+  <p class="lead">Drafts, in one place, without bolting them onto the framework early.</p>
+  <p>Each item below is real, working content — viewable and commentable just like the rest of the site — but deliberately not linked from Documentation, the Dashboard, or any nav. Nothing moves into the framework proper until it's been reviewed and both of you are ready to make it official. This catalog is the single "what's the state of everything" view: every item's title links straight to its Word document for a proper review read, with the HTML page and PDF alongside it.</p>
 </div>
 
-<div class="hal-quote">
-  <p class="label">Why We Built This</p>
-  <p>HAL 9000, from 2001: A Space Odyssey, is arguably the most famous AI in history — and had no human oversight, no decision rights framework, no human in the loop, by design. This framework is the architectural answer.</p>
-  <a href="hitl_origin_story.html">Read the full story →</a>
+<div class="vote-note">
+  <p>Voting happens directly on each votable item's own page now — open it, and the Approve / Needs Revision / Park / Deny controls are right there, along with both reviewers' current picks. The Status column below stays live, straight from the same vote data.</p>
 </div>
 
-<div class="groups">
-
-  <div class="group">
-    <div class="group-header">
-      <h2>Core Methodology</h2>
-      <p>The conceptual foundation — read these first.</p>
-    </div>
-    <div class="doc-list">
-      <a class="doc-card" href="hitl_origin_story.html">
-        <div class="doc-title">Why We Built This: The HAL 9000 Story</div>
-        <div class="doc-desc">The failure mode this framework exists to answer — and the real, shipped pieces that answer it, one at a time.</div>
-      </a>
-      <a class="doc-card" href="hitl_methodology.html">
-        <div class="doc-title">The HITL Design Methodology</div>
-        <div class="doc-desc">The full methodology: the HITL Stack, the five pattern types, the ratio methodology, and the governance model.</div>
-      </a>
-      <a class="doc-card" href="hitl_maturity_scale.html">
-        <div class="doc-title">Understanding the HITL Maturity Scale</div>
-        <div class="doc-desc">Why human involvement is measured on a five-point scale (M1–M5) — and why the goal isn't the top of it.</div>
-      </a>
-    </div>
+<div class="stage-legend">
+  <div class="legend-title">Development stage (per Section 5, Working Collaboration &amp; Co-Development Principles — &ldquo;How We Develop It&rdquo;)</div>
+  <div class="legend-steps">
+    <span class="step-chip">Concept</span>
+    <span class="step-chip">Step 1 · Prototype</span>
+    <span class="step-chip">Step 2 · Pressure Test</span>
+    <span class="step-chip">Step 3 · Refine</span>
+    <span class="step-chip">Step 4 · Pilot</span>
+    <span class="step-chip">Step 5 · Validate</span>
+    <span class="step-chip">Step 6 · Commercialize</span>
   </div>
-
-  <div class="group">
-    <div class="group-header">
-      <h2>Process View — Value Streams</h2>
-      <p>How AI-driven maturity reshapes each value stream's process flow, mapped end to end.</p>
-    </div>
-    <div class="doc-list">
-      <a class="doc-card" href="process_catalog_pcf7.html">
-        <div class="doc-title">PCF 7.0 — Human Resources</div>
-        <div class="doc-desc">6 value streams &middot; Maturity Assessment &middot; RACI reference</div>
-      </a>
-      <a class="doc-card" href="process_catalog_pcf8.html">
-        <div class="doc-title">PCF 8.0 — Information Technology</div>
-        <div class="doc-desc">8 value streams &middot; Maturity Assessment &middot; RACI reference</div>
-      </a>
-      <a class="doc-card" href="process_catalog_pcf9.html">
-        <div class="doc-title">PCF 9.0 — Finance</div>
-        <div class="doc-desc">9 value streams &middot; Maturity Assessment &middot; RACI reference</div>
-      </a>
-    </div>
-  </div>
-
+  <p>Every row below carries a stage tag showing where it actually sits in this sequence today — a separate thing from the amber &ldquo;review status&rdquo; badge, which just tracks whether it's ready for a read-through.</p>
 </div>
+
+<div class="catalog-wrap">
+  <p class="catalog-caption">14 items · sorted by group, oldest work first within each</p>
+  <div class="table-scroll">
+    <table class="catalog">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Status</th>
+          <th>Stage</th>
+          <th>Formats</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr class="group-row"><td colspan="4">Role Pattern Transition Narratives <span class="g-note">Stage-first M1 → M3 → M5 views, per role, grounded in real Accountable-process data. Live HTML rebuilt onto the standard site's own system (px-based Standing Type Scale, standard masthead/page chrome, live pattern legend) — see the Content Generation Rules compliance audit below; the Word/PDF exports keep their dedicated print layout, matched on fonts and colors only, per Token Lock.</span></td></tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="CHRO_Pattern_Transition_Narrative.docx">CHRO — Pattern Transition Narratives</a></div>
+            <div class="item-desc">Stage-first view of how the CHRO's remaining human work shifts across M1 &rarr; M3 &rarr; M5 as AI matures, by HITL pattern.</div>
+          </td>
+          <td><span class="status" data-wip-status="chro-narratives">Loading…</span></td>
+          <td><span class="stage">Step 1 · Prototype</span></td>
+          <td class="fmt-links">
+            <a href="CHRO_Pattern_Transition_Narrative.docx">Word</a><span class="sep">·</span>
+            <a href="chro_pattern_transition_stagefirst.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="chro_pattern_transition_stagefirst.pdf">PDF</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="HRBP_Manager_Pattern_Transition_Narrative.docx">HRBP Manager — Pattern Transition Narratives</a></div>
+            <div class="item-desc">Same stage-first view for the HRBP Manager role — 22 real L4 activities across 10 Accountable processes.</div>
+          </td>
+          <td><span class="status" data-wip-status="hrbp-narratives">Loading…</span></td>
+          <td><span class="stage">Step 1 · Prototype</span></td>
+          <td class="fmt-links">
+            <a href="HRBP_Manager_Pattern_Transition_Narrative.docx">Word</a><span class="sep">·</span>
+            <a href="hrbp_manager_pattern_transition_stagefirst.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="hrbp_manager_pattern_transition_stagefirst.pdf">PDF</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="Recruiter_Pattern_Transition_Narrative.docx">Recruiter — Pattern Transition Narratives</a></div>
+            <div class="item-desc">Same stage-first view for the Recruiter role, the third of the three roles walked through on the Aug 31 call.</div>
+          </td>
+          <td><span class="status" data-wip-status="recruiter-narratives">Loading…</span></td>
+          <td><span class="stage">Step 1 · Prototype</span></td>
+          <td class="fmt-links">
+            <a href="Recruiter_Pattern_Transition_Narrative.docx">Word</a><span class="sep">·</span>
+            <a href="recruiter_pattern_transition_stagefirst.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="recruiter_pattern_transition_stagefirst.pdf">PDF</a>
+          </td>
+        </tr>
+
+        <tr class="group-row"><td colspan="4">Concepts &amp; Design Principles <span class="g-note">Framework-level ideas and mechanisms — not yet applied to a specific role, dataset, or dashboard lens.</span></td></tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="H_Pct_Provenance_Badge_Standard.docx">H% Provenance Badge — Naming &amp; Placement Standard</a></div>
+            <div class="item-desc">A per-domain status badge (MODELED — Pattern-Reference Estimate / MODELED — RACI-Grounded) for the Maturity Table's H% figures, operationalizing Rule 14 and Rule 16 of the unified Framework Content Generation Rules.</div>
+          </td>
+          <td><span class="status" data-wip-status="hpct-badge">Loading…</span></td>
+          <td><span class="stage">Concept</span></td>
+          <td class="fmt-links">
+            <a href="H_Pct_Provenance_Badge_Standard.docx">Word</a><span class="sep">·</span>
+            <a href="h_pct_provenance_badge_standard.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="h_pct_provenance_badge_standard.pdf">PDF</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="Work_Pattern_Color_Standard.docx">Work Pattern Color Standard</a></div>
+            <div class="item-desc">A validated, colorblind-safe color mapping for the five work patterns (Decision/Knowledge/Document/Transaction/Exception) — fixes a real CVD accessibility failure in the current palette and operationalizes Rule 2 of the unified Framework Content Generation Rules.</div>
+          </td>
+          <td><span class="status" data-wip-status="pattern-color">Loading…</span></td>
+          <td><span class="stage">Concept</span></td>
+          <td class="fmt-links">
+            <a href="Work_Pattern_Color_Standard.docx">Word</a><span class="sep">·</span>
+            <a href="work_pattern_color_standard.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="work_pattern_color_standard.pdf">PDF</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="The_Shock_Wave_Effect.docx">The Shock Wave Effect</a></div>
+            <div class="item-desc">How change propagates through an organization in five rings (Role, Person, Manager, Team, Accountability) — and what happens when multiple domains transform at once.</div>
+          </td>
+          <td><span class="status" data-wip-status="shock-wave">Loading…</span></td>
+          <td><span class="stage">Concept</span></td>
+          <td class="fmt-links">
+            <a href="The_Shock_Wave_Effect.docx">Word</a><span class="sep">·</span>
+            <a href="the_shock_wave_effect.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="the_shock_wave_effect.pdf">PDF</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="From_Concept_to_Principle.docx">From Concept to Principle</a></div>
+            <div class="item-desc">A proposed governance layer: how an idea moves from Concept through Claude's feasibility review to Approved, requiring sign-off from both Tim and GiGi.</div>
+          </td>
+          <td><span class="status" data-wip-status="concept-to-principle">Loading…</span></td>
+          <td><span class="stage">Concept</span></td>
+          <td class="fmt-links">
+            <a href="From_Concept_to_Principle.docx">Word</a><span class="sep">·</span>
+            <a href="from_concept_to_principle.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="from_concept_to_principle.pdf">PDF</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="Framework_Content_Generation_Rules.docx">Framework Content Generation Rules — The Complete Catalog</a></div>
+            <div class="item-desc">One continuously numbered catalog, currently Rule 1 through Rule 19, replacing what were three separately-numbered documents (Visual System &amp; Hierarchy, Navigation &amp; Structure, Language &amp; Precision) so a rule number means the same thing everywhere it's cited. Includes Rule 19 (One Shape for Every WIP Proposal), setting the standard five-section structure — Why This Now, The Problem, The Recommendation, Proposed Tokens, Build Note — for every future WIP proposal.</div>
+          </td>
+          <td><span class="status" data-wip-status="rule-catalog">Loading…</span></td>
+          <td><span class="stage">Concept</span></td>
+          <td class="fmt-links">
+            <a href="Framework_Content_Generation_Rules.docx">Word</a><span class="sep">·</span>
+            <a href="framework_content_generation_rules.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="framework_content_generation_rules.pdf">PDF</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="Content_Rules_Compliance_Audit_WIP_Pass.docx">Content Generation Rules — Compliance Audit (WIP Hub Pass)</a></div>
+            <div class="item-desc">A proof-of-concept pressure-test of the 17 proposed rules above against the WIP hub's own 9 documents. No real violations found; surfaced a Token Lock color-list gap (mostly fixed — 2 colors still open), a Rule 2 content gap (now fixed everywhere), and the 3 role-narrative pages' print-pipeline design system, since resolved by rebuilding them onto the standard system.</div>
+          </td>
+          <td><span class="status">Ready for review</span></td>
+          <td><span class="stage">Step 2 · Pressure Test</span></td>
+          <td class="fmt-links">
+            <a href="Content_Rules_Compliance_Audit_WIP_Pass.docx">Word</a><span class="sep">·</span>
+            <a href="content_rules_compliance_audit_wip_pass.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="content_rules_compliance_audit_wip_pass.pdf">PDF</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="Working_Relationship_Progression_Methodology.docx">Working-Relationship Progression — A Design Methodology</a></div>
+            <div class="item-desc">Replaces the pattern-derived M1&ndash;M5 maturity model with a per-activity working-relationship classification, a three-axis readiness gate, and a seven-stage human-impact propagation pathway. Validated against three pilots spanning all three role tiers (HRBP Manager, Recruiter, CHRO) — a foundation-level change, and the concept origination point for GiGi Garcia's own Human Readiness/Agency, Criticality, and Intensity work.</div>
+          </td>
+          <td><span class="status" data-wip-status="wrpm">Loading…</span></td>
+          <td><span class="stage">Step 2 · Pressure Test</span></td>
+          <td class="fmt-links">
+            <a href="Working_Relationship_Progression_Methodology.docx">Word</a><span class="sep">·</span>
+            <a href="working_relationship_progression_methodology.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="working_relationship_progression_methodology.pdf">PDF</a>
+          </td>
+        </tr>
+
+        <tr class="group-row"><td colspan="4">Governance &amp; Traceability <span class="g-note">Tracking and cross-reference tools that manage the WIP catalog and its source requirements, not proposals themselves — updated on an ongoing basis rather than moving through the Section 5 stage ladder.</span></td></tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="HITL_Requirements_Register.xlsx">HITL Requirements Register</a></div>
+            <div class="item-desc">The requirement-level traceability register (GR-001&ndash;GR-035) distilled from GiGi Garcia's evaluation documents &mdash; each requirement's source, category, converged design-spec doc/section, mapped WIP item, and current status (Implemented / Designed / Partially Addressed / Open). The single source of truth for "which requirement does this WIP item address," cross-referenced from each votable item's own Related Requirements box.</div>
+          </td>
+          <td><span class="status">Living document &mdash; updated ongoing</span></td>
+          <td><span class="stage">Governance Tool</span></td>
+          <td class="fmt-links">
+            <span class="unavailable">Word n/a</span><span class="sep">·</span>
+            <a href="HITL_Requirements_Register.xlsx">Excel</a><span class="sep">·</span>
+            <span class="unavailable">PDF n/a</span>
+          </td>
+        </tr>
+
+        <tr class="group-row"><td colspan="4">External &amp; Partner Review Notes <span class="g-note">Working notes from GiGi Garcia's own review — her words, not tracked against the Section 5 build-stage ladder since these are input, not a work product moving through it.</span></td></tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="gigi_website_framework_review.html">HITL Website, Framework &amp; Human Readiness — Working Review Notes<span class="lock"> (GiGi's own words — HTML only)</span></a></div>
+            <div class="item-desc">GiGi's first pass through the site and framework: reaction to visual design and navigation, methodology questions to pressure-test, second-order workforce effects, and where she sees her own contribution.</div>
+          </td>
+          <td><span class="status">Ready for review</span></td>
+          <td><span class="stage">External Review</span></td>
+          <td class="fmt-links">
+            <span class="unavailable">Word n/a</span><span class="sep">·</span>
+            <a href="gigi_website_framework_review.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="gigi_website_framework_review.pdf">PDF</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="gigi_lifelabs_report_note.html">Why I Felt Compelled to Share This Report<span class="lock"> (GiGi's own words — HTML only)</span></a></div>
+            <div class="item-desc">GiGi's strategic note on the LifeLabs Learning 2026 Mid-Year Workplace Trends Report — the 58% vs. 14% improvised-vs-coordinated adoption finding, three questions she wants us to bring forward, and her guiding principle.</div>
+          </td>
+          <td><span class="status">Ready for review</span></td>
+          <td><span class="stage">External Review</span></td>
+          <td class="fmt-links">
+            <span class="unavailable">Word n/a</span><span class="sep">·</span>
+            <a href="gigi_lifelabs_report_note.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="gigi_lifelabs_report_note.pdf">PDF</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="Talking_Through_Your_Questions.docx">Talking Through Your Questions</a></div>
+            <div class="item-desc">Our working reply to GiGi's full review — a summary of her own site and language recommendations, followed by all fifteen of her questions one at a time (the original twelve from her site review, plus three more from her LifeLabs report note): what's settled, what we have a working answer for, and the real open options.</div>
+          </td>
+          <td><span class="status">Ready for review</span></td>
+          <td><span class="stage">External Review</span></td>
+          <td class="fmt-links">
+            <a href="Talking_Through_Your_Questions.docx">Word</a><span class="sep">·</span>
+            <a href="talking_through_your_questions.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="talking_through_your_questions.pdf">PDF</a>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <p class="catalog-footnote">Every item's title links to its Word document — the format built for a proper sit-down review — except GiGi's two review notes, which stay HTML-only since reformatting her own words into a Word doc isn't ours to do. The Formats column always carries the alternate HTML and PDF versions alongside.</p>
+</div>
+
+<!--
+  HOW TO ADD A NEW WIP ITEM
+
+  Two kinds of items live in this catalog: VOTABLE items (need an actual
+  Tim + GiGi Approve/Revise/Park/Deny decision before they can graduate) and
+  REFERENCE-ONLY items (working notes, review replies — nothing to vote on,
+  just tracked here so the catalog stays complete). Steps 1-5 and 7 apply to
+  both; step 3a and the "status" line in step 6 differ by kind, per the
+  branches below.
+
+  1. Drop the draft HTML file in this same docs/wip/ folder.
+  2. Prefix its <title> with "[DRAFT] " — a second signal, visible in the
+     browser tab, that survives even if someone bookmarks or shares the link.
+  3. Paste this exact block as the FIRST thing inside that page's <body>,
+     before its own masthead/header — it's self-contained (inline styles),
+     so it renders correctly no matter what that page's own CSS does:
+
+       <div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+       border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+       font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+         <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+         — Not Yet Part of the Framework</strong>
+         &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing
+         here is official yet.
+         &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+         Back to WIP hub</a>
+       </div>
+
+     That's what makes a draft unmistakable even if someone opens it directly
+     (a shared link, a bookmark, browser history) without going through this
+     hub page first.
+
+  3a. VOTABLE items only — wire up the embedded voting widget (there is no
+     separate review-board page; voting happens right on the item's own
+     page):
+       - Pick an itemId (short, kebab-case, e.g. "shock-wave").
+       - Immediately after the page's own masthead <div> closes, add:
+           <div data-wip-vote-mount data-item="ITEMID"></div>
+       - Immediately before </body>, add:
+           <script src="wip-vote-widget.js"></script>
+       - In src/index.js, add "ITEMID": "YYYY-MM-DD" (today's date) to the
+         VOTABLE_ITEMS map — this is the SINGLE source of truth for both the
+         item's content version (bump it later if the doc changes materially,
+         so stale votes get flagged) and which items the API and hub will
+         serve. No other file needs a version number.
+     Reference-only items skip this step entirely — no vote mount, no script
+     tag, no VOTABLE_ITEMS entry.
+
+  4. Build a matching Word document (.docx) for the item — the format this
+     catalog links to first — UNLESS the item is another partner's own
+     original words (like GiGi's review notes), in which case it stays
+     HTML/PDF only rather than being reformatted into a Word doc on their
+     behalf. Render (or export) matching PDFs for both the HTML page and,
+     where one exists, the Word doc, and drop everything in this same folder.
+  5. Decide which group it belongs in — "Role Pattern Transition Narratives"
+     (built-and-applied content, scoped to one specific role), "Concepts &
+     Design Principles" (a framework-level idea/mechanism, not yet applied to
+     any specific role or dataset), or "External & Partner Review Notes"
+     (someone else's own words). Add a new group row if none fit.
+  6. Add one <tr class="item-row"> to the table below: the item-title link
+     points at the Word doc (or the HTML page if there isn't one), the
+     item-desc is a one-line summary, and:
+       - "status" cell — VOTABLE items: <span class="status"
+         data-wip-status="ITEMID">Loading…</span> (same itemId as step 3a;
+         the widget fills in the live Approved/Needs Revision/Parked/Denied/
+         Pending/Needs Discussion label from actual vote data — never
+         hand-type this one). REFERENCE-ONLY items: hand-typed editorial
+         readiness, plain <span class="status">Ready for review</span> (or
+         "Drafting", "Needs data") — there's no vote to sync to.
+       - class="stage": where it actually sits against the Section 5 steps in
+         the legend above. A framework-level idea that hasn't been applied to
+         specific roles yet is "Concept," not "Step 1" — don't round up.
+     Fill in the Formats cell with whichever of Word / HTML / PDF actually
+     exist — use the "Word n/a" treatment (see GiGi's rows) for words-only
+     content with no Word doc.
+  7. Leave it OUT of docs/index.html, hitl_dashboard_final.html, and any other
+     nav until it's approved — that's what keeps it "WIP."
+  8. Once Approved (both Tim and GiGi picked Approve — check the live status,
+     or wait for the scheduled Approved-item check to flag it): remove the
+     draft ribbon and the [DRAFT] title prefix; for a formerly-votable item
+     also strip the <div data-wip-vote-mount ...></div> and the
+     wip-vote-widget.js <script> tag, and delete its entry from
+     VOTABLE_ITEMS in src/index.js (leaving a stale entry there just wastes a
+     KV read — it's harmless but pointless once nothing links to it); move
+     the file(s) into their real home in docs/, add it to the real
+     navigation, then delete its row from this table.
+-->
 
 <footer>
   <p>
-    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect &nbsp;·&nbsp; August 2026<br>
-    Co-developed with Claude (Anthropic)<br>
-    <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
-    &nbsp;·&nbsp; hitldrivenarchitecture.com
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect<br>
+    Private review area — not part of the published framework<br>
+    hitldrivenarchitecture.com
   </p>
 </footer>
 
+<script src="wip-vote-widget.js"></script>
 </body>
 </html>

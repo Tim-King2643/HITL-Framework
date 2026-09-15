@@ -1,0 +1,48 @@
+--- /tmp/claude-0/-home-claude/1e8af207-9430-570b-bf45-b54ec92625bc/scratchpad/register/live/wip_index_current.html	2026-09-15 18:30:15.751769448 +0000
++++ /tmp/claude-0/-home-claude/1e8af207-9430-570b-bf45-b54ec92625bc/scratchpad/register/live/wip_index_patched.html	2026-09-15 18:46:08.777815615 +0000
+@@ -179,7 +179,7 @@
+ </div>
+ 
+ <div class="catalog-wrap">
+-  <p class="catalog-caption">12 items · sorted by group, oldest work first within each</p>
++  <p class="catalog-caption">14 items · sorted by group, oldest work first within each</p>
+   <div class="table-scroll">
+     <table class="catalog">
+       <thead>
+@@ -322,6 +322,36 @@
+           </td>
+         </tr>
+ 
++        <tr class="item-row">
++          <td>
++            <div class="item-title"><a href="Working_Relationship_Progression_Methodology.docx">Working-Relationship Progression — A Design Methodology</a></div>
++            <div class="item-desc">Replaces the pattern-derived M1&ndash;M5 maturity model with a per-activity working-relationship classification, a three-axis readiness gate, and a seven-stage human-impact propagation pathway. Validated against three pilots spanning all three role tiers (HRBP Manager, Recruiter, CHRO) — a foundation-level change, and the concept origination point for GiGi Garcia's own Human Readiness/Agency, Criticality, and Intensity work.</div>
++          </td>
++          <td><span class="status" data-wip-status="wrpm">Loading…</span></td>
++          <td><span class="stage">Step 2 · Pressure Test</span></td>
++          <td class="fmt-links">
++            <a href="Working_Relationship_Progression_Methodology.docx">Word</a><span class="sep">·</span>
++            <a href="working_relationship_progression_methodology.html">HTML</a><span class="sep">·</span>
++            <a class="pdf" href="working_relationship_progression_methodology.pdf">PDF</a>
++          </td>
++        </tr>
++
++        <tr class="group-row"><td colspan="4">Governance &amp; Traceability <span class="g-note">Tracking and cross-reference tools that manage the WIP catalog and its source requirements, not proposals themselves — updated on an ongoing basis rather than moving through the Section 5 stage ladder.</span></td></tr>
++
++        <tr class="item-row">
++          <td>
++            <div class="item-title"><a href="HITL_Requirements_Register.xlsx">HITL Requirements Register</a></div>
++            <div class="item-desc">The requirement-level traceability register (GR-001&ndash;GR-035) distilled from GiGi Garcia's evaluation documents &mdash; each requirement's source, category, converged design-spec doc/section, mapped WIP item, and current status (Implemented / Designed / Partially Addressed / Open). The single source of truth for "which requirement does this WIP item address," cross-referenced from each votable item's own Related Requirements box.</div>
++          </td>
++          <td><span class="status">Living document &mdash; updated ongoing</span></td>
++          <td><span class="stage">Governance Tool</span></td>
++          <td class="fmt-links">
++            <span class="unavailable">Word n/a</span><span class="sep">·</span>
++            <a href="HITL_Requirements_Register.xlsx">Excel</a><span class="sep">·</span>
++            <span class="unavailable">PDF n/a</span>
++          </td>
++        </tr>
++
+         <tr class="group-row"><td colspan="4">External &amp; Partner Review Notes <span class="g-note">Working notes from GiGi Garcia's own review — her words, not tracked against the Section 5 build-stage ladder since these are input, not a work product moving through it.</span></td></tr>
+ 
+         <tr class="item-row">

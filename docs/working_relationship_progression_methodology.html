@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Working-Relationship Progression &mdash; A Design Methodology &mdash; The Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead .byline { font-family: 'Consolas', monospace; font-size: 11.5px; color: #CFE0F5; margin-bottom: 16px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 820px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.concept-flag { background: var(--amber-bg); border-left: 3px solid var(--amber); border-radius: 4px; padding: 16px 20px; font-size: 13px; font-style: italic; color: var(--amber-text); line-height: 1.6; margin-bottom: 20px; }
+
+.status-box { background: var(--amber-bg); border-left: 3px solid var(--amber); border-radius: 4px; padding: 18px 22px; margin-bottom: 28px; }
+.status-box .status-label { display: block; font-family: 'Consolas', monospace; font-weight: 700; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--amber-text); margin-bottom: 8px; }
+.status-box p { font-size: 13px; font-style: italic; color: var(--amber-text); line-height: 1.65; margin-bottom: 0; }
+
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 28px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 36px 0 12px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 16px; margin: 26px 0 10px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+p.note { font-size: 13px; color: var(--lgray); font-style: italic; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 12.5px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 10px 10px 7px; font-size: 10.5px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 9px 10px; vertical-align: top; color: #222; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.row-name { font-weight: 700; white-space: nowrap; }
+.table-scroll { overflow-x: auto; margin: 8px 0 24px; }
+.table-scroll table { margin: 0; }
+
+.pdf-download { display: inline-flex; align-items: center; gap: 6px; font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px; padding: 8px 14px; text-decoration: none; margin: 0 0 28px; }
+.pdf-download:hover { background: #DCE8F8; }
+
+.doc-link { display: inline-flex; align-items: center; gap: 6px; font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--navy-d); background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 8px 14px; text-decoration: none; margin: 0 0 28px 8px; }
+.doc-link:hover { background: #FAFBFD; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">CONCEPT &nbsp;·&nbsp; TIM KING &amp; CLAUDE &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>Working-Relationship Progression</h1>
+  <div class="subtitle">A design methodology — replacing the pattern-derived M1&ndash;M5 maturity model with a per-activity working-relationship classification, a three-axis readiness gate, and a human-impact propagation pathway</div>
+  <div class="byline">Tim King &amp; Claude &middot; September 2026 &middot; Working Document</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-vote-mount data-item="wrpm"></div>
+
+<div class="wrap">
+
+  <div class="status-box">
+    <span class="status-label">Status &mdash; Concept Stage, Not Yet Adopted Framework-Wide</span>
+    <p>This is a working synthesis of the methodology this session has converged on &mdash; not a locked framework spec. It replaces the pattern-derived M1&ndash;M5 maturity model with a per-activity working-relationship classification, a three-axis readiness gate, and a human-impact propagation pathway. It is validated so far against three pilots spanning all three role tiers &mdash; HRBP Manager / PCF 7.4.4 (Manage employee grievances, Managerial tier), Recruiter / PCF 7.2.3.4 (Select and reject candidates, Operational tier), and CHRO / PCF 7.1.1.2 (Define HR and business function roles and accountability, Executive tier) &mdash; and is written to precede, not substitute for, the pilot findings summary for GiGi Garcia.</p>
+  </div>
+
+  <div class="related-reqs">
+    <span class="rr-label">Related Requirements — Requirements Register (GiGi&rsquo;s evaluation docs)</span>
+    <ul>
+      <li><code>GR-001</code> — extend the framework beyond &ldquo;what changes&rdquo; into &ldquo;is the organization ready for that change&rdquo; <em>(Designed — &sect;5 The Readiness Gate names the axes and what they measure)</em></li>
+      <li><code>GR-012</code> — build a Human Operating Readiness instrument across the 10 named dimensions <em>(Open — the exact content gap behind the Role-level/Organizational-level axes; per Tim (Sept 15, 2026) the existing AI Transition Pathways self-assessment/TMI tool is explicitly not used to fill this, that stays GiGi&rsquo;s own lane)</em></li>
+      <li><code>GR-017</code> — add a Low/Moderate/High/Critical Consequence-of-Error axis alongside the working-relationship classification <em>(Implemented — live today as WR_DATA&rsquo;s <code>cons</code> field)</em></li>
+      <li><code>GR-018</code> — define and track Judgment Density &mdash; concentration of demanding work inside a shrinking role <em>(Open — named as Human Intensity in &sect;9, still not built anywhere)</em></li>
+      <li><code>GR-023</code> — distinguish Automation/Augmentation/Agent-delegation/Oversight/Judgment/Human-only as separate categories instead of one blended percentage <em>(Implemented — exactly the &sect;2 Working-Relationship Ramp&rsquo;s six categories)</em></li>
+      <li><code>GR-026</code> — measure human consequence, not only human presence <em>(Implemented — this is &sect;1&rsquo;s own founding rationale, almost verbatim)</em></li>
+      <li><code>GR-028</code> — define a Human Judgment Floor &mdash; a minimum human-involvement level some responsibilities shouldn&rsquo;t drop below <em>(Implemented — the same judgment call as &sect;3&rsquo;s Progression Ceiling, approached from the opposite direction)</em></li>
+      <li><code>GR-029</code> — define the Exception Escalation Effect &mdash; automation removes routine work first, leaving a smaller but harder remainder <em>(Open — named in &sect;9 as genuinely new; no instrument yet)</em></li>
+      <li><code>GR-031</code> — reframe &ldquo;No R/A touches&rdquo; roles as a visibility limitation, not evidence the role is unimportant <em>(Open — named a &ldquo;genuine blind spot, not resolved by anything in this methodology&rdquo; in &sect;9)</em></li>
+      <li><code>GR-032</code> — expand Transition Distance beyond a skills gap to include judgment, identity, authority, relationship, and work-pattern shift <em>(Open — named genuinely new in &sect;9, not built anywhere)</em></li>
+      <li><code>GR-033</code> — build a 7-stage Human Impact Pathway with one consistent question set applied at every stage <em>(Designed — adopted as &sect;7 and walked by hand for all three pilots in &sect;8; no UI/data structure exists for it in the sandbox yet)</em></li>
+      <li><code>GR-035</code> — validate each provisional reportsTo edge against practical operating-model criteria <em>(Partially Addressed — &sect;7&rsquo;s Manager Absorption finding argues HRBP Manager&rsquo;s real escalation path is Director of HR Ops, not VP People &amp; Culture, but the sandbox&rsquo;s ROLE_TAXONOMY hasn&rsquo;t been corrected to match yet (see also the HRBP Manager narrative page))</em></li>
+    </ul>
+  </div>
+
+  <a class="pdf-download" href="working_relationship_progression_methodology.pdf">⬇ Download PDF</a>
+  <a class="doc-link" href="Working_Relationship_Progression_Methodology.docx">⬇ Download Word</a>
+
+  <h2>1. Why This Layer Exists</h2>
+  <p>The framework&rsquo;s original M1&ndash;M5 maturity model derives a single H% figure from an activity&rsquo;s pattern type (Decision, Knowledge, Document, Transaction, Exception), applying a fixed decay curve shared by every activity of that pattern. Two findings broke that assumption. First, at the activity level: 7.2.1.3 (Approve job requisition, pattern Decision, M3=80) and 7.2.4.3 (Hire candidate, pattern Transaction, M3=35) carry opposite pattern-derived numbers yet collapse to the same real working relationship &mdash; Oversight, a human checkpoint on each instance &mdash; once classified by what actually happens rather than the pattern label. Second, at the role level: two roles can land at nearly identical H% and still retain completely different work &mdash; GiGi Garcia&rsquo;s review of the role-level dashboard showed HRBP Manager and Director of HR Ops converging on a similar M3 band while retaining judgment/coaching/conflict work versus exceptions/controls/compliance work respectively, with very different human consequence.</p>
+  <p>The pattern-derived model measures human presence. This methodology is the first attempt at measuring what stays true about the working relationship itself &mdash; who does the work, who owns the outcome, and what has to be true for the human share of it to succeed.</p>
+  <h2>2. The Working-Relationship Ramp</h2>
+  <p>Six ordinal categories replace pattern type as the source of an activity&rsquo;s H%/maturity value, read left to right as increasing automation:</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Category</th><th>What It Means</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Human-only</td><td>No meaningful AI role, by design &mdash; legal, ethical, or relational reasons hold regardless of maturity level.</td></tr>
+      <tr><td class="row-name">Judgment</td><td>A person makes the actual call. AI&rsquo;s role is informational only &mdash; it can supply data or a ranking, but the reasoning and decision are the person&rsquo;s.</td></tr>
+      <tr><td class="row-name">Oversight</td><td>AI performs or proposes the work; a person reviews and approves each instance before it takes effect.</td></tr>
+      <tr><td class="row-name">Augmentation</td><td>A person remains the primary actor and does the work; AI assists &mdash; drafts, suggests, summarizes &mdash; but doesn&rsquo;t act on its own.</td></tr>
+      <tr><td class="row-name">Agent-delegation</td><td>An AI agent performs the work autonomously within policy bounds; a person handles only flagged exceptions, not every instance.</td></tr>
+      <tr><td class="row-name">Automation</td><td>AI performs and completes the work with no person in the loop for that instance.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Progression moves toward Automation one adjacent step at a time (skipping a category is not modeled). The ramp is ordinal, not categorical &mdash; it carries a validated single-hue, monotone-lightness color sequence (Sept 10, 2026) distinct from the five work-pattern colors, which keep their separate job as visual/structural identity (badges, pattern-mix bars, capability-map cards) and are not being replaced by this ramp.</p>
+  <h2>3. Current State, Future State, and Progression Ceiling &mdash; replacing M1&ndash;M5</h2>
+  <p>The five-level M1&ndash;M5 curve is retired for any activity classified on the working-relationship ramp. In its place, each classified activity carries three values instead of a five-point curve:</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Current State</td><td>The activity&rsquo;s real working-relationship category today.</td></tr>
+      <tr><td class="row-name">Future State</td><td>The category actively being pursued as the near-term target. May sit below the Progression Ceiling by deliberate choice.</td></tr>
+      <tr><td class="row-name">Progression Ceiling</td><td>The ceiling category this specific activity can plausibly reach, for technical or governance reasons. May be undecided/open. May equal Current State &mdash; i.e. no further runway either because the activity is already fully automated or because it is already at its human-side ceiling.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Five worked examples from PCF 7.1/7.2/7.4 &mdash; spanning all three role tiers now that Recruiter and CHRO have been piloted alongside HRBP Manager &mdash; show why Future State and Progression Ceiling are not always the same value, and why M1/M2 never needed to &ldquo;mean&rdquo; anything once the five-point curve is gone:</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Activity</th><th>Current State</th><th>Future State</th><th>Progression Ceiling</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">7.2.1.3<br>Approve job requisition</td><td>Oversight</td><td>Oversight</td><td>Agent-delegation</td><td>Ceiling is knowable, but reaching it is a governance choice (removing human sign-off), not only a technical one.</td></tr>
+      <tr><td class="row-name">Align staffing plan<br>(7.2.1)</td><td>Judgment</td><td>Judgment</td><td>Open / undecided</td><td>No settled ceiling &mdash; could stay Judgment permanently as a strategic/budget call. Flagged as Tim&rsquo;s call, not invented.</td></tr>
+      <tr><td class="row-name">7.4.4<br>Manage employee grievances</td><td>Judgment</td><td>Judgment</td><td>Judgment</td><td>Already at its human-side ceiling. The Accountable role (HRBP Manager) never changes across the real M1&rarr;M5 curve (95%&rarr;68%) &mdash; the mirror case to an activity already at Automation with no further runway.</td></tr>
+      <tr><td class="row-name">7.2.3.4<br>Select and reject candidates</td><td>Judgment</td><td>Judgment</td><td>Judgment</td><td>A second already-at-ceiling case, for a different reason than 7.4.4&rsquo;s &mdash; EEOC/adverse-impact liability on the hiring decision itself, not emotional/relational stakes. Recruiter&rsquo;s pilot below.</td></tr>
+      <tr><td class="row-name">7.1.1.2<br>Define HR and business function roles and accountability</td><td>Judgment</td><td>Judgment</td><td>Judgment</td><td>A third already-at-ceiling case, this one Executive tier: defining the domain&rsquo;s own accountability structure isn&rsquo;t a decision to hand to an AI proposal. CHRO&rsquo;s pilot below.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>This equivalence is worth naming explicitly: Progression Ceiling is the same concept GiGi Garcia&rsquo;s reflections call a &ldquo;Human Judgment Floor&rdquo; &mdash; a minimum level of human participation below which the organization should not move regardless of technical capability &mdash; named from the automation-ceiling side rather than the human-floor side.</p>
+  <h2>4. Granularity: Where Each Kind of Readiness Lives</h2>
+  <p>Not every part of this methodology needs to operate at the same level of detail, and forcing uniform granularity was the wrong instinct. The activity&rsquo;s own classification (Current State / Future State / Progression Ceiling) has to live at L4 &mdash; or at L3 when the process is a genuine APQC leaf with no L4 children, confirmed against the real APQC PCF Cross-Industry v8.0 source file (18 such leaf L3s exist domain-wide in PCF 7.0, including all five L3s under 7.4 Manage Employee Relations &mdash; a real structural fact, not a missing build). Technical/process readiness (below) has to live at the same granularity, because it is evidence about AI performance on one specific piece of work.</p>
+  <p>Person, Manager, Team, and Accountability readiness, by contrast, are properties of a human or an organizational unit, not of an activity &mdash; a manager does not have a different capacity to absorb change per L4. Those signals consume an aggregate of the L4-level change underneath them (magnitude, velocity, concentration &mdash; the kind of rollup the existing Transition Magnitude Index already performs) rather than needing L4 granularity themselves.</p>
+  <h2>5. The Readiness Gate</h2>
+  <p>An activity advances from Current State toward Future State only when three independent signals clear &mdash; not one role-level score standing in for all three:</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Axis</th><th>What It Measures</th><th>Granularity</th><th>Instrument</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Technical / Process</td><td>Whether AI performance on this specific activity supports the specific transition being attempted.</td><td>Per L4 (or leaf-L3), per transition.</td><td>New &mdash; the per-transition evidence ladder below (&sect;6). No existing instrument anywhere in the framework.</td></tr>
+      <tr><td class="row-name">Role-level</td><td>Whether the person(s) actually doing the work &mdash; read off the Responsible role(s) via RACI, not only Accountable &mdash; have the authority, confidence, and psychological safety to exercise it. Multiple touching roles: weakest-link, not averaged.</td><td>Per role, via its RACI touches on the L3/L4.</td><td>Not yet defined. Deliberately <em>not</em> the existing AI Transition Pathways self-assessment / TMI tier &mdash; per Tim (Sept 15, 2026), that instrument stays in GiGi Garcia&rsquo;s own review lane, not this sandbox. The leading candidate is GiGi&rsquo;s own Human Readiness/Agency, Human Criticality, and Human Intensity work (&sect;9), which she is developing directly against the three pilot roles below.</td></tr>
+      <tr><td class="row-name">Organizational-level</td><td>Broader climate &mdash; trust, psychological safety, leadership readiness, change capacity. Not tied to any one activity.</td><td>Domain- or company-wide; closer to a go/no-go condition than a per-activity gate.</td><td>No existing instrument. Distinct from Role-level per GiGi&rsquo;s reflections, not a duplicate of it.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h2>6. The Per-Transition Evidence Ladder (Technical / Process Axis)</h2>
+  <p>The five adjacent transitions on the ramp are not interchangeable &mdash; each represents a different delegation of authority and needs a different kind of evidence. Volume of real instances is a precondition for trusting any of these numbers, not a competing metric alongside them.</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Transition</th><th>Evidence Needed</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Human-only &rarr; Judgment</td><td>Relevance/usefulness of AI-supplied input &mdash; no autonomous action exists yet, so there is no error rate to measure.</td></tr>
+      <tr><td class="row-name">Judgment &rarr; Oversight</td><td>Agreement rate between the AI-proposed action and what the human would have decided, trustworthy only once enough instances have run.</td></tr>
+      <tr><td class="row-name">Oversight &rarr; Augmentation</td><td>Audit-pass rate &mdash; a high share of full-review instances passing clean, sustained over volume, justifying sampled review over full review.</td></tr>
+      <tr><td class="row-name">Augmentation &rarr; Agent-delegation</td><td>Accuracy/error rate within defined policy bounds, plus exception-detection recall &mdash; can the system reliably flag when it is out of bounds.</td></tr>
+      <tr><td class="row-name">Agent-delegation &rarr; Automation</td><td>Sustained low exception rate over real volume, plus an explicit governance sign-off gate layered on top &mdash; this step can be a policy choice, not only a technical threshold (see the job-requisition example above).</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h2>7. The Human Impact Pathway</h2>
+  <p>The original Shock Wave Effect model (five rings: Role, Person, Manager, Team, Accountability) is extended, per GiGi Garcia&rsquo;s reflections, into seven stages, with one consistent set of questions applied at every stage rather than a bespoke instrument per ring: What changed? Who absorbs it? Where did the work go? What new risk appeared? What new human capability is required? Who now owns the outcome? The pathway&rsquo;s trigger (Work Change) is inherently activity-level; downstream stages read off that change as it aggregates outward.</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Stage</th><th>First Real Finding (7.4.4 &mdash; Manage employee grievances)</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Work Change</td><td>AI absorbs the administrative shell (case intake, precedent lookup, documentation); the determination itself stays entirely human.</td></tr>
+      <tr><td class="row-name">Role Impact</td><td>One of &ge; 9 L3s HRBP Manager holds Accountable for; this one&rsquo;s curve is unusually flat next to others that plausibly progress further &mdash; a compositional shift in the role&rsquo;s real time allocation that a flat role-level H% would not show.</td></tr>
+      <tr><td class="row-name">Human Impact</td><td>Intensity likely rises even if volume doesn&rsquo;t (validating AI&rsquo;s prep, absorbing the harder tail); Criticality is already high (litigation/executive/regulatory escalation triggers exist in the real GDP); Agency is unmeasured &mdash; nothing tracks whether HRBP Manager can actually override a bad AI-surfaced precedent.</td></tr>
+      <tr><td class="row-name">Manager Absorption</td><td>The real functional escalation path names Director of HR Ops, not VP People &amp; Culture (the provisional reportsTo edge) &mdash; a second, independent argument for correcting that edge, beyond the original RACI self-consistency check.</td></tr>
+      <tr><td class="row-name">Team Effect</td><td>Unmeasured. No data exists on whether HR Generalist or others absorb any freed capacity around this role.</td></tr>
+      <tr><td class="row-name">Accountability</td><td>Already fully concentrated, not an emerging risk &mdash; HRBP Manager holds 100% of the Accountable share across the entire real M1&rarr;M5 curve for this activity.</td></tr>
+      <tr><td class="row-name">Org Outcome</td><td>If &ldquo;AI redistributes work, not accountability&rdquo; holds, administrative capacity grows while risk-bearing judgment stays exactly as concentrated &mdash; readiness investment has to target this one role, not a widening pool.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h2>8. Second and Third Pilots &mdash; Recruiter and CHRO</h2>
+  <p>GiGi Garcia&rsquo;s recommendation was to test the methodology against roles other than HRBP Manager before trusting it. Rather than pick two more Managerial-tier roles, this pilot deliberately spans the org&rsquo;s vertical range: Recruiter (Operational tier, the narrowest and highest-volume Accountable footprint of the three) and CHRO (Executive tier, the domain&rsquo;s only Exec-Accountable L3) &mdash; testing whether the Human Impact Pathway and the ceiling logic hold at both ends of the hierarchy, not only in the middle.</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Role</th><th>Tier</th><th>Accountable Scope</th><th>Taxonomy H% mean</th><th>reportsTo status</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">HRBP Manager</td><td>Managerial</td><td>&ge; 9 L3s across Enable &amp; Govern and Move-to-Exit</td><td>Not yet aggregated &mdash; only 7.4.4 classified so far</td><td>Corrected: real escalation path names Director of HR Ops, not the provisional VP People &amp; Culture edge</td></tr>
+      <tr><td class="row-name">Recruiter</td><td>Operational</td><td>3 L3s (7.2.2&ndash;7.2.4)</td><td>54.6 (equal-weighted: 38.0 / 68.5 / 57.3)</td><td>Strong as drafted: Director of TA (1 of only 5 confirmed-strong PCF 7.0 edges) &mdash; no correction found</td></tr>
+      <tr><td class="row-name">CHRO</td><td>Executive</td><td>1 L3 (7.1.1, 10 L4s) &mdash; the only Exec-Accountable L3 in PCF 7.0</td><td>73.2 (equal-weighted across all 10 L4s)</td><td>N/A &mdash; top of the PCF 7.0 role catalog; Exec-tier escalation already modeled as CEO/Board, outside the catalog</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h3>Recruiter &mdash; First Real Finding (7.2.3.4, Select and reject candidates)</h3>
+  <p>Recruiter holds Accountable for 7.2.2 (Recruit/Source candidates), 7.2.3 (Screen and select candidates), and 7.2.4 (Manage new hire/re-hire) &mdash; the highest-stakes, highest-volume middle of the Recruit-to-Hire pipeline, bounded on either side by HRBP Manager (7.2.1, requisitions) and HRIS Analyst (7.2.5, applicant records). 7.2.3.4 is the single highest-consequence L4 in the entire 7.2 pilot (Judgment, H% 82, Critical) and sits squarely inside Recruiter&rsquo;s own Accountable scope &mdash; the natural choice for this pilot.</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Stage</th><th>First Real Finding (7.2.3.4 &mdash; Select and reject candidates)</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Work Change</td><td>AI absorbs sourcing, screening, and ranking (7.2.2&rsquo;s and part of 7.2.3&rsquo;s real work); the decision to select or reject a specific candidate stays entirely human.</td></tr>
+      <tr><td class="row-name">Role Impact</td><td>One of only 3 L3s Recruiter holds Accountable for &mdash; the narrowest scope of the three roles piloted &mdash; but the internal spread across those 3 L3s (38.0 / 68.5 / 57.3) reproduces the same compositional-shift dynamic the 7.4.4 pilot found for HRBP Manager, just concentrated in one role instead of spread across nine. A role-level H% for Recruiter would average out a stream (7.2.2, sourcing) that&rsquo;s already mostly Automation/Agent-delegation against one (7.2.3, selection) that&rsquo;s Judgment-heavy &mdash; hiding exactly the shift the working-relationship view exists to surface.</td></tr>
+      <tr><td class="row-name">Human Impact</td><td>Intensity likely rises, same mechanism as 7.4.4 (validating AI-surfaced rankings, absorbing the harder or more ambiguous calls); Criticality is already tagged Critical in the 7.2 pilot itself &mdash; not inferred here, it&rsquo;s the highest tier the taxonomy has; Agency is unmeasured, same open gap as 7.4.4: nothing tracks whether Recruiter can actually override an AI ranking or screening recommendation under real time/volume pressure.</td></tr>
+      <tr><td class="row-name">Manager Absorption</td><td>No correction needed here &mdash; Recruiter &rarr; Director of TA is one of only 5 PCF 7.0 reportsTo edges with strong internal support, and Director of TA is also the confirmed Recruit-to-Hire stream owner. Worth stating plainly: not every role pilot surfaces a reportsTo problem, and this one didn&rsquo;t.</td></tr>
+      <tr><td class="row-name">Team Effect</td><td>Unmeasured, same as 7.4.4. Hiring Managers are the stream&rsquo;s tagged external participant and plausibly touch the select/reject decision in practice, but no RACI letter or capacity data exists to say how &mdash; flagged as a gap, not filled in.</td></tr>
+      <tr><td class="row-name">Accountability</td><td>Recruiter holds the sole Accountable role across all 4 L4s of 7.2.3 (the framework&rsquo;s per-L3 single-Accountable convention, same as every other confirmed L3 in PCF 7.0) &mdash; fully concentrated, same shape as 7.4.4, but on a hiring decision with external legal exposure (EEOC/adverse impact) rather than an internal grievance.</td></tr>
+      <tr><td class="row-name">Org Outcome</td><td>Same &ldquo;AI redistributes work, not accountability&rdquo; thesis holds a second time: administrative screening capacity grows, but the liability-bearing judgment on each candidate stays exactly as concentrated in Recruiter as it is today.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h3>CHRO &mdash; First Real Finding (7.1.1.2, Define HR and business function roles and accountability)</h3>
+  <p>CHRO&rsquo;s entire Accountable footprint in PCF 7.0 is a single L3 &mdash; 7.1.1 (Develop human resources strategy), the domain&rsquo;s only Executive-tier Accountable L3, carrying 10 real L4 children. None of them had a working-relationship classification before this pilot; all 10 are classified here for the first time, by hand, against the real APQC L4 text, the same discipline used for 7.2 and 7.3.</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>L4</th><th>Activity</th><th>Working Relationship</th><th>H%</th><th>Consequence</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">7.1.1.1</td><td>Identify strategic HR needs</td><td>Judgment</td><td>82</td><td>Moderate</td></tr>
+      <tr><td class="row-name">7.1.1.2</td><td>Define HR and business function roles and accountability</td><td>Judgment</td><td>82</td><td>High</td></tr>
+      <tr><td class="row-name">7.1.1.3</td><td>Determine HR function roles and structure</td><td>Judgment</td><td>82</td><td>Moderate</td></tr>
+      <tr><td class="row-name">7.1.1.4</td><td>Determine HR delivery model</td><td>Judgment</td><td>82</td><td>Moderate</td></tr>
+      <tr><td class="row-name">7.1.1.5</td><td>Determine HR costs</td><td>Oversight</td><td>62</td><td>Moderate</td></tr>
+      <tr><td class="row-name">7.1.1.6</td><td>Establish HR measures</td><td>Judgment</td><td>82</td><td>Moderate</td></tr>
+      <tr><td class="row-name">7.1.1.7</td><td>Communicate HR strategies</td><td>Augmentation</td><td>48</td><td>Low</td></tr>
+      <tr><td class="row-name">7.1.1.8</td><td>Develop strategy for HR systems/technologies/tools</td><td>Judgment</td><td>82</td><td>High</td></tr>
+      <tr><td class="row-name">7.1.1.9</td><td>Manage employer branding</td><td>Augmentation</td><td>48</td><td>Moderate</td></tr>
+      <tr><td class="row-name">7.1.1.10</td><td>Design the employee experience</td><td>Judgment</td><td>82</td><td>Moderate</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>L3 equal-weighted mean: 73.2 (7 Judgment, 2 Augmentation, 1 Oversight). Close calls flagged honestly: 7.1.1.5 (Determine HR costs) could reasonably read as Augmentation rather than Oversight depending on whether AI-proposed cost models are treated as a draft CHRO edits or a recommendation CHRO approves; 7.1.1.6 (Establish HR measures) could read as Augmentation if choosing metrics is treated as a technical exercise rather than the value judgment it is here &mdash; Tim reviewed both calls directly (Sept 14, 2026) and confirmed they hold, with the standing caveat that GiGi may suggest otherwise once she reviews. Notably higher than either 7.2 (40.3) or 7.3&rsquo;s mean &mdash; the working-relationship view confirms rather than disrupts the intuitive picture for strategy-formation work, unlike 7.2.1, where it cut the pattern-derived number nearly in half. Consequence of Error tags here were also walked through and confirmed by Tim directly, the same pass that reviewed 7.2&rsquo;s own tags (which produced two corrections &mdash; 7.2.3.3 and 7.2.5.1 both moved up to High for compliance/litigation exposure). Two of CHRO&rsquo;s own ten rise to High: 7.1.1.2 (the accountability structure itself) and 7.1.1.8 (technology strategy, including AI adoption &mdash; a wrong bet is costly and hard to unwind, not just wrong). No L4 in 7.1.1 rises to Critical, unlike 7.2.3.4 &mdash; a real difference in stakes shape between an individual hiring decision and a strategy-formation activity, not an artifact of the classification. None of this is derived from real escalation data yet, which stays the more defensible source worth building toward.</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Stage</th><th>First Real Finding (7.1.1.2 &mdash; Define HR and business function roles and accountability)</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Work Change</td><td>AI could contribute benchmark data on peer HR governance structures or a first-pass draft of roles/policies; the actual definition of who is accountable for what inside HR stays a CHRO judgment call, not an AI proposal to approve.</td></tr>
+      <tr><td class="row-name">Role Impact</td><td>The narrowest Accountable footprint of the three roles piloted &mdash; 1 L3 against Recruiter&rsquo;s 3 and HRBP Manager&rsquo;s &ge; 9 &mdash; but it is the domain&rsquo;s only Executive-tier Accountable L3, and it defines the accountability structure every other role&rsquo;s RACI assignment in this framework depends on. Narrow breadth, maximal structural leverage &mdash; a different shape than either &ldquo;broad and flat&rdquo; (HRBP Manager) or &ldquo;narrow and high-volume&rdquo; (Recruiter).</td></tr>
+      <tr><td class="row-name">Human Impact</td><td>Intensity is low-frequency, high-cognitive-load (an annual/periodic strategy cycle, not a daily caseload) &mdash; a genuinely different profile from 7.4.4&rsquo;s ongoing grievance volume. Criticality is tagged High here (&sect;8&rsquo;s classification table above) &mdash; real stakes, but a tier below 7.2.3.4&rsquo;s Critical, since a wrong accountability structure is damaging and slow to unwind rather than a single irreversible legal exposure. Agency is a different question than for HRBP Manager or Recruiter: there is no one above CHRO in the HR role catalog to escalate to, so the open question isn&rsquo;t &ldquo;can CHRO override AI&rdquo; but whether CHRO has trustworthy AI-augmented input to decide well in the first place.</td></tr>
+      <tr><td class="row-name">Manager Absorption</td><td>Structurally does not apply &mdash; CHRO sits at the top of the PCF 7.0 role catalog, with Exec-tier escalation already modeled as CEO/Board, outside the catalog entirely. This is itself a finding: the Human Impact Pathway&rsquo;s ring model assumes a manager to absorb into, and the top-of-catalog case needs to be named as its own variant rather than silently read as &ldquo;no data.&rdquo;</td></tr>
+      <tr><td class="row-name">Team Effect</td><td>Not &ldquo;a nearby role absorbs freed capacity&rdquo; (the ring model&rsquo;s original assumption) but a domain-wide dependency: every other Accountable role in PCF 7.0 operates inside the accountability structure this L3 defines. Still unmeasured in the sense that no instrument tracks it, but the shape of the gap is different from 7.4.4&rsquo;s.</td></tr>
+      <tr><td class="row-name">Accountability</td><td>100% concentrated in CHRO, the same single-Accountable convention as everywhere else in the framework &mdash; reproduces 7.4.4&rsquo;s and Recruiter&rsquo;s finding a third time, but here the L3 being defended is the mechanism of accountability itself, which the other two pilots&rsquo; activities are not.</td></tr>
+      <tr><td class="row-name">Org Outcome</td><td>The &ldquo;AI redistributes work, not accountability&rdquo; thesis holds again, but with less room to move: 7.1.1&rsquo;s L4s were already judgment-heavy under the old pattern-derived system too (Knowledge pattern, M3 65), so working-relationship classification confirms the existing picture rather than overturning it the way it did for 7.2.1 (45.7% &rarr; 27.7%).</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Reproduced or diverged? Both, in different ways. Recruiter substantially reproduces 7.4.4&rsquo;s shape &mdash; concentrated single-role Accountability, unmeasured Agency, an intensity-not-volume shift, the same &ldquo;redistributes work, not accountability&rdquo; outcome &mdash; but diverges on two counts: its reportsTo edge needed no correction (Director of TA was already strongly evidenced), and its Role Impact finding comes from spread across its own 3 L3s rather than one flat L3 sitting next to others. CHRO diverges more substantially: the narrowest Accountable scope of the three, no Manager Absorption ring to apply (top of catalog), a domain-wide rather than nearby Team Effect, and &mdash; most importantly &mdash; a taxonomy result that confirms the pattern-derived intuition instead of overturning it, because strategy-formation work was already understood as human-heavy before this method existed. The methodology held across all three tiers without modification, but it does not produce the same kind of finding at every tier, and treating &ldquo;reproduces 7.4.4&rdquo; as the success condition would have been the wrong bar.</p>
+  <h2>9. Known Open Constructs &mdash; Named, Not Yet Built</h2>
+  <p>Human Intensity (cognitive/emotional/relational/operational demand) is genuinely new &mdash; nothing today distinguishes &ldquo;less human involvement&rdquo; from &ldquo;the human involvement that remains is more demanding.&rdquo; Human Criticality substantially overlaps the four-tier consequence-of-error tag already built into the Sept 9&ndash;10 L4 working-relationship taxonomy pilot &mdash; mostly a naming/formalizing exercise, not a new instrument. Human Agency (authority, information, capacity, confidence, skill, psychological safety) sharpens Person-ring readiness into something functional rather than sentiment-based; psychological safety specifically functions as an AI governance/control variable &mdash; whether a person will actually challenge a wrong AI recommendation &mdash; not a culture metric. Zero-R/A-touch roles may hold real, invisible relational/leadership work (influencing, coaching, sense-making, trust-building) that a RACI-based framework structurally cannot see &mdash; flagged as a genuine blind spot, not resolved by anything in this methodology.</p>
+  <p class="note">Sept 2026 update: GiGi Garcia&rsquo;s own working reply on the three pilots confirms this is squarely her track. She names Human Readiness/Agency (&ldquo;can the person actually exercise the judgment they are being held accountable for?&rdquo;), Human Criticality (&ldquo;what happens if the decision is wrong, who is affected, and how reversible is the damage?&rdquo;), and Human Intensity (&ldquo;does AI reduce work, or does it concentrate the hardest parts of the work?&rdquo;) as exactly what she wants to go deeper on next, and has started a role-by-role deep dive on the three prototype positions to do it &mdash; asking, per role, what work leaves, what remains human, whether the remaining work intensifies, what judgment/authority/accountability shifts, and whether the role is being elevated, expanded, compressed, converged, or redesigned. She also names a fourth, closely related construct &mdash; Role Transition (what changes in skill, judgment, authority, identity, relationships, and accountability) &mdash; which is the same territory this document&rsquo;s Role Impact and Human Impact stages (&sect;7) already probe, but from the role&rsquo;s side rather than the activity&rsquo;s. None of these are built instruments yet; this note records where the next instrument for the Role-level axis (&sect;5) is most likely to come from, and whose work it is.</p>
+  <h2>10. Sourcing, Validation, and What This Document Deliberately Leaves Out</h2>
+  <p>The real APQC Process Classification Framework Cross-Industry v8.0 source spreadsheet (obtained directly from APQC, not framework-authored) independently confirms the framework&rsquo;s already-corrected PCF 7.0 counts &mdash; exactly 37 L3s and 100 L4s &mdash; and supplies the real element-description text used above for 7.4.4. It is now the ground truth for resolving any future &ldquo;is this a leaf or a gap&rdquo; question across all 13 domains, not only HR.</p>
+  <p>The Organizational Role Taxonomy / reportsTo practical sanity check (GiGi Garcia&rsquo;s reflections, section 16) is a deliberately separate, parallel review track &mdash; not merged into this methodology &mdash; though its findings feed the Manager Absorption stage above directly, and the 7.4.4 pilot produced independent evidence for it.</p>
+  <p>The Recruiter and CHRO pilots (Section 8) are now complete &mdash; GiGi&rsquo;s recommended test has been run. Left open by design, newly surfaced by those two pilots: whether the Role-level readiness axis&rsquo;s &ldquo;weakest-link across multiple touching roles&rdquo; rule needs a distinct treatment for an Executive-tier, single-decision-maker L3 like CHRO&rsquo;s, where no second touching role exists to be the weak link; and whether the Human Impact Pathway&rsquo;s Manager Absorption stage needs an explicit top-of-catalog variant rather than defaulting to &ldquo;no data&rdquo; when a role has no manager to absorb into. Still open from before: what the technical-readiness instrument should concretely measure and collect at scale; and whether Human Intensity ultimately becomes its own tracked field or stays a qualitative note alongside Current State / Future State / Progression Ceiling.</p>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;·&nbsp; Concept — For Review<br>
+    HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="working_relationship_progression_methodology.pdf">Download PDF</a> &nbsp;·&nbsp; <a href="Working_Relationship_Progression_Methodology.docx">Download Word</a> &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a><br>
+    © Timothy P. King 2026 · developed with the assistance of Claude (Anthropic)
+  </p>
+</footer>
+<script src="wip-vote-widget.js"></script>
+</body>
+</html>

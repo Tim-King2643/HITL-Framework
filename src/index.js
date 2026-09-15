@@ -30,7 +30,8 @@ const VOTABLE_ITEMS = {
   'pattern-color': '2026-09-08',
   'shock-wave': '2026-09-08',
   'concept-to-principle': '2026-09-08',
-  'rule-catalog': '2026-09-08'
+  'rule-catalog': '2026-09-08',
+  'wrpm': '2026-09-15'
 };
 
 // Friendly titles for notification emails — falls back to the raw itemId if
@@ -43,7 +44,8 @@ const ITEM_TITLES = {
   'pattern-color': 'Work Pattern Color Standard',
   'shock-wave': 'The Shock Wave Effect',
   'concept-to-principle': 'From Concept to Principle',
-  'rule-catalog': 'Framework Content Generation Rules — The Complete Catalog'
+  'rule-catalog': 'Framework Content Generation Rules — The Complete Catalog',
+  'wrpm': 'Working-Relationship Progression — A Design Methodology'
 };
 
 // Only Tim can request/complete a publish — GiGi reviews and votes, but
