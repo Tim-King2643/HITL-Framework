@@ -34,6 +34,11 @@ body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--
 .wrap { max-width: 800px; margin: 0 auto; padding: 36px 24px 72px; }
 
 .concept-flag { background: var(--amber-bg); border-left: 3px solid var(--amber); border-radius: 4px; padding: 16px 20px; font-size: 13px; font-style: italic; color: var(--amber-text); line-height: 1.6; margin-bottom: 28px; }
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 24px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
 
 h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 36px 0 12px; }
 p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
@@ -91,6 +96,15 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <div class="concept-flag">Concept stage — not yet part of the framework. Directly operationalizes Rule 14 (Modeled vs. Observed, Always Labeled) and Rule 16 (H% Carries Its Disclaimer) of the unified Framework Content Generation Rules, for the one place those rules matter most concretely: the Maturity Table's H% figures. Nothing here changes live dashboard behavior until approved.</div>
 
   <a class="pdf-download" href="h_pct_provenance_badge_standard.pdf">⬇ Download PDF</a>
+
+  <div class="related-reqs">
+    <span class="rr-label">Related Requirements — Requirements Register (GiGi’s evaluation docs)</span>
+    <ul>
+    <li><code>GR-008</code> — 20–25pt gap statement needs explicit modeled/observed labeling <em>(Designed — this badge operationalizes Rules 14 &amp; 16, the rules GR-008 maps to)</em></li>
+    <li><code>GR-014</code> — define H%'s unit of measure everywhere it's displayed <em>(Partially Addressed — this badge covers grounding/provenance, not the unit H% itself measures)</em></li>
+    </ul>
+  </div>
+
 
   <h2>Why This Now</h2>
   <p>Tim saw a CHRO Office Substack dashboard example tagging compensation figures &ldquo;DIRECTIONAL&rdquo; and &ldquo;AI-INFERRED — FROM DIRECTIONAL P50&rdquo; with a sources link, and liked the pattern of surfacing data provenance visibly rather than in a footnote. GiGi had separately flagged, in her September 3 review, that H% needs precision about whether it's modeled or observed — exactly what Rule 14 and Rule 16 of the unified Framework Content Generation Rules already require. This standard is the concrete mechanism that satisfies both.</p>

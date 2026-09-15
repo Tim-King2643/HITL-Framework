@@ -53,6 +53,11 @@ body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--
   padding: 16px 20px; font-size: 13px; font-style: italic; color: #7A5A1E;
   line-height: 1.6; margin-bottom: 24px;
 }
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 24px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
 
 .doc-body p { font-size: 14px; color: var(--gray); line-height: 1.7; margin-bottom: 20px; }
 
@@ -136,6 +141,22 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
 <div class="doc-wrap">
 
   <div class="concept-flag">Concept stage — not yet part of the framework. Per the Concept &rarr; Feasibility Review &rarr; Approved lifecycle established in <em>From Concept to Principle</em>, this is Claude's feasibility pass only. Nothing here binds any actual content generation until both Tim and GiGi approve it.</div>
+
+  <div class="related-reqs">
+    <span class="rr-label">Related Requirements — Requirements Register (GiGi’s evaluation docs)</span>
+    <ul>
+    <li><code>GR-002</code> — pull key findings out of paragraphs into visual callouts <em>(Designed — Rule 3 + Rule 4)</em></li>
+    <li><code>GR-004</code> — modernize typography/spacing (titles, headings, whitespace, width) <em>(Partially Addressed — Rule 5 covers type scale only, not whitespace/width)</em></li>
+    <li><code>GR-005</code> — give the tagline more visual prominence site-wide <em>(Partially Addressed — Rule 6 + Rule 12 lock it; only the WIP hub's own masthead is confirmed restyled so far)</em></li>
+    <li><code>GR-006</code> — add problem-first navigation entry points <em>(Designed — Rule 9)</em></li>
+    <li><code>GR-007</code> — add a simple explanatory sequence diagram <em>(Partially Addressed — Rule 10 locks the sequence's wording; no diagram confirmed built, and Rule 10's “no reordering” is in tension with GR-025)</em></li>
+    <li><code>GR-009</code> — replace “optimal” with “designed/appropriate” <em>(Designed — Rule 17)</em></li>
+    <li><code>GR-010</code> — replace absolute safety/control claims <em>(Designed — Rule 15)</em></li>
+    <li><code>GR-011</code> — reframe the 90/10 HAL 9000 example as origin story <em>(Designed — Rule 18)</em></li>
+    <li><code>GR-025</code> — add a “Prepare for it” step to the core design principle <em>(Open — in direct tension with Rule 10's “no reordering permitted”; flagged, not resolved)</em></li>
+    </ul>
+  </div>
+
 
   <div class="doc-body">
     <p>This catalog merges what were three separately-numbered documents — Visual System &amp; Hierarchy, Navigation &amp; Structure, and Language &amp; Precision — into one continuously numbered list, currently Rule 1 through Rule 19. Each still turns one of GiGi's site-recommendation groups (or, for Rule 19, a standard Tim set directly) into something checkable, not just a style preference, and each still names what it requires, what it applies to, and, where useful, points at a real page or decision already in the framework that shows the rule in action or in violation. What changes is only the numbering: under three separate "Rule 1…N" sequences, "Rule 3" meant something different depending on which document you were in. Under one catalog, "Rule 14" means exactly one thing everywhere it's cited — in this document, in the compliance audit, or in any future WIP proposal that references it. The three source documents are retained in the WIP folder for history but are superseded by this one.</p>

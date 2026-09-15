@@ -77,6 +77,12 @@ td.ring-name { color: var(--navy); font-weight: 600; white-space: nowrap; }
 }
 .term-box strong { color: var(--navy); }
 
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 24px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
+
 .pdf-download {
   display: inline-flex; align-items: center; gap: 6px;
   font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
@@ -121,6 +127,16 @@ footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
   </div>
 
   <a class="pdf-download" href="the_shock_wave_effect.pdf">⬇ Download PDF</a>
+
+  <div class="related-reqs">
+    <span class="rr-label">Related Requirements — Requirements Register (GiGi’s evaluation docs)</span>
+    <ul>
+    <li><code>GR-021</code> — add a visible “Human Accountability Anchor” marker <em>(Partially Addressed — the GDP definition is the closest existing language, not yet a built UI marker)</em></li>
+    <li><code>GR-024</code> — composite executive-facing per-role view + recommended transition path <em>(Open — the Five Rings model is related conceptual groundwork, not the built view)</em></li>
+    <li><code>GR-030</code> — track Accountability Concentration as H% declines <em>(Partially Addressed — conceptual language exists (accountability held fixed by design), not a computed metric)</em></li>
+    </ul>
+  </div>
+
 
   <h2>Where This Started</h2>
   <p>The Working Collaboration &amp; Co-Development Principles document's Shared Vision paragraph names the real question underneath this whole partnership: when AI, or any other force, materially changes the work, what happens to the role, the person performing it, the manager leading it, the team around it, and the accountability for what follows?</p>
