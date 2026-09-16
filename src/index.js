@@ -138,6 +138,161 @@ async function sendPublishEmail(env, itemId, requestedBy) {
   }
 }
 
+// ── Sandbox Reactions & Notes (docs/sandbox/*.html) ─────────────────────
+// Added Sept 16, 2026. The SANDBOX_NOTES KV namespace and its wrangler.jsonc
+// binding were already wired up from the original Sept 14 sandbox build,
+// but these route handlers were never added — that's exactly why the
+// sandbox's Notes panel showed read-only: sandbox-notes-widget.js's fetch
+// to /sandbox-api/me got a 404 (falling through to env.ASSETS.fetch, which
+// correctly has no static file there) and set its own NOTES_API_DOWN flag.
+// This closes that gap.
+//
+// Storage key: `notes:<scope>:<itemId>` -> JSON array of
+// { id, reviewer, reaction, text, postedAt, editedAt }. `scope` is a
+// per-domain-sandbox slug ("pcf7" today, for docs/sandbox/pcf7.html); itemId
+// is a PCF code (an L3 or L4, e.g. "7.1.1.1" or leaf-L3 "7.4.4").
+// sandbox-notes-widget.js's POST body doesn't send a scope yet since only
+// one domain sandbox exists — defaults to 'pcf7' below. If a second domain
+// sandbox (e.g. PCF 8.0) is built, the widget needs to start sending its own
+// scope and the itemId pattern below needs to accept that domain's leading
+// digit too.
+//
+// Full CRUD added Sept 16, 2026 (Tim's request): each reviewer can update or
+// delete their OWN notes only — not the other reviewer's — enforced by
+// comparing the authenticated reviewer against the stored note's `reviewer`
+// field, never a client-supplied one. Claude's seed rationale (WR_DATA.note,
+// baked into pcf7.html at patch time) is deliberately NOT part of this KV
+// store at all, so it has no id/edit/delete path here — it stays read-only
+// by construction, same as Tim asked.
+
+const SANDBOX_REACTIONS = new Set(['agree', 'question', 'flag']);
+const SANDBOX_ITEM_ID_RE = /^7(\.\d+){1,3}$/;
+const SANDBOX_MAX_TEXT_LEN = 2000;
+
+function sandboxKey(scope, itemId) {
+  return `notes:${scope}:${itemId}`;
+}
+
+async function readSandboxNotes(env, scope, itemId) {
+  const raw = await env.SANDBOX_NOTES.get(sandboxKey(scope, itemId));
+  return raw ? JSON.parse(raw) : [];
+}
+
+async function writeSandboxNotes(env, scope, itemId, notes) {
+  await env.SANDBOX_NOTES.put(sandboxKey(scope, itemId), JSON.stringify(notes));
+}
+
+async function handleSandboxApi(request, env, url) {
+  const reviewer = reviewerFromRequest(request);
+
+  if (url.pathname === '/sandbox-api/me') {
+    return json({ reviewer });
+  }
+
+  if (url.pathname === '/sandbox-api/notes-all' && request.method === 'GET') {
+    const scope = url.searchParams.get('scope') || 'pcf7';
+    const prefix = `notes:${scope}:`;
+    const notes = {};
+    let cursor;
+    do {
+      const page = await env.SANDBOX_NOTES.list({ prefix, cursor });
+      for (const key of page.keys) {
+        const itemId = key.name.slice(prefix.length);
+        const raw = await env.SANDBOX_NOTES.get(key.name);
+        if (raw) notes[itemId] = JSON.parse(raw);
+      }
+      cursor = page.cursor;
+    } while (cursor);
+    return json({ reviewer, notes });
+  }
+
+  if (url.pathname === '/sandbox-api/note' && request.method === 'POST') {
+    if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
+
+    let body;
+    try { body = await request.json(); } catch (e) { return json({ error: 'invalid JSON body' }, { status: 400 }); }
+    const itemId = body && body.itemId;
+    const reaction = (body && body.reaction) || null;
+    const text = typeof (body && body.text) === 'string' ? body.text.trim().slice(0, SANDBOX_MAX_TEXT_LEN) : '';
+    const scope = (body && body.scope) || 'pcf7';
+
+    if (typeof itemId !== 'string' || !SANDBOX_ITEM_ID_RE.test(itemId)) {
+      return json({ error: 'unknown item' }, { status: 400 });
+    }
+    if (reaction && !SANDBOX_REACTIONS.has(reaction)) {
+      return json({ error: 'unknown reaction' }, { status: 400 });
+    }
+    if (!text && !reaction) {
+      return json({ error: 'a note needs text or a reaction' }, { status: 400 });
+    }
+
+    const notes = await readSandboxNotes(env, scope, itemId);
+    notes.push({ id: crypto.randomUUID(), reviewer, reaction, text, postedAt: Date.now() });
+    await writeSandboxNotes(env, scope, itemId, notes);
+    return json({ ok: true, notes });
+  }
+
+  if (url.pathname === '/sandbox-api/note' && request.method === 'PATCH') {
+    if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
+
+    let body;
+    try { body = await request.json(); } catch (e) { return json({ error: 'invalid JSON body' }, { status: 400 }); }
+    const itemId = body && body.itemId;
+    const noteId = body && body.noteId;
+    const reaction = (body && body.reaction) || null;
+    const text = typeof (body && body.text) === 'string' ? body.text.trim().slice(0, SANDBOX_MAX_TEXT_LEN) : '';
+    const scope = (body && body.scope) || 'pcf7';
+
+    if (typeof itemId !== 'string' || !SANDBOX_ITEM_ID_RE.test(itemId)) {
+      return json({ error: 'unknown item' }, { status: 400 });
+    }
+    if (typeof noteId !== 'string') return json({ error: 'missing noteId' }, { status: 400 });
+    if (reaction && !SANDBOX_REACTIONS.has(reaction)) {
+      return json({ error: 'unknown reaction' }, { status: 400 });
+    }
+    if (!text && !reaction) {
+      return json({ error: 'a note needs text or a reaction' }, { status: 400 });
+    }
+
+    const notes = await readSandboxNotes(env, scope, itemId);
+    const idx = notes.findIndex(n => n.id === noteId);
+    if (idx === -1) return json({ error: 'note not found' }, { status: 404 });
+    if (notes[idx].reviewer !== reviewer) {
+      return json({ error: 'you can only edit your own notes' }, { status: 403 });
+    }
+    notes[idx] = Object.assign({}, notes[idx], { reaction, text, editedAt: Date.now() });
+    await writeSandboxNotes(env, scope, itemId, notes);
+    return json({ ok: true, notes });
+  }
+
+  if (url.pathname === '/sandbox-api/note' && request.method === 'DELETE') {
+    if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
+
+    let body;
+    try { body = await request.json(); } catch (e) { return json({ error: 'invalid JSON body' }, { status: 400 }); }
+    const itemId = body && body.itemId;
+    const noteId = body && body.noteId;
+    const scope = (body && body.scope) || 'pcf7';
+
+    if (typeof itemId !== 'string' || !SANDBOX_ITEM_ID_RE.test(itemId)) {
+      return json({ error: 'unknown item' }, { status: 400 });
+    }
+    if (typeof noteId !== 'string') return json({ error: 'missing noteId' }, { status: 400 });
+
+    const notes = await readSandboxNotes(env, scope, itemId);
+    const idx = notes.findIndex(n => n.id === noteId);
+    if (idx === -1) return json({ error: 'note not found' }, { status: 404 });
+    if (notes[idx].reviewer !== reviewer) {
+      return json({ error: 'you can only delete your own notes' }, { status: 403 });
+    }
+    notes.splice(idx, 1);
+    await writeSandboxNotes(env, scope, itemId, notes);
+    return json({ ok: true, notes });
+  }
+
+  return json({ error: 'not found' }, { status: 404 });
+}
+
 async function handleApi(request, env, url) {
   const reviewer = reviewerFromRequest(request);
 
@@ -257,6 +412,9 @@ export default {
     const url = new URL(request.url);
     if (url.pathname.startsWith('/wip-api/')) {
       return handleApi(request, env, url);
+    }
+    if (url.pathname.startsWith('/sandbox-api/')) {
+      return handleSandboxApi(request, env, url);
     }
     return env.ASSETS.fetch(request);
   }
