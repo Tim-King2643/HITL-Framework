@@ -354,7 +354,7 @@ td.crud-d .crud-entity { color: #991B1B; }
   This is a live working copy of the full PCF 7.0 content — Maturity Table, RACI Table, Value Stream Profile, Data View (CRUD Matrix), and
   People View — with a second, integrated view laid over the Maturity Table: the
   <strong>Current State &rarr; Future State &rarr; Progression Ceiling</strong> model (replacing M1&ndash;M5) plus Consequence of Error,
-  for the 78 activities that have been hand-classified by working relationship so far. Everything here is real data pulled from the
+  for the 95 activities that have been hand-classified by working relationship so far. Everything here is real data pulled from the
   live framework &mdash; nothing is simulated. Leave a reaction or a note on any Maturity/Working-Relationship row using the <strong>Notes</strong> button; GiGi and Tim can both see
   and add to them here.
 </div>
@@ -384,7 +384,7 @@ td.crud-d .crud-entity { color: #991B1B; }
     <div class="card lens-section" id="panel-maturity">
       <div class="card-header">
         <h3>HITL Maturity Assessment &mdash; PCF 7.0</h3>
-        <span>100 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 78 working-relationship classified</span>
+        <span>100 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 95 working-relationship classified</span>
       </div>
       <div class="table-wrap">
         <table id="main-table">
@@ -893,10 +893,34 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
 // cons  = Consequence of Error tag (Low/Moderate/High/Critical) — GiGi's
 //         Human Criticality axis; every tag here is a starting position for
 //         her to own and refine, not a settled call. null = not yet tagged.
-// future / ceiling / note = only set for the 5 real worked examples in the
-// methodology doc. Every other classified item has NOT had Future State /
-// Progression Ceiling reasoning done yet — left honestly null rather than
-// guessed, same convention as the rest of this framework.
+// future / ceiling / note:
+//   5 items (7.1.1.2, 7.2.1.1, 7.2.1.3, 7.2.3.4, 7.4.4) got individual
+//   walkthroughs against Working_Relationship_Progression_Methodology.docx —
+//   those stand as originally reasoned, including 7.2.1.1's deliberate
+//   "Open / undecided" ceiling.
+//
+//   Every other item (Sept 16, 2026) uses the Progression Ceiling Rule
+//   below instead — a disclosed heuristic, not a re-derivation of that
+//   deeper methodology work, offered as Claude's own perspective for Tim
+//   and GiGi to spot-check and override:
+//     1. Current State = Automation -> already the floor of the ladder.
+//        Future = Ceiling = Automation, always.
+//     2. Current State = Judgment because of a standing accountability
+//        duty (strategic authority, EEOC/adverse-impact liability, ERISA
+//        fiduciary duty, NLRA/union exposure, confidentiality/duty-of-care)
+//        -> already at the top. Future = Ceiling = Judgment.
+//     3. Everything between (Agent-delegation / Augmentation / Oversight):
+//        if the item's note flags a standing duty attached to that
+//        specific tier (a fiduciary sign-off, a disparate-treatment review
+//        point, a compliance-surface duty), that tier IS the ceiling —
+//        Future = Ceiling = Current. If no such duty is flagged, the item
+//        sits there only because trust/tooling hasn't caught up yet, and
+//        the ceiling moves one notch more automated: Oversight ->
+//        Agent-delegation, Augmentation -> Agent-delegation,
+//        Agent-delegation -> Automation.
+//   Still genuinely null = not yet reasoned at all (no Current State tag
+//   yet), same honest-blank convention as everywhere else in this
+//   framework.
 
 const WR_CATS = {
   "Automation":       { color:"#7DAEE0", h:10 },
@@ -913,133 +937,164 @@ const WR_DATA = {
   // ── CHRO / PCF 7.1.1 — Develop human resources strategy (10 L4s) ──────────
   // Piloted alongside HRBP Manager and Recruiter; consequence tags here are
   // CHRO's own pilot pass, not yet given the individual-walkthrough scrutiny
-  // 7.2 and 7.3's tags received on Sept 14, 2026.
-  "7.1.1.1":  { rel:"Judgment",         cons:"Moderate" },
+  // 7.2 and 7.3's tags received on Sept 14, 2026. Future/ceiling added
+  // Sept 16, 2026 per the Progression Ceiling Rule above.
+  "7.1.1.1":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
   "7.1.1.2":  { rel:"Judgment",         cons:"High",
                 future:"Judgment", ceiling:"Judgment",
                 note:"Already at ceiling — Executive tier. Defining the domain's own accountability structure isn't a decision to hand to an AI proposal." },
-  "7.1.1.3":  { rel:"Judgment",         cons:"Moderate" },
-  "7.1.1.4":  { rel:"Judgment",         cons:"Moderate" },
+  "7.1.1.3":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
+  "7.1.1.4":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
   "7.1.1.5":  { rel:"Oversight",        cons:"Moderate",
-                note:"Close call, flagged honestly: cost models are treated as a draft CHRO edits or a recommendation CHRO approves." },
-  "7.1.1.6":  { rel:"Judgment",         cons:"Moderate" },
-  "7.1.1.7":  { rel:"Augmentation",     cons:"Low" },
-  "7.1.1.8":  { rel:"Judgment",         cons:"High" },
-  "7.1.1.9":  { rel:"Augmentation",     cons:"Moderate" },
-  "7.1.1.10": { rel:"Judgment",         cons:"Moderate" },
+                future:"Agent-delegation", ceiling:"Agent-delegation",
+                note:"Close call, flagged honestly: cost models are treated as a draft CHRO edits or a recommendation CHRO approves. No standing duty requires CHRO's personal review — ceiling moves one notch per the Progression Ceiling Rule." },
+  "7.1.1.6":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
+  "7.1.1.7":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.1.1.8":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment" },
+  "7.1.1.9":  { rel:"Augmentation",     cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.1.1.10": { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
 
   // ── PCF 7.1.2 — Develop and implement workforce planning, policies, and
   // strategies (16 L4s) — Sept 16, 2026, Tim-confirmed on first pass ───────
-  "7.1.2.1":  { rel:"Judgment",         cons:"Moderate" },
-  "7.1.2.2":  { rel:"Judgment",         cons:"High",
+  "7.1.2.1":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
+  "7.1.2.2":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment",
                 note:"Pay-equity/compensation-discrimination exposure." },
-  "7.1.2.3":  { rel:"Judgment",         cons:"High",
+  "7.1.2.3":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment",
                 note:"Same continuity/favoritism-exposure logic as 7.3.3.4's succession-plan tag." },
-  "7.1.2.4":  { rel:"Augmentation",     cons:"Moderate" },
-  "7.1.2.5":  { rel:"Augmentation",     cons:"High",
-                note:"DEI plan design carries real legal exposure in either direction under the current landscape." },
-  "7.1.2.6":  { rel:"Agent-delegation", cons:"High",
-                note:"Same DEI exposure as 7.1.2.5, at execution." },
-  "7.1.2.7":  { rel:"Augmentation",     cons:"Low" },
-  "7.1.2.8":  { rel:"Augmentation",     cons:"Low" },
-  "7.1.2.9":  { rel:"Augmentation",     cons:"Low" },
-  "7.1.2.10": { rel:"Augmentation",     cons:"High",
-                note:"Policy language is the direct compliance surface — same regulatory-teeth logic as 7.2.5.1/7.3.4.6." },
-  "7.1.2.11": { rel:"Agent-delegation", cons:"Moderate",
-                note:"Inconsistent application risks disparate-treatment claims." },
-  "7.1.2.12": { rel:"Augmentation",     cons:"High",
-                note:"ERISA fiduciary/compliance exposure." },
-  "7.1.2.13": { rel:"Augmentation",     cons:"Low" },
-  "7.1.2.14": { rel:"Agent-delegation", cons:"Low" },
-  "7.1.2.15": { rel:"Agent-delegation", cons:"Moderate",
-                note:"FLSA exemption-classification risk sits behind job-family structure." },
-  "7.1.2.16": { rel:"Augmentation",     cons:"Moderate",
-                note:"ADA essential-functions / FLSA-exemption language risk." },
+  "7.1.2.4":  { rel:"Augmentation",     cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.1.2.5":  { rel:"Augmentation",     cons:"High", future:"Augmentation", ceiling:"Augmentation",
+                note:"DEI plan design carries real legal exposure in either direction under the current landscape — the exposure attaches at this tier, so it's the ceiling, not a maturity gap." },
+  "7.1.2.6":  { rel:"Agent-delegation", cons:"High", future:"Agent-delegation", ceiling:"Agent-delegation",
+                note:"Same DEI exposure as 7.1.2.5, at execution — the review checkpoint is the safeguard, not a temporary trust gap." },
+  "7.1.2.7":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.1.2.8":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.1.2.9":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.1.2.10": { rel:"Augmentation",     cons:"High", future:"Augmentation", ceiling:"Augmentation",
+                note:"Policy language is the direct compliance surface — same regulatory-teeth logic as 7.2.5.1/7.3.4.6. The compliance-surface duty attaches here, so it's the ceiling." },
+  "7.1.2.11": { rel:"Agent-delegation", cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation",
+                note:"Inconsistent application risks disparate-treatment claims — the review checkpoint is the safeguard, so it's the ceiling, not a maturity gap." },
+  "7.1.2.12": { rel:"Augmentation",     cons:"High", future:"Augmentation", ceiling:"Augmentation",
+                note:"ERISA fiduciary/compliance exposure — the fiduciary sign-off is the ceiling." },
+  "7.1.2.13": { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.1.2.14": { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.1.2.15": { rel:"Agent-delegation", cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation",
+                note:"FLSA exemption-classification risk sits behind job-family structure — the review checkpoint is the ceiling." },
+  "7.1.2.16": { rel:"Augmentation",     cons:"Moderate", future:"Augmentation", ceiling:"Augmentation",
+                note:"ADA essential-functions / FLSA-exemption language risk — the compliance-surface duty is the ceiling." },
 
   // ── PCF 7.1.3 — Monitor and update HR strategies, plans, and policies
   // (4 L4s) — Sept 16, 2026, Tim-confirmed on first pass ──────────────────
-  "7.1.3.1":  { rel:"Agent-delegation", cons:"Low" },
-  "7.1.3.2":  { rel:"Agent-delegation", cons:"Low" },
-  "7.1.3.3":  { rel:"Augmentation",     cons:"Low" },
-  "7.1.3.4":  { rel:"Judgment",         cons:"Moderate" },
+  "7.1.3.1":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.1.3.2":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.1.3.3":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.1.3.4":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
 
   // ── PCF 7.1.4 — Develop competency management models (leaf L3) ─────────
   // Sept 16, 2026, Tim-confirmed on first pass
-  "7.1.4":    { rel:"Judgment",         cons:"Moderate",
+  "7.1.4":    { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment",
                 note:"Foundational model feeds downstream skills/pay/promotion decisions — same tier as 7.1.1's own strategy work." },
 
   // ── PCF 7.2 — Recruit and select employees (24 L4s, 5 L3s) ────────────────
   "7.2.1.1":  { rel:"Judgment",         cons:"Moderate",
                 future:"Judgment", ceiling:"Open / undecided",
                 note:"No settled ceiling — could stay Judgment permanently as a strategic/budget call. Flagged as Tim's call, not invented." },
-  "7.2.1.2":  { rel:"Automation",       cons:"Low" },
+  "7.2.1.2":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
   "7.2.1.3":  { rel:"Oversight",        cons:"High",
                 future:"Oversight", ceiling:"Agent-delegation",
                 note:"Ceiling is knowable, but reaching it is a governance choice (removing human sign-off), not only a technical one." },
-  "7.2.1.4":  { rel:"Automation",       cons:"Low" },
-  "7.2.1.5":  { rel:"Automation",       cons:"Low" },
-  "7.2.1.6":  { rel:"Automation",       cons:"Low" },
-  "7.2.1.7":  { rel:"Automation",       cons:"Low" },
-  "7.2.2.1":  { rel:"Augmentation",     cons:"Low" },
-  "7.2.2.2":  { rel:"Augmentation",     cons:"Low" },
-  "7.2.2.3":  { rel:"Agent-delegation", cons:"Low" },
-  "7.2.2.4":  { rel:"Augmentation",     cons:"Moderate" },
-  "7.2.2.5":  { rel:"Agent-delegation", cons:"Low" },
-  "7.2.2.6":  { rel:"Agent-delegation", cons:"Low" },
-  "7.2.3.1":  { rel:"Judgment",         cons:"Moderate" },
-  "7.2.3.2":  { rel:"Judgment",         cons:"High" },
-  "7.2.3.3":  { rel:"Agent-delegation", cons:"High",
-                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — compliance/litigation exposure." },
+  "7.2.1.4":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.2.1.5":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.2.1.6":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.2.1.7":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.2.2.1":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.2.2.2":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.2.2.3":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.2.2.4":  { rel:"Augmentation",     cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.2.2.5":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.2.2.6":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.2.3.1":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
+  "7.2.3.2":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment" },
+  "7.2.3.3":  { rel:"Agent-delegation", cons:"High", future:"Agent-delegation", ceiling:"Agent-delegation",
+                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — compliance/litigation exposure. The review checkpoint (test-validity/adverse-impact under UGESP) is the ceiling." },
   "7.2.3.4":  { rel:"Judgment",         cons:"Critical",
                 future:"Judgment", ceiling:"Judgment",
                 note:"Already at ceiling, a different reason than 7.4.4's — EEOC/adverse-impact liability on the hiring decision itself." },
-  "7.2.4.1":  { rel:"Agent-delegation", cons:"Moderate" },
-  "7.2.4.2":  { rel:"Judgment",         cons:"High" },
-  "7.2.4.3":  { rel:"Oversight",        cons:"Moderate" },
-  "7.2.5.1":  { rel:"Automation",       cons:"High",
+  "7.2.4.1":  { rel:"Agent-delegation", cons:"Moderate", future:"Automation", ceiling:"Automation" },
+  "7.2.4.2":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment" },
+  "7.2.4.3":  { rel:"Oversight",        cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.2.5.1":  { rel:"Automation",       cons:"High", future:"Automation", ceiling:"Automation",
                 note:"Moved up to High on individual walkthrough (Sept 14, 2026) — compliance/litigation exposure, same pattern as 7.3.4.6." },
-  "7.2.5.2":  { rel:"Automation",       cons:"Low" },
-  "7.2.5.3":  { rel:"Automation",       cons:"Low" },
-  "7.2.5.4":  { rel:"Automation",       cons:"Moderate" },
+  "7.2.5.2":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.2.5.3":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.2.5.4":  { rel:"Automation",       cons:"Moderate", future:"Automation", ceiling:"Automation" },
 
   // ── PCF 7.3 — Develop and counsel employees (18 L4s, 4 L3s) ───────────────
-  "7.3.1.1":  { rel:"Augmentation",     cons:"Moderate" },
-  "7.3.1.2":  { rel:"Agent-delegation", cons:"Low" },
-  "7.3.1.3":  { rel:"Augmentation",     cons:"Low" },
-  "7.3.2.1":  { rel:"Judgment",         cons:"Moderate" },
-  "7.3.2.2":  { rel:"Judgment",         cons:"High",
+  "7.3.1.1":  { rel:"Augmentation",     cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.3.1.2":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.3.1.3":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.3.2.1":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
+  "7.3.2.2":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment",
                 note:"Feeds pay/promotion/termination decisions and carries real discrimination exposure if done badly." },
-  "7.3.2.3":  { rel:"Augmentation",     cons:"High",
-                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — documentation quality is a common deciding factor in wrongful-termination litigation." },
-  "7.3.2.4":  { rel:"Agent-delegation", cons:"Low" },
-  "7.3.3.1":  { rel:"Augmentation",     cons:"Low" },
-  "7.3.3.2":  { rel:"Judgment",         cons:"Moderate" },
-  "7.3.3.3":  { rel:"Agent-delegation", cons:"Low" },
-  "7.3.3.4":  { rel:"Judgment",         cons:"High",
+  "7.3.2.3":  { rel:"Augmentation",     cons:"High", future:"Augmentation", ceiling:"Augmentation",
+                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — documentation quality is a common deciding factor in wrongful-termination litigation. Someone has to be able to vouch for the record, so the ceiling stays here." },
+  "7.3.2.4":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.3.3.1":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.3.3.2":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
+  "7.3.3.3":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.3.3.4":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment",
                 note:"A wrong call on a critical role is a continuity risk and can shade into perceived-favoritism exposure." },
-  "7.3.4.1":  { rel:"Augmentation",     cons:"Low" },
-  "7.3.4.2":  { rel:"Agent-delegation", cons:"Low" },
-  "7.3.4.3":  { rel:"Agent-delegation", cons:"Low" },
-  "7.3.4.4":  { rel:"Augmentation",     cons:"Low" },
-  "7.3.4.5":  { rel:"Augmentation",     cons:"High",
-                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — covers legally mandated training with real statutory deadlines." },
-  "7.3.4.6":  { rel:"Automation",       cons:"High",
+  "7.3.4.1":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.3.4.2":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.3.4.3":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.3.4.4":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.3.4.5":  { rel:"Augmentation",     cons:"High", future:"Agent-delegation", ceiling:"Agent-delegation",
+                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — covers legally mandated training with real statutory deadlines. That's deadline-tracking mechanics, not content judgment, so the ceiling moves one notch rather than staying pinned." },
+  "7.3.4.6":  { rel:"Automation",       cons:"High", future:"Automation", ceiling:"Automation",
                 note:"Moved up to High on individual walkthrough (Sept 14, 2026) — classified Automation, but the one step with real regulatory teeth, same pattern as 7.2.5.1." },
-  "7.3.4.7":  { rel:"Agent-delegation", cons:"Low" },
+  "7.3.4.7":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
 
   // ── PCF 7.4 — Manage employee/labor relations (5 leaf L3s, no L4 children) ─
   // 7.4.1-7.4.3/7.4.5 — Sept 16, 2026, Tim-confirmed on first pass ─────────
-  "7.4.1":    { rel:"Judgment", cons:"Critical",
+  "7.4.1":    { rel:"Judgment", cons:"Critical", future:"Judgment", ceiling:"Judgment",
                 note:"Moved to Critical (Tim, Sept 16, 2026) — unfair-labor-practice/NLRA and strike/work-stoppage exposure." },
-  "7.4.2":    { rel:"Judgment", cons:"Critical",
+  "7.4.2":    { rel:"Judgment", cons:"Critical", future:"Judgment", ceiling:"Judgment",
                 note:"Moved to Critical (Tim, Sept 16, 2026) — same exposure class as 7.4.1; a mishandled CBA negotiation carries large-scale financial/legal risk." },
-  "7.4.3":    { rel:"Judgment", cons:"Moderate",
+  "7.4.3":    { rel:"Judgment", cons:"Moderate", future:"Judgment", ceiling:"Judgment",
                 note:"Relationship-maintenance work; lower single-decision stakes than active bargaining or a grievance case." },
-  "7.4.4":    { rel:"Judgment", cons:null,
+  "7.4.4":    { rel:"Judgment", cons:"Critical",
                 future:"Judgment", ceiling:"Judgment",
-                note:"Already at its human-side ceiling. The Accountable role (HRBP Manager) never changes across the real M1→M5 curve (95%→68%) — the mirror case to an activity already at Automation with no further runway. Consequence-of-error not yet tagged for this one — left blank rather than guessed." },
-  "7.4.5":    { rel:"Agent-delegation", cons:"High",
-                note:"Same regulatory-teeth logic as 7.2.5.1/7.3.4.6 — the monitoring/scanning is delegable, but a missed change here creates a real compliance gap." },
+                note:"Already at its human-side ceiling. The Accountable role (HRBP Manager) never changes across the real M1→M5 curve (95%→68%) — the mirror case to an activity already at Automation with no further runway. Consequence-of-error tagged Critical (Sept 16, 2026, Claude's read for Tim to confirm) — grievances routinely stem from CBA violations or protected-activity retaliation, the same exposure class as 7.4.1/7.4.2, and a mishandled one is exactly what escalates into an NLRB charge or litigation." },
+  "7.4.5":    { rel:"Agent-delegation", cons:"High", future:"Agent-delegation", ceiling:"Agent-delegation",
+                note:"Same regulatory-teeth logic as 7.2.5.1/7.3.4.6 — the monitoring/scanning is delegable, but a missed change here creates a real compliance gap. The review-before-acting step is the ceiling, not a maturity gap." },
+
+  // ── PCF 7.5 — Reward and Retain Employees (17 L4s/leaf-L3s, 5 L3s) ─────────
+  // Sept 16, 2026, Tim-confirmed on first pass, future/ceiling applied
+  // per the Progression Ceiling Rule at the same time as Current State.
+  "7.5.1.1":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment",
+                note:"Same pay-equity exposure as 7.1.2.2 — sets the bands the whole comp system runs on." },
+  "7.5.1.2":  { rel:"Augmentation",     cons:"High", future:"Augmentation", ceiling:"Augmentation",
+                note:"ERISA fiduciary exposure, same logic as 7.1.2.12 — the fiduciary sign-off is the ceiling, not full authorship." },
+  "7.5.1.3":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.5.1.4":  { rel:"Augmentation",     cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.5.1.5":  { rel:"Automation",       cons:"High", future:"Automation", ceiling:"Automation",
+                note:"Direct pay execution — wage-and-hour exposure if mis-administered, same regulatory-teeth logic as 7.5.4/7.4.5." },
+  "7.5.1.6":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.5.1.7":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.5.1.8":  { rel:"Augmentation",     cons:"Moderate", future:"Augmentation", ceiling:"Augmentation",
+                note:"Same pay-equity duty as 7.5.1.1 attaches to reviewing the plan, not just setting it." },
+  "7.5.1.9":  { rel:"Augmentation",     cons:"Moderate", future:"Augmentation", ceiling:"Augmentation",
+                note:"Same ERISA-adjacent duty as 7.5.1.2." },
+  "7.5.2.1":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.5.2.2":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.5.2.3":  { rel:"Automation",       cons:"Moderate", future:"Automation", ceiling:"Automation" },
+  "7.5.2.4":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
+  "7.5.3.1":  { rel:"Oversight",        cons:"Moderate", future:"Oversight", ceiling:"Oversight",
+                note:"Confidential, individual-situation support work (EAP referrals, family/wellbeing needs) — a human needs to stay meaningfully present given the sensitivity, even with strong AI assistance. Duty-of-care floor, not a maturity gap." },
+  "7.5.3.2":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
+  "7.5.4":    { rel:"Automation",       cons:"High", future:"Automation", ceiling:"Automation",
+                note:"Same regulatory-teeth logic as 7.2.5.1/7.3.4.6/7.4.5 — routine execution, but wage-and-hour/FLSA exposure if it's wrong." },
+  "7.5.5":    { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation",
+                note:"No standing duty — survey/suggestion collection is fully delegable once trust is established." },
 };
 
 
