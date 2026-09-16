@@ -345,7 +345,7 @@ td.crud-d .crud-entity { color: #991B1B; }
   This is a live working copy of the full PCF 7.0 content — Maturity Table, RACI Table, Value Stream Profile, Data View (CRUD Matrix), and
   People View — with a second, integrated view laid over the Maturity Table: the
   <strong>Current State &rarr; Future State &rarr; Progression Ceiling</strong> model (replacing M1&ndash;M5) plus Consequence of Error,
-  for the 53 activities that have been hand-classified by working relationship so far. Everything here is real data pulled from the
+  for the 74 activities that have been hand-classified by working relationship so far. Everything here is real data pulled from the
   live framework &mdash; nothing is simulated. Leave a reaction or a note on any Maturity/Working-Relationship row using the <strong>Notes</strong> button; GiGi and Tim can both see
   and add to them here.
 </div>
@@ -375,7 +375,7 @@ td.crud-d .crud-entity { color: #991B1B; }
     <div class="card lens-section" id="panel-maturity">
       <div class="card-header">
         <h3>HITL Maturity Assessment &mdash; PCF 7.0</h3>
-        <span>100 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 53 working-relationship classified</span>
+        <span>100 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 74 working-relationship classified</span>
       </div>
       <div class="table-wrap">
         <table id="main-table">
@@ -918,6 +918,46 @@ const WR_DATA = {
   "7.1.1.8":  { rel:"Judgment",         cons:"High" },
   "7.1.1.9":  { rel:"Augmentation",     cons:"Moderate" },
   "7.1.1.10": { rel:"Judgment",         cons:"Moderate" },
+
+  // ── PCF 7.1.2 — Develop and implement workforce planning, policies, and
+  // strategies (16 L4s) — Sept 16, 2026, Tim-confirmed on first pass ───────
+  "7.1.2.1":  { rel:"Judgment",         cons:"Moderate" },
+  "7.1.2.2":  { rel:"Judgment",         cons:"High",
+                note:"Pay-equity/compensation-discrimination exposure." },
+  "7.1.2.3":  { rel:"Judgment",         cons:"High",
+                note:"Same continuity/favoritism-exposure logic as 7.3.3.4's succession-plan tag." },
+  "7.1.2.4":  { rel:"Augmentation",     cons:"Moderate" },
+  "7.1.2.5":  { rel:"Augmentation",     cons:"High",
+                note:"DEI plan design carries real legal exposure in either direction under the current landscape." },
+  "7.1.2.6":  { rel:"Agent-delegation", cons:"High",
+                note:"Same DEI exposure as 7.1.2.5, at execution." },
+  "7.1.2.7":  { rel:"Augmentation",     cons:"Low" },
+  "7.1.2.8":  { rel:"Augmentation",     cons:"Low" },
+  "7.1.2.9":  { rel:"Augmentation",     cons:"Low" },
+  "7.1.2.10": { rel:"Augmentation",     cons:"High",
+                note:"Policy language is the direct compliance surface — same regulatory-teeth logic as 7.2.5.1/7.3.4.6." },
+  "7.1.2.11": { rel:"Agent-delegation", cons:"Moderate",
+                note:"Inconsistent application risks disparate-treatment claims." },
+  "7.1.2.12": { rel:"Augmentation",     cons:"High",
+                note:"ERISA fiduciary/compliance exposure." },
+  "7.1.2.13": { rel:"Augmentation",     cons:"Low" },
+  "7.1.2.14": { rel:"Agent-delegation", cons:"Low" },
+  "7.1.2.15": { rel:"Agent-delegation", cons:"Moderate",
+                note:"FLSA exemption-classification risk sits behind job-family structure." },
+  "7.1.2.16": { rel:"Augmentation",     cons:"Moderate",
+                note:"ADA essential-functions / FLSA-exemption language risk." },
+
+  // ── PCF 7.1.3 — Monitor and update HR strategies, plans, and policies
+  // (4 L4s) — Sept 16, 2026, Tim-confirmed on first pass ──────────────────
+  "7.1.3.1":  { rel:"Agent-delegation", cons:"Low" },
+  "7.1.3.2":  { rel:"Agent-delegation", cons:"Low" },
+  "7.1.3.3":  { rel:"Augmentation",     cons:"Low" },
+  "7.1.3.4":  { rel:"Judgment",         cons:"Moderate" },
+
+  // ── PCF 7.1.4 — Develop competency management models (leaf L3) ─────────
+  // Sept 16, 2026, Tim-confirmed on first pass
+  "7.1.4":    { rel:"Judgment",         cons:"Moderate",
+                note:"Foundational model feeds downstream skills/pay/promotion decisions — same tier as 7.1.1's own strategy work." },
 
   // ── PCF 7.2 — Recruit and select employees (24 L4s, 5 L3s) ────────────────
   "7.2.1.1":  { rel:"Judgment",         cons:"Moderate",
