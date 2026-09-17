@@ -163,6 +163,7 @@ tbody td.delta-cell { background: #fff; }
 .wr-prov { font-family:'DM Mono',monospace; font-size:9px; font-weight:400; padding:2px 7px; border-radius:4px; letter-spacing:.04em; text-transform:uppercase; white-space:nowrap; display:inline-block; }
 .wr-prov-classified { background:rgba(30,63,110,.10); color:#1E3F6E; border:1px solid rgba(30,63,110,.3); }
 .wr-prov-pattern { background:rgba(122,156,198,.12); color:#5B7A9C; border:1px solid rgba(122,156,198,.3); }
+.wr-prov-rollup { background:rgba(27,143,130,.10); color:#12695F; border:1px solid rgba(27,143,130,.32); }
 #thead-wr th.wr-col { min-width: 185px; }
 #thead-wr th.wr-col-pc { min-width: 207px; }
 #main-table td.wr-left { text-align: left !important; }
@@ -1832,6 +1833,10 @@ function provBadge(classified) {
     : '<span class="wr-prov wr-prov-pattern">Modeled</span>';
 }
 
+function provBadgeRollup() {
+  return '<span class="wr-prov wr-prov-rollup">Rollup</span>';
+}
+
 function noteTitle(note) {
   return note ? ' title="' + note.replace(/"/g, '&quot;') + '"' : '';
 }
@@ -1854,6 +1859,16 @@ function wrRowCells(code) {
     '<td class="wr-left">' + consCell(w.cons) + '</td>' +
     '<td>' + provBadge(w.classified) + '</td>' +
     '<td class="notes-cell">' + notesWidget(code) + '</td>';
+}
+
+function wrRowCellsRollup(l3) {
+  const l3s = [l3];
+  return '<td class="wr-left">' + wrRollupCell(l3s, 'rel') + '</td>' +
+    '<td class="wr-left">' + wrRollupCell(l3s, 'future') + '</td>' +
+    '<td class="wr-left">' + wrRollupCell(l3s, 'ceiling') + '</td>' +
+    '<td class="wr-left">' + consRollupCell(l3s) + '</td>' +
+    '<td>' + provBadgeRollup() + '</td>' +
+    '<td class="notes-cell">' + notesWidget(l3.code) + '</td>';
 }
 
 function render() {
@@ -1887,7 +1902,7 @@ function render() {
         '<span class="row-text">' + l3.name + '</span></span></td>' +
         (currentView === 'legacy'
           ? '<td><span class="pat pat-' + (l3.mixed ? 'Mixed' : l3.pattern) + '">' + (l3.mixed ? 'Mixed' : l3.pattern) + '</span></td>' + legacyRowCells(null, l3.mv, false)
-          : wrRowCells(l3.code)) +
+          : (hasL4 ? wrRowCellsRollup(l3) : wrRowCells(l3.code))) +
         '</tr>';
 
       l3.l4.forEach(l4 => {
