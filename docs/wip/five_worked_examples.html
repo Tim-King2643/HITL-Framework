@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Five Worked Examples — The Working-Relationship Pressure Test — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead {
+  background: var(--navy-d); color: #fff; padding: 34px 24px 30px;
+  text-align: center;
+}
+.masthead .eyebrow {
+  font-family: 'Consolas', monospace; font-size: 12px; color: var(--lightblue);
+  letter-spacing: .04em; margin-bottom: 12px;
+}
+.masthead h1 {
+  font-family: 'Georgia', serif; font-weight: 700; font-size: 26px;
+  margin-bottom: 10px;
+}
+.masthead .tagline2 { font-size: 14px; color: #9FC2EE; font-style: italic; margin-bottom: 18px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.5; }
+.masthead nav a {
+  color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600;
+  margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent;
+}
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.doc-wrap { max-width: 780px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.callout-box, .pull-quote-box, .flow-box {
+  background: var(--navy-l); border-radius: 4px; padding: 18px 22px;
+  font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 700;
+  color: var(--navy-d); font-size: 16px; line-height: 1.5; margin: 0;
+}
+.pull-quote-box, .flow-box { text-align: center; }
+.callout-rule { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+
+.doc-body p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+.doc-body p.caption { font-size: 12px; color: var(--lgray); font-style: italic; margin-bottom: 18px; }
+
+.doc-body h2 {
+  font-family: 'Georgia', serif; font-weight: 700; font-size: 20px; color: var(--navy-d);
+  margin: 34px 0 12px;
+}
+.doc-body h3 {
+  font-family: 'Segoe UI', sans-serif; font-weight: 600; font-size: 14.5px; color: var(--navy);
+  margin: 22px 0 8px; line-height: 1.5;
+}
+
+.section-badge {
+  display: flex; align-items: baseline; gap: 12px; margin: 40px 0 18px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--border);
+}
+.section-badge .num {
+  font-family: 'Consolas', monospace; font-size: 11px; font-weight: 700; color: var(--navy);
+  background: var(--navy-l); border-radius: 4px; padding: 3px 9px;
+}
+.section-badge .title {
+  font-family: 'Georgia', serif; font-weight: 700; font-size: 20px; color: var(--navy-d);
+}
+.section-badge .code-tag {
+  font-family: 'Consolas', monospace; font-size: 12px; font-weight: 700; color: var(--lgray);
+  align-self: center;
+}
+
+table { width: 100%; border-collapse: collapse; margin: 4px 0 22px; font-size: 12.5px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 10px 10px 6px; font-size: 11px; letter-spacing: .02em; }
+td { border: 1px solid var(--border); padding: 9px 10px; vertical-align: top; color: #222; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.row-name { color: var(--navy); font-weight: 600; white-space: nowrap; }
+td.wr-cell { font-weight: 600; color: var(--navy-d); }
+.tag-critical { color: #B0362E; font-weight: 700; }
+.tag-high { color: #B8873F; font-weight: 700; }
+.tag-provisional { color: #B0362E; font-weight: 600; }
+.tag-external { color: #7A5A1E; font-weight: 600; }
+
+ul.bullets { list-style: none; margin: 0 0 16px; }
+ul.bullets li {
+  position: relative; padding-left: 18px; font-size: 14.5px; color: var(--gray);
+  line-height: 1.65; margin-bottom: 8px;
+}
+ul.bullets li::before { content: "–"; position: absolute; left: 0; color: var(--navy); }
+ul.bullets li strong { color: var(--navy); font-weight: 600; }
+
+.closing-quote {
+  background: var(--navy-d); color: #fff; text-align: center; border-radius: 4px;
+  padding: 26px 24px; margin: 34px 0 8px;
+  font-family: 'Georgia', serif; font-style: italic; font-size: 17px;
+}
+
+.doc-meta {
+  font-size: 12px; color: var(--lgray); text-align: center;
+  padding-top: 20px; margin-top: 30px; border-top: 1px solid var(--border);
+}
+
+.note-pdf {
+  display: block; text-align: center; background: #fff; border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px; font-size: 13px; font-weight: 700; color: #7A5A1E;
+  text-decoration: none; margin-top: 18px;
+}
+.note-pdf:hover { background: var(--amber-bg); border-color: var(--amber); }
+
+.back-link { display: block; text-align: center; margin-top: 22px; }
+.back-link a { font-size: 12.5px; font-weight: 600; color: var(--navy); text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+
+footer { text-align: center; padding: 0 24px 48px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">WORKING DISCUSSION &nbsp;·&nbsp; TIM KING &amp; GIGI GARCIA &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>Five Worked Examples — The Working-Relationship Pressure Test</h1>
+  <div class="tagline2">GiGi's own proposed test, run against the live PCF 7.0 data and RACI: her five chosen activities, walked through her own chain — activity &rarr; working relationship &rarr; consequence/criticality &rarr; human readiness &rarr; governance limit &rarr; transition recommendation.</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div class="doc-wrap">
+
+  <div class="doc-body">
+    <p>In her working notes, GiGi proposed we stop adding theory and instead run a small set of very different activities all the way through the same logic — not to prove the methodology, but to break it, find redundancy, and expose blind spots. She named five activities and a fixed chain to walk each one through: <strong>current activity &rarr; proposed working relationship &rarr; consequence/criticality &rarr; human readiness &rarr; governance limit &rarr; transition recommendation.</strong> This runs that test against the framework's real, live data — the fully classified PCF 7.0 dataset (118 of 118 L4 activities) and the actual RACI and role-taxonomy tables — rather than illustrative examples.</p>
+
+    <p class="caption">All five of her named activities exist in the live data under their exact or near-exact wording. Codes, classifications, and RACI below are pulled directly from the live sandbox and role taxonomy, not reconstructed for this page.</p>
+
+    <div class="pull-quote-box">The goal of the prototype should not be to prove our methodology. It should be to break it, identify redundancy, expose blind spots, and determine what actually produces an executive-grade insight.</div>
+    <p class="caption" style="text-align:center;margin-top:8px;">&mdash; GiGi Garcia, HITL Working Thoughts &amp; Next Steps</p>
+
+    <h2>A Note on Method</h2>
+    <p>One thing became clear before walking through any of the five individually: all five of GiGi's chosen activities already sit at their Progression Ceiling in the live model. Their Current State, Future State, and Progression Ceiling values are identical — the framework has already independently concluded, activity by activity, that none of these should move further toward automation regardless of what the technology can do. That collapses the first two steps of her chain into one for every example below (there is no daylight between "current" and "proposed" to walk through), which is itself a finding worth stating plainly rather than glossing over: the working-relationship and consequence logic is doing real work here, correctly holding the line on exactly the kind of activity she picked these five to stress-test.</p>
+    <p>Readiness is a different story, and where this test earns its keep. There is no scored Human Readiness Gate wired into the framework yet — that instrument is GiGi's own open canvas to design, not something to fake a number for here. So the Human Readiness read below is a first-pass qualitative one, grounded in what the live data can actually tell us today: who is Accountable and Responsible per the RACI, whether that role's own reporting line has been confirmed or is still provisional per the taxonomy's self-consistency check, and whether the role doing the real judgment work sits inside the 14-role HR catalog at all or outside it as an "External Participant." That is a narrower question than her full eight-dimension model, but it is real, sourced, and — as it turns out — sharp enough to surface concrete gaps.</p>
+    <p>Governance Limit draws on her own proposed structure for a Governed Decision Point &mdash; a named owner, an escalation path, an override path, documentation, and review &mdash; applied to what the consequence-of-error tag and RACI already tell us, rather than inventing new machinery.</p>
+
+    <div class="section-badge"><span class="num">1</span><span class="title">Select / Reject Candidate</span><span class="code-tag">PCF 7.2.3.4</span></div>
+    <table>
+      <thead><tr><th>Working Relationship</th><th>Consequence</th><th>Accountable</th><th>Responsible</th></tr></thead>
+      <tbody>
+        <tr><td class="wr-cell">Judgment &mdash; already at ceiling</td><td><span class="tag-critical">Critical</span></td><td class="row-name">Recruiter</td><td>Hiring Managers*</td></tr>
+      </tbody>
+    </table>
+    <p>The live note on this activity is explicit: EEOC and adverse-impact liability sits directly on the hiring decision itself, which is why it's tagged Critical and already held at Judgment across the whole curve.</p>
+    <h3>Human Readiness</h3>
+    <p>The RACI names Recruiter as Accountable &mdash; a confirmed, non-provisional reporting line into Director of Talent Acquisition. But Responsible is <span class="tag-external">Hiring Managers*</span>, and the role taxonomy's own tier system classifies Hiring Managers as an <strong>External Participant</strong> &mdash; outside the 14-role HR catalog entirely. The person actually exercising the judgment this activity protects isn't reachable by the framework's readiness or reporting apparatus at all.</p>
+    <h3>Governance Limit</h3>
+    <p>Critical consequence caps this at human-only, full stop, regardless of AI accuracy on the recommendation side. A Governed Decision Point here needs Recruiter as process owner, but the real override/escalation path has to reach the Hiring Manager population directly &mdash; not assume HR's own reporting lines cover it.</p>
+    <h3>Transition Recommendation</h3>
+    <p>Hold at Judgment &mdash; correct as-is. But this is the clearest example of a readiness blind spot in the set: the next readiness work needs a way to reach past the HR role catalog to hiring managers themselves, or the "who is ready to exercise this judgment" question has no real answer.</p>
+
+    <div class="section-badge"><span class="num">2</span><span class="title">Manage Employee Grievance</span><span class="code-tag">PCF 7.4.4</span></div>
+    <table>
+      <thead><tr><th>Working Relationship</th><th>Consequence</th><th>Accountable</th><th>Responsible</th></tr></thead>
+      <tbody>
+        <tr><td class="wr-cell">Judgment &mdash; already at ceiling</td><td><span class="tag-critical">Critical</span></td><td class="row-name">HRBP Manager</td><td>&mdash;</td></tr>
+      </tbody>
+    </table>
+    <p>The live note flags this as close to a hard floor: the Accountable role's human involvement barely moves across the entire M1&rarr;M5 curve (95%&rarr;68%). Grievances routinely stem from CBA violations or protected-activity retaliation &mdash; the same exposure class that escalates into an NLRB charge or litigation.</p>
+    <h3>Human Readiness</h3>
+    <p>HRBP Manager is sole Accountable, with no separate Responsible named. That matters here specifically: HRBP Manager is one of exactly two Managerial-tier reportsTo edges the role taxonomy itself flags as <span class="tag-provisional">provisional and unconfirmed</span> &mdash; the RACI self-consistency check found no support for its claimed reporting line. The single most consequential activity in the whole domain runs through a reporting relationship nobody has actually validated yet.</p>
+    <p>A second, independent gap: Legal appears only as Informed here, while it's Consulted on the closely related labor-relations and collective-bargaining activities (7.4.1/7.4.2) &mdash; despite this activity's own note naming NLRB and litigation exposure directly. That's a RACI inconsistency, not a readiness question, but it sits right next to one.</p>
+    <h3>Governance Limit</h3>
+    <p>Critical, emotionally loaded, litigation-adjacent &mdash; the tightest Governed Decision Point in the set: HRBP Manager as named owner, a real (not nominal) Legal consult given the exposure, a named override path to a senior HR leader, full documentation, and review tied to case outcomes rather than a fixed calendar.</p>
+    <h3>Transition Recommendation</h3>
+    <p>Hold at Judgment. Treat HRBP Manager's reportsTo confirmation as a prerequisite, not a nice-to-have, before calling this ceiling durable &mdash; and reconsider upgrading Legal from Informed to Consulted given what the activity's own risk note already says.</p>
+
+    <div class="section-badge"><span class="num">3</span><span class="title">Define HR Roles and Accountability</span><span class="code-tag">PCF 7.1.1.2</span></div>
+    <table>
+      <thead><tr><th>Working Relationship</th><th>Consequence</th><th>Accountable</th><th>Responsible</th></tr></thead>
+      <tbody>
+        <tr><td class="wr-cell">Judgment &mdash; already at ceiling</td><td><span class="tag-high">High</span></td><td class="row-name">CHRO</td><td>HRBP Manager &middot; Director of HR Ops</td></tr>
+      </tbody>
+    </table>
+    <p>The live note calls this Executive-tier work: "defining the domain's own accountability structure isn't a decision to hand to an AI proposal."</p>
+    <h3>Human Readiness</h3>
+    <p>This is the cleanest of the five. CHRO is Accountable, sits at the top of the org, and escalates directly to CEO/Board &mdash; a confirmed reporting line with real organizational authority behind it. The one soft spot is one level down: HRBP Manager carries part of the Responsible load, the same provisional-edge issue as above, but it isn't load-bearing for the final call here.</p>
+    <h3>Governance Limit</h3>
+    <p>High consequence with executive/structural reach: CHRO as owner and approver, Legal/Board awareness for major restructurings, documented rationale for any change to the accountability structure itself, and a review cadence tied to actual organizational change rather than the calendar.</p>
+    <h3>Transition Recommendation</h3>
+    <p>Hold at Judgment. Readiness here is fundamentally sound because the Accountable role's authority is both real and confirmed &mdash; the strongest example in the set.</p>
+
+    <div class="section-badge"><span class="num">4</span><span class="title">Document Employee Performance</span><span class="code-tag">PCF 7.3.2.3</span></div>
+    <table>
+      <thead><tr><th>Working Relationship</th><th>Consequence</th><th>Accountable</th><th>Responsible</th></tr></thead>
+      <tbody>
+        <tr><td class="wr-cell">Augmentation (48% H) &mdash; already at ceiling</td><td><span class="tag-high">High</span></td><td class="row-name">HRBP Manager</td><td>HR Generalist &middot; Managers*</td></tr>
+      </tbody>
+    </table>
+    <p>The only non-Judgment activity in the set. The live note holds the ceiling here specifically because "someone has to be able to vouch for the record" &mdash; documentation quality is a common deciding factor in wrongful-termination litigation.</p>
+    <h3>Human Readiness</h3>
+    <p>At under half human involvement, the remaining human step is a low-volume, easy-to-rubber-stamp review of what's mostly AI-drafted text &mdash; exactly the profile GiGi's Human Presence vs. Human Agency distinction warns about. HRBP Manager is Accountable (the same provisional edge as above); Responsible splits between HR Generalist &mdash; a clean, confirmed reporting line &mdash; and <span class="tag-external">Managers*</span>, again an External Participant sitting outside the HR role catalog.</p>
+    <h3>Governance Limit</h3>
+    <p>"A human signs off" isn't a sufficient Governed Decision Point on its own at this consequence level. It needs a named reviewer, evidence the draft was actually read rather than approved on sight, and periodic audit of vouched records against real outcomes.</p>
+    <h3>Transition Recommendation</h3>
+    <p>Hold at Augmentation/High &mdash; but flag that the ceiling is currently a paper ceiling until there's a way to verify the vouching is real rather than ceremonial. This is the activity where a rubber-stamp failure would be hardest to see coming.</p>
+
+    <div class="section-badge"><span class="num">5</span><span class="title">Establish Succession Plans</span><span class="code-tag">PCF 7.3.3.4</span></div>
+    <table>
+      <thead><tr><th>Working Relationship</th><th>Consequence</th><th>Accountable</th><th>Responsible</th></tr></thead>
+      <tbody>
+        <tr><td class="wr-cell">Judgment &mdash; already at ceiling</td><td><span class="tag-high">High</span></td><td class="row-name">Director of L&amp;D</td><td>HRBP Manager &middot; L&amp;D Specialist</td></tr>
+      </tbody>
+    </table>
+    <p>The live note: "a wrong call on a critical role is a continuity risk and can shade into perceived-favoritism exposure."</p>
+    <h3>Human Readiness</h3>
+    <p>The weakest readiness foundation of the five. Director of L&amp;D is Accountable &mdash; the <em>other</em> of the two provisional reportsTo edges the taxonomy flags &mdash; and HRBP Manager (also provisional) carries part of the Responsible load too. Both roles touching this activity's RACI are exactly the two edges GiGi's own reporting-structure sanity-check asked to examine. VP People &amp; Culture is genuinely Consulted, which is a real strength worth keeping.</p>
+    <p>A related, easy-to-confuse activity exists one group over &mdash; 7.1.2.3 "Develop succession plan," tagged the same way but Accountable to Director of HR Ops, whose own reportsTo is marked "context-dependent" rather than clean. A third flavor of the same underlying gap, on an adjacent process.</p>
+    <h3>Governance Limit</h3>
+    <p>High consequence, bias-sensitive: Director of L&amp;D as named owner, VP People &amp; Culture as a genuine consult (already true today), an explicit bias-check step rather than a bare judgment call, documented rationale for succession picks, and review tied to leadership changes.</p>
+    <h3>Transition Recommendation</h3>
+    <p>Hold at Judgment &mdash; but make this the first candidate when the reporting-structure sanity check actually runs. It's the one place in the set where the model's output rests most heavily on assumptions nobody has confirmed yet.</p>
+
+    <hr class="callout-rule">
+    <div class="section-badge"><span class="num">6</span><span class="title">Where the Method Held, Where It Broke</span></div>
+    <p>On the working-relationship side, the method held up well. All five of GiGi's deliberately hard cases &mdash; picked specifically to stress different parts of the model &mdash; independently landed at Judgment, or Augmentation with a hard ceiling. That's the right answer for EEOC exposure, NLRB exposure, an executive accountability decision, litigation-grade documentation, and a bias-sensitive succession call. The consequence-of-error tagging and the Progression Ceiling logic aren't decorative here; they're doing real work, and doing it consistently.</p>
+    <p>Readiness is where it breaks, and in a genuinely useful way rather than a vague one. Three of the five run through one of the exact two reportsTo edges the role taxonomy already flags as unconfirmed &mdash; HRBP Manager or Director of L&amp;D. Two of the five have their real decision-maker (Hiring Managers, line Managers) sitting entirely outside the 14-role catalog as an External Participant, meaning the framework's own readiness and reporting apparatus doesn't reach the person actually exercising the judgment. And one RACI inconsistency turned up independent of readiness &mdash; Legal downgraded to Informed on the one activity (grievances) where its own risk note argues hardest for Consulted.</p>
+    <p>None of this is hypothetical. It's the same gap GiGi named in her own working notes, now pinned to five specific, real activities instead of argued in the abstract &mdash; which was the whole point of running the test this way.</p>
+
+    <div class="closing-quote">Just because AI can perform the work does not mean the organization is ready &mdash; or should permit it &mdash; to do so.</div>
+  </div>
+
+  <div class="doc-meta">Tim King &amp; GiGi Garcia &nbsp;|&nbsp; Working Discussion Draft &nbsp;|&nbsp; September 2026</div>
+
+  <a class="note-pdf" href="five_worked_examples.pdf">Download PDF ↓</a>
+
+  <div class="back-link"><a href="index.html">&larr; Back to WIP hub</a></div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect<br>
+    Private review area — not part of the published framework<br>
+    hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>
