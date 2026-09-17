@@ -1,0 +1,32 @@
+--- /tmp/claude-0/-home-claude/1e8af207-9430-570b-bf45-b54ec92625bc/scratchpad/register/live/wip_index_patched.html	2026-09-15 18:52:01.488125105 +0000
++++ /tmp/claude-0/-home-claude/1e8af207-9430-570b-bf45-b54ec92625bc/scratchpad/guide_build/wip_index_v3.html	2026-09-16 10:51:03.510782726 +0000
+@@ -179,7 +179,7 @@
+ </div>
+ 
+ <div class="catalog-wrap">
+-  <p class="catalog-caption">14 items · sorted by group, oldest work first within each</p>
++  <p class="catalog-caption">15 items · sorted by group, oldest work first within each</p>
+   <div class="table-scroll">
+     <table class="catalog">
+       <thead>
+@@ -352,6 +352,20 @@
+           </td>
+         </tr>
+ 
++        <tr class="item-row">
++          <td>
++            <div class="item-title"><a href="How_This_Site_Works.docx">How This Site Works</a></div>
++            <div class="item-desc">A reference guide to the Sandbox, WIP, the Requirements Register, and the Design Spec Template &mdash; what each one is for, and how a real idea (walked through using WRPM as the worked example) actually moves through all four.</div>
++          </td>
++          <td><span class="status">Living document &mdash; updated ongoing</span></td>
++          <td><span class="stage">Governance Tool</span></td>
++          <td class="fmt-links">
++            <a href="How_This_Site_Works.docx">Word</a><span class="sep">·</span>
++            <a href="how_this_site_works.html">HTML</a><span class="sep">·</span>
++            <a class="pdf" href="how_this_site_works.pdf">PDF</a>
++          </td>
++        </tr>
++
+         <tr class="group-row"><td colspan="4">External &amp; Partner Review Notes <span class="g-note">Working notes from GiGi Garcia's own review — her words, not tracked against the Section 5 build-stage ladder since these are input, not a work product moving through it.</span></td></tr>
+ 
+         <tr class="item-row">

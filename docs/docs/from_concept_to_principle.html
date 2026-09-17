@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] From Concept to Principle — A Design Spec — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 820px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.callout { background: var(--amber-bg); border-left: 3px solid var(--amber); border-radius: 4px; padding: 16px 20px; font-size: 13px; font-style: italic; color: var(--amber-text); line-height: 1.6; margin-bottom: 28px; }
+
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 28px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
+
+.gap-note { background: #fff; border: 1px dashed #C7CEDA; border-radius: 4px; padding: 12px 16px; margin: 0 0 20px; font-size: 13px; color: var(--lgray); font-style: italic; line-height: 1.6; }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 36px 0 12px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 16px; margin: 26px 0 10px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+
+blockquote { border-left: 3px solid var(--navy); margin: 16px 0 24px; padding: 4px 20px; font-style: italic; color: var(--navy-d); font-size: 15px; line-height: 1.7; }
+
+.term-box { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 6px; padding: 14px 20px; margin: 0 0 28px; font-size: 13.5px; color: #333; line-height: 1.65; }
+.term-box strong { color: var(--navy); }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 12.5px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 10px 10px 7px; font-size: 10.5px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 9px 10px; vertical-align: top; color: #222; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.row-name { font-weight: 700; white-space: nowrap; color: var(--navy); }
+.table-scroll { overflow-x: auto; margin: 8px 0 24px; }
+.table-scroll table { margin: 0; }
+
+.pdf-download { display: inline-flex; align-items: center; gap: 6px; font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px; padding: 8px 14px; text-decoration: none; margin: 0 0 28px; }
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">HITL-Driven Architecture &nbsp;&middot;&nbsp; Design Spec (&sect;&sect;1&ndash;10)</div>
+  <h1>From Concept to Principle</h1>
+  <div class="subtitle">A lightweight governance layer for how ideas become shared co-development principles</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-vote-mount data-item="concept-to-principle"></div>
+
+<div class="wrap">
+
+  <div class="callout">
+    <strong style="text-transform:uppercase;letter-spacing:.03em;">Status &mdash; Proposal, Not Yet Adopted.</strong> This page proposes a new governance layer for the partnership; it isn&rsquo;t in effect until both of you approve it, which is, appropriately, the first thing it would need to go through under its own rule. Restructured into the framework&rsquo;s Design Spec Template on Sept 15, 2026 to match the two-tier content-shape system &mdash; this is a methodology/model-layer document (it defines the process every other model-layer document, including itself, moves through), not a tactical site-mechanics proposal. The underlying proposal is unchanged; only the shape changed &mdash; that shape change is not itself an approval, and doesn&rsquo;t touch this proposal&rsquo;s own Approved/Parked status, which stays exactly what it was: not yet decided, since GiGi hasn&rsquo;t reviewed it.
+  </div>
+
+  <div class="related-reqs">
+    <span class="rr-label">Related Requirements — Requirements Register (GiGi&rsquo;s evaluation docs)</span>
+    <ul>
+      <li><code>GR-034</code> — record an explicit, agreed answer to the framework&rsquo;s core intent <em>(Open — this doc is the right governance mechanism for adopting such an answer later, not itself an answer)</em></li>
+    </ul>
+  </div>
+
+  <a class="pdf-download" href="from_concept_to_principle.pdf">⬇ Download PDF</a>
+
+  <h2>1. Why This Layer Exists</h2>
+  <p>Ideas like The Shock Wave Effect are starting to come out of the Tim + Claude work at a real pace &mdash; informed by GiGi&rsquo;s writing, but not yet reviewed by her. So far, the only signal distinguishing a working idea from something the partnership has actually adopted has been an informal note on the document itself (&ldquo;for joint review, not a settled position&rdquo;). That&rsquo;s worked as a stopgap. It doesn&rsquo;t scale, and it leaves a real question unanswered: once GiGi has weighed in, how does an idea actually become one of the principles this partnership works by &mdash; not just something that was proposed once and never revisited?</p>
+  <h2>2. Core Model &mdash; Two Different Things Being Tracked</h2>
+  <p>The Section 5 development-stage tags already on this hub answer a maturity question &mdash; how far has this actually been built and tested. That&rsquo;s a different question from whether both of you have agreed to it. A concept can be genuinely useful to prototype before it&rsquo;s formally approved as a shared principle; conversely, something can be approved as a principle you both work by before it&rsquo;s been built out into a full methodology. Keeping these as two separate tracks avoids collapsing &ldquo;we&rsquo;re experimenting with this&rdquo; and &ldquo;this is now how we work&rdquo; into the same status.</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th></th><th>Development Stage (Section 5)</th><th>Approval State (new)</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Tracks</td><td>How far a methodology or concept has actually been built and tested</td><td>Whether both of you have formally agreed it&rsquo;s one of your shared principles</td></tr>
+      <tr><td class="row-name">Question it answers</td><td>&ldquo;How developed is this?&rdquo;</td><td>&ldquo;Is this actually ours?&rdquo;</td></tr>
+      <tr><td class="row-name">States</td><td>Concept &rarr; Prototype &rarr; Pressure Test &rarr; Refine &rarr; Pilot &rarr; Validate &rarr; Commercialize</td><td>Concept &rarr; Feasibility Review &rarr; Approved (or Parked)</td></tr>
+      <tr><td class="row-name">Who moves it forward</td><td>Whoever is doing the building/testing work</td><td>Only Tim and GiGi &mdash; jointly, both required</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h2>3. Data Model &mdash; The Approval Lifecycle</h2>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>State</th><th>What It Means</th><th>Who&rsquo;s Responsible</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Concept</td><td>A new idea, named and written down &mdash; not yet checked for whether it holds up</td><td>Either partner (or surfaced through the Tim + Claude work)</td></tr>
+      <tr><td class="row-name">Feasibility Review</td><td>An honest look at the mechanism, what&rsquo;s actually measurable or buildable, real gaps, and what evidence would be needed &mdash; an assessment, not a decision</td><td>Claude</td></tr>
+      <tr><td class="row-name">Approved</td><td>Both partners have explicitly signed off &mdash; the idea is added to the Co-Development Principles Log with a date and both names</td><td>Tim and GiGi, jointly</td></tr>
+      <tr><td class="row-name">Parked</td><td>Reviewed, not adopted &mdash; kept on record rather than silently dropped, so &ldquo;not approved&rdquo; is never ambiguous with &ldquo;never discussed&rdquo;</td><td>Tim and GiGi, jointly</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h2>4. Granularity</h2>
+  <p>Not applicable in the way granularity matters for activity-level methodologies like WRPM. This layer operates at the level of a single named idea or principle &mdash; the unit is always one proposal, never a fraction of one or a rollup across several.</p>
+  <h2>5. Gate/Decision Logic &mdash; Claude&rsquo;s Role: Feasibility, Not Approval</h2>
+  <div class="term-box">
+    <strong>The boundary:</strong> Claude&rsquo;s contribution is analysis &mdash; does the mechanism hold up, what&rsquo;s actually measurable or buildable today, what&rsquo;s genuinely new versus already covered, what evidence or data would be needed, and what the honest risks or gaps are. That&rsquo;s real, substantive work, and it&rsquo;s already what these explainer docs have been doing informally. But it stops at analysis. Claude doesn&rsquo;t have standing to move anything to Approved &mdash; that decision belongs to the two of you, and only the two of you, every time.
+  </div>
+  <h2>6. Evidence/Instrumentation</h2>
+  <p>None yet. Nothing today tracks how many ideas move through this lifecycle, how long each stage takes, or how often something gets Parked versus Approved. If this proposal itself is adopted, the Co-Development Principles Log (&sect;7) is the natural place that data would first appear &mdash; a byproduct of using the lifecycle, not a separate build.</p>
+  <h2>7. Downstream/Propagation Effects &mdash; Where Approved Principles Live</h2>
+  <p>Recommend a running Co-Development Principles Log &mdash; one table, appended to (or referenced from) the Working Collaboration &amp; Co-Development Principles document itself, since that&rsquo;s already the living document both of you review together. Each row: the principle, a one-line summary, a link to its feasibility review, the date, and both names. A short, growing, citable record of what the partnership has actually agreed to &mdash; not scattered across individual documents&rsquo; amber callouts.</p>
+  <h2>8. Pilots/Validation &mdash; Worked Example: The Shock Wave Effect</h2>
+  <p>Useful as a live test of the lifecycle rather than a hypothetical. Concept: proposed after re-reading the Shared Vision paragraph, extended to the multi-domain case. Feasibility Review: done &mdash; the wave-interference mechanism holds up as a physical analogy, cascading failure is flagged as the more defensible framing than literal &ldquo;total destruction,&rdquo; and open questions were named rather than glossed over (Manager/Team measurement, whether interference is detectable in advance, cross-domain scope). Approved: not yet &mdash; GiGi hasn&rsquo;t seen it. Once she has and both of you sign off, it&rsquo;s the log&rsquo;s first real entry.</p>
+  <h2>9. Known Open Constructs &mdash; Named, Not Yet Built</h2>
+  <p>Not named explicitly in the original proposal &mdash; surfaced during this Sept 15, 2026 restructuring pass, not yet discussed with Tim or GiGi, so treat both as genuinely open rather than settled: what happens to an idea that&rsquo;s Approved but later needs revision &mdash; does it re-enter Feasibility Review, or is revision handled some other way? And whether a Parked idea can be resurfaced later without restarting at Concept, or whether Parked is effectively terminal.</p>
+  <h2>10. Sourcing, Validation, and What This Document Deliberately Leaves Out</h2>
+  <p>This proposal&rsquo;s own worked example (&sect;8) is itself the evidence for how the lifecycle is meant to be used &mdash; there is no separate source document behind the Concept &rarr; Feasibility Review &rarr; Approved/Parked states beyond the Working Collaboration &amp; Co-Development Principles document&rsquo;s existing practice of informal review.</p>
+  <p>Deliberately left out: what happens on disagreement between Tim and GiGi beyond the binary Approved/Parked outcome &mdash; no explicit &ldquo;revise and resubmit&rdquo; state is defined (see &sect;9); and any version-numbering or amendment process for something already Approved.</p>
+  <p>This document was reorganized into the framework&rsquo;s Design Spec Template on Sept 15, 2026, to match the two-tier content-shape system formalized that day &mdash; the underlying proposal is unchanged; only the shape changed.</p>
+
+</div>
+
+<footer>
+  <p>
+    For joint review &mdash; <strong style="color:var(--navy)">Tim King</strong> and <strong style="color:var(--navy)">GiGi Garcia</strong><br>
+    HITL-Driven Architecture &middot; developed with the assistance of Claude (Anthropic)<br>
+    <a href="from_concept_to_principle.pdf">Download PDF</a> &nbsp;&middot;&nbsp; <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+<script src="wip-vote-widget.js"></script>
+</body>
+</html>
