@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Page 3 — Three Worked Examples by Tier — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 34px 24px 30px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 12px; color: var(--lightblue); letter-spacing: .04em; margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 25px; margin-bottom: 10px; }
+.masthead .tagline2 { font-size: 13.5px; color: #9FC2EE; font-style: italic; margin-bottom: 18px; max-width: 640px; margin-left: auto; margin-right: auto; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.doc-wrap { max-width: 820px; margin: 0 auto; padding: 36px 24px 72px; }
+.doc-body p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+.doc-body p.caption { font-size: 12px; color: var(--lgray); font-style: italic; margin-bottom: 18px; }
+.doc-body h2 { font-family: 'Georgia', serif; font-weight: 700; font-size: 19px; color: var(--navy-d); margin: 32px 0 12px; }
+
+/* Rules Referenced */
+.rule-card { border: 1px solid var(--border); border-radius: 6px; margin: 0 0 14px; overflow: hidden; background: #fff; }
+.rule-head { background: var(--navy-l); padding: 9px 16px; font-family: 'Georgia', serif; font-weight: 700; font-size: 14px; color: var(--navy-d); }
+.rule-body { padding: 12px 16px; font-size: 13px; color: var(--gray); line-height: 1.65; }
+.rule-body ol, .rule-body ul { margin: 6px 0 0 18px; }
+.rule-body li { margin-bottom: 6px; }
+.rule-src { font-size: 11px; color: var(--lgray); font-style: italic; margin-top: 8px; }
+
+/* Section badge for each tier example */
+.section-badge { display: flex; align-items: baseline; gap: 12px; margin: 44px 0 6px; padding-bottom: 10px; border-bottom: 2px solid var(--navy); }
+.section-badge .tier { font-family: 'Consolas', monospace; font-size: 11px; font-weight: 700; color: #fff; background: var(--navy); border-radius: 4px; padding: 3px 9px; text-transform: uppercase; letter-spacing: .03em; }
+.section-badge .title { font-family: 'Georgia', serif; font-weight: 700; font-size: 21px; color: var(--navy-d); }
+.section-badge .code-tag { font-family: 'Consolas', monospace; font-size: 12px; font-weight: 700; color: var(--lgray); align-self: center; }
+.activity-line { font-size: 13px; color: var(--gray); margin: 4px 0 18px; }
+.activity-line .raci { font-family: 'Consolas', monospace; font-size: 11.5px; color: var(--navy-d); }
+
+/* Stage check blocks */
+.stage-check { border: 1px solid var(--border); border-radius: 6px; margin: 0 0 16px; overflow: hidden; background: #fff; }
+.stage-check-head { background: var(--navy-l); padding: 9px 16px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.stage-num { font-family: 'Consolas', monospace; font-size: 10.5px; font-weight: 700; color: var(--navy); background: #fff; border-radius: 4px; padding: 2px 7px; }
+.stage-name { font-family: 'Georgia', serif; font-weight: 700; font-size: 14px; color: var(--navy-d); }
+.stage-rubric { font-size: 11px; color: var(--lgray); }
+.check-table { width: 100%; border-collapse: collapse; margin: 0; font-size: 12px; }
+.check-table td { padding: 6px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.check-table tr:last-child td { border-bottom: none; }
+.dim-name { font-weight: 600; color: var(--navy-d); white-space: nowrap; width: 150px; }
+.dim-note { color: var(--gray); }
+.v { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+.v-strong { color: #166534; background: #DCFCE7; }
+.v-adequate { color: #7A5A1E; background: #FEF3C7; }
+.v-weak { color: #991B1B; background: #FEE2E2; }
+.stage-body { padding: 10px 16px; font-size: 13px; color: var(--gray); line-height: 1.65; }
+.stage-verdict { padding: 8px 16px; font-weight: 700; font-size: 12px; border-top: 1px solid var(--border); }
+.verdict-pass { background: #F0FDF4; color: #166534; }
+.verdict-fail { background: #FEF2F2; color: #991B1B; }
+.verdict-mixed { background: #FFFBEB; color: #7A5A1E; }
+.verdict-flag { background: #FFFBEB; color: #7A5A1E; }
+
+.closing-quote { background: var(--navy-d); color: #fff; text-align: center; border-radius: 4px; padding: 24px 24px; margin: 30px 0 8px; font-family: 'Georgia', serif; font-style: italic; font-size: 16px; }
+.doc-meta { font-size: 12px; color: var(--lgray); text-align: center; padding-top: 20px; margin-top: 30px; border-top: 1px solid var(--border); }
+.note-pdf { display: block; text-align: center; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-size: 13px; font-weight: 700; color: #7A5A1E; text-decoration: none; margin-top: 18px; }
+.note-pdf:hover { background: var(--amber-bg); border-color: var(--amber); }
+.back-link { display: block; text-align: center; margin-top: 22px; }
+.back-link a { font-size: 12.5px; font-weight: 600; color: var(--navy); text-decoration: none; }
+footer { text-align: center; padding: 0 24px 48px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">WORKING DISCUSSION &nbsp;·&nbsp; TIM KING &amp; GIGI GARCIA &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>Page 3 — Three Worked Examples by Tier</h1>
+  <div class="tagline2">One Recruiter example, one HRBP Manager example, one CHRO example — the whole chain from activity through working relationship, readiness, governance, and final transition recommendation, run against live PCF 7.0 data and presented as a stage check against each rule, citing the term used at every step.</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div class="doc-wrap">
+  <div class="doc-body">
+
+    <p>GiGi asked for this specifically: "one Recruiter example, one HRBP Manager example, and one CHRO example. Show the whole chain from activity through working relationship, readiness, governance, and final transition recommendation." One example per role tier — Operational, Managerial, Executive — chosen to test whether the chain holds up across seniority levels, not just across different kinds of risk (that's what the separate five-activity pressure test was for).</p>
+    <p class="caption">Live source: <code>docs/sandbox/pcf7.html</code> and <code>docs/role_taxonomy.html</code>. Each stage below cites the specific rubric or rule it's checked against — Page 1 (Human Readiness Gate), Page 2 (Human Criticality Review), or one of the two rules below — rather than asserting a result.</p>
+
+    <h2>Rules Referenced</h2>
+    <p>Two rules do real work in this chain and are already in use, but haven't had a citable form until now. Both are transcribed here verbatim from their source, not re-derived.</p>
+
+    <div class="rule-card">
+      <div class="rule-head">Progression Ceiling Rule — governs the Working Relationship stage</div>
+      <div class="rule-body">
+        <p style="margin-bottom:8px;">Applied to every one of the 90-plus non-individually-walked activities in the live PCF 7.0 dataset:</p>
+        <ol>
+          <li><strong>Automation is always the floor.</strong> Current State = Automation → Future = Ceiling = Automation, always.</li>
+          <li><strong>A standing accountability duty makes Judgment the ceiling.</strong> Strategic authority, EEOC/adverse-impact liability, ERISA fiduciary duty, NLRA/union exposure, or confidentiality/duty-of-care → already at the top; Future = Ceiling = Judgment.</li>
+          <li><strong>Everything between (Agent-delegation / Augmentation / Oversight):</strong> if the item's note flags a standing duty attached to that specific tier, that tier <em>is</em> the ceiling — Future = Ceiling = Current. If no such duty is flagged, the ceiling moves one notch more automated.</li>
+        </ol>
+        <div class="rule-src">Source: inline comment above <code>WR_DATA</code> in <code>docs/sandbox/pcf7.html</code>, "a disclosed heuristic... offered as Claude's own perspective for Tim and GiGi to spot-check and override."</div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-head">Governed Decision Point definition — governs the Governance Limit stage</div>
+      <div class="rule-body">
+        <p style="margin-bottom:8px;">Every Governed Decision Point needs to include:</p>
+        <ul>
+          <li><strong>Owner</strong> — who is named Accountable</li>
+          <li><strong>Escalation</strong> — a specific trigger and destination when the owner can't resolve it</li>
+          <li><strong>Override</strong> — a defined path to reverse or block an AI-proposed action</li>
+          <li><strong>Documentation</strong> — a record of what happened and why</li>
+          <li><strong>Review</strong> — a cadence for revisiting the decision or the assignment itself</li>
+        </ul>
+        <div class="rule-src">Source: GiGi Garcia, HITL Working Thoughts &amp; Next Steps, Section 4.</div>
+      </div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:30px 0;">
+
+    <!-- ============ EXAMPLE 1: RECRUITER ============ -->
+    <div class="section-badge"><span class="tier">Operational</span><span class="title">Recruiter — Negotiate Offer</span><span class="code-tag">PCF 7.2.4.2</span></div>
+    <div class="activity-line">Pattern: Decision &nbsp;·&nbsp; RACI (7.2.4 Manage new hire/re-hire): <span class="raci">A: Recruiter &middot; R: Comp &amp; Benefits Mgr (offer terms) &middot; C: Director of TA &middot; I: HRIS Analyst</span></div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 1</span><span class="stage-name">Working Relationship</span><span class="stage-rubric">— checked against the Progression Ceiling Rule</span></div>
+      <div class="stage-body">Current: <strong>Judgment</strong> &nbsp;·&nbsp; Future: <strong>Judgment</strong> &nbsp;·&nbsp; Ceiling: <strong>Judgment</strong>. Rule 2 applies: compensation-negotiation authority combined with pay-equity/compensation-discrimination exposure functions as a standing duty at this tier.</div>
+      <div class="stage-verdict verdict-flag">FLAG, NOT FAIL — Judgment ceiling confirmed, but this is an Operational-tier role (Recruiter) holding a Judgment-ceiling activity, atypical elsewhere in this domain where Judgment sits almost entirely with Managerial/Executive roles. Worth carrying into the readiness check below rather than treating as settled.</div>
+    </div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 2</span><span class="stage-name">Human Criticality Review</span><span class="stage-rubric">— checked against Page 2's six questions</span></div>
+      <table class="check-table">
+        <tr><td class="dim-name">Human impact</td><td class="dim-note">Directly affects the candidate's comp outcome; can affect internal pay equity at the margin.</td></tr>
+        <tr><td class="dim-name">Legal/regulatory</td><td class="dim-note">Yes — pay-equity and compensation-discrimination exposure attach directly to negotiation decisions.</td></tr>
+        <tr><td class="dim-name">Financial/operational</td><td class="dim-note">Direct and immediate — comp above band, signing bonus, relocation are real dollar commitments.</td></tr>
+        <tr><td class="dim-name">Trust/reputation</td><td class="dim-note">Internal equity-perception risk if terms aren't applied consistently; limited external exposure.</td></tr>
+        <tr><td class="dim-name">Reach</td><td class="dim-note">Narrow per instance (one hire), though the pattern across many hires can compound into systemic exposure.</td></tr>
+        <tr><td class="dim-name">Reversibility</td><td class="dim-note">Low — walking back an accepted offer damages trust and can carry its own legal exposure.</td></tr>
+      </table>
+      <div class="stage-verdict verdict-mixed">HIGH — direct legal exposure and poor reversibility, but reach is narrow per instance, which is why this lands at High rather than Critical. Matches the live tag.</div>
+    </div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 3</span><span class="stage-name">Human Readiness Gate</span><span class="stage-rubric">— checked against Page 1's eight dimensions, for Recruiter (Accountable)</span></div>
+      <table class="check-table">
+        <tr><td class="dim-name">Authority</td><td><span class="v v-adequate">Adequate</span></td><td class="dim-note">Real within standard parameters, but the activity's own trigger hands final authority to Comp &amp; Benefits Manager past a threshold.</td></tr>
+        <tr><td class="dim-name">Information</td><td><span class="v v-adequate">Adequate</span></td><td class="dim-note">Has candidate-side context; relies on Comp &amp; Benefits Manager for band/market data.</td></tr>
+        <tr><td class="dim-name">Capability</td><td><span class="v v-adequate">Adequate</span></td><td class="dim-note">Trained for standard negotiations; the escalation trigger exists precisely because capability tops out below the exception threshold.</td></tr>
+        <tr><td class="dim-name">Capacity</td><td><span class="v v-strong">Strong</span></td><td class="dim-note">High-frequency, routine-volume work, well within normal load.</td></tr>
+        <tr><td class="dim-name">Role clarity</td><td><span class="v v-strong">Strong</span></td><td class="dim-note">The existing Governed Decision Point is unusually explicit about where Recruiter's authority ends.</td></tr>
+        <tr><td class="dim-name">Confidence</td><td><span class="v v-adequate">Adequate</span></td><td class="dim-note">Reasonable within standard parameters; untested against an AI-drafted negotiation position specifically.</td></tr>
+        <tr><td class="dim-name">Psychological safety</td><td><span class="v v-strong">Strong</span></td><td class="dim-note">No indication of penalty risk for escalating an exception.</td></tr>
+        <tr><td class="dim-name">Escalation / override</td><td><span class="v v-strong">Strong</span></td><td class="dim-note">Already has a named, trigger-conditioned path to Director of Talent Acquisition — more precise than any other activity checked so far.</td></tr>
+      </table>
+      <div class="stage-verdict verdict-pass">GATE PASSES — 4 Strong, 4 Adequate, 0 Weak. No dimension fails outright, but four of eight are bounded rather than fully strong, consistent with this being a shared-authority activity.</div>
+    </div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 4</span><span class="stage-name">Governance Limit</span><span class="stage-rubric">— checked against the Governed Decision Point definition</span></div>
+      <table class="check-table">
+        <tr><td class="dim-name">Owner</td><td><span class="v v-strong">✓</span></td><td class="dim-note">Recruiter, bounded — already named.</td></tr>
+        <tr><td class="dim-name">Escalation</td><td><span class="v v-strong">✓</span></td><td class="dim-note">Director of Talent Acquisition, with a specific named trigger.</td></tr>
+        <tr><td class="dim-name">Override</td><td><span class="v v-adequate">Implicit</span></td><td class="dim-note">Bundled into the escalation trigger, not separately named.</td></tr>
+        <tr><td class="dim-name">Documentation</td><td><span class="v v-weak">✗</span></td><td class="dim-note">Not required by the current entry.</td></tr>
+        <tr><td class="dim-name">Review</td><td><span class="v v-weak">✗</span></td><td class="dim-note">No cadence specified.</td></tr>
+      </table>
+      <div class="stage-verdict verdict-mixed">3 of 5 elements explicit — this is the one example where governance machinery already exists rather than needing to be proposed from scratch.</div>
+    </div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 5</span><span class="stage-name">Transition Recommendation</span><span class="stage-rubric">— synthesis, not a separate check</span></div>
+      <div class="stage-body"><strong>Hold at Judgment.</strong> The chain confirms the existing governance design is basically sound — this is the example that shows the governance layer already working as intended for a bounded-authority case. <strong>Intervention:</strong> add explicit Override and Review terms to the existing Governed Decision Point entry, since Authority and Confidence both read Adequate rather than Strong above.</div>
+    </div>
+
+    <!-- ============ EXAMPLE 2: HRBP MANAGER ============ -->
+    <div class="section-badge"><span class="tier">Managerial</span><span class="title">HRBP Manager — Manage Leave of Absence</span><span class="code-tag">PCF 7.6.2.2</span></div>
+    <div class="activity-line">Pattern: Transaction &nbsp;·&nbsp; RACI (7.6.2 Manage separation): <span class="raci">A: HRBP Manager &middot; R: HR Generalist &middot; C: Compensation &amp; Benefits Manager &middot; I: Legal*</span></div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 1</span><span class="stage-name">Working Relationship</span><span class="stage-rubric">— checked against the Progression Ceiling Rule</span></div>
+      <div class="stage-body">Current: <strong>Automation</strong> &nbsp;·&nbsp; Future: <strong>Automation</strong> &nbsp;·&nbsp; Ceiling: <strong>Automation</strong>. Live note: "routine execution, but FMLA/ADA interference exposure if leave administration is mishandled."</div>
+      <div class="stage-verdict verdict-flag">OPEN QUESTION — Rule 1 applies mechanically ("Automation is always the floor... always"), with no carve-out for standing regulatory duty the way Rule 3 has for higher tiers. The note flags real FMLA/ADA exposure sitting on an Automation-tier activity. Proceeding with the live classification as tagged, but this is a real gap in the rule as written, worth raising with Tim and GiGi directly rather than silently resolving it here.</div>
+    </div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 2</span><span class="stage-name">Human Criticality Review</span><span class="stage-rubric">— checked against Page 2's six questions</span></div>
+      <table class="check-table">
+        <tr><td class="dim-name">Human impact</td><td class="dim-note">Direct — job-protected leave status, benefits continuity, and return-to-work rights are at stake.</td></tr>
+        <tr><td class="dim-name">Legal/regulatory</td><td class="dim-note">Yes, specifically named — FMLA and ADA interference claims are a well-established litigation category.</td></tr>
+        <tr><td class="dim-name">Financial/operational</td><td class="dim-note">Moderate direct cost; litigation cost if mishandled is significant.</td></tr>
+        <tr><td class="dim-name">Trust/reputation</td><td class="dim-note">Real internal trust impact — leave failures are exactly the story that damages standing with the workforce.</td></tr>
+        <tr><td class="dim-name">Reach</td><td class="dim-note">Narrow per instance (one employee on leave), though volume can be substantial org-wide.</td></tr>
+        <tr><td class="dim-name">Reversibility</td><td class="dim-note">Mixed — routine errors are correctable, but an interference finding tied to an adverse action can be very hard to unwind.</td></tr>
+      </table>
+      <div class="stage-verdict verdict-mixed">HIGH — matches the live tag. Not Critical: the exposure is well-precedented and defensible when procedure is followed, unlike, for example, the grievance activity's NLRB/CBA exposure with less procedural containment.</div>
+    </div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 3</span><span class="stage-name">Human Readiness Gate</span><span class="stage-rubric">— checked against Page 1's eight dimensions, for HRBP Manager (Accountable)</span></div>
+      <table class="check-table">
+        <tr><td class="dim-name">Authority</td><td><span class="v v-strong">Strong</span></td><td class="dim-note">Clear authority to intervene in a leave case.</td></tr>
+        <tr><td class="dim-name">Information</td><td><span class="v v-adequate">Adequate</span></td><td class="dim-note">Case-level visibility, but FMLA/ADA determinations often need legal nuance beyond standard case data.</td></tr>
+        <tr><td class="dim-name">Capability</td><td><span class="v v-weak">Weak</span></td><td class="dim-note">FMLA/ADA interaction analysis is specialist legal-adjacent judgment; the role is staffed for a largely-automated process, not this expertise on every case.</td></tr>
+        <tr><td class="dim-name">Capacity</td><td><span class="v v-strong">Strong</span></td><td class="dim-note">Routine-volume, automated — capacity isn't the constraint.</td></tr>
+        <tr><td class="dim-name">Role clarity</td><td><span class="v v-adequate">Adequate</span></td><td class="dim-note">Accountable per RACI, but no defined point at which an automated case should be pulled out for direct attention.</td></tr>
+        <tr><td class="dim-name">Confidence</td><td><span class="v v-weak">Weak</span></td><td class="dim-note">Same root cause as Capability — not well positioned to challenge an automated system's edge-case handling.</td></tr>
+        <tr><td class="dim-name">Psychological safety</td><td><span class="v v-adequate">Adequate</span></td><td class="dim-note">No evidence of penalty risk, but also no established norm for pulling cases out of automation — untested rather than confirmed.</td></tr>
+        <tr><td class="dim-name">Escalation / override</td><td><span class="v v-weak">Weak</span></td><td class="dim-note">Legal is only Informed, not Consulted, despite the note's own FMLA/ADA language. No defined trigger for routing a case to Legal before action is taken.</td></tr>
+      </table>
+      <div class="stage-verdict verdict-fail">GATE FAILS — 2 Strong, 3 Adequate, 3 Weak. An Automation-tier, High-consequence activity where readiness to catch exceptions is genuinely weak on the dimensions that matter most: Capability, Confidence, Escalation/override.</div>
+    </div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 4</span><span class="stage-name">Governance Limit</span><span class="stage-rubric">— checked against the Governed Decision Point definition</span></div>
+      <table class="check-table">
+        <tr><td class="dim-name">Owner</td><td><span class="v v-strong">✓</span></td><td class="dim-note">HRBP Manager, named.</td></tr>
+        <tr><td class="dim-name">Escalation</td><td><span class="v v-weak">✗</span></td><td class="dim-note">No defined trigger comparable to the Recruiter example's "comp above band" — nothing tells the process when a case needs to stop for review.</td></tr>
+        <tr><td class="dim-name">Override</td><td><span class="v v-weak">✗</span></td><td class="dim-note">Not defined.</td></tr>
+        <tr><td class="dim-name">Documentation</td><td><span class="v v-weak">✗</span></td><td class="dim-note">Not defined.</td></tr>
+        <tr><td class="dim-name">Review</td><td><span class="v v-weak">✗</span></td><td class="dim-note">Not defined.</td></tr>
+      </table>
+      <div class="stage-verdict verdict-fail">1 of 5 elements explicit. Also a second, independent finding: Legal sitting at Informed despite a risk note arguing for Consulted is the same RACI pattern already found once on the grievance activity in the five-activity pressure test — now found twice, which raises it from an isolated note to a pattern worth a standing rule.</div>
+    </div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 5</span><span class="stage-name">Transition Recommendation</span><span class="stage-rubric">— synthesis, not a separate check</span></div>
+      <div class="stage-body"><strong>Hold at Automation for routine processing</strong> — the base classification is right for volume reasons — <strong>but the ceiling is not closed.</strong> Interventions: (1) define a Governed Decision Point for the exception path — Owner: HRBP Manager, Escalation: a named trigger such as "leave nearing exhaustion combined with a performance action, or any ADA accommodation request," Override: Legal review before any adverse action during or immediately after protected leave, Documentation: a case-level record of why an exception was or wasn't escalated, Review: tied to any FMLA/ADA-adjacent incident rather than a fixed calendar; (2) upgrade Legal from Informed to Consulted here — the same correction flagged once already, now recommended as a standing rule rather than a one-off fix; (3) raise the open question from Stage 1 with Tim and GiGi directly: does the Progression Ceiling Rule need a duty carve-out at the Automation tier, the way it already has one higher up?</div>
+    </div>
+
+    <!-- ============ EXAMPLE 3: CHRO ============ -->
+    <div class="section-badge"><span class="tier">Executive</span><span class="title">CHRO — Define HR Roles and Accountability</span><span class="code-tag">PCF 7.1.1.2</span></div>
+    <div class="activity-line">Pattern: Knowledge &nbsp;·&nbsp; RACI (7.1.1 Develop human resources strategy): <span class="raci">A: CHRO &middot; R: HRBP Manager &middot; Director of HR Ops &middot; C: Director of TA &middot; I: All Managerial-tier</span></div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 1</span><span class="stage-name">Working Relationship</span><span class="stage-rubric">— checked against the Progression Ceiling Rule</span></div>
+      <div class="stage-body">Current: <strong>Judgment</strong> &nbsp;·&nbsp; Future: <strong>Judgment</strong> &nbsp;·&nbsp; Ceiling: <strong>Judgment</strong>. Rule 2 applies directly: strategic authority over the domain's own accountability structure is a standing duty at the top of the ladder. Live note: "defining the domain's own accountability structure isn't a decision to hand to an AI proposal."</div>
+      <div class="stage-verdict verdict-pass">PASS — clean application of Rule 2, no open question.</div>
+    </div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 2</span><span class="stage-name">Human Criticality Review</span><span class="stage-rubric">— checked against Page 2's six questions</span></div>
+      <table class="check-table">
+        <tr><td class="dim-name">Human impact</td><td class="dim-note">Indirect but broad — a wrong structure creates duplicated or missing ownership across HR, affecting employees through broken downstream processes.</td></tr>
+        <tr><td class="dim-name">Legal/regulatory</td><td class="dim-note">Indirect — a bad structure can itself create compliance gaps downstream (e.g. no clear EEOC-reporting owner), but this activity isn't itself a filing.</td></tr>
+        <tr><td class="dim-name">Financial/operational</td><td class="dim-note">High — restructuring accountability affects every downstream process in the domain.</td></tr>
+        <tr><td class="dim-name">Trust/reputation</td><td class="dim-note">Internal trust impact if roles are unclear or contested; limited external exposure.</td></tr>
+        <tr><td class="dim-name">Reach</td><td class="dim-note">Enterprise-wide — defines the domain's structure, touching every HR role.</td></tr>
+        <tr><td class="dim-name">Reversibility</td><td class="dim-note">Correctable but costly — re-organizing accountability is disruptive and slow to unwind once operationalized.</td></tr>
+      </table>
+      <div class="stage-verdict verdict-mixed">HIGH — matches the live tag. Not Critical: no direct or immediate harm to a specific individual, no acute legal filing at stake — the exposure is structural and slow-building rather than sharp.</div>
+    </div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 3</span><span class="stage-name">Human Readiness Gate</span><span class="stage-rubric">— checked against Page 1's eight dimensions, for CHRO (Accountable)</span></div>
+      <table class="check-table">
+        <tr><td class="dim-name">Authority</td><td><span class="v v-strong">Strong</span></td><td class="dim-note">Top executive in the domain; full authority over any AI-drafted structural proposal.</td></tr>
+        <tr><td class="dim-name">Information</td><td><span class="v v-strong">Strong</span></td><td class="dim-note">Full visibility across the HR function.</td></tr>
+        <tr><td class="dim-name">Capability</td><td><span class="v v-strong">Strong</span></td><td class="dim-note">Defining organizational accountability structures is core to the role.</td></tr>
+        <tr><td class="dim-name">Capacity</td><td><span class="v v-adequate">Adequate</span></td><td class="dim-note">Infrequent, high-effort work — a real but manageable constraint, not a failure since it doesn't compete with daily volume.</td></tr>
+        <tr><td class="dim-name">Role clarity</td><td><span class="v v-strong">Strong</span></td><td class="dim-note">RACI is unambiguous: CHRO Accountable, HRBP Manager/Director of HR Ops Responsible, Director of TA Consulted.</td></tr>
+        <tr><td class="dim-name">Confidence</td><td><span class="v v-strong">Strong</span></td><td class="dim-note">No reason to doubt the ability to challenge an AI-drafted structure proposal.</td></tr>
+        <tr><td class="dim-name">Psychological safety</td><td><span class="v v-strong">Strong</span></td><td class="dim-note">Top of the org — no penalty risk for overriding a proposal.</td></tr>
+        <tr><td class="dim-name">Escalation / override</td><td><span class="v v-strong">Strong</span></td><td class="dim-note">Escalates only to CEO/Board — a confirmed, non-provisional line per the live role-taxonomy table.</td></tr>
+      </table>
+      <div class="stage-verdict verdict-pass">GATE PASSES CLEANLY — 7 Strong, 1 Adequate, 0 Weak. Secondary note: Responsible includes HRBP Manager, whose own reportsTo edge is one of the two the taxonomy flags as unconfirmed — but since HRBP Manager is Responsible here, not Accountable, this doesn't undermine the Accountable role's own readiness.</div>
+    </div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 4</span><span class="stage-name">Governance Limit</span><span class="stage-rubric">— checked against the Governed Decision Point definition</span></div>
+      <table class="check-table">
+        <tr><td class="dim-name">Owner</td><td><span class="v v-weak">✗</span></td><td class="dim-note">CHRO is clearly the de facto owner, but this activity is not currently registered as a Governed Decision Point on the live Move-to-Exit-style VSP pages the way 7.2.4.2, 7.3.3.4, and 7.6.1 are.</td></tr>
+        <tr><td class="dim-name">Escalation</td><td><span class="v v-strong">✓</span></td><td class="dim-note">CEO/Board, confirmed.</td></tr>
+        <tr><td class="dim-name">Override</td><td><span class="v v-strong">✓</span></td><td class="dim-note">CEO/Board.</td></tr>
+        <tr><td class="dim-name">Documentation</td><td><span class="v v-weak">✗</span></td><td class="dim-note">Not currently required or defined for this specific activity.</td></tr>
+        <tr><td class="dim-name">Review</td><td><span class="v v-weak">✗</span></td><td class="dim-note">Not currently defined.</td></tr>
+      </table>
+      <div class="stage-verdict verdict-mixed">2 of 5 elements explicit — not because readiness or authority is in question (Stage 3 passed cleanly), but because nobody has formally registered this as a Governed Decision Point at all.</div>
+    </div>
+
+    <div class="stage-check">
+      <div class="stage-check-head"><span class="stage-num">STAGE 5</span><span class="stage-name">Transition Recommendation</span><span class="stage-rubric">— synthesis, not a separate check</span></div>
+      <div class="stage-body"><strong>Hold at Judgment.</strong> Cleanest of the three tier examples — readiness passes on 7 of 8 dimensions with the eighth merely Adequate, and governance isn't the binding constraint. <strong>Intervention:</strong> formally register this as a Governed Decision Point with documented rationale retained for any accountability-structure change and review tied to actual organizational-change events, since it currently has real authority behind it but no paper trail.</div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:30px 0;">
+    <h2>Where the Chain Held, Where It Didn't</h2>
+    <p>Across the three tiers, the Working Relationship stage held up well — two clean Rule 2 applications (Recruiter, CHRO) and one genuine open question about whether Rule 1 needs the same duty carve-out Rule 3 already has (HRBP Manager). Readiness is where the three diverge sharply: CHRO passes cleanly, Recruiter passes on a bounded-but-functioning governance design, and HRBP Manager fails outright — not because Automation was the wrong base classification, but because nothing catches the exception cases the activity's own note already warns about. The Legal-at-Informed pattern also reappeared independently, now confirmed twice across two unrelated exercises, which is the kind of repeat finding that argues for a standing rule rather than a case-by-case fix.</p>
+
+    <div class="closing-quote">A person can be named Accountable and still not be able to exercise that accountability — three tiers, and it only failed once, but it failed on exactly the dimensions the framework couldn't have caught without walking the chain.</div>
+  </div>
+
+  <div class="doc-meta">Tim King &amp; GiGi Garcia &nbsp;|&nbsp; Working Discussion Draft &nbsp;|&nbsp; September 2026</div>
+  <a class="note-pdf" href="three_examples_by_tier.pdf">Download PDF ↓</a>
+  <div class="back-link"><a href="index.html">&larr; Back to WIP hub</a></div>
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect<br>
+    Private review area — not part of the published framework<br>
+    hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>
