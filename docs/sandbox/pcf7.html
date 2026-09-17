@@ -17,8 +17,6 @@
   --white:  #fff;
   --bg:     #F4F6FB;
   --border: #DDE3EE;
-  --m1: #F0F7FF; --m2: #E6F1FF; --m3: #D6E8FF; --m4: #C4DCFF; --m5: #B0CEFF;
-  --m-text: #1B4F8A;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
@@ -58,9 +56,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
   font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
   text-transform: uppercase; letter-spacing: .06em; white-space: nowrap;
 }
-.pill-m1 { background: var(--m1); color: var(--m-text); border: 1px solid var(--m3); }
-.pill-m3 { background: var(--m3); color: var(--m-text); border: 1px solid var(--m5); font-weight: 700; }
-.pill-m5 { background: var(--m5); color: var(--m-text); border: 1px solid var(--m5); }
+.pill-wr1 { background: #EEF3FA; color: var(--navy-d); border: 1px solid #C7D8EE; }
+.pill-wr2 { background: #D6E8FF; color: var(--navy-d); border: 1px solid #9FC0E8; font-weight: 700; }
+.pill-wr3 { background: #1E3F6E; color: #fff; border: 1px solid #1E3F6E; }
 
 /* ── View toggle ──────────────────────────────────────────────────────── */
 .view-toggle { display: flex; gap: 8px; padding: 16px 24px 4px; align-items:center; flex-wrap:wrap; }
@@ -92,9 +90,6 @@ thead th.nowrap { white-space: nowrap; }
 #main-table thead th:not(:first-child):not(:nth-child(2)) { text-align: center; }
 thead th:first-child { text-align: left; min-width: 300px; }
 thead th:nth-child(2) { min-width: 90px; }
-thead th.col-m1, thead th.col-m2, thead th.col-m3,
-thead th.col-m4, thead th.col-m5, thead th.delta-cell { color: #fff !important; font-weight: 600; }
-thead th.col-m3 { background: rgba(147,197,253,.25) !important; }
 tbody tr:hover { background: #FAFBFF; }
 
 /* Level rows */
@@ -119,33 +114,13 @@ td:first-child { text-align: left; }
 .row-prefix { flex: 0 0 auto; white-space: nowrap; margin-right: 6px; }
 .row-text { flex: 1 1 auto; min-width: 0; }
 
-/* Pattern badge (legacy, M1-M5 view) */
+/* Pattern badge (used by the RACI Table view's Pattern column) */
 .pat { display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: .05em; white-space: nowrap; }
 .pat-Decision   { background: #7B9FD1; color: #fff; }
 .pat-Knowledge  { background: #A79AE0; color: #fff; }
 .pat-Document   { background: #5EB8E0; color: #fff; }
 .pat-Transaction{ background: #6FC48C; color: #fff; }
 .pat-Exception  { background: #E88A8A; color: #fff; }
-
-/* Maturity cells (legacy M1-M5) */
-.col-m1 { color: var(--m-text); }
-.col-m2 { color: var(--m-text); }
-.col-m3 { color: var(--m-text); font-weight: 700; }
-.col-m4 { color: var(--m-text); }
-.col-m5 { color: var(--m-text); font-weight: 600; }
-tbody td.col-m1 { background: var(--m1) !important; color: var(--m-text); }
-tbody td.col-m2 { background: var(--m2) !important; color: var(--m-text); }
-tbody td.col-m3 { background: var(--m3) !important; color: var(--m-text); font-weight: 700; }
-tbody td.col-m4 { background: var(--m4) !important; color: var(--m-text); }
-tbody td.col-m5 { background: var(--m5) !important; color: var(--m-text); font-weight: 600; }
-tbody td.delta-cell { background: #fff; }
-.row-l1 td.col-m1, .row-l1 td.col-m2, .row-l1 td.col-m3,
-.row-l1 td.col-m4, .row-l1 td.col-m5, .row-l1 td.m3-col, .row-l1 td.delta-cell {
-  background: #0D2D4F !important; color: #A8C4E0 !important; font-weight: 700; text-align:center !important; font-family:'DM Mono',monospace;
-}
-.row-l2 td.m3-col, .row-l3 td.m3-col, .row-l4 td.m3-col { background: var(--m3) !important; }
-.delta-cell { font-weight: 600; }
-.delta-neg { color: #B45309; }
 
 /* Expand toggle */
 .toggle-l2, .toggle-l3 { cursor: pointer; user-select: none; }
@@ -352,11 +327,11 @@ td.crud-d .crud-entity { color: #991B1B; }
 <div class="sandbox-banner">
   <span class="tag">Sandbox</span>
   <strong>PCF 7.0 — Develop and Manage Human Resources.</strong>
-  This is a live working copy of the full PCF 7.0 content — Maturity Table, RACI Table, Value Stream Profile, Data View (CRUD Matrix), and
-  People View — with a second, integrated view laid over the Maturity Table: the
-  <strong>Current State &rarr; Future State &rarr; Progression Ceiling</strong> model (replacing M1&ndash;M5) plus Consequence of Error,
+  This is a live working copy of the full PCF 7.0 content — Working-Relationship Table, RACI Table, Value Stream Profile, Data View (CRUD Matrix), and
+  People View. The Working-Relationship Table shows the
+  <strong>Current State &rarr; Future State &rarr; Progression Ceiling</strong> model plus Consequence of Error,
   for the 118 activities that have been hand-classified by working relationship so far. Everything here is real data pulled from the
-  live framework &mdash; nothing is simulated. Leave a reaction or a note on any Maturity/Working-Relationship row using the <strong>Notes</strong> button; GiGi and Tim can both see
+  live framework &mdash; nothing is simulated. Leave a reaction or a note on any row using the <strong>Notes</strong> button; GiGi and Tim can both see
   and add to them here.
 </div>
 
@@ -364,15 +339,14 @@ td.crud-d .crud-entity { color: #991B1B; }
   <div class="topbar">
     <div>
       <h2>7.0 &mdash; Develop and Manage Human Resources</h2>
-      <p>Sandbox &middot; toggle between the legacy Maturity Curve and the Working-Relationship view</p>
+      <p>Sandbox &middot; Working-Relationship classification, plus RACI, Value Stream, Data, People, and Readiness Gate views</p>
     </div>
     <div class="topbar-pills" id="topbar-pills"></div>
   </div>
 
   <div class="view-toggle">
     <span class="view-toggle-label">View</span>
-    <button class="view-toggle-btn active" id="btn-legacy" onclick="setView('legacy')">Maturity Curve (M1&ndash;M5)</button>
-    <button class="view-toggle-btn" id="btn-wr" onclick="setView('wr')">Working Relationship</button>
+    <button class="view-toggle-btn active" id="btn-wr" onclick="setView('wr')">Working Relationship</button>
     <button class="view-toggle-btn" id="btn-raci" onclick="setView('raci')">RACI Table</button>
     <button class="view-toggle-btn" id="btn-vsp" onclick="setView('vsp')">Value Stream Profile</button>
     <button class="view-toggle-btn" id="btn-data" onclick="setView('data')">Data View (CRUD)</button>
@@ -384,24 +358,12 @@ td.crud-d .crud-entity { color: #991B1B; }
   <div class="content">
     <div class="card lens-section" id="panel-maturity">
       <div class="card-header">
-        <h3>HITL Maturity Assessment &mdash; PCF 7.0</h3>
+        <h3>Working-Relationship Table &mdash; PCF 7.0</h3>
         <span>118 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 118 working-relationship classified</span>
       </div>
       <div class="table-wrap">
         <table id="main-table">
-          <thead id="thead-legacy">
-            <tr>
-              <th>Process</th>
-              <th>Pattern</th>
-              <th class="col-m1">M1<br>Undesigned</th>
-              <th class="col-m2">M2<br>Ad Hoc</th>
-              <th class="col-m3">M3<br>Defined</th>
-              <th class="col-m4">M4<br>Managed</th>
-              <th class="col-m5">M5<br>Leading</th>
-              <th>M1&rarr;M3<br>Delta</th>
-            </tr>
-          </thead>
-          <thead id="thead-wr" style="display:none">
+          <thead id="thead-wr">
             <tr>
               <th>L1-Domain/L2-Process Group/L3-Process/L4-Activity</th>
               <th class="nowrap wr-col">Current<br>State</th>
@@ -415,7 +377,7 @@ td.crud-d .crud-entity { color: #991B1B; }
           <tbody id="table-body"></tbody>
         </table>
       </div>
-      <div class="legend" id="legend-wr" style="display:none">
+      <div class="legend" id="legend-wr">
         <span style="font-size:10.5px;font-weight:700;color:var(--navy-d);text-transform:uppercase;letter-spacing:.05em;">Working relationship</span>
         <!-- populated by JS from WR_CATS -->
       </div>
@@ -1784,21 +1746,20 @@ function renderDescriptionPanel(cat, streamFilter) {
 }
 
 /* ── State ─────────────────────────────────────────────────────────────── */
-let currentView = 'legacy';
+let currentView = 'wr';
 const cat = PCF7;
 
-function fmtDelta(a, b) {
-  const d = b - a;
-  const sign = d >= 0 ? '+' : '';
-  const cls = d < 0 ? 'delta-neg' : '';
-  return '<span class="' + cls + '">' + sign + d + ' pts</span>';
-}
-
 function renderTopPills() {
+  const entries = Object.keys(WR_DATA).map(k => WR_DATA[k]);
+  const total = entries.length;
+  const atCeiling = entries.filter(d => d.rel === d.ceiling).length;
+  const belowFuture = entries.filter(d => d.future && d.rel !== d.future).length;
+  const humanLoop = entries.filter(d => d.rel === 'Judgment' || d.rel === 'Oversight').length;
   document.getElementById('topbar-pills').innerHTML =
-    '<span class="pill pill-m1">M1 ' + cat.l1mv[0] + '%</span>' +
-    '<span class="pill pill-m3">M3 ' + cat.l1mv[2] + '%</span>' +
-    '<span class="pill pill-m5">M5 ' + cat.l1mv[4] + '%</span>';
+    '<span class="pill pill-wr1">' + total + ' classified</span>' +
+    '<span class="pill pill-wr2">' + atCeiling + ' at ceiling</span>' +
+    '<span class="pill pill-wr1">' + belowFuture + ' below future state</span>' +
+    '<span class="pill pill-wr3">' + humanLoop + ' Judgment + Oversight</span>';
 }
 
 function wrCell(code) {
@@ -1841,16 +1802,6 @@ function noteTitle(note) {
   return note ? ' title="' + note.replace(/"/g, '&quot;') + '"' : '';
 }
 
-function legacyRowCells(codeAttrs, mv, isL1) {
-  const cls = isL1 ? ' class="m3-col"' : '';
-  return '<td class="col-m1">' + mv[0] + '%</td>' +
-    '<td class="col-m2">' + mv[1] + '%</td>' +
-    '<td class="col-m3 m3-col"><strong>' + mv[2] + '%</strong></td>' +
-    '<td class="col-m4">' + mv[3] + '%</td>' +
-    '<td class="col-m5">' + mv[4] + '%</td>' +
-    '<td class="delta-cell">' + fmtDelta(mv[0], mv[2]) + '</td>';
-}
-
 function wrRowCells(code) {
   const w = wrCell(code);
   return '<td class="wr-left">' + wrBadge(w.current) + '</td>' +
@@ -1878,7 +1829,7 @@ function render() {
 
   html += '<tr class="row-l1">' +
     '<td><div style="font-weight:700;font-size:13px;">' + cat.code + ' &nbsp;' + cat.name + '<span class="pcf-ref">L1 Domain</span></div></td>' +
-    (currentView === 'legacy' ? '<td></td>' + legacyRowCells(null, cat.l1mv, true) : '<td colspan="6" style="background:#0D2D4F;"></td>') +
+    '<td colspan="6" style="background:#0D2D4F;"></td>' +
     '</tr>';
 
   cat.groups.forEach(g => {
@@ -1886,7 +1837,7 @@ function render() {
       '<td class="indent-l2 toggle-l2" data-group="' + g.code + '" onclick="toggleGroup(\'' + g.code + '\',this)">' +
       '<span class="row-flex"><span class="row-prefix"><span class="toggle-icon" title="Click to collapse">&minus;</span>' + g.code + '</span>' +
       '<span class="row-text">' + g.name + '</span></span></td>' +
-      (currentView === 'legacy' ? '<td></td>' + legacyRowCells(null, g.mv, false) : '<td colspan="6"></td>') +
+      '<td colspan="6"></td>' +
       '</tr>';
 
     g.l3.forEach(l3 => {
@@ -1900,18 +1851,14 @@ function render() {
       html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
         '<td ' + l3ToggleAttrs + '><span class="row-flex"><span class="row-prefix">' + l3Icon + '<span class="pcf-ref">' + l3.code + '</span></span>' +
         '<span class="row-text">' + l3.name + '</span></span></td>' +
-        (currentView === 'legacy'
-          ? '<td><span class="pat pat-' + (l3.mixed ? 'Mixed' : l3.pattern) + '">' + (l3.mixed ? 'Mixed' : l3.pattern) + '</span></td>' + legacyRowCells(null, l3.mv, false)
-          : (hasL4 ? wrRowCellsRollup(l3) : wrRowCells(l3.code))) +
+        (hasL4 ? wrRowCellsRollup(l3) : wrRowCells(l3.code)) +
         '</tr>';
 
       l3.l4.forEach(l4 => {
         html += '<tr class="row-l4" data-parent="' + g.code + '" data-parent-l3="' + l3.code + '" style="display:none">' +
           '<td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + l4.code + '</span></span>' +
           '<span class="row-text">' + l4.name + '</span></span></td>' +
-          (currentView === 'legacy'
-            ? '<td><span class="pat pat-' + l4.pattern + '">' + l4.pattern + '</span></td>' + legacyRowCells(null, l4.mv, false)
-            : wrRowCells(l4.code)) +
+          wrRowCells(l4.code) +
           '</tr>';
       });
     });
@@ -1950,24 +1897,19 @@ function toggleL3(code, el) { setL3Expanded(code, el.classList.contains('collaps
 
 function setView(v) {
   currentView = v;
-  ['legacy', 'wr', 'raci', 'vsp', 'data', 'people', 'gates'].forEach(name => {
+  ['wr', 'raci', 'vsp', 'data', 'people', 'gates'].forEach(name => {
     const btn = document.getElementById('btn-' + name);
     if (btn) btn.classList.toggle('active', v === name);
   });
-  document.getElementById('panel-maturity').style.display = (v === 'legacy' || v === 'wr') ? '' : 'none';
+  document.getElementById('panel-maturity').style.display = v === 'wr' ? '' : 'none';
   document.getElementById('panel-raci').style.display = v === 'raci' ? '' : 'none';
   document.getElementById('panel-vsp').style.display = v === 'vsp' ? '' : 'none';
   document.getElementById('panel-data').style.display = v === 'data' ? '' : 'none';
   document.getElementById('panel-people').style.display = v === 'people' ? '' : 'none';
   document.getElementById('panel-gates').style.display = v === 'gates' ? '' : 'none';
 
-  document.getElementById('thead-legacy').style.display = v === 'legacy' ? '' : 'none';
-  document.getElementById('thead-wr').style.display = v === 'wr' ? '' : 'none';
-  document.getElementById('legend-wr').style.display = v === 'wr' ? 'flex' : 'none';
-
   const notes = {
-    legacy: 'The original pattern-derived Maturity Table, unchanged.',
-    wr: 'Current State / Future State / Progression Ceiling replace the M1–M5 curve for classified activities — the real model from Working_Relationship_Progression_Methodology.docx. Blank cells mean that reasoning hasn’t been done yet, not that the answer is zero.',
+    wr: 'Current State / Future State / Progression Ceiling — the real model from Working_Relationship_Progression_Methodology.docx. Blank cells mean that reasoning hasn’t been done yet, not that the answer is zero.',
     raci: 'Real reasoned-match RACI, same data the live dashboard’s RACI Table renders. R falls back to the Accountable role (marked "from Accountable") wherever no separate Responsible was identified.',
     vsp: 'Description, KPIs, Design Narrative, AI Capability Map, Process Accountability, Handoff Points, and Governed Decision Points — select a value stream, or leave it on All Processes.',
     data: 'Entity × process CRUD — 22 of 37 L3s have real confirmed CRUD data, ported unchanged from the live dashboard’s Data View lens.',
@@ -1976,7 +1918,7 @@ function setView(v) {
   };
   document.getElementById('view-note').textContent = notes[v] || '';
 
-  if (v === 'legacy' || v === 'wr') render();
+  if (v === 'wr') render();
 }
 
 function buildLegend() {
@@ -2001,7 +1943,7 @@ renderRoleImpactTable(cat);
 renderGatesTable(cat);
 populateValueStreamBar(cat);
 applyValueStream('all');
-setView('legacy');
+setView('wr');
 </script>
 </body>
 </html>
