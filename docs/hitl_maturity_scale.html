@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Understanding Working-Relationship Progression — Human-AI Partnership Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B4F8A; --navy-d: #0D2D4F; --navy-l: #EEF3FA; --dark: #0D1B2A;
+  --gray: #444; --lgray: #888; --bg: #F4F6FB; --border: #DDE3EE;
+  --c-dec:#1B4F8A; --c-kno:#534AB7; --c-doc:#0369A1; --c-tra:#166534; --c-exc:#991B1B;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); }
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 4px; }
+.masthead .tagline { font-size: 13px; color: #6E8CB8; font-style: italic; margin-bottom: 18px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+.breadcrumb { max-width: 800px; margin: 20px auto 0; padding: 0 24px; font-size: 12px; color: var(--lgray); }
+.breadcrumb a { color: var(--navy); text-decoration: none; }
+.doc { max-width: 800px; margin: 0 auto; padding: 24px 24px 80px; }
+.doc h1.title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy-d); margin: 8px 0 6px; }
+.doc .subtitle { font-size: 13px; color: var(--lgray); font-style: italic; margin-bottom: 22px; }
+.doc h2 { font-size: 16px; color: var(--navy-d); font-weight: 700; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--navy-l); }
+.doc p { font-size: 13px; line-height: 1.7; color: var(--gray); margin-bottom: 12px; }
+.doc ul { margin: 0 0 16px 20px; }
+.doc li { font-size: 13px; line-height: 1.65; color: var(--gray); margin-bottom: 7px; }
+.callout { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; }
+.callout.core { background: #EEF3FA; border-left-color: #1B4F8A; }
+.callout .label { font-size: 12px; font-weight: 700; color: var(--navy-d); text-transform: uppercase; letter-spacing: .03em; margin-bottom: 6px; }
+.callout p { color: #333; margin-bottom: 0; font-size: 12.5px; }
+.superseded { background: #FEF3C7; border-left: 4px solid #B8873F; border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 0 0 24px; }
+.superseded .label { font-size: 12px; font-weight: 700; color: #7A5A1E; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 6px; }
+.superseded p { color: #7A5A1E; margin-bottom: 0; font-size: 12.5px; }
+table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 12px; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 7px 10px; font-size: 11px; }
+td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:nth-child(even) td { background: #FAFBFD; }
+.pat-Decision { color: var(--c-dec); font-weight: 700; }
+.pat-Knowledge { color: var(--c-kno); font-weight: 700; }
+.pat-Document { color: var(--c-doc); font-weight: 700; }
+.pat-Transaction { color: var(--c-tra); font-weight: 700; }
+.pat-Exception { color: var(--c-exc); font-weight: 700; }
+.stack-table td:first-child { background: var(--navy-d); color: #fff; font-weight: 700; width: 22%; }
+footer { text-align: center; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.8; }
+footer a { color: var(--navy); text-decoration: none; }
+.crosslink { display: block; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 24px 0; text-decoration: none; }
+.crosslink .ct { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.crosslink .cd { font-size: 12px; color: var(--lgray); }
+
+/* --- Working-Relationship Ramp exhibit --- */
+.ramp { display: flex; margin: 14px 0 6px; border-radius: 8px; overflow: hidden; }
+.ramp-step { flex: 1; padding: 14px 8px 12px; text-align: center; color: #fff; }
+.ramp-step .rs-name { font-size: 10.5px; font-weight: 700; letter-spacing: .01em; line-height: 1.3; }
+.ramp-step .rs-arrow { font-size: 13px; opacity: .55; }
+.ramp-caption { font-size: 10.5px; color: var(--lgray); text-align: center; margin: 0 0 20px; }
+.reading { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 6px; padding: 14px 18px; margin: 18px 0 0; font-size: 12.5px; color: #24405E; line-height: 1.65; }
+.reading strong { color: var(--navy-d); }
+.ex-table td.rel { font-weight: 700; color: var(--navy-d); white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <h1>Human-AI Partnership Framework</h1>
+  <div class="tagline">Where human judgment belongs</div>
+  <nav>
+    <a href="index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+  </nav>
+</div>
+
+<div class="breadcrumb"><a href="index.html">Documentation</a> / Core Methodology / Understanding Working-Relationship Progression</div>
+
+<div class="doc">
+  <h1 class="title">Understanding Working-Relationship Progression</h1>
+  <p class="subtitle">Why the framework tracks a working relationship, not a maturity score — and what that has to do with the five pattern types</p>
+
+  <div class="superseded">
+    <div class="label">This page replaces the earlier HITL Maturity Scale (M1&ndash;M5)</div>
+    <p>The framework used to describe human involvement as a five-point maturity curve — M1 through M5 — derived from an activity's pattern type. That model is retired. Every activity now carries a real working-relationship classification instead: Current State, Future State, and a Progression Ceiling. Pattern type hasn't gone away — it still identifies what kind of work an activity is, and still drives the site's visual system — it's just no longer the thing a maturity number gets derived from. See <a href="working_relationship_progression_methodology.html">the full Working-Relationship Progression Methodology</a> for the underlying design work and pilot findings.</p>
+  </div>
+
+  <h2>Start Here: Design, Not Safety</h2>
+  <p>Most people's first association with "human-in-the-loop" is safety — keeping a person in the chain to catch AI errors before they cause harm. That's correct, but it's not the whole idea, and it's not what this page is about.</p>
+  <div class="callout"><div class="label">HITL Design vs. HITL Safety</div>
+    <p>HITL Safety asks: where must humans stay involved to prevent harm? HITL Design asks: where should humans stay involved to produce the best outcome? The design question is broader, more strategic, and it's the one this framework is built around.</p>
+  </div>
+  <p>Framed as a design question, human involvement isn't something that just happens to a process as AI tools get adopted — it's something an organization can decide, deliberately, activity by activity. Working-relationship classification is how that decision gets named and tracked.</p>
+
+  <h2>The Three Layers Every Process Sits In</h2>
+  <p>Every piece of enterprise work belongs in one of three layers:</p>
+  <table class="stack-table">
+    <tr><td>Human Layer<br>Judgment &amp; Oversight</td><td>Approvals, interpretation, escalations, ethical decisions — the work that requires wisdom, context, and accountability.</td></tr>
+    <tr><td>Automation Layer<br>Execution</td><td>Routing, matching, scheduling, orchestration — rules-based workflows that are consistent, reliable, and repeatable.</td></tr>
+    <tr><td>AI Layer<br>Prediction &amp; Generation</td><td>Drafting, summarizing, pattern detection, forecasting — fast, scalable, tireless processing and generation.</td></tr>
+  </table>
+  <p>The most common failure in human-AI operating model design is work sitting in the wrong layer — humans doing Transaction work that automation should handle, or AI generating outputs for Decision work where human judgment and accountability are non-negotiable. Working-relationship classification is how the framework now names which layer an activity actually sits in, activity by activity. <a href="hitl_methodology.html" style="color:var(--navy)">Full detail in the HITL Design Methodology →</a></p>
+
+  <h2>The Working-Relationship Ramp</h2>
+  <p>Six ordinal categories, read left to right as increasing automation. Every classified activity sits on exactly one of these today — its <strong>Current State</strong>.</p>
+
+  <div class="ramp">
+    <div class="ramp-step" style="background:#0D2D4F"><div class="rs-name">Human-only</div></div>
+    <div class="ramp-step" style="background:#1E3F6E"><div class="rs-name">Judgment</div></div>
+    <div class="ramp-step" style="background:#29528A"><div class="rs-name">Oversight</div></div>
+    <div class="ramp-step" style="background:#3D6FA8"><div class="rs-name">Augmentation</div></div>
+    <div class="ramp-step" style="background:#5A8DC4"><div class="rs-name">Agent-delegation</div></div>
+    <div class="ramp-step" style="background:#7DAEE0"><div class="rs-name">Automation</div></div>
+  </div>
+  <p class="ramp-caption">Darker = more human. Progression moves one adjacent step at a time — skipping a category isn't modeled.</p>
+
+  <table>
+    <tr><th>Category</th><th>What it means</th></tr>
+    <tr><td class="rel">Human-only</td><td>No meaningful AI role, by design — legal, ethical, or relational reasons hold regardless of how capable the technology gets.</td></tr>
+    <tr><td class="rel">Judgment</td><td>A person makes the actual call. AI's role is informational only — it can supply data or a ranking, but the reasoning and decision are the person's.</td></tr>
+    <tr><td class="rel">Oversight</td><td>AI performs or proposes the work; a person reviews and approves each instance before it takes effect.</td></tr>
+    <tr><td class="rel">Augmentation</td><td>A person remains the primary actor and does the work; AI assists — drafts, suggests, summarizes — but doesn't act on its own.</td></tr>
+    <tr><td class="rel">Agent-delegation</td><td>An AI agent performs the work autonomously within policy bounds; a person handles only flagged exceptions, not every instance.</td></tr>
+    <tr><td class="rel">Automation</td><td>AI performs and completes the work with no person in the loop for that instance.</td></tr>
+  </table>
+
+  <h2>Current State, Future State, Progression Ceiling</h2>
+  <p>Instead of a five-point curve, each classified activity carries three values:</p>
+  <table>
+    <tr><th style="width:22%">Term</th><th>Definition</th></tr>
+    <tr><td class="rel">Current State</td><td>The activity's real working-relationship category today.</td></tr>
+    <tr><td class="rel">Future State</td><td>The category actively being pursued as the near-term target. May sit below the Progression Ceiling by deliberate choice.</td></tr>
+    <tr><td class="rel">Progression Ceiling</td><td>The most-automated category this specific activity can plausibly reach, for technical or governance reasons. May equal Current State — i.e. no further runway, either because the activity is already fully automated or because it's already at its human-side ceiling.</td></tr>
+  </table>
+  <p>A positive gap between Future State and Current State is the AI convergence opportunity. A Progression Ceiling that equals Current State isn't unfinished work — for a lot of judgment- and accountability-carrying activities, that's the design succeeding, not stalling.</p>
+
+  <h2>How the Progression Ceiling Guards Judgment</h2>
+  <p>This is the mechanism that does the same job the old M3 design-intent target used to do, but per activity instead of per generic pattern curve — and it's the piece most worth understanding, because it's what actively protects certain work from drifting toward Automation the way routine processing does.</p>
+  <ol style="margin:0 0 16px 20px; font-size:13px; line-height:1.7; color:var(--gray)">
+    <li style="margin-bottom:8px"><strong>Automation is always the floor.</strong> An activity's Current State is never below where it already runs autonomously; its own future ceiling starts there.</li>
+    <li style="margin-bottom:8px"><strong>A standing accountability duty makes Judgment the ceiling.</strong> Strategic authority, EEOC/adverse-impact liability, ERISA fiduciary duty, NLRA/union exposure, or confidentiality/duty-of-care obligations put a hard ceiling at Judgment — no further automation is modeled past that line, regardless of pattern type.</li>
+    <li>For everything in between (Agent-delegation / Augmentation / Oversight): if the activity's own note flags a standing duty attached to that specific tier, that tier <em>is</em> the ceiling. If no such duty is flagged, the ceiling moves one notch more automated.</li>
+  </ol>
+  <p>The practical effect: two activities can sit at the same Current State today and still have completely different runway ahead of them — not because one was assessed more generously, but because the accountability actually attached to the work is different. A shallow gap between Current State and Progression Ceiling on a Judgment-tier activity isn't an unfinished assessment. It's the ceiling correctly holding the line on work that shouldn't automate further.</p>
+
+  <h2>Where Pattern Type Still Matters</h2>
+  <p>The five work-pattern types — Decision, Knowledge, Document, Transaction, Exception — haven't been retired. They still answer a real question: what kind of work is this, fundamentally, and they're still recorded against every activity. What's changed is visibility: pattern type is maintained data, not a displayed view. It no longer appears as the framework's classification lens on any page — Working-Relationship classification is what the framework shows.</p>
+  <p>What's changed is what pattern type is <em>for</em>. It used to be the source a generic H% decay curve was derived from — every Decision-pattern activity inheriting the same M1→M5 trajectory whether or not that trajectory actually fit it. Now it sits in the background as descriptive metadata alongside a real, individually-assessed Current State / Future State / Progression Ceiling — available for internal reference, not part of what any view surfaces. Two activities of the same pattern can — and often do — carry different real classifications once assessed on their own facts.</p>
+  <div class="callout core"><div class="label">A Real Example</div>
+    <p>7.2.1.3 (Approve job requisition — pattern Decision) and 7.2.4.3 (Hire candidate — pattern Transaction) carried very different pattern-derived numbers under the old model, yet both turned out to be the same real working relationship — Oversight, a human checkpoint on each instance — once classified by what actually happens rather than by pattern label alone.</p>
+  </div>
+
+  <h2>Reading the Numbers</h2>
+  <p>When you see a working-relationship classification anywhere in this framework, it's worth reading the ceiling logic behind it, not just the category name:</p>
+  <ul>
+    <li>Current State sitting well below the Progression Ceiling usually means real, near-term AI convergence opportunity — automation the work can plausibly absorb</li>
+    <li>Current State equal to the Progression Ceiling at Judgment or Human-only isn't a design failure — it's the design correctly holding the line on judgment-critical or accountability-carrying work</li>
+    <li>An open/undecided Progression Ceiling means the runway is a real, unresolved governance question — not a gap in the assessment</li>
+    <li>Future State set below the Progression Ceiling by choice is a deliberate pacing decision, not evidence the activity is under-optimized</li>
+  </ul>
+
+  <h2>A Note on Where This Comes From</h2>
+  <p>Working-relationship classification is individually assessed against real process data and RACI assignments, not derived from a generic pattern curve — where it has been done (PCF 7.0's HR domain, built out first), the classification reflects the actual activity, not an estimate. Domains not yet individually assessed still show their pattern-type reference as a starting point, the same way the original methodology always intended pattern type to work before organizational data was available — see <a href="hitl_methodology.html">the HITL Design Methodology</a> for how pattern types are defined and assigned, and <a href="working_relationship_progression_methodology.html">the Working-Relationship Progression Methodology</a> for the full design work, the Progression Ceiling logic, the readiness gate, and the pilot findings this page draws from.</p>
+
+  <a class="crosslink" href="hitl_methodology.html">
+    <div class="ct">← The full HITL Design Methodology</div>
+    <div class="cd">Where the five pattern types are defined and assigned — the classification this page's Working-Relationship Ramp now builds on top of, rather than deriving a curve from.</div>
+  </a>
+
+  <h2>Where This Shows Up</h2>
+  <p>This same logic runs through everything built on this framework: per-activity working-relationship classifications, the RACI Table's Accountable/Responsible assignments, and every Value Stream Profile's AI Capability Map. Same six categories, same Progression Ceiling logic, queried from a different angle each time.</p>
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect &nbsp;·&nbsp; September 2026<br>
+    Co-developed with Claude (Anthropic)<br>
+    <a href="mailto:timothy.king@hitldrivenarchitecture.com">timothy.king@hitldrivenarchitecture.com</a>
+    &nbsp;·&nbsp; hitldrivenarchitecture.com
+  </p>
+</footer>
+
+</body>
+</html>
