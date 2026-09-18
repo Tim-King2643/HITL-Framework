@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WR Category Palette Standard — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+  --green-text: #166534;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 800px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.concept-flag { background: var(--amber-bg); border-left: 3px solid var(--amber); border-radius: 4px; padding: 16px 20px; font-size: 13px; font-style: italic; color: var(--amber-text); line-height: 1.6; margin-bottom: 28px; }
+.applied-flag { background: #E7F3EC; border-left: 3px solid #2F8452; border-radius: 4px; padding: 16px 20px; font-size: 13px; color: var(--green-text); line-height: 1.6; margin-bottom: 28px; }
+.gov-flag { background: #FDECEC; border-left: 3px solid #B23B3B; border-radius: 4px; padding: 16px 20px; font-size: 13px; color: #7A2020; line-height: 1.6; margin-bottom: 28px; }
+.gov-flag strong { color: #5A1717; }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 36px 0 12px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 15px; margin: 0 0 10px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 12px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 10px 12px; vertical-align: top; color: #222; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.row-name { font-weight: 700; white-space: nowrap; }
+td.unchanged { color: var(--lgray); font-style: italic; }
+
+.mock-panel { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; margin: 8px 0 24px; }
+.compare-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.compare-col { flex: 1; min-width: 240px; }
+.compare-col .cap { font-size: 10px; text-transform: uppercase; letter-spacing: .04em; color: var(--lgray); font-weight: 700; margin-bottom: 8px; text-align: center; }
+.mini-mock { border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; background: #fbfcfe; }
+.deutan { filter: url(#deuteranopia); }
+.swatches { display: flex; flex-direction: column; gap: 6px; }
+.sw-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #333; }
+.sw { width: 20px; height: 20px; border-radius: 4px; flex-shrink: 0; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <filter id="deuteranopia">
+    <feColorMatrix type="matrix" values="
+      0.367 0.861 -0.228 0 0
+      0.280 0.673  0.047 0 0
+     -0.012 0.043  0.969 0 0
+      0     0      0     1 0"/>
+  </filter>
+</svg>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">WIP Record</strong>
+  &nbsp;·&nbsp; Documents a change already applied and live — see Applied note below.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">RULE 20 &nbsp;·&nbsp; TIM KING &amp; CLAUDE &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>WR Category Palette Standard</h1>
+  <div class="subtitle">A validated, colorblind-safe color mapping for the six Working-Relationship categories — Automation, Agent-delegation, Augmentation, Oversight, Judgment, Human-only</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <div class="applied-flag"><strong>Applied — already live.</strong> Tim reviewed the before/after comparison and approved this change directly; Oversight and Judgment were respaced across the Working Relationship Progression Table, the PCF 7.0 sandbox, and the Understanding Working-Relationship Progression page the same session. This page is the durable record of why, not a pending request. It also backs the new Rule 20 (WR Category Palette Lock) in the Framework Content Generation Rules.</div>
+
+  <div class="gov-flag"><strong>Token Lock note (Rule 1):</strong> Human-only (#0D2D4F) is untouched by this change and stays intentionally identical to the Rule 1 navy-d token — that match is deliberate, not coincidental, and this proposal doesn't disturb it. Automation, Agent-delegation, and Augmentation are also untouched; only Oversight and Judgment move.</div>
+
+  <h2>Why This Now</h2>
+  <p>The six WR categories were carrying real classification data across all 118 PCF 7.0 activities — the Working Relationship Progression Table and the live sandbox — with no accessibility validation behind the palette and no locked source of truth for it, the same gap Work Pattern Color Standard closed for the five work patterns a few weeks earlier. Reviewing the live badges directly, the three darkest tiers — Oversight, Judgment, Human-only — read as visually similar enough to raise the same question that prompted that earlier proposal: does this actually hold up, or does it just look plain? Running the same rigor (CIEDE2000 color-difference, simulated across deuteranopia and protanopia) gave a real answer rather than an impression.</p>
+
+  <h2>The Problem</h2>
+  <p>Unlike the work-pattern palette's failure, this isn't a colorblind-specific collapse — the WR ramp is a single hue throughout, so it's already inherently robust to red-green colorblindness; simulated deuteranopia and protanopia barely move the numbers at all. The real issue is perceptual compression at the dark end: CIEDE2000 correctly weights a given lightness step as less significant the darker it gets, so the bottom of a pure-lightness ramp reads as "they all look alike" even when the raw hex values aren't objectively closer together than the lighter tiers.</p>
+
+  <div class="mock-panel">
+    <h3>Current palette</h3>
+    <div class="compare-row">
+      <div class="compare-col">
+        <div class="cap">Normal vision</div>
+        <div class="mini-mock">
+          <div class="swatches">
+            <div class="sw-row"><span class="sw" style="background:#7DAEE0"></span>Automation · 10%</div>
+            <div class="sw-row"><span class="sw" style="background:#5A8DC4"></span>Agent-delegation · 28%</div>
+            <div class="sw-row"><span class="sw" style="background:#3D6FA8"></span>Augmentation · 48%</div>
+            <div class="sw-row"><span class="sw" style="background:#29528A"></span>Oversight · 62%</div>
+            <div class="sw-row"><span class="sw" style="background:#1E3F6E"></span>Judgment · 82%</div>
+            <div class="sw-row"><span class="sw" style="background:#0D2D4F"></span>Human-only · 95%</div>
+          </div>
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="cap">Simulated — deuteranopia</div>
+        <div class="mini-mock deutan">
+          <div class="swatches">
+            <div class="sw-row"><span class="sw" style="background:#7DAEE0"></span>Automation · 10%</div>
+            <div class="sw-row"><span class="sw" style="background:#5A8DC4"></span>Agent-delegation · 28%</div>
+            <div class="sw-row"><span class="sw" style="background:#3D6FA8"></span>Augmentation · 48%</div>
+            <div class="sw-row"><span class="sw" style="background:#29528A"></span>Oversight · 62%</div>
+            <div class="sw-row"><span class="sw" style="background:#1E3F6E"></span>Judgment · 82%</div>
+            <div class="sw-row"><span class="sw" style="background:#0D2D4F"></span>Human-only · 95%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:10px;font-size:12.5px">Measured (CIEDE2000): Oversight vs. Judgment at 6.7 normal / 6.3 deutan / 6.8 protan, and Judgment vs. Human-only at 6.5 / 6.7 / 7.0 — both noticeably weaker than the palette's other three adjacent pairs, which all sit at 10.3&ndash;11.4 regardless of vision type.</p>
+  </div>
+
+  <h2>The Recommendation</h2>
+  <p>Respace Oversight and Judgment only. Pure lightness adjustment can't fix this on its own — CIEDE2000's dark-end compression means a bigger raw lightness step buys less separation than the same step would in the midtones, and Human-only's lightness is fixed to the locked navy-d token. So both moving colors also pick up a bit more saturation and a small hue nudge, giving a second dimension of separation instead of relying on darkness alone. Both stay inside the existing family's hue (~210&ndash;216&deg;) and saturation (~46&ndash;72%) envelope, so they read as part of the same navy ramp rather than an outlier — a mathematically stronger candidate for Judgment was found and rejected because it pushed saturation to 85% and the hue off-family, which would have looked like a different color entirely.</p>
+
+  <div class="mock-panel">
+    <h3>Recommended palette — Oversight &amp; Judgment respaced</h3>
+    <div class="compare-row">
+      <div class="compare-col">
+        <div class="cap">Normal vision</div>
+        <div class="mini-mock">
+          <div class="swatches">
+            <div class="sw-row"><span class="sw" style="background:#7DAEE0"></span>Automation · 10%</div>
+            <div class="sw-row"><span class="sw" style="background:#5A8DC4"></span>Agent-delegation · 28%</div>
+            <div class="sw-row"><span class="sw" style="background:#3D6FA8"></span>Augmentation · 48%</div>
+            <div class="sw-row"><span class="sw" style="background:#2457A3"></span>Oversight · 62%</div>
+            <div class="sw-row"><span class="sw" style="background:#204474"></span>Judgment · 82%</div>
+            <div class="sw-row"><span class="sw" style="background:#0D2D4F"></span>Human-only · 95%</div>
+          </div>
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="cap">Simulated — deuteranopia</div>
+        <div class="mini-mock deutan">
+          <div class="swatches">
+            <div class="sw-row"><span class="sw" style="background:#7DAEE0"></span>Automation · 10%</div>
+            <div class="sw-row"><span class="sw" style="background:#5A8DC4"></span>Agent-delegation · 28%</div>
+            <div class="sw-row"><span class="sw" style="background:#3D6FA8"></span>Augmentation · 48%</div>
+            <div class="sw-row"><span class="sw" style="background:#2457A3"></span>Oversight · 62%</div>
+            <div class="sw-row"><span class="sw" style="background:#204474"></span>Judgment · 82%</div>
+            <div class="sw-row"><span class="sw" style="background:#0D2D4F"></span>Human-only · 95%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:10px;font-size:12.5px">Validated (CIEDE2000): every adjacent pair in the six-category ramp now sits in an 8.0&ndash;11.5 band across normal vision, deuteranopia, and protanopia alike — up from a 6.3&ndash;11.4 spread with two weak pairs. Weakest link: Oversight vs. Judgment and Judgment vs. Human-only, both now at 8.0 (was 6.3&ndash;6.7).</p>
+  </div>
+
+  <h2>Proposed Tokens</h2>
+  <table>
+    <thead><tr><th>Category</th><th>H%</th><th>Hex</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Automation</td><td>10%</td><td>#7DAEE0</td><td class="unchanged">Unchanged</td></tr>
+      <tr><td class="row-name">Agent-delegation</td><td>28%</td><td>#5A8DC4</td><td class="unchanged">Unchanged</td></tr>
+      <tr><td class="row-name">Augmentation</td><td>48%</td><td>#3D6FA8</td><td class="unchanged">Unchanged</td></tr>
+      <tr><td class="row-name">Oversight</td><td>62%</td><td>#2457A3</td><td>Was #29528A — moved for separation from Judgment</td></tr>
+      <tr><td class="row-name">Judgment</td><td>82%</td><td>#204474</td><td>Was #1E3F6E — moved for separation from Oversight and Human-only</td></tr>
+      <tr><td class="row-name">Human-only</td><td>95%</td><td>#0D2D4F</td><td class="unchanged">Unchanged — locked to the Rule 1 navy-d token</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Build Note</h2>
+  <p>Already applied everywhere this palette was live: the WR_CATS source-of-truth object in the PCF 7.0 sandbox (badges render from it directly, so nothing else in that file needed touching), all 130 hardcoded per-activity swatch instances in the Working Relationship Progression Table, the ramp illustration on Understanding Working-Relationship Progression, and two sandbox UI elements that had independently borrowed Judgment's exact hex (the "Judgment + Oversight" summary pill and the "Modeled" provenance badge) — both updated to match so they don't go stale against the badges around them. Verified live in a headless browser: zero elements anywhere in the three files still resolve to the old colors. The next domain to get a WR rollout inherits this same six-value set with no further validation needed, per Rule 20.</p>
+
+  <div style="border-top:1px solid var(--border);margin-top:30px;padding-top:16px;text-align:center">
+    <span style="font-size:12px;color:var(--lgray)">Tim King &amp; Claude &nbsp;|&nbsp; Applied &nbsp;|&nbsp; September 2026</span>
+  </div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;·&nbsp; Applied<br>
+    HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+</body>
+</html>
