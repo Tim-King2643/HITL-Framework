@@ -4221,8 +4221,16 @@ PCF.forEach(cat => {
 const nav = document.getElementById('sidebar-nav');
 PCF.forEach((cat,idx) => {
   const li = document.createElement('li');
-  li.innerHTML = `<a href="#" title="${cat.code} ${cat.name}"><span class="pcf-num">${cat.code}</span>${cat.name}</a>`;
-  li.onclick = () => render(idx);
+  if (cat.code === "7.0") {
+    // PCF 7.0's current working dashboard lives in the sandbox (the live
+    // Working-Relationship model, kept up to date); this in-page render()
+    // path still shows the older, unreconciled M1-M5 maturity data, so
+    // this item links out instead of switching to that stale internal view.
+    li.innerHTML = `<a href="sandbox/pcf7.html" title="${cat.code} ${cat.name} — current working dashboard"><span class="pcf-num">${cat.code}</span>${cat.name}</a>`;
+  } else {
+    li.innerHTML = `<a href="#" title="${cat.code} ${cat.name}"><span class="pcf-num">${cat.code}</span>${cat.name}</a>`;
+    li.onclick = () => render(idx);
+  }
   nav.appendChild(li);
 });
 
