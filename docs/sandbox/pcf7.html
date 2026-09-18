@@ -21,6 +21,13 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
 
+/* ── Masthead — site standard ─────────────────────────────────────────── */
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 4px; }
+.masthead .tagline { font-size: 13px; color: #fff; font-style: italic; margin-bottom: 18px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
 /* ── Draft ribbon — exact required block per docs/wip/index.html's
      "HOW TO ADD A NEW WIP ITEM" instructions ───────────────────────────── */
 .draft-ribbon {
@@ -317,6 +324,15 @@ td.crud-d .crud-entity { color: #991B1B; }
 </style>
 </head>
 <body>
+
+<div class="masthead">
+  <h1>Human-AI Partnership Framework</h1>
+  <div class="tagline">Where human judgment belongs</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+  </nav>
+</div>
 
 <div class="draft-ribbon">
   <strong>Draft — Not Yet Part of the Framework</strong>
