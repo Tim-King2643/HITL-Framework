@@ -180,13 +180,13 @@ td:first-child { text-align: left; }
    the "Progression Gates" mockup exploration (Sept 19, 2026). One open
    info panel per row at a time, same pattern as .wr-cons-pop. ─────────── */
 .gates-track { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding: 4px 0 2px; }
-.gate-node { display: flex; flex-direction: column; align-items: center; min-width: 76px; flex: 0 0 auto; }
-.gate-redline { width: 20px; height: 2px; background: #CC3333; margin: 0 0 3px; }
+.gate-node { display: flex; flex-direction: column; align-items: center; min-width: 96px; flex: 0 0 auto; }
+.gate-redline { width: 22px; height: 2px; background: #CC3333; margin: 0 0 3px; }
 .gate-redline-off { background: transparent; }
-.gate-circle { all: unset; width: 16px; height: 16px; border-radius: 50%; box-sizing: border-box; }
-.gate-label { all: unset; cursor: pointer; font-size: 9.5px; font-weight: 500; color: #000; text-align: center; margin-top: 3px; line-height: 1.2; white-space: nowrap; }
-.gate-arrow { all: unset; cursor: pointer; width: 20px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; margin-top: 8px; }
-.gates-info { display: none; margin-top: 8px; width: 100%; max-width: 520px; background: #FAFBFD; border: 1px solid var(--border); border-radius: 7px; padding: 8px 10px; text-align: left; }
+.gate-circle { all: unset; width: 20px; height: 20px; border-radius: 50%; box-sizing: border-box; }
+.gate-label { all: unset; cursor: pointer; font-size: 10px; font-weight: 500; color: #000; text-align: center; margin-top: 3px; line-height: 1.25; white-space: nowrap; }
+.gate-arrow { all: unset; cursor: pointer; width: 26px; height: 20px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; margin-top: 0; }
+.gates-info { display: none; margin-top: 10px; width: 100%; max-width: 460px; background: #FAFBFD; border: 1px solid var(--border); border-radius: 7px; padding: 10px 14px; text-align: left; }
 .gates-info.open { display: block; }
 .gates-info-title { font-size: 11px; font-weight: 600; color: var(--navy-d); margin-bottom: 6px; }
 .gates-info-label { font-size: 9px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); margin-bottom: 3px; }
@@ -199,9 +199,21 @@ td:first-child { text-align: left; }
 .gates-rollup-label { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .04em; color: var(--lgray); margin-right: 3px; }
 .gates-rollup-sep { margin: 0 8px; color: var(--lgray); }
 .gates-cons-row { display: flex; justify-content: flex-end; align-items: baseline; gap: 6px; margin-bottom: 6px; position: relative; }
-.gates-cons-label { font-size: 9.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); }
+.gates-cons-label { font-size: 9.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); line-height: 14px; }
 .gates-cons-row .wr-cons { font-weight: 700; font-size: 13px; }
 .gates-cons-row .wr-cons-pop { position: absolute; top: 100%; right: 0; z-index: 5; }
+
+/* ── Activity card — exact look from the "Progression Gates" mockup:
+   code + name + Consequence of Error on one header line, gates track
+   below, single info panel below that. One card per activity, replacing
+   the old split name-column / data-column table row. ─────────────────── */
+.gates-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin: 6px 12px; display: flex; flex-direction: column; gap: 12px; }
+.gates-card-header { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+.gates-card-code { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--navy); font-weight: 500; line-height: 14px; }
+.gates-card-name { font-size: 14px; font-weight: 600; color: var(--navy-d); line-height: 14px; }
+.gates-card-cons { margin-left: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; position: relative; }
+.gates-card-cons .wr-cons-pop { position: absolute; top: 100%; right: 0; z-index: 5; width: 230px; }
+.gates-card-cons .wr-cons { font-weight: 700; font-size: 13px; }
 
 /* ── Aggregation (People View rollup) + Readiness Gate view ─────────────
    (Sept 14, 2026, per Working_Relationship_Progression_Methodology.docx)
@@ -1692,10 +1704,23 @@ function gatesTrackHtml(code) {
     '<div class="gates-info" id="' + panelId + '"></div>';
 }
 
-function wrRowCellsGates(code) {
+// Full activity card — the exact look from the "Progression Gates" mockup:
+// code + name + Consequence of Error on one header line, the six-step
+// gates track below, and the single info panel below that. Spans the
+// whole row (colspan) rather than splitting name/content into separate
+// table columns, same as the mockup's card-per-activity layout.
+function activityCardHtml(code, name, indentPx) {
   const w = wrCell(code);
-  const consHtml = '<div class="gates-cons-row"><span class="gates-cons-label">Consequence of Error</span>' + consCell(w.cons) + consChecklistPop(code, w.consFactors, w.consNote) + '</div>';
-  return '<td class="wr-left gates-cell">' + consHtml + gatesTrackHtml(code) + '</td>';
+  return '<div class="gates-card" style="margin-left:' + indentPx + 'px;">' +
+    '<div class="gates-card-header">' +
+    '<span class="gates-card-code">' + code + '</span>' +
+    '<span class="gates-card-name">' + name + '</span>' +
+    '<div class="gates-card-cons">' +
+    '<span class="gates-cons-label">Consequence of Error</span>' + consCell(w.cons) + consChecklistPop(code, w.consFactors, w.consNote) +
+    '</div>' +
+    '</div>' +
+    gatesTrackHtml(code) +
+    '</div>';
 }
 
 function wrRowCellsRollupGates(l3) {
@@ -1793,17 +1818,21 @@ function render() {
       const l3Icon = hasL4
         ? '<span class="toggle-icon" title="Click to expand">+</span>'
         : '<span class="toggle-icon placeholder"></span>';
-      html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
-        '<td ' + l3ToggleAttrs + '><span class="row-flex"><span class="row-prefix">' + l3Icon + '<span class="pcf-ref">' + l3.code + '</span></span>' +
-        '<span class="row-text">' + l3.name + '</span></span></td>' +
-        (hasL4 ? wrRowCellsRollupGates(l3) : wrRowCellsGates(l3.code)) +
-        '</tr>';
+      if (hasL4) {
+        html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
+          '<td ' + l3ToggleAttrs + '><span class="row-flex"><span class="row-prefix">' + l3Icon + '<span class="pcf-ref">' + l3.code + '</span></span>' +
+          '<span class="row-text">' + l3.name + '</span></span></td>' +
+          wrRowCellsRollupGates(l3) +
+          '</tr>';
+      } else {
+        html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
+          '<td colspan="2" style="padding:0;">' + activityCardHtml(l3.code, l3.name, 8) + '</td>' +
+          '</tr>';
+      }
 
       l3.l4.forEach(l4 => {
         html += '<tr class="row-l4" data-parent="' + g.code + '" data-parent-l3="' + l3.code + '" style="display:none">' +
-          '<td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + l4.code + '</span></span>' +
-          '<span class="row-text">' + l4.name + '</span></span></td>' +
-          wrRowCellsGates(l4.code) +
+          '<td colspan="2" style="padding:0;">' + activityCardHtml(l4.code, l4.name, 24) + '</td>' +
           '</tr>';
       });
     });
