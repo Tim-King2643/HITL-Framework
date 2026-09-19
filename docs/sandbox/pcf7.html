@@ -172,8 +172,32 @@ td:first-child { text-align: left; }
 .wr-prov-rollup { background:rgba(27,143,130,.10); color:#12695F; border:1px solid rgba(27,143,130,.32); }
 #thead-wr th.wr-col { min-width: 185px; }
 #thead-wr th.wr-col-pc { min-width: 207px; }
+#thead-wr th.wr-col-gates { min-width: 560px; }
 #main-table td.wr-left { text-align: left !important; }
 #thead-wr th { text-align: left !important; }
+
+/* ── Progression Gates track — the six-step ramp per activity, ported from
+   the "Progression Gates" mockup exploration (Sept 19, 2026). One open
+   info panel per row at a time, same pattern as .wr-cons-pop. ─────────── */
+.gates-track { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding: 4px 0 2px; }
+.gate-node { display: flex; flex-direction: column; align-items: center; min-width: 76px; flex: 0 0 auto; }
+.gate-redline { width: 20px; height: 2px; background: #CC3333; margin: 0 0 3px; }
+.gate-redline-off { background: transparent; }
+.gate-circle { all: unset; width: 16px; height: 16px; border-radius: 50%; box-sizing: border-box; }
+.gate-label { all: unset; cursor: pointer; font-size: 9.5px; font-weight: 500; color: #000; text-align: center; margin-top: 3px; line-height: 1.2; white-space: nowrap; }
+.gate-arrow { all: unset; cursor: pointer; width: 20px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; margin-top: 8px; }
+.gates-info { display: none; margin-top: 8px; width: 100%; max-width: 520px; background: #FAFBFD; border: 1px solid var(--border); border-radius: 7px; padding: 8px 10px; text-align: left; }
+.gates-info.open { display: block; }
+.gates-info-title { font-size: 11px; font-weight: 600; color: var(--navy-d); margin-bottom: 6px; }
+.gates-info-label { font-size: 9px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); margin-bottom: 3px; }
+.gates-info-label-2 { border-top: 1px solid var(--border); padding-top: 8px; margin-top: 2px; }
+.gates-info-def { font-size: 11px; line-height: 1.45; color: var(--gray); margin: 0 0 8px; }
+.gates-req-list { list-style: none; margin: 0 0 8px; padding: 0; }
+.gates-req-list li { display: flex; align-items: flex-start; gap: 7px; font-size: 11px; line-height: 1.5; padding: 2px 0; color: var(--gray); }
+.gates-req-list li::before { content: ''; flex: 0 0 auto; width: 13px; height: 13px; margin-top: 1px; border-radius: 3px; border: 1.3px dashed #C6CDD9; display: inline-block; }
+.gates-rollup { font-size: 11px; color: var(--gray); }
+.gates-rollup-label { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .04em; color: var(--lgray); margin-right: 3px; }
+.gates-rollup-sep { margin: 0 8px; color: var(--lgray); }
 
 /* ── Aggregation (People View rollup) + Readiness Gate view ─────────────
    (Sept 14, 2026, per Working_Relationship_Progression_Methodology.docx)
@@ -307,8 +331,9 @@ td.crud-d .crud-entity { color: #991B1B; }
   <span class="tag">Sandbox</span>
   <strong>PCF 7.0 — Develop and Manage Human Resources.</strong>
   This is a live working copy of the full PCF 7.0 content — Working-Relationship Table, RACI Table, Data View (CRUD Matrix), and
-  People View. The Working-Relationship Table shows the
-  <strong>Current State &rarr; Future State &rarr; Progression Ceiling</strong> model plus Consequence of Error,
+  People View. The Working-Relationship Table shows each activity's
+  <strong>Current State &rarr; Progression Ceiling</strong> plotted on the full six-step ramp, with the Per-Transition Evidence Ladder
+  as clickable gates in between, plus Consequence of Error,
   for the 118 activities that have been hand-classified by working relationship so far. Everything here is real data pulled from the
   live framework &mdash; nothing is simulated. Leave a reaction or a note on any row using the <strong>Notes</strong> button; GiGi and Tim can both see
   and add to them here.
@@ -337,16 +362,14 @@ td.crud-d .crud-entity { color: #991B1B; }
     <div class="card lens-section" id="panel-maturity">
       <div class="card-header">
         <h3>Working-Relationship Table &mdash; PCF 7.0</h3>
-        <span>118 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 118 working-relationship classified</span>
+        <span>118 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 118 working-relationship classified &middot; click a step, its circle, or a gate arrow for detail</span>
       </div>
       <div class="table-wrap">
         <table id="main-table">
           <thead id="thead-wr">
             <tr>
               <th>L1-Domain/L2-Process Group/L3-Process/L4-Activity</th>
-              <th class="nowrap wr-col">Current<br>State</th>
-              <th class="nowrap wr-col">Future<br>State</th>
-              <th class="nowrap wr-col-pc">Progression<br>Ceiling</th>
+              <th class="nowrap wr-col-gates">Working Relationship &mdash; Current State &rarr; Progression Ceiling</th>
               <th class="nowrap">Consequence<br>of Error</th>
               <th class="nowrap">Provenance</th>
               <th class="notes-cell">Reactions<br>&amp; Notes</th>
@@ -1533,6 +1556,159 @@ const CEILING_FACTORS = [
   { key: 'top', label: 'Already at Top of Ramp' },
 ];
 
+// ── Progression Gates track — the six-step ramp per activity, ported from
+// the "Progression Gates" mockup exploration (Sept 19, 2026). Reuses
+// WR_DATA (real, already-classified data) unchanged. The only new content
+// is the per-step "what the work looks like here" text, templated from the
+// six standard category definitions (Table 2 of the methodology doc)
+// applied to each activity's own name and RACI-Accountable role — not
+// hand-authored per activity, given the scale (118 activities × 6 steps).
+const CATS_ORDER = ["Human-only", "Judgment", "Oversight", "Augmentation", "Agent-delegation", "Automation"];
+
+const STEP_DEFINITIONS = {
+  "Human-only": "No meaningful AI role, by design — legal, ethical, or relational reasons hold regardless of maturity level.",
+  "Judgment": "A person makes the actual call. AI's role is informational only — it can supply data or a ranking, but the reasoning and decision are the person's.",
+  "Oversight": "AI performs or proposes the work; a person reviews and approves each instance before it takes effect.",
+  "Augmentation": "A person remains the primary actor and does the work; AI assists — drafts, suggests, summarizes — but doesn't act on its own.",
+  "Agent-delegation": "An AI agent performs the work autonomously within policy bounds; a person handles only flagged exceptions, not every instance.",
+  "Automation": "AI performs and completes the work with no person in the loop for that instance."
+};
+
+// Per Working_Relationship_Progression_Methodology.docx §6, "Per-Transition
+// Evidence Ladder" — generic evidence for each of the 5 transitions, the
+// same for every activity crossing it.
+const GATE_EVIDENCE = [
+  ["AI-supplied input is relevant and useful to the person doing the work", "No autonomous action exists yet, so there's no error rate to measure"],
+  ["AI's proposed action agrees with what the human would decide, most of the time", "Enough real instances have run to trust that agreement rate"],
+  ["A high share of full-review instances pass clean (audit-pass rate)", "That clean rate holds up sustained over real volume"],
+  ["Accuracy/error rate proven within defined policy bounds", "System reliably flags when it's out of bounds (exception-detection recall)"],
+  ["Sustained low exception rate over real volume", "An explicit governance sign-off gate layered on top (a policy choice, not just a technical threshold)"]
+];
+const GATE_TITLES = ["Human-only → Judgment", "Judgment → Oversight", "Oversight → Augmentation", "Augmentation → Agent-delegation", "Agent-delegation → Automation"];
+
+// code -> { name, role }, built once from the real PCF7 tree.
+const CODE_INFO = {};
+(function buildCodeInfo() {
+  cat.groups.forEach(function (g) {
+    g.l3.forEach(function (l3) {
+      const role = (l3.raci && l3.raci.A) ? l3.raci.A.split(' · ')[0].split(',')[0].trim() : 'The accountable role';
+      if (l3.l4 && l3.l4.length) {
+        l3.l4.forEach(function (l4) { CODE_INFO[l4.code] = { name: l4.name, role: role }; });
+      } else {
+        CODE_INFO[l3.code] = { name: l3.name, role: role };
+      }
+    });
+  });
+})();
+
+function lowerFirst(s) { return s.charAt(0).toLowerCase() + s.slice(1); }
+
+function stepContextText(category, activityName, role) {
+  const act = lowerFirst(activityName);
+  switch (category) {
+    case "Human-only": return role + " handles " + act + " directly — AI has no role here, by design.";
+    case "Judgment": return role + " decides on " + act + "; AI can supply information or a ranking, but the call and its reasoning stay " + role.toLowerCase() + "'s.";
+    case "Oversight": return "AI proposes or performs " + act + "; " + role + " reviews and approves each instance before it takes effect.";
+    case "Augmentation": return role + " remains the primary actor on " + act + "; AI assists by drafting, suggesting, or summarizing.";
+    case "Agent-delegation": return "An AI agent performs " + act + " autonomously within policy bounds; " + role + " only handles flagged exceptions.";
+    case "Automation": return "AI completes " + act + " with no person involved for that instance.";
+    default: return "";
+  }
+}
+
+function gatesInfoContent(code, key) {
+  const w = wrCell(code);
+  const info = CODE_INFO[code] || { name: code, role: 'The accountable role' };
+  if (key === 'ceil') {
+    const items = CEILING_FACTORS.map(function (f) {
+      const on = (w.ceilingFactors || []).indexOf(f.key) !== -1;
+      return '<li class="' + (on ? 'wr-cf-on' : 'wr-cf-off') + '"><span class="wr-cf-box">' + (on ? '&#10003;' : '') + '</span>' + f.label + '</li>';
+    }).join('');
+    return '<div class="gates-info-title">Why the ceiling sits at ' + w.ceiling + '</div>' +
+      '<ul class="wr-cf-list">' + items + '</ul>' +
+      '<p class="wr-cf-note">' + (w.ceilingNote || '') + '</p>';
+  }
+  if (key.charAt(0) === 'g') {
+    const gi = parseInt(key.slice(1), 10);
+    return '<div class="gates-info-title">Gate: ' + GATE_TITLES[gi] + '</div>' +
+      '<ul class="gates-req-list">' + GATE_EVIDENCE[gi].map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>' +
+      '<p class="wr-cf-note">This is the generic Evidence Ladder requirement for this transition type — the same for every activity crossing it, not specific to ' + code + '.</p>';
+  }
+  if (key.charAt(0) === 'n') {
+    const ni = parseInt(key.slice(1), 10);
+    const label = CATS_ORDER[ni];
+    return '<div class="gates-info-title">' + label + ' — what the work looks like here</div>' +
+      '<div class="gates-info-label">Standard definition</div>' +
+      '<p class="gates-info-def">' + STEP_DEFINITIONS[label] + '</p>' +
+      '<div class="gates-info-label gates-info-label-2">For this activity</div>' +
+      '<p class="wr-cf-note" style="border-top:none;padding-top:0;">' + stepContextText(label, info.name, info.role) + '</p>';
+  }
+  return '';
+}
+
+function toggleGatesInfo(ev, code, key) {
+  ev.stopPropagation();
+  const panel = document.getElementById('gp-' + code.replace(/\./g, '-'));
+  if (!panel) return;
+  const already = panel.classList.contains('open') && panel.dataset.key === key;
+  document.querySelectorAll('.wr-cons-pop.open, .gates-info.open').forEach(function (p) { p.classList.remove('open'); });
+  if (!already) {
+    panel.innerHTML = gatesInfoContent(code, key);
+    panel.dataset.key = key;
+    panel.classList.add('open');
+  }
+}
+
+function gatesTrackHtml(code) {
+  const w = wrCell(code);
+  if (!w.classified) return '<span class="wr-blank">&mdash; not yet reasoned &mdash;</span>';
+  const currentIdx = CATS_ORDER.indexOf(w.current);
+  const ceilingIdx = CATS_ORDER.indexOf(w.ceiling);
+  const panelId = 'gp-' + code.replace(/\./g, '-');
+  let nodesHtml = '';
+  for (let i = 0; i < 6; i++) {
+    const label = CATS_ORDER[i];
+    const isCurrent = i === currentIdx, isCeiling = i === ceilingIdx;
+    const bg = (isCurrent || isCeiling) ? WR_CATS[label].color : '#fff';
+    const border = (isCurrent || isCeiling) ? '3px solid ' + WR_CATS[label].color : '2px solid #DDE3EE';
+    let circleOnclick = '', circleCursor = 'default';
+    if (isCeiling) { circleOnclick = "toggleGatesInfo(event,'" + code + "','ceil')"; circleCursor = 'pointer'; }
+    else if (isCurrent) { circleOnclick = "toggleGatesInfo(event,'" + code + "','n" + i + "')"; circleCursor = 'pointer'; }
+    const redLine = isCeiling ? '<div class="gate-redline"></div>' : '<div class="gate-redline gate-redline-off"></div>';
+    nodesHtml += '<div class="gate-node">' + redLine +
+      '<button type="button" class="gate-circle" style="cursor:' + circleCursor + ';background:' + bg + ';border:' + border + ';" ' + (circleOnclick ? 'onclick="' + circleOnclick + '"' : '') + '></button>' +
+      '<button type="button" class="gate-label" onclick="' + "toggleGatesInfo(event,'" + code + "','n" + i + "')" + '">' + label + '</button>' +
+      '</div>';
+    if (i < 5) {
+      let gateState = 'locked';
+      if (i < currentIdx) gateState = 'passed'; else if (i >= currentIdx && i < ceilingIdx) gateState = 'open';
+      const glyph = gateState === 'passed' ? '&#10003;' : '&rarr;';
+      const gcolor = gateState === 'passed' ? '#166534' : (gateState === 'open' ? '#5A8DC4' : '#DDE3EE');
+      nodesHtml += '<button type="button" class="gate-arrow" style="color:' + gcolor + ';" onclick="' + "toggleGatesInfo(event,'" + code + "','g" + i + "')" + '">' + glyph + '</button>';
+    }
+  }
+  return '<div class="gates-track">' + nodesHtml + '</div>' +
+    '<div class="gates-info" id="' + panelId + '"></div>';
+}
+
+function wrRowCellsGates(code) {
+  const w = wrCell(code);
+  return '<td class="wr-left gates-cell">' + gatesTrackHtml(code) + '</td>' +
+    '<td class="wr-left wr-cons-cell">' + consCell(w.cons) + consChecklistPop(code, w.consFactors, w.consNote) + '</td>' +
+    '<td>' + provBadge(w.classified) + '</td>' +
+    '<td class="notes-cell">' + notesWidget(code) + '</td>';
+}
+
+function wrRowCellsRollupGates(l3) {
+  const l3s = [l3];
+  const rollupHtml = '<div class="gates-rollup"><span class="gates-rollup-label">Current</span>' + wrRollupCell(l3s, 'rel') +
+    '<span class="gates-rollup-sep">&rarr;</span><span class="gates-rollup-label">Ceiling</span>' + wrRollupCell(l3s, 'ceiling') + '</div>';
+  return '<td class="wr-left">' + rollupHtml + '</td>' +
+    '<td class="wr-left">' + consRollupCell(l3s) + '</td>' +
+    '<td>' + provBadgeRollup() + '</td>' +
+    '<td class="notes-cell">' + notesWidget(l3.code) + '</td>';
+}
+
 function factorChecklistPop(code, factorList, activeFactors, note) {
   if (!activeFactors || !activeFactors.length) return '';
   const items = factorList.map(function (f) {
@@ -1601,7 +1777,7 @@ function render() {
 
   html += '<tr class="row-l1">' +
     '<td><div style="font-weight:700;font-size:13px;">' + cat.code + ' &nbsp;' + cat.name + '<span class="pcf-ref">L1 Domain</span></div></td>' +
-    '<td colspan="6" style="background:#0D2D4F;"></td>' +
+    '<td colspan="4" style="background:#0D2D4F;"></td>' +
     '</tr>';
 
   cat.groups.forEach(g => {
@@ -1609,7 +1785,7 @@ function render() {
       '<td class="indent-l2 toggle-l2" data-group="' + g.code + '" onclick="toggleGroup(\'' + g.code + '\',this)">' +
       '<span class="row-flex"><span class="row-prefix"><span class="toggle-icon" title="Click to collapse">&minus;</span>' + g.code + '</span>' +
       '<span class="row-text">' + g.name + '</span></span></td>' +
-      '<td colspan="6"></td>' +
+      '<td colspan="4"></td>' +
       '</tr>';
 
     g.l3.forEach(l3 => {
@@ -1623,14 +1799,14 @@ function render() {
       html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
         '<td ' + l3ToggleAttrs + '><span class="row-flex"><span class="row-prefix">' + l3Icon + '<span class="pcf-ref">' + l3.code + '</span></span>' +
         '<span class="row-text">' + l3.name + '</span></span></td>' +
-        (hasL4 ? wrRowCellsRollup(l3) : wrRowCells(l3.code)) +
+        (hasL4 ? wrRowCellsRollupGates(l3) : wrRowCellsGates(l3.code)) +
         '</tr>';
 
       l3.l4.forEach(l4 => {
         html += '<tr class="row-l4" data-parent="' + g.code + '" data-parent-l3="' + l3.code + '" style="display:none">' +
           '<td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + l4.code + '</span></span>' +
           '<span class="row-text">' + l4.name + '</span></span></td>' +
-          wrRowCells(l4.code) +
+          wrRowCellsGates(l4.code) +
           '</tr>';
       });
     });
@@ -1680,7 +1856,7 @@ function setView(v) {
   document.getElementById('panel-gates').style.display = v === 'gates' ? '' : 'none';
 
   const notes = {
-    wr: 'Current State / Future State / Progression Ceiling — the real model from Working_Relationship_Progression_Methodology.docx. Blank cells mean that reasoning hasn’t been done yet, not that the answer is zero.',
+    wr: 'Current State and Progression Ceiling — the real model from Working_Relationship_Progression_Methodology.docx, plotted on the six-step ramp with the Per-Transition Evidence Ladder shown as gates in between. Blank rows mean that reasoning hasn’t been done yet, not that the answer is zero.',
     raci: 'Real reasoned-match RACI, same data the live dashboard’s RACI Table renders. R falls back to the Accountable role (marked "from Accountable") wherever no separate Responsible was identified.',
     data: 'Entity × process CRUD — 22 of 37 L3s have real confirmed CRUD data, ported unchanged from the live dashboard’s Data View lens.',
     people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced. Each role’s WR rollup (Current State) is real — an equal-weighted mean across its Accountable L3s, shown only once every one of them is fully classified.',
@@ -1698,6 +1874,19 @@ function buildLegend() {
     const span = document.createElement('span');
     span.className = 'legend-item';
     span.innerHTML = '<span class="legend-swatch" style="background:' + c.color + '"></span>' + name + '<span class="legend-h">H&nbsp;' + c.h + '%</span>';
+    el.appendChild(span);
+  });
+  const gateHints = [
+    { html: '<span style="display:inline-flex;flex-direction:column;align-items:center;gap:2px;"><span style="width:14px;height:2px;background:#CC3333;display:block;"></span><span style="width:10px;height:10px;border-radius:50%;background:#7B9FD1;display:block;"></span></span>', label: 'Progression Ceiling — click circle for why it stops here' },
+    { html: '<span style="width:10px;height:10px;border-radius:50%;background:var(--navy);display:inline-block;"></span>', label: 'Current State — click circle or step name for detail' },
+    { html: '<span style="font-weight:700;color:#166534;">&#10003;</span>', label: 'Gate passed' },
+    { html: '<span style="font-weight:700;color:#5A8DC4;">&rarr;</span>', label: 'Open gate — click for evidence needed' },
+    { html: '<span style="font-weight:700;color:#DDE3EE;">&rarr;</span>', label: 'Locked past the ceiling' },
+  ];
+  gateHints.forEach(h => {
+    const span = document.createElement('span');
+    span.className = 'legend-item';
+    span.innerHTML = h.html + h.label;
     el.appendChild(span);
   });
 }
