@@ -137,7 +137,6 @@ td:first-child { text-align: left; }
 /* ── Working-Relationship view ───────────────────────────────────────── */
 .wr-badge { display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:400; white-space:nowrap; }
 .wr-swatch { width:9px; height:9px; border-radius:2px; display:inline-block; flex:0 0 auto; }
-.wr-h { font-family:'DM Mono',monospace; font-size:10px; color:var(--lgray); margin-left:2px; }
 .wr-blank { color:#B8C0CC; font-style:italic; font-size:11px; }
 .wr-open { color:#B8873F; font-style:italic; font-size:11px; font-weight:400; }
 .wr-cons { font-weight:400; font-size:11px; }
@@ -159,7 +158,7 @@ td:first-child { text-align: left; }
 .wr-rollup-line { font-family:'DM Mono',monospace; font-size:10px; margin-top:3px; }
 .wr-rollup-pending { color:#B8C0CC; font-style:italic; }
 .wr-rollup-ready { color:var(--navy-d); }
-.wr-rollup-ready strong { color:var(--navy); }
+.wr-rollup-ready .rollup-val { color:var(--navy); font-weight:400; }
 .gate-axis-cell { color:#B8C0CC; font-style:italic; font-size:10.5px; }
 .gate-status { font-family:'DM Mono',monospace; font-size:9.5px; font-weight:400; padding:2px 7px; border-radius:4px; letter-spacing:.04em; text-transform:uppercase; white-space:nowrap; display:inline-block; }
 .gate-status-unknown { background:#F1F3F6; color:#8A93A0; border:1px solid #DCE1E8; }
@@ -172,7 +171,7 @@ td:first-child { text-align: left; }
 /* ── Notes / reactions widget ────────────────────────────────────────── */
 .notes-cell { min-width: 99px; }
 .notes-toggle {
-  font-size:10.5px; font-weight:600; color:var(--navy); background:#fff; border:1px solid var(--border);
+  font-size:10.5px; font-weight:400; color:var(--navy); background:#fff; border:1px solid var(--border);
   border-radius:5px; padding:3px 9px; cursor:pointer; white-space:nowrap;
 }
 .notes-toggle.has-notes { background:#EEF3FA; border-color:#B8CDE0; }
@@ -185,7 +184,7 @@ td:first-child { text-align: left; }
 .note-entry { font-size:11px; padding:5px 0; border-bottom:1px solid var(--border); }
 .note-entry:last-child { border-bottom:none; }
 .note-entry .who { font-weight:700; color:var(--navy-d); }
-.note-entry .react { font-size:9.5px; padding:1px 6px; border-radius:9px; margin-left:5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; }
+.note-entry .react { font-size:9.5px; padding:1px 6px; border-radius:9px; margin-left:5px; font-weight:400; text-transform:uppercase; letter-spacing:.03em; }
 .react-agree { background:#DCFCE7; color:#166534; }
 .react-question { background:#FEF3C7; color:#7A5A1E; }
 .react-flag { background:#FEE2E2; color:#991B1B; }
@@ -838,214 +837,124 @@ const WR_CATS = {
 const CONS_COLOR = { Low:"#166534", Moderate:"#7A5A1E", High:"#9A3412", Critical:"#991B1B" };
 
 const WR_DATA = {
-  // ── CHRO / PCF 7.1.1 — Develop human resources strategy (10 L4s) ──────────
-  // Piloted alongside HRBP Manager and Recruiter; consequence tags here are
-  // CHRO's own pilot pass, not yet given the individual-walkthrough scrutiny
-  // 7.2 and 7.3's tags received on Sept 14, 2026. Future/ceiling added
-  // Sept 16, 2026 per the Progression Ceiling Rule above.
-  "7.1.1.1":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
-  "7.1.1.2":  { rel:"Judgment",         cons:"High",
-                future:"Judgment", ceiling:"Judgment",
-                note:"Already at ceiling — Executive tier. Defining the domain's own accountability structure isn't a decision to hand to an AI proposal." },
-  "7.1.1.3":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
-  "7.1.1.4":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
-  "7.1.1.5":  { rel:"Oversight",        cons:"Moderate",
-                future:"Agent-delegation", ceiling:"Agent-delegation",
-                note:"Close call, flagged honestly: cost models are treated as a draft CHRO edits or a recommendation CHRO approves. No standing duty requires CHRO's personal review — ceiling moves one notch per the Progression Ceiling Rule." },
-  "7.1.1.6":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
-  "7.1.1.7":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.1.1.8":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment" },
-  "7.1.1.9":  { rel:"Augmentation",     cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.1.1.10": { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
-
-  // ── PCF 7.1.2 — Develop and implement workforce planning, policies, and
-  // strategies (16 L4s) — Sept 16, 2026, Tim-confirmed on first pass ───────
-  "7.1.2.1":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
-  "7.1.2.2":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment",
-                note:"Pay-equity/compensation-discrimination exposure." },
-  "7.1.2.3":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment",
-                note:"Same continuity/favoritism-exposure logic as 7.3.3.4's succession-plan tag." },
-  "7.1.2.4":  { rel:"Augmentation",     cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.1.2.5":  { rel:"Augmentation",     cons:"High", future:"Augmentation", ceiling:"Augmentation",
-                note:"DEI plan design carries real legal exposure in either direction under the current landscape — the exposure attaches at this tier, so it's the ceiling, not a maturity gap." },
-  "7.1.2.6":  { rel:"Agent-delegation", cons:"High", future:"Agent-delegation", ceiling:"Agent-delegation",
-                note:"Same DEI exposure as 7.1.2.5, at execution — the review checkpoint is the safeguard, not a temporary trust gap." },
-  "7.1.2.7":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.1.2.8":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.1.2.9":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.1.2.10": { rel:"Augmentation",     cons:"High", future:"Augmentation", ceiling:"Augmentation",
-                note:"Policy language is the direct compliance surface — same regulatory-teeth logic as 7.2.5.1/7.3.4.6. The compliance-surface duty attaches here, so it's the ceiling." },
-  "7.1.2.11": { rel:"Agent-delegation", cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation",
-                note:"Inconsistent application risks disparate-treatment claims — the review checkpoint is the safeguard, so it's the ceiling, not a maturity gap." },
-  "7.1.2.12": { rel:"Augmentation",     cons:"High", future:"Augmentation", ceiling:"Augmentation",
-                note:"ERISA fiduciary/compliance exposure — the fiduciary sign-off is the ceiling." },
-  "7.1.2.13": { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.1.2.14": { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.1.2.15": { rel:"Agent-delegation", cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation",
-                note:"FLSA exemption-classification risk sits behind job-family structure — the review checkpoint is the ceiling." },
-  "7.1.2.16": { rel:"Augmentation",     cons:"Moderate", future:"Augmentation", ceiling:"Augmentation",
-                note:"ADA essential-functions / FLSA-exemption language risk — the compliance-surface duty is the ceiling." },
-
-  // ── PCF 7.1.3 — Monitor and update HR strategies, plans, and policies
-  // (4 L4s) — Sept 16, 2026, Tim-confirmed on first pass ──────────────────
-  "7.1.3.1":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.1.3.2":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.1.3.3":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.1.3.4":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
-
-  // ── PCF 7.1.4 — Develop competency management models (leaf L3) ─────────
-  // Sept 16, 2026, Tim-confirmed on first pass
-  "7.1.4":    { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment",
-                note:"Foundational model feeds downstream skills/pay/promotion decisions — same tier as 7.1.1's own strategy work." },
-
-  // ── PCF 7.2 — Recruit and select employees (24 L4s, 5 L3s) ────────────────
-  "7.2.1.1":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment",
-                note:"Ceiling resolved to Judgment — a standing strategic/budget-authority duty holds the line permanently. Reconciled to match hitl_working_relationship_final.html." },
-  "7.2.1.2":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.2.1.3":  { rel:"Oversight",        cons:"High",
-                future:"Oversight", ceiling:"Agent-delegation",
-                note:"Ceiling is knowable, but reaching it is a governance choice (removing human sign-off), not only a technical one." },
-  "7.2.1.4":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.2.1.5":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.2.1.6":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.2.1.7":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.2.2.1":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.2.2.2":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.2.2.3":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.2.2.4":  { rel:"Augmentation",     cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.2.2.5":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.2.2.6":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.2.3.1":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
-  "7.2.3.2":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment" },
-  "7.2.3.3":  { rel:"Agent-delegation", cons:"High", future:"Agent-delegation", ceiling:"Agent-delegation",
-                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — compliance/litigation exposure. The review checkpoint (test-validity/adverse-impact under UGESP) is the ceiling." },
-  "7.2.3.4":  { rel:"Judgment",         cons:"Critical",
-                future:"Judgment", ceiling:"Judgment",
-                note:"Already at ceiling, a different reason than 7.4.4's — EEOC/adverse-impact liability on the hiring decision itself." },
-  "7.2.4.1":  { rel:"Agent-delegation", cons:"Moderate", future:"Automation", ceiling:"Automation" },
-  "7.2.4.2":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment" },
-  "7.2.4.3":  { rel:"Oversight",        cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.2.5.1":  { rel:"Automation",       cons:"High", future:"Automation", ceiling:"Automation",
-                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — compliance/litigation exposure, same pattern as 7.3.4.6." },
-  "7.2.5.2":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.2.5.3":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.2.5.4":  { rel:"Automation",       cons:"Moderate", future:"Automation", ceiling:"Automation" },
-
-  // ── PCF 7.3 — Develop and counsel employees (18 L4s, 4 L3s) ───────────────
-  "7.3.1.1":  { rel:"Augmentation",     cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.3.1.2":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.3.1.3":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.3.2.1":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
-  "7.3.2.2":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment",
-                note:"Feeds pay/promotion/termination decisions and carries real discrimination exposure if done badly." },
-  "7.3.2.3":  { rel:"Augmentation",     cons:"High", future:"Augmentation", ceiling:"Augmentation",
-                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — documentation quality is a common deciding factor in wrongful-termination litigation. Someone has to be able to vouch for the record, so the ceiling stays here." },
-  "7.3.2.4":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.3.3.1":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.3.3.2":  { rel:"Judgment",         cons:"Moderate", future:"Judgment", ceiling:"Judgment" },
-  "7.3.3.3":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.3.3.4":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment",
-                note:"A wrong call on a critical role is a continuity risk and can shade into perceived-favoritism exposure." },
-  "7.3.4.1":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.3.4.2":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.3.4.3":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.3.4.4":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.3.4.5":  { rel:"Augmentation",     cons:"High", future:"Agent-delegation", ceiling:"Agent-delegation",
-                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — covers legally mandated training with real statutory deadlines. That's deadline-tracking mechanics, not content judgment, so the ceiling moves one notch rather than staying pinned." },
-  "7.3.4.6":  { rel:"Automation",       cons:"High", future:"Automation", ceiling:"Automation",
-                note:"Moved up to High on individual walkthrough (Sept 14, 2026) — classified Automation, but the one step with real regulatory teeth, same pattern as 7.2.5.1." },
-  "7.3.4.7":  { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
-
-  // ── PCF 7.4 — Manage employee/labor relations (5 leaf L3s, no L4 children) ─
-  // 7.4.1-7.4.3/7.4.5 — Sept 16, 2026, Tim-confirmed on first pass ─────────
-  "7.4.1":    { rel:"Judgment", cons:"Critical", future:"Judgment", ceiling:"Judgment",
-                note:"Moved to Critical (Tim, Sept 16, 2026) — unfair-labor-practice/NLRA and strike/work-stoppage exposure." },
-  "7.4.2":    { rel:"Judgment", cons:"Critical", future:"Judgment", ceiling:"Judgment",
-                note:"Moved to Critical (Tim, Sept 16, 2026) — same exposure class as 7.4.1; a mishandled CBA negotiation carries large-scale financial/legal risk." },
-  "7.4.3":    { rel:"Judgment", cons:"Moderate", future:"Judgment", ceiling:"Judgment",
-                note:"Relationship-maintenance work; lower single-decision stakes than active bargaining or a grievance case." },
-  "7.4.4":    { rel:"Judgment", cons:"Critical",
-                future:"Judgment", ceiling:"Judgment",
-                note:"Already at its human-side ceiling. The Accountable role (HRBP Manager) never changes across the real M1→M5 curve (95%→68%) — the mirror case to an activity already at Automation with no further runway. Consequence-of-error tagged Critical (Sept 16, 2026, Claude's read for Tim to confirm) — grievances routinely stem from CBA violations or protected-activity retaliation, the same exposure class as 7.4.1/7.4.2, and a mishandled one is exactly what escalates into an NLRB charge or litigation." },
-  "7.4.5":    { rel:"Agent-delegation", cons:"High", future:"Agent-delegation", ceiling:"Agent-delegation",
-                note:"Same regulatory-teeth logic as 7.2.5.1/7.3.4.6 — the monitoring/scanning is delegable, but a missed change here creates a real compliance gap. The review-before-acting step is the ceiling, not a maturity gap." },
-
-  // ── PCF 7.5 — Reward and Retain Employees (17 L4s/leaf-L3s, 5 L3s) ─────────
-  // Sept 16, 2026, Tim-confirmed on first pass, future/ceiling applied
-  // per the Progression Ceiling Rule at the same time as Current State.
-  "7.5.1.1":  { rel:"Judgment",         cons:"High", future:"Judgment", ceiling:"Judgment",
-                note:"Same pay-equity exposure as 7.1.2.2 — sets the bands the whole comp system runs on." },
-  "7.5.1.2":  { rel:"Augmentation",     cons:"High", future:"Augmentation", ceiling:"Augmentation",
-                note:"ERISA fiduciary exposure, same logic as 7.1.2.12 — the fiduciary sign-off is the ceiling, not full authorship." },
-  "7.5.1.3":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.5.1.4":  { rel:"Augmentation",     cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.5.1.5":  { rel:"Automation",       cons:"High", future:"Automation", ceiling:"Automation",
-                note:"Direct pay execution — wage-and-hour exposure if mis-administered, same regulatory-teeth logic as 7.5.4/7.4.5." },
-  "7.5.1.6":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.5.1.7":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.5.1.8":  { rel:"Augmentation",     cons:"Moderate", future:"Augmentation", ceiling:"Augmentation",
-                note:"Same pay-equity duty as 7.5.1.1 attaches to reviewing the plan, not just setting it." },
-  "7.5.1.9":  { rel:"Augmentation",     cons:"Moderate", future:"Augmentation", ceiling:"Augmentation",
-                note:"Same ERISA-adjacent duty as 7.5.1.2." },
-  "7.5.2.1":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.5.2.2":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.5.2.3":  { rel:"Automation",       cons:"Moderate", future:"Automation", ceiling:"Automation" },
-  "7.5.2.4":  { rel:"Automation",       cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.5.3.1":  { rel:"Oversight",        cons:"Moderate", future:"Oversight", ceiling:"Oversight",
-                note:"Confidential, individual-situation support work (EAP referrals, family/wellbeing needs) — a human needs to stay meaningfully present given the sensitivity, even with strong AI assistance. Duty-of-care floor, not a maturity gap." },
-  "7.5.3.2":  { rel:"Augmentation",     cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.5.4":    { rel:"Automation",       cons:"High", future:"Automation", ceiling:"Automation",
-                note:"Same regulatory-teeth logic as 7.2.5.1/7.3.4.6/7.4.5 — routine execution, but wage-and-hour/FLSA exposure if it's wrong." },
-  "7.5.5":    { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation",
-                note:"No standing duty — survey/suggestion collection is fully delegable once trust is established." },
-
-  // ── PCF 7.6 — Redeploy and Retire Employees (6 L4s/leaf-L3s, 3 L3s) ─────
-  // Sept 16, 2026, Tim-confirmed on first pass, future/ceiling applied
-  // per the Progression Ceiling Rule at the same time as Current State.
-  "7.6.1": { rel:"Judgment", cons:"High", future:"Judgment", ceiling:"Judgment",
-                note:"EEOC/adverse-impact liability on an individual promotion/demotion decision — same exposure class as 7.2.3.4's hire/reject gate, one tier down since the decision changes rather than creates/ends employment." },
-  "7.6.2.1": { rel:"Automation", cons:"Moderate", future:"Automation", ceiling:"Automation",
-                note:"Same shape as 7.5.2.x benefits-transaction items — rule-based processing against a retirement election." },
-  "7.6.2.2": { rel:"Automation", cons:"High", future:"Automation", ceiling:"Automation",
-                note:"Same regulatory-teeth logic as 7.5.4 — routine execution, but FMLA/ADA interference exposure if leave administration is mishandled." },
-  "7.6.2.3": { rel:"Automation", cons:"High", future:"Automation", ceiling:"Automation",
-                note:"Final-pay and system-access-removal steps carry real wage-and-hour and data-security exposure if delayed or missed." },
-  "7.6.2.4": { rel:"Augmentation", cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.6.3.1": { rel:"Oversight", cons:"High", future:"Oversight", ceiling:"Oversight",
-                note:"Cross-border immigration/tax/labor-law compliance review — same “review-before-acting is the ceiling” logic as 7.4.5. Also the value stream's confirmed specialist-role gap (International HR Management isn't in the current role catalog)." },
-
-  // ── PCF 7.7 — Manage Employee Information (14 L4s/leaf-L3s, 8 L3s) ───
-  // Sept 16, 2026, Tim-confirmed on first pass, future/ceiling applied
-  // per the Progression Ceiling Rule at the same time as Current State.
-  "7.7.1": { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.7.2": { rel:"Oversight", cons:"Moderate", future:"Oversight", ceiling:"Oversight",
-                note:"Exception-pattern inquiries routinely surface sensitive edge cases (harassment concerns, pay disputes, leave confusion) before they're classified as something bigger — same confidentiality/duty-of-care logic as 7.4.4, at a lower stakes tier." },
-  "7.7.3": { rel:"Automation", cons:"Moderate", future:"Automation", ceiling:"Automation",
-                note:"Rule-based record maintenance; errors cascade downstream into pay/benefits but the step itself carries no standing duty." },
-  "7.7.4": { rel:"Automation", cons:"Moderate", future:"Automation", ceiling:"Automation" },
-  "7.7.5": { rel:"Augmentation", cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.7.6": { rel:"Automation", cons:"High", future:"Automation", ceiling:"Automation",
-                note:"Same regulatory-teeth logic as 7.5.4 — T&A data drives payroll/overtime directly; an error here is wage-and-hour/FLSA exposure." },
-  "7.7.7.1": { rel:"Augmentation", cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.7.7.2": { rel:"Augmentation", cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.7.7.3": { rel:"Judgment", cons:"High", future:"Judgment", ceiling:"Judgment",
-                note:"Methodology choice frames every downstream conclusion — same “sets what the system runs on” logic as 7.5.1.1. Per the decision-authority table, escalates to Director of HR Ops specifically when output will inform restructuring or board-level reporting." },
-  "7.7.7.4": { rel:"Augmentation", cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.7.7.5": { rel:"Automation", cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.7.8.1": { rel:"Automation", cons:"Low", future:"Automation", ceiling:"Automation" },
-  "7.7.8.2": { rel:"Augmentation", cons:"Moderate", future:"Agent-delegation", ceiling:"Agent-delegation",
-                note:"The analytical middle between choosing methodology (7.7.7.3, where the framing duty sits) and communicating conclusions (7.7.8.3, where the accuracy duty sits) — genuinely augmentable once analysis patterns are trusted." },
-  "7.7.8.3": { rel:"Oversight", cons:"High", future:"Oversight", ceiling:"Oversight",
-                note:"Communicates conclusions that can inform restructuring/board reporting — same stakes chain as 7.7.7.3, but at the review-before-dissemination stage: the human sign-off is the ceiling." },
-
-  // ── PCF 7.8 — Manage Employee Communication (3 L4s/leaf-L3s, 3 L3s) ───
-  // Sept 16, 2026, Tim-confirmed on first pass, future/ceiling applied
-  // per the Progression Ceiling Rule at the same time as Current State.
-  "7.8.1": { rel:"Augmentation", cons:"Low", future:"Agent-delegation", ceiling:"Agent-delegation" },
-  "7.8.2": { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation",
-                note:"Same underlying activity as 7.5.5 — APQC catalogs it separately under two L2 groups; classification carries forward unchanged, per the value-stream write-up's own note." },
-  "7.8.3": { rel:"Agent-delegation", cons:"Low", future:"Automation", ceiling:"Automation",
-                note:"Delivery of already-approved messages — explicitly named in the value-stream write-up as one of the framework's steepest AI-absorption opportunities." },
+  "7.1.1.1": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Reach is broad (frames strategy for the whole function) but the assessment itself is easily revised — moderate human/ops impact, no legal exposure, high reversibility keep this at Moderate." },
+  "7.1.1.2": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"High", consNote:"Sets accountability org-wide (high reach) and a bad structural call is disruptive and slow to unwind (low reversibility) — human impact and reach, not a specific legal trigger, drive this to High.", note:"Already at ceiling — Executive tier. Defining the domain's own accountability structure isn't a decision to hand to an AI proposal." },
+  "7.1.1.3": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Narrower than 7.1.1.2 — structures HR's own internal organization; moderate reach and reversibility, no legal exposure." },
+  "7.1.1.4": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Operational design choice (e.g., centralized vs. shared services); moderate ops/financial exposure if mis-sized, correctable at the next planning cycle." },
+  "7.1.1.5": { rel:"Oversight", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Moderate", consNote:"Cost modeling feeds budget planning — moderate operational/financial impact if wrong, but a draft CHRO reviews before it's acted on, which caps the exposure.", note:"Close call, flagged honestly: cost models are treated as a draft CHRO edits or a recommendation CHRO approves. No standing duty requires CHRO's personal review — ceiling moves one notch per the Progression Ceiling Rule." },
+  "7.1.1.6": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Defines what HR is measured against — moderate trust/reputation impact if metrics mislead leadership, but revisable each cycle." },
+  "7.1.1.7": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Distribution of already-decided strategy; low legal exposure and high reversibility — a poorly worded message can be corrected." },
+  "7.1.1.8": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"High", consNote:"A wrong systems-strategy call has real operational/financial impact (multi-year vendor and integration commitments) and broad reach across every downstream HR process — hard to unwind once contracted." },
+  "7.1.1.9": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Moderate", consNote:"Trust/reputation-facing (external candidate perception) but not legally exposed and easily adjusted." },
+  "7.1.1.10": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Broad reach (affects every employee's day-to-day) but a design choice, not a legal or individual-decision exposure — moderate human impact." },
+  "7.1.2.1": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Broad reach (headcount/skills planning) but a forecasting exercise revised each cycle — no legal exposure, moderate ops impact if under- or over-resourced." },
+  "7.1.2.2": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"High", consNote:"Sets the pay structure the whole organization runs on — pay-equity/compensation-discrimination legal exposure plus wide reach keep this High.", note:"Pay-equity/compensation-discrimination exposure." },
+  "7.1.2.3": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"High", consNote:"Getting a critical-role succession call wrong is a real continuity risk, and perceived favoritism in who's chosen carries trust exposure — same logic as 7.3.3.4.", note:"Same continuity/favoritism-exposure logic as 7.3.3.4's succession-plan tag." },
+  "7.1.2.4": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Moderate", consNote:"Program design affecting a subset of employees; moderate human/trust impact, no legal exposure, revisable." },
+  "7.1.2.5": { rel:"Augmentation", future:"Augmentation", ceiling:"Augmentation", cons:"High", consNote:"DEI plan design carries real legal exposure in either direction under the current landscape — legal exposure is the driving factor, and it attaches at design, not just execution.", note:"DEI plan design carries real legal exposure in either direction under the current landscape — the exposure attaches at this tier, so it's the ceiling, not a maturity gap." },
+  "7.1.2.6": { rel:"Agent-delegation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"High", consNote:"Same legal exposure as 7.1.2.5, now at execution — a review checkpoint is the safeguard against a mishandled rollout.", note:"Same DEI exposure as 7.1.2.5, at execution — the review checkpoint is the safeguard, not a temporary trust gap." },
+  "7.1.2.7": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Program-design work; low direct legal exposure, broad reach but easily revised before it touches an individual candidate." },
+  "7.1.2.8": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Same shape as 7.1.2.7 — design-stage work, no individual decision yet, easily revised." },
+  "7.1.2.9": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Catch-all program design; low stakes until a specific program with its own exposure is built out." },
+  "7.1.2.10": { rel:"Augmentation", future:"Augmentation", ceiling:"Augmentation", cons:"High", consNote:"Policy language is the direct compliance surface employees and courts will read — same regulatory-teeth logic as 7.2.5.1/7.3.4.6.", note:"Policy language is the direct compliance surface — same regulatory-teeth logic as 7.2.5.1/7.3.4.6. The compliance-surface duty attaches here, so it's the ceiling." },
+  "7.1.2.11": { rel:"Agent-delegation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Moderate", consNote:"Inconsistent application across employees risks disparate-treatment claims — the review checkpoint at execution caps this below the policy-drafting tier itself.", note:"Inconsistent application risks disparate-treatment claims — the review checkpoint is the safeguard, so it's the ceiling, not a maturity gap." },
+  "7.1.2.12": { rel:"Augmentation", future:"Augmentation", ceiling:"Augmentation", cons:"High", consNote:"ERISA fiduciary and compliance exposure attaches to benefits plan design, same as 7.5.1.2 — the fiduciary sign-off is the safeguard.", note:"ERISA fiduciary/compliance exposure — the fiduciary sign-off is the ceiling." },
+  "7.1.2.13": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Modeling/tooling work one step removed from any real decision; low legal or human impact on its own." },
+  "7.1.2.14": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Deploying an already-approved model; mechanical, reversible, no new exposure introduced." },
+  "7.1.2.15": { rel:"Agent-delegation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Moderate", consNote:"FLSA exemption-classification risk sits behind job-family structure — misclassifying exempt/non-exempt status is a real wage-and-hour exposure, capped by review.", note:"FLSA exemption-classification risk sits behind job-family structure — the review checkpoint is the ceiling." },
+  "7.1.2.16": { rel:"Augmentation", future:"Augmentation", ceiling:"Augmentation", cons:"Moderate", consNote:"ADA essential-functions and FLSA-exemption language live in the job description text — a compliance surface, but one corrected on the next revision rather than acted on irreversibly.", note:"ADA essential-functions / FLSA-exemption language risk — the compliance-surface duty is the ceiling." },
+  "7.1.3.1": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Retrospective measurement; an error is caught and corrected at the next reporting cycle, no individual or legal exposure." },
+  "7.1.3.2": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Same retrospective-measurement shape as 7.1.3.1 — low stakes, high reversibility." },
+  "7.1.3.3": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Distribution of already-decided content; a wording error is easily corrected." },
+  "7.1.3.4": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Broad reach (touches every downstream plan) but this is the review/correction step itself, which is inherently self-limiting." },
+  "7.1.4": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Feeds downstream skills/pay/promotion decisions across the whole workforce — broad reach is the driving factor, though the model itself is revisable, unlike the individual decisions built on top of it.", note:"Foundational model feeds downstream skills/pay/promotion decisions — same tier as 7.1.1's own strategy work." },
+  "7.2.1.1": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Budget-authority and strategic-fit judgment; moderate operational/financial impact if misaligned, corrected at the next planning pass.", note:"Ceiling resolved to Judgment — a standing strategic/budget-authority duty holds the line permanently. Reconciled to match hitl_working_relationship_final.html." },
+  "7.2.1.2": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Mechanical record-creation step; fully reversible, no legal exposure." },
+  "7.2.1.3": { rel:"Oversight", future:"Oversight", ceiling:"Agent-delegation", cons:"High", consNote:"This is the budget-commitment gate — reversing an approved-then-wrong hire is a real financial and organizational cost, and removing the sign-off here is a governance choice, not just a technical one.", note:"Ceiling is knowable, but reaching it is a governance choice (removing human sign-off), not only a technical one." },
+  "7.2.1.4": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Publication step; low stakes and reversible." },
+  "7.2.1.5": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Administrative update; reversible, no legal exposure." },
+  "7.2.1.6": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Routine notification; no material consequence if delayed." },
+  "7.2.1.7": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Scheduling mechanics; low stakes." },
+  "7.2.2.1": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Channel-strategy choice one step removed from any real candidate interaction; low direct exposure." },
+  "7.2.2.2": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Execution of an already-chosen recruiting activity; low stakes, reversible." },
+  "7.2.2.3": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Pipeline-building work; no individual decision yet, low exposure." },
+  "7.2.2.4": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Moderate", consNote:"Vendor relationships carry contractual/financial exposure if mismanaged, though correctable at contract renewal." },
+  "7.2.2.5": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Program administration; low legal or financial exposure." },
+  "7.2.2.6": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Channel management; low stakes, reversible." },
+  "7.2.3.1": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Tool choice shapes every downstream selection decision (broad reach) but is a design step, not the decision itself — moderate tier, revisable before it touches a real candidate." },
+  "7.2.3.2": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"High", consNote:"Direct human-impact touchpoint with legal exposure (discriminatory questioning) baked into the interaction itself, though the interview alone doesn't decide the outcome." },
+  "7.2.3.3": { rel:"Agent-delegation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"High", consNote:"Test-validity/adverse-impact exposure under UGESP — a flawed assessment tool can disadvantage protected groups at scale (reach) before any human reviews it.", note:"Moved up to High on individual walkthrough (Sept 14, 2026) — compliance/litigation exposure. The review checkpoint (test-validity/adverse-impact under UGESP) is the ceiling." },
+  "7.2.3.4": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Critical", consNote:"The hire/reject decision itself — EEOC/adverse-impact liability, irreversible impact on the candidate's life and the employer's legal exposure, and no correction once the decision is communicated. Human impact, legal exposure, and reversibility all point the same direction.", note:"Already at ceiling, a different reason than 7.4.4's — EEOC/adverse-impact liability on the hiring decision itself." },
+  "7.2.4.1": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Moderate", consNote:"Mechanical drafting of an already-decided offer; moderate financial exposure if terms are wrong, correctable before signature." },
+  "7.2.4.2": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"High", consNote:"A live negotiation with a real candidate — a misstep has direct financial exposure (over- or under-offering) and can create pay-equity precedent for future hires." },
+  "7.2.4.3": { rel:"Oversight", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Moderate", consNote:"Administrative execution of an already-approved offer; the real decision risk sits upstream at 7.2.3.4/7.2.4.2, this step is largely mechanical." },
+  "7.2.5.1": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"High", consNote:"FCRA and ban-the-box compliance exposure attaches directly to how background checks are obtained and used — real regulatory teeth even though the step itself is administrative.", note:"Moved up to High on individual walkthrough (Sept 14, 2026) — compliance/litigation exposure, same pattern as 7.3.4.6." },
+  "7.2.5.2": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Mechanical record creation; low exposure." },
+  "7.2.5.3": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Routine data tracking; low exposure." },
+  "7.2.5.4": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Moderate", consNote:"Retention-period compliance (EEOC recordkeeping requirements) sits behind this step, though it's a mechanical archiving task." },
+  "7.3.1.1": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Moderate", consNote:"Broad reach (every new hire) but program design, not an individual decision — revisable." },
+  "7.3.1.2": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Execution of an already-designed program; low stakes." },
+  "7.3.1.3": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Monitoring/update work; corrected at the next review." },
+  "7.3.2.1": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Sets the standard an employee will be judged against; moderate human impact, correctable before a real review occurs." },
+  "7.3.2.2": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"High", consNote:"Feeds pay/promotion/termination decisions directly and carries real discrimination exposure if the review itself is biased or inconsistent.", note:"Feeds pay/promotion/termination decisions and carries real discrimination exposure if done badly." },
+  "7.3.2.3": { rel:"Augmentation", future:"Augmentation", ceiling:"Augmentation", cons:"High", consNote:"Documentation quality is a common deciding factor in wrongful-termination litigation — someone has to be able to vouch for the record.", note:"Moved up to High on individual walkthrough (Sept 14, 2026) — documentation quality is a common deciding factor in wrongful-termination litigation. Someone has to be able to vouch for the record, so the ceiling stays here." },
+  "7.3.2.4": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Program-monitoring work; low direct exposure." },
+  "7.3.3.1": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Guideline-setting one step removed from any individual employee's plan; low exposure." },
+  "7.3.3.2": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Individual-level guidance with real human impact on someone's trajectory, but advisory rather than decisional — corrected in the next conversation." },
+  "7.3.3.3": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Program administration; low exposure." },
+  "7.3.3.4": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"High", consNote:"A wrong call on a critical role is a continuity risk and can create perceived-favoritism exposure — same logic as 7.1.2.3.", note:"A wrong call on a critical role is a continuity risk and can shade into perceived-favoritism exposure." },
+  "7.3.4.1": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Needs-alignment work one step removed from any individual training decision; low exposure." },
+  "7.3.4.2": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Skills-taxonomy work; low exposure." },
+  "7.3.4.3": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Program-alignment work; low exposure." },
+  "7.3.4.4": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Analysis feeding program design; low direct exposure." },
+  "7.3.4.5": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"High", consNote:"Covers legally mandated training with real statutory deadlines — a missed deadline is a compliance gap, not just a scheduling slip.", note:"Moved up to High on individual walkthrough (Sept 14, 2026) — covers legally mandated training with real statutory deadlines. That's deadline-tracking mechanics, not content judgment, so the ceiling moves one notch rather than staying pinned." },
+  "7.3.4.6": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"High", consNote:"The one step in this group with real regulatory teeth — a lapsed or mishandled certification can mean someone is working without a legally required credential.", note:"Moved up to High on individual walkthrough (Sept 14, 2026) — classified Automation, but the one step with real regulatory teeth, same pattern as 7.2.5.1." },
+  "7.3.4.7": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Program evaluation; low direct exposure." },
+  "7.4.1": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Critical", consNote:"Unfair-labor-practice/NLRA exposure and strike/work-stoppage risk — legal exposure, reach (the whole represented workforce), and reversibility (a mishandled move is hard to walk back) all point to Critical.", note:"Moved to Critical (Tim, Sept 16, 2026) — unfair-labor-practice/NLRA and strike/work-stoppage exposure." },
+  "7.4.2": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Critical", consNote:"Same exposure class as 7.4.1 — a mishandled CBA negotiation carries large-scale financial and legal risk across the entire bargaining unit, and a bad-faith-bargaining charge can't be walked back.", note:"Moved to Critical (Tim, Sept 16, 2026) — same exposure class as 7.4.1; a mishandled CBA negotiation carries large-scale financial/legal risk." },
+  "7.4.3": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Relationship-maintenance work; lower single-decision stakes than active bargaining (7.4.2) or a grievance case (7.4.4), though it shares the same represented-workforce reach.", note:"Relationship-maintenance work; lower single-decision stakes than active bargaining or a grievance case." },
+  "7.4.4": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Critical", consNote:"Grievances routinely stem from CBA violations or protected-activity retaliation — the same exposure class as 7.4.1/7.4.2 — and a mishandled one is exactly what escalates into an NLRB charge or litigation.", note:"Already at its human-side ceiling. The Accountable role (HRBP Manager) never changes across the real M1→M5 curve (95%→68%) — the mirror case to an activity already at Automation with no further runway. Consequence-of-error tagged Critical (Sept 16, 2026, Claude's read for Tim to confirm) — grievances routinely stem from CBA violations or protected-activity retaliation, the same exposure class as 7.4.1/7.4.2, and a mishandled one is exactly what escalates into an NLRB charge or litigation." },
+  "7.4.5": { rel:"Agent-delegation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"High", consNote:"The monitoring/scanning itself is delegable, but a missed regulatory change creates a real compliance gap across every process downstream of it — reach and legal exposure drive this, capped below Critical because a review-before-acting step catches most misses.", note:"Same regulatory-teeth logic as 7.2.5.1/7.3.4.6 — the monitoring/scanning is delegable, but a missed change here creates a real compliance gap. The review-before-acting step is the ceiling, not a maturity gap." },
+  "7.5.1.1": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"High", consNote:"Same pay-equity exposure as 7.1.2.2 — sets the bands the whole comp system runs on, so an error has enterprise-wide reach.", note:"Same pay-equity exposure as 7.1.2.2 — sets the bands the whole comp system runs on." },
+  "7.5.1.2": { rel:"Augmentation", future:"Augmentation", ceiling:"Augmentation", cons:"High", consNote:"ERISA fiduciary exposure, same logic as 7.1.2.12 — the fiduciary sign-off is the safeguard, not full authorship.", note:"ERISA fiduciary exposure, same logic as 7.1.2.12 — the fiduciary sign-off is the ceiling, not full authorship." },
+  "7.5.1.3": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Market research feeding a decision made elsewhere; low direct exposure." },
+  "7.5.1.4": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Moderate", consNote:"Translates policy into requirements; moderate financial impact if misread, caught at the plan-design step downstream." },
+  "7.5.1.5": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"High", consNote:"Direct pay execution — wage-and-hour exposure if mis-administered, same regulatory-teeth logic as 7.5.4/7.4.5, and errors touch every paycheck (reach).", note:"Direct pay execution — wage-and-hour exposure if mis-administered, same regulatory-teeth logic as 7.5.4/7.4.5." },
+  "7.5.1.6": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Execution of already-decided recognition/rewards; low stakes, reversible." },
+  "7.5.1.7": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Monitoring/analysis work; corrected at the next review cycle." },
+  "7.5.1.8": { rel:"Augmentation", future:"Augmentation", ceiling:"Augmentation", cons:"Moderate", consNote:"Same pay-equity duty as 7.5.1.1 attaches to reviewing the plan, not just setting it — the review step is the safeguard, keeping this a notch below the design tier.", note:"Same pay-equity duty as 7.5.1.1 attaches to reviewing the plan, not just setting it." },
+  "7.5.1.9": { rel:"Augmentation", future:"Augmentation", ceiling:"Augmentation", cons:"Moderate", consNote:"Same ERISA-adjacent duty as 7.5.1.2, at the review stage.", note:"Same ERISA-adjacent duty as 7.5.1.2." },
+  "7.5.2.1": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Routine benefits-transaction processing; low individual risk if the rules are followed." },
+  "7.5.2.2": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Enrollment processing; low exposure, reversible." },
+  "7.5.2.3": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Moderate", consNote:"A wrongly processed claim directly affects an individual employee's healthcare/financial access — human impact drives this above the other routine benefits-transaction steps." },
+  "7.5.2.4": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Reconciliation is a check on other steps, not a new decision; low exposure." },
+  "7.5.3.1": { rel:"Oversight", future:"Oversight", ceiling:"Oversight", cons:"Moderate", consNote:"Confidential, individual-situation support work (EAP referrals, family/wellbeing needs) — a human needs to stay meaningfully present given the sensitivity; trust/duty-of-care is the driving factor, not legal exposure.", note:"Confidential, individual-situation support work (EAP referrals, family/wellbeing needs) — a human needs to stay meaningfully present given the sensitivity, even with strong AI assistance. Duty-of-care floor, not a maturity gap." },
+  "7.5.3.2": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Program design one step removed from the individual support conversations themselves." },
+  "7.5.4": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"High", consNote:"Routine execution, but wage-and-hour/FLSA exposure if it's wrong, and reach is total — every employee's pay runs through this step every cycle.", note:"Same regulatory-teeth logic as 7.2.5.1/7.3.4.6/7.4.5 — routine execution, but wage-and-hour/FLSA exposure if it's wrong." },
+  "7.5.5": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"No standing legal or financial duty — survey/suggestion collection is fully delegable once trust in the process is established.", note:"No standing duty — survey/suggestion collection is fully delegable once trust is established." },
+  "7.6.1": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"High", consNote:"EEOC/adverse-impact liability on an individual promotion/demotion decision — same exposure class as 7.2.3.4's hire/reject gate, one tier down since the decision changes an existing employment relationship rather than creating or ending one.", note:"EEOC/adverse-impact liability on an individual promotion/demotion decision — same exposure class as 7.2.3.4's hire/reject gate, one tier down since the decision changes rather than creates/ends employment." },
+  "7.6.2.1": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Moderate", consNote:"Same shape as routine benefits-transaction items — rule-based processing against a retirement election, low individual risk if the rules are followed.", note:"Same shape as 7.5.2.x benefits-transaction items — rule-based processing against a retirement election." },
+  "7.6.2.2": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"High", consNote:"FMLA/ADA interference exposure if leave administration is mishandled — a real and common source of litigation.", note:"Same regulatory-teeth logic as 7.5.4 — routine execution, but FMLA/ADA interference exposure if leave administration is mishandled." },
+  "7.6.2.3": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"High", consNote:"Final-pay and system-access-removal steps carry real wage-and-hour and data-security exposure if delayed or missed.", note:"Final-pay and system-access-removal steps carry real wage-and-hour and data-security exposure if delayed or missed." },
+  "7.6.2.4": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Support program design; low direct legal exposure." },
+  "7.6.3.1": { rel:"Oversight", future:"Oversight", ceiling:"Oversight", cons:"High", consNote:"Cross-border immigration/tax/labor-law compliance review — same review-before-acting logic as 7.4.5, compounded by the current role catalog's confirmed specialist-role gap (International HR Management isn't a named role).", note:"Cross-border immigration/tax/labor-law compliance review — same “review-before-acting is the ceiling” logic as 7.4.5. Also the value stream's confirmed specialist-role gap (International HR Management isn't in the current role catalog)." },
+  "7.7.1": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Internal reporting mechanics; corrected at the next reporting cycle, no individual or legal exposure." },
+  "7.7.2": { rel:"Oversight", future:"Oversight", ceiling:"Oversight", cons:"Moderate", consNote:"Exception-pattern inquiries routinely surface sensitive edge cases (harassment concerns, pay disputes, leave confusion) before they're classified as something bigger — trust/duty-of-care drives this, at a lower stakes tier than an active grievance (7.4.4).", note:"Exception-pattern inquiries routinely surface sensitive edge cases (harassment concerns, pay disputes, leave confusion) before they're classified as something bigger — same confidentiality/duty-of-care logic as 7.4.4, at a lower stakes tier." },
+  "7.7.3": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Moderate", consNote:"Rule-based record maintenance; errors cascade downstream into pay/benefits, but the step itself carries no standing legal duty of its own.", note:"Rule-based record maintenance; errors cascade downstream into pay/benefits but the step itself carries no standing duty." },
+  "7.7.4": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Moderate", consNote:"System-administration work; an outage or misconfiguration has broad operational reach (every HR process depends on it) but is a technical fix, not a legal exposure." },
+  "7.7.5": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Metric-design work; corrected at the next measurement cycle." },
+  "7.7.6": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"High", consNote:"T&A data drives payroll/overtime directly — an error here is wage-and-hour/FLSA exposure, same regulatory-teeth logic as 7.5.4, and it touches every hourly employee (reach).", note:"Same regulatory-teeth logic as 7.5.4 — T&A data drives payroll/overtime directly; an error here is wage-and-hour/FLSA exposure." },
+  "7.7.7.1": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Requirements-gathering one step removed from any real analysis; low exposure." },
+  "7.7.7.2": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Question-framing work; low exposure." },
+  "7.7.7.3": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"High", consNote:"Methodology choice frames every downstream conclusion — same “sets what the system runs on” logic as 7.5.1.1 — and per the decision-authority table escalates to Director of HR Ops when output will inform restructuring or board-level reporting.", note:"Methodology choice frames every downstream conclusion — same “sets what the system runs on” logic as 7.5.1.1. Per the decision-authority table, escalates to Director of HR Ops specifically when output will inform restructuring or board-level reporting." },
+  "7.7.7.4": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Sourcing work; low exposure." },
+  "7.7.7.5": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Data collection; low exposure." },
+  "7.7.8.1": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Mechanical data transformation; low exposure." },
+  "7.7.8.2": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Moderate", consNote:"The analytical middle between choosing methodology (7.7.7.3, where the framing duty sits) and communicating conclusions (7.7.8.3, where the accuracy duty sits) — genuinely augmentable once analysis patterns are trusted.", note:"The analytical middle between choosing methodology (7.7.7.3, where the framing duty sits) and communicating conclusions (7.7.8.3, where the accuracy duty sits) — genuinely augmentable once analysis patterns are trusted." },
+  "7.7.8.3": { rel:"Oversight", future:"Oversight", ceiling:"Oversight", cons:"High", consNote:"Communicates conclusions that can inform restructuring or board reporting — trust/reputation and reach are high, and the human sign-off before dissemination is the safeguard.", note:"Communicates conclusions that can inform restructuring/board reporting — same stakes chain as 7.7.7.3, but at the review-before-dissemination stage: the human sign-off is the ceiling." },
+  "7.8.1": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Planning work one step removed from any employee actually receiving a message; low direct exposure." },
+  "7.8.2": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Survey administration; low individual or legal exposure — same underlying activity as 7.5.5, carried forward unchanged since APQC catalogs it under two L2 groups.", note:"Same underlying activity as 7.5.5 — APQC catalogs it separately under two L2 groups; classification carries forward unchanged, per the value-stream write-up's own note." },
+  "7.8.3": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Delivery of already-approved messages; low risk since the content judgment happened upstream at 7.8.1.", note:"Delivery of already-approved messages — explicitly named in the value-stream write-up as one of the framework's steepest AI-absorption opportunities." },
 };
 
 
@@ -1299,7 +1208,7 @@ function wrRollupCell(l3s, field) {
   if (!rollup.ready) return '<span class="wr-blank">not yet aggregated &mdash; ' + rollup.l3ready + ' of ' + rollup.l3total + ' reasoned</span>';
   if (rollup.allOpen) return '<span class="wr-open">Open / undecided</span>';
   const openNote = rollup.anyOpen ? ' <span class="wr-cons-worst-note">(some open/undecided)</span>' : '';
-  return '<span class="wr-rollup-ready"><strong>' + rollup.mean.toFixed(1) + '% H</strong></span>' + openNote;
+  return '<span class="wr-rollup-ready"><span class="rollup-val">' + rollup.mean.toFixed(1) + '% H</span></span>' + openNote;
 }
 function l3ConsCoverage(l3) {
   const units = (l3.l4 && l3.l4.length) ? l3.l4.map(l4 => l4.code) : [l3.code];
@@ -1506,7 +1415,7 @@ function renderGatesTable(cat) {
       const raci = l3.raci || { A: '—' };
       const cov = l3WrCoverage(l3);
       const rollupCell = cov.fullyClassified
-        ? '<span class="wr-rollup-ready"><strong>' + cov.mean.toFixed(1) + '% H</strong></span>'
+        ? '<span class="wr-rollup-ready"><span class="rollup-val">' + cov.mean.toFixed(1) + '% H</span></span>'
         : '<span class="wr-blank">' + cov.classifiedCount + ' of ' + cov.total + ' classified</span>';
       html += '<tr class="row-l3">' +
         '<td class="indent-l3"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + l3.code + '</span></span><span class="row-text">' + l3.name + '</span></span></td>' +
@@ -1547,6 +1456,7 @@ function wrCell(code) {
     future: d.future || null,
     ceiling: d.ceiling || null,
     cons: d.cons || null,
+    consNote: d.consNote || null,
     note: d.note || null,
     classified: true,
   };
@@ -1557,12 +1467,27 @@ function wrBadge(catName) {
   if (catName === 'Open / undecided') return '<span class="wr-open">Open / undecided</span>';
   const c = WR_CATS[catName];
   if (!c) return '<span class="wr-blank">' + catName + '</span>';
-  return '<span class="wr-badge"><span class="wr-swatch" style="background:' + c.color + '"></span>' + catName + '<span class="wr-h">' + c.h + '%</span></span>';
+  // H% is a fixed value per category (see the legend, which already states
+  // it once per category) — repeating it on every single row added no
+  // information, since the same category always carries the same number.
+  return '<span class="wr-badge"><span class="wr-swatch" style="background:' + c.color + '"></span>' + catName + '</span>';
 }
 
 function consCell(cons) {
   if (!cons) return '<span class="wr-blank">&mdash; not yet tagged &mdash;</span>';
   return '<span class="wr-cons" style="color:' + CONS_COLOR[cons] + '">' + cons + '</span>';
+}
+
+// The six-factor walk (Human Impact, Legal/Regulatory Exposure,
+// Operational/Financial Impact, Trust/Reputation, Reach, Reversibility)
+// behind a Consequence-of-Error tier — shown as an info-icon tooltip on the
+// Consequence of Error cell, the same convention Future State already uses
+// for its own ceiling-rule reasoning.
+function consNoteTitle(consNote) {
+  return consNote ? ' title="' + consNote.replace(/"/g, '&quot;') + '"' : '';
+}
+function consNoteIcon(consNote) {
+  return consNote ? '<span class="wr-note-icon">&#9432;</span>' : '';
 }
 
 function provBadge(classified) {
@@ -1584,7 +1509,7 @@ function wrRowCells(code) {
   return '<td class="wr-left">' + wrBadge(w.current) + '</td>' +
     '<td class="wr-left"' + noteTitle(w.note) + '>' + wrBadge(w.future) + (w.note ? '<span class="wr-note-icon">&#9432;</span>' : '') + '</td>' +
     '<td class="wr-left">' + wrBadge(w.ceiling) + '</td>' +
-    '<td class="wr-left">' + consCell(w.cons) + '</td>' +
+    '<td class="wr-left"' + consNoteTitle(w.consNote) + '>' + consCell(w.cons) + consNoteIcon(w.consNote) + '</td>' +
     '<td>' + provBadge(w.classified) + '</td>' +
     '<td class="notes-cell">' + notesWidget(code) + '</td>';
 }
