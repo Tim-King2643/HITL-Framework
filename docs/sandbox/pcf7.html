@@ -134,15 +134,6 @@ td:first-child { text-align: left; }
 .toggle-icon { display: inline-block; width: 14px; text-align: center; margin-right: 4px; font-weight: 800; font-size: 12px; color: var(--navy-d); }
 .toggle-icon.placeholder { visibility: hidden; }
 
-/* Value-stream scoping highlight (Working-Relationship table) — same
-   convention as the live dashboard's Maturity Table: active rows for the
-   selected stream, dimmed rows outside it, a lighter dim for a group only
-   partially in-scope. */
-.row-l3.vs-active td, .row-l4.vs-active td { background: #FFFBEB; }
-.vs-active td:first-child { box-shadow: inset 3px 0 0 #B45309; }
-.row-l2.vs-partial td:first-child { box-shadow: inset 3px 0 0 rgba(180,83,9,.4); }
-.row-l2.vs-dim td, .row-l3.vs-dim td, .row-l4.vs-dim td { opacity: .35; }
-
 /* ── Working-Relationship view ───────────────────────────────────────── */
 .wr-badge { display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:400; white-space:nowrap; }
 .wr-swatch { width:9px; height:9px; border-radius:2px; display:inline-block; flex:0 0 auto; }
@@ -231,27 +222,11 @@ td:first-child { text-align: left; }
   .topbar, .content { padding-left: 14px; padding-right: 14px; }
 }
 
-/* ── Added for RACI / Data View / Value Stream Profile / People View
+/* ── Added for RACI / Data View / People View
      (Sept 14, 2026) — ported from the live dashboard's own CSS system,
      same tokens/classes, scoped to this single-domain sandbox page ───── */
 .lens-section { margin-top: 16px; }
 .pat-Mixed { background: #94A3B8; color: #fff; }
-
-/* Summary bar (Value Stream Profile) */
-.summary-bar { display: flex; gap: 12px; padding: 14px 18px; background: var(--navy-l); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-.summary-card { background: #fff; border-radius: 8px; border: 1px solid var(--border); padding: 10px 16px; flex: 1; min-width: 90px; text-align: center; }
-.summary-card .label { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--lgray); margin-bottom: 4px; white-space: nowrap; }
-.summary-card .value { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--navy); }
-.summary-card .sub { font-size: 10px; color: var(--lgray); margin-top: 2px; }
-
-/* Value-stream selector */
-.vs-bar { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-bottom: 1px solid var(--border); background: #fff; flex-wrap: wrap; }
-.vs-bar label { font-size: 11px; font-weight: 700; color: var(--navy-d); text-transform: uppercase; letter-spacing: .04em; flex: 0 0 auto; }
-.vs-bar select {
-  font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--dark);
-  background: #fff; border: 1px solid var(--border); border-radius: 5px; padding: 5px 10px; cursor: pointer;
-  flex: 0 0 auto; width: 280px; max-width: 100%; box-sizing: border-box;
-}
 
 .lens-empty { padding: 24px 18px; text-align: center; color: var(--lgray); font-style: italic; font-size: 12px; }
 
@@ -281,52 +256,6 @@ td.crud-d .crud-entity { color: #991B1B; }
 .pat-mix-bar span { display:block; height:100%; box-sizing:border-box; border-right:1px solid #CBD5E1; }
 .pat-mix-bar span:last-child { border-right:none; }
 
-/* Value Stream Profile description cards */
-.description-grid { display: grid; grid-template-columns: 1fr; gap: 14px; padding: 18px; }
-.desc-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-.desc-card-head { background: var(--navy-d); color: #fff; padding: 10px 16px; }
-.desc-card-head .desc-pcf { font-family: 'DM Mono', monospace; font-size: 11px; color: #A8C4E0; display: block; margin-bottom: 2px; }
-.desc-card-head .desc-name { font-size: 15px; font-weight: 700; }
-.desc-card-head .desc-subtitle { font-size: 11px; font-style: italic; color: #C7D8EA; margin-top: 2px; }
-.desc-card-body { padding: 14px 16px; }
-.desc-card-body p { font-size: 12px; color: var(--dark); line-height: 1.6; margin: 0 0 10px; }
-.desc-card-body p:last-child { margin-bottom: 0; }
-.desc-stats { display: flex; gap: 18px; padding: 10px 16px; background: #FAFBFD; border-top: 1px solid var(--border); flex-wrap: wrap; }
-.desc-stat { font-size: 11px; color: var(--lgray); }
-.desc-stat strong { color: var(--navy-d); font-size: 13px; display: block; }
-.desc-section-heading { font-size: 13px; font-weight: 700; color: var(--navy-d); padding: 14px 16px 8px; border-top: 1px solid var(--border); }
-.desc-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.desc-table-gov { table-layout: fixed; }
-.desc-table-gov th:nth-child(1), .desc-table-gov td:nth-child(1) { width: 9%; }
-.desc-table-gov th:nth-child(2), .desc-table-gov td:nth-child(2) { width: 20%; }
-.desc-table-gov th:nth-child(3), .desc-table-gov td:nth-child(3) { width: 14%; }
-.desc-table-gov th:nth-child(4), .desc-table-gov td:nth-child(4) { width: 16%; }
-.desc-table-gov th:nth-child(5), .desc-table-gov td:nth-child(5) { width: 15%; }
-.desc-table-gov th:nth-child(6), .desc-table-gov td:nth-child(6) { width: 26%; }
-.desc-table th { background: var(--navy); color: #fff; font-size: 11px; font-weight: 700; text-align: left; padding: 8px 16px; }
-.desc-table td { padding: 8px 16px; border-top: 1px solid var(--border); color: var(--dark); vertical-align: top; text-align: left; font-family: inherit; }
-.desc-table-formula { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--lgray); font-style: italic; margin-top: 4px; }
-.desc-table-source { font-size: 10px; font-weight: 700; color: #166534; text-align: left; }
-.desc-table-tier { font-size: 10px; font-weight: 700; text-align: left; }
-.desc-table-roles { table-layout: fixed; }
-.desc-table-roles th:nth-child(1), .desc-table-roles td:nth-child(1) { width: 220px; }
-.desc-table-roles th:nth-child(2), .desc-table-roles td:nth-child(2) { width: 150px; white-space: nowrap; }
-.desc-table-pcf { font-family: 'DM Mono', monospace; font-size: 10.5px; color: var(--gray); white-space: normal; word-break: break-word; }
-.desc-table-note { font-family: 'DM Sans', sans-serif; font-size: 10px; font-style: italic; color: var(--lgray); margin-top: 3px; }
-.desc-card .lens-empty { padding: 14px 16px; text-align: left; font-size: 12px; }
-.lens-note { font-size: 10px; color: var(--lgray); font-style: italic; padding: 10px 18px; }
-.narrative-block { padding: 14px 18px; font-size: 12px; color: var(--dark); line-height: 1.6; background: #FAFBFD; border-bottom: 1px solid var(--border); }
-.narrative-block p { margin: 0 0 10px; }
-.narrative-block p:last-child { margin-bottom: 0; }
-.capmap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 8px 18px 18px; }
-.capmap-card { border-radius: 8px; padding: 12px 14px; }
-.capmap-card .cm-name { font-weight: 700; font-size: 12px; margin-bottom: 3px; text-transform: uppercase; letter-spacing: .03em; }
-.capmap-card .cm-tagline { font-style: italic; font-size: 10px; margin-bottom: 8px; }
-.capmap-card .cm-count { font-weight: 700; font-size: 17px; }
-.capmap-card .cm-count span { font-size: 11px; font-weight: 700; text-transform: none; letter-spacing: 0; }
-.capmap-card .cm-mvals { font-weight: 700; font-size: 11px; margin-top: 4px; }
-.capmap-card .cm-empty-note { font-style: italic; font-size: 11px; }
-
 /* People View (Role Impact Table) */
 .role-toggle-icon { display: inline-block; width: 12px; font-weight: 700; color: var(--navy); margin-right: 4px; }
 #people-main-table td:not(:first-child) { text-align: center; font-family: 'DM Mono', monospace; font-size: 12px; }
@@ -353,7 +282,7 @@ td.crud-d .crud-entity { color: #991B1B; }
 <div class="sandbox-banner">
   <span class="tag">Sandbox</span>
   <strong>PCF 7.0 — Develop and Manage Human Resources.</strong>
-  This is a live working copy of the full PCF 7.0 content — Working-Relationship Table, RACI Table, Value Stream Profile, Data View (CRUD Matrix), and
+  This is a live working copy of the full PCF 7.0 content — Working-Relationship Table, RACI Table, Data View (CRUD Matrix), and
   People View. The Working-Relationship Table shows the
   <strong>Current State &rarr; Future State &rarr; Progression Ceiling</strong> model plus Consequence of Error,
   for the 118 activities that have been hand-classified by working relationship so far. Everything here is real data pulled from the
@@ -365,7 +294,7 @@ td.crud-d .crud-entity { color: #991B1B; }
   <div class="topbar">
     <div>
       <h2>7.0 &mdash; Develop and Manage Human Resources</h2>
-      <p>Sandbox &middot; Working-Relationship classification, plus RACI, Value Stream, Data, People, and Readiness Gate views</p>
+      <p>Sandbox &middot; Working-Relationship classification, plus RACI, Data, People, and Readiness Gate views</p>
     </div>
     <div class="topbar-pills" id="topbar-pills"></div>
   </div>
@@ -374,7 +303,6 @@ td.crud-d .crud-entity { color: #991B1B; }
     <span class="view-toggle-label">View</span>
     <button class="view-toggle-btn active" id="btn-wr" onclick="setView('wr')">Working Relationship</button>
     <button class="view-toggle-btn" id="btn-raci" onclick="setView('raci')">RACI Table</button>
-    <button class="view-toggle-btn" id="btn-vsp" onclick="setView('vsp')">Value Stream Profile</button>
     <button class="view-toggle-btn" id="btn-data" onclick="setView('data')">Data View (CRUD)</button>
     <button class="view-toggle-btn" id="btn-people" onclick="setView('people')">People View</button>
     <button class="view-toggle-btn" id="btn-gates" onclick="setView('gates')">Readiness Gate</button>
@@ -385,11 +313,7 @@ td.crud-d .crud-entity { color: #991B1B; }
     <div class="card lens-section" id="panel-maturity">
       <div class="card-header">
         <h3>Working-Relationship Table &mdash; PCF 7.0</h3>
-        <span id="wr-stat-line">118 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 118 working-relationship classified</span>
-      </div>
-      <div class="vs-bar" id="vs-bar-wr">
-        <label for="vs-select-wr">Value Stream</label>
-        <select id="vs-select-wr" onchange="applyValueStreamWr(this.value === 'all' ? 'all' : Number(this.value))"></select>
+        <span>118 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 118 working-relationship classified</span>
       </div>
       <div class="table-wrap">
         <table id="main-table">
@@ -456,19 +380,6 @@ td.crud-d .crud-entity { color: #991B1B; }
           <tbody id="crud-table-body"></tbody>
         </table>
       </div>
-    </div>
-
-    <div class="card lens-section" id="panel-vsp" style="display:none">
-      <div class="card-header">
-        <h3>Value Stream Profile &mdash; PCF 7.0</h3>
-        <span>Description, KPIs, Design Narrative, Working Relationship Profile, Process Accountability, Handoff Points, Governed Decision Points &mdash; per value stream</span>
-      </div>
-      <div class="vs-bar" id="vs-bar">
-        <label for="vs-select">Value Stream</label>
-        <select id="vs-select" onchange="applyValueStream(this.value === 'all' ? 'all' : Number(this.value))"></select>
-      </div>
-      <div class="summary-bar" id="summary-bar"></div>
-      <div class="description-grid" id="description-grid"></div>
     </div>
 
     <div class="card lens-section" id="panel-people" style="display:none">
@@ -1139,7 +1050,7 @@ const WR_DATA = {
 
 
 
-/* ── Added for RACI / Data View / Value Stream Profile / People View
+/* ── Added for RACI / Data View / People View
    (Sept 14, 2026) — ported from the live dashboard's own render functions,
    same logic, scoped to this single-domain (PCF 7.0) sandbox page. ────── */
 
@@ -1611,311 +1522,6 @@ function renderGatesTable(cat) {
   tbody.innerHTML = html;
 }
 
-/* ── Value Stream Profile ────────────────────────────────────────────── */
-function codeInStream(code, stream) {
-  if (!stream) return false;
-  const l2Match = (stream.l2codes || []).some(l2 => code === l2 || code.startsWith(l2 + '.'));
-  if (l2Match) return true;
-  return (stream.l3codes || []).some(l3 => code === l3 || code.startsWith(l3 + '.'));
-}
-function getStreamL3s(cat, stream) {
-  const fullGroups = new Set(stream.l2codes || []);
-  const explicitL3 = new Set(stream.l3codes || []);
-  const result = [];
-  cat.groups.forEach(g => {
-    if (fullGroups.has(g.code)) g.l3.forEach(l3 => result.push(l3));
-    else if (explicitL3.size) g.l3.forEach(l3 => { if (explicitL3.has(l3.code)) result.push(l3); });
-  });
-  return result;
-}
-
-/* WR-based helpers for the Value Stream Profile view — pulls straight from
-   WR_DATA/WR_CATS (the same single source of truth as the Working
-   Relationship tab) rather than a separately-maintained M1/M3 copy, so this
-   view can never drift out of sync with it again. */
-function getActivityCodesForL3s(l3s) {
-  const codes = [];
-  l3s.forEach(l3 => {
-    if (l3.l4 && l3.l4.length) l3.l4.forEach(l4 => codes.push(l4.code));
-    else codes.push(l3.code);
-  });
-  return codes;
-}
-function computeWrStatsForCodes(codes) {
-  let n = 0, relSum = 0, futSum = 0, atCeiling = 0, belowFuture = 0;
-  codes.forEach(code => {
-    const d = WR_DATA[code];
-    if (!d || !d.rel || !WR_CATS[d.rel]) return;
-    n++;
-    const relH = WR_CATS[d.rel].h;
-    relSum += relH;
-    const futH = (d.future && WR_CATS[d.future]) ? WR_CATS[d.future].h : relH;
-    futSum += futH;
-    if (d.rel === d.ceiling) atCeiling++;
-    if (relH > futH) belowFuture++;
-  });
-  return {
-    total: codes.length, n, atCeiling, belowFuture,
-    rel: n ? Math.round(relSum / n) : null,
-    fut: n ? Math.round(futSum / n) : null,
-  };
-}
-const VSP_WR_ORDER = ['Automation', 'Agent-delegation', 'Augmentation', 'Oversight', 'Judgment', 'Human-only'];
-const VSP_WR_TAGLINES = {
-  'Automation': 'Rules-Based Execution — deterministic steps, no judgment required',
-  'Agent-delegation': 'Bounded Autonomy — AI executes within defined parameters, human sets the bounds',
-  'Augmentation': 'AI-Assisted Judgment — AI drafts and surfaces options, human decides',
-  'Oversight': 'Human Verifies — AI proposes the action, human reviews before it executes',
-  'Judgment': 'Human Decides — synthesis and accountability that stay with the person',
-  'Human-only': 'Human-Only — a standing duty that cannot be delegated',
-};
-function buildWrProfileGrid(codes) {
-  const cards = VSP_WR_ORDER.map(catName => {
-    const color = WR_CATS[catName].color;
-    let n = 0, at = 0;
-    codes.forEach(code => {
-      const d = WR_DATA[code];
-      if (d && d.ceiling === catName) { n++; if (d.rel === catName) at++; }
-    });
-    const tagline = VSP_WR_TAGLINES[catName];
-    const body = n > 0
-      ? '<div class="cm-count">' + n + ' <span>L4 activities at ceiling</span></div><div class="cm-mvals">H ' + WR_CATS[catName].h + '% &middot; ' + at + ' of ' + n + ' already there</div>'
-      : '<div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities in this value stream have this Progression Ceiling</div>';
-    return '<div class="capmap-card" style="background:' + color + '1A;color:' + color + '"><div class="cm-name">' + catName + '</div><div class="cm-tagline">' + tagline + '</div>' + body + '</div>';
-  }).join('');
-  return '<div class="capmap-grid">' + cards + '</div>';
-}
-function buildWrSummarySentence(wr) {
-  if (!wr || !wr.n) return '';
-  const diff = wr.fut - wr.rel;
-  const verb = wr.belowFuture === 1 ? 'has' : 'have';
-  const pronoun = wr.belowFuture === 1 ? 'its' : 'their';
-  return 'Under the Working-Relationship model, this value stream\u2019s aggregate Current State sits at H ' + wr.rel + '%; its designed Future State brings that to H ' + wr.fut + '% (\u0394 ' + diff + ' points) \u2014 ' + wr.belowFuture + ' of ' + wr.n + ' activities ' + verb + ' not yet reached ' + pronoun + ' Future State target, and ' + wr.atCeiling + ' have already reached their Progression Ceiling with no further AI-absorption headroom remaining.';
-}
-function computeStreamStats(cat, streamIdx) {
-  const stream = cat.valueStreams[streamIdx];
-  const fullGroups = new Set(stream.l2codes || []);
-  const explicitL3 = new Set(stream.l3codes || []);
-  let l3count = 0, mixedL3 = 0, codes = [];
-  const groupCodesTouched = new Set();
-  cat.groups.forEach(g => {
-    const isFull = fullGroups.has(g.code);
-    g.l3.forEach(l3 => {
-      if (!isFull && !explicitL3.has(l3.code)) return;
-      l3count++;
-      groupCodesTouched.add(g.code);
-      if (l3.mixed) mixedL3++;
-      if (l3.l4 && l3.l4.length) l3.l4.forEach(l4 => codes.push(l4.code)); else codes.push(l3.code);
-    });
-  });
-  const wr = computeWrStatsForCodes(codes);
-  return { l3count, activityUnits: codes.length, mixedL3, groupsTouched: groupCodesTouched.size, wr };
-}
-function renderSummaryBar(s) {
-  const sb = document.getElementById('summary-bar');
-  const deltaVal = (s.diff === null || s.diff === undefined) ? '\u2014' : ((s.diff > 0 ? '+' : '') + s.diff + '%');
-  sb.innerHTML =
-    '<div class="summary-card"><div class="label">L3 Processes</div><div class="value">' + s.l3 + '</div><div class="sub">' + s.l3sub + '</div></div>' +
-    '<div class="summary-card"><div class="label">L4 Activities</div><div class="value">' + s.l4 + '</div><div class="sub">' + s.l4sub + '</div></div>' +
-    '<div class="summary-card"><div class="label">Current State H%</div><div class="value">' + (s.rel === null ? '\u2014' : s.rel + '%') + '</div><div class="sub">Real, per-activity</div></div>' +
-    '<div class="summary-card" style="flex:1.3"><div class="label">Future State H%</div><div class="value" style="color:var(--navy)">' + (s.fut === null ? '\u2014' : s.fut + '%') + '</div><div class="sub">&#9733; designed target</div></div>' +
-    '<div class="summary-card"><div class="label">At Progression Ceiling</div><div class="value" style="color:var(--navy-d)">' + s.atCeiling + '</div><div class="sub">of ' + s.n + ' classified</div></div>' +
-    '<div class="summary-card"><div class="label">&Delta; Current &rarr; Future</div><div class="value" style="color:#B45309">' + deltaVal + '</div><div class="sub">AI-absorption runway</div></div>';
-}
-function populateValueStreamBar(cat, selectId) {
-  const select = document.getElementById(selectId || 'vs-select');
-  const hasTiers = cat.valueStreams.some(vs => vs.tier);
-  let optionsHtml = '<option value="all">All Processes</option>';
-  if (hasTiers) {
-    ["Strategy", "Operational", "Enablement"].forEach(tier => {
-      const inTier = cat.valueStreams.map((vs, i) => ({ vs, i })).filter(({ vs }) => vs.tier === tier);
-      if (!inTier.length) return;
-      optionsHtml += '<optgroup label="' + tier + '">' +
-        inTier.map(({ vs, i }) => '<option value="' + i + '">' + vs.name + (vs.subtitle ? ' &mdash; ' + vs.subtitle : '') + '</option>').join('') +
-        '</optgroup>';
-    });
-  }
-  select.innerHTML = optionsHtml;
-  select.value = 'all';
-}
-function applyValueStream(val) {
-  if (val === 'all') {
-    renderDescriptionPanel(cat, 'all');
-    let l3count = 0, codes = [];
-    cat.groups.forEach(g => g.l3.forEach(l3 => {
-      l3count++;
-      if (l3.l4 && l3.l4.length) l3.l4.forEach(l4 => codes.push(l4.code)); else codes.push(l3.code);
-    }));
-    const wr = computeWrStatsForCodes(codes);
-    renderSummaryBar({ l3: l3count, l3sub: cat.groups.length + ' process groups', l4: wr.total, l4sub: cat.groups.reduce((n, g) => n + g.l3.filter(l3 => l3.mixed).length, 0) + ' mixed-pattern L3s',
-      rel: wr.rel, fut: wr.fut, atCeiling: wr.atCeiling, n: wr.n, diff: (wr.rel !== null && wr.fut !== null) ? wr.fut - wr.rel : null });
-    return;
-  }
-  const stats = computeStreamStats(cat, val);
-  renderSummaryBar({ l3: stats.l3count, l3sub: stats.groupsTouched + ' process group' + (stats.groupsTouched === 1 ? '' : 's'),
-    l4: stats.wr.total, l4sub: stats.mixedL3 + ' mixed-pattern L3s',
-    rel: stats.wr.rel, fut: stats.wr.fut, atCeiling: stats.wr.atCeiling, n: stats.wr.n,
-    diff: (stats.wr.rel !== null && stats.wr.fut !== null) ? stats.wr.fut - stats.wr.rel : null });
-  renderDescriptionPanel(cat, cat.valueStreams[val]);
-}
-
-/* ── Value-stream scoping for the Working-Relationship table itself ─────
-   Same UX as the live dashboard's Maturity Table "VALUE STREAM" dropdown
-   (screenshot reference: hitl_dashboard_final's PCF 8.0 Process View) —
-   selecting a stream highlights and auto-expands the L2/L3/L4 rows that
-   belong to it and dims the rest, rather than replacing the table with a
-   separate profile. Reuses the same row-l2/row-l3/row-l4 + toggle
-   infrastructure render() already builds; only the highlight/expand state
-   and the header stat line change. */
-let WR_DEFAULT_STAT_LINE = null;
-function applyValueStreamWr(val) {
-  const statEl = document.getElementById('wr-stat-line');
-  if (WR_DEFAULT_STAT_LINE === null && statEl) WR_DEFAULT_STAT_LINE = statEl.innerHTML;
-
-  const allRows = {
-    l2: document.querySelectorAll('#table-body tr.row-l2'),
-    l3: document.querySelectorAll('#table-body tr.row-l3'),
-    l4: document.querySelectorAll('#table-body tr.row-l4'),
-  };
-  [...allRows.l2, ...allRows.l3, ...allRows.l4].forEach(r => {
-    r.classList.remove('vs-active', 'vs-dim', 'vs-partial');
-  });
-
-  if (val === 'all') {
-    cat.groups.forEach(g => setGroupExpanded(g.code, true));
-    cat.groups.forEach(g => g.l3.forEach(l3 => { if (l3.l4.length) setL3Expanded(l3.code, false); }));
-    if (statEl && WR_DEFAULT_STAT_LINE !== null) statEl.innerHTML = WR_DEFAULT_STAT_LINE;
-    return;
-  }
-
-  const stats = computeStreamStats(cat, val);
-  if (statEl) {
-    statEl.textContent = stats.activityUnits + ' L4 activities · ' + stats.l3count + ' L3 processes · ' +
-      stats.groupsTouched + ' process group' + (stats.groupsTouched === 1 ? '' : 's') + ' · ' +
-      stats.wr.n + ' working-relationship classified';
-  }
-
-  const stream = cat.valueStreams[val];
-  const fullGroups = new Set(stream.l2codes || []);
-  const explicitL3 = new Set(stream.l3codes || []);
-
-  cat.groups.forEach(g => {
-    const isFull = fullGroups.has(g.code);
-    const partialL3s = g.l3.filter(l3 => explicitL3.has(l3.code));
-    const isPartial = !isFull && partialL3s.length > 0;
-    const l2tr = document.querySelector('#table-body tr.row-l2[data-group="' + g.code + '"]');
-
-    if (isFull) {
-      l2tr.classList.add('vs-active');
-      setGroupExpanded(g.code, true);
-      g.l3.forEach(l3 => {
-        const l3tr = document.querySelector('#table-body tr.row-l3[data-l3code="' + l3.code + '"]');
-        if (l3tr) l3tr.classList.add('vs-active');
-        if (l3.l4.length) setL3Expanded(l3.code, true);
-        document.querySelectorAll('#table-body tr.row-l4[data-parent-l3="' + l3.code + '"]').forEach(l4tr => l4tr.classList.add('vs-active'));
-      });
-    } else if (isPartial) {
-      l2tr.classList.add('vs-partial');
-      setGroupExpanded(g.code, true);
-      g.l3.forEach(l3 => {
-        const relevant = explicitL3.has(l3.code);
-        const l3tr = document.querySelector('#table-body tr.row-l3[data-l3code="' + l3.code + '"]');
-        if (l3tr) l3tr.classList.add(relevant ? 'vs-active' : 'vs-dim');
-        if (relevant && l3.l4.length) setL3Expanded(l3.code, true);
-        document.querySelectorAll('#table-body tr.row-l4[data-parent-l3="' + l3.code + '"]').forEach(l4tr => {
-          l4tr.classList.add(relevant ? 'vs-active' : 'vs-dim');
-        });
-      });
-    } else {
-      l2tr.classList.add('vs-dim');
-      setGroupExpanded(g.code, false);
-    }
-  });
-}
-
-function splitRoleAnnotation(raw) {
-  const m = raw.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
-  return m ? { base: m[1].trim(), note: m[2].trim() } : { base: raw, note: null };
-}
-function renderDescriptionPanel(cat, streamFilter) {
-  const grid = document.getElementById('description-grid');
-  const descs = (!streamFilter || streamFilter === 'all')
-    ? cat.lenses.descriptions
-    : cat.lenses.descriptions.filter(d => d.stream === streamFilter.name);
-  grid.innerHTML = descs.map(d => {
-    const kpiEntry = (cat.lenses.kpis || []).find(k => k.stream === d.stream);
-    const kpiSection = kpiEntry ? (
-      '<div class="desc-section-heading">KPIs</div>' +
-      '<table class="desc-table"><thead><tr><th>Business Impact Metric &amp; Formula (where confirmed)</th><th>Source</th></tr></thead><tbody>' +
-      kpiEntry.metrics.map(m => '<tr><td><strong>' + m.name + '</strong>' + (m.formula ? '<div class="desc-table-formula">' + m.formula + '</div>' : '') + '</td>' +
-        '<td class="desc-table-source">' + (m.source || '—') + '</td></tr>').join('') + '</tbody></table>'
-    ) : '';
-
-    const stream = (cat.valueStreams || []).find(s => s.name === d.stream);
-
-    const designNarrativeText = (stream && cat.lenses.designNarrative && cat.lenses.designNarrative[stream.name]) || '';
-    const designNarrativeSection = designNarrativeText ? '<div class="desc-section-heading">Design Narrative</div><div class="narrative-block" style="padding:0 16px 14px"><p>' + designNarrativeText + '</p></div>' : '';
-
-    const streamCodes = stream ? getActivityCodesForL3s(getStreamL3s(cat, stream)) : [];
-    const wrStats = computeWrStatsForCodes(streamCodes);
-    const wrSentence = buildWrSummarySentence(wrStats);
-
-    const capabilityMapSection = stream ? (
-      '<div class="desc-section-heading">Working Relationship Profile</div>' +
-      '<div class="lens-note" style="padding:0 16px 10px">Progression Ceiling distribution across this value stream\u2019s L4 activities \u2014 the durable state where AI\u2019s role stops advancing, either because a standing accountability duty holds the line or, for Automation, because no further reduction in human involvement remains meaningful. H% figures are each Working-Relationship category\u2019s fixed value, applied consistently across all PCF domains.</div>' +
-      buildWrProfileGrid(streamCodes)
-    ) : '';
-
-    const ownerData = {};
-    const roleNotes = {};
-    if (stream) {
-      getStreamL3s(cat, stream).forEach(l3 => {
-        const raw = (l3.raci && l3.raci.A) || 'Unassigned';
-        const { base: role, note } = splitRoleAnnotation(raw);
-        const count = (l3.l4 && l3.l4.length) ? l3.l4.length : 1;
-        if (!ownerData[role]) ownerData[role] = { steps: 0, l3s: [] };
-        ownerData[role].steps += count;
-        ownerData[role].l3s.push(l3.code);
-        if (note) { if (!roleNotes[role]) roleNotes[role] = []; roleNotes[role].push({ code: l3.code, note }); }
-      });
-    }
-    const tierByRole = {};
-    (d.roles || []).forEach(r => { tierByRole[r.role] = r.tier; });
-    const accountabilitySection = Object.keys(ownerData).length ? (
-      '<div class="desc-section-heading">Process Accountability</div>' +
-      '<table class="desc-table desc-table-roles"><thead><tr><th>Process Accountability</th><th>Tier</th><th>L3 Processes</th><th>L4 Activities</th></tr></thead><tbody>' +
-      Object.entries(ownerData).map(([role, data]) => {
-        const tier = tierByRole[role] || tierByRole[role.replace(/\*$/, '')] || 'External Participant';
-        const tc = TIER_COLORS[tier] || TIER_COLORS["External Participant"];
-        const notes = roleNotes[role] || [];
-        const l3Text = data.l3s.map(code => notes.some(n => n.code === code) ? code + '&dagger;' : code).join(', ');
-        const noteLines = notes.map(n => '<div class="desc-table-note">&dagger; ' + n.code + ': ' + n.note + '</div>').join('');
-        return '<tr><td>' + role + '</td><td class="desc-table-tier" style="background:' + tc.fill + ';color:' + tc.text + '">' + tier + '</td>' +
-          '<td class="desc-table-pcf">' + l3Text + noteLines + '</td><td style="text-align:left">' + data.steps + '</td></tr>';
-      }).join('') + '</tbody></table>'
-    ) : '';
-
-    const handoffPoints = (stream && cat.lenses.handoffPoints && cat.lenses.handoffPoints[stream.name]) || [];
-    const handoffSection = handoffPoints.length ? '<div class="desc-section-heading">Handoff Points</div><div class="narrative-block" style="padding:0 16px 14px">' + handoffPoints.map(p => '<p>' + p + '</p>').join('') + '</div>' : '';
-
-    const govItems = stream ? (cat.lenses.governance || []).filter(g => codeInStream(g.code, stream)) : [];
-    const govSection = '<div class="desc-section-heading">Governed Decision Points</div>' + (govItems.length ? (
-      '<div class="lens-note" style="padding:0 16px 10px">Every Decision/Exception-pattern activity in the value stream, including those embedded inside Mixed-labeled steps.</div>' +
-      '<table class="desc-table desc-table-gov"><thead><tr><th>PCF</th><th>Decision</th><th>Authority</th><th>Impact</th><th>Escalates To</th><th>Trigger</th></tr></thead><tbody>' +
-      govItems.map(g => '<tr><td class="pcf-code">' + g.code + '</td><td>' + g.decision + '</td><td>' + g.authority + '</td><td>' + g.impact + '</td><td>' + g.escalates + '</td><td>' + g.trigger + '</td></tr>').join('') +
-      '</tbody></table>'
-    ) : '<div class="lens-empty">No Decision- or Exception-pattern activity in this value stream — every step here is Knowledge, Document, Transaction, or Mixed without an embedded Decision/Exception component.</div>');
-
-    return '<div class="desc-card"><div class="desc-card-head"><span class="desc-pcf">' + d.pcf + '</span><span class="desc-name">' + d.stream + '</span><div class="desc-subtitle">' + d.subtitle + '</div></div>' +
-      '<div class="desc-card-body">' + d.narrative.map(p => '<p>' + p + '</p>').join('') + (wrSentence ? '<p>' + wrSentence + '</p>' : '') + '</div>' +
-      '<div class="desc-stats"><div class="desc-stat"><strong>' + d.l3Count + '</strong>L3 Processes</div><div class="desc-stat"><strong>' + d.activityUnits + '</strong>Activities</div>' +
-      '<div class="desc-stat"><strong>' + (wrStats.rel === null ? '\u2014' : wrStats.rel + '%') + '</strong>Current State</div>' +
-      '<div class="desc-stat"><strong>' + (wrStats.fut === null ? '\u2014' : wrStats.fut + '%') + '</strong>Future State</div>' +
-      '<div class="desc-stat"><strong>' + wrStats.atCeiling + '/' + wrStats.n + '</strong>At Ceiling</div></div>' +
-      kpiSection + designNarrativeSection + capabilityMapSection + accountabilitySection + handoffSection + govSection + '</div>';
-  }).join('');
-}
-
 /* ── State ─────────────────────────────────────────────────────────────── */
 let currentView = 'wr';
 const cat = PCF7;
@@ -2068,13 +1674,12 @@ function toggleL3(code, el) { setL3Expanded(code, el.classList.contains('collaps
 
 function setView(v) {
   currentView = v;
-  ['wr', 'raci', 'vsp', 'data', 'people', 'gates'].forEach(name => {
+  ['wr', 'raci', 'data', 'people', 'gates'].forEach(name => {
     const btn = document.getElementById('btn-' + name);
     if (btn) btn.classList.toggle('active', v === name);
   });
   document.getElementById('panel-maturity').style.display = v === 'wr' ? '' : 'none';
   document.getElementById('panel-raci').style.display = v === 'raci' ? '' : 'none';
-  document.getElementById('panel-vsp').style.display = v === 'vsp' ? '' : 'none';
   document.getElementById('panel-data').style.display = v === 'data' ? '' : 'none';
   document.getElementById('panel-people').style.display = v === 'people' ? '' : 'none';
   document.getElementById('panel-gates').style.display = v === 'gates' ? '' : 'none';
@@ -2082,21 +1687,13 @@ function setView(v) {
   const notes = {
     wr: 'Current State / Future State / Progression Ceiling — the real model from Working_Relationship_Progression_Methodology.docx. Blank cells mean that reasoning hasn’t been done yet, not that the answer is zero.',
     raci: 'Real reasoned-match RACI, same data the live dashboard’s RACI Table renders. R falls back to the Accountable role (marked "from Accountable") wherever no separate Responsible was identified.',
-    vsp: 'Description, KPIs, Design Narrative, Working Relationship Profile, Process Accountability, Handoff Points, and Governed Decision Points — select a value stream, or leave it on All Processes.',
     data: 'Entity × process CRUD — 22 of 37 L3s have real confirmed CRUD data, ported unchanged from the live dashboard’s Data View lens.',
     people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced. Each role’s WR rollup (Current State) is real — an equal-weighted mean across its Accountable L3s, shown only once every one of them is fully classified.',
     gates: 'Per Working_Relationship_Progression_Methodology.docx §5 — three independent axes (Technical/Process, Role-level, Organizational-level) must all clear before an activity advances, gated here at L3 via its RACI Accountable role. Only the WR Rollup column is real; no instrument exists yet for any of the three gate axes, so those cells are honest placeholders, not a status.',
   };
   document.getElementById('view-note').textContent = notes[v] || '';
 
-  if (v === 'wr') {
-    render();
-    // render() rebuilds table-body from scratch (all L3s collapsed), so the
-    // currently-selected value stream's highlight/expand state has to be
-    // re-applied rather than assumed to survive the rebuild.
-    const wrSel = document.getElementById('vs-select-wr');
-    applyValueStreamWr(wrSel && wrSel.value !== 'all' ? Number(wrSel.value) : 'all');
-  }
+  if (v === 'wr') render();
 }
 
 function buildLegend() {
@@ -2119,9 +1716,6 @@ renderRaciTable(cat);
 renderCrudTable(cat);
 renderRoleImpactTable(cat);
 renderGatesTable(cat);
-populateValueStreamBar(cat, 'vs-select');
-populateValueStreamBar(cat, 'vs-select-wr');
-applyValueStream('all');
 setView('wr');
 </script>
 </body>
