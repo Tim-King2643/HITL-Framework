@@ -448,7 +448,7 @@ td.crud-d .crud-entity { color: #991B1B; }
     <div class="card lens-section" id="panel-vsp" style="display:none">
       <div class="card-header">
         <h3>Value Stream Profile &mdash; PCF 7.0</h3>
-        <span>Description, KPIs, Design Narrative, AI Capability Map, Process Accountability, Handoff Points, Governed Decision Points &mdash; per value stream</span>
+        <span>Description, KPIs, Design Narrative, Working Relationship Profile, Process Accountability, Handoff Points, Governed Decision Points &mdash; per value stream</span>
       </div>
       <div class="vs-bar" id="vs-bar">
         <label for="vs-select">Value Stream</label>
@@ -585,7 +585,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
       { code:"7.7.7.3", decision:"Select the methodology used for workforce analytics (embedded in Manage HR Reporting & Analytics)", authority:"HRIS Analyst", tier:"Operational", impact:"Operational + Strategic — informs downstream restructuring or board reporting", escalates:"Director of HR Ops (Managerial)", trigger:"Methodology output will inform headcount, restructuring, or board-level reporting decisions" }
     ],
       descriptions: [
-      { stream:"HR Vision-to-Strategy", pcf:"PCF 7.1", subtitle:"Set HR direction & workforce strategy", l3Count:4, activityUnits:31, m1:80, m3:58, delta:-22, narrative:["This value stream comprises one APQC PCF process group: 7.1 Develop and Manage HR Planning, Policies, and Strategies — spanning 4 Level 3 processes and 31 Level 4 activities.", "At the activity level, this value stream's work breaks down as 23 Knowledge activities (judgment, synthesis, and interpretation-driven work), 4 Document activities (content generation), and 4 Transaction activities (rules-based processing suited to automation). No Decision- or Exception-pattern activity exists within this value stream.", "At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 58%, down from an 80% undesigned baseline — a 22-point AI convergence opportunity."],
+      { stream:"HR Vision-to-Strategy", pcf:"PCF 7.1", subtitle:"Set HR direction & workforce strategy", l3Count:4, activityUnits:31, narrative:["This value stream comprises one APQC PCF process group: 7.1 Develop and Manage HR Planning, Policies, and Strategies — spanning 4 Level 3 processes and 31 Level 4 activities.", "At the activity level, this value stream's work breaks down as 23 Knowledge activities (judgment, synthesis, and interpretation-driven work), 4 Document activities (content generation), and 4 Transaction activities (rules-based processing suited to automation). No Decision- or Exception-pattern activity exists within this value stream."],
         roles:[
           {role:"CHRO", tier:"Executive"},
           {role:"VP People & Culture", tier:"Executive"},
@@ -596,7 +596,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
           {role:"Compensation & Benefits Manager", tier:"Managerial"},
           {role:"HR Generalist", tier:"Operational"},
         ] },
-      { stream:"Recruit-to-Hire", pcf:"PCF 7.2", subtitle:"Acquire Talent", l3Count:5, activityUnits:24, m1:70, m3:47, delta:-23, narrative:["This value stream comprises one APQC PCF process group: 7.2 Recruit, Source, and Select Employees — spanning 5 Level 3 processes and 24 Level 4 activities.", "At the activity level, this value stream's work breaks down as 15 Transaction activities (rules-based processing suited to automation), 5 Knowledge activities (judgment, synthesis, and interpretation-driven work), 3 Decision activities (judgment-and-authority gates that stay human by design), and 1 Document activity (content generation). No Exception-pattern activity exists within this value stream.", "At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 47%, down from a 70% undesigned baseline — a 23-point AI convergence opportunity."],
+      { stream:"Recruit-to-Hire", pcf:"PCF 7.2", subtitle:"Acquire Talent", l3Count:5, activityUnits:24, narrative:["This value stream comprises one APQC PCF process group: 7.2 Recruit, Source, and Select Employees — spanning 5 Level 3 processes and 24 Level 4 activities.", "At the activity level, this value stream's work breaks down as 15 Transaction activities (rules-based processing suited to automation), 5 Knowledge activities (judgment, synthesis, and interpretation-driven work), 3 Decision activities (judgment-and-authority gates that stay human by design), and 1 Document activity (content generation). No Exception-pattern activity exists within this value stream."],
         roles:[
           {role:"Director of Talent Acquisition", tier:"Managerial"},
           {role:"HRBP Manager", tier:"Managerial"},
@@ -607,7 +607,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
           {role:"HRIS Analyst", tier:"Operational"},
           {role:"Hiring Managers*", tier:"External Participant"},
         ] },
-      { stream:"Perform-to-Grow", pcf:"PCF 7.3", subtitle:"Develop Talent", l3Count:4, activityUnits:18, m1:79, m3:58, delta:-21, narrative:["This value stream comprises one APQC PCF process group: 7.3 Develop and Counsel Employees — spanning 4 Level 3 processes and 18 Level 4 activities.", "At the activity level, this value stream's work breaks down as 12 Knowledge activities (judgment, synthesis, and interpretation-driven work), 4 Transaction activities (rules-based processing suited to automation), 1 Document activity (content generation), and 1 Decision activity (judgment-and-authority gates that stay human by design). No Exception-pattern activity exists within this value stream.", "At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 58%, down from a 79% undesigned baseline — a 21-point AI convergence opportunity."],
+      { stream:"Perform-to-Grow", pcf:"PCF 7.3", subtitle:"Develop Talent", l3Count:4, activityUnits:18, narrative:["This value stream comprises one APQC PCF process group: 7.3 Develop and Counsel Employees — spanning 4 Level 3 processes and 18 Level 4 activities.", "At the activity level, this value stream's work breaks down as 12 Knowledge activities (judgment, synthesis, and interpretation-driven work), 4 Transaction activities (rules-based processing suited to automation), 1 Document activity (content generation), and 1 Decision activity (judgment-and-authority gates that stay human by design). No Exception-pattern activity exists within this value stream."],
         roles:[
           {role:"CHRO", tier:"Executive"},
           {role:"VP People & Culture", tier:"Executive"},
@@ -620,7 +620,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
           {role:"Onboarding Coordinator", tier:"Operational"},
           {role:"Managers*", tier:"External Participant"},
         ] },
-      { stream:"Reward-to-Retain", pcf:"PCF 7.5", subtitle:"Reward & Retain Talent", l3Count:5, activityUnits:17, m1:74, m3:51, delta:-23, narrative:["This value stream comprises one APQC PCF process group: 7.5 Reward and Retain Employees — spanning 5 Level 3 processes and 17 Level 4 activities.", "At the activity level, this value stream's work breaks down as 9 Knowledge activities (judgment, synthesis, and interpretation-driven work), 7 Transaction activities (rules-based processing suited to automation), and 1 Document activity (content generation). No Exception-pattern activity exists within this value stream.", "At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 51%, down from a 74% undesigned baseline — a 23-point AI convergence opportunity."],
+      { stream:"Reward-to-Retain", pcf:"PCF 7.5", subtitle:"Reward & Retain Talent", l3Count:5, activityUnits:17, narrative:["This value stream comprises one APQC PCF process group: 7.5 Reward and Retain Employees — spanning 5 Level 3 processes and 17 Level 4 activities.", "At the activity level, this value stream's work breaks down as 9 Knowledge activities (judgment, synthesis, and interpretation-driven work), 7 Transaction activities (rules-based processing suited to automation), and 1 Document activity (content generation). No Exception-pattern activity exists within this value stream."],
         roles:[
           {role:"Compensation & Benefits Manager", tier:"Managerial"},
           {role:"Director of HR Ops", tier:"Managerial"},
@@ -630,14 +630,14 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
           {role:"HRIS Analyst", tier:"Operational"},
           {role:"Finance*", tier:"External Participant"},
         ] },
-      { stream:"Move-to-Exit", pcf:"PCF 7.6", subtitle:"Transition Talent", l3Count:3, activityUnits:6, m1:70, m3:48, delta:-22, narrative:["This value stream comprises one APQC PCF process group: 7.6 Redeploy and Retire Employees — spanning 3 Level 3 processes and 6 Level 4 activities.", "At the activity level, this value stream's work breaks down as 4 Transaction activities (rules-based processing suited to automation), 1 Decision activity (judgment-and-authority gates that stay human by design), and 1 Knowledge activity (judgment, synthesis, and interpretation-driven work). No Exception-pattern activity exists within this value stream.", "At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 48%, down from a 70% undesigned baseline — a 22-point AI convergence opportunity."],
+      { stream:"Move-to-Exit", pcf:"PCF 7.6", subtitle:"Transition Talent", l3Count:3, activityUnits:6, narrative:["This value stream comprises one APQC PCF process group: 7.6 Redeploy and Retire Employees — spanning 3 Level 3 processes and 6 Level 4 activities.", "At the activity level, this value stream's work breaks down as 4 Transaction activities (rules-based processing suited to automation), 1 Decision activity (judgment-and-authority gates that stay human by design), and 1 Knowledge activity (judgment, synthesis, and interpretation-driven work). No Exception-pattern activity exists within this value stream."],
         roles:[
           {role:"HRBP Manager", tier:"Managerial"},
           {role:"Compensation & Benefits Manager", tier:"Managerial"},
           {role:"HR Generalist", tier:"Operational"},
           {role:"Legal*", tier:"External Participant"},
         ] },
-      { stream:"Enable & Govern", pcf:"PCF 7.4, 7.7–7.8", subtitle:"Cross-cutting — compliance, data, communication", l3Count:16, activityUnits:22, m1:79, m3:57, delta:-22, narrative:["This value stream spans 3 APQC PCF process groups: 7.4 Manage Employee Relations, 7.7 Manage Employee Information, and 7.8 Manage Employee Communication — together comprising 16 Level 3 processes and 22 Level 4 activities.", "At the activity level, this value stream's work breaks down as 8 Knowledge activities (judgment, synthesis, and interpretation-driven work), 5 Transaction activities (rules-based processing suited to automation), 4 Document activities (content generation), 3 Decision activities (judgment-and-authority gates that stay human by design), and 2 Exception activities (non-standard cases requiring human resolution).", "At M3 (HITL Design Intent), the value stream's aggregate human-involvement ratio is 57%, down from a 79% undesigned baseline — a 22-point AI convergence opportunity."],
+      { stream:"Enable & Govern", pcf:"PCF 7.4, 7.7–7.8", subtitle:"Cross-cutting — compliance, data, communication", l3Count:16, activityUnits:22, narrative:["This value stream spans 3 APQC PCF process groups: 7.4 Manage Employee Relations, 7.7 Manage Employee Information, and 7.8 Manage Employee Communication — together comprising 16 Level 3 processes and 22 Level 4 activities.", "At the activity level, this value stream's work breaks down as 8 Knowledge activities (judgment, synthesis, and interpretation-driven work), 5 Transaction activities (rules-based processing suited to automation), 4 Document activities (content generation), 3 Decision activities (judgment-and-authority gates that stay human by design), and 2 Exception activities (non-standard cases requiring human resolution)."],
         roles:[
           {role:"CHRO", tier:"Executive"},
           {role:"Director of HR Ops", tier:"Managerial"},
@@ -648,12 +648,12 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         ] },
     ],
       designNarrative: {
-        "HR Vision-to-Strategy": "HR Vision-to-Strategy is the framework's only Executive-tier value stream in PCF 7.0: 7.1.1 (Develop human resources strategy) is the domain's single Executive-Accountable L3, with CHRO holding formal Accountability while HRBP Manager and Director of HR Ops carry the Responsible drafting work. Director of HR Ops then holds Accountable for translating that strategy into workforce planning and keeping it current (7.1.2, 7.1.3), while Director of L&D owns competency model design (7.1.4) as an adjacent step. Every other PCF 7.0 value stream operates downstream of this one — its outputs (approved strategy, workforce plans, policies, competency models) are the direct inputs the operational and enablement streams execute against. Its steepest AI-absorption opportunities cluster in Document-pattern content — 7.1.1.7 (communicating HR strategy) and 7.1.2.16 (maintaining job descriptions) both sit at -32 points.",
-        "Recruit-to-Hire": "Recruit-to-Hire, now scoped to candidate acquisition alone, keeps human judgment concentrated at two points: candidate selection itself (7.2.3, the interview and select/reject decision) and final hire commitment (7.2.4, offer negotiation) — both Accountable to Recruiter. Everything else in the value stream — requisition administration (7.2.1), sourcing-channel execution (7.2.2), applicant data management (7.2.5) — carries real AI-absorption opportunity at M3, reflected in the value stream's steepest single gap sitting in 7.2.4.1 (Draw up and make offer, Document-pattern, -32 points), with 7.2.5's entirely Transaction-pattern applicant-information work close behind at -25.",
-        "Perform-to-Grow": "Perform-to-Grow's HITL design keeps human judgment concentrated at two points: succession-plan decisions (7.3.3.4, Decision-pattern, the smallest Δ M1→M3 in the value stream at -12 points) and the performance review conversation itself (7.3.2.2), which sits outside the HR role catalog entirely and is conducted by the employee's direct manager rather than an HR role. Everything else in the value stream — onboarding implementation, performance documentation, skill and competency execution, training delivery and certifications — carries real AI-absorption opportunity at M3, reflected in the value stream's largest single Δ M1→M3 gap sitting in 7.3.2.3 (Document employee performance, Document-pattern, -32 points).",
-        "Reward-to-Retain": "Reward-to-Retain has no Decision-pattern activity and no Executive-tier accountability anywhere in this value stream — human judgment here is concentrated in Knowledge-pattern program design and review work (7.5.1's compensation-structure design and recurring plan-review cadence, 7.5.3's work/life balance and family-support program delivery) rather than in formal approval gates. The value stream also introduces its first genuine cross-functional accountability boundary: 7.5.4 Administer Payroll is Accountable to HRIS Analyst but explicitly scoped to HR-owned personnel data, with Finance owning the payroll run itself as an external participant. The steepest AI-absorption opportunity sits in 7.5.5 (Manage/Collect Employee Suggestions and Research, Document-pattern, -32 points), the value stream's only Document-pattern content.",
-        "Move-to-Exit": "Move-to-Exit is the first value stream in this framework where a single role — HR Business Partner Manager — is Accountable for every L3 process, a confirmed structural finding rather than under-differentiation: published offboarding-process literature identifies diffused ownership as the primary failure mode for exit workflows, making concentrated single-role accountability the correct shape here. Human judgment stays most anchored in 7.6.1 (Manage Promotion and Demotion Process, Decision-pattern, the smallest Δ M1→M3 in the value stream at -12 points). This value stream also produced the framework's first confirmed specialist-role gap: 7.6.3's Accountable assignment is explicitly partial, since International HR Management is a recognized specialist discipline the current role catalog does not name — distinct in kind from Reward-to-Retain's HR/Finance boundary, which was a split between two existing roles rather than the absence of one.",
-        "Enable & Govern": "Enable & Govern is the first value stream spanning multiple PCF L2 groups rather than one, and its accountability pattern reflects that structure: three distinct role clusters emerge along the underlying group boundaries instead of a single dominant owner — HR Business Partner Manager holds the case-based, relationship-driven work (7.4.1–7.4.4, 7.8.1, 7.8.3), HRIS Analyst holds systems and data infrastructure (the majority of 7.7), and Director of HR Operations sits above both as the cross-domain governance layer, directly Accountable for compliance monitoring (7.4.5). This value stream also carries the framework's two Exception-pattern activities (7.4.4 grievances, 7.7.2 employee inquiries), and its steepest AI-absorption opportunities cluster in Document-pattern content — 7.7.1 reporting, 7.8.2 survey administration, and 7.8.3 communication delivery all sit at -32 points. 7.8.2 carries forward its Reward-to-Retain assignment unchanged, since APQC names the same underlying activity separately under two different L2 groups.",
+        "HR Vision-to-Strategy": "HR Vision-to-Strategy is the framework's only Executive-tier value stream in PCF 7.0: 7.1.1 (Develop human resources strategy) is the domain's single Executive-Accountable L3, with CHRO holding formal Accountability while HRBP Manager and Director of HR Ops carry the Responsible drafting work. Director of HR Ops then holds Accountable for translating that strategy into workforce planning and keeping it current (7.1.2, 7.1.3), while Director of L&D owns competency model design (7.1.4) as an adjacent step. Every other PCF 7.0 value stream operates downstream of this one — its outputs (approved strategy, workforce plans, policies, competency models) are the direct inputs the operational and enablement streams execute against. Under real per-activity assessment, its steepest gap is 7.1.1.5 (Determine HR costs), currently classified Oversight against an Agent-delegation ceiling — a 34-point H% gap, the widest in this value stream. 7.1.1.7 (communicating HR strategy) carries a real but shallower 20-point gap to the same ceiling; 7.1.2.16 (maintaining job descriptions), previously flagged under the old model, is already at its Augmentation ceiling with no further AI-absorption headroom remaining.",
+        "Recruit-to-Hire": "Recruit-to-Hire, now scoped to candidate acquisition alone, keeps human judgment concentrated at two points: candidate selection itself (7.2.3, the interview and select/reject decision) and final hire commitment (7.2.4, offer negotiation) — both Accountable to Recruiter. Everything else in the value stream — requisition administration (7.2.1), sourcing-channel execution (7.2.2), applicant data management (7.2.5) — has been reassessed under the Working-Relationship model. Its steepest gaps are actually two Oversight-classified gates — 7.2.1.3 (Approve job requisition) and 7.2.4.3 (Hire candidate) — each a 34-point gap to an Agent-delegation ceiling, once a standing accountability duty (budget authority, compensation commitment) stops holding them at a higher tier but before AI can execute the step outright. 7.2.4.1 (Draw up and make offer), previously flagged as the steepest gap under the old model, carries a real but shallower 18-point gap. 7.2.5, by contrast, is already fully realized: all four of its activities sit at their Automation ceiling today, with no further AI-absorption headroom remaining there.",
+        "Perform-to-Grow": "Perform-to-Grow's HITL design keeps human judgment concentrated at two points: succession-plan decisions (7.3.3.4) and the performance review conversation itself (7.3.2.2), which sits outside the HR role catalog entirely and is conducted by the employee's direct manager rather than an HR role — both are already at their Judgment ceiling, with no further AI-absorption headroom remaining. 7.3.2.3 (Document employee performance), flagged as the value stream's steepest gap under the old model, is likewise already fully realized at its Augmentation ceiling. The real remaining runway sits instead in a six-activity cluster spanning onboarding design (7.3.1.1, 7.3.1.3), development-guideline setting (7.3.3.1), and training-needs analysis and delivery (7.3.4.1, 7.3.4.4, 7.3.4.5) — each currently Augmentation against an Agent-delegation ceiling, a 20-point gap apiece and the value stream's real steepest opportunity.",
+        "Reward-to-Retain": "Reward-to-Retain has no Decision-pattern activity and no Executive-tier accountability anywhere in this value stream — human judgment here is concentrated in Knowledge-pattern program design and review work (7.5.1's compensation-structure design and recurring plan-review cadence, 7.5.3's work/life balance and family-support program delivery) rather than in formal approval gates. The value stream also introduces its first genuine cross-functional accountability boundary: 7.5.4 Administer Payroll is Accountable to HRIS Analyst but explicitly scoped to HR-owned personnel data, with Finance owning the payroll run itself as an external participant. Under real per-activity assessment, this value stream's steepest gaps are a four-activity Augmentation→Agent-delegation cluster in compensation-structure and benefits program design — 7.5.1.3 (competitive benefits analysis), 7.5.1.4 (compensation-requirements identification), 7.5.1.7 (engagement/retention-indicator review), and 7.5.3.2 (family-support system design) — each a 20-point gap. 7.5.5 (Manage/Collect Employee Suggestions and Research), flagged as the steepest gap under the old model, carries a real but slightly shallower 18-point gap, one step from its Automation ceiling.",
+        "Move-to-Exit": "Move-to-Exit is the first value stream in this framework where a single role — HR Business Partner Manager — is Accountable for every L3 process, a confirmed structural finding rather than under-differentiation: published offboarding-process literature identifies diffused ownership as the primary failure mode for exit workflows, making concentrated single-role accountability the correct shape here. Human judgment stays most anchored in 7.6.1 (Manage Promotion and Demotion Process) — already at its Judgment ceiling today, with no further AI-absorption headroom remaining, the cleanest zero-gap activity in the value stream. This value stream also produced the framework's first confirmed specialist-role gap: 7.6.3's Accountable assignment is explicitly partial, since International HR Management is a recognized specialist discipline the current role catalog does not name — distinct in kind from Reward-to-Retain's HR/Finance boundary, which was a split between two existing roles rather than the absence of one.",
+        "Enable & Govern": "Enable & Govern is the first value stream spanning multiple PCF L2 groups rather than one, and its accountability pattern reflects that structure: three distinct role clusters emerge along the underlying group boundaries instead of a single dominant owner — HR Business Partner Manager holds the case-based, relationship-driven work (7.4.1–7.4.4, 7.8.1, 7.8.3), HRIS Analyst holds systems and data infrastructure (the majority of 7.7), and Director of HR Operations sits above both as the cross-domain governance layer, directly Accountable for compliance monitoring (7.4.5). This value stream also carries the framework's two Exception-pattern activities (7.4.4 grievances, 7.7.2 employee inquiries) — both already at their Judgment and Oversight ceilings respectively, with no further AI-absorption headroom remaining. Under real per-activity assessment, its steepest gaps are a six-activity Augmentation→Agent-delegation cluster — 7.7.5 (employee measures), 7.7.7.1/7.7.7.2/7.7.7.4 (analytics-program design), 7.7.8.2 (analytics insight development), and 7.8.1 (communication planning) — each a 20-point gap. 7.7.1 (reporting), 7.8.2 (survey administration), and 7.8.3 (communication delivery), flagged as steepest under the old model, carry a real but slightly shallower 18-point gap each, all three already past Augmentation and one step from their Automation ceiling. 7.8.2 carries forward its Reward-to-Retain assignment unchanged, since APQC names the same underlying activity separately under two different L2 groups.",
       },
       handoffPoints: {
         "HR Vision-to-Strategy": [
@@ -661,7 +661,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         ],
         "Recruit-to-Hire": [
           "Recruit-to-Hire opens with HRBP Manager on requisition management (7.2.1), then hands to Recruiter for the full candidate lifecycle: sourcing (7.2.2), screening and selection (7.2.3), and new hire/offer management (7.2.4) — the value stream's largest single lane.",
-          "The funnel closes with HRIS Analyst, Accountable for applicant information management (7.2.5) — background checks, records, tracking, archiving — entirely Transaction-pattern, one of the value stream's largest AI-absorption opportunities (Δ -25 points).",
+          "The funnel closes with HRIS Analyst, Accountable for applicant information management (7.2.5) — background checks, records, tracking, archiving. All four activities here are already at their Automation ceiling — the cleanest fully-realized lane in the value stream, not an outstanding AI-absorption opportunity.",
         ],
         "Perform-to-Grow": [
           "The value stream opens with the Onboarding Coordinator (7.3.1), who owns the employee's entry into the organization end to end — program design, implementation, and monitoring all sit in one lane, the cleanest single-owner match in Perform-to-Grow.",
@@ -1615,11 +1615,75 @@ function getStreamL3s(cat, stream) {
   });
   return result;
 }
+
+/* WR-based helpers for the Value Stream Profile view — pulls straight from
+   WR_DATA/WR_CATS (the same single source of truth as the Working
+   Relationship tab) rather than a separately-maintained M1/M3 copy, so this
+   view can never drift out of sync with it again. */
+function getActivityCodesForL3s(l3s) {
+  const codes = [];
+  l3s.forEach(l3 => {
+    if (l3.l4 && l3.l4.length) l3.l4.forEach(l4 => codes.push(l4.code));
+    else codes.push(l3.code);
+  });
+  return codes;
+}
+function computeWrStatsForCodes(codes) {
+  let n = 0, relSum = 0, futSum = 0, atCeiling = 0, belowFuture = 0;
+  codes.forEach(code => {
+    const d = WR_DATA[code];
+    if (!d || !d.rel || !WR_CATS[d.rel]) return;
+    n++;
+    const relH = WR_CATS[d.rel].h;
+    relSum += relH;
+    const futH = (d.future && WR_CATS[d.future]) ? WR_CATS[d.future].h : relH;
+    futSum += futH;
+    if (d.rel === d.ceiling) atCeiling++;
+    if (relH > futH) belowFuture++;
+  });
+  return {
+    total: codes.length, n, atCeiling, belowFuture,
+    rel: n ? Math.round(relSum / n) : null,
+    fut: n ? Math.round(futSum / n) : null,
+  };
+}
+const VSP_WR_ORDER = ['Automation', 'Agent-delegation', 'Augmentation', 'Oversight', 'Judgment', 'Human-only'];
+const VSP_WR_TAGLINES = {
+  'Automation': 'Rules-Based Execution — deterministic steps, no judgment required',
+  'Agent-delegation': 'Bounded Autonomy — AI executes within defined parameters, human sets the bounds',
+  'Augmentation': 'AI-Assisted Judgment — AI drafts and surfaces options, human decides',
+  'Oversight': 'Human Verifies — AI proposes the action, human reviews before it executes',
+  'Judgment': 'Human Decides — synthesis and accountability that stay with the person',
+  'Human-only': 'Human-Only — a standing duty that cannot be delegated',
+};
+function buildWrProfileGrid(codes) {
+  const cards = VSP_WR_ORDER.map(catName => {
+    const color = WR_CATS[catName].color;
+    let n = 0, at = 0;
+    codes.forEach(code => {
+      const d = WR_DATA[code];
+      if (d && d.ceiling === catName) { n++; if (d.rel === catName) at++; }
+    });
+    const tagline = VSP_WR_TAGLINES[catName];
+    const body = n > 0
+      ? '<div class="cm-count">' + n + ' <span>L4 activities at ceiling</span></div><div class="cm-mvals">H ' + WR_CATS[catName].h + '% &middot; ' + at + ' of ' + n + ' already there</div>'
+      : '<div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities in this value stream have this Progression Ceiling</div>';
+    return '<div class="capmap-card" style="background:' + color + '1A;color:' + color + '"><div class="cm-name">' + catName + '</div><div class="cm-tagline">' + tagline + '</div>' + body + '</div>';
+  }).join('');
+  return '<div class="capmap-grid">' + cards + '</div>';
+}
+function buildWrSummarySentence(wr) {
+  if (!wr || !wr.n) return '';
+  const diff = wr.fut - wr.rel;
+  const verb = wr.belowFuture === 1 ? 'has' : 'have';
+  const pronoun = wr.belowFuture === 1 ? 'its' : 'their';
+  return 'Under the Working-Relationship model, this value stream\u2019s aggregate Current State sits at H ' + wr.rel + '%; its designed Future State brings that to H ' + wr.fut + '% (\u0394 ' + diff + ' points) \u2014 ' + wr.belowFuture + ' of ' + wr.n + ' activities ' + verb + ' not yet reached ' + pronoun + ' Future State target, and ' + wr.atCeiling + ' have already reached their Progression Ceiling with no further AI-absorption headroom remaining.';
+}
 function computeStreamStats(cat, streamIdx) {
   const stream = cat.valueStreams[streamIdx];
   const fullGroups = new Set(stream.l2codes || []);
   const explicitL3 = new Set(stream.l3codes || []);
-  let l3count = 0, mixedL3 = 0, units = [];
+  let l3count = 0, mixedL3 = 0, codes = [];
   const groupCodesTouched = new Set();
   cat.groups.forEach(g => {
     const isFull = fullGroups.has(g.code);
@@ -1628,22 +1692,22 @@ function computeStreamStats(cat, streamIdx) {
       l3count++;
       groupCodesTouched.add(g.code);
       if (l3.mixed) mixedL3++;
-      if (l3.l4.length) l3.l4.forEach(l4 => units.push(l4.mv)); else units.push(l3.mv);
+      if (l3.l4 && l3.l4.length) l3.l4.forEach(l4 => codes.push(l4.code)); else codes.push(l3.code);
     });
   });
-  const n = units.length;
-  const mv = [0, 1, 2, 3, 4].map(i => Math.round(units.reduce((s, x) => s + x[i], 0) / n));
-  return { l3count, activityUnits: n, mixedL3, mv, groupsTouched: groupCodesTouched.size };
+  const wr = computeWrStatsForCodes(codes);
+  return { l3count, activityUnits: codes.length, mixedL3, groupsTouched: groupCodesTouched.size, wr };
 }
 function renderSummaryBar(s) {
   const sb = document.getElementById('summary-bar');
+  const deltaVal = (s.diff === null || s.diff === undefined) ? '\u2014' : ((s.diff > 0 ? '+' : '') + s.diff + '%');
   sb.innerHTML =
     '<div class="summary-card"><div class="label">L3 Processes</div><div class="value">' + s.l3 + '</div><div class="sub">' + s.l3sub + '</div></div>' +
     '<div class="summary-card"><div class="label">L4 Activities</div><div class="value">' + s.l4 + '</div><div class="sub">' + s.l4sub + '</div></div>' +
-    '<div class="summary-card"><div class="label">M1 Baseline H%</div><div class="value">' + s.m1 + '%</div><div class="sub">Undesigned state</div></div>' +
-    '<div class="summary-card" style="flex:1.3"><div class="label">M3 Design Intent H%</div><div class="value" style="color:var(--navy)">' + s.m3 + '%</div><div class="sub">&#9733; HITL design intent</div></div>' +
-    '<div class="summary-card"><div class="label">M5 Leading H%</div><div class="value" style="color:var(--navy-d)">' + s.m5 + '%</div><div class="sub">North star target</div></div>' +
-    '<div class="summary-card"><div class="label">&Delta; M1 &rarr; M3</div><div class="value" style="color:#B45309">' + s.delta + '%</div><div class="sub">AI convergence opportunity</div></div>';
+    '<div class="summary-card"><div class="label">Current State H%</div><div class="value">' + (s.rel === null ? '\u2014' : s.rel + '%') + '</div><div class="sub">Real, per-activity</div></div>' +
+    '<div class="summary-card" style="flex:1.3"><div class="label">Future State H%</div><div class="value" style="color:var(--navy)">' + (s.fut === null ? '\u2014' : s.fut + '%') + '</div><div class="sub">&#9733; designed target</div></div>' +
+    '<div class="summary-card"><div class="label">At Progression Ceiling</div><div class="value" style="color:var(--navy-d)">' + s.atCeiling + '</div><div class="sub">of ' + s.n + ' classified</div></div>' +
+    '<div class="summary-card"><div class="label">&Delta; Current &rarr; Future</div><div class="value" style="color:#B45309">' + deltaVal + '</div><div class="sub">AI-absorption runway</div></div>';
 }
 function populateValueStreamBar(cat) {
   const select = document.getElementById('vs-select');
@@ -1664,14 +1728,21 @@ function populateValueStreamBar(cat) {
 function applyValueStream(val) {
   if (val === 'all') {
     renderDescriptionPanel(cat, 'all');
-    renderSummaryBar({ l3: 37, l3sub: cat.groups.length + ' process groups', l4: 100, l4sub: cat.groups.reduce((n, g) => n + g.l3.filter(l3 => l3.mixed).length, 0) + ' mixed-pattern L3s',
-      m1: cat.l1mv[0], m3: cat.l1mv[2], m5: cat.l1mv[4], delta: cat.l1mv[2] - cat.l1mv[0] });
+    let l3count = 0, codes = [];
+    cat.groups.forEach(g => g.l3.forEach(l3 => {
+      l3count++;
+      if (l3.l4 && l3.l4.length) l3.l4.forEach(l4 => codes.push(l4.code)); else codes.push(l3.code);
+    }));
+    const wr = computeWrStatsForCodes(codes);
+    renderSummaryBar({ l3: l3count, l3sub: cat.groups.length + ' process groups', l4: wr.total, l4sub: cat.groups.reduce((n, g) => n + g.l3.filter(l3 => l3.mixed).length, 0) + ' mixed-pattern L3s',
+      rel: wr.rel, fut: wr.fut, atCeiling: wr.atCeiling, n: wr.n, diff: (wr.rel !== null && wr.fut !== null) ? wr.fut - wr.rel : null });
     return;
   }
   const stats = computeStreamStats(cat, val);
   renderSummaryBar({ l3: stats.l3count, l3sub: stats.groupsTouched + ' process group' + (stats.groupsTouched === 1 ? '' : 's'),
-    l4: stats.activityUnits, l4sub: stats.mixedL3 + ' mixed-pattern L3s',
-    m1: stats.mv[0], m3: stats.mv[2], m5: stats.mv[4], delta: stats.mv[2] - stats.mv[0] });
+    l4: stats.wr.total, l4sub: stats.mixedL3 + ' mixed-pattern L3s',
+    rel: stats.wr.rel, fut: stats.wr.fut, atCeiling: stats.wr.atCeiling, n: stats.wr.n,
+    diff: (stats.wr.rel !== null && stats.wr.fut !== null) ? stats.wr.fut - stats.wr.rel : null });
   renderDescriptionPanel(cat, cat.valueStreams[val]);
 }
 function splitRoleAnnotation(raw) {
@@ -1697,21 +1768,15 @@ function renderDescriptionPanel(cat, streamFilter) {
     const designNarrativeText = (stream && cat.lenses.designNarrative && cat.lenses.designNarrative[stream.name]) || '';
     const designNarrativeSection = designNarrativeText ? '<div class="desc-section-heading">Design Narrative</div><div class="narrative-block" style="padding:0 16px 14px"><p>' + designNarrativeText + '</p></div>' : '';
 
-    const capabilityMapSection = stream ? (() => {
-      const counts = countPatternsForL3s(getStreamL3s(cat, stream));
-      const order = ['Decision', 'Knowledge', 'Document', 'Transaction', 'Exception'];
-      const cards = order.map(name => {
-        const meta = PATTERN_META[name];
-        const count = counts[name];
-        const body = count === 0
-          ? '<div class="cm-count">0 <span>L4 activities</span></div><div class="cm-empty-note">No activities of this pattern in this value stream</div>'
-          : '<div class="cm-count">' + count + ' <span>L4 activities</span></div><div class="cm-mvals">M1 ' + meta.m1 + '%  &rarr;  M3 ' + meta.m3 + '%</div>';
-        return '<div class="capmap-card" style="background:' + meta.fill + ';color:' + meta.text + '"><div class="cm-name">' + name + '</div><div class="cm-tagline">' + meta.tagline + '</div>' + body + '</div>';
-      }).join('');
-      return '<div class="desc-section-heading">AI Capability Map</div>' +
-        '<div class="lens-note" style="padding:0 16px 10px">Pattern-type distribution across this value stream’s activity units. H% figures are the pattern type’s standard value at each maturity level, applied consistently across all PCF domains.</div>' +
-        '<div class="capmap-grid">' + cards + '</div>';
-    })() : '';
+    const streamCodes = stream ? getActivityCodesForL3s(getStreamL3s(cat, stream)) : [];
+    const wrStats = computeWrStatsForCodes(streamCodes);
+    const wrSentence = buildWrSummarySentence(wrStats);
+
+    const capabilityMapSection = stream ? (
+      '<div class="desc-section-heading">Working Relationship Profile</div>' +
+      '<div class="lens-note" style="padding:0 16px 10px">Progression Ceiling distribution across this value stream\u2019s L4 activities \u2014 the durable state where AI\u2019s role stops advancing, either because a standing accountability duty holds the line or, for Automation, because no further reduction in human involvement remains meaningful. H% figures are each Working-Relationship category\u2019s fixed value, applied consistently across all PCF domains.</div>' +
+      buildWrProfileGrid(streamCodes)
+    ) : '';
 
     const ownerData = {};
     const roleNotes = {};
@@ -1754,9 +1819,11 @@ function renderDescriptionPanel(cat, streamFilter) {
     ) : '<div class="lens-empty">No Decision- or Exception-pattern activity in this value stream — every step here is Knowledge, Document, Transaction, or Mixed without an embedded Decision/Exception component.</div>');
 
     return '<div class="desc-card"><div class="desc-card-head"><span class="desc-pcf">' + d.pcf + '</span><span class="desc-name">' + d.stream + '</span><div class="desc-subtitle">' + d.subtitle + '</div></div>' +
-      '<div class="desc-card-body">' + d.narrative.map(p => '<p>' + p + '</p>').join('') + '</div>' +
+      '<div class="desc-card-body">' + d.narrative.map(p => '<p>' + p + '</p>').join('') + (wrSentence ? '<p>' + wrSentence + '</p>' : '') + '</div>' +
       '<div class="desc-stats"><div class="desc-stat"><strong>' + d.l3Count + '</strong>L3 Processes</div><div class="desc-stat"><strong>' + d.activityUnits + '</strong>Activities</div>' +
-      '<div class="desc-stat"><strong>' + d.m1 + '%</strong>M1 Baseline</div><div class="desc-stat"><strong>' + d.m3 + '%</strong>M3 Design Intent</div><div class="desc-stat"><strong>' + d.delta + '%</strong>&Delta; M1&rarr;M3</div></div>' +
+      '<div class="desc-stat"><strong>' + (wrStats.rel === null ? '\u2014' : wrStats.rel + '%') + '</strong>Current State</div>' +
+      '<div class="desc-stat"><strong>' + (wrStats.fut === null ? '\u2014' : wrStats.fut + '%') + '</strong>Future State</div>' +
+      '<div class="desc-stat"><strong>' + wrStats.atCeiling + '/' + wrStats.n + '</strong>At Ceiling</div></div>' +
       kpiSection + designNarrativeSection + capabilityMapSection + accountabilitySection + handoffSection + govSection + '</div>';
   }).join('');
 }
@@ -1927,7 +1994,7 @@ function setView(v) {
   const notes = {
     wr: 'Current State / Future State / Progression Ceiling — the real model from Working_Relationship_Progression_Methodology.docx. Blank cells mean that reasoning hasn’t been done yet, not that the answer is zero.',
     raci: 'Real reasoned-match RACI, same data the live dashboard’s RACI Table renders. R falls back to the Accountable role (marked "from Accountable") wherever no separate Responsible was identified.',
-    vsp: 'Description, KPIs, Design Narrative, AI Capability Map, Process Accountability, Handoff Points, and Governed Decision Points — select a value stream, or leave it on All Processes.',
+    vsp: 'Description, KPIs, Design Narrative, Working Relationship Profile, Process Accountability, Handoff Points, and Governed Decision Points — select a value stream, or leave it on All Processes.',
     data: 'Entity × process CRUD — 22 of 37 L3s have real confirmed CRUD data, ported unchanged from the live dashboard’s Data View lens.',
     people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced. Each role’s WR rollup (Current State) is real — an equal-weighted mean across its Accountable L3s, shown only once every one of them is fully classified.',
     gates: 'Per Working_Relationship_Progression_Methodology.docx §5 — three independent axes (Technical/Process, Role-level, Organizational-level) must all clear before an activity advances, gated here at L3 via its RACI Accountable role. Only the WR Rollup column is real; no instrument exists yet for any of the three gate axes, so those cells are honest placeholders, not a status.',
