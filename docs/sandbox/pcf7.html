@@ -172,7 +172,7 @@ td:first-child { text-align: left; }
 .wr-prov-rollup { background:rgba(27,143,130,.10); color:#12695F; border:1px solid rgba(27,143,130,.32); }
 #thead-wr th.wr-col { min-width: 185px; }
 #thead-wr th.wr-col-pc { min-width: 207px; }
-#thead-wr th.wr-col-gates { min-width: 560px; }
+#thead-wr th.wr-col-gates { min-width: 700px; }
 #main-table td.wr-left { text-align: left !important; }
 #thead-wr th { text-align: left !important; }
 
@@ -198,6 +198,10 @@ td:first-child { text-align: left; }
 .gates-rollup { font-size: 11px; color: var(--gray); }
 .gates-rollup-label { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .04em; color: var(--lgray); margin-right: 3px; }
 .gates-rollup-sep { margin: 0 8px; color: var(--lgray); }
+.gates-cons-row { display: flex; justify-content: flex-end; align-items: baseline; gap: 6px; margin-bottom: 6px; position: relative; }
+.gates-cons-label { font-size: 9.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); }
+.gates-cons-row .wr-cons { font-weight: 700; font-size: 13px; }
+.gates-cons-row .wr-cons-pop { position: absolute; top: 100%; right: 0; z-index: 5; }
 
 /* ── Aggregation (People View rollup) + Readiness Gate view ─────────────
    (Sept 14, 2026, per Working_Relationship_Progression_Methodology.docx)
@@ -369,10 +373,7 @@ td.crud-d .crud-entity { color: #991B1B; }
           <thead id="thead-wr">
             <tr>
               <th>L1-Domain/L2-Process Group/L3-Process/L4-Activity</th>
-              <th class="nowrap wr-col-gates">Working Relationship &mdash; Current State &rarr; Progression Ceiling</th>
-              <th class="nowrap">Consequence<br>of Error</th>
-              <th class="nowrap">Provenance</th>
-              <th class="notes-cell">Reactions<br>&amp; Notes</th>
+              <th class="nowrap wr-col-gates">Working Relationship &mdash; Current State &rarr; Progression Ceiling, plus Consequence of Error</th>
             </tr>
           </thead>
           <tbody id="table-body"></tbody>
@@ -1693,20 +1694,16 @@ function gatesTrackHtml(code) {
 
 function wrRowCellsGates(code) {
   const w = wrCell(code);
-  return '<td class="wr-left gates-cell">' + gatesTrackHtml(code) + '</td>' +
-    '<td class="wr-left wr-cons-cell">' + consCell(w.cons) + consChecklistPop(code, w.consFactors, w.consNote) + '</td>' +
-    '<td>' + provBadge(w.classified) + '</td>' +
-    '<td class="notes-cell">' + notesWidget(code) + '</td>';
+  const consHtml = '<div class="gates-cons-row"><span class="gates-cons-label">Consequence of Error</span>' + consCell(w.cons) + consChecklistPop(code, w.consFactors, w.consNote) + '</div>';
+  return '<td class="wr-left gates-cell">' + consHtml + gatesTrackHtml(code) + '</td>';
 }
 
 function wrRowCellsRollupGates(l3) {
   const l3s = [l3];
+  const consHtml = '<div class="gates-cons-row"><span class="gates-cons-label">Consequence of Error</span>' + consRollupCell(l3s) + '</div>';
   const rollupHtml = '<div class="gates-rollup"><span class="gates-rollup-label">Current</span>' + wrRollupCell(l3s, 'rel') +
     '<span class="gates-rollup-sep">&rarr;</span><span class="gates-rollup-label">Ceiling</span>' + wrRollupCell(l3s, 'ceiling') + '</div>';
-  return '<td class="wr-left">' + rollupHtml + '</td>' +
-    '<td class="wr-left">' + consRollupCell(l3s) + '</td>' +
-    '<td>' + provBadgeRollup() + '</td>' +
-    '<td class="notes-cell">' + notesWidget(l3.code) + '</td>';
+  return '<td class="wr-left">' + consHtml + rollupHtml + '</td>';
 }
 
 function factorChecklistPop(code, factorList, activeFactors, note) {
@@ -1777,7 +1774,7 @@ function render() {
 
   html += '<tr class="row-l1">' +
     '<td><div style="font-weight:700;font-size:13px;">' + cat.code + ' &nbsp;' + cat.name + '<span class="pcf-ref">L1 Domain</span></div></td>' +
-    '<td colspan="4" style="background:#0D2D4F;"></td>' +
+    '<td colspan="1" style="background:#0D2D4F;"></td>' +
     '</tr>';
 
   cat.groups.forEach(g => {
@@ -1785,7 +1782,7 @@ function render() {
       '<td class="indent-l2 toggle-l2" data-group="' + g.code + '" onclick="toggleGroup(\'' + g.code + '\',this)">' +
       '<span class="row-flex"><span class="row-prefix"><span class="toggle-icon" title="Click to collapse">&minus;</span>' + g.code + '</span>' +
       '<span class="row-text">' + g.name + '</span></span></td>' +
-      '<td colspan="4"></td>' +
+      '<td colspan="1"></td>' +
       '</tr>';
 
     g.l3.forEach(l3 => {
