@@ -134,6 +134,15 @@ td:first-child { text-align: left; }
 .toggle-icon { display: inline-block; width: 14px; text-align: center; margin-right: 4px; font-weight: 800; font-size: 12px; color: var(--navy-d); }
 .toggle-icon.placeholder { visibility: hidden; }
 
+/* Value-stream scoping highlight (Working-Relationship table) — same
+   convention as the live dashboard's Maturity Table: active rows for the
+   selected stream, dimmed rows outside it, a lighter dim for a group only
+   partially in-scope. */
+.row-l3.vs-active td, .row-l4.vs-active td { background: #FFFBEB; }
+.vs-active td:first-child { box-shadow: inset 3px 0 0 #B45309; }
+.row-l2.vs-partial td:first-child { box-shadow: inset 3px 0 0 rgba(180,83,9,.4); }
+.row-l2.vs-dim td, .row-l3.vs-dim td, .row-l4.vs-dim td { opacity: .35; }
+
 /* ── Working-Relationship view ───────────────────────────────────────── */
 .wr-badge { display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:400; white-space:nowrap; }
 .wr-swatch { width:9px; height:9px; border-radius:2px; display:inline-block; flex:0 0 auto; }
@@ -376,7 +385,11 @@ td.crud-d .crud-entity { color: #991B1B; }
     <div class="card lens-section" id="panel-maturity">
       <div class="card-header">
         <h3>Working-Relationship Table &mdash; PCF 7.0</h3>
-        <span>118 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 118 working-relationship classified</span>
+        <span id="wr-stat-line">118 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 118 working-relationship classified</span>
+      </div>
+      <div class="vs-bar" id="vs-bar-wr">
+        <label for="vs-select-wr">Value Stream</label>
+        <select id="vs-select-wr" onchange="applyValueStreamWr(this.value === 'all' ? 'all' : Number(this.value))"></select>
       </div>
       <div class="table-wrap">
         <table id="main-table">
@@ -1709,8 +1722,8 @@ function renderSummaryBar(s) {
     '<div class="summary-card"><div class="label">At Progression Ceiling</div><div class="value" style="color:var(--navy-d)">' + s.atCeiling + '</div><div class="sub">of ' + s.n + ' classified</div></div>' +
     '<div class="summary-card"><div class="label">&Delta; Current &rarr; Future</div><div class="value" style="color:#B45309">' + deltaVal + '</div><div class="sub">AI-absorption runway</div></div>';
 }
-function populateValueStreamBar(cat) {
-  const select = document.getElementById('vs-select');
+function populateValueStreamBar(cat, selectId) {
+  const select = document.getElementById(selectId || 'vs-select');
   const hasTiers = cat.valueStreams.some(vs => vs.tier);
   let optionsHtml = '<option value="all">All Processes</option>';
   if (hasTiers) {
@@ -1745,6 +1758,81 @@ function applyValueStream(val) {
     diff: (stats.wr.rel !== null && stats.wr.fut !== null) ? stats.wr.fut - stats.wr.rel : null });
   renderDescriptionPanel(cat, cat.valueStreams[val]);
 }
+
+/* ── Value-stream scoping for the Working-Relationship table itself ─────
+   Same UX as the live dashboard's Maturity Table "VALUE STREAM" dropdown
+   (screenshot reference: hitl_dashboard_final's PCF 8.0 Process View) —
+   selecting a stream highlights and auto-expands the L2/L3/L4 rows that
+   belong to it and dims the rest, rather than replacing the table with a
+   separate profile. Reuses the same row-l2/row-l3/row-l4 + toggle
+   infrastructure render() already builds; only the highlight/expand state
+   and the header stat line change. */
+let WR_DEFAULT_STAT_LINE = null;
+function applyValueStreamWr(val) {
+  const statEl = document.getElementById('wr-stat-line');
+  if (WR_DEFAULT_STAT_LINE === null && statEl) WR_DEFAULT_STAT_LINE = statEl.innerHTML;
+
+  const allRows = {
+    l2: document.querySelectorAll('#table-body tr.row-l2'),
+    l3: document.querySelectorAll('#table-body tr.row-l3'),
+    l4: document.querySelectorAll('#table-body tr.row-l4'),
+  };
+  [...allRows.l2, ...allRows.l3, ...allRows.l4].forEach(r => {
+    r.classList.remove('vs-active', 'vs-dim', 'vs-partial');
+  });
+
+  if (val === 'all') {
+    cat.groups.forEach(g => setGroupExpanded(g.code, true));
+    cat.groups.forEach(g => g.l3.forEach(l3 => { if (l3.l4.length) setL3Expanded(l3.code, false); }));
+    if (statEl && WR_DEFAULT_STAT_LINE !== null) statEl.innerHTML = WR_DEFAULT_STAT_LINE;
+    return;
+  }
+
+  const stats = computeStreamStats(cat, val);
+  if (statEl) {
+    statEl.textContent = stats.activityUnits + ' L4 activities · ' + stats.l3count + ' L3 processes · ' +
+      stats.groupsTouched + ' process group' + (stats.groupsTouched === 1 ? '' : 's') + ' · ' +
+      stats.wr.n + ' working-relationship classified';
+  }
+
+  const stream = cat.valueStreams[val];
+  const fullGroups = new Set(stream.l2codes || []);
+  const explicitL3 = new Set(stream.l3codes || []);
+
+  cat.groups.forEach(g => {
+    const isFull = fullGroups.has(g.code);
+    const partialL3s = g.l3.filter(l3 => explicitL3.has(l3.code));
+    const isPartial = !isFull && partialL3s.length > 0;
+    const l2tr = document.querySelector('#table-body tr.row-l2[data-group="' + g.code + '"]');
+
+    if (isFull) {
+      l2tr.classList.add('vs-active');
+      setGroupExpanded(g.code, true);
+      g.l3.forEach(l3 => {
+        const l3tr = document.querySelector('#table-body tr.row-l3[data-l3code="' + l3.code + '"]');
+        if (l3tr) l3tr.classList.add('vs-active');
+        if (l3.l4.length) setL3Expanded(l3.code, true);
+        document.querySelectorAll('#table-body tr.row-l4[data-parent-l3="' + l3.code + '"]').forEach(l4tr => l4tr.classList.add('vs-active'));
+      });
+    } else if (isPartial) {
+      l2tr.classList.add('vs-partial');
+      setGroupExpanded(g.code, true);
+      g.l3.forEach(l3 => {
+        const relevant = explicitL3.has(l3.code);
+        const l3tr = document.querySelector('#table-body tr.row-l3[data-l3code="' + l3.code + '"]');
+        if (l3tr) l3tr.classList.add(relevant ? 'vs-active' : 'vs-dim');
+        if (relevant && l3.l4.length) setL3Expanded(l3.code, true);
+        document.querySelectorAll('#table-body tr.row-l4[data-parent-l3="' + l3.code + '"]').forEach(l4tr => {
+          l4tr.classList.add(relevant ? 'vs-active' : 'vs-dim');
+        });
+      });
+    } else {
+      l2tr.classList.add('vs-dim');
+      setGroupExpanded(g.code, false);
+    }
+  });
+}
+
 function splitRoleAnnotation(raw) {
   const m = raw.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
   return m ? { base: m[1].trim(), note: m[2].trim() } : { base: raw, note: null };
@@ -2001,7 +2089,14 @@ function setView(v) {
   };
   document.getElementById('view-note').textContent = notes[v] || '';
 
-  if (v === 'wr') render();
+  if (v === 'wr') {
+    render();
+    // render() rebuilds table-body from scratch (all L3s collapsed), so the
+    // currently-selected value stream's highlight/expand state has to be
+    // re-applied rather than assumed to survive the rebuild.
+    const wrSel = document.getElementById('vs-select-wr');
+    applyValueStreamWr(wrSel && wrSel.value !== 'all' ? Number(wrSel.value) : 'all');
+  }
 }
 
 function buildLegend() {
@@ -2024,7 +2119,8 @@ renderRaciTable(cat);
 renderCrudTable(cat);
 renderRoleImpactTable(cat);
 renderGatesTable(cat);
-populateValueStreamBar(cat);
+populateValueStreamBar(cat, 'vs-select');
+populateValueStreamBar(cat, 'vs-select-wr');
 applyValueStream('all');
 setView('wr');
 </script>
