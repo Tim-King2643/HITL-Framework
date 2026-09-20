@@ -197,9 +197,11 @@ td:first-child { text-align: left; }
 .gates-rollup-block { display: flex; flex-direction: column; gap: 4px; padding: 4px 0; }
 .gates-rollup-toprow { display: flex; align-items: flex-start; gap: 10px; padding-right: 26px; }
 .gates-rollup { font-size: 11px; color: var(--gray); }
-.gates-rollup-inline { flex: 0 0 auto; white-space: nowrap; margin-left: auto; }
+.gates-rollup-inline { flex: 0 0 auto; white-space: nowrap; }
+.gates-rollup-inline .rollup-val { display: inline-block; min-width: 46px; text-align: right; font-variant-numeric: tabular-nums; }
 .gates-rollup-label { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .04em; color: var(--lgray); margin-right: 3px; }
 .gates-rollup-sep { margin: 0 8px; color: var(--lgray); }
+.gates-rollup-cons-group { display: flex; align-items: flex-start; gap: 20px; margin-left: auto; }
 .gates-cons-row { display: flex; justify-content: flex-end; align-items: baseline; gap: 6px; margin-bottom: 6px; position: relative; }
 .gates-cons-label { font-size: 9.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); line-height: 14px; }
 .gates-cons-row .wr-cons { font-weight: 700; font-size: 13px; }
@@ -218,7 +220,7 @@ td:first-child { text-align: left; }
 .gates-card-cons .wr-cons { font-weight: 700; font-size: 13px; }
 .gates-card-cons .wr-cf-trigger { margin-left: 0; }
 .gates-card-cons .wr-cf-trigger:hover { text-decoration: underline; }
-.gates-card-cons-tight { gap: 0; }
+.gates-card-cons-tight { gap: 0; margin-left: 0; }
 
 .gates-legend-box { display: flex; flex-direction: column; gap: 8px; padding: 18px 22px; margin: 8px 14px 8px 48px; background: #fff; border: 1px solid var(--border); border-radius: 10px; }
 /* Sized and positioned to match the activity card below it exactly — same
@@ -1832,10 +1834,12 @@ function rollupRowHtml(l3, icon) {
     '<div class="gates-rollup-toprow">' +
     '<span class="row-flex"><span class="row-prefix">' + icon + '<span class="pcf-ref">' + l3.code + '</span></span>' +
     '<span class="row-text">' + l3.name + '</span></span>' +
+    '<div class="gates-rollup-cons-group">' +
     '<div class="gates-rollup gates-rollup-inline"><span class="gates-rollup-label">Current</span>' + wrRollupCell(l3s, 'rel') +
     '<span class="gates-rollup-sep">&rarr;</span><span class="gates-rollup-label">Ceiling</span>' + wrRollupCell(l3s, 'ceiling') + '</div>' +
     '<div class="gates-card-cons gates-card-cons-tight">' +
     '<span class="gates-cons-label">Consequence of Error - Worst Case</span>' + consRollupValueOnly(l3s) +
+    '</div>' +
     '</div>' +
     '</div>' +
     '</div>';
