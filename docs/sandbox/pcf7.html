@@ -186,6 +186,7 @@ td:first-child { text-align: left; }
 .gate-circle { all: unset; width: 20px; height: 20px; border-radius: 50%; box-sizing: border-box; }
 .gate-label { all: unset; cursor: pointer; font-size: 10px; font-weight: 500; color: #000; text-align: center; margin-top: 3px; line-height: 1.25; white-space: nowrap; }
 .gate-arrow { all: unset; cursor: pointer; width: 26px; height: 20px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; margin-top: 0; }
+.gate-arrow-locked { font-size: 12px; opacity: .85; }
 .gates-info { display: none; margin-top: 10px; width: 100%; max-width: 460px; background: #FAFBFD; border: 1px solid var(--border); border-radius: 7px; padding: 10px 14px; text-align: left; }
 .gates-info.open { display: block; }
 .gates-info-title { font-size: 11px; font-weight: 600; color: var(--navy-d); margin-bottom: 6px; }
@@ -408,7 +409,7 @@ td.crud-d .crud-entity { color: #991B1B; }
         <div class="gates-legend-row">
           <span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
           <span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
-          <span class="gates-legend-item"><span style="color:#DDE3EE;font-weight:700;">&rarr;</span> Locked past the ceiling</span>
+          <span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Locked past the ceiling &mdash; permanently unreachable</span>
         </div>
       </div>
       <div class="table-wrap">
@@ -1753,22 +1754,36 @@ function gatesTrackHtml(code) {
   for (let i = 0; i < 6; i++) {
     const label = CATS_ORDER[i];
     const isCurrent = i === currentIdx, isCeiling = i === ceilingIdx;
-    const bg = (isCurrent || isCeiling) ? WR_CATS[label].color : '#fff';
-    const border = (isCurrent || isCeiling) ? '3px solid ' + WR_CATS[label].color : '2px solid #DDE3EE';
+    const isDead = i > ceilingIdx; // permanently unreachable — past the progression ceiling
+    const bg = (isCurrent || isCeiling) ? WR_CATS[label].color : (isDead ? '#EDEFF3' : '#fff');
+    const border = (isCurrent || isCeiling) ? '3px solid ' + WR_CATS[label].color : (isDead ? '2px solid #94A3B8' : '2px solid #DDE3EE');
     let circleOnclick = '', circleCursor = 'default';
     if (isCeiling) { circleOnclick = "toggleGatesInfo(event,'" + code + "','ceil')"; circleCursor = 'pointer'; }
     else if (isCurrent) { circleOnclick = "toggleGatesInfo(event,'" + code + "','n" + i + "')"; circleCursor = 'pointer'; }
     const redLine = isCeiling ? '<div class="gate-redline"></div>' : '<div class="gate-redline gate-redline-off"></div>';
+    const labelStyle = isDead ? ' style="color:#94A3B8;"' : '';
     nodesHtml += '<div class="gate-node">' + redLine +
       '<button type="button" class="gate-circle" style="cursor:' + circleCursor + ';background:' + bg + ';border:' + border + ';" ' + (circleOnclick ? 'onclick="' + circleOnclick + '"' : '') + '></button>' +
-      '<button type="button" class="gate-label" onclick="' + "toggleGatesInfo(event,'" + code + "','n" + i + "')" + '">' + label + '</button>' +
+      '<button type="button" class="gate-label"' + labelStyle + ' onclick="' + "toggleGatesInfo(event,'" + code + "','n" + i + "')" + '">' + label + '</button>' +
       '</div>';
     if (i < 5) {
       let gateState = 'locked';
       if (i < currentIdx) gateState = 'passed'; else if (i >= currentIdx && i < ceilingIdx) gateState = 'open';
-      const glyph = gateState === 'passed' ? '&#10003;' : '&rarr;';
-      const gcolor = gateState === 'passed' ? '#166534' : (gateState === 'open' ? '#5A8DC4' : '#DDE3EE');
-      nodesHtml += '<button type="button" class="gate-arrow" style="color:' + gcolor + ';" onclick="' + "toggleGatesInfo(event,'" + code + "','g" + i + "')" + '">' + glyph + '</button>';
+      // The boundary arrow — the first one past the ceiling — carries a lock
+      // glyph instead of a plain arrow, so the stop reads as one clear wall
+      // rather than a repeated mark down every remaining segment.
+      const isBoundary = gateState === 'locked' && i === ceilingIdx;
+      // A drawn SVG (currentColor) rather than the lock emoji, which
+      // renders in a fixed yellow regardless of CSS color and would read
+      // as an amber "warning" instead of a dead, slate-grey stop.
+      const lockSvg = '<svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;">' +
+        '<rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/>' +
+        '<path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/>' +
+        '</svg>';
+      const glyph = gateState === 'passed' ? '&#10003;' : (isBoundary ? lockSvg : '&rarr;');
+      const gcolor = gateState === 'passed' ? '#166534' : (gateState === 'open' ? '#5A8DC4' : '#64748B');
+      const arrowCls = 'gate-arrow' + (gateState === 'locked' ? ' gate-arrow-locked' : '');
+      nodesHtml += '<button type="button" class="' + arrowCls + '" style="color:' + gcolor + ';" onclick="' + "toggleGatesInfo(event,'" + code + "','g" + i + "')" + '">' + glyph + '</button>';
     }
   }
   return '<div class="gates-track">' + nodesHtml + '</div>' +
@@ -1829,7 +1844,7 @@ function inlineLegendHtml(indentPx) {
     '<div class="gates-legend-row">' +
     '<span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>' +
     '<span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>' +
-    '<span class="gates-legend-item"><span style="color:#DDE3EE;font-weight:700;">&rarr;</span> Locked past the ceiling</span>' +
+    '<span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Locked past the ceiling &mdash; permanently unreachable</span>' +
     '</div>' +
     '</div>';
 }
