@@ -216,8 +216,10 @@ td:first-child { text-align: left; }
 .gates-card-cons { margin-left: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; position: relative; }
 .gates-card-cons .wr-cons-pop { position: absolute; top: 100%; right: 0; z-index: 5; width: 230px; }
 .gates-card-cons .wr-cons { font-weight: 700; font-size: 13px; }
+.gates-card-cons-tight { gap: 0; }
 
 .gates-legend-box { display: flex; flex-direction: column; gap: 8px; padding: 10px 18px; background: #fff; border-bottom: 1px solid var(--border); }
+.gates-legend-box-inline { border: 1px solid var(--border); border-bottom: 1px solid var(--border); border-radius: 8px; background: #FAFBFD; margin: 6px 14px; padding: 8px 16px; }
 .gates-legend-row { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
 .gates-legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--gray); }
 .gates-legend-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
@@ -1315,6 +1317,22 @@ function consRollupCell(l3s) {
   return '<span class="wr-cons" style="color:' + CONS_COLOR[worst] + '">' + worst + '</span><span class="wr-cons-worst-note">worst case</span>';
 }
 
+// Same worst-case computation as consRollupCell, but returns only the
+// colored rating value with no trailing "worst case" note line — used by
+// the L3 rollup card header, where "worst case" is folded into the label
+// itself ("Consequence of Error - Worst Case") instead of repeated below.
+function consRollupValueOnly(l3s) {
+  if (!l3s || !l3s.length) return '<span class="wr-blank">no Accountable L3s</span>';
+  const coverages = l3s.map(l3 => l3ConsCoverage(l3));
+  const l3ready = coverages.filter(c => c.fullyReasoned).length;
+  const l3total = coverages.length;
+  if (l3ready < l3total) return '<span class="wr-blank">not yet aggregated &mdash; ' + l3ready + ' of ' + l3total + ' reasoned</span>';
+  let worst = null;
+  coverages.forEach(c => { if (c.worst && (worst === null || CONS_ORDER.indexOf(c.worst) > CONS_ORDER.indexOf(worst))) worst = c.worst; });
+  if (!worst) return '<span class="wr-blank">&mdash; not yet tagged &mdash;</span>';
+  return '<span class="wr-cons" style="color:' + CONS_COLOR[worst] + '">' + worst + '</span>';
+}
+
 /* ── People View (Role Impact Table) ─────────────────────────────────────
    Anchored on the Organizational Role Taxonomy's PCF 7.0 catalog (14 roles,
    3 tiers). Every role's row is derived live from the same RACI data the
@@ -1753,12 +1771,31 @@ function rollupRowHtml(l3, icon) {
     '<div class="gates-rollup-toprow">' +
     '<span class="row-flex"><span class="row-prefix">' + icon + '<span class="pcf-ref">' + l3.code + '</span></span>' +
     '<span class="row-text">' + l3.name + '</span></span>' +
-    '<div class="gates-card-cons">' +
-    '<span class="gates-cons-label">Consequence of Error</span>' + consRollupCell(l3s) +
+    '<div class="gates-card-cons gates-card-cons-tight">' +
+    '<span class="gates-cons-label">Consequence of Error - Worst Case</span>' + consRollupValueOnly(l3s) +
     '</div>' +
     '</div>' +
     '<div class="gates-rollup"><span class="gates-rollup-label">Current</span>' + wrRollupCell(l3s, 'rel') +
     '<span class="gates-rollup-sep">&rarr;</span><span class="gates-rollup-label">Ceiling</span>' + wrRollupCell(l3s, 'ceiling') + '</div>' +
+    '</div>';
+}
+
+// Compact restatement of the top-of-page gates legend, inserted as its own
+// row right after an L3 process row, shown only while that L3 is expanded.
+// Once a reader has scrolled down into a long process group, the real
+// legend at the top of the table is off-screen — this repeats it right
+// where the activity cards it explains are about to appear.
+function inlineLegendHtml() {
+  return '<div class="gates-legend-box gates-legend-box-inline">' +
+    '<div class="gates-legend-row">' +
+    '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);border:2px solid var(--navy-d);"></span>Current State &mdash; click circle for what the work looks like here</span>' +
+    '<span class="gates-legend-item"><span class="gates-legend-dot-wrap"><span class="gates-legend-redline"></span><span class="gates-legend-dot" style="background:#7B9FD1;border:2px solid var(--navy-d);"></span></span>Progression Ceiling &mdash; click circle for why it stops here</span>' +
+    '</div>' +
+    '<div class="gates-legend-row">' +
+    '<span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>' +
+    '<span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>' +
+    '<span class="gates-legend-item"><span style="color:#DDE3EE;font-weight:700;">&rarr;</span> Locked past the ceiling</span>' +
+    '</div>' +
     '</div>';
 }
 
@@ -1852,6 +1889,9 @@ function render() {
       if (hasL4) {
         html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
           '<td colspan="2" ' + l3ToggleAttrs + '>' + rollupRowHtml(l3, l3Icon) + '</td>' +
+          '</tr>';
+        html += '<tr class="row-l4 row-legend-inline" data-parent="' + g.code + '" data-parent-l3="' + l3.code + '" style="display:none">' +
+          '<td colspan="2" style="padding:0 14px;">' + inlineLegendHtml() + '</td>' +
           '</tr>';
       } else {
         html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
