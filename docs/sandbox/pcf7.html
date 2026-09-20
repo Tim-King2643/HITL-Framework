@@ -399,7 +399,7 @@ td.crud-d .crud-entity { color: #991B1B; }
       </div>
       <div class="gates-legend-box">
         <div class="gates-legend-row">
-          <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);border:3px solid #0D1B2A;"></span>Current State &mdash; click circle for what the work looks like here</span>
+          <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);border:1.5px solid #B8C0CE;"></span>Current State &mdash; click circle for what the work looks like here</span>
           <span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>
         </div>
         <div class="gates-legend-row">
@@ -1754,13 +1754,12 @@ function gatesTrackHtml(code) {
     const isReachable = i <= ceilingIdx; // Human-only through the ceiling — every step actually in play
     // Every reachable step (up to and including the ceiling) shows its own
     // stage color, not just the current/ceiling circles — the dead zone
-    // past the ceiling is the only part that goes grey. "Current" is
-    // marked with a heavy dark ring instead of a plain colored border so
-    // it still reads as a distinct marker against its own fill color.
+    // past the ceiling is the only part that goes grey. One light, uniform
+    // grey outline on every circle regardless of state — the fill color
+    // (and the checkmark/arrow sequence around it) carries the meaning,
+    // not the stroke.
     const bg = isReachable ? WR_CATS[label].color : '#EDEFF3';
-    const border = isDead ? '2px solid #94A3B8'
-      : isCurrent ? '3px solid #0D1B2A'
-      : '2px solid ' + WR_CATS[label].color;
+    const border = '1.5px solid #B8C0CE';
     // The ceiling circle no longer carries its own click/marker — the lock
     // glyph on the boundary arrow right after it is now the one place that
     // explains "why it stops here" (see isBoundary below), so the circle
@@ -1850,7 +1849,7 @@ function rollupRowHtml(l3, icon) {
 function inlineLegendHtml(indentPx) {
   return '<div class="gates-legend-box gates-legend-box-inline" style="margin-left:' + indentPx + 'px;">' +
     '<div class="gates-legend-row">' +
-    '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);border:3px solid #0D1B2A;"></span>Current State &mdash; click circle for what the work looks like here</span>' +
+    '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);border:1.5px solid #B8C0CE;"></span>Current State &mdash; click circle for what the work looks like here</span>' +
     '<span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>' +
     '</div>' +
     '<div class="gates-legend-row">' +
