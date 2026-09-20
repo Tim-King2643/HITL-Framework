@@ -196,7 +196,7 @@ td:first-child { text-align: left; }
 .gates-req-list li { display: flex; align-items: flex-start; gap: 7px; font-size: 11px; line-height: 1.5; padding: 2px 0; color: var(--gray); }
 .gates-req-list li::before { content: ''; flex: 0 0 auto; width: 13px; height: 13px; margin-top: 1px; border-radius: 3px; border: 1.3px dashed #C6CDD9; display: inline-block; }
 .gates-rollup-block { display: flex; flex-direction: column; gap: 4px; padding: 4px 0; }
-.gates-rollup-toprow { display: flex; align-items: flex-start; gap: 10px; }
+.gates-rollup-toprow { display: flex; align-items: flex-start; gap: 10px; padding-right: 26px; }
 .gates-rollup { font-size: 11px; color: var(--gray); }
 .gates-rollup-label { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .04em; color: var(--lgray); margin-right: 3px; }
 .gates-rollup-sep { margin: 0 8px; color: var(--lgray); }
@@ -213,9 +213,11 @@ td:first-child { text-align: left; }
 .gates-card-header { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
 .gates-card-code { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gray); font-weight: 400; line-height: 14px; }
 .gates-card-name { font-size: 12px; font-weight: 400; color: var(--gray); line-height: 14px; }
-.gates-card-cons { margin-left: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; position: relative; }
+.gates-card-cons { margin-left: auto; width: 220px; flex: 0 0 220px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; position: relative; }
 .gates-card-cons .wr-cons-pop { position: absolute; top: 100%; right: 0; z-index: 5; width: 230px; }
 .gates-card-cons .wr-cons { font-weight: 700; font-size: 13px; }
+.gates-card-cons .wr-cf-trigger { margin-left: 0; }
+.gates-card-cons .wr-cf-trigger:hover { text-decoration: underline; }
 .gates-card-cons-tight { gap: 0; }
 
 .gates-legend-box { display: flex; flex-direction: column; gap: 8px; padding: 10px 18px; background: #fff; border-bottom: 1px solid var(--border); }
@@ -1578,6 +1580,25 @@ function consCell(cons) {
   return '<span class="wr-cons" style="color:' + CONS_COLOR[cons] + '">' + cons + '</span>';
 }
 
+// Consequence-of-Error rating for the activity cards, with the rule
+// checklist folded onto the rating itself: click the rating value to open
+// the same CONS_FACTORS checklist that used to need a separate (i) icon.
+// No icon and no extra flex row — this is the only element in the
+// Consequence-of-Error badge besides its label.
+function consCellWithPop(cons, consFactors, consNote) {
+  if (!cons) return '<span class="wr-blank">&mdash; not yet tagged &mdash;</span>';
+  const ratingHtml = '<span class="wr-cons" style="color:' + CONS_COLOR[cons] + '">' + cons + '</span>';
+  if (!consFactors || !consFactors.length) return ratingHtml;
+  const items = CONS_FACTORS.map(function (f) {
+    const on = consFactors.indexOf(f.key) !== -1;
+    return '<li class="' + (on ? 'wr-cf-on' : 'wr-cf-off') + '">' +
+      '<span class="wr-cf-box">' + (on ? '&#10003;' : '') + '</span>' + f.label + '</li>';
+  }).join('');
+  const noteHtml = consNote ? '<p class="wr-cf-note">' + consNote.replace(/"/g, '&quot;') + '</p>' : '';
+  return '<span class="wr-cons wr-cf-trigger" style="color:' + CONS_COLOR[cons] + '" onclick="toggleFactorPop(event, this)">' + cons + '</span>' +
+    '<div class="wr-cons-pop"><ul class="wr-cf-list">' + items + '</ul>' + noteHtml + '</div>';
+}
+
 // The six-factor walk behind a Consequence-of-Error tier — Human Impact,
 // Legal/Regulatory Exposure, Operational/Financial Impact, Trust/Reputation,
 // Reach, Reversibility. Click the info icon on the Consequence of Error cell
@@ -1754,7 +1775,7 @@ function activityCardHtml(code, name, indentPx) {
     '<span class="gates-card-code">' + code + '</span>' +
     '<span class="gates-card-name">' + name + '</span>' +
     '<div class="gates-card-cons">' +
-    '<span class="gates-cons-label">Consequence of Error</span>' + consCell(w.cons) + consChecklistPop(code, w.consFactors, w.consNote) +
+    '<span class="gates-cons-label">Consequence of Error</span>' + consCellWithPop(w.cons, w.consFactors, w.consNote) +
     '</div>' +
     '</div>' +
     gatesTrackHtml(code) +
