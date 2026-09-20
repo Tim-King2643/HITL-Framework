@@ -1117,8 +1117,8 @@ function renderRaciTable(cat) {
   let html = '';
   cat.groups.forEach(g => {
     html += '<tr class="row-l2 toggle-row" data-raci-group="' + g.code + '">' +
-      '<td class="indent-l2 toggle-l2" colspan="6" data-raci-group="' + g.code + '" onclick="toggleRaciGroup(\'' + g.code + '\',this)">' +
-      '<span class="row-flex"><span class="row-prefix"><span class="toggle-icon" title="Click to collapse">&minus;</span>' + g.code + '</span>' +
+      '<td class="indent-l2 toggle-l2 collapsed" colspan="6" data-raci-group="' + g.code + '" onclick="toggleRaciGroup(\'' + g.code + '\',this)">' +
+      '<span class="row-flex"><span class="row-prefix"><span class="toggle-icon" title="Click to expand">+</span>' + g.code + '</span>' +
       '<span class="row-text">' + g.name + '</span></span></td></tr>';
     g.l3.forEach(l3 => {
       const hasL4 = l3.l4 && l3.l4.length > 0;
@@ -1128,7 +1128,7 @@ function renderRaciTable(cat) {
         : 'class="indent-l3"';
       const l3Icon = hasL4 ? '<span class="toggle-icon" title="Click to expand">+</span>' : '<span class="toggle-icon placeholder"></span>';
       const raci = l3.raci || { R: '—', A: '—', C: '—', I: '—' };
-      html += '<tr class="row-l3" data-raci-parent="' + g.code + '" data-raci-l3code="' + l3.code + '">' +
+      html += '<tr class="row-l3" data-raci-parent="' + g.code + '" data-raci-l3code="' + l3.code + '" style="display:none">' +
         '<td ' + l3ToggleAttrs + '><span class="row-flex"><span class="row-prefix">' + l3Icon + '<span class="pcf-ref">' + l3.code + '</span></span><span class="row-text">' + l3.name + '</span></span></td>' +
         '<td>' + patBadge + '</td>' +
         '<td>' + formatRCell(raci) + '</td>' +
@@ -1185,8 +1185,8 @@ function renderCrudTable(cat) {
   let html = '';
   cat.groups.forEach(g => {
     html += '<tr class="row-l2 toggle-row" data-crud-group="' + g.code + '">' +
-      '<td class="indent-l2 toggle-l2" colspan="6" data-crud-group="' + g.code + '" onclick="toggleCrudGroup(\'' + g.code + '\',this)">' +
-      '<span class="row-flex"><span class="row-prefix"><span class="toggle-icon" title="Click to collapse">&minus;</span>' + g.code + '</span>' +
+      '<td class="indent-l2 toggle-l2 collapsed" colspan="6" data-crud-group="' + g.code + '" onclick="toggleCrudGroup(\'' + g.code + '\',this)">' +
+      '<span class="row-flex"><span class="row-prefix"><span class="toggle-icon" title="Click to expand">+</span>' + g.code + '</span>' +
       '<span class="row-text">' + g.name + '</span></span></td></tr>';
     g.l3.forEach(l3 => {
       const hasL4 = l3.l4 && l3.l4.length > 0;
@@ -1196,7 +1196,7 @@ function renderCrudTable(cat) {
         : 'class="indent-l3"';
       const l3Icon = hasL4 ? '<span class="toggle-icon" title="Click to expand">+</span>' : '<span class="toggle-icon placeholder"></span>';
       const cr = l3.crud || {};
-      html += '<tr class="row-l3" data-crud-parent="' + g.code + '" data-crud-l3code="' + l3.code + '">' +
+      html += '<tr class="row-l3" data-crud-parent="' + g.code + '" data-crud-l3code="' + l3.code + '" style="display:none">' +
         '<td ' + l3ToggleAttrs + '><span class="row-flex"><span class="row-prefix">' + l3Icon + '<span class="pcf-ref">' + l3.code + '</span></span><span class="row-text">' + l3.name + '</span></span></td>' +
         '<td>' + patBadge + '</td>' +
         formatCrudCell(cr.create, 'c') + formatCrudCell(cr.read, 'r') + formatCrudCell(cr.update, 'u') + formatCrudCell(cr.delete, 'd') + '</tr>';
@@ -1939,8 +1939,8 @@ function render() {
 
   cat.groups.forEach(g => {
     html += '<tr class="row-l2 toggle-row" data-group="' + g.code + '">' +
-      '<td class="indent-l2 toggle-l2" data-group="' + g.code + '" onclick="toggleGroup(\'' + g.code + '\',this)">' +
-      '<span class="row-flex"><span class="row-prefix"><span class="toggle-icon" title="Click to collapse">&minus;</span>' + g.code + '</span>' +
+      '<td class="indent-l2 toggle-l2 collapsed" data-group="' + g.code + '" onclick="toggleGroup(\'' + g.code + '\',this)">' +
+      '<span class="row-flex"><span class="row-prefix"><span class="toggle-icon" title="Click to expand">+</span>' + g.code + '</span>' +
       '<span class="row-text">' + g.name + '</span></span></td>' +
       '<td colspan="1"></td>' +
       '</tr>';
@@ -1962,7 +1962,7 @@ function render() {
         : '<span class="toggle-icon placeholder"></span>';
       if (hasL4) {
         leafLegendShown = false;
-        html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
+        html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '" style="display:none">' +
           '<td colspan="2" ' + l3ToggleAttrs + '>' + rollupRowHtml(l3, l3Icon) + '</td>' +
           '</tr>';
         html += '<tr class="row-l4 row-legend-inline" data-parent="' + g.code + '" data-parent-l3="' + l3.code + '" style="display:none">' +
@@ -1970,12 +1970,12 @@ function render() {
           '</tr>';
       } else {
         if (!leafLegendShown) {
-          html += '<tr class="row-legend-inline" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
+          html += '<tr class="row-legend-inline" data-parent="' + g.code + '" data-l3code="' + l3.code + '" style="display:none">' +
             '<td colspan="2" style="padding:0;">' + inlineLegendHtml(32) + '</td>' +
             '</tr>';
           leafLegendShown = true;
         }
-        html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
+        html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '" style="display:none">' +
           '<td colspan="2" style="padding:0;">' + activityCardHtml(l3.code, l3.name, 32) + '</td>' +
           '</tr>';
       }
@@ -2004,6 +2004,7 @@ function setGroupExpanded(code, expanded) {
   td.classList.toggle('collapsed', !expanded);
   setIcon(td, expanded);
   document.querySelectorAll('tr.row-l3[data-parent="' + code + '"]').forEach(r => { r.style.display = expanded ? '' : 'none'; });
+  document.querySelectorAll('tr.row-legend-inline[data-parent="' + code + '"]:not([data-parent-l3])').forEach(r => { r.style.display = expanded ? '' : 'none'; });
   if (!expanded) {
     document.querySelectorAll('tr.row-l3.toggle-l3[data-parent="' + code + '"]').forEach(l3row => { l3row.classList.add('collapsed'); setIcon(l3row, false); });
     document.querySelectorAll('tr.row-l4[data-parent="' + code + '"]').forEach(l4row => { l4row.style.display = 'none'; });
