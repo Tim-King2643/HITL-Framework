@@ -179,12 +179,12 @@ td:first-child { text-align: left; }
 /* ── Progression Gates track — the six-step ramp per activity, ported from
    the "Progression Gates" mockup exploration (Sept 19, 2026). One open
    info panel per row at a time, same pattern as .wr-cons-pop. ─────────── */
-.gates-track { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding: 4px 0 2px; }
-.gate-node { display: flex; flex-direction: column; align-items: center; min-width: 96px; flex: 0 0 auto; }
-.gate-circle { all: unset; width: 20px; height: 20px; border-radius: 50%; box-sizing: border-box; }
-.gate-label { all: unset; cursor: pointer; font-size: 10px; font-weight: 500; color: #000; text-align: center; margin-top: 3px; line-height: 1.25; white-space: nowrap; }
-.gate-arrow { all: unset; cursor: pointer; width: 26px; height: 20px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; margin-top: 0; }
-.gate-arrow-locked { font-size: 12px; opacity: .85; }
+.gates-track { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding: 2px 0 1px; }
+.gate-node { display: flex; flex-direction: column; align-items: center; min-width: 74px; flex: 0 0 auto; }
+.gate-circle { all: unset; width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; }
+.gate-label { all: unset; cursor: pointer; font-size: 9px; font-weight: 500; color: #000; text-align: center; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
+.gate-arrow { all: unset; cursor: pointer; width: 20px; height: 14px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-top: 0; }
+.gate-arrow-locked { font-size: 10px; opacity: .85; }
 .gates-info { display: none; margin-top: 10px; width: 100%; max-width: 460px; background: #FAFBFD; border: 1px solid var(--border); border-radius: 7px; padding: 10px 14px; text-align: left; }
 .gates-info.open { display: block; }
 .gates-info-title { font-size: 11px; font-weight: 600; color: var(--navy-d); margin-bottom: 6px; }
@@ -211,7 +211,7 @@ td:first-child { text-align: left; }
    code + name + Consequence of Error on one header line, gates track
    below, single info panel below that. One card per activity, replacing
    the old split name-column / data-column table row. ─────────────────── */
-.gates-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; margin: 8px 14px; display: flex; flex-direction: column; gap: 14px; }
+.gates-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin: 6px 14px; display: flex; flex-direction: column; gap: 10px; }
 .gates-card-header { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
 .gates-card-code { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gray); font-weight: 400; line-height: 14px; }
 .gates-card-name { font-size: 12px; font-weight: 400; color: var(--gray); line-height: 14px; }
@@ -1784,7 +1784,7 @@ function gatesTrackHtml(code) {
       // A drawn SVG (currentColor) rather than the lock emoji, which
       // renders in a fixed yellow regardless of CSS color and would read
       // as an amber "warning" instead of a dead, slate-grey stop.
-      const lockSvg = '<svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;">' +
+      const lockSvg = '<svg width="9" height="10" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;">' +
         '<rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/>' +
         '<path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/>' +
         '</svg>';
