@@ -181,8 +181,6 @@ td:first-child { text-align: left; }
    info panel per row at a time, same pattern as .wr-cons-pop. ─────────── */
 .gates-track { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding: 4px 0 2px; }
 .gate-node { display: flex; flex-direction: column; align-items: center; min-width: 96px; flex: 0 0 auto; }
-.gate-redline { width: 22px; height: 2px; background: #CC3333; margin: 0 0 3px; }
-.gate-redline-off { background: transparent; }
 .gate-circle { all: unset; width: 20px; height: 20px; border-radius: 50%; box-sizing: border-box; }
 .gate-label { all: unset; cursor: pointer; font-size: 10px; font-weight: 500; color: #000; text-align: center; margin-top: 3px; line-height: 1.25; white-space: nowrap; }
 .gate-arrow { all: unset; cursor: pointer; width: 26px; height: 20px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; margin-top: 0; }
@@ -233,8 +231,6 @@ td:first-child { text-align: left; }
 .gates-legend-row { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
 .gates-legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--gray); }
 .gates-legend-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
-.gates-legend-dot-wrap { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; }
-.gates-legend-redline { width: 14px; height: 2px; background: #CC3333; display: block; }
 
 /* ── Aggregation (People View rollup) + Readiness Gate view ─────────────
    (Sept 14, 2026, per Working_Relationship_Progression_Methodology.docx)
@@ -403,13 +399,13 @@ td.crud-d .crud-entity { color: #991B1B; }
       </div>
       <div class="gates-legend-box">
         <div class="gates-legend-row">
-          <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);border:2px solid var(--navy-d);"></span>Current State &mdash; click circle for what the work looks like here</span>
-          <span class="gates-legend-item"><span class="gates-legend-dot-wrap"><span class="gates-legend-redline"></span><span class="gates-legend-dot" style="background:#7B9FD1;border:2px solid var(--navy-d);"></span></span>Progression Ceiling &mdash; click circle for why it stops here</span>
+          <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);border:3px solid #0D1B2A;"></span>Current State &mdash; click circle for what the work looks like here</span>
+          <span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>
         </div>
         <div class="gates-legend-row">
           <span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
           <span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
-          <span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Locked past the ceiling &mdash; permanently unreachable</span>
+          <span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
         </div>
       </div>
       <div class="table-wrap">
@@ -1755,14 +1751,25 @@ function gatesTrackHtml(code) {
     const label = CATS_ORDER[i];
     const isCurrent = i === currentIdx, isCeiling = i === ceilingIdx;
     const isDead = i > ceilingIdx; // permanently unreachable — past the progression ceiling
-    const bg = (isCurrent || isCeiling) ? WR_CATS[label].color : (isDead ? '#EDEFF3' : '#fff');
-    const border = (isCurrent || isCeiling) ? '3px solid ' + WR_CATS[label].color : (isDead ? '2px solid #94A3B8' : '2px solid #DDE3EE');
+    const isReachable = i <= ceilingIdx; // Human-only through the ceiling — every step actually in play
+    // Every reachable step (up to and including the ceiling) shows its own
+    // stage color, not just the current/ceiling circles — the dead zone
+    // past the ceiling is the only part that goes grey. "Current" is
+    // marked with a heavy dark ring instead of a plain colored border so
+    // it still reads as a distinct marker against its own fill color.
+    const bg = isReachable ? WR_CATS[label].color : '#EDEFF3';
+    const border = isDead ? '2px solid #94A3B8'
+      : isCurrent ? '3px solid #0D1B2A'
+      : '2px solid ' + WR_CATS[label].color;
+    // The ceiling circle no longer carries its own click/marker — the lock
+    // glyph on the boundary arrow right after it is now the one place that
+    // explains "why it stops here" (see isBoundary below), so the circle
+    // itself only needs to distinguish "current" from the rest of the
+    // reachable gradient.
     let circleOnclick = '', circleCursor = 'default';
-    if (isCeiling) { circleOnclick = "toggleGatesInfo(event,'" + code + "','ceil')"; circleCursor = 'pointer'; }
-    else if (isCurrent) { circleOnclick = "toggleGatesInfo(event,'" + code + "','n" + i + "')"; circleCursor = 'pointer'; }
-    const redLine = isCeiling ? '<div class="gate-redline"></div>' : '<div class="gate-redline gate-redline-off"></div>';
+    if (isCurrent) { circleOnclick = "toggleGatesInfo(event,'" + code + "','n" + i + "')"; circleCursor = 'pointer'; }
     const labelStyle = isDead ? ' style="color:#94A3B8;"' : '';
-    nodesHtml += '<div class="gate-node">' + redLine +
+    nodesHtml += '<div class="gate-node">' +
       '<button type="button" class="gate-circle" style="cursor:' + circleCursor + ';background:' + bg + ';border:' + border + ';" ' + (circleOnclick ? 'onclick="' + circleOnclick + '"' : '') + '></button>' +
       '<button type="button" class="gate-label"' + labelStyle + ' onclick="' + "toggleGatesInfo(event,'" + code + "','n" + i + "')" + '">' + label + '</button>' +
       '</div>';
@@ -1783,7 +1790,12 @@ function gatesTrackHtml(code) {
       const glyph = gateState === 'passed' ? '&#10003;' : (isBoundary ? lockSvg : '&rarr;');
       const gcolor = gateState === 'passed' ? '#166534' : (gateState === 'open' ? '#5A8DC4' : '#64748B');
       const arrowCls = 'gate-arrow' + (gateState === 'locked' ? ' gate-arrow-locked' : '');
-      nodesHtml += '<button type="button" class="' + arrowCls + '" style="color:' + gcolor + ';" onclick="' + "toggleGatesInfo(event,'" + code + "','g" + i + "')" + '">' + glyph + '</button>';
+      // The boundary lock is the click target for ceiling rationale ('ceil')
+      // instead of the generic per-gate evidence text — clicking the wall
+      // answers "why does it stop here", which is what the ceiling circle
+      // used to be the (easy-to-miss) only way to reach.
+      const arrowKey = isBoundary ? 'ceil' : ('g' + i);
+      nodesHtml += '<button type="button" class="' + arrowCls + '" style="color:' + gcolor + ';" onclick="' + "toggleGatesInfo(event,'" + code + "','" + arrowKey + "')" + '">' + glyph + '</button>';
     }
   }
   return '<div class="gates-track">' + nodesHtml + '</div>' +
@@ -1838,13 +1850,13 @@ function rollupRowHtml(l3, icon) {
 function inlineLegendHtml(indentPx) {
   return '<div class="gates-legend-box gates-legend-box-inline" style="margin-left:' + indentPx + 'px;">' +
     '<div class="gates-legend-row">' +
-    '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);border:2px solid var(--navy-d);"></span>Current State &mdash; click circle for what the work looks like here</span>' +
-    '<span class="gates-legend-item"><span class="gates-legend-dot-wrap"><span class="gates-legend-redline"></span><span class="gates-legend-dot" style="background:#7B9FD1;border:2px solid var(--navy-d);"></span></span>Progression Ceiling &mdash; click circle for why it stops here</span>' +
+    '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);border:3px solid #0D1B2A;"></span>Current State &mdash; click circle for what the work looks like here</span>' +
+    '<span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>' +
     '</div>' +
     '<div class="gates-legend-row">' +
     '<span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>' +
     '<span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>' +
-    '<span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Locked past the ceiling &mdash; permanently unreachable</span>' +
+    '<span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>' +
     '</div>' +
     '</div>';
 }
