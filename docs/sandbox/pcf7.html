@@ -221,7 +221,13 @@ td:first-child { text-align: left; }
 .gates-card-cons-tight { gap: 0; }
 
 .gates-legend-box { display: flex; flex-direction: column; gap: 8px; padding: 18px 22px; margin: 8px 14px 8px 48px; background: #fff; border: 1px solid var(--border); border-radius: 10px; }
-.gates-legend-box-inline { border: 1px solid var(--border); border-bottom: 1px solid var(--border); border-radius: 8px; background: #FAFBFD; margin: 6px 14px; padding: 8px 16px; }
+/* Sized and positioned to match .gates-info exactly — the same box an
+   activity's step/circle/gate click opens inside a card (100% width capped
+   at 460px, #FAFBFD fill, 7px radius, 10px/14px padding) — so the L4 legend
+   reads as "the same kind of box, docked open" rather than a wider banner.
+   Its left edge is set inline per row (see inlineLegendHtml) to land at the
+   same x as that info box would sit inside the card below it. */
+.gates-legend-box-inline { border: 1px solid var(--border); border-radius: 7px; background: #FAFBFD; margin: 10px 14px; padding: 10px 14px; width: 100%; max-width: 460px; }
 .gates-legend-row { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
 .gates-legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--gray); }
 .gates-legend-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
@@ -1802,12 +1808,17 @@ function rollupRowHtml(l3, icon) {
 }
 
 // Compact restatement of the top-of-page gates legend, inserted as its own
-// row right after an L3 process row, shown only while that L3 is expanded.
-// Once a reader has scrolled down into a long process group, the real
-// legend at the top of the table is off-screen — this repeats it right
-// where the activity cards it explains are about to appear.
-function inlineLegendHtml() {
-  return '<div class="gates-legend-box gates-legend-box-inline">' +
+// row right before the activity card(s) it explains (right after an
+// L3-with-children row, or right before a leaf L3's own card). Sized and
+// left-aligned to land exactly where that activity's .gates-info panel
+// would sit inside its card: activityCardHtml sets the card's own
+// margin-left to indentPx alone (that overrides the .gates-card class's
+// margin-left, not add to it), so the card's content edge is indentPx +
+// its 1px border + its 22px padding from the table edge — the same offset
+// this legend needs from its own (unpadded) td.
+function inlineLegendHtml(indentPx) {
+  const leftInset = indentPx + 1 + 22;
+  return '<div class="gates-legend-box gates-legend-box-inline" style="margin-left:' + leftInset + 'px;">' +
     '<div class="gates-legend-row">' +
     '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);border:2px solid var(--navy-d);"></span>Current State &mdash; click circle for what the work looks like here</span>' +
     '<span class="gates-legend-item"><span class="gates-legend-dot-wrap"><span class="gates-legend-redline"></span><span class="gates-legend-dot" style="background:#7B9FD1;border:2px solid var(--navy-d);"></span></span>Progression Ceiling &mdash; click circle for why it stops here</span>' +
@@ -1912,11 +1923,11 @@ function render() {
           '<td colspan="2" ' + l3ToggleAttrs + '>' + rollupRowHtml(l3, l3Icon) + '</td>' +
           '</tr>';
         html += '<tr class="row-l4 row-legend-inline" data-parent="' + g.code + '" data-parent-l3="' + l3.code + '" style="display:none">' +
-          '<td colspan="2" style="padding:0 14px;">' + inlineLegendHtml() + '</td>' +
+          '<td colspan="2" style="padding:0;">' + inlineLegendHtml(48) + '</td>' +
           '</tr>';
       } else {
         html += '<tr class="row-legend-inline" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
-          '<td colspan="2" style="padding:0 14px;">' + inlineLegendHtml() + '</td>' +
+          '<td colspan="2" style="padding:0;">' + inlineLegendHtml(32) + '</td>' +
           '</tr>';
         html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
           '<td colspan="2" style="padding:0;">' + activityCardHtml(l3.code, l3.name, 32) + '</td>' +
