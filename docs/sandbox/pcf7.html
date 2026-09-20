@@ -399,7 +399,7 @@ td.crud-d .crud-entity { color: #991B1B; }
       </div>
       <div class="gates-legend-box">
         <div class="gates-legend-row">
-          <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);border:1.5px solid #B8C0CE;"></span>Current State &mdash; click circle for what the work looks like here</span>
+          <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>
           <span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>
         </div>
         <div class="gates-legend-row">
@@ -1754,12 +1754,11 @@ function gatesTrackHtml(code) {
     const isReachable = i <= ceilingIdx; // Human-only through the ceiling — every step actually in play
     // Every reachable step (up to and including the ceiling) shows its own
     // stage color, not just the current/ceiling circles — the dead zone
-    // past the ceiling is the only part that goes grey. One light, uniform
-    // grey outline on every circle regardless of state — the fill color
-    // (and the checkmark/arrow sequence around it) carries the meaning,
-    // not the stroke.
+    // past the ceiling is the only part that goes grey. No outline at all —
+    // the fill color (and the checkmark/arrow sequence around it) carries
+    // the meaning on its own.
     const bg = isReachable ? WR_CATS[label].color : '#EDEFF3';
-    const border = '1.5px solid #B8C0CE';
+    const border = 'none';
     // The ceiling circle no longer carries its own click/marker — the lock
     // glyph on the boundary arrow right after it is now the one place that
     // explains "why it stops here" (see isBoundary below), so the circle
@@ -1849,7 +1848,7 @@ function rollupRowHtml(l3, icon) {
 function inlineLegendHtml(indentPx) {
   return '<div class="gates-legend-box gates-legend-box-inline" style="margin-left:' + indentPx + 'px;">' +
     '<div class="gates-legend-row">' +
-    '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);border:1.5px solid #B8C0CE;"></span>Current State &mdash; click circle for what the work looks like here</span>' +
+    '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>' +
     '<span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>' +
     '</div>' +
     '<div class="gates-legend-row">' +
@@ -2039,7 +2038,10 @@ function setView(v) {
 
 function buildLegend() {
   const el = document.getElementById('legend-wr');
-  Object.keys(WR_CATS).forEach(name => {
+  // Iterate CATS_ORDER (Human-only → Automation), not raw WR_CATS key
+  // order — this legend was listing Automation first, backwards from the
+  // ramp direction every gates track and progression circle uses.
+  CATS_ORDER.forEach(name => {
     const c = WR_CATS[name];
     const span = document.createElement('span');
     span.className = 'legend-item';
