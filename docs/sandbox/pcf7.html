@@ -207,13 +207,20 @@ td:first-child { text-align: left; }
    code + name + Consequence of Error on one header line, gates track
    below, single info panel below that. One card per activity, replacing
    the old split name-column / data-column table row. ─────────────────── */
-.gates-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin: 6px 12px; display: flex; flex-direction: column; gap: 12px; }
+.gates-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; margin: 8px 14px; display: flex; flex-direction: column; gap: 14px; }
 .gates-card-header { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
 .gates-card-code { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--navy); font-weight: 500; line-height: 14px; }
 .gates-card-name { font-size: 14px; font-weight: 600; color: var(--navy-d); line-height: 14px; }
 .gates-card-cons { margin-left: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; position: relative; }
 .gates-card-cons .wr-cons-pop { position: absolute; top: 100%; right: 0; z-index: 5; width: 230px; }
 .gates-card-cons .wr-cons { font-weight: 700; font-size: 13px; }
+
+.gates-legend-box { display: flex; flex-direction: column; gap: 8px; padding: 10px 18px; background: #fff; border-bottom: 1px solid var(--border); }
+.gates-legend-row { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
+.gates-legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--gray); }
+.gates-legend-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+.gates-legend-dot-wrap { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; }
+.gates-legend-redline { width: 14px; height: 2px; background: #CC3333; display: block; }
 
 /* ── Aggregation (People View rollup) + Readiness Gate view ─────────────
    (Sept 14, 2026, per Working_Relationship_Progression_Methodology.docx)
@@ -379,6 +386,17 @@ td.crud-d .crud-entity { color: #991B1B; }
       <div class="card-header">
         <h3>Working-Relationship Table &mdash; PCF 7.0</h3>
         <span>118 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 118 working-relationship classified &middot; click a step, its circle, or a gate arrow for detail</span>
+      </div>
+      <div class="gates-legend-box">
+        <div class="gates-legend-row">
+          <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);border:2px solid var(--navy-d);"></span>Current State &mdash; click circle for what the work looks like here</span>
+          <span class="gates-legend-item"><span class="gates-legend-dot-wrap"><span class="gates-legend-redline"></span><span class="gates-legend-dot" style="background:#7B9FD1;border:2px solid var(--navy-d);"></span></span>Progression Ceiling &mdash; click circle for why it stops here</span>
+        </div>
+        <div class="gates-legend-row">
+          <span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
+          <span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
+          <span class="gates-legend-item"><span style="color:#DDE3EE;font-weight:700;">&rarr;</span> Locked past the ceiling</span>
+        </div>
       </div>
       <div class="table-wrap">
         <table id="main-table">
@@ -1900,19 +1918,6 @@ function buildLegend() {
     const span = document.createElement('span');
     span.className = 'legend-item';
     span.innerHTML = '<span class="legend-swatch" style="background:' + c.color + '"></span>' + name + '<span class="legend-h">H&nbsp;' + c.h + '%</span>';
-    el.appendChild(span);
-  });
-  const gateHints = [
-    { html: '<span style="display:inline-flex;flex-direction:column;align-items:center;gap:2px;"><span style="width:14px;height:2px;background:#CC3333;display:block;"></span><span style="width:10px;height:10px;border-radius:50%;background:#7B9FD1;display:block;"></span></span>', label: 'Progression Ceiling — click circle for why it stops here' },
-    { html: '<span style="width:10px;height:10px;border-radius:50%;background:var(--navy);display:inline-block;"></span>', label: 'Current State — click circle or step name for detail' },
-    { html: '<span style="font-weight:700;color:#166534;">&#10003;</span>', label: 'Gate passed' },
-    { html: '<span style="font-weight:700;color:#5A8DC4;">&rarr;</span>', label: 'Open gate — click for evidence needed' },
-    { html: '<span style="font-weight:700;color:#DDE3EE;">&rarr;</span>', label: 'Locked past the ceiling' },
-  ];
-  gateHints.forEach(h => {
-    const span = document.createElement('span');
-    span.className = 'legend-item';
-    span.innerHTML = h.html + h.label;
     el.appendChild(span);
   });
 }
