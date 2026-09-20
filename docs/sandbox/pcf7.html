@@ -1908,6 +1908,13 @@ function render() {
       '<td colspan="1"></td>' +
       '</tr>';
 
+    // Leaf L3s (no L4 children) render one after another as their own
+    // activity cards with no toggle in between them — a run. Rather than
+    // repeat the legend before every single one, show it only once, right
+    // before the first leaf L3 of each such run; a rollup (hasL4) row
+    // breaks the run, since it gets its own legend when expanded.
+    let leafLegendShown = false;
+
     g.l3.forEach(l3 => {
       const hasL4 = l3.l4.length > 0;
       const l3ToggleAttrs = hasL4
@@ -1917,6 +1924,7 @@ function render() {
         ? '<span class="toggle-icon" title="Click to expand">+</span>'
         : '<span class="toggle-icon placeholder"></span>';
       if (hasL4) {
+        leafLegendShown = false;
         html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
           '<td colspan="2" ' + l3ToggleAttrs + '>' + rollupRowHtml(l3, l3Icon) + '</td>' +
           '</tr>';
@@ -1924,9 +1932,12 @@ function render() {
           '<td colspan="2" style="padding:0;">' + inlineLegendHtml(48) + '</td>' +
           '</tr>';
       } else {
-        html += '<tr class="row-legend-inline" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
-          '<td colspan="2" style="padding:0;">' + inlineLegendHtml(32) + '</td>' +
-          '</tr>';
+        if (!leafLegendShown) {
+          html += '<tr class="row-legend-inline" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
+            '<td colspan="2" style="padding:0;">' + inlineLegendHtml(32) + '</td>' +
+            '</tr>';
+          leafLegendShown = true;
+        }
         html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
           '<td colspan="2" style="padding:0;">' + activityCardHtml(l3.code, l3.name, 32) + '</td>' +
           '</tr>';
