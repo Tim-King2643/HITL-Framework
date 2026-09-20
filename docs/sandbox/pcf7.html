@@ -191,6 +191,7 @@ td:first-child { text-align: left; }
 .gates-info-label { font-size: 9px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); margin-bottom: 3px; }
 .gates-info-label-2 { border-top: 1px solid var(--border); padding-top: 8px; margin-top: 2px; }
 .gates-info-def { font-size: 11px; line-height: 1.45; color: var(--gray); margin: 0 0 8px; }
+.wr-role-flag { color: #B45309; text-transform: none; letter-spacing: 0; font-weight: 700; }
 .gates-req-list { list-style: none; margin: 0 0 8px; padding: 0; }
 .gates-req-list li { display: flex; align-items: flex-start; gap: 7px; font-size: 11px; line-height: 1.5; padding: 2px 0; color: var(--gray); }
 .gates-req-list li::before { content: ''; flex: 0 0 auto; width: 13px; height: 13px; margin-top: 1px; border-radius: 3px; border: 1.3px dashed #C6CDD9; display: inline-block; }
@@ -1700,6 +1701,68 @@ function stepContextText(category, activityName, role) {
   }
 }
 
+// ── Per-step "what moved to AI / what stays human" breakdown ────────────
+// Sept 20, 2026: replaces the single-paragraph stepContextText for the
+// step info panel with three explicit parts — What moves to AI, What
+// stays human, and a Change-impact read that reuses each activity's own
+// hand-authored consNote/ceilingNote (real, activity-specific reasoning
+// already in WR_DATA) rather than a second layer of generic template
+// text. A role-impact note is appended only when this step's category is
+// Agent-delegation or Automation — the two tiers where a role's remaining
+// hands-on task list for this one activity has hollowed out enough that
+// the role's own definition may need revisiting; every other step reads
+// as "role intact" rather than staying silent, so the absence of a flag
+// is itself legible.
+function stepToAiText(category, act, role) {
+  switch (category) {
+    case "Human-only": return "Nothing. AI has no role in " + act + ", by design.";
+    case "Judgment": return "AI may supply supporting input — data, a ranking, a benchmark — that " + role + " draws on to " + act + ". It does not produce the candidate decision.";
+    case "Oversight": return "AI performs or proposes the complete " + act + " work product, end to end, before anyone sees it.";
+    case "Augmentation": return "AI works alongside " + role + " in real time on " + act + " — drafting, suggesting, or summarizing — without acting unilaterally.";
+    case "Agent-delegation": return "An AI agent carries out " + act + " autonomously within policy bounds, handling the routine cases end to end.";
+    case "Automation": return "AI fully performs and completes " + act + ", with no person involved in a given instance.";
+    default: return "";
+  }
+}
+function stepHumanText(category, act, role) {
+  switch (category) {
+    case "Human-only": return role + " carries out all of " + act + " personally — there is nothing here to hand off.";
+    case "Judgment": return role + " forms the judgment and makes the actual call on " + act + "; AI's input never becomes the decision.";
+    case "Oversight": return role + " reviews every AI-produced instance of " + act + " and approves or rejects it before it takes effect.";
+    case "Augmentation": return role + " stays the primary actor on " + act + ", doing the work themselves with AI assisting, not deciding.";
+    case "Agent-delegation": return role + " steps in only on the exceptions the agent flags for " + act + " — not on every instance.";
+    case "Automation": return "Nothing on a per-instance basis. " + role + "'s involvement, if any, shifts to occasionally auditing the system as a whole rather than touching individual instances of " + act + ".";
+    default: return "";
+  }
+}
+function stepImpactText(code, ni, currentIdx, ceilingIdx, act, role, w) {
+  const label = CATS_ORDER[ni];
+  if (ni < currentIdx) {
+    return role + "'s work on " + act + " has already moved past this point — this describes an earlier way of working the role no longer uses here.";
+  }
+  if (ni === currentIdx && ni === ceilingIdx) {
+    return "This is where " + act + " sits today for " + role + " — and, per the Progression Ceiling, as far as it's authorized to go. " + (w.ceilingNote || "");
+  }
+  if (ni === currentIdx) {
+    return "This is where " + act + " sits today for " + role + "." + (w.cons === 'High' || w.cons === 'Critical' ? " Consequence of Error here is " + w.cons.toLowerCase() + ": " + (w.consNote || '') : '');
+  }
+  if (ni === ceilingIdx) {
+    return "The authorized stopping point for " + act + " — it could move here, but no further. " + (w.ceilingNote || "");
+  }
+  return "Not yet reached for " + act + " — it would need to clear the evidence ladder between today's step and this one first.";
+}
+function roleImpactNote(ni, currentIdx, act, role) {
+  const label = CATS_ORDER[ni];
+  if (label !== "Agent-delegation" && label !== "Automation") {
+    return { flagged: false, text: role + "'s role definition holds at this step — " + act + " still requires " + role + "'s hands-on work or a per-instance review, not just exception-handling." };
+  }
+  const drop = label === "Automation" ? "zero hands-on involvement" : "exception-handling only, not the work itself";
+  if (ni <= currentIdx) {
+    return { flagged: true, text: role + "'s day-to-day on " + act + " has already dropped to " + drop + ". If this pattern holds across " + role + "'s other activities, the role's own definition — not just this one task — may need to be revisited." };
+  }
+  return { flagged: true, text: "If " + act + " advances to this step, " + role + "'s hands-on involvement drops to " + drop + " for this activity — worth flagging for a future role-definition review, not a change to make today." };
+}
+
 function gatesInfoContent(code, key) {
   const w = wrCell(code);
   const info = CODE_INFO[code] || { name: code, role: 'The accountable role' };
@@ -1721,11 +1784,22 @@ function gatesInfoContent(code, key) {
   if (key.charAt(0) === 'n') {
     const ni = parseInt(key.slice(1), 10);
     const label = CATS_ORDER[ni];
+    const currentIdx = CATS_ORDER.indexOf(w.current);
+    const ceilingIdx = CATS_ORDER.indexOf(w.ceiling);
+    const act = lowerFirst(info.name);
+    const role = info.role;
+    const rn = roleImpactNote(ni, currentIdx, act, role);
     return '<div class="gates-info-title">' + label + ' — what the work looks like here</div>' +
       '<div class="gates-info-label">Standard definition</div>' +
       '<p class="gates-info-def">' + STEP_DEFINITIONS[label] + '</p>' +
-      '<div class="gates-info-label gates-info-label-2">For this activity</div>' +
-      '<p class="wr-cf-note" style="border-top:none;padding-top:0;">' + stepContextText(label, info.name, info.role) + '</p>';
+      '<div class="gates-info-label gates-info-label-2">What moves to AI</div>' +
+      '<p class="wr-cf-note" style="border-top:none;padding-top:0;">' + stepToAiText(label, act, role) + '</p>' +
+      '<div class="gates-info-label gates-info-label-2">What stays human</div>' +
+      '<p class="wr-cf-note" style="border-top:none;padding-top:0;">' + stepHumanText(label, act, role) + '</p>' +
+      '<div class="gates-info-label gates-info-label-2">Change impact</div>' +
+      '<p class="wr-cf-note" style="border-top:none;padding-top:0;">' + stepImpactText(code, ni, currentIdx, ceilingIdx, act, role, w) + '</p>' +
+      '<div class="gates-info-label gates-info-label-2">Role impact' + (rn.flagged ? ' — <span class="wr-role-flag">redefinition recommended</span>' : '') + '</div>' +
+      '<p class="wr-cf-note" style="border-top:none;padding-top:0;">' + rn.text + '</p>';
   }
   return '';
 }
