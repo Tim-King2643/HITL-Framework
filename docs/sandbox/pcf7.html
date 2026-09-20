@@ -195,6 +195,8 @@ td:first-child { text-align: left; }
 .gates-req-list { list-style: none; margin: 0 0 8px; padding: 0; }
 .gates-req-list li { display: flex; align-items: flex-start; gap: 7px; font-size: 11px; line-height: 1.5; padding: 2px 0; color: var(--gray); }
 .gates-req-list li::before { content: ''; flex: 0 0 auto; width: 13px; height: 13px; margin-top: 1px; border-radius: 3px; border: 1.3px dashed #C6CDD9; display: inline-block; }
+.gates-rollup-block { display: flex; flex-direction: column; gap: 4px; padding: 4px 0; }
+.gates-rollup-toprow { display: flex; align-items: flex-start; gap: 10px; }
 .gates-rollup { font-size: 11px; color: var(--gray); }
 .gates-rollup-label { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .04em; color: var(--lgray); margin-right: 3px; }
 .gates-rollup-sep { margin: 0 8px; color: var(--lgray); }
@@ -1741,12 +1743,23 @@ function activityCardHtml(code, name, indentPx) {
     '</div>';
 }
 
-function wrRowCellsRollupGates(l3) {
+// L3 rollup row (a process with L4 children) — same left edge and the same
+// stacked, left-aligned Consequence of Error badge as the activity cards
+// below it, so L3-level data lines up with L3/L4-level data instead of
+// sitting in its own separate, right-shifted column.
+function rollupRowHtml(l3, icon) {
   const l3s = [l3];
-  const consHtml = '<div class="gates-cons-row"><span class="gates-cons-label">Consequence of Error</span>' + consRollupCell(l3s) + '</div>';
-  const rollupHtml = '<div class="gates-rollup"><span class="gates-rollup-label">Current</span>' + wrRollupCell(l3s, 'rel') +
-    '<span class="gates-rollup-sep">&rarr;</span><span class="gates-rollup-label">Ceiling</span>' + wrRollupCell(l3s, 'ceiling') + '</div>';
-  return '<td class="wr-left">' + consHtml + rollupHtml + '</td>';
+  return '<div class="gates-rollup-block">' +
+    '<div class="gates-rollup-toprow">' +
+    '<span class="row-flex"><span class="row-prefix">' + icon + '<span class="pcf-ref">' + l3.code + '</span></span>' +
+    '<span class="row-text">' + l3.name + '</span></span>' +
+    '<div class="gates-card-cons">' +
+    '<span class="gates-cons-label">Consequence of Error</span>' + consRollupCell(l3s) +
+    '</div>' +
+    '</div>' +
+    '<div class="gates-rollup"><span class="gates-rollup-label">Current</span>' + wrRollupCell(l3s, 'rel') +
+    '<span class="gates-rollup-sep">&rarr;</span><span class="gates-rollup-label">Ceiling</span>' + wrRollupCell(l3s, 'ceiling') + '</div>' +
+    '</div>';
 }
 
 function factorChecklistPop(code, factorList, activeFactors, note) {
@@ -1838,19 +1851,17 @@ function render() {
         : '<span class="toggle-icon placeholder"></span>';
       if (hasL4) {
         html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
-          '<td ' + l3ToggleAttrs + '><span class="row-flex"><span class="row-prefix">' + l3Icon + '<span class="pcf-ref">' + l3.code + '</span></span>' +
-          '<span class="row-text">' + l3.name + '</span></span></td>' +
-          wrRowCellsRollupGates(l3) +
+          '<td colspan="2" ' + l3ToggleAttrs + '>' + rollupRowHtml(l3, l3Icon) + '</td>' +
           '</tr>';
       } else {
         html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
-          '<td colspan="2" style="padding:0;">' + activityCardHtml(l3.code, l3.name, 8) + '</td>' +
+          '<td colspan="2" style="padding:0;">' + activityCardHtml(l3.code, l3.name, 32) + '</td>' +
           '</tr>';
       }
 
       l3.l4.forEach(l4 => {
         html += '<tr class="row-l4" data-parent="' + g.code + '" data-parent-l3="' + l3.code + '" style="display:none">' +
-          '<td colspan="2" style="padding:0;">' + activityCardHtml(l4.code, l4.name, 24) + '</td>' +
+          '<td colspan="2" style="padding:0;">' + activityCardHtml(l4.code, l4.name, 48) + '</td>' +
           '</tr>';
       });
     });
