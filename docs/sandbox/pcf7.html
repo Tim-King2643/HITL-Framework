@@ -1915,6 +1915,9 @@ function render() {
           '<td colspan="2" style="padding:0 14px;">' + inlineLegendHtml() + '</td>' +
           '</tr>';
       } else {
+        html += '<tr class="row-legend-inline" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
+          '<td colspan="2" style="padding:0 14px;">' + inlineLegendHtml() + '</td>' +
+          '</tr>';
         html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '">' +
           '<td colspan="2" style="padding:0;">' + activityCardHtml(l3.code, l3.name, 32) + '</td>' +
           '</tr>';
