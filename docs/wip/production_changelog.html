@@ -68,7 +68,21 @@ footer strong { color: var(--navy); }
 
   <!-- Newest entries go at the top. Copy this block for each new entry. -->
 
-  <div class="empty-note">No entries yet — this page is ready for the first one.</div>
+  <div class="entry">
+    <div class="entry-date">2026-09-21</div>
+    <div class="entry-desc">Retired the Excel Requirements Register in favor of the living HTML tracker, and fixed a broken link and stale counts that referenced it.</div>
+    <div class="entry-meta">
+      <b>Files touched:</b><br/>
+      <span class="files-touched">docs/HITL_Requirements_Register.xlsx (deleted)</span>
+      <span class="files-touched">wip/HITL_Requirements_Register.xlsx (deleted)</span>
+      <span class="files-touched">docs/wip/production_changelog.html (added)</span>
+      <span class="files-touched">docs/how_this_site_works.html (4 edits)</span>
+      <br/><br/>
+      <b>What changed in how_this_site_works.html:</b> the Requirements Register link (previously pointing at the now-deleted .xlsx, a 404) now points to <span class="files-touched">wip/requirements_register.html</span>; three descriptions that called it "a 35-row Excel spreadsheet, GR-001&ndash;GR-035" were updated to "a living HTML tracker, GR-001&ndash;GR-043" &mdash; matching the register's actual current row count, which had grown past the old description without anyone updating this page.<br/><br/>
+      <b>Source:</b> found during the 7.0 rebuild-scope audit, not a WIP-catalog item.
+    </div>
+    <span class="verified yes">Verified live</span>
+  </div>
 
 </div>
 
