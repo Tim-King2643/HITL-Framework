@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Working Relationship as the Primary Display Lens — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 860px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.concept-flag { background: var(--amber-bg); border-left: 3px solid var(--amber); border-radius: 4px; padding: 16px 20px; font-size: 13px; font-style: italic; color: var(--amber-text); line-height: 1.6; margin-bottom: 28px; }
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 24px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
+.gov-flag { background: #FDECEC; border-left: 3px solid #B23B3B; border-radius: 4px; padding: 16px 20px; font-size: 13px; color: #7A2020; line-height: 1.6; margin-bottom: 28px; }
+.gov-flag strong { color: #5A1717; }
+.quote-flag { background: #F3F0FE; border-left: 3px solid #9B7BC4; border-radius: 4px; padding: 16px 20px; font-size: 13.5px; color: #3E3563; line-height: 1.7; margin-bottom: 28px; font-style: italic; }
+.quote-flag cite { display: block; margin-top: 8px; font-style: normal; font-size: 11.5px; font-weight: 700; letter-spacing: .02em; color: #5A4B96; text-transform: uppercase; }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 36px 0 12px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 15px; margin: 0 0 10px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 12.5px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 10px 10px 7px; font-size: 10.5px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 8px 10px; vertical-align: top; color: #222; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.row-name { font-weight: 700; white-space: nowrap; }
+td.count { text-align: center; font-weight: 700; }
+
+.status-chip { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+.status-remove { background: #FEE2E2; color: #991B1B; }
+.status-add { background: #DCFCE7; color: #166534; }
+.status-clean { background: #E0F2FE; color: #0369A1; }
+.status-hold { background: var(--amber-bg); color: var(--amber-text); }
+
+.wr-swatch-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 24px; }
+.wr-swatch { flex: 1; min-width: 130px; border-radius: 6px; padding: 10px 12px; font-size: 11.5px; }
+.wr-swatch .wr-name { font-weight: 700; margin-bottom: 2px; }
+
+.pdf-download { display: inline-flex; align-items: center; gap: 6px; font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px; padding: 8px 14px; text-decoration: none; margin: 0 0 28px; }
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">CONCEPT &nbsp;·&nbsp; TIM KING, GIGI GARCIA &amp; CLAUDE &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>Working Relationship as the Primary Display Lens</h1>
+  <div class="subtitle">Retire the five work-pattern labels and colors from every user-facing page; keep them in the backend for future analytics; make the six Working-Relationship categories the thing people actually see</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-vote-mount data-item="wr-display-migration"></div>
+
+<div class="wrap">
+
+  <div class="concept-flag">Concept stage — not yet part of the framework. This proposal supersedes the in-progress <a href="work_pattern_color_standard.html">Work Pattern Color Standard</a> concept: that proposal fixed the pattern palette's colorblind-accessibility problem, but if patterns stop being displayed to users at all, the problem it was solving no longer needs a display-layer fix. Recommend marking that item <strong>Superseded</strong> rather than continuing to review it — see "What happens to the old proposal" below.</div>
+
+  <div class="quote-flag">"The biggest shift for me is that the working relationship now feels like the most concrete place to start. It tells us, at the activity level, what the human and AI are actually doing together. That is much easier to understand and much easier to test than asking the pattern label to carry the whole story. I would keep the original patterns in the backend because they may still matter analytically or technically, but I do not think the end user needs to see both. The working relationship is the thing that gives us something actionable: Automation, Agent-delegation, Augmentation, Oversight, Judgment, or Human-only."<cite>GiGi Garcia, relayed by Tim King, 2026-09-21</cite></div>
+
+  <div class="related-reqs">
+    <span class="rr-label">Related Requirements — Requirements Register</span>
+    <ul>
+    <li><code>GR-003</code> — give the work classification a stronger, consistent visual identity site-wide <em>(Reframed — Working Relationship, not pattern, is now the identity that needs it)</em></li>
+    </ul>
+  </div>
+
+  <h2>Why This Now</h2>
+  <p>Tim and GiGi have agreed: the five work patterns (Decision, Knowledge, Document, Transaction, Exception) stop being something a site visitor sees, and the six Working-Relationship categories (Automation, Agent-delegation, Augmentation, Oversight, Judgment, Human-only) become the primary lens instead. Patterns describe <em>what kind of work</em> an activity is; Working Relationship describes <em>what the human and the AI are actually doing together</em> on it — and it's the second question a reader actually came to the site to answer. Patterns aren't being deleted. They stay in the backend/data layer, available if pattern-level analytics turn out to matter later — they just stop competing with Working Relationship for the reader's attention on every page.</p>
+
+  <h2>The Problem</h2>
+  <p>Right now the two classifications are shown side by side in some places and not at all in others, with no single page consistently leading on Working Relationship. A scan of every live PCF 7.0/8.0/9.0 page for the actual color-coded badge markup (not just the word "pattern" or "judgment" appearing in prose) found:</p>
+
+  <table>
+    <thead><tr><th>Page group</th><th>Count</th><th>Shows pattern badges (<code>.pat-badge</code>)</th><th>Shows Working Relationship (<code>.capmap</code>)</th><th>What this proposal changes</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Role Transition Profiles (<code>rtp_*.html</code>)</td><td class="count">25</td><td><span class="status-chip status-remove">Yes — all 25</span></td><td><span class="status-chip status-clean">Yes — all 25</span></td><td>Remove the pattern badge only. Working Relationship display is already built and correct here — this group needs the least work.</td></tr>
+      <tr><td class="row-name">CRUD Tables (<code>hitl_crud_pcf7/8/9_final.html</code>)</td><td class="count">3</td><td><span class="status-chip status-remove">Yes — 7&ndash;10 occurrences each</span></td><td><span class="status-chip status-hold">No</span></td><td>Remove pattern badges from the table; add a Working Relationship column or per-row chip in its place.</td></tr>
+      <tr><td class="row-name">RACI Tables (<code>hitl_raci_pcf7/8/9_final.html</code>)</td><td class="count">3</td><td><span class="status-chip status-remove">Yes — 2 each</span></td><td><span class="status-chip status-hold">No</span></td><td>Same treatment as CRUD: remove pattern badge, add Working Relationship in its place.</td></tr>
+      <tr><td class="row-name">Maturity Tables (<code>hitl_maturity_pcf8/9_final.html</code>)</td><td class="count">2</td><td><span class="status-chip status-remove">Yes — 2 each</span></td><td><span class="status-chip status-hold">No</span></td><td>Same treatment. (<code>hitl_maturity_scale.html</code>, the narrative page, has no badge markup at all and needs no code change.)</td></tr>
+      <tr><td class="row-name">Value Stream Profiles (<code>vsp_*.html</code>)</td><td class="count">18</td><td><span class="status-chip status-clean">No</span></td><td><span class="status-chip status-clean">Yes — already the primary lens</span></td><td>No change. This is the pattern the other groups are being brought up to.</td></tr>
+      <tr><td class="row-name">Dashboard (<code>hitl_dashboard_final.html</code>)</td><td class="count">1</td><td><span class="status-chip status-hold">Aggregate mix bars only, not per-item badges</span></td><td><span class="status-chip status-clean">Yes — already present</span></td><td>Out of scope for this proposal. The dashboard's pattern-mix bars are an aggregate analytics view, not a per-activity label — arguably the legitimate "backend/analytics use" GiGi described. Flagging for a separate decision rather than folding it in here.</td></tr>
+      <tr><td class="row-name">Narrative/methodology pages</td><td class="count">4</td><td><span class="status-chip status-clean">No badge markup — prose mentions only</span></td><td><span class="status-chip status-clean">n/a</span></td><td>No change. (<code>hitl_methodology.html</code>, <code>hitl_origin_story.html</code>, <code>hitl_maturity_scale.html</code>, <code>hitl_working_relationship_final.html</code>)</td></tr>
+    </tbody>
+  </table>
+
+  <p style="font-size:12.5px">Counted directly against the live repo export (2026-09-21) by grepping for the actual badge/card markup (<code>.pat-badge</code>, <code>.capmap</code>) rather than the pattern or category words appearing anywhere in the page — a page mentioning "Judgment" in a sentence doesn't count as displaying it as a classification.</p>
+
+  <h2>The Recommendation</h2>
+  <p>Two moves, applied consistently across the 33 pages that currently show a pattern badge (CRUD ×3, RACI ×3, Maturity ×2, RTP ×25):</p>
+  <p><strong>1. Remove the pattern badge from the rendered page.</strong> The pattern value itself isn't deleted — it stays wherever it's already stored in each page's data (the same <code>PATTERN_META</code>/local pattern-object source the badges currently read from), just no longer rendered as a visible chip. That satisfies "keep it in the backend for possible future analytic use" without a data migration — only the display templates change.</p>
+  <p><strong>2. Where Working Relationship isn't shown yet, add it — using the design already proven on the Value Stream Profile pages and the RTP pages.</strong> Those pages already render Working Relationship with Rule 20's locked palette via inline-styled <code>.capmap-card</code> elements (name, one-line description, activity count, H% ceiling value). CRUD, RACI, and Maturity tables need a per-row Working Relationship chip or column added using the same six locked colors — no new visual design work, just extending an existing, already-governed pattern to three more page types.</p>
+
+  <div class="wr-swatch-row">
+    <div class="wr-swatch" style="background:#7DAEE01A;color:#7DAEE0"><div class="wr-name">Automation</div>Rules-Based Execution</div>
+    <div class="wr-swatch" style="background:#5A8DC41A;color:#5A8DC4"><div class="wr-name">Agent-delegation</div>Bounded Autonomy</div>
+    <div class="wr-swatch" style="background:#3D6FA81A;color:#3D6FA8"><div class="wr-name">Augmentation</div>AI-Assisted Judgment</div>
+    <div class="wr-swatch" style="background:#2457A31A;color:#2457A3"><div class="wr-name">Oversight</div>Human Verifies</div>
+    <div class="wr-swatch" style="background:#2044741A;color:#204474"><div class="wr-name">Judgment</div>Human Decides</div>
+    <div class="wr-swatch" style="background:#0D2D4F1A;color:#0D2D4F"><div class="wr-name">Human-only</div>Standing Duty</div>
+  </div>
+
+  <h2>What happens to the old proposal</h2>
+  <p>Recommend marking <a href="work_pattern_color_standard.html">Work Pattern Color Standard</a> <strong>Superseded</strong> rather than Denied — its colorblind-safety finding (Transaction/Exception nearly indistinguishable under deuteranopia; Decision/Knowledge too close under normal vision) is still true and still worth having on record. It just no longer needs to become a live display change, since the pattern colors it was fixing won't be displayed. If patterns are ever surfaced again for analytics tooling aimed at Tim or GiGi rather than end users, that validated palette is sitting there ready to reuse — recommend leaving a note to that effect on the superseded proposal rather than deleting it.</p>
+
+  <h2>Proposed Tokens</h2>
+  <p>None new. This proposal is entirely built on Rule 20's already-locked Working-Relationship palette — the same six hex values already live on every Value Stream Profile page. No token lock change needed for the six colors themselves; the only governance action is extending <em>where</em> they're used.</p>
+  <table>
+    <thead><tr><th>Category</th><th>Hex</th><th>Fixed H% value</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Automation</td><td>#7DAEE0</td><td>10%</td></tr>
+      <tr><td class="row-name">Agent-delegation</td><td>#5A8DC4</td><td>28%</td></tr>
+      <tr><td class="row-name">Augmentation</td><td>#3D6FA8</td><td>48%</td></tr>
+      <tr><td class="row-name">Oversight</td><td>#2457A3</td><td>&mdash;</td></tr>
+      <tr><td class="row-name">Judgment</td><td>#204474</td><td>82%</td></tr>
+      <tr><td class="row-name">Human-only</td><td>#0D2D4F</td><td>&mdash;</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Build Note</h2>
+  <p>Recommended sequence, easiest and lowest-risk first:</p>
+  <p><strong>1. RTP pages (25 files)</strong> — delete-only. Each page already renders its Working Relationship card set correctly; this step is just removing the <code>.pat-badge</code> markup and its legend, nothing to build.</p>
+  <p><strong>2. CRUD / RACI / Maturity tables (8 files)</strong> — the real build. Same badge removal, plus adding a Working Relationship column/chip per row, styled from the same locked palette and card pattern already proven on the VSP and RTP pages. Recommend building the pattern once against one CRUD page, confirming it reads correctly, then repeating across the other seven.</p>
+  <p><strong>3. Dashboard</strong> — hold for a separate decision. Its pattern-mix bars are aggregate, not per-activity, and may be the legitimate backend/analytics use case GiGi flagged rather than something this proposal needs to touch.</p>
+  <p>Underlying pattern data (the <code>PATTERN_META</code>/pattern-object values each page currently reads its badge from) is left in place throughout — nothing in this build touches the data layer, only what's rendered from it.</p>
+
+  <div style="border-top:1px solid var(--border);margin-top:30px;padding-top:16px;text-align:center">
+    <span style="font-size:12px;color:var(--lgray)">Tim King, GiGi Garcia &amp; Claude &nbsp;|&nbsp; Concept — For Review &nbsp;|&nbsp; September 2026</span>
+  </div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong>, <strong style="color:var(--navy)">GiGi Garcia</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;·&nbsp; Concept — For Review<br>
+    HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="working_relationship_display_migration.pdf">Download PDF</a> &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+<script src="wip-vote-widget.js"></script>
+</body>
+</html>
