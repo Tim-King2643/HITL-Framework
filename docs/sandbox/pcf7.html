@@ -183,8 +183,8 @@ td:first-child { text-align: left; }
 .gate-node { display: flex; flex-direction: column; align-items: center; min-width: 74px; flex: 0 0 auto; }
 .gate-circle { all: unset; width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; }
 .gate-label { all: unset; cursor: pointer; font-size: 9px; font-weight: 500; color: #000; text-align: center; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
-.gate-arrow { all: unset; cursor: pointer; width: 20px; height: 14px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-top: 0; }
-.gate-arrow-locked { font-size: 10px; opacity: .85; }
+.gate-arrow { all: unset; cursor: pointer; width: 22px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; margin-top: 0; }
+.gate-arrow-locked { font-size: 14px; }
 .gates-info { display: none; margin-top: 10px; width: 100%; max-width: 460px; background: #FAFBFD; border: 1px solid var(--border); border-radius: 7px; padding: 10px 30px 10px 14px; text-align: left; position: relative; }
 .gates-info-close { all: unset; position: absolute; top: 6px; right: 6px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--lgray); font-size: 15px; line-height: 1; border-radius: 4px; }
 .gates-info-close:hover { color: var(--navy-d); background: #EEF1F6; }
@@ -408,8 +408,8 @@ td.crud-d .crud-entity { color: #991B1B; }
         <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>
         <span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>
         <span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
-        <span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
-        <span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
+        <span class="gates-legend-item"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
+        <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
         <span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist &mdash; click the &times; to close any open box</span>
       </div>
       <div class="table-wrap">
@@ -483,8 +483,8 @@ td.crud-d .crud-entity { color: #991B1B; }
         <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>
         <span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>
         <span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
-        <span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
-        <span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
+        <span class="gates-legend-item"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
+        <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
         <span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist &mdash; click the &times; to close any open box</span>
       </div>
       <div class="table-wrap">
@@ -935,7 +935,17 @@ const WR_CATS = {
   "Human-only":        { color:"#0D2D4F", h:95 },
 };
 
-const CONS_COLOR = { Low:"#166534", Moderate:"#7A5A1E", High:"#9A3412", Critical:"#991B1B" };
+// Okabe-Ito-derived — blue/teal/amber/burnt-orange rather than green/red, so
+// Low and Critical (the pair most likely to be confused under red-green
+// colorblindness) stay visually far apart. Darkened just enough from the
+// published Okabe-Ito hues to clear WCAG AA contrast as text on white (the
+// palette's own Yellow and Sky Blue entries are too light for that and
+// were dropped). Per Tim's Sept 22, 2026 colorblindness review.
+const CONS_COLOR = { Low:"#0072B2", Moderate:"#008460", High:"#9A6A00", Critical:"#C15500" };
+// Weight escalates with severity alongside color — a second, color-vision-
+// independent cue so "worse" still reads as visually heavier even if the
+// hue itself doesn't register.
+const CONS_WEIGHT = { Low: 400, Moderate: 500, High: 600, Critical: 700 };
 
 const WR_DATA = {
   "7.1.1.1": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Reach is broad (frames strategy for the whole function) but the assessment itself is easily revised — moderate human/ops impact, no legal exposure, high reversibility keep this at Moderate.", consFactors:["human","ops","reach"], ceilingFactors:["accountability"], ceilingNote:"Sets the strategic direction the rest of 7.1 executes against — a standing strategic-judgment duty, not a runway gap, holds this at Judgment." },
@@ -1332,7 +1342,7 @@ function consRollupCell(l3s) {
   let worst = null;
   coverages.forEach(c => { if (c.worst && (worst === null || CONS_ORDER.indexOf(c.worst) > CONS_ORDER.indexOf(worst))) worst = c.worst; });
   if (!worst) return '<span class="wr-blank">&mdash; not yet tagged &mdash;</span>';
-  return '<span class="wr-cons" style="color:' + CONS_COLOR[worst] + '">' + worst + '</span><span class="wr-cons-worst-note">worst case</span>';
+  return '<span class="wr-cons" style="color:' + CONS_COLOR[worst] + ';font-weight:' + CONS_WEIGHT[worst] + '">' + worst + '</span><span class="wr-cons-worst-note">worst case</span>';
 }
 
 // Same worst-case computation as consRollupCell, but returns only the
@@ -1348,7 +1358,7 @@ function consRollupValueOnly(l3s) {
   let worst = null;
   coverages.forEach(c => { if (c.worst && (worst === null || CONS_ORDER.indexOf(c.worst) > CONS_ORDER.indexOf(worst))) worst = c.worst; });
   if (!worst) return '<span class="wr-blank">&mdash; not yet tagged &mdash;</span>';
-  return '<span class="wr-cons" style="color:' + CONS_COLOR[worst] + '">' + worst + '</span>';
+  return '<span class="wr-cons" style="color:' + CONS_COLOR[worst] + ';font-weight:' + CONS_WEIGHT[worst] + '">' + worst + '</span>';
 }
 
 /* ── People View (Role Impact Table) ─────────────────────────────────────
@@ -1598,7 +1608,7 @@ function wrBadge(catName) {
 
 function consCell(cons) {
   if (!cons) return '<span class="wr-blank">&mdash; not yet tagged &mdash;</span>';
-  return '<span class="wr-cons" style="color:' + CONS_COLOR[cons] + '">' + cons + '</span>';
+  return '<span class="wr-cons" style="color:' + CONS_COLOR[cons] + ';font-weight:' + CONS_WEIGHT[cons] + '">' + cons + '</span>';
 }
 
 // Consequence-of-Error rating for the activity cards, with the rule
@@ -1608,7 +1618,7 @@ function consCell(cons) {
 // Consequence-of-Error badge besides its label.
 function consCellWithPop(cons, consFactors, consNote) {
   if (!cons) return '<span class="wr-blank">&mdash; not yet tagged &mdash;</span>';
-  const ratingHtml = '<span class="wr-cons" style="color:' + CONS_COLOR[cons] + '">' + cons + '</span>';
+  const ratingHtml = '<span class="wr-cons" style="color:' + CONS_COLOR[cons] + ';font-weight:' + CONS_WEIGHT[cons] + '">' + cons + '</span>';
   if (!consFactors || !consFactors.length) return ratingHtml;
   const items = CONS_FACTORS.map(function (f) {
     const on = consFactors.indexOf(f.key) !== -1;
@@ -1616,7 +1626,7 @@ function consCellWithPop(cons, consFactors, consNote) {
       '<span class="wr-cf-box">' + (on ? '&#10003;' : '') + '</span>' + f.label + '</li>';
   }).join('');
   const noteHtml = consNote ? '<p class="wr-cf-note">' + consNote.replace(/"/g, '&quot;') + '</p>' : '';
-  return '<span class="wr-cons wr-cf-trigger" style="color:' + CONS_COLOR[cons] + '" onclick="toggleFactorPop(event, this)">' + cons + '</span>' +
+  return '<span class="wr-cons wr-cf-trigger" style="color:' + CONS_COLOR[cons] + ';font-weight:' + CONS_WEIGHT[cons] + '" onclick="toggleFactorPop(event, this)">' + cons + '</span>' +
     '<div class="wr-cons-pop"><button type="button" class="gates-info-close" onclick="closeFactorPop(event, this)" aria-label="Close">&times;</button><ul class="wr-cf-list">' + items + '</ul>' + noteHtml + '</div>';
 }
 
@@ -1884,12 +1894,16 @@ function gatesTrackHtml(code, scope) {
       // A drawn SVG (currentColor) rather than the lock emoji, which
       // renders in a fixed yellow regardless of CSS color and would read
       // as an amber "warning" instead of a dead, slate-grey stop.
-      const lockSvg = '<svg width="9" height="10" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;">' +
+      const lockSvg = '<svg width="12" height="13" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;">' +
         '<rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/>' +
         '<path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/>' +
         '</svg>';
       const glyph = gateState === 'passed' ? '&#10003;' : (isBoundary ? lockSvg : '&rarr;');
-      const gcolor = gateState === 'passed' ? '#166534' : (gateState === 'open' ? '#5A8DC4' : '#64748B');
+      // Darkened from the original lighter blue/grey (#5A8DC4/#64748B) —
+      // both read as too faint against white at a glance, per Tim's Sept
+      // 22, 2026 feedback ("update the size of the gate arrows or darken
+      // them for better visibility"). Sized up alongside the darkening.
+      const gcolor = gateState === 'passed' ? '#166534' : (gateState === 'open' ? '#2457A3' : '#475569');
       const arrowCls = 'gate-arrow' + (gateState === 'locked' ? ' gate-arrow-locked' : '');
       // The boundary lock is the click target for ceiling rationale ('ceil')
       // instead of the generic per-gate evidence text — clicking the wall
@@ -1957,8 +1971,8 @@ function inlineLegendHtml(indentPx) {
     '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>' +
     '<span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>' +
     '<span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>' +
-    '<span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>' +
-    '<span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>' +
+    '<span class="gates-legend-item"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>' +
+    '<span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>' +
     '<span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist &mdash; click the &times; to close any open box</span>' +
     '</div>';
 }
