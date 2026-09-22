@@ -63,7 +63,7 @@ td.count { text-align: center; font-weight: 700; }
 
 .wr-swatch-row { display: flex; flex-wrap: wrap; gap: 18px; margin: 8px 0 24px; }
 .wr-swatch { display: flex; flex-direction: column; align-items: center; text-align: center; width: 108px; font-size: 11.5px; color: var(--gray); }
-.wr-swatch .wr-dot { width: 30px; height: 30px; border-radius: 50%; margin-bottom: 6px; }
+.wr-swatch .wr-dot { width: 14px; height: 14px; border-radius: 50%; margin-bottom: 5px; }
 .wr-swatch .wr-name { font-weight: 700; color: var(--dark); margin-bottom: 2px; }
 
 .pdf-download { display: inline-flex; align-items: center; gap: 6px; font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px; padding: 8px 14px; text-decoration: none; margin: 0 0 28px; }
@@ -101,12 +101,14 @@ footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
 .gates-card-header { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
 .gates-cons-label { font-size: 9.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); line-height: 14px; display: block; }
 .wr-cons { font-weight: 500; font-size: 12px; }
+.mock-cons-trigger { all: unset; cursor: pointer; }
+.mock-cons-trigger:hover { text-decoration: underline; }
 .gates-track { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding: 2px 0 1px; }
 .gate-node { display: flex; flex-direction: column; align-items: center; min-width: 84px; flex: 0 0 auto; }
 .gate-circle { all: unset; width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; }
 .gate-label { all: unset; cursor: pointer; font-size: 11px; font-weight: 500; color: #000; text-align: center; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
-.gate-arrow { all: unset; cursor: pointer; width: 22px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; margin-top: 0; }
-.gate-arrow-locked { font-size: 14px; }
+.gate-arrow { all: unset; cursor: pointer; width: 22px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; margin-top: -1px; }
+.gate-arrow-locked { font-size: 14px; margin-top: 0; }
 .gates-info { display: none; margin-top: 10px; width: 100%; max-width: 460px; background: #fff; border: 1px solid var(--border); border-radius: 7px; padding: 10px 30px 10px 14px; text-align: left; position: relative; }
 .gates-info.open { display: block; }
 .gates-info-close { all: unset; position: absolute; top: 6px; right: 6px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--lgray); font-size: 15px; line-height: 1; border-radius: 4px; }
@@ -272,29 +274,62 @@ const MOCK_ACTIVITY = {
 };
 const MOCK_CONS_COLOR = { Low:"#0072B2", Moderate:"#008460", High:"#9A6A00", Critical:"#C15500" };
 const MOCK_CONS_WEIGHT = { Low: 400, Moderate: 500, High: 600, Critical: 700 };
+// Per Working_Relationship_Progression_Methodology.docx §6, "Per-Transition
+// Evidence Ladder" — the same generic evidence for each of the 5 transitions,
+// real content pulled from docs/sandbox/pcf7.html.
+const MOCK_GATE_TITLES = ["Human-only → Judgment", "Judgment → Oversight", "Oversight → Augmentation", "Augmentation → Agent-delegation", "Agent-delegation → Automation"];
+const MOCK_GATE_EVIDENCE = [
+  ["AI-supplied input is relevant and useful to the person doing the work", "No autonomous action exists yet, so there's no error rate to measure"],
+  ["AI's proposed action agrees with what the human would decide, most of the time", "Enough real instances have run to trust that agreement rate"],
+  ["A high share of full-review instances pass clean (audit-pass rate)", "That clean rate holds up sustained over real volume"],
+  ["Accuracy/error rate proven within defined policy bounds", "System reliably flags when it's out of bounds (exception-detection recall)"],
+  ["Sustained low exception rate over real volume", "An explicit governance sign-off gate layered on top (a policy choice, not just a technical threshold)"]
+];
 
-function mockGatesInfoContent(i) {
-  const label = MOCK_CATS_ORDER[i];
-  const currentIdx = MOCK_CATS_ORDER.indexOf(MOCK_ACTIVITY.current);
-  const ceilingIdx = MOCK_CATS_ORDER.indexOf(MOCK_ACTIVITY.ceiling);
-  let statusLine;
-  if (i === currentIdx) statusLine = "Current state for this activity.";
-  else if (i === ceilingIdx) statusLine = "Progression ceiling — " + MOCK_ACTIVITY.ceilingNote;
-  else if (i < currentIdx) statusLine = "Already passed on the way to the current state.";
-  else statusLine = "Reachable — between current state and the ceiling.";
-  return '<div class="gates-info-title">' + label + '</div>' +
-    '<p class="gates-info-def">' + MOCK_STEP_DEFINITIONS[label] + '</p>' +
-    '<div class="gates-info-label" style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;">For this activity</div>' +
-    '<p class="gates-info-def">' + statusLine + '</p>';
+function mockGatesInfoContent(key) {
+  const w = MOCK_ACTIVITY;
+  const currentIdx = MOCK_CATS_ORDER.indexOf(w.current);
+  const ceilingIdx = MOCK_CATS_ORDER.indexOf(w.ceiling);
+
+  if (key.indexOf('step-') === 0) {
+    const i = Number(key.slice(5));
+    const label = MOCK_CATS_ORDER[i];
+    let statusLine;
+    if (i === currentIdx) statusLine = "Current state for this activity.";
+    else if (i === ceilingIdx) statusLine = "Progression ceiling — " + w.ceilingNote;
+    else if (i < currentIdx) statusLine = "Already passed on the way to the current state.";
+    else statusLine = "Reachable — between current state and the ceiling.";
+    return '<div class="gates-info-title">' + label + '</div>' +
+      '<p class="gates-info-def">' + MOCK_STEP_DEFINITIONS[label] + '</p>' +
+      '<div class="gates-info-label" style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;">For this activity</div>' +
+      '<p class="gates-info-def">' + statusLine + '</p>';
+  }
+  if (key.indexOf('gate-') === 0) {
+    const gi = Number(key.slice(5));
+    const ev = MOCK_GATE_EVIDENCE[gi];
+    return '<div class="gates-info-title">Gate: ' + MOCK_GATE_TITLES[gi] + '</div>' +
+      '<div class="gates-info-label">Evidence to cross this gate</div>' +
+      '<p class="gates-info-def">' + ev[0] + '</p>' +
+      '<p class="gates-info-def">' + ev[1] + '</p>';
+  }
+  if (key === 'ceiling') {
+    return '<div class="gates-info-title">Progression Ceiling — ' + w.ceiling + '</div>' +
+      '<p class="gates-info-def">' + w.ceilingNote + '</p>';
+  }
+  if (key === 'cons') {
+    return '<div class="gates-info-title">Consequence of Error — ' + w.cons + '</div>' +
+      '<p class="gates-info-def">' + w.consNote + '</p>';
+  }
+  return '';
 }
 
-function mockToggleGatesInfo(i) {
+function mockToggleGatesInfo(key) {
   const panel = document.getElementById('mock-gates-info');
-  const already = panel.classList.contains('open') && panel.dataset.key === String(i);
+  const already = panel.classList.contains('open') && panel.dataset.key === key;
   panel.classList.remove('open');
   if (!already) {
-    panel.innerHTML = '<button type="button" class="gates-info-close" onclick="mockCloseGatesInfo(event)" aria-label="Close">&times;</button>' + mockGatesInfoContent(i);
-    panel.dataset.key = String(i);
+    panel.innerHTML = '<button type="button" class="gates-info-close" onclick="mockCloseGatesInfo(event)" aria-label="Close">&times;</button>' + mockGatesInfoContent(key);
+    panel.dataset.key = key;
     panel.classList.add('open');
   }
 }
@@ -313,7 +348,7 @@ function mockGatesCardHtml() {
     const isReachable = i <= ceilingIdx;
     const bg = isReachable ? MOCK_WR_CATS[label].color : '#EDEFF3';
     const labelStyle = !isReachable ? ' style="color:#94A3B8;"' : '';
-    const onclick = isReachable ? ' onclick="mockToggleGatesInfo(' + i + ')"' : '';
+    const onclick = isReachable ? ' onclick="mockToggleGatesInfo(\'step-' + i + '\')"' : '';
     const cursor = isReachable ? 'pointer' : 'default';
     nodesHtml += '<div class="gate-node">' +
       '<button type="button" class="gate-circle" style="cursor:' + cursor + ';background:' + bg + ';"' + onclick + '></button>' +
@@ -330,8 +365,8 @@ function mockGatesCardHtml() {
       const glyph = gateState === 'passed' ? '&#10003;' : (isBoundary ? lockSvg : '&rarr;');
       const gcolor = gateState === 'passed' ? '#166534' : (gateState === 'open' ? '#2457A3' : '#475569');
       const arrowCls = 'gate-arrow' + (gateState === 'locked' ? ' gate-arrow-locked' : '');
-      const arrowClick = isBoundary ? ' onclick="mockToggleGatesInfo(' + ceilingIdx + ')"' : '';
-      nodesHtml += '<button type="button" class="' + arrowCls + '" style="color:' + gcolor + ';"' + arrowClick + '>' + glyph + '</button>';
+      const arrowKey = isBoundary ? 'ceiling' : ('gate-' + i);
+      nodesHtml += '<button type="button" class="' + arrowCls + '" style="color:' + gcolor + ';" onclick="mockToggleGatesInfo(\'' + arrowKey + '\')">' + glyph + '</button>';
     }
   }
   return '<div class="gates-card-header">' +
@@ -339,7 +374,7 @@ function mockGatesCardHtml() {
     '<span style="font-size:12px;color:var(--gray);">' + w.name + '</span>' +
     '<div style="margin-left:auto;">' +
     '<span class="gates-cons-label">Consequence of Error</span>' +
-    '<span class="wr-cons" style="color:' + MOCK_CONS_COLOR[w.cons] + ';font-weight:' + MOCK_CONS_WEIGHT[w.cons] + ';">' + w.cons + '</span>' +
+    '<button type="button" class="mock-cons-trigger wr-cons" style="color:' + MOCK_CONS_COLOR[w.cons] + ';font-weight:' + MOCK_CONS_WEIGHT[w.cons] + ';" onclick="mockToggleGatesInfo(\'cons\')">' + w.cons + '</button>' +
     '</div></div>' +
     '<div class="gates-track">' + nodesHtml + '</div>' +
     '<div class="gates-info" id="mock-gates-info"></div>';
