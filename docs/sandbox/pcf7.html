@@ -151,7 +151,7 @@ td:first-child { text-align: left; }
 .wr-cons-pop {
   display:none; margin-top:6px; width:230px;
   background:#FAFBFD; border:1px solid var(--border); border-radius:7px;
-  padding:8px 10px; text-align:left;
+  padding:8px 26px 8px 10px; text-align:left; position: relative;
 }
 .wr-cons-pop.open { display:block; }
 .wr-cf-list { list-style:none; margin:0 0 8px; padding:0; }
@@ -185,7 +185,9 @@ td:first-child { text-align: left; }
 .gate-label { all: unset; cursor: pointer; font-size: 9px; font-weight: 500; color: #000; text-align: center; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
 .gate-arrow { all: unset; cursor: pointer; width: 20px; height: 14px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-top: 0; }
 .gate-arrow-locked { font-size: 10px; opacity: .85; }
-.gates-info { display: none; margin-top: 10px; width: 100%; max-width: 460px; background: #FAFBFD; border: 1px solid var(--border); border-radius: 7px; padding: 10px 14px; text-align: left; }
+.gates-info { display: none; margin-top: 10px; width: 100%; max-width: 460px; background: #FAFBFD; border: 1px solid var(--border); border-radius: 7px; padding: 10px 30px 10px 14px; text-align: left; position: relative; }
+.gates-info-close { all: unset; position: absolute; top: 6px; right: 6px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--lgray); font-size: 15px; line-height: 1; border-radius: 4px; }
+.gates-info-close:hover { color: var(--navy-d); background: #EEF1F6; }
 .gates-info.open { display: block; }
 .gates-info-title { font-size: 11px; font-weight: 600; color: var(--navy-d); margin-bottom: 6px; }
 .gates-info-label { font-size: 9px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); margin-bottom: 3px; }
@@ -223,18 +225,19 @@ td:first-child { text-align: left; }
 .gates-card-cons .wr-cf-trigger:hover { text-decoration: underline; }
 .gates-card-cons-tight { gap: 0; margin-left: 0; }
 
-.gates-legend-box { display: flex; flex-direction: column; gap: 8px; padding: 18px 22px; margin: 8px 14px 8px 48px; background: #fff; border: 1px solid var(--border); border-radius: 10px; }
+.gates-legend-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px 28px; padding: 16px 22px; margin: 8px 14px 8px 48px; background: #fff; border: 1px solid var(--border); border-radius: 10px; }
 /* Sized and positioned to match the activity card below it exactly — same
    background, border, radius and padding as .gates-card, and the same
    margin scheme (class sets margin:8px 14px; the per-row inline style
    below overrides only margin-left to the row's indentPx, exactly the way
    activityCardHtml overrides its own card's margin-left) so the legend's
    left edge and width line up with the card's, full length, not a small
-   popup-sized box. */
-.gates-legend-box-inline { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; margin: 8px 14px; }
-.gates-legend-row { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
+   popup-sized box. A grid (not a flex row that wraps) keeps every item's
+   text starting at the same left edge column by column, instead of
+   trailing off into ragged whitespace after the longest item in a row. */
+.gates-legend-box-inline { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px 28px; background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px 22px; margin: 8px 14px; }
 .gates-legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--gray); }
-.gates-legend-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+.gates-legend-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; flex: 0 0 auto; }
 
 /* ── Aggregation (People View rollup) + Readiness Gate view ─────────────
    (Sept 14, 2026, per Working_Relationship_Progression_Methodology.docx)
@@ -402,16 +405,12 @@ td.crud-d .crud-entity { color: #991B1B; }
         <span>118 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 118 working-relationship classified &middot; click a step, its circle, or a gate arrow for detail</span>
       </div>
       <div class="gates-legend-box">
-        <div class="gates-legend-row">
-          <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>
-          <span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>
-        </div>
-        <div class="gates-legend-row">
-          <span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
-          <span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
-          <span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
-          <span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist</span>
-        </div>
+        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>
+        <span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>
+        <span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
+        <span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
+        <span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
+        <span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist &mdash; click the &times; to close any open box</span>
       </div>
       <div class="table-wrap">
         <table id="main-table">
@@ -481,16 +480,12 @@ td.crud-d .crud-entity { color: #991B1B; }
         <span>14-role catalog &middot; reportsTo/span of control is a first-pass reasoned structure, not yet externally sourced &middot; a role&rsquo;s own row is an equal-weighted rollup across its RACI-Accountable L3s &mdash; click a role open to see each underlying process&rsquo;s own real ramp, the same six-step Current State &rarr; Progression Ceiling track used in the process view</span>
       </div>
       <div class="gates-legend-box">
-        <div class="gates-legend-row">
-          <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>
-          <span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>
-        </div>
-        <div class="gates-legend-row">
-          <span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
-          <span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
-          <span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
-          <span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist</span>
-        </div>
+        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>
+        <span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>
+        <span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
+        <span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
+        <span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
+        <span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist &mdash; click the &times; to close any open box</span>
       </div>
       <div class="table-wrap">
         <table id="people-main-table">
@@ -1622,7 +1617,7 @@ function consCellWithPop(cons, consFactors, consNote) {
   }).join('');
   const noteHtml = consNote ? '<p class="wr-cf-note">' + consNote.replace(/"/g, '&quot;') + '</p>' : '';
   return '<span class="wr-cons wr-cf-trigger" style="color:' + CONS_COLOR[cons] + '" onclick="toggleFactorPop(event, this)">' + cons + '</span>' +
-    '<div class="wr-cons-pop"><ul class="wr-cf-list">' + items + '</ul>' + noteHtml + '</div>';
+    '<div class="wr-cons-pop"><button type="button" class="gates-info-close" onclick="closeFactorPop(event, this)" aria-label="Close">&times;</button><ul class="wr-cf-list">' + items + '</ul>' + noteHtml + '</div>';
 }
 
 // The six-factor walk behind a Consequence-of-Error tier — Human Impact,
@@ -1825,15 +1820,24 @@ function gatesInfoContent(code, key) {
 function toggleGatesInfo(ev, code, key, scope) {
   scope = scope || '';
   ev.stopPropagation();
-  const panel = document.getElementById('gp-' + (scope ? scope + '-' : '') + code.replace(/\./g, '-'));
+  const panelId = 'gp-' + (scope ? scope + '-' : '') + code.replace(/\./g, '-');
+  const panel = document.getElementById(panelId);
   if (!panel) return;
   const already = panel.classList.contains('open') && panel.dataset.key === key;
   document.querySelectorAll('.wr-cons-pop.open, .gates-info.open').forEach(function (p) { p.classList.remove('open'); });
   if (!already) {
-    panel.innerHTML = gatesInfoContent(code, key);
+    panel.innerHTML = '<button type="button" class="gates-info-close" onclick="closeGatesInfo(event,\'' + panelId + '\')" aria-label="Close">&times;</button>' + gatesInfoContent(code, key);
     panel.dataset.key = key;
     panel.classList.add('open');
   }
+}
+// Explicit close — the X in the corner of an open gates-info panel. Kept
+// separate from the click-the-same-circle-again toggle above so either
+// habit works; both just drop the 'open' class.
+function closeGatesInfo(ev, panelId) {
+  ev.stopPropagation();
+  const panel = document.getElementById(panelId);
+  if (panel) panel.classList.remove('open');
 }
 
 function gatesTrackHtml(code, scope) {
@@ -1950,16 +1954,12 @@ function rollupRowHtml(l3, icon) {
 // same left edge and run the same full width.
 function inlineLegendHtml(indentPx) {
   return '<div class="gates-legend-box gates-legend-box-inline" style="margin-left:' + indentPx + 'px;">' +
-    '<div class="gates-legend-row">' +
     '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>' +
     '<span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>' +
-    '</div>' +
-    '<div class="gates-legend-row">' +
     '<span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>' +
     '<span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>' +
     '<span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>' +
-    '<span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist</span>' +
-    '</div>' +
+    '<span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist &mdash; click the &times; to close any open box</span>' +
     '</div>';
 }
 
@@ -1972,7 +1972,7 @@ function factorChecklistPop(code, factorList, activeFactors, note) {
   }).join('');
   const noteHtml = note ? '<p class="wr-cf-note">' + note.replace(/"/g, '&quot;') + '</p>' : '';
   return '<span class="wr-cf-trigger wr-note-icon" onclick="toggleFactorPop(event, this)">&#9432;</span>' +
-    '<div class="wr-cons-pop"><ul class="wr-cf-list">' + items + '</ul>' + noteHtml + '</div>';
+    '<div class="wr-cons-pop"><button type="button" class="gates-info-close" onclick="closeFactorPop(event, this)" aria-label="Close">&times;</button><ul class="wr-cf-list">' + items + '</ul>' + noteHtml + '</div>';
 }
 
 function consChecklistPop(code, consFactors, consNote) {
@@ -1989,6 +1989,14 @@ function toggleFactorPop(ev, trigger) {
   const willOpen = !pop.classList.contains('open');
   document.querySelectorAll('.wr-cons-pop.open').forEach(function (p) { p.classList.remove('open'); });
   if (willOpen) pop.classList.add('open');
+}
+// Explicit close — the X in the corner of an open factor-checklist popover
+// (Consequence of Error / Progression Ceiling), same pairing as
+// closeGatesInfo/toggleGatesInfo: click-the-trigger-again still works too.
+function closeFactorPop(ev, btn) {
+  ev.stopPropagation();
+  const pop = btn.closest('.wr-cons-pop');
+  if (pop) pop.classList.remove('open');
 }
 document.addEventListener('click', function () {
   document.querySelectorAll('.wr-cons-pop.open').forEach(function (p) { p.classList.remove('open'); });
