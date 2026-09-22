@@ -478,21 +478,34 @@ td.crud-d .crud-entity { color: #991B1B; }
     <div class="card lens-section" id="panel-people" style="display:none">
       <div class="card-header">
         <h3>People View (Role Impact Table) &mdash; PCF 7.0</h3>
-        <span>14-role catalog &middot; reportsTo/span of control is a first-pass reasoned structure, not yet externally sourced &middot; Current State/Progression Ceiling/Consequence of Error are the same Working-Relationship columns as the process view, equal-weighted across each role&rsquo;s RACI-Accountable L3s &mdash; a role clicks open to show each underlying process&rsquo;s own real value</span>
+        <span>14-role catalog &middot; reportsTo/span of control is a first-pass reasoned structure, not yet externally sourced &middot; a role&rsquo;s own row is an equal-weighted rollup across its RACI-Accountable L3s &mdash; click a role open to see each underlying process&rsquo;s own real ramp, the same six-step Current State &rarr; Progression Ceiling track used in the process view</span>
+      </div>
+      <div class="gates-legend-box">
+        <div class="gates-legend-row">
+          <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>
+          <span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>
+        </div>
+        <div class="gates-legend-row">
+          <span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
+          <span class="gates-legend-item"><span style="color:#5A8DC4;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
+          <span class="gates-legend-item"><span style="color:#64748B;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
+          <span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist</span>
+        </div>
       </div>
       <div class="table-wrap">
         <table id="people-main-table">
           <thead>
             <tr>
               <th>Role</th>
-              <th class="nowrap wr-col">Current<br>State</th>
-              <th class="nowrap wr-col-pc">Progression<br>Ceiling</th>
-              <th class="nowrap">Consequence<br>of Error</th>
-              <th class="nowrap">Provenance</th>
+              <th class="nowrap wr-col-gates">Working Relationship &mdash; Current State &rarr; Progression Ceiling, plus Consequence of Error</th>
             </tr>
           </thead>
           <tbody id="role-impact-table-body"></tbody>
         </table>
+      </div>
+      <div class="legend" id="legend-people">
+        <span style="font-size:10.5px;font-weight:700;color:var(--navy-d);text-transform:uppercase;letter-spacing:.05em;">Working relationship</span>
+        <!-- populated by JS from WR_CATS -->
       </div>
     </div>
 
@@ -1445,6 +1458,25 @@ function reportingLine(r, taxonomy) {
   const spanText = span.direct ? ' · ' + span.direct + ' direct report' + (span.direct === 1 ? '' : 's') + ', ' + span.total + ' total in span' : '';
   return '<div style="color:var(--lgray);font-size:10px;margin-top:2px">' + reportsToText + spanText + '</div>';
 }
+// Role-level rollup summary — same visual language as an L3 rollup row in
+// the process view (gates-rollup-block), aggregated directly across a
+// role's full set of RACI-Accountable L3s (a role isn't itself an L3 in
+// the process hierarchy, so this doesn't route through rollupRowHtml,
+// which expects a single L3).
+function roleRollupInlineHtml(accL3s) {
+  if (!accL3s || !accL3s.length) return '<span class="wr-blank">&mdash;</span>';
+  return '<div class="gates-rollup-block">' +
+    '<div class="gates-rollup-toprow">' +
+    '<div class="gates-rollup-cons-group" style="margin-left:0;">' +
+    '<div class="gates-rollup gates-rollup-inline"><span class="gates-rollup-label">Current</span>' + wrRollupCell(accL3s, 'rel') +
+    '<span class="gates-rollup-sep">&rarr;</span><span class="gates-rollup-label">Ceiling</span>' + wrRollupCell(accL3s, 'ceiling') + '</div>' +
+    '<div class="gates-card-cons gates-card-cons-tight">' +
+    '<span class="gates-cons-label">Consequence of Error - Worst Case</span>' + consRollupValueOnly(accL3s) +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '</div>';
+}
 function renderRoleImpactTable(cat) {
   const tbody = document.getElementById('role-impact-table-body');
   const taxonomy = ROLE_TAXONOMY;
@@ -1454,34 +1486,24 @@ function renderRoleImpactTable(cat) {
   let html = '';
   tiers.forEach(tier => {
     const rolesInTier = taxonomy.filter(r => r.tier === tier);
-    html += '<tr class="row-l2"><td colspan="5">' + tier + ' Tier</td></tr>';
+    html += '<tr class="row-l2"><td colspan="2">' + tier + ' Tier</td></tr>';
     rolesInTier.forEach(r => {
       const l3s = roleL3Map[r.name] || [];
       const accL3s = accountableL3Map[r.name] || [];
       const rowId = 'role-' + r.name.replace(/[^a-zA-Z0-9]/g, '');
       if (!l3s.length) {
         html += '<tr class="row-l3"><td class="indent-l3"><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + '</td>' +
-          '<td colspan="4" style="color:#B8C0CC;font-style:italic;font-size:11px">No R/A touches in current RACI data</td></tr>';
+          '<td style="color:#B8C0CC;font-style:italic;font-size:11px">No R/A touches in current RACI data</td></tr>';
         return;
       }
       html += '<tr class="row-l3 toggle-role" data-role="' + rowId + '" onclick="toggleRoleRow(\'' + rowId + '\')" style="cursor:pointer">' +
         '<td class="indent-l3"><span class="role-toggle-icon" id="icon-' + rowId + '">+</span><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + '</td>' +
-        '<td class="wr-left">' + wrRollupCell(accL3s, 'rel') + '</td>' +
-        '<td class="wr-left">' + wrRollupCell(accL3s, 'ceiling') + '</td>' +
-        '<td class="wr-left">' + consRollupCell(accL3s) + '</td>' +
-        '<td>' + (accL3s.length ? provBadge(true) : '<span class="wr-blank">&mdash;</span>') + '</td></tr>';
+        '<td style="padding:0;">' + roleRollupInlineHtml(accL3s) + '</td></tr>';
       roleTouchRows(l3s).forEach(row => {
-        const w = wrCell(row.code);
         const isL3 = row.level === 'l3';
-        const indentCls = isL3 ? 'indent-l3' : 'indent-l4';
-        const nameStyle = isL3 ? ' style="font-weight:600;color:var(--navy-d)"' : '';
-        const rowBg = isL3 ? 'background:#F7F9FC;' : '';
-        html += '<tr class="row-l4 role-leaf" data-role-parent="' + rowId + '" style="display:none;' + rowBg + '">' +
-          '<td class="' + indentCls + '"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + row.code + '</span></span><span class="row-text"' + nameStyle + '>' + row.name + '</span></span></td>' +
-          '<td class="wr-left">' + wrBadge(w.current) + '</td>' +
-          '<td class="wr-left">' + wrBadge(w.ceiling) + '</td>' +
-          '<td class="wr-left">' + consCell(w.cons) + '</td>' +
-          '<td>' + provBadge(w.classified) + '</td></tr>';
+        const indentPx = isL3 ? 32 : 48;
+        html += '<tr class="row-l4 role-leaf" data-role-parent="' + rowId + '" style="display:none">' +
+          '<td colspan="2" style="padding:0;">' + activityCardHtml(row.code, row.name, indentPx, 'people-' + rowId) + '</td></tr>';
       });
     });
   });
@@ -1800,9 +1822,10 @@ function gatesInfoContent(code, key) {
   return '';
 }
 
-function toggleGatesInfo(ev, code, key) {
+function toggleGatesInfo(ev, code, key, scope) {
+  scope = scope || '';
   ev.stopPropagation();
-  const panel = document.getElementById('gp-' + code.replace(/\./g, '-'));
+  const panel = document.getElementById('gp-' + (scope ? scope + '-' : '') + code.replace(/\./g, '-'));
   if (!panel) return;
   const already = panel.classList.contains('open') && panel.dataset.key === key;
   document.querySelectorAll('.wr-cons-pop.open, .gates-info.open').forEach(function (p) { p.classList.remove('open'); });
@@ -1813,12 +1836,13 @@ function toggleGatesInfo(ev, code, key) {
   }
 }
 
-function gatesTrackHtml(code) {
+function gatesTrackHtml(code, scope) {
+  scope = scope || '';
   const w = wrCell(code);
   if (!w.classified) return '<span class="wr-blank">&mdash; not yet reasoned &mdash;</span>';
   const currentIdx = CATS_ORDER.indexOf(w.current);
   const ceilingIdx = CATS_ORDER.indexOf(w.ceiling);
-  const panelId = 'gp-' + code.replace(/\./g, '-');
+  const panelId = 'gp-' + (scope ? scope + '-' : '') + code.replace(/\./g, '-');
   let nodesHtml = '';
   for (let i = 0; i < 6; i++) {
     const label = CATS_ORDER[i];
@@ -1840,11 +1864,11 @@ function gatesTrackHtml(code) {
     // lock glyph on the boundary arrow right after it is the place that
     // explains "why it stops here" (see isBoundary below).
     let circleOnclick = '', circleCursor = 'default';
-    if (isReachable) { circleOnclick = "toggleGatesInfo(event,'" + code + "','n" + i + "')"; circleCursor = 'pointer'; }
+    if (isReachable) { circleOnclick = "toggleGatesInfo(event,'" + code + "','n" + i + "','" + scope + "')"; circleCursor = 'pointer'; }
     const labelStyle = isDead ? ' style="color:#94A3B8;"' : '';
     nodesHtml += '<div class="gate-node">' +
       '<button type="button" class="gate-circle" style="cursor:' + circleCursor + ';background:' + bg + ';border:' + border + ';" ' + (circleOnclick ? 'onclick="' + circleOnclick + '"' : '') + '></button>' +
-      '<button type="button" class="gate-label"' + labelStyle + ' onclick="' + "toggleGatesInfo(event,'" + code + "','n" + i + "')" + '">' + label + '</button>' +
+      '<button type="button" class="gate-label"' + labelStyle + ' onclick="' + "toggleGatesInfo(event,'" + code + "','n" + i + "','" + scope + "')" + '">' + label + '</button>' +
       '</div>';
     if (i < 5) {
       let gateState = 'locked';
@@ -1868,7 +1892,7 @@ function gatesTrackHtml(code) {
       // answers "why does it stop here", which is what the ceiling circle
       // used to be the (easy-to-miss) only way to reach.
       const arrowKey = isBoundary ? 'ceil' : ('g' + i);
-      nodesHtml += '<button type="button" class="' + arrowCls + '" style="color:' + gcolor + ';" onclick="' + "toggleGatesInfo(event,'" + code + "','" + arrowKey + "')" + '">' + glyph + '</button>';
+      nodesHtml += '<button type="button" class="' + arrowCls + '" style="color:' + gcolor + ';" onclick="' + "toggleGatesInfo(event,'" + code + "','" + arrowKey + "','" + scope + "')" + '">' + glyph + '</button>';
     }
   }
   return '<div class="gates-track">' + nodesHtml + '</div>' +
@@ -1880,7 +1904,7 @@ function gatesTrackHtml(code) {
 // gates track below, and the single info panel below that. Spans the
 // whole row (colspan) rather than splitting name/content into separate
 // table columns, same as the mockup's card-per-activity layout.
-function activityCardHtml(code, name, indentPx) {
+function activityCardHtml(code, name, indentPx, scope) {
   const w = wrCell(code);
   return '<div class="gates-card" style="margin-left:' + indentPx + 'px;">' +
     '<div class="gates-card-header">' +
@@ -1890,7 +1914,7 @@ function activityCardHtml(code, name, indentPx) {
     '<span class="gates-cons-label">Consequence of Error</span>' + consCellWithPop(w.cons, w.consFactors, w.consNote) +
     '</div>' +
     '</div>' +
-    gatesTrackHtml(code) +
+    gatesTrackHtml(code, scope) +
     '</div>';
 }
 
@@ -2115,8 +2139,9 @@ function setView(v) {
   if (v === 'wr') render();
 }
 
-function buildLegend() {
-  const el = document.getElementById('legend-wr');
+function buildLegendInto(elId) {
+  const el = document.getElementById(elId);
+  if (!el) return;
   // Iterate CATS_ORDER (Human-only → Automation), not raw WR_CATS key
   // order — this legend was listing Automation first, backwards from the
   // ramp direction every gates track and progression circle uses.
@@ -2127,6 +2152,10 @@ function buildLegend() {
     span.innerHTML = '<span class="legend-swatch" style="background:' + c.color + '"></span>' + name + '<span class="legend-h">H&nbsp;' + c.h + '%</span>';
     el.appendChild(span);
   });
+}
+function buildLegend() {
+  buildLegendInto('legend-wr');
+  buildLegendInto('legend-people');
 }
 
 
