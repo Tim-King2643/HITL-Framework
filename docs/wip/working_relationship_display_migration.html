@@ -61,9 +61,10 @@ td.count { text-align: center; font-weight: 700; }
 .status-clean { background: #E0F2FE; color: #0369A1; }
 .status-hold { background: var(--amber-bg); color: var(--amber-text); }
 
-.wr-swatch-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 24px; }
-.wr-swatch { flex: 1; min-width: 130px; border-radius: 6px; padding: 10px 12px; font-size: 11.5px; }
-.wr-swatch .wr-name { font-weight: 700; margin-bottom: 2px; }
+.wr-swatch-row { display: flex; flex-wrap: wrap; gap: 18px; margin: 8px 0 24px; }
+.wr-swatch { display: flex; flex-direction: column; align-items: center; text-align: center; width: 108px; font-size: 11.5px; color: var(--gray); }
+.wr-swatch .wr-dot { width: 30px; height: 30px; border-radius: 50%; margin-bottom: 6px; }
+.wr-swatch .wr-name { font-weight: 700; color: var(--dark); margin-bottom: 2px; }
 
 .pdf-download { display: inline-flex; align-items: center; gap: 6px; font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px; padding: 8px 14px; text-decoration: none; margin: 0 0 28px; }
 .pdf-download:hover { background: #DCE8F8; }
@@ -136,15 +137,15 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <h2>The Recommendation</h2>
   <p>Two moves, applied consistently across the 33 pages that currently show a pattern badge (CRUD ×3, RACI ×3, Maturity ×2, RTP ×25):</p>
   <p><strong>1. Remove the pattern badge from the rendered page.</strong> The pattern value itself isn't deleted — it stays wherever it's already stored in each page's data (the same <code>PATTERN_META</code>/local pattern-object source the badges currently read from), just no longer rendered as a visible chip. That satisfies "keep it in the backend for possible future analytic use" without a data migration — only the display templates change.</p>
-  <p><strong>2. Where Working Relationship isn't shown yet, add it — using the design already proven on the Value Stream Profile pages and the RTP pages.</strong> Those pages already render Working Relationship with Rule 20's locked palette via inline-styled <code>.capmap-card</code> elements (name, one-line description, activity count, H% ceiling value). CRUD, RACI, and Maturity tables need a per-row Working Relationship chip or column added using the same six locked colors — no new visual design work, just extending an existing, already-governed pattern to three more page types.</p>
+  <p><strong>2. Where Working Relationship isn't shown yet, add it — as a per-row replacement for the pattern badge, not a static circle/chip.</strong> Rather than swapping one colored circle (pattern) for another colored circle (Working Relationship category), use the progression-ramp graphic already built and working in the PCF 7.0 sandbox (<code>docs/sandbox/pcf7.html</code>): Current State → Progression Ceiling shown across all six categories per activity, with reached steps marked, the ceiling locked, and each step clickable for detail. It carries the same locked Rule 20 colors as the VSP/RTP <code>.capmap-card</code> summaries, but at the individual-activity level it says more than a single-category label can — current state, how far the activity can go, and the path between, which is exactly the "what the human and AI are actually doing together" framing this proposal is built on. CRUD, RACI, and Maturity tables get this ramp per row in place of the pattern badge; no new visual design work, since it's already built and proven in the sandbox.</p>
 
   <div class="wr-swatch-row">
-    <div class="wr-swatch" style="background:#7DAEE01A;color:#7DAEE0"><div class="wr-name">Automation</div>Rules-Based Execution</div>
-    <div class="wr-swatch" style="background:#5A8DC41A;color:#5A8DC4"><div class="wr-name">Agent-delegation</div>Bounded Autonomy</div>
-    <div class="wr-swatch" style="background:#3D6FA81A;color:#3D6FA8"><div class="wr-name">Augmentation</div>AI-Assisted Judgment</div>
-    <div class="wr-swatch" style="background:#2457A31A;color:#2457A3"><div class="wr-name">Oversight</div>Human Verifies</div>
-    <div class="wr-swatch" style="background:#2044741A;color:#204474"><div class="wr-name">Judgment</div>Human Decides</div>
-    <div class="wr-swatch" style="background:#0D2D4F1A;color:#0D2D4F"><div class="wr-name">Human-only</div>Standing Duty</div>
+    <div class="wr-swatch"><div class="wr-dot" style="background:#7DAEE0"></div><div class="wr-name">Automation</div>Rules-Based Execution</div>
+    <div class="wr-swatch"><div class="wr-dot" style="background:#5A8DC4"></div><div class="wr-name">Agent-delegation</div>Bounded Autonomy</div>
+    <div class="wr-swatch"><div class="wr-dot" style="background:#3D6FA8"></div><div class="wr-name">Augmentation</div>AI-Assisted Judgment</div>
+    <div class="wr-swatch"><div class="wr-dot" style="background:#2457A3"></div><div class="wr-name">Oversight</div>Human Verifies</div>
+    <div class="wr-swatch"><div class="wr-dot" style="background:#204474"></div><div class="wr-name">Judgment</div>Human Decides</div>
+    <div class="wr-swatch"><div class="wr-dot" style="background:#0D2D4F"></div><div class="wr-name">Human-only</div>Standing Duty</div>
   </div>
 
   <h2>What happens to the old proposal</h2>
@@ -167,7 +168,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <h2>Build Note</h2>
   <p>Recommended sequence, easiest and lowest-risk first:</p>
   <p><strong>1. RTP pages (25 files)</strong> — delete-only. Each page already renders its Working Relationship card set correctly; this step is just removing the <code>.pat-badge</code> markup and its legend, nothing to build.</p>
-  <p><strong>2. CRUD / RACI / Maturity tables (8 files)</strong> — the real build. Same badge removal, plus adding a Working Relationship column/chip per row, styled from the same locked palette and card pattern already proven on the VSP and RTP pages. Recommend building the pattern once against one CRUD page, confirming it reads correctly, then repeating across the other seven.</p>
+  <p><strong>2. CRUD / RACI / Maturity tables (8 files)</strong> — the real build. Same badge removal, plus adding the sandbox's progression-ramp graphic per row (Current State → Progression Ceiling across the six locked categories), reusing its existing markup/styling rather than a new circle or chip design. Table rows will need to accommodate a full-width strip rather than squeeze the ramp into an existing narrow column. Recommend building the pattern once against one CRUD page, confirming it reads correctly, then repeating across the other seven.</p>
   <p><strong>3. Dashboard</strong> — hold for a separate decision. Its pattern-mix bars are aggregate, not per-activity, and may be the legitimate backend/analytics use case GiGi flagged rather than something this proposal needs to touch.</p>
   <p>Underlying pattern data (the <code>PATTERN_META</code>/pattern-object values each page currently reads its badge from) is left in place throughout — nothing in this build touches the data layer, only what's rendered from it.</p>
 
