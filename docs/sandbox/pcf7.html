@@ -405,12 +405,12 @@ td.crud-d .crud-entity { color: #991B1B; }
         <span>118 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 118 working-relationship classified &middot; click a step, its circle, or a gate arrow for detail</span>
       </div>
       <div class="gates-legend-box">
-        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>
-        <span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>
-        <span class="gates-legend-item" style="white-space:nowrap;"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
-        <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
+        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Colored step &mdash; one of the six Working-Relationship categories, Human-only through Automation</span>
+        <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#166534;font-weight:700;">&#10003;</span> Passed &mdash; evidence already cleared this step</span>
+        <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open &mdash; reachable next, not required yet</span>
         <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
-        <span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist &mdash; click the &times; to close any open box</span>
+        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Beyond the ceiling &mdash; greyed out, not in play for this activity</span>
+        <span class="gates-legend-item">Click any circle or step name (up to the ceiling) for its definition</span>
       </div>
       <div class="table-wrap">
         <table id="main-table">
@@ -480,12 +480,12 @@ td.crud-d .crud-entity { color: #991B1B; }
         <span>14-role catalog &middot; reportsTo/span of control is a first-pass reasoned structure, not yet externally sourced &middot; a role&rsquo;s own row is an equal-weighted rollup across its RACI-Accountable L3s &mdash; click a role open to see each underlying process&rsquo;s own real ramp, the same six-step Current State &rarr; Progression Ceiling track used in the process view</span>
       </div>
       <div class="gates-legend-box">
-        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>
-        <span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>
-        <span class="gates-legend-item" style="white-space:nowrap;"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
-        <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
+        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Colored step &mdash; one of the six Working-Relationship categories, Human-only through Automation</span>
+        <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#166534;font-weight:700;">&#10003;</span> Passed &mdash; evidence already cleared this step</span>
+        <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open &mdash; reachable next, not required yet</span>
         <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
-        <span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist &mdash; click the &times; to close any open box</span>
+        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Beyond the ceiling &mdash; greyed out, not in play for this activity</span>
+        <span class="gates-legend-item">Click any circle or step name (up to the ceiling) for its definition</span>
       </div>
       <div class="table-wrap">
         <table id="people-main-table">
@@ -1968,12 +1968,12 @@ function rollupRowHtml(l3, icon) {
 // same left edge and run the same full width.
 function inlineLegendHtml(indentPx) {
   return '<div class="gates-legend-box gates-legend-box-inline" style="margin-left:' + indentPx + 'px;">' +
-    '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>' +
-    '<span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>' +
-    '<span class="gates-legend-item" style="white-space:nowrap;"><strong>Step name</strong> &mdash; click for what the work looks like there</span>' +
-    '<span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>' +
+    '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Colored step &mdash; one of the six Working-Relationship categories, Human-only through Automation</span>' +
+    '<span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#166534;font-weight:700;">&#10003;</span> Passed &mdash; evidence already cleared this step</span>' +
+    '<span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open &mdash; reachable next, not required yet</span>' +
     '<span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>' +
-    '<span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist &mdash; click the &times; to close any open box</span>' +
+    '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Beyond the ceiling &mdash; greyed out, not in play for this activity</span>' +
+    '<span class="gates-legend-item">Click any circle or step name (up to the ceiling) for its definition</span>' +
     '</div>';
 }
 
