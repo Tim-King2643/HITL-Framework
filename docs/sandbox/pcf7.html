@@ -478,7 +478,7 @@ td.crud-d .crud-entity { color: #991B1B; }
     <div class="card lens-section" id="panel-people" style="display:none">
       <div class="card-header">
         <h3>People View (Role Impact Table) &mdash; PCF 7.0</h3>
-        <span>14-role catalog &middot; reportsTo/span of control is a first-pass reasoned structure, not yet externally sourced &middot; Current State/Future State/Progression Ceiling/Consequence of Error are the same Working-Relationship columns as the process view, equal-weighted across each role&rsquo;s RACI-Accountable L3s &mdash; a role clicks open to show each underlying process&rsquo;s own real value</span>
+        <span>14-role catalog &middot; reportsTo/span of control is a first-pass reasoned structure, not yet externally sourced &middot; Current State/Progression Ceiling/Consequence of Error are the same Working-Relationship columns as the process view, equal-weighted across each role&rsquo;s RACI-Accountable L3s &mdash; a role clicks open to show each underlying process&rsquo;s own real value</span>
       </div>
       <div class="table-wrap">
         <table id="people-main-table">
@@ -486,7 +486,6 @@ td.crud-d .crud-entity { color: #991B1B; }
             <tr>
               <th>Role</th>
               <th class="nowrap wr-col">Current<br>State</th>
-              <th class="nowrap wr-col">Future<br>State</th>
               <th class="nowrap wr-col-pc">Progression<br>Ceiling</th>
               <th class="nowrap">Consequence<br>of Error</th>
               <th class="nowrap">Provenance</th>
@@ -500,7 +499,7 @@ td.crud-d .crud-entity { color: #991B1B; }
     <div class="card lens-section" id="panel-gates" style="display:none">
       <div class="card-header">
         <h3>Readiness Gate &mdash; PCF 7.0</h3>
-        <span>Per Working_Relationship_Progression_Methodology.docx &sect;5 &mdash; an activity advances toward its Future State only once all three independent axes clear, gated at L3 via its RACI Accountable role</span>
+        <span>Per Working_Relationship_Progression_Methodology.docx &sect;5 &mdash; an activity advances toward its Progression Ceiling only once all three independent axes clear, gated at L3 via its RACI Accountable role</span>
       </div>
       <div class="lens-empty" style="text-align:left;padding:14px 18px;border-bottom:1px solid var(--border);font-style:normal;">
         <strong style="color:var(--navy-d);">None of the three axes has a real instrument yet.</strong> Technical/Process and Organizational-level have no instrument anywhere in the framework (per &sect;5/&sect;9). Role-level is meant to reuse the AI Transition Pathways self-assessment / TMI tier output, joined by this L3&rsquo;s Accountable role &mdash; but those per-role results haven&rsquo;t been ported into this sandbox yet. Every cell below is an honest blank, not a zero &mdash; this view exists to hold the shape of the gate, not to imply readiness has been measured.
@@ -1235,7 +1234,7 @@ function toggleCrudL3(code, el) { setCrudL3Expanded(code, el.classList.contains(
 
 /* ── Aggregation (WR Rollup) ──────────────────────────────────────────────
    Per Working_Relationship_Progression_Methodology.docx §4/§8 — the People
-   View shows the same Current State / Future State / Progression Ceiling /
+   View shows the same Current State / Progression Ceiling /
    Consequence of Error / Provenance columns as the Working-Relationship
    process view, pivoted to the role level: each cell is the equal-weighted
    mean, across a role's Accountable L3s, of each L3's own mean value for
@@ -1455,20 +1454,19 @@ function renderRoleImpactTable(cat) {
   let html = '';
   tiers.forEach(tier => {
     const rolesInTier = taxonomy.filter(r => r.tier === tier);
-    html += '<tr class="row-l2"><td colspan="6">' + tier + ' Tier</td></tr>';
+    html += '<tr class="row-l2"><td colspan="5">' + tier + ' Tier</td></tr>';
     rolesInTier.forEach(r => {
       const l3s = roleL3Map[r.name] || [];
       const accL3s = accountableL3Map[r.name] || [];
       const rowId = 'role-' + r.name.replace(/[^a-zA-Z0-9]/g, '');
       if (!l3s.length) {
         html += '<tr class="row-l3"><td class="indent-l3"><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + '</td>' +
-          '<td colspan="5" style="color:#B8C0CC;font-style:italic;font-size:11px">No R/A touches in current RACI data</td></tr>';
+          '<td colspan="4" style="color:#B8C0CC;font-style:italic;font-size:11px">No R/A touches in current RACI data</td></tr>';
         return;
       }
       html += '<tr class="row-l3 toggle-role" data-role="' + rowId + '" onclick="toggleRoleRow(\'' + rowId + '\')" style="cursor:pointer">' +
         '<td class="indent-l3"><span class="role-toggle-icon" id="icon-' + rowId + '">+</span><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + '</td>' +
         '<td class="wr-left">' + wrRollupCell(accL3s, 'rel') + '</td>' +
-        '<td class="wr-left">' + wrRollupCell(accL3s, 'future') + '</td>' +
         '<td class="wr-left">' + wrRollupCell(accL3s, 'ceiling') + '</td>' +
         '<td class="wr-left">' + consRollupCell(accL3s) + '</td>' +
         '<td>' + (accL3s.length ? provBadge(true) : '<span class="wr-blank">&mdash;</span>') + '</td></tr>';
@@ -1481,7 +1479,6 @@ function renderRoleImpactTable(cat) {
         html += '<tr class="row-l4 role-leaf" data-role-parent="' + rowId + '" style="display:none;' + rowBg + '">' +
           '<td class="' + indentCls + '"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + row.code + '</span></span><span class="row-text"' + nameStyle + '>' + row.name + '</span></span></td>' +
           '<td class="wr-left">' + wrBadge(w.current) + '</td>' +
-          '<td class="wr-left">' + wrBadge(w.future) + '</td>' +
           '<td class="wr-left">' + wrBadge(w.ceiling) + '</td>' +
           '<td class="wr-left">' + consCell(w.cons) + '</td>' +
           '<td>' + provBadge(w.classified) + '</td></tr>';
@@ -1499,7 +1496,7 @@ function toggleRoleRow(rowId) {
 
 /* ── Readiness Gate ────────────────────────────────────────────────────
    Per Working_Relationship_Progression_Methodology.docx §5 — an activity
-   only advances toward its Future State once THREE independent axes all
+   only advances toward its Progression Ceiling once THREE independent axes all
    clear: Technical/Process (per L4/leaf-L3, per transition), Role-level
    (per role, via RACI Responsible touches — meant to reuse the AI
    Transition Pathways self-assessment / TMI tier), and Organizational-
@@ -1548,12 +1545,10 @@ function renderTopPills() {
   const entries = Object.keys(WR_DATA).map(k => WR_DATA[k]);
   const total = entries.length;
   const atCeiling = entries.filter(d => d.rel === d.ceiling).length;
-  const belowFuture = entries.filter(d => d.future && d.rel !== d.future).length;
   const humanLoop = entries.filter(d => d.rel === 'Judgment' || d.rel === 'Oversight').length;
   document.getElementById('topbar-pills').innerHTML =
     '<span class="pill pill-wr1">' + total + ' classified</span>' +
     '<span class="pill pill-wr2">' + atCeiling + ' at ceiling</span>' +
-    '<span class="pill pill-wr1">' + belowFuture + ' below future state</span>' +
     '<span class="pill pill-wr3">' + humanLoop + ' Judgment + Oversight</span>';
 }
 
@@ -1988,7 +1983,6 @@ function provBadgeRollup() {
 function wrRowCells(code) {
   const w = wrCell(code);
   return '<td class="wr-left">' + wrBadge(w.current) + '</td>' +
-    '<td class="wr-left">' + wrBadge(w.future) + '</td>' +
     '<td class="wr-left wr-cons-cell">' + wrBadge(w.ceiling) + ceilingChecklistPop(code, w.ceilingFactors, w.ceilingNote) + '</td>' +
     '<td class="wr-left wr-cons-cell">' + consCell(w.cons) + consChecklistPop(code, w.consFactors, w.consNote) + '</td>' +
     '<td>' + provBadge(w.classified) + '</td>' +
@@ -1998,7 +1992,6 @@ function wrRowCells(code) {
 function wrRowCellsRollup(l3) {
   const l3s = [l3];
   return '<td class="wr-left">' + wrRollupCell(l3s, 'rel') + '</td>' +
-    '<td class="wr-left">' + wrRollupCell(l3s, 'future') + '</td>' +
     '<td class="wr-left">' + wrRollupCell(l3s, 'ceiling') + '</td>' +
     '<td class="wr-left">' + consRollupCell(l3s) + '</td>' +
     '<td>' + provBadgeRollup() + '</td>' +
