@@ -244,6 +244,58 @@ function fmtSourceSpan(text) {
   return `<span class="gr-source">${esc(text)}</span>`;
 }
 
+// Known docs/wip/ (and one docs/sandbox/) items this register can actually link to.
+// Keys are matched as substrings against spec_doc / wip_item text, longest key first.
+const KNOWN_LINKS = {
+  "pattern-color — work_pattern_color_standard.html": "work_pattern_color_standard.html",
+  "hpct-badge — h_pct_provenance_badge_standard.html": "h_pct_provenance_badge_standard.html",
+  "rule-catalog — framework_content_generation_rules.html": "framework_content_generation_rules.html",
+  "shock-wave — the_shock_wave_effect.html": "the_shock_wave_effect.html",
+  "concept-to-principle — from_concept_to_principle.html": "from_concept_to_principle.html",
+  "hrbp-narratives — hrbp_manager_pattern_transition_stagefirst.html": "hrbp_manager_pattern_transition_stagefirst.html",
+  "wr-progression-methodology — wr_progression_methodology_spec.html": "wr_progression_methodology_spec.html",
+  "chro-narratives": "chro_pattern_transition_stagefirst.html",
+  "hrbp-narratives": "hrbp_manager_pattern_transition_stagefirst.html",
+  "recruiter-narratives": "recruiter_pattern_transition_stagefirst.html",
+  "docs/wip/the_shock_wave_effect.html": "the_shock_wave_effect.html",
+  "Shock Wave Effect (Accountability ring)": "the_shock_wave_effect.html",
+  "Shock Wave Effect (Five Rings model)": "the_shock_wave_effect.html",
+  "Shock Wave Effect (GDP definition)": "the_shock_wave_effect.html",
+  "Work Pattern Color Standard": "work_pattern_color_standard.html",
+  "H% Provenance Badge — Naming & Placement Standard": "h_pct_provenance_badge_standard.html",
+  "Framework Content Generation Rules — The Complete Catalog": "framework_content_generation_rules.html",
+  "CHRO / HRBP Manager / Recruiter Pattern Transition Narratives": "chro_pattern_transition_stagefirst.html",
+  "pcf7.html (sandbox data layer)": "../sandbox/pcf7.html"
+};
+const KNOWN_KEYS = Object.keys(KNOWN_LINKS).sort((a, b) => b.length - a.length);
+
+// Turns any recognized substring in `text` into a link to the real live file;
+// text outside a match, and text that names something not hosted on the site
+// (a .docx, a Claude Docs artifact), stays as plain escaped text.
+function linkify(text) {
+  if (!text) return "";
+  let remaining = esc(text);
+  // Work against the *unescaped* text for matching (keys have no special chars needing escape),
+  // then rebuild the escaped string with anchors spliced in.
+  let result = "";
+  let cursor = 0;
+  const raw = text;
+  while (cursor < raw.length) {
+    let matched = null;
+    for (const key of KNOWN_KEYS) {
+      if (raw.startsWith(key, cursor)) { matched = key; break; }
+    }
+    if (matched) {
+      result += `<a href="${esc(KNOWN_LINKS[matched])}">${esc(matched)}</a>`;
+      cursor += matched.length;
+    } else {
+      result += esc(raw[cursor]);
+      cursor += 1;
+    }
+  }
+  return result;
+}
+
 function detailField(label, value, isLink) {
   if (!value) return "";
   return `<div class="field"><div class="flabel">${esc(label)}</div><div class="fval">${value}</div></div>`;
@@ -277,8 +329,8 @@ function renderTable() {
     `;
     const detailTr = document.createElement("tr");
     detailTr.className = "detail-row";
-    const specDocLink = r.spec_doc ? esc(r.spec_doc) : "—";
-    const wipLink = r.wip_item ? esc(r.wip_item) : "—";
+    const specDocLink = r.spec_doc ? linkify(r.spec_doc) : "—";
+    const wipLink = r.wip_item ? linkify(r.wip_item) : "—";
     detailTr.innerHTML = `<td colspan="5"><div class="detail-box">
       ${detailField("Source", esc(r.source_doc) + (r.source_section ? " — " + esc(r.source_section) : ""))}
       ${detailField("GiGi's raw observation", esc(r.raw))}
