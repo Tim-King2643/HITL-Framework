@@ -61,9 +61,10 @@ td.count { text-align: center; font-weight: 700; }
 .status-clean { background: #E0F2FE; color: #0369A1; }
 .status-hold { background: var(--amber-bg); color: var(--amber-text); }
 
-.wr-swatch-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 24px; }
-.wr-swatch { flex: 1; min-width: 130px; border-radius: 6px; padding: 10px 12px; font-size: 11.5px; }
-.wr-swatch .wr-name { font-weight: 700; margin-bottom: 2px; }
+.wr-swatch-row { display: flex; flex-wrap: wrap; gap: 18px; margin: 8px 0 24px; }
+.wr-swatch { display: flex; flex-direction: column; align-items: center; text-align: center; width: 108px; font-size: 11.5px; color: var(--gray); }
+.wr-swatch .wr-dot { width: 14px; height: 14px; border-radius: 50%; margin-bottom: 5px; }
+.wr-swatch .wr-name { font-weight: 700; color: var(--dark); margin-bottom: 2px; }
 
 .pdf-download { display: inline-flex; align-items: center; gap: 6px; font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px; padding: 8px 14px; text-decoration: none; margin: 0 0 28px; }
 .pdf-download:hover { background: #DCE8F8; }
@@ -71,6 +72,50 @@ td.count { text-align: center; font-weight: 700; }
 footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
 footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
 footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+/* ---- Design-progression mockup (Before / After) ---- */
+.mock-shell { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px 20px; margin: 8px 0 26px; }
+.mock-activity { font-family: 'Consolas', monospace; font-size: 11px; color: var(--lgray); margin-bottom: 2px; }
+.mock-activity-name { font-size: 14px; font-weight: 700; color: var(--navy-d); margin-bottom: 14px; }
+.mock-toggle-row { display: flex; gap: 8px; margin-bottom: 14px; }
+.mock-toggle { all: unset; cursor: pointer; font-size: 11.5px; font-weight: 700; letter-spacing: .02em; padding: 6px 14px; border-radius: 16px; border: 1px solid var(--border); color: var(--gray); background: #FAFBFD; }
+.mock-toggle.active { background: var(--navy-d); border-color: var(--navy-d); color: #fff; }
+.mock-panel { display: none; }
+.mock-panel.active { display: block; }
+.mock-hint { font-size: 11px; color: var(--lgray); font-style: italic; margin-top: 8px; }
+
+/* Legend — how to read the ramp, shown before the example */
+.mock-legend-box { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin: 0 0 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px 24px; }
+.mock-legend-title { grid-column: 1 / -1; font-size: 10.5px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--lgray); margin-bottom: 2px; }
+.mock-legend-item { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--gray); line-height: 1.4; }
+.mock-legend-icon { flex: 0 0 auto; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+.mock-legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+/* Before: the pattern badge as it renders today */
+.pat-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 4px 11px; border-radius: 14px; }
+.m3tag { font-family: 'Consolas', monospace; font-size: 10.5px; font-weight: 700; color: var(--lgray); margin-left: 8px; }
+.mock-before-row { display: flex; align-items: center; gap: 4px; padding: 10px 0; }
+
+/* After: the Working-Relationship progression ramp (same markup/classes as docs/sandbox/pcf7.html) */
+.gates-card { background: #FAFBFD; border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; display: flex; flex-direction: column; gap: 10px; }
+.gates-card-header { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+.gates-cons-label { font-size: 9.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); line-height: 14px; display: block; }
+.wr-cons { font-weight: 500; font-size: 12px; }
+.mock-cons-trigger { all: unset; cursor: pointer; }
+.mock-cons-trigger:hover { text-decoration: underline; }
+.gates-track { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding: 2px 0 1px; }
+.gate-node { display: flex; flex-direction: column; align-items: center; min-width: 84px; flex: 0 0 auto; }
+.gate-circle { all: unset; width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; }
+.gate-label { all: unset; cursor: pointer; font-size: 11px; font-weight: 500; color: #000; text-align: center; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
+.gate-arrow { all: unset; cursor: pointer; width: 22px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; margin-top: -1px; }
+.gate-arrow-locked { font-size: 14px; margin-top: 0; }
+.gates-info { display: none; margin-top: 10px; width: 100%; max-width: 460px; background: #fff; border: 1px solid var(--border); border-radius: 7px; padding: 10px 30px 10px 14px; text-align: left; position: relative; }
+.gates-info.open { display: block; }
+.gates-info-close { all: unset; position: absolute; top: 6px; right: 6px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--lgray); font-size: 15px; line-height: 1; border-radius: 4px; }
+.gates-info-close:hover { color: var(--navy-d); background: #EEF1F6; }
+.gates-info-title { font-size: 11px; font-weight: 600; color: var(--navy-d); margin-bottom: 6px; }
+.gates-info-label { font-size: 9px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); margin-bottom: 3px; }
+.gates-info-def { font-size: 11.5px; line-height: 1.5; color: var(--gray); margin: 0; }
 </style>
 </head>
 <body>
@@ -101,7 +146,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
 
 <div class="wrap">
 
-  <div class="concept-flag">Concept stage — not yet part of the framework. This proposal supersedes the in-progress <a href="work_pattern_color_standard.html">Work Pattern Color Standard</a> concept: that proposal fixed the pattern palette's colorblind-accessibility problem, but if patterns stop being displayed to users at all, the problem it was solving no longer needs a display-layer fix. Recommend marking that item <strong>Superseded</strong> rather than continuing to review it — see "What happens to the old proposal" below.</div>
+  <div class="concept-flag">Concept stage — not yet part of the framework. This proposal supersedes the in-progress <a href="work_pattern_color_standard.html">Work Pattern Color Standard</a> concept — see "What happens to the old proposal" below.</div>
 
   <div class="quote-flag">"The biggest shift for me is that the working relationship now feels like the most concrete place to start. It tells us, at the activity level, what the human and AI are actually doing together. That is much easier to understand and much easier to test than asking the pattern label to carry the whole story. I would keep the original patterns in the backend because they may still matter analytically or technically, but I do not think the end user needs to see both. The working relationship is the thing that gives us something actionable: Automation, Agent-delegation, Augmentation, Oversight, Judgment, or Human-only."<cite>GiGi Garcia, relayed by Tim King, 2026-09-21</cite></div>
 
@@ -113,42 +158,58 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   </div>
 
   <h2>Why This Now</h2>
-  <p>Tim and GiGi have agreed: the five work patterns (Decision, Knowledge, Document, Transaction, Exception) stop being something a site visitor sees, and the six Working-Relationship categories (Automation, Agent-delegation, Augmentation, Oversight, Judgment, Human-only) become the primary lens instead. Patterns describe <em>what kind of work</em> an activity is; Working Relationship describes <em>what the human and the AI are actually doing together</em> on it — and it's the second question a reader actually came to the site to answer. Patterns aren't being deleted. They stay in the backend/data layer, available if pattern-level analytics turn out to matter later — they just stop competing with Working Relationship for the reader's attention on every page.</p>
+  <p>Tim and GiGi have agreed: the five work patterns (Decision, Knowledge, Document, Transaction, Exception) and their %-based maturity scores stop being something a site visitor sees. They weren't actionable — they described what kind of work an activity was, not what's actually changing about it. The six Working-Relationship categories are actionable: they show current state, how far an activity can go, and the path between. Patterns aren't deleted, just no longer the thing rendered on the page — they stay in the data layer for future backend analytics. The mockup below shows the shift on one real activity.</p>
 
-  <h2>The Problem</h2>
-  <p>Right now the two classifications are shown side by side in some places and not at all in others, with no single page consistently leading on Working Relationship. A scan of every live PCF 7.0/8.0/9.0 page for the actual color-coded badge markup (not just the word "pattern" or "judgment" appearing in prose) found:</p>
+  <h2>See It In Practice</h2>
+  <p>A real row from the CRUD table, shown both ways. Click a step in the "After" ramp — it's the same clickable ramp already built and live in the PCF 7.0 sandbox. The legend below explains how to read it.</p>
 
-  <table>
-    <thead><tr><th>Page group</th><th>Count</th><th>Shows pattern badges (<code>.pat-badge</code>)</th><th>Shows Working Relationship (<code>.capmap</code>)</th><th>What this proposal changes</th></tr></thead>
-    <tbody>
-      <tr><td class="row-name">Role Transition Profiles (<code>rtp_*.html</code>)</td><td class="count">25</td><td><span class="status-chip status-remove">Yes — all 25</span></td><td><span class="status-chip status-clean">Yes — all 25</span></td><td>Remove the pattern badge only. Working Relationship display is already built and correct here — this group needs the least work.</td></tr>
-      <tr><td class="row-name">CRUD Tables (<code>hitl_crud_pcf7/8/9_final.html</code>)</td><td class="count">3</td><td><span class="status-chip status-remove">Yes — 7&ndash;10 occurrences each</span></td><td><span class="status-chip status-hold">No</span></td><td>Remove pattern badges from the table; add a Working Relationship column or per-row chip in its place.</td></tr>
-      <tr><td class="row-name">RACI Tables (<code>hitl_raci_pcf7/8/9_final.html</code>)</td><td class="count">3</td><td><span class="status-chip status-remove">Yes — 2 each</span></td><td><span class="status-chip status-hold">No</span></td><td>Same treatment as CRUD: remove pattern badge, add Working Relationship in its place.</td></tr>
-      <tr><td class="row-name">Maturity Tables (<code>hitl_maturity_pcf8/9_final.html</code>)</td><td class="count">2</td><td><span class="status-chip status-remove">Yes — 2 each</span></td><td><span class="status-chip status-hold">No</span></td><td>Same treatment. (<code>hitl_maturity_scale.html</code>, the narrative page, has no badge markup at all and needs no code change.)</td></tr>
-      <tr><td class="row-name">Value Stream Profiles (<code>vsp_*.html</code>)</td><td class="count">18</td><td><span class="status-chip status-clean">No</span></td><td><span class="status-chip status-clean">Yes — already the primary lens</span></td><td>No change. This is the pattern the other groups are being brought up to.</td></tr>
-      <tr><td class="row-name">Dashboard (<code>hitl_dashboard_final.html</code>)</td><td class="count">1</td><td><span class="status-chip status-hold">Aggregate mix bars only, not per-item badges</span></td><td><span class="status-chip status-clean">Yes — already present</span></td><td>Out of scope for this proposal. The dashboard's pattern-mix bars are an aggregate analytics view, not a per-activity label — arguably the legitimate "backend/analytics use" GiGi described. Flagging for a separate decision rather than folding it in here.</td></tr>
-      <tr><td class="row-name">Narrative/methodology pages</td><td class="count">4</td><td><span class="status-chip status-clean">No badge markup — prose mentions only</span></td><td><span class="status-chip status-clean">n/a</span></td><td>No change. (<code>hitl_methodology.html</code>, <code>hitl_origin_story.html</code>, <code>hitl_maturity_scale.html</code>, <code>hitl_working_relationship_final.html</code>)</td></tr>
-    </tbody>
-  </table>
+  <div class="mock-legend-box">
+    <div class="mock-legend-title">Reading the ramp</div>
+    <div class="mock-legend-item"><span class="mock-legend-icon"><span class="mock-legend-dot" style="background:#2457A3;"></span></span>Colored step — one of the six Working-Relationship categories, Human-only through Automation</div>
+    <div class="mock-legend-item"><span class="mock-legend-icon" style="color:#166534;font-weight:700;">&#10003;</span>Passed — evidence already cleared this step on the way to current state</div>
+    <div class="mock-legend-item"><span class="mock-legend-icon" style="color:#2457A3;font-weight:700;">&rarr;</span>Open — reachable next, not required for this activity yet</div>
+    <div class="mock-legend-item"><span class="mock-legend-icon" style="color:#475569;"><svg width="12" height="13" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span>Progression ceiling — click the lock for why it stops here</div>
+    <div class="mock-legend-item"><span class="mock-legend-icon"><span class="mock-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span></span>Beyond the ceiling — greyed out, not in play for this activity</div>
+    <div class="mock-legend-item"><span class="mock-legend-icon" style="color:var(--navy);font-weight:700;">&#9432;</span>Click any circle or step name (up to the ceiling) for its definition</div>
+  </div>
 
-  <p style="font-size:12.5px">Counted directly against the live repo export (2026-09-21) by grepping for the actual badge/card markup (<code>.pat-badge</code>, <code>.capmap</code>) rather than the pattern or category words appearing anywhere in the page — a page mentioning "Judgment" in a sentence doesn't count as displaying it as a classification.</p>
+  <div class="mock-shell">
+    <div class="mock-activity">7.1.1.5</div>
+    <div class="mock-activity-name">Determine HR costs</div>
+    <div class="mock-toggle-row">
+      <button type="button" class="mock-toggle active" id="mock-btn-before" onclick="mockShow('before')">Before — pattern badge</button>
+      <button type="button" class="mock-toggle" id="mock-btn-after" onclick="mockShow('after')">After — Working Relationship</button>
+    </div>
+
+    <div class="mock-panel active" id="mock-panel-before">
+      <div class="mock-before-row">
+        <span class="pat-badge" style="color:#534AB7;background:#F3F0FE;">Knowledge</span>
+        <span class="m3tag">65%</span>
+      </div>
+      <p class="mock-hint">This is everything the page tells a reader today: a category label and a maturity score. It doesn't say what the AI actually does, what a person still has to do, or where this activity is headed.</p>
+    </div>
+
+    <div class="mock-panel" id="mock-panel-after">
+      <div id="mock-gates-card"></div>
+      <p class="mock-hint">Same activity, same row. Current state, progression ceiling, and everything in between — click any reachable step for what it means.</p>
+    </div>
+  </div>
 
   <h2>The Recommendation</h2>
-  <p>Two moves, applied consistently across the 33 pages that currently show a pattern badge (CRUD ×3, RACI ×3, Maturity ×2, RTP ×25):</p>
-  <p><strong>1. Remove the pattern badge from the rendered page.</strong> The pattern value itself isn't deleted — it stays wherever it's already stored in each page's data (the same <code>PATTERN_META</code>/local pattern-object source the badges currently read from), just no longer rendered as a visible chip. That satisfies "keep it in the backend for possible future analytic use" without a data migration — only the display templates change.</p>
-  <p><strong>2. Where Working Relationship isn't shown yet, add it — using the design already proven on the Value Stream Profile pages and the RTP pages.</strong> Those pages already render Working Relationship with Rule 20's locked palette via inline-styled <code>.capmap-card</code> elements (name, one-line description, activity count, H% ceiling value). CRUD, RACI, and Maturity tables need a per-row Working Relationship chip or column added using the same six locked colors — no new visual design work, just extending an existing, already-governed pattern to three more page types.</p>
+  <p><strong>1. Remove the pattern badge from the rendered page.</strong> The value itself stays wherever it's already stored (the same <code>PATTERN_META</code>/pattern-object source the badges read from) — only the display templates change.</p>
+  <p><strong>2. Where Working Relationship isn't shown yet, add it as the progression ramp</strong> — Current State → Progression Ceiling across all six categories, reached steps marked, the ceiling locked, each step clickable. It carries the same locked Rule 20 colors as the VSP/RTP cards, but says more than a single label can, as shown above. CRUD, RACI, and Maturity tables get this ramp per row; no new visual design work, since it's already built and proven in the sandbox.</p>
 
   <div class="wr-swatch-row">
-    <div class="wr-swatch" style="background:#7DAEE01A;color:#7DAEE0"><div class="wr-name">Automation</div>Rules-Based Execution</div>
-    <div class="wr-swatch" style="background:#5A8DC41A;color:#5A8DC4"><div class="wr-name">Agent-delegation</div>Bounded Autonomy</div>
-    <div class="wr-swatch" style="background:#3D6FA81A;color:#3D6FA8"><div class="wr-name">Augmentation</div>AI-Assisted Judgment</div>
-    <div class="wr-swatch" style="background:#2457A31A;color:#2457A3"><div class="wr-name">Oversight</div>Human Verifies</div>
-    <div class="wr-swatch" style="background:#2044741A;color:#204474"><div class="wr-name">Judgment</div>Human Decides</div>
-    <div class="wr-swatch" style="background:#0D2D4F1A;color:#0D2D4F"><div class="wr-name">Human-only</div>Standing Duty</div>
+    <div class="wr-swatch"><div class="wr-dot" style="background:#7DAEE0"></div><div class="wr-name">Automation</div>Rules-Based Execution</div>
+    <div class="wr-swatch"><div class="wr-dot" style="background:#5A8DC4"></div><div class="wr-name">Agent-delegation</div>Bounded Autonomy</div>
+    <div class="wr-swatch"><div class="wr-dot" style="background:#3D6FA8"></div><div class="wr-name">Augmentation</div>AI-Assisted Judgment</div>
+    <div class="wr-swatch"><div class="wr-dot" style="background:#2457A3"></div><div class="wr-name">Oversight</div>Human Verifies</div>
+    <div class="wr-swatch"><div class="wr-dot" style="background:#204474"></div><div class="wr-name">Judgment</div>Human Decides</div>
+    <div class="wr-swatch"><div class="wr-dot" style="background:#0D2D4F"></div><div class="wr-name">Human-only</div>Standing Duty</div>
   </div>
 
   <h2>What happens to the old proposal</h2>
-  <p>Recommend marking <a href="work_pattern_color_standard.html">Work Pattern Color Standard</a> <strong>Superseded</strong> rather than Denied — its colorblind-safety finding (Transaction/Exception nearly indistinguishable under deuteranopia; Decision/Knowledge too close under normal vision) is still true and still worth having on record. It just no longer needs to become a live display change, since the pattern colors it was fixing won't be displayed. If patterns are ever surfaced again for analytics tooling aimed at Tim or GiGi rather than end users, that validated palette is sitting there ready to reuse — recommend leaving a note to that effect on the superseded proposal rather than deleting it.</p>
+  <p>Recommend marking <a href="work_pattern_color_standard.html">Work Pattern Color Standard</a> <strong>Superseded</strong> rather than Denied — its colorblind-safety finding is still true and still worth having on record, it just no longer needs to become a live display change, since the pattern colors it was fixing won't be displayed to users.</p>
 
   <h2>Proposed Tokens</h2>
   <p>None new. This proposal is entirely built on Rule 20's already-locked Working-Relationship palette — the same six hex values already live on every Value Stream Profile page. No token lock change needed for the six colors themselves; the only governance action is extending <em>where</em> they're used.</p>
@@ -165,10 +226,10 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   </table>
 
   <h2>Build Note</h2>
-  <p>Recommended sequence, easiest and lowest-risk first:</p>
-  <p><strong>1. RTP pages (25 files)</strong> — delete-only. Each page already renders its Working Relationship card set correctly; this step is just removing the <code>.pat-badge</code> markup and its legend, nothing to build.</p>
-  <p><strong>2. CRUD / RACI / Maturity tables (8 files)</strong> — the real build. Same badge removal, plus adding a Working Relationship column/chip per row, styled from the same locked palette and card pattern already proven on the VSP and RTP pages. Recommend building the pattern once against one CRUD page, confirming it reads correctly, then repeating across the other seven.</p>
-  <p><strong>3. Dashboard</strong> — hold for a separate decision. Its pattern-mix bars are aggregate, not per-activity, and may be the legitimate backend/analytics use case GiGi flagged rather than something this proposal needs to touch.</p>
+  <p>Scoped to completing the PCF 7.0 (HR) implementation first; 8.0/9.0 get the same treatment in a later pass once this one is proven out. Recommended sequence, easiest and lowest-risk first:</p>
+  <p><strong>1. PCF 7.0 RTP pages (<code>rtp_7*.html</code>)</strong> — delete-only. Each page already renders its Working Relationship card set correctly; this step is just removing the <code>.pat-badge</code> markup and its legend, nothing to build.</p>
+  <p><strong>2. <code>hitl_crud_pcf7_final.html</code> and <code>hitl_raci_pcf7_final.html</code></strong> — the real build. Remove the pattern badge, add the sandbox's progression-ramp graphic per row (Current State → Progression Ceiling across the six locked categories, as mocked up above), reusing its existing markup/styling rather than a new circle or chip design. Table rows will need to accommodate a full-width strip rather than squeeze the ramp into an existing narrow column. Build against the CRUD page first, confirm it reads correctly, then repeat on RACI. (PCF 7.0 has no maturity table to update.)</p>
+  <p><strong>3. Dashboard and PCF 8.0/9.0</strong> — out of scope here. The dashboard's pattern-mix bars are aggregate, not per-activity, and may be the legitimate backend/analytics use case GiGi flagged; 8.0/9.0's CRUD/RACI/Maturity tables get the same two-step treatment once the 7.0 build is confirmed working.</p>
   <p>Underlying pattern data (the <code>PATTERN_META</code>/pattern-object values each page currently reads its badge from) is left in place throughout — nothing in this build touches the data layer, only what's rendered from it.</p>
 
   <div style="border-top:1px solid var(--border);margin-top:30px;padding-top:16px;text-align:center">
@@ -184,6 +245,150 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
     <a href="working_relationship_display_migration.pdf">Download PDF</a> &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
   </p>
 </footer>
+
+<script>
+// ---- Real data for the mockup, matching docs/sandbox/pcf7.html exactly ----
+const MOCK_CATS_ORDER = ["Human-only", "Judgment", "Oversight", "Augmentation", "Agent-delegation", "Automation"];
+const MOCK_WR_CATS = {
+  "Automation":       { color:"#7DAEE0" },
+  "Agent-delegation": { color:"#5A8DC4" },
+  "Augmentation":     { color:"#3D6FA8" },
+  "Oversight":        { color:"#2457A3" },
+  "Judgment":         { color:"#204474" },
+  "Human-only":       { color:"#0D2D4F" },
+};
+const MOCK_STEP_DEFINITIONS = {
+  "Human-only": "No AI role in this activity, by design — regardless of demonstrated AI capability.",
+  "Judgment": "A person forms the reasoning and makes the call. AI may supply raw inputs (data, a ranking, a benchmark) but does not produce the candidate decision.",
+  "Oversight": "AI performs or proposes the complete work product; a person reviews and approves (or rejects) each instance before it takes effect.",
+  "Augmentation": "The person remains the primary actor and does the work themselves; AI assists in real time but never acts unilaterally, and there is no separate approval gate.",
+  "Agent-delegation": "An AI agent performs the work autonomously within policy bounds; a person handles only flagged exceptions, not every instance.",
+  "Automation": "AI performs and completes the work with no person in the loop for that instance — exceptions included."
+};
+const MOCK_ACTIVITY = {
+  code: "7.1.1.5", name: "Determine HR costs",
+  current: "Oversight", ceiling: "Agent-delegation",
+  cons: "Moderate",
+  consNote: "Cost modeling feeds budget planning — moderate operational/financial impact if wrong, but a draft CHRO reviews before it's acted on, which caps the exposure.",
+  ceilingNote: "Close call, flagged honestly: cost models are treated as a draft CHRO edits or a recommendation CHRO approves. No standing duty requires CHRO's personal review — ceiling moves one notch per the Progression Ceiling Rule."
+};
+const MOCK_CONS_COLOR = { Low:"#0072B2", Moderate:"#008460", High:"#9A6A00", Critical:"#C15500" };
+const MOCK_CONS_WEIGHT = { Low: 400, Moderate: 500, High: 600, Critical: 700 };
+// Per Working_Relationship_Progression_Methodology.docx §6, "Per-Transition
+// Evidence Ladder" — the same generic evidence for each of the 5 transitions,
+// real content pulled from docs/sandbox/pcf7.html.
+const MOCK_GATE_TITLES = ["Human-only → Judgment", "Judgment → Oversight", "Oversight → Augmentation", "Augmentation → Agent-delegation", "Agent-delegation → Automation"];
+const MOCK_GATE_EVIDENCE = [
+  ["AI-supplied input is relevant and useful to the person doing the work", "No autonomous action exists yet, so there's no error rate to measure"],
+  ["AI's proposed action agrees with what the human would decide, most of the time", "Enough real instances have run to trust that agreement rate"],
+  ["A high share of full-review instances pass clean (audit-pass rate)", "That clean rate holds up sustained over real volume"],
+  ["Accuracy/error rate proven within defined policy bounds", "System reliably flags when it's out of bounds (exception-detection recall)"],
+  ["Sustained low exception rate over real volume", "An explicit governance sign-off gate layered on top (a policy choice, not just a technical threshold)"]
+];
+
+function mockGatesInfoContent(key) {
+  const w = MOCK_ACTIVITY;
+  const currentIdx = MOCK_CATS_ORDER.indexOf(w.current);
+  const ceilingIdx = MOCK_CATS_ORDER.indexOf(w.ceiling);
+
+  if (key.indexOf('step-') === 0) {
+    const i = Number(key.slice(5));
+    const label = MOCK_CATS_ORDER[i];
+    let statusLine;
+    if (i === currentIdx) statusLine = "Current state for this activity.";
+    else if (i === ceilingIdx) statusLine = "Progression ceiling — " + w.ceilingNote;
+    else if (i < currentIdx) statusLine = "Already passed on the way to the current state.";
+    else statusLine = "Reachable — between current state and the ceiling.";
+    return '<div class="gates-info-title">' + label + '</div>' +
+      '<p class="gates-info-def">' + MOCK_STEP_DEFINITIONS[label] + '</p>' +
+      '<div class="gates-info-label" style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;">For this activity</div>' +
+      '<p class="gates-info-def">' + statusLine + '</p>';
+  }
+  if (key.indexOf('gate-') === 0) {
+    const gi = Number(key.slice(5));
+    const ev = MOCK_GATE_EVIDENCE[gi];
+    return '<div class="gates-info-title">Gate: ' + MOCK_GATE_TITLES[gi] + '</div>' +
+      '<div class="gates-info-label">Evidence to cross this gate</div>' +
+      '<p class="gates-info-def">' + ev[0] + '</p>' +
+      '<p class="gates-info-def">' + ev[1] + '</p>';
+  }
+  if (key === 'ceiling') {
+    return '<div class="gates-info-title">Progression Ceiling — ' + w.ceiling + '</div>' +
+      '<p class="gates-info-def">' + w.ceilingNote + '</p>';
+  }
+  if (key === 'cons') {
+    return '<div class="gates-info-title">Consequence of Error — ' + w.cons + '</div>' +
+      '<p class="gates-info-def">' + w.consNote + '</p>';
+  }
+  return '';
+}
+
+function mockToggleGatesInfo(key) {
+  const panel = document.getElementById('mock-gates-info');
+  const already = panel.classList.contains('open') && panel.dataset.key === key;
+  panel.classList.remove('open');
+  if (!already) {
+    panel.innerHTML = '<button type="button" class="gates-info-close" onclick="mockCloseGatesInfo(event)" aria-label="Close">&times;</button>' + mockGatesInfoContent(key);
+    panel.dataset.key = key;
+    panel.classList.add('open');
+  }
+}
+function mockCloseGatesInfo(ev) {
+  ev.stopPropagation();
+  document.getElementById('mock-gates-info').classList.remove('open');
+}
+
+function mockGatesCardHtml() {
+  const w = MOCK_ACTIVITY;
+  const currentIdx = MOCK_CATS_ORDER.indexOf(w.current);
+  const ceilingIdx = MOCK_CATS_ORDER.indexOf(w.ceiling);
+  let nodesHtml = '';
+  for (let i = 0; i < 6; i++) {
+    const label = MOCK_CATS_ORDER[i];
+    const isReachable = i <= ceilingIdx;
+    const bg = isReachable ? MOCK_WR_CATS[label].color : '#EDEFF3';
+    const labelStyle = !isReachable ? ' style="color:#94A3B8;"' : '';
+    const onclick = isReachable ? ' onclick="mockToggleGatesInfo(\'step-' + i + '\')"' : '';
+    const cursor = isReachable ? 'pointer' : 'default';
+    nodesHtml += '<div class="gate-node">' +
+      '<button type="button" class="gate-circle" style="cursor:' + cursor + ';background:' + bg + ';"' + onclick + '></button>' +
+      '<button type="button" class="gate-label"' + labelStyle + onclick + '>' + label + '</button>' +
+      '</div>';
+    if (i < 5) {
+      let gateState = 'locked';
+      if (i < currentIdx) gateState = 'passed'; else if (i >= currentIdx && i < ceilingIdx) gateState = 'open';
+      const isBoundary = gateState === 'locked' && i === ceilingIdx;
+      const lockSvg = '<svg width="12" height="13" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;">' +
+        '<rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/>' +
+        '<path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/>' +
+        '</svg>';
+      const glyph = gateState === 'passed' ? '&#10003;' : (isBoundary ? lockSvg : '&rarr;');
+      const gcolor = gateState === 'passed' ? '#166534' : (gateState === 'open' ? '#2457A3' : '#475569');
+      const arrowCls = 'gate-arrow' + (gateState === 'locked' ? ' gate-arrow-locked' : '');
+      const arrowKey = isBoundary ? 'ceiling' : ('gate-' + i);
+      nodesHtml += '<button type="button" class="' + arrowCls + '" style="color:' + gcolor + ';" onclick="mockToggleGatesInfo(\'' + arrowKey + '\')">' + glyph + '</button>';
+    }
+  }
+  return '<div class="gates-card-header">' +
+    '<span class="mock-activity" style="margin:0;">' + w.code + '</span>' +
+    '<span style="font-size:12px;color:var(--gray);">' + w.name + '</span>' +
+    '<div style="margin-left:auto;">' +
+    '<span class="gates-cons-label">Consequence of Error</span>' +
+    '<button type="button" class="mock-cons-trigger wr-cons" style="color:' + MOCK_CONS_COLOR[w.cons] + ';font-weight:' + MOCK_CONS_WEIGHT[w.cons] + ';" onclick="mockToggleGatesInfo(\'cons\')">' + w.cons + '</button>' +
+    '</div></div>' +
+    '<div class="gates-track">' + nodesHtml + '</div>' +
+    '<div class="gates-info" id="mock-gates-info"></div>';
+}
+
+document.getElementById('mock-gates-card').innerHTML = mockGatesCardHtml();
+
+function mockShow(which) {
+  document.getElementById('mock-panel-before').classList.toggle('active', which === 'before');
+  document.getElementById('mock-panel-after').classList.toggle('active', which === 'after');
+  document.getElementById('mock-btn-before').classList.toggle('active', which === 'before');
+  document.getElementById('mock-btn-after').classList.toggle('active', which === 'after');
+}
+</script>
 
 <script src="wip-vote-widget.js"></script>
 </body>
