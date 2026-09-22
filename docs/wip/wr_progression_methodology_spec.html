@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Working-Relationship Progression — Plain-Language Spec — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 800px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.approval-box { background: var(--amber-bg); border: 1px solid #F0C67A; border-left: 5px solid var(--amber); border-radius: 8px; padding: 18px 22px; margin-bottom: 28px; }
+.approval-box .ab-head { font-size: 14px; font-weight: 700; color: var(--amber-text); margin-bottom: 6px; }
+.approval-box p { font-size: 13px; color: #5A4315; line-height: 1.65; margin: 0; }
+
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 28px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 19px; margin: 34px 0 10px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 15px; margin: 20px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 14px; }
+p.lede { font-size: 15.5px; color: var(--dark); }
+ul.plain { margin: 0 0 16px 20px; }
+ul.plain li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.feature-box { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 8px 0 20px; }
+.feature-box h3 { margin-top: 0; }
+
+.ramp-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 6px; align-items: center; }
+.ramp-step { display: flex; flex-direction: column; align-items: center; width: 84px; font-size: 10.5px; color: var(--gray); text-align: center; }
+.ramp-step .rs-dot { width: 26px; height: 26px; border-radius: 50%; margin-bottom: 5px; }
+.ramp-step .rs-name { font-weight: 700; color: var(--dark); }
+.ramp-arrow { color: var(--lgray); font-size: 16px; }
+
+.proof-grid { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 20px; }
+.proof-card { flex: 1; min-width: 200px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.proof-card .pc-role { font-weight: 700; color: var(--navy-d); font-size: 13.5px; margin-bottom: 4px; }
+.proof-card .pc-tier { font-size: 10.5px; color: var(--lgray); text-transform: uppercase; letter-spacing: .03em; margin-bottom: 8px; }
+.proof-card p { font-size: 12.5px; margin: 0; }
+
+.open-item { border-left: 3px solid var(--lgray); padding: 4px 0 4px 14px; margin-bottom: 12px; }
+.open-item .oi-name { font-weight: 700; color: var(--dark); font-size: 13.5px; }
+.open-item p { font-size: 13px; margin: 3px 0 0; }
+
+.source-note { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 4px; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">DESIGN SPEC &nbsp;·&nbsp; PLAIN-LANGUAGE VERSION &nbsp;·&nbsp; TIM KING &amp; CLAUDE &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>Working-Relationship Progression</h1>
+  <div class="subtitle">What it does, what it replaces, and what it's proven on — a plain-language companion to the full methodology document</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-vote-mount data-item="wr-progression-methodology"></div>
+
+<div class="wrap">
+
+  <div class="approval-box">
+    <div class="ab-head">This needs Tim and GiGi's approval before it becomes official</div>
+    <p>The full methodology (<a href="../working_relationship_progression_methodology.html">Working-Relationship Progression — A Design Methodology</a>) has been live on the site as a draft since September, and it's the thing the sandbox is actually built on — but it was never added to the WIP catalog or wired to voting, so there's no record of anyone formally signing off on it. This page is two things at once: a plain-language rewrite for anyone who doesn't need the full technical detail, and the vehicle for bringing the underlying methodology into the same approval process every other framework decision goes through.</p>
+  </div>
+
+  <div class="related-reqs">
+    <span class="rr-label">Related Requirements — Requirements Register</span>
+    <ul>
+    <li><code>GR-044</code> — Sandbox Environment <em>(Implemented — this methodology is the sandbox's data model)</em></li>
+    </ul>
+  </div>
+
+  <p class="lede">Short version: the framework used to guess how much of an activity a human still needed to do based on what <em>kind</em> of activity it was. That guess was often wrong. This replaces the guess with a direct classification of what's actually happening, activity by activity — and adds a gate that has to clear before any activity is allowed to automate further.</p>
+
+  <h2>The Problem This Solves</h2>
+  <p>The old model looked at an activity's type — Decision, Knowledge, Document, Transaction, or Exception — and used that type to predict a single number for how much of it still needed a human. The trouble: two activities of completely different types kept landing on the exact same real-world answer (a human checking each instance before it goes through), while two activities that scored almost identically on that number turned out to involve completely different kinds of work — one mostly judgment calls and coaching, the other mostly compliance and exception-handling. The type was a poor stand-in for the thing that actually matters: what is the human doing, and why does it have to be a human who does it.</p>
+
+  <h2>What It Does</h2>
+
+  <div class="feature-box">
+    <h3>1. Classifies every activity on one clear ramp, not a type-based guess</h3>
+    <p>Every activity gets placed directly on a six-step scale, based on what's actually happening today — not inferred from its category:</p>
+    <div class="ramp-row">
+      <div class="ramp-step"><div class="rs-dot" style="background:#0D2D4F"></div><div class="rs-name">Human-only</div></div>
+      <span class="ramp-arrow">→</span>
+      <div class="ramp-step"><div class="rs-dot" style="background:#204474"></div><div class="rs-name">Judgment</div></div>
+      <span class="ramp-arrow">→</span>
+      <div class="ramp-step"><div class="rs-dot" style="background:#2457A3"></div><div class="rs-name">Oversight</div></div>
+      <span class="ramp-arrow">→</span>
+      <div class="ramp-step"><div class="rs-dot" style="background:#3D6FA8"></div><div class="rs-name">Augmentation</div></div>
+      <span class="ramp-arrow">→</span>
+      <div class="ramp-step"><div class="rs-dot" style="background:#5A8DC4"></div><div class="rs-name">Agent-delegation</div></div>
+      <span class="ramp-arrow">→</span>
+      <div class="ramp-step"><div class="rs-dot" style="background:#7DAEE0"></div><div class="rs-name">Automation</div></div>
+    </div>
+    <p style="font-size:12.5px;margin-top:8px">An activity moves one step at a time — it can't skip a step on the way to more automation. The five work-pattern colors (Decision/Knowledge/Document/Transaction/Exception) keep doing their own separate job elsewhere on the site; this is a different, additional lens, not a replacement for them.</p>
+  </div>
+
+  <div class="feature-box">
+    <h3>2. Tracks three numbers per activity instead of one five-point score</h3>
+    <ul class="plain">
+      <li><strong>Current State</strong> — where the activity actually sits today.</li>
+      <li><strong>Future State</strong> — the next realistic step, given real evidence.</li>
+      <li><strong>Progression Ceiling</strong> — the furthest this activity can ever go, and the reason it stops there (sometimes that reason is a standing duty that can't be delegated at all; sometimes it's simply that full automation is the natural end point and there's nowhere further to go).</li>
+    </ul>
+    <p>Future State and Progression Ceiling aren't always the same value — an activity can be safely nudged one step forward while everyone agrees it should never go further than that.</p>
+  </div>
+
+  <div class="feature-box">
+    <h3>3. Puts detail where it belongs, and rolls up where it doesn't</h3>
+    <p>An activity's classification lives at the activity level, because that's genuinely where the evidence is. But a manager's capacity to absorb change, or a team's readiness for it, isn't a property of any single activity — those get measured as a rollup of everything changing underneath them, not reclassified activity-by-activity themselves.</p>
+  </div>
+
+  <div class="feature-box">
+    <h3>4. Requires three independent checks before an activity is allowed to move forward</h3>
+    <p>No activity advances toward its Future State on the strength of one score. Three separate signals all have to clear first — real evidence that the technology performs reliably on this specific work, real evidence the process around it can support the change, and real evidence the people affected are actually ready for it. One good number doesn't substitute for the other two.</p>
+  </div>
+
+  <div class="feature-box">
+    <h3>5. Traces how a change ripples outward, with the same questions at every stage</h3>
+    <p>When one activity changes, the effects don't stop there — they move outward to the role, the person doing it, their manager, their team, and ultimately who's accountable for the outcome. The same six questions get asked at each stage: what changed, who absorbs it, where did the work go, what new risk appeared, what new capability does someone need, and who owns the outcome now. One consistent question set instead of a different instrument for every stage.</p>
+  </div>
+
+  <h2>Proven So Far</h2>
+  <p>Tested against three roles spanning the full range of the organization, on purpose — not three similar roles that would all tell the same story.</p>
+
+  <div class="proof-grid">
+    <div class="proof-card">
+      <div class="pc-role">HRBP Manager</div>
+      <div class="pc-tier">Managerial tier · first pilot</div>
+      <p>Where the method was built and first tested. Surfaced a real correction: the reporting line the site had on record didn't match what the evidence actually showed.</p>
+    </div>
+    <div class="proof-card">
+      <div class="pc-role">Recruiter</div>
+      <div class="pc-tier">Operational tier · highest volume</div>
+      <p>The busiest, most repetitive end of the range. Its highest-stakes single decision — selecting or rejecting a candidate — held up as the most human-critical activity in the whole pilot.</p>
+    </div>
+    <div class="proof-card">
+      <div class="pc-role">CHRO</div>
+      <div class="pc-tier">Executive tier · narrowest scope</div>
+      <p>The opposite end — one strategic area instead of hundreds of transactions. Here the method confirmed what everyone already expected (this work is human-heavy) rather than overturning it, which is itself a useful result: the method doesn't just find surprises, it also correctly recognizes when there isn't one.</p>
+    </div>
+  </div>
+
+  <p>The method held up across all three without needing to be changed for each one — but it didn't produce the same <em>kind</em> of finding every time, and that's expected, not a weakness.</p>
+
+  <h2>What's Still Open</h2>
+
+  <div class="open-item">
+    <div class="oi-name">How to measure the effort involved, not just how much is left</div>
+    <p>Right now the model can say a human is still doing 20% of an activity, but it can't yet say whether that remaining 20% is easy or genuinely demanding. That distinction isn't built yet.</p>
+  </div>
+  <div class="open-item">
+    <div class="oi-name">Whether people actually have what they need to exercise real judgment</div>
+    <p>Authority, information, confidence, and the psychological safety to challenge a wrong AI recommendation — these matter, and there's an early idea for measuring them, but no working instrument yet.</p>
+  </div>
+  <div class="open-item">
+    <div class="oi-name">Roles with no formal decision rights in the record</div>
+    <p>Some roles do real, valuable relationship and coaching work that a formal accountability record structurally can't see. Flagged honestly as a blind spot, not solved here.</p>
+  </div>
+  <div class="open-item">
+    <div class="oi-name">A couple of edge cases from the CHRO pilot</div>
+    <p>What "the group this role can be compared against" means when a role sits at the very top with no peer to compare against, and what "who absorbs the change" means when there's no manager above to absorb it.</p>
+  </div>
+  <div class="open-item">
+    <div class="oi-name">What the technology-readiness evidence should actually consist of, at scale</div>
+    <p>Still an open design question, not yet answered.</p>
+  </div>
+
+  <h2>Where This Comes From</h2>
+  <p>Grounded against the real APQC Process Classification Framework source file, obtained directly from APQC — not something the framework invented its own counts for. The organizational reporting-line review that fed into this is a deliberately separate, parallel track, not merged into this methodology, though its findings do feed directly into how this methodology measures a manager's capacity to absorb change.</p>
+  <p class="source-note">Full technical version, with the worked examples, exact figures, and section-by-section detail: <a href="../working_relationship_progression_methodology.html">Working-Relationship Progression — A Design Methodology</a>.</p>
+
+  <div style="border-top:1px solid var(--border);margin-top:30px;padding-top:16px;text-align:center">
+    <span style="font-size:12px;color:var(--lgray)">Tim King &amp; Claude &nbsp;|&nbsp; Design Spec — For Review &nbsp;|&nbsp; September 2026</span>
+  </div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;·&nbsp; Design Spec — For Review<br>
+    HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+<script src="wip-vote-widget.js"></script>
+</body>
+</html>
