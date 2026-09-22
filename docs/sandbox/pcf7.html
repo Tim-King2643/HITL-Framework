@@ -180,9 +180,9 @@ td:first-child { text-align: left; }
    the "Progression Gates" mockup exploration (Sept 19, 2026). One open
    info panel per row at a time, same pattern as .wr-cons-pop. ─────────── */
 .gates-track { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding: 2px 0 1px; }
-.gate-node { display: flex; flex-direction: column; align-items: center; min-width: 74px; flex: 0 0 auto; }
+.gate-node { display: flex; flex-direction: column; align-items: center; min-width: 84px; flex: 0 0 auto; }
 .gate-circle { all: unset; width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; }
-.gate-label { all: unset; cursor: pointer; font-size: 9px; font-weight: 500; color: #000; text-align: center; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
+.gate-label { all: unset; cursor: pointer; font-size: 11px; font-weight: 500; color: #000; text-align: center; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
 .gate-arrow { all: unset; cursor: pointer; width: 22px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; margin-top: 0; }
 .gate-arrow-locked { font-size: 14px; }
 .gates-info { display: none; margin-top: 10px; width: 100%; max-width: 460px; background: #FAFBFD; border: 1px solid var(--border); border-radius: 7px; padding: 10px 30px 10px 14px; text-align: left; position: relative; }
@@ -225,7 +225,7 @@ td:first-child { text-align: left; }
 .gates-card-cons .wr-cf-trigger:hover { text-decoration: underline; }
 .gates-card-cons-tight { gap: 0; margin-left: 0; }
 
-.gates-legend-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px 28px; padding: 16px 22px; margin: 8px 14px 8px 48px; background: #fff; border: 1px solid var(--border); border-radius: 10px; }
+.gates-legend-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px 28px; padding: 16px 22px; margin: 8px 0; background: #fff; border: 1px solid var(--border); border-radius: 10px; }
 /* Sized and positioned to match the activity card below it exactly — same
    background, border, radius and padding as .gates-card, and the same
    margin scheme (class sets margin:8px 14px; the per-row inline style
@@ -407,8 +407,8 @@ td.crud-d .crud-entity { color: #991B1B; }
       <div class="gates-legend-box">
         <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>
         <span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>
-        <span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
-        <span class="gates-legend-item"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
+        <span class="gates-legend-item" style="white-space:nowrap;"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
+        <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
         <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
         <span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist &mdash; click the &times; to close any open box</span>
       </div>
@@ -482,8 +482,8 @@ td.crud-d .crud-entity { color: #991B1B; }
       <div class="gates-legend-box">
         <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>
         <span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>
-        <span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
-        <span class="gates-legend-item"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
+        <span class="gates-legend-item" style="white-space:nowrap;"><strong>Step name</strong> &mdash; click for what the work looks like there</span>
+        <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>
         <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
         <span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist &mdash; click the &times; to close any open box</span>
       </div>
@@ -1970,8 +1970,8 @@ function inlineLegendHtml(indentPx) {
   return '<div class="gates-legend-box gates-legend-box-inline" style="margin-left:' + indentPx + 'px;">' +
     '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Current State &mdash; click circle for what the work looks like here</span>' +
     '<span class="gates-legend-item">Each colored step below is reachable &mdash; the ramp up to and including the Progression Ceiling</span>' +
-    '<span class="gates-legend-item"><strong>Step name</strong> &mdash; click for what the work looks like there</span>' +
-    '<span class="gates-legend-item"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>' +
+    '<span class="gates-legend-item" style="white-space:nowrap;"><strong>Step name</strong> &mdash; click for what the work looks like there</span>' +
+    '<span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open gate &mdash; click for evidence needed</span>' +
     '<span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>' +
     '<span class="gates-legend-item">Consequence of Error rating &mdash; click to see the decision checklist &mdash; click the &times; to close any open box</span>' +
     '</div>';
