@@ -29,7 +29,7 @@
 
   a { color: #1B4F8A !important; text-decoration: underline; }
 
-  .wrap { max-width: 100% !important; padding: 0.25in 0 !important; margin: 0 !important; }
+  .wrap, .doc-wrap, .note-wrap { max-width: 100% !important; padding: 0.25in 0 !important; margin: 0 !important; }
 
   /* Dark navy masthead reads fine on screen but burns ink/toner and can
      print as a solid black block depending on the browser's background-
@@ -43,6 +43,9 @@
   }
   .masthead .eyebrow { color: #444 !important; }
   .masthead .subtitle { color: #444 !important; }
+  .masthead .tagline1 { color: #444 !important; }
+  .masthead .tagline2 { color: #0D2D4F !important; }
+  .masthead .tagline2::after { display: none !important; }
   .masthead h1 { color: #0D2D4F !important; }
 
   /* Keep structured blocks from splitting awkwardly across a page break. */

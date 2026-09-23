@@ -30,18 +30,24 @@
   }
 
   function pageTitle() {
+    // Some pages reuse the masthead's <h1> for the site brand and give the
+    // document's own title a separate heading class inside the content —
+    // check those first so the download isn't titled "Human-AI Partnership
+    // Framework" for every one of them.
+    var contentHeading = document.querySelector('.note-headline, .doc-title');
+    if (contentHeading && contentHeading.textContent.trim()) return contentHeading.textContent.trim();
     var h1 = document.querySelector('.masthead h1');
     if (h1 && h1.textContent.trim()) return h1.textContent.trim();
     return document.title.replace(/^\[DRAFT\]\s*/, '').split(' — Human-AI Partnership Framework')[0];
   }
 
   function buildWordHtml(title) {
-    var wrapEl = document.querySelector('.wrap');
+    var wrapEl = document.querySelector('.wrap') || document.querySelector('.doc-wrap') || document.querySelector('.note-wrap');
     if (!wrapEl) return null;
 
     var clone = wrapEl.cloneNode(true);
     var stripSelectors = [
-      '[data-wip-vote-mount]', '[data-wip-download-mount]', '.wip-vote-card',
+      '[data-wip-vote-mount]', '[data-wip-download-mount]', '[data-wip-docladder-mount]', '.wip-vote-card',
       '.mock-toggle-row', '.gates-info-close', '.mock-legend-box ~ .mock-shell .mock-hint'
     ];
     stripSelectors.forEach(function (sel) {
