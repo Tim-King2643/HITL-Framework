@@ -112,7 +112,10 @@
       '.wip-ladder-dot{font-size:11px;line-height:1;}',
       '.wip-ladder-arrow{color:var(--border,#DDE3EE);font-size:13px;margin:0 6px;}',
       '.wip-ladder-arrow.is-passed{color:#1B7A4C;}',
-      '.wip-ladder-note{font-size:11.5px;color:var(--lgray,#888);font-style:italic;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border,#DDE3EE);}'
+      '.wip-ladder-note{font-size:11.5px;color:var(--lgray,#888);font-style:italic;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border,#DDE3EE);}',
+      '.wip-vote-head-pills{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}',
+      '.wip-stage-pill{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;',
+      'color:var(--navy,#1B4F8A);background:var(--navy-l,#EEF3FA);border-radius:3px;padding:4px 9px;white-space:nowrap;}'
     ].join('');
     document.head.appendChild(style);
   }
@@ -137,11 +140,23 @@
     mount.classList.add('wip-vote-card');
     var meta = DECISION_META[itemData.decision] || DECISION_META.pending;
     var myVote = identity === 'Tim' ? itemData.tim : identity === 'GiGi' ? itemData.gigi : null;
+    var stage = mount.getAttribute('data-stage');
 
     var html = '';
     html += '<div class="wip-vote-head">';
     html += '<span class="wip-vote-eyebrow">WIP Review</span>';
-    html += '<span class="wip-vote-pill" style="color:' + meta.fg + ';background:' + meta.bg + '">' + meta.label + '</span>';
+    html += '<div class="wip-vote-head-pills">';
+    // The Development Stage badge always shows — it's the same value as the
+    // catalog's Stage column. The decision pill only shows when it carries
+    // real news (a plain "Pending Review" just restates what the Document
+    // Status stepper below already says with its current-step highlight).
+    if (stage) {
+      html += '<span class="wip-stage-pill">' + escapeHtml(stage) + '</span>';
+    }
+    if (itemData.decision !== 'pending') {
+      html += '<span class="wip-vote-pill" style="color:' + meta.fg + ';background:' + meta.bg + '">' + meta.label + '</span>';
+    }
+    html += '</div>';
     html += '</div>';
     html += '<div class="wip-vote-status-row">' + statusLine('Tim', itemData.tim) + statusLine('GiGi', itemData.gigi) + '</div>';
 
