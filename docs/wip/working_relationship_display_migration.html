@@ -229,10 +229,10 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   </table>
 
   <h2>Build Note</h2>
-  <p>Scoped to completing the PCF 7.0 (HR) implementation first; 8.0/9.0 get the same treatment in a later pass once this one is proven out. Recommended sequence, easiest and lowest-risk first:</p>
+  <p>Scoped to completing this domain's implementation first; other domains get the same treatment in a later pass once this one is proven out. Recommended sequence, easiest and lowest-risk first:</p>
   <p><strong>1. PCF 7.0 RTP pages (<code>rtp_7*.html</code>)</strong> — delete-only. Each page already renders its Working Relationship card set correctly; this step is just removing the <code>.pat-badge</code> markup and its legend, nothing to build.</p>
   <p><strong>2. <code>hitl_crud_pcf7_final.html</code> and <code>hitl_raci_pcf7_final.html</code></strong> — the real build. Remove the pattern badge, add the sandbox's progression-ramp graphic per row (Current State → Progression Ceiling across the six locked categories, as mocked up above), reusing its existing markup/styling rather than a new circle or chip design. Table rows will need to accommodate a full-width strip rather than squeeze the ramp into an existing narrow column. Build against the CRUD page first, confirm it reads correctly, then repeat on RACI. (PCF 7.0 has no maturity table to update.)</p>
-  <p><strong>3. Dashboard and PCF 8.0/9.0</strong> — out of scope here. The dashboard's pattern-mix bars are aggregate, not per-activity, and may be the legitimate backend/analytics use case GiGi flagged; 8.0/9.0's CRUD/RACI/Maturity tables get the same two-step treatment once the 7.0 build is confirmed working.</p>
+  <p><strong>3. Dashboard and other domains</strong> — out of scope here. The dashboard's pattern-mix bars are aggregate, not per-activity, and may be the legitimate backend/analytics use case GiGi flagged; other domains' CRUD/RACI/Maturity tables get the same two-step treatment once this domain's build is confirmed working.</p>
   <p>Underlying pattern data (the <code>PATTERN_META</code>/pattern-object values each page currently reads its badge from) is left in place throughout — nothing in this build touches the data layer, only what's rendered from it.</p>
 
   <div style="border-top:1px solid var(--border);margin-top:30px;padding-top:16px;text-align:center">
