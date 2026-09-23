@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Content Promotion Policy — Sandbox / WIP / Production — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 800px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.concept-flag { background: var(--amber-bg); border-left: 3px solid var(--amber); border-radius: 4px; padding: 16px 20px; font-size: 13px; font-style: italic; color: var(--amber-text); line-height: 1.6; margin-bottom: 28px; }
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 24px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
+.gov-flag { background: #FDECEC; border-left: 3px solid #B23B3B; border-radius: 4px; padding: 16px 20px; font-size: 13px; color: #7A2020; line-height: 1.6; margin-bottom: 28px; }
+.gov-flag strong { color: #5A1717; }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 36px 0 12px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 15px; margin: 0 0 10px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+ol, ul.plain { margin: 0 0 16px 20px; }
+ol li, ul.plain li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 12px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 10px 12px; vertical-align: top; color: #222; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.row-name { font-weight: 700; white-space: nowrap; }
+
+.key-fix { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 24px; font-size: 13.5px; color: var(--gray); line-height: 1.7; }
+.key-fix strong { color: var(--navy-d); }
+
+.code-block { background: #0D2D4F; color: #CFE0F5; border-radius: 8px; padding: 16px 18px; margin: 8px 0 24px; font-family: 'Consolas', monospace; font-size: 12px; line-height: 1.6; overflow-x: auto; white-space: pre; }
+.code-block .cl-h { color: #9FC2EE; font-weight: 700; }
+.code-block .cl-b { color: #7DAEE0; }
+
+.check-list { margin: 0 0 24px; padding: 0; list-style: none; }
+.check-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--gray); line-height: 1.6; margin-bottom: 10px; }
+.check-list .box { flex: 0 0 auto; width: 16px; height: 16px; border: 2px solid var(--navy); border-radius: 3px; margin-top: 2px; }
+
+.pdf-download { display: inline-flex; align-items: center; gap: 6px; font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px; padding: 8px 14px; text-decoration: none; margin: 0 0 28px; }
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">CONCEPT &nbsp;·&nbsp; TIM KING &amp; CLAUDE &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>Content Promotion Policy — Sandbox / WIP / Production</h1>
+  <div class="subtitle">Three explicit tiers and a status ladder so a piece of content can't silently drift between exploration, review, and the live site</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-vote-mount data-item="content-promotion-policy"></div>
+
+<div class="wrap">
+
+  <div class="concept-flag">Concept stage — not yet part of the framework. A process/governance proposal, not a content or design change: it doesn't alter what's on any live page, only how a change earns its way from an idea to something shipped.</div>
+
+  <div class="related-reqs">
+    <span class="rr-label">Related Requirements — Requirements Register</span>
+    <ul>
+    <li><code>GR-045</code> — define an explicit content-promotion pipeline (tiers, status ladder, checklist, changelog) so changes can't silently drift between sandbox, WIP, and production</li>
+    </ul>
+  </div>
+
+  <h2>Why this exists</h2>
+  <p>On September 21 the tagline on hitldrivenarchitecture.com turned out to exist in three different wordings across the live site, the sandbox, and the WIP catalog — with no record of which one was ever deliberately "shipped." Pulling the thread further: Rule 1's Token Lock was missing colors that had been live for weeks before anyone caught it, and GR-002 through GR-011 all sit at "rule exists, not confirmed swept" because no one has gone page-by-page to check.</p>
+  <p>None of this is one bad file. It's the predictable output of a system with no promotion pipeline and no drift-detection step. Content already moves between three informal spaces — sandbox exploration, WIP review, and the live production site — but nothing marks the boundary between them, nothing requires a deliberate act to cross it, and nothing records that a crossing happened.</p>
+  <p>This doc defines three explicit tiers, extends the Proposed → Under Review → Concept Agreed → Text Approved → Adopted status ladder GiGi proposed for the collaboration docs to cover <strong>content promotion</strong> (not just principles), and proposes a lightweight production changelog so the next drift shows up as a diff instead of six weeks later, by eye.</p>
+
+  <h2>The three tiers</h2>
+  <table>
+    <thead><tr><th>Tier</th><th>What it's for</th><th>What it is NOT</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Sandbox (e.g. <code>docs/sandbox/pcf7.html</code>)</td><td>Free exploration — trying layouts, copy, structure with Tim and GiGi before anything is committed to an idea</td><td>Not reviewed, not voted on, not a staging step. Nothing here is assumed correct or final, and nothing auto-flows out of it.</td></tr>
+      <tr><td class="row-name">WIP (the WIP catalog / requirements register)</td><td>Candidate content that's been proposed and is being reviewed or voted on</td><td>"Approved" in WIP is a review outcome, not a publish event. It does not push anything to production by itself — someone still has to pull the file and commit it.</td></tr>
+      <tr><td class="row-name">Production (hitldrivenarchitecture.com, source of truth in Tim-King2643/HITL-Framework)</td><td>The live, publicly reachable site</td><td>The only tier where changes are tracked (see the changelog below). Nothing is "production" until it has actually been committed to the repo and deployed — a WIP item marked Approved is not yet production.</td></tr>
+    </tbody>
+  </table>
+  <p>Today there is no enforced boundary between these — a wording can drift from sandbox into what people treat as settled without ever passing through WIP review or a recorded production commit. The status ladder below is how a piece of content earns its way from one tier to the next, on the record.</p>
+
+  <h2>Status ladder, applied to content</h2>
+  <p>GiGi's ladder for the collaboration docs — Proposed → Under Review → Concept Agreed → Text Approved → Adopted — maps onto the three tiers with one addition at the end, since content also has to actually land in the repo and go live:</p>
+  <table>
+    <thead><tr><th>Status</th><th>Tier</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td class="row-name">Proposed</td><td>Sandbox</td><td>An idea or draft exists; not yet reviewed by anyone else</td></tr>
+      <tr><td class="row-name">Under Review</td><td>Sandbox → WIP</td><td>Moved into the WIP catalog for comment/voting</td></tr>
+      <tr><td class="row-name">Concept Agreed</td><td>WIP</td><td>The direction is agreed; wording may still change</td></tr>
+      <tr><td class="row-name">Text Approved</td><td>WIP</td><td>The exact text/asset is signed off as ready to ship</td></tr>
+      <tr><td class="row-name">Adopted</td><td>WIP</td><td>Formally accepted as the version that should go live — this is what "Approved" in WIP should mean going forward</td></tr>
+      <tr><td class="row-name"><strong>Published</strong></td><td>Production</td><td>Actually committed to the repo, deployed, and logged in the production changelog</td></tr>
+    </tbody>
+  </table>
+  <div class="key-fix">The key fix: <strong>Adopted ≠ Published.</strong> An item can sit at Adopted indefinitely without being live, and that's fine — but nobody should describe it as "done" until it clears the last step. This is exactly the gap that let the tagline drift: it was effectively treated as agreed-on in more than one place without ever being tracked through to a single Published version.</div>
+
+  <h2>Promotion mechanics</h2>
+  <p><strong>Who moves things:</strong> Tim is the only one who commits to production (via the GitHub web editor or desktop, as today). Claude prepares the change and verifies it landed; Tim and GiGi both weigh in during WIP review, but promotion to Production is a single deliberate act Tim takes, not something that happens by consensus alone.</p>
+  <p><strong>What triggers a move between tiers:</strong></p>
+  <ul class="plain">
+    <li>Sandbox → WIP: Tim or GiGi decides an idea is worth formal review and it gets added to the WIP catalog.</li>
+    <li>WIP → Adopted: review/voting concludes and the exact text or asset is signed off.</li>
+    <li>Adopted → Published: Tim pulls the adopted file, commits it to the repo, and the change is deployed.</li>
+  </ul>
+  <p><strong>What a promotion requires (checklist), before marking anything Published:</strong></p>
+  <ol>
+    <li>The adopted version is the one actually committed — no last-minute rewording outside the record.</li>
+    <li>If the same value (tagline, color token, rule text) appears in more than one file, every occurrence is identified and updated together — not just the one file that prompted the change.</li>
+    <li>The commit is verified live (e.g. via <code>raw.githubusercontent.com</code> or the deployed page itself), not assumed from the commit alone.</li>
+    <li>An entry is added to the production changelog (below) before the task is considered closed.</li>
+  </ol>
+  <p>This checklist is deliberately short. The goal isn't heavy process — it's making the "did this actually ship, and everywhere it needed to" question something the record answers, instead of something someone has to remember to ask.</p>
+
+  <h2>Production changelog</h2>
+  <p>A single file in the repo — <code>CHANGELOG.md</code> at the root, or <code>docs/production-changelog.md</code> — with one row per shipped change:</p>
+  <div class="code-block"><span class="cl-h">## 2026-09-21</span>
+- <span class="cl-b">**Tagline locked**</span> across header, footer, and meta description to: "&lt;final wording&gt;"
+  Files touched: index.html, /about/index.html, /footer-partial.html
+  Source: Adopted from WIP item #&lt;id&gt;
+  Verified: raw.githubusercontent.com + live page, 2026-09-21</div>
+  <p>Each entry needs: the date, a one-line description of what changed, the list of files touched (this is what would have caught the tagline drift — a reviewer scanning past entries would see the tagline touched three files, not one), which WIP item (if any) it came from, and confirmation it was verified live.</p>
+  <p>This doesn't need tooling to start — it's a markdown file Tim edits by hand alongside each production commit, or Claude drafts the entry and Tim commits it with the change. If it proves useful, it could later gate merges (a PR template field) or feed a lightweight drift-check script that diffs a tracked value like the tagline across all files that should contain it.</p>
+
+  <h2>Open questions / next steps</h2>
+  <ul class="check-list">
+    <li><span class="box"></span>Confirm final tagline wording and Adopt it formally (first item to run through this ladder end to end)</li>
+    <li><span class="box"></span>Decide changelog location: repo root <code>CHANGELOG.md</code> vs. a <code>docs/</code> subfolder</li>
+    <li><span class="box"></span>Decide whether WIP catalog's "Approved" status should be relabeled to match this ladder (Concept Agreed / Text Approved / Adopted) so it isn't read as "live"</li>
+    <li><span class="box"></span>Pair this with the domain-by-domain rebuild scope doc — each domain rebuild is a natural point to apply this policy from day one rather than retrofitting it</li>
+  </ul>
+
+  <div style="border-top:1px solid var(--border);margin-top:30px;padding-top:16px;text-align:center">
+    <span style="font-size:12px;color:var(--lgray)">Tim King &amp; Claude &nbsp;|&nbsp; Concept — For Review &nbsp;|&nbsp; September 2026</span>
+  </div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;·&nbsp; Concept — For Review<br>
+    HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+<script src="wip-vote-widget.js"></script>
+</body>
+</html>
