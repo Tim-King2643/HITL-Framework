@@ -119,7 +119,58 @@ function itemPayload(itemId, votes) {
   if (voteDecision === 'approve' && publish) {
     decision = publish.status === 'published' ? 'published' : 'pending-publish';
   }
-  return { tim, gigi, voteDecision, decision, publish };
+  const round = votes.round == null ? null : votes.round;
+  const docStatus = docStatusFrom(tim, gigi, voteDecision, round, publish);
+  return { tim, gigi, voteDecision, decision, publish, round, docStatus, history: votes.history || [] };
+}
+
+// ── Document status ladder ───────────────────────────────────────────────
+// Added Sept 23, 2026, per Tim's request to track a document's own review
+// maturity (Proposed -> Under Review -> Concept Agreed -> Text Approved ->
+// Adopted -> Published) separately from the Section 5 Development Stage
+// ladder (Concept -> Prototype -> ... -> Commercialize), which lives in the
+// catalog instead and is a future, separate piece of work. This one reuses
+// the EXISTING Approve/Needs Revision/Park/Deny reconciliation rather than
+// adding a second voting mechanism: a `round` field on the same vote record
+// splits it into two sequential approval passes.
+//
+//   Round 1 ("Concept Agreement" — do we agree on the direction) resolving
+//   to 'approve' advances the item to Concept Agreed, logs that outcome to
+//   `history`, and resets both reviewers' picks so round 2 starts fresh.
+//
+//   Round 2 ("Final Text" — do we agree on the exact wording) resolving to
+//   'approve' logs Text Approved to `history`. Text Approved and Adopted are
+//   treated as the same moment (both reviewers signing off on final text IS
+//   adopting it) rather than a third vote round — docStatus reports
+//   'adopted' at that point, with the stepper showing both nodes passed.
+//   Published stays exactly what it already was: Tim-only, via the existing
+//   publish/mark-published endpoints, no vote involved.
+//
+// Items that already had votes before this shipped have no `round` field in
+// their stored KV record. For those, an already-resolved 'approve' is
+// treated as fully Adopted (the old system's single approval always meant
+// both concept + text at once) rather than retroactively splitting it into
+// two rounds it never went through — see the `round == null` branch below.
+// The first fresh vote cast on such an item enters the two-round system
+// going forward (see the round-advance block in the /wip-api/vote handler).
+const DOC_LADDER_STEPS = ['proposed', 'under-review', 'concept-agreed', 'text-approved', 'adopted', 'published'];
+
+function docStatusFrom(timAnn, gigiAnn, voteDecision, round, publish) {
+  if (publish && publish.status === 'published') return 'published';
+  const tim = timAnn && !timAnn.stale ? timAnn : null;
+  const gigi = gigiAnn && !gigiAnn.stale ? gigiAnn : null;
+
+  if (round == null) {
+    // Legacy item, never entered the two-round model.
+    if (voteDecision === 'approve') return 'adopted';
+    return (!tim && !gigi) ? 'proposed' : 'under-review';
+  }
+  if (round >= 2) {
+    return voteDecision === 'approve' ? 'adopted' : 'concept-agreed';
+  }
+  // round === 1
+  if (voteDecision === 'approve') return 'concept-agreed'; // transitional; the server advances the round synchronously, so this is rarely observed by a client
+  return (!tim && !gigi) ? 'proposed' : 'under-review';
 }
 
 // Best-effort notification — a failed email should never block the publish
@@ -327,14 +378,49 @@ async function handleApi(request, env, url) {
     if (!CHOICES.has(choice)) return json({ error: 'unknown choice' }, { status: 400 });
 
     const votes = await readVotes(env, itemId);
+    const version = VOTABLE_ITEMS[itemId];
+
+    // Snapshot the reconciliation as it stood BEFORE this vote is applied,
+    // so a legacy item that was already fully approved (no `round` field
+    // yet) doesn't get retroactively pulled into round-1 bookkeeping the
+    // moment someone touches it again — see docStatusFrom's `round == null`
+    // branch for why that matters.
+    const priorDecision = decisionFrom(annotate(votes.Tim, version), annotate(votes.GiGi, version));
+
     const existing = votes[reviewer];
     votes[reviewer] = {
       reviewer,
       choice,
       notes: (existing && existing.notes) || '',
       votedAt: new Date().toISOString(),
-      votedOnVersion: VOTABLE_ITEMS[itemId]
+      votedOnVersion: version
     };
+
+    const alreadyPublished = votes.publish && votes.publish.status === 'published';
+    const legacyAlreadyApproved = votes.round == null && priorDecision === 'approve';
+    if (!alreadyPublished && !legacyAlreadyApproved) {
+      if (votes.round == null) votes.round = 1;
+      const curDecision = decisionFrom(annotate(votes.Tim, version), annotate(votes.GiGi, version));
+      votes.history = votes.history || [];
+      if (votes.round === 1 && curDecision === 'approve') {
+        votes.history.push({
+          round: 1, label: 'concept-agreed', resolvedAt: new Date().toISOString(),
+          tim: votes.Tim, gigi: votes.GiGi
+        });
+        votes.Tim = null;
+        votes.GiGi = null;
+        votes.round = 2;
+      } else if (votes.round === 2 && curDecision === 'approve') {
+        const hasTextApproved = votes.history.some(function (h) { return h.label === 'text-approved'; });
+        if (!hasTextApproved) {
+          votes.history.push({
+            round: 2, label: 'text-approved', resolvedAt: new Date().toISOString(),
+            tim: votes.Tim, gigi: votes.GiGi
+          });
+        }
+      }
+    }
+
     await writeVotes(env, itemId, votes);
     return json({ ok: true, item: itemPayload(itemId, votes) });
   }

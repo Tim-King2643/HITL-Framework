@@ -31,6 +31,23 @@
   var CHOICE_LABEL = { approve: 'Approve', revise: 'Needs Revision', park: 'Park', deny: 'Deny' };
   var CHOICE_TAG = { approve: 'Approved', revise: 'Needs Revision', park: 'Parked', deny: 'Denied' };
 
+  // Document status ladder — separate from the Development Stage ladder
+  // (Concept/Step 1.../Commercialize), which lives in the catalog instead.
+  // This one tracks the document's own review maturity: Proposed -> Under
+  // Review -> Concept Agreed -> Text Approved -> Adopted -> Published.
+  var DOC_LADDER_STEPS = [
+    { id: 'proposed', label: 'Proposed' },
+    { id: 'under-review', label: 'Under Review' },
+    { id: 'concept-agreed', label: 'Concept Agreed' },
+    { id: 'text-approved', label: 'Text Approved' },
+    { id: 'adopted', label: 'Adopted' },
+    { id: 'published', label: 'Published' }
+  ];
+  // 'text-approved' has no index of its own — Adopted (index 4) implies it,
+  // since the two are treated as the same moment (see index.js). Landing on
+  // 'adopted' lights up both the Text Approved and Adopted nodes as passed.
+  var DOC_LADDER_INDEX = { proposed: 0, 'under-review': 1, 'concept-agreed': 2, adopted: 4, published: 5 };
+
   var identity = null;
   var latestItems = {};
   var pollTimer = null;
@@ -84,7 +101,18 @@
       '.wip-publish-btn:hover{background:#472F87;border-color:#472F87;}',
       '.wip-publish-hint{font-size:12px;color:var(--lgray,#888);}',
       '.wip-publish-status{font-size:12.5px;font-weight:700;color:#5A3FA6;}',
-      '.wip-publish-status-done{color:#0F6B3F;}'
+      '.wip-publish-status-done{color:#0F6B3F;}',
+      '.wip-ladder-card{box-sizing:border-box;max-width:800px;background:var(--surface,#fff);border:1px solid var(--border,#DDE3EE);border-radius:10px;',
+      'padding:14px 22px 16px;margin:20px auto 0;font-family:"Segoe UI",sans-serif;}',
+      '.wip-ladder-eyebrow{font-family:Consolas,monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--lgray,#888);margin-bottom:9px;}',
+      '.wip-ladder-steps{display:flex;align-items:center;flex-wrap:wrap;row-gap:6px;}',
+      '.wip-ladder-step{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;white-space:nowrap;color:var(--lgray,#888);}',
+      '.wip-ladder-step.is-passed{color:#1B7A4C;}',
+      '.wip-ladder-step.is-current{color:var(--navy,#1B4F8A);font-weight:700;}',
+      '.wip-ladder-dot{font-size:11px;line-height:1;}',
+      '.wip-ladder-arrow{color:var(--border,#DDE3EE);font-size:13px;margin:0 6px;}',
+      '.wip-ladder-arrow.is-passed{color:#1B7A4C;}',
+      '.wip-ladder-note{font-size:11.5px;color:var(--lgray,#888);font-style:italic;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border,#DDE3EE);}'
     ].join('');
     document.head.appendChild(style);
   }
@@ -118,8 +146,9 @@
     html += '<div class="wip-vote-status-row">' + statusLine('Tim', itemData.tim) + statusLine('GiGi', itemData.gigi) + '</div>';
 
     if (identity) {
+      var roundLabel = itemData.round === 2 ? 'the final text' : 'the concept/direction';
       html += '<div class="wip-vote-controls">';
-      html += '<div class="wip-vote-prompt">Your review, ' + identity + ':</div>';
+      html += '<div class="wip-vote-prompt">Your review, ' + identity + ' — voting on ' + roundLabel + ':</div>';
       html += '<div class="wip-vote-buttons">';
       ['approve', 'revise', 'park', 'deny'].forEach(function (c) {
         var sel = myVote && myVote.choice === c ? ' is-selected' : '';
@@ -185,6 +214,46 @@
     }
   }
 
+  function fmtDate(iso) {
+    try { return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }); }
+    catch (e) { return ''; }
+  }
+
+  function renderDocLadderMount(mount, itemId, itemData) {
+    mount.classList.add('wip-ladder-card');
+    var currentIndex = DOC_LADDER_INDEX[itemData.docStatus];
+    if (currentIndex == null) currentIndex = 0;
+
+    var html = '<div class="wip-ladder-eyebrow">Document Status</div>';
+    html += '<div class="wip-ladder-steps">';
+    DOC_LADDER_STEPS.forEach(function (step, idx) {
+      if (idx > 0) {
+        var arrowState = idx <= currentIndex ? 'is-passed' : 'is-future';
+        html += '<span class="wip-ladder-arrow ' + arrowState + '">&rarr;</span>';
+      }
+      var state = idx < currentIndex ? 'is-passed' : (idx === currentIndex ? 'is-current' : 'is-future');
+      var dot = idx < currentIndex ? '&#10003;' : (idx === currentIndex ? '&#9679;' : '&#9675;');
+      html += '<span class="wip-ladder-step ' + state + '"><span class="wip-ladder-dot">' + dot + '</span><span>' + escapeHtml(step.label) + '</span></span>';
+    });
+    html += '</div>';
+
+    var history = itemData.history || [];
+    var conceptEntry = history.filter(function (h) { return h.label === 'concept-agreed'; }).pop();
+    var textEntry = history.filter(function (h) { return h.label === 'text-approved'; }).pop();
+    var noteParts = [];
+    if (conceptEntry) noteParts.push('Concept agreed ' + fmtDate(conceptEntry.resolvedAt));
+    if (textEntry) {
+      noteParts.push('text approved ' + fmtDate(textEntry.resolvedAt));
+    } else if (itemData.round >= 2 && itemData.docStatus === 'concept-agreed') {
+      noteParts.push('now reviewing the final text');
+    }
+    if (noteParts.length) {
+      html += '<div class="wip-ladder-note">' + noteParts.join(' · ') + '.</div>';
+    }
+
+    mount.innerHTML = html;
+  }
+
   function renderHubBadge(span, itemData) {
     var meta = DECISION_META[itemData.decision] || DECISION_META.pending;
     span.textContent = meta.label;
@@ -198,6 +267,11 @@
       var itemId = mount.getAttribute('data-item');
       var itemData = latestItems[itemId];
       if (itemData) renderVoteMount(mount, itemId, itemData);
+    });
+    document.querySelectorAll('[data-wip-docladder-mount]').forEach(function (mount) {
+      var itemId = mount.getAttribute('data-item');
+      var itemData = latestItems[itemId];
+      if (itemData) renderDocLadderMount(mount, itemId, itemData);
     });
     document.querySelectorAll('[data-wip-status]').forEach(function (span) {
       var itemId = span.getAttribute('data-wip-status');
@@ -275,7 +349,7 @@
   }
 
   function init() {
-    var hasWork = document.querySelector('[data-wip-vote-mount]') || document.querySelector('[data-wip-status]');
+    var hasWork = document.querySelector('[data-wip-vote-mount]') || document.querySelector('[data-wip-status]') || document.querySelector('[data-wip-docladder-mount]');
     if (!hasWork) return;
     injectStyles();
     loadAll().finally(function () {

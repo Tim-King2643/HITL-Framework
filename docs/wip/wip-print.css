@@ -12,6 +12,7 @@
   .masthead nav,
   [data-wip-vote-mount],
   [data-wip-download-mount],
+  [data-wip-docladder-mount],
   .wip-vote-card,
   .mock-toggle-row,
   footer a[href="index.html"],
