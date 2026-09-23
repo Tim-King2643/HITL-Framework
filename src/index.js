@@ -31,7 +31,11 @@ const VOTABLE_ITEMS = {
   'shock-wave': '2026-09-15',
   'concept-to-principle': '2026-09-15',
   'rule-catalog': '2026-09-08',
-  'wrpm': '2026-09-15'
+  'wrpm': '2026-09-15',
+  'wr-display-migration': '2026-09-22',
+  'wr-progression-methodology': '2026-09-21',
+  'wr-palette': '2026-09-21',
+  'content-promotion-policy': '2026-09-23'
 };
 
 // Friendly titles for notification emails — falls back to the raw itemId if
@@ -45,7 +49,11 @@ const ITEM_TITLES = {
   'shock-wave': 'The Shock Wave Effect',
   'concept-to-principle': 'From Concept to Principle',
   'rule-catalog': 'Framework Content Generation Rules — The Complete Catalog',
-  'wrpm': 'Working-Relationship Progression — A Design Methodology'
+  'wrpm': 'Working-Relationship Progression — A Design Methodology',
+  'wr-display-migration': 'Working Relationship as the Primary Display Lens',
+  'wr-progression-methodology': 'Working-Relationship Progression — Plain-Language Spec',
+  'wr-palette': 'WR Category Palette Standard',
+  'content-promotion-policy': 'Content Promotion Policy — Sandbox / WIP / Production'
 };
 
 // Only Tim can request/complete a publish — GiGi reviews and votes, but
