@@ -1,0 +1,57 @@
+/* Shared print stylesheet for docs/wip/ item pages.
+   Loaded with <link rel="stylesheet" href="wip-print.css" media="print">
+   so it only applies when printing / saving as PDF via the browser's
+   native print dialog (triggered by the "Download PDF" button in
+   wip-download-widget.js). Never affects on-screen rendering. */
+
+@media print {
+  html, body { background: #fff !important; }
+
+  /* Chrome that only makes sense on screen. */
+  div[style*="position:sticky"],
+  .masthead nav,
+  [data-wip-vote-mount],
+  [data-wip-download-mount],
+  .wip-vote-card,
+  .mock-toggle-row,
+  footer a[href="index.html"],
+  footer a[href$=".pdf"],
+  a.pdf-download {
+    display: none !important;
+  }
+
+  /* Any open interactive info/consequence popover is a screen affordance
+     — printing whatever happened to be open mid-click would be noise. */
+  .gates-info.open, .wr-cons-pop.open {
+    display: none !important;
+  }
+
+  a { color: #1B4F8A !important; text-decoration: underline; }
+
+  .wrap { max-width: 100% !important; padding: 0.25in 0 !important; margin: 0 !important; }
+
+  /* Dark navy masthead reads fine on screen but burns ink/toner and can
+     print as a solid black block depending on the browser's background-
+     graphics setting — swap to a light, bordered header for print. */
+  .masthead {
+    background: #fff !important;
+    color: #0D2D4F !important;
+    padding: 0 0 16px !important;
+    border-bottom: 2px solid #0D2D4F;
+    margin-bottom: 20px;
+  }
+  .masthead .eyebrow { color: #444 !important; }
+  .masthead .subtitle { color: #444 !important; }
+  .masthead h1 { color: #0D2D4F !important; }
+
+  /* Keep structured blocks from splitting awkwardly across a page break. */
+  table, tr, .gates-card, .concept-flag, .related-reqs, .key-fix,
+  .code-block, .applied-flag, .gov-flag, .mock-shell {
+    break-inside: avoid;
+  }
+  h2, h3 { break-after: avoid; }
+
+  .code-block { background: #F4F6FB !important; color: #0D2D4F !important; border: 1px solid #DDE3EE; }
+
+  footer { border-top: 1px solid #DDE3EE; }
+}
