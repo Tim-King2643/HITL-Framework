@@ -2101,7 +2101,10 @@ function rollupRowHtml(l3, icon) {
 // override activityCardHtml applies to its own card), so both sit at the
 // same left edge and run the same full width.
 function inlineLegendHtml(indentPx) {
-  return '<div class="gates-legend-box gates-legend-box-inline" style="margin-left:' + indentPx + 'px;">' +
+  // Full table width, same as the top-of-page legend (per Tim, Sept 24, 2026),
+  // rather than indented to the activity cards' left edge. indentPx kept in
+  // the signature so the two call sites don't change.
+  return '<div class="gates-legend-box gates-legend-box-inline" style="margin-left:0;margin-right:0;">' +
     '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Colored step &mdash; one of the six Working-Relationship categories, Human-only through Automation</span>' +
     '<span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#166534;font-weight:700;">&#10003;</span> Passed &mdash; evidence already cleared this step</span>' +
     '<span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open &mdash; reachable next, not required yet</span>' +
