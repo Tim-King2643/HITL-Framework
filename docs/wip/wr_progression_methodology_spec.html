@@ -53,11 +53,14 @@ ul.plain li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bo
 .feature-box { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 8px 0 20px; }
 .feature-box h3 { margin-top: 0; }
 
-.ramp-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 6px; align-items: center; }
-.ramp-step { display: flex; flex-direction: column; align-items: center; width: 84px; font-size: 10.5px; color: var(--gray); text-align: center; }
-.ramp-step .rs-dot { width: 26px; height: 26px; border-radius: 50%; margin-bottom: 5px; }
-.ramp-step .rs-name { font-weight: 700; color: var(--dark); }
-.ramp-arrow { color: var(--lgray); font-size: 16px; }
+/* Sizing/alignment matched to the "Working Relationship" gates track in
+   docs/sandbox/pcf7.html (.gate-node/.gate-circle/.gate-label/.gate-arrow)
+   so this legend reads as the same visual system, not a bigger lookalike. */
+.ramp-row { display: flex; flex-wrap: wrap; gap: 0; margin: 12px 0 6px; align-items: flex-start; }
+.ramp-step { display: flex; flex-direction: column; align-items: center; min-width: 84px; flex: 0 0 auto; text-align: center; }
+.ramp-step .rs-dot { width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; }
+.ramp-step .rs-name { font-size: 11px; font-weight: 500; color: #000; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
+.ramp-arrow { width: 22px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; color: var(--lgray); font-size: 16px; font-weight: 700; }
 
 .proof-grid { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 20px; }
 .proof-card { flex: 1; min-width: 200px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
