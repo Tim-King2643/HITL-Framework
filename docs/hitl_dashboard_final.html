@@ -5025,7 +5025,10 @@ function renderRoleMixBar(l3s) {
 // Director of HR Ops. The self-consistency check found VP People & Culture never
 // once appears as C or I across HRBP Manager's 11 owned (Accountable) L3s, while
 // Director of HR Ops appears 6 times with no other candidate close behind. Logged
-// in CHANGELOG.md.
+// as CL-001 in docs/wip/changelog-data.js (rendered at docs/wip/production_changelog.html).
+// Any future reportsTo edit in this object needs its own CHANGE_LOG entry there —
+// see .github/workflows/changelog-audit.yml, which fails CI if this file's
+// reportsTo values change without a matching changelog-data.js update.
 const ROLE_TAXONOMY_BY_DOMAIN = {
   "7.0": [
     { name: "CHRO", tier: "Executive", reportsTo: null },

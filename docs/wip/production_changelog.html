@@ -125,24 +125,37 @@ footer strong { color: var(--navy); }
   </p>
 </footer>
 
+<script src="changelog-data.js"></script>
 <script>
-const RECORDS = [
-  {
-    "id": "CL-001",
-    "date": "2026-09-23",
-    "summary": "HRBP Manager reportsTo corrected from VP People & Culture to Director of HR Ops.",
-    "kind": "Data Correction",
-    "files": ["docs/hitl_dashboard_final.html"],
-    "wipItem": null,
-    "source": "reportsTo self-consistency check — see docs/wip/wr_progression_methodology_spec.html “Proven So Far,” confirmed by GiGi directly rather than run through a voted WIP item",
-    "reason": "VP People & Culture never appears as C or I across HRBP Manager's 11 owned (Accountable) L3 processes; Director of HR Ops appears 6 times with no other candidate close behind.",
-    "verified": "computeSpanOfControl / getRoleTaxonomy re-run clean for PCF 7.0 (no orphans or cycles); requirements register GR-035/GR-040 updated to Implemented."
-  }
-];
+// CHANGE_LOG comes from changelog-data.js — the single shared source of
+// truth also read live by docs/sandbox/pcf7.html. This page only renders
+// it; it doesn't keep its own copy of the data.
+const RECORDS = CHANGE_LOG;
+
+const KIND_LABELS = {
+  "reportsTo": "Reports-To Correction",
+  "wr-ceiling": "WR Ceiling",
+  "wr-current": "WR Current",
+  "wr-future": "WR Future",
+  "wr-consequence": "WR Consequence"
+};
+function kindLabel(k) {
+  if (KIND_LABELS[k]) return KIND_LABELS[k];
+  return String(k).replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+}
 
 function esc(s) {
   if (s === null || s === undefined) return "";
   return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function targetLine(t) {
+  if (!t) return "";
+  const parts = [];
+  if (t.domain) parts.push("Domain " + t.domain);
+  if (t.activity) parts.push("Activity " + t.activity);
+  if (t.role) parts.push(t.role);
+  return parts.join(" · ");
 }
 
 function renderSummary() {
@@ -160,7 +173,7 @@ function populateKinds() {
   const sel = document.getElementById("kindSelect");
   kinds.forEach(k => {
     const opt = document.createElement("option");
-    opt.value = k; opt.textContent = k;
+    opt.value = k; opt.textContent = kindLabel(k);
     sel.appendChild(opt);
   });
 }
@@ -180,23 +193,30 @@ function renderTable() {
   sorted.forEach((r, idx) => {
     if (kind !== "all" && r.kind !== kind) return;
     if (q) {
-      const hay = [r.id, r.summary, r.reason, r.source, r.verified, r.kind, ...r.files]
-        .filter(Boolean).join(" ").toLowerCase();
+      const t = r.target || {};
+      const hay = [
+        r.id, r.summary, r.reason, r.source, r.verified, r.kind, r.requestedBy,
+        r.from, r.to, t.domain, t.activity, t.role, ...r.files
+      ].filter(Boolean).join(" ").toLowerCase();
       if (!hay.includes(q)) return;
     }
     shown++;
     const rowTr = document.createElement("tr");
     rowTr.className = "row";
+    rowTr.id = "row-" + esc(r.id);
     rowTr.innerHTML = `
       <td class="cl-date">${esc(r.date)}</td>
       <td class="cl-change">${esc(r.summary)}</td>
-      <td><span class="cl-kind">${esc(r.kind)}</span></td>
+      <td><span class="cl-kind">${esc(kindLabel(r.kind))}</span></td>
       <td class="cl-files">${r.files.map(esc).join("<br>")}</td>
     `;
     const detailTr = document.createElement("tr");
     detailTr.className = "detail-row";
     detailTr.innerHTML = `<td colspan="4"><div class="detail-box">
-      ${detailField("WIP item", r.wipItem ? esc(r.wipItem) : "&mdash; (not run through a voted WIP item)")}
+      ${detailField("Target", targetLine(r.target))}
+      ${detailField("Requested by", r.requestedBy ? esc(r.requestedBy) : "")}
+      ${detailField("Changed from", r.from ? esc(r.from) : "")}
+      ${detailField("Changed to", r.to ? esc(r.to) : "")}
       ${detailField("Source", r.source)}
       ${detailField("Reason", r.reason)}
       ${detailField("Verified", r.verified)}
@@ -214,9 +234,34 @@ function renderTable() {
 document.getElementById("searchBox").addEventListener("input", renderTable);
 document.getElementById("kindSelect").addEventListener("change", renderTable);
 
+// Deep-link support: ?q=<term> pre-fills the search box (used by
+// docs/sandbox/pcf7.html's Change History link, e.g. ?q=7.2.1.1) and
+// opens the matching entry's detail row automatically when there's
+// exactly one match.
+function applyQueryParam() {
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get("q");
+  if (q) document.getElementById("searchBox").value = q;
+}
+
+applyQueryParam();
 renderSummary();
 populateKinds();
 renderTable();
+
+(function openSingleMatch() {
+  const params = new URLSearchParams(window.location.search);
+  if (!params.get("q")) return;
+  const visible = document.querySelectorAll("#tbody tr.row");
+  if (visible.length === 1) {
+    const id = visible[0].id.replace(/^row-/, "");
+    const detail = visible[0].nextElementSibling;
+    if (detail && detail.classList.contains("detail-row")) {
+      detail.classList.add("open");
+      visible[0].scrollIntoView({ block: "center" });
+    }
+  }
+})();
 </script>
 </body>
 </html>

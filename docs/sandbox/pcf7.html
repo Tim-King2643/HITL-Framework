@@ -197,6 +197,15 @@ td:first-child { text-align: left; }
 .gates-req-list { list-style: none; margin: 0 0 8px; padding: 0; }
 .gates-req-list li { display: flex; align-items: flex-start; gap: 7px; font-size: 11px; line-height: 1.5; padding: 2px 0; color: var(--gray); }
 .gates-req-list li::before { content: ''; flex: 0 0 auto; width: 13px; height: 13px; margin-top: 1px; border-radius: 3px; border: 1.3px dashed #C6CDD9; display: inline-block; }
+/* Per-activity classification change history (GR-043) — only rendered on
+   the ceiling info panel, and only when the shared changelog (see
+   ../wip/changelog-data.js) has an entry for this activity, so the 100+
+   never-revised activities show nothing extra. A link out to the
+   Production Changelog, not inline history text — the changelog itself
+   is the single source of truth. */
+.gates-history-link-wrap { border-top: 1px solid var(--border); padding-top: 8px; margin-top: 2px; }
+.gates-history-link { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--navy); text-decoration: none; }
+.gates-history-link:hover { text-decoration: underline; }
 .gates-rollup-block { display: flex; flex-direction: column; gap: 4px; padding: 4px 0; }
 .gates-rollup-toprow { display: flex; align-items: flex-start; gap: 10px; padding-right: 26px; }
 .gates-rollup { font-size: 11px; color: var(--gray); }
@@ -533,6 +542,7 @@ td.crud-d .crud-entity { color: #991B1B; }
 </div>
 
 <script src="sandbox-notes-widget.js"></script>
+<script src="../wip/changelog-data.js"></script>
 <script>
 /* ── Real PCF 7.0 data, extracted from the live dashboard ────────────── */
 const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 68, 55, 43, 33],
@@ -925,6 +935,16 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
 //   Still genuinely null = not yet reasoned at all (no Current State tag
 //   yet), same honest-blank convention as everywhere else in this
 //   framework.
+//
+// Change history (GR-043 in docs/wip/requirements_register.html — GiGi's
+//   ask to track why a classification changed and what evidence drove
+//   it) is NOT stored per-activity here. It lives in the single shared
+//   changelog, ../wip/changelog-data.js's CHANGE_LOG array, alongside
+//   every other modeled-data correction (reportsTo edges, etc.) rather
+//   than duplicated in WR_DATA. gatesInfoContent() looks up CHANGE_LOG
+//   entries with kind:"wr-ceiling" and a matching target.activity at
+//   render time and, when any exist, shows a Change History link to the
+//   Production Changelog instead of inline text.
 
 const WR_CATS = {
   "Automation":       { color:"#7DAEE0", h:10 },
@@ -979,7 +999,7 @@ const WR_DATA = {
   "7.1.3.3": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Distribution of already-decided content; a wording error is easily corrected.", consFactors:["reversibility"], ceilingFactors:["technical"], ceilingNote:"Stakeholder updates can move to agent-delegation once accuracy and tone are proven at scale — a technical readiness question." },
   "7.1.3.4": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Broad reach (touches every downstream plan) but this is the review/correction step itself, which is inherently self-limiting.", consFactors:["reach"], ceilingFactors:["accountability"], ceilingNote:"Revising HR's own plans is a standing planning-authority duty, the same logic as 7.1.2.1's forecasting work." },
   "7.1.4": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Feeds downstream skills/pay/promotion decisions across the whole workforce — broad reach is the driving factor, though the model itself is revisable, unlike the individual decisions built on top of it.", consFactors:["human","reach"], ceilingFactors:["floor","accountability"], ceilingNote:"Foundational model feeds downstream skills/pay/promotion decisions — same tier as 7.1.1's own strategy work." },
-  "7.2.1.1": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Budget-authority and strategic-fit judgment; moderate operational/financial impact if misaligned, corrected at the next planning pass.", consFactors:["ops","reversibility"], ceilingFactors:["accountability"], ceilingNote:"Ceiling decided: Judgment, permanently. A standing strategic/budget-authority duty — the same logic as the rest of 7.1.1's strategy-formation work — holds this line regardless of technical capability. Resolved by Tim (Sept 20, 2026), superseding WRPM §3's earlier open/undecided flag." },
+  "7.2.1.1": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", cons:"Moderate", consNote:"Budget-authority and strategic-fit judgment; moderate operational/financial impact if misaligned, corrected at the next planning pass.", consFactors:["ops","reversibility"], ceilingFactors:["accountability"], ceilingNote:"Ceiling decided: Judgment, permanently. A standing strategic/budget-authority duty — the same logic as the rest of 7.1.1's strategy-formation work — holds this line regardless of technical capability. Resolved by Tim (Sept 20, 2026), superseding WRPM §3's earlier open/undecided flag. See CL-002 in the Production Changelog." },
   "7.2.1.2": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Mechanical record-creation step; fully reversible, no legal exposure.", consFactors:["reversibility"], ceilingFactors:["top"], ceilingNote:"Opening a requisition from an already-approved template is fully mechanical — automation is the natural ceiling." },
   "7.2.1.3": { rel:"Oversight", future:"Oversight", ceiling:"Agent-delegation", cons:"High", consNote:"This is the budget-commitment gate — reversing an approved-then-wrong hire is a real financial and organizational cost, and removing the sign-off here is a governance choice, not just a technical one.", consFactors:["ops","reversibility"], ceilingFactors:["governance","technical"], ceilingNote:"Ceiling is knowable, but reaching it is a governance choice (removing human sign-off), not only a technical one." },
   "7.2.1.4": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Publication step; low stakes and reversible.", consFactors:["reversibility"], ceilingFactors:["top"], ceilingNote:"Posting an already-approved requisition to job boards is fully mechanical — automation is the ceiling." },
@@ -1786,6 +1806,24 @@ function roleImpactNote(ni, currentIdx, act, role) {
   return { flagged: true, text: "If " + act + " advances to this step, " + role + "'s hands-on involvement drops to " + drop + " for this activity — worth flagging for a future role-definition review, not a change to make today." };
 }
 
+// Looks up the shared changelog (../wip/changelog-data.js, loaded via
+// <script src>) for any wr-ceiling entries logged against this activity,
+// and if there are any, returns a "Change History" link out to the
+// Production Changelog (pre-filtered to this activity via ?q=) rather
+// than duplicating the entry's text here. CHANGE_LOG is the single
+// source of truth; this box only links to it.
+function ceilingHistoryLinkHtml(code) {
+  if (typeof CHANGE_LOG === 'undefined') return '';
+  const matches = CHANGE_LOG.filter(function (r) {
+    return r.kind === 'wr-ceiling' && r.target && r.target.activity === code;
+  });
+  if (!matches.length) return '';
+  return '<div class="gates-history-link-wrap">' +
+    '<a class="gates-history-link" href="../wip/production_changelog.html?q=' +
+    encodeURIComponent(code) + '" target="_blank" rel="noopener">Change History &rarr;</a>' +
+    '</div>';
+}
+
 function gatesInfoContent(code, key) {
   const w = wrCell(code);
   const info = CODE_INFO[code] || { name: code, role: 'The accountable role' };
@@ -1794,9 +1832,11 @@ function gatesInfoContent(code, key) {
       const on = (w.ceilingFactors || []).indexOf(f.key) !== -1;
       return '<li class="' + (on ? 'wr-cf-on' : 'wr-cf-off') + '"><span class="wr-cf-box">' + (on ? '&#10003;' : '') + '</span>' + f.label + '</li>';
     }).join('');
+    const historyHtml = ceilingHistoryLinkHtml(code);
     return '<div class="gates-info-title">Why the ceiling sits at ' + w.ceiling + '</div>' +
       '<ul class="wr-cf-list">' + items + '</ul>' +
-      '<p class="wr-cf-note">' + (w.ceilingNote || '') + '</p>';
+      '<p class="wr-cf-note">' + (w.ceilingNote || '') + '</p>' +
+      historyHtml;
   }
   if (key.charAt(0) === 'g') {
     const gi = parseInt(key.slice(1), 10);

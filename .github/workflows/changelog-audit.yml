@@ -1,0 +1,33 @@
+name: Changelog audit
+
+# Enforces the automatic half of GR-043 (docs/wip/requirements_register.html):
+# any push or PR that changes a tracked modeled-data value — a reportsTo edge
+# in docs/hitl_dashboard_final.html, or a WR rel/future/ceiling value in
+# docs/sandbox/pcf7.html — must also add a new entry to
+# docs/wip/changelog-data.js in the same range. The "why" is still written by
+# a human (Tim or Claude, on Tim's or GiGi's direction); this job only makes
+# sure that step never gets silently skipped.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run changelog audit
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+            HEAD="${{ github.event.pull_request.head.sha }}"
+          else
+            BASE="${{ github.event.before }}"
+            HEAD="${{ github.sha }}"
+          fi
+          node scripts/check-changelog-audit.mjs "$BASE" "$HEAD"
