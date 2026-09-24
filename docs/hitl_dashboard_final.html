@@ -5026,9 +5026,13 @@ function renderRoleMixBar(l3s) {
 // once appears as C or I across HRBP Manager's 11 owned (Accountable) L3s, while
 // Director of HR Ops appears 6 times with no other candidate close behind. Logged
 // as CL-001 in docs/wip/changelog-data.js (rendered at docs/wip/production_changelog.html).
-// Any future reportsTo edit in this object needs its own CHANGE_LOG entry there —
-// see .github/workflows/changelog-audit.yml, which fails CI if this file's
-// reportsTo values change without a matching changelog-data.js update.
+// Per the Content Promotion Policy's master-data lane (docs/wip/content_promotion_policy.html),
+// docs/sandbox/pcf7.html's ROLE_TAXONOMY is the master table for this data —
+// a future reportsTo correction is reasoned and edited there first, logged as a
+// CHANGE_LOG entry, then manually published here to match, not the other way
+// around. Any reportsTo edit in this object still needs its own CHANGE_LOG
+// entry — see .github/workflows/changelog-audit.yml, which fails CI if this
+// file's reportsTo values change without a matching changelog-data.js update.
 const ROLE_TAXONOMY_BY_DOMAIN = {
   "7.0": [
     { name: "CHRO", tier: "Executive", reportsTo: null },

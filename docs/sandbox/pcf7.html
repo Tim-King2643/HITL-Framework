@@ -1388,14 +1388,20 @@ function consRollupValueOnly(l3s) {
    L3 when it holds R or A on it; C/I are excluded, since this measures
    whose work actually changes as a process's pattern automates. reportsTo
    is a first-pass reasoned structure (July 31, 2026), not externally
-   sourced — carried over unchanged from the live dashboard. ─────────────── */
+   sourced. This sandbox copy is the master data table per the Content
+   Promotion Policy's master-data lane (docs/wip/content_promotion_policy.html):
+   a reportsTo correction is reasoned and edited HERE first, logged as a
+   CHANGE_LOG entry in docs/wip/changelog-data.js, then manually published
+   to docs/hitl_dashboard_final.html's ROLE_TAXONOMY_BY_DOMAIN — not the
+   other direction. See CL-001/CL-003: HRBP Manager corrected to Director
+   of HR Ops (Sept 23, 2026). ─────────────── */
 const ROLE_TAXONOMY = [
   { name: "CHRO", tier: "Executive", reportsTo: null },
   { name: "SVP Talent Management", tier: "Executive", reportsTo: "CHRO" },
   { name: "VP People & Culture", tier: "Executive", reportsTo: "CHRO" },
   { name: "Director of TA", tier: "Managerial", reportsTo: "SVP Talent Management" },
   { name: "Director of L&D", tier: "Managerial", reportsTo: "SVP Talent Management" },
-  { name: "HRBP Manager", tier: "Managerial", reportsTo: "VP People & Culture" },
+  { name: "HRBP Manager", tier: "Managerial", reportsTo: "Director of HR Ops" },
   { name: "Compensation & Benefits Manager", tier: "Managerial", reportsTo: "Director of TA" },
   { name: "Director of HR Ops", tier: "Managerial", reportsTo: "CHRO", contextDependent: true },
   { name: "HR Generalist", tier: "Operational", reportsTo: "HRBP Manager" },

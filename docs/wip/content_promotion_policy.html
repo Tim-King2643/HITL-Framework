@@ -110,6 +110,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
     <span class="rr-label">Related Requirements — Requirements Register</span>
     <ul>
     <li><code>GR-045</code> — define an explicit content-promotion pipeline (tiers, status ladder, checklist, changelog) so changes can't silently drift between sandbox, WIP, and production</li>
+    <li><code>GR-035</code> / <code>GR-040</code> — the HRBP Manager reportsTo correction that established the master-data lane below in practice, before it was written down here</li>
     </ul>
   </div>
 
@@ -127,10 +128,22 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
       <tr><td class="row-name">Production (hitldrivenarchitecture.com, source of truth in Tim-King2643/HITL-Framework)</td><td>The live, publicly reachable site</td><td>The only tier where changes are tracked (see the changelog below). Nothing is "production" until it has actually been committed to the repo and deployed — a WIP item marked Approved is not yet production.</td></tr>
     </tbody>
   </table>
-  <p>Today there is no enforced boundary between these — a wording can drift from sandbox into what people treat as settled without ever passing through WIP review or a recorded production commit. The status ladder below is how a piece of content earns its way from one tier to the next, on the record.</p>
+  <p>Today there is no enforced boundary between these — a wording can drift from sandbox into what people treat as settled without ever passing through WIP review or a recorded production commit. The status ladder below is how a piece of content earns its way from one tier to the next, on the record — for content. Master data is different, and has its own lane; see below.</p>
+
+  <h2>Master data corrections — a separate, lighter lane</h2>
+  <p>Not everything that changes is <em>content</em> in the sense the tiers above were built for. A reportsTo edge in the Organizational Role Taxonomy, a working-relationship or Progression Ceiling classification in WR_DATA — these are master-data values, not authored material, and routing a correction like that through Sandbox → WIP review → a vote → Adopted → Published would be process for its own sake. The evidence behind a correction (a RACI self-consistency check, an evidence walkthrough against a spec) already <em>is</em> the review. Nobody needs to vote on whether HRBP Manager's manager is VP People &amp; Culture or Director of HR Ops once the RACI data has already settled it.</p>
+  <p>So master data corrections skip the status ladder and use a three-step path instead:</p>
+  <ol>
+    <li><strong>Record it.</strong> Add an entry to <code>docs/wip/changelog-data.js</code>'s <code>CHANGE_LOG</code> — what changed, who requested it (Tim or GiGi), the source evidence, how it was verified. This entry <em>is</em> the review; there's no separate WIP catalog item and nothing gets voted on.</li>
+    <li><strong>Update the sandbox's copy first.</strong> The sandbox (<code>docs/sandbox/pcf7.html</code>) holds the working master table for reasoned data — <code>ROLE_TAXONOMY</code>, <code>WR_DATA</code> — because that's where the reasoning behind a correction already happens. The sandbox is edited first, ahead of production, for this category of change specifically.</li>
+    <li><strong>Publish to production manually.</strong> Tim copies the corrected value(s) into the matching production file (e.g. <code>docs/hitl_dashboard_final.html</code>'s <code>ROLE_TAXONOMY_BY_DOMAIN</code>) and commits. There's no Adopted status and no Published stage to clear — the changelog entry from step 1 is the record that it happened, why, and what it's based on.</li>
+  </ol>
+  <p>The changelog-audit CI job (<code>.github/workflows/changelog-audit.yml</code>) is what keeps this honest without adding process on top of it: it fails the build if a tracked master-data file changes without a matching new <code>CHANGE_LOG</code> entry landing in the same push — whichever file changed first.</p>
+  <p><strong>What still goes through the full ladder below:</strong> anything actually being built or written — new UI, new components, rewritten copy, layout, anything more than one person should reasonably weigh in on before it ships. The dividing line isn't "sandbox vs. production" — it's whether the sandbox is doing free-form exploration (full ladder applies) or holding the current confirmed value of an already-settled fact (this lighter lane applies).</p>
+  <p>This formalizes what already happened in practice: the HRBP Manager reportsTo correction (CL-001) and its follow-up sync into the sandbox's own taxonomy copy (CL-003) both went straight from evidence to changelog entry to production, with no WIP item in between — see <a href="production_changelog.html">Production Changelog</a>.</p>
 
   <h2>Status ladder, applied to content</h2>
-  <p>GiGi's ladder for the collaboration docs — Proposed → Under Review → Concept Agreed → Text Approved → Adopted — maps onto the three tiers with one addition at the end, since content also has to actually land in the repo and go live:</p>
+  <p>GiGi's ladder for the collaboration docs — Proposed → Under Review → Concept Agreed → Text Approved → Adopted — maps onto the three tiers with one addition at the end, since content also has to actually land in the repo and go live. (Master data corrections, above, don't use this ladder at all.)</p>
   <table>
     <thead><tr><th>Status</th><th>Tier</th><th>What it means</th></tr></thead>
     <tbody>
@@ -145,6 +158,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <div class="key-fix">The key fix: <strong>Adopted ≠ Published.</strong> An item can sit at Adopted indefinitely without being live, and that's fine — but nobody should describe it as "done" until it clears the last step. This is exactly the gap that let the tagline drift: it was effectively treated as agreed-on in more than one place without ever being tracked through to a single Published version.</div>
 
   <h2>Promotion mechanics</h2>
+  <p><em>This section covers promotion through the status ladder above — i.e. content. Master data corrections use the three-step path described in the lighter lane above instead.</em></p>
   <p><strong>Who moves things:</strong> Tim is the only one who commits to production (via the GitHub web editor or desktop, as today). Claude prepares the change and verifies it landed; Tim and GiGi both weigh in during WIP review, but promotion to Production is a single deliberate act Tim takes, not something that happens by consensus alone.</p>
   <p><strong>What triggers a move between tiers:</strong></p>
   <ul class="plain">
@@ -163,7 +177,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
 
   <h2>Production changelog</h2>
   <p><strong>Decided (Sept 23, 2026):</strong> not a bare repo file — a living page in the WIP hub, <a href="production_changelog.html">docs/wip/production_changelog.html</a>, following the same pattern as the <a href="requirements_register.html">Requirements Register</a>: filterable/searchable, one row per shipped change, expandable to the full record. Tim and Claude add to it directly; GiGi reviews it there too, same as the register.</p>
-  <p>Each entry carries: the date, a one-line description of what changed, the kind of change, the list of files touched (this is what would have caught the tagline drift — a reviewer scanning past entries would see the tagline touched three files, not one), the source evidence behind the change, and confirmation it was verified live. Its first real entry (HRBP Manager's reportsTo correction) is already logged there.</p>
+  <p>Each entry carries: the date, who requested it, a one-line description of what changed, the kind of change, the list of files touched (this is what would have caught the tagline drift — a reviewer scanning past entries would see the tagline touched three files, not one), the source evidence behind the change, and confirmation it was verified live. It now doubles as the record for master data corrections (the lighter lane above) — its first entries are the HRBP Manager reportsTo correction (CL-001) and the follow-up sync of that same correction into the sandbox's own taxonomy copy (CL-003).</p>
   <p>If it proves useful, it could later gate merges (a PR template field) or feed a lightweight drift-check script that diffs a tracked value like the tagline across all files that should contain it.</p>
 
   <h2>Open questions / next steps</h2>
