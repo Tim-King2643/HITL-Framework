@@ -162,19 +162,13 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <p>This checklist is deliberately short. The goal isn't heavy process — it's making the "did this actually ship, and everywhere it needed to" question something the record answers, instead of something someone has to remember to ask.</p>
 
   <h2>Production changelog</h2>
-  <p>A single file in the repo — <code>CHANGELOG.md</code> at the root, or <code>docs/production-changelog.md</code> — with one row per shipped change:</p>
-  <div class="code-block"><span class="cl-h">## 2026-09-21</span>
-- <span class="cl-b">**Tagline locked**</span> across header, footer, and meta description to: "&lt;final wording&gt;"
-  Files touched: index.html, /about/index.html, /footer-partial.html
-  Source: Adopted from WIP item #&lt;id&gt;
-  Verified: raw.githubusercontent.com + live page, 2026-09-21</div>
-  <p>Each entry needs: the date, a one-line description of what changed, the list of files touched (this is what would have caught the tagline drift — a reviewer scanning past entries would see the tagline touched three files, not one), which WIP item (if any) it came from, and confirmation it was verified live.</p>
-  <p>This doesn't need tooling to start — it's a markdown file Tim edits by hand alongside each production commit, or Claude drafts the entry and Tim commits it with the change. If it proves useful, it could later gate merges (a PR template field) or feed a lightweight drift-check script that diffs a tracked value like the tagline across all files that should contain it.</p>
+  <p><strong>Decided (Sept 23, 2026):</strong> not a bare repo file — a living page in the WIP hub, <a href="production_changelog.html">docs/wip/production_changelog.html</a>, following the same pattern as the <a href="requirements_register.html">Requirements Register</a>: filterable/searchable, one row per shipped change, expandable to the full record. Tim and Claude add to it directly; GiGi reviews it there too, same as the register.</p>
+  <p>Each entry carries: the date, a one-line description of what changed, the kind of change, the list of files touched (this is what would have caught the tagline drift — a reviewer scanning past entries would see the tagline touched three files, not one), the source evidence behind the change, and confirmation it was verified live. Its first real entry (HRBP Manager's reportsTo correction) is already logged there.</p>
+  <p>If it proves useful, it could later gate merges (a PR template field) or feed a lightweight drift-check script that diffs a tracked value like the tagline across all files that should contain it.</p>
 
   <h2>Open questions / next steps</h2>
   <ul class="check-list">
     <li><span class="box"></span>Confirm final tagline wording and Adopt it formally (first item to run through this ladder end to end)</li>
-    <li><span class="box"></span>Decide changelog location: repo root <code>CHANGELOG.md</code> vs. a <code>docs/</code> subfolder</li>
     <li><span class="box"></span>Decide whether WIP catalog's "Approved" status should be relabeled to match this ladder (Concept Agreed / Text Approved / Adopted) so it isn't read as "live"</li>
     <li><span class="box"></span>Pair this with the domain-by-domain rebuild scope doc — each domain rebuild is a natural point to apply this policy from day one rather than retrofitting it</li>
   </ul>

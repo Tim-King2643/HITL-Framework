@@ -5020,6 +5020,12 @@ function renderRoleMixBar(l3s) {
 // not externally sourced, walked through with Tim (one correction made: Compensation
 // & Benefits Manager -> Director of TA). contextDependent flags Director of HR Ops's
 // placement, which Tim called genuinely ambiguous rather than confirmed.
+// REAL CORRECTION (Sept 23, 2026, per GiGi's direction to correct reportsTo edges
+// the data actually supports): HRBP Manager moved from VP People & Culture to
+// Director of HR Ops. The self-consistency check found VP People & Culture never
+// once appears as C or I across HRBP Manager's 11 owned (Accountable) L3s, while
+// Director of HR Ops appears 6 times with no other candidate close behind. Logged
+// in CHANGELOG.md.
 const ROLE_TAXONOMY_BY_DOMAIN = {
   "7.0": [
     { name: "CHRO", tier: "Executive", reportsTo: null },
@@ -5027,7 +5033,7 @@ const ROLE_TAXONOMY_BY_DOMAIN = {
     { name: "VP People & Culture", tier: "Executive", reportsTo: "CHRO" },
     { name: "Director of TA", tier: "Managerial", reportsTo: "SVP Talent Management" },
     { name: "Director of L&D", tier: "Managerial", reportsTo: "SVP Talent Management" },
-    { name: "HRBP Manager", tier: "Managerial", reportsTo: "VP People & Culture" },
+    { name: "HRBP Manager", tier: "Managerial", reportsTo: "Director of HR Ops" },
     { name: "Compensation & Benefits Manager", tier: "Managerial", reportsTo: "Director of TA" },
     { name: "Director of HR Ops", tier: "Managerial", reportsTo: "CHRO", contextDependent: true },
     { name: "HR Generalist", tier: "Operational", reportsTo: "HRBP Manager" },

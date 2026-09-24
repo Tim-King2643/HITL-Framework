@@ -29,29 +29,57 @@ body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--
 .masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
 .masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
 
+.draft-ribbon { position: sticky; top: 0; z-index: 1000; background: var(--amber-bg); border-bottom: 2px solid var(--amber); padding: 10px 20px; text-align: center; font-size: 12.5px; color: var(--amber-text); }
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: var(--amber-text); font-weight: 600; }
+
 .intro { max-width: 900px; margin: 0 auto; padding: 24px 24px 8px; text-align: center; }
 .intro p.lead { font-size: 16px; color: var(--navy); font-style: italic; margin-bottom: 10px; line-height: 1.6; }
 .intro p { font-size: 13.5px; color: var(--gray); line-height: 1.7; }
 
-.entries-wrap { max-width: 900px; margin: 24px auto 0; padding: 0 24px 40px; }
+.summary-wrap { max-width: 1100px; margin: 18px auto 0; padding: 0 24px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.summary-tile { flex: 1 1 140px; max-width: 200px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 10px; text-align: center; }
+.summary-tile .n { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; color: var(--navy-d); }
+.summary-tile .l { font-size: 10.5px; letter-spacing: .03em; text-transform: uppercase; color: var(--lgray); margin-top: 2px; }
 
-.entry { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin-bottom: 16px; }
-.entry .entry-date { font-family: 'Georgia', serif; font-weight: 700; font-size: 15px; color: var(--navy); margin-bottom: 6px; }
-.entry .entry-desc { font-size: 13.5px; color: var(--dark); line-height: 1.6; margin-bottom: 10px; }
-.entry .entry-meta { font-size: 12px; color: var(--gray); line-height: 1.7; }
-.entry .entry-meta b { color: var(--dark); }
-.entry .files-touched { font-family: Consolas, monospace; font-size: 11.5px; color: var(--gray); background: var(--navy-l); border-radius: 4px; padding: 2px 6px; margin: 1px 2px 1px 0; display: inline-block; }
-.entry .verified { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; padding: 3px 9px; border-radius: 10px; margin-top: 8px; }
-.entry .verified.yes { background: #DCFCE7; color: #166534; }
-.entry .verified.pending { background: var(--amber-bg); color: var(--amber-text); }
+.controls-wrap { max-width: 1100px; margin: 18px auto 0; padding: 0 24px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.controls-wrap input[type=text] { flex: 1 1 220px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; font-family: inherit; }
+select.kind-select { padding: 7px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 12.5px; font-family: inherit; color: var(--gray); background: #fff; }
+.result-count { font-size: 11.5px; color: var(--lgray); margin-left: auto; white-space: nowrap; }
 
-.empty-note { text-align: center; font-size: 13px; color: var(--lgray); padding: 30px 10px; font-style: italic; }
+.catalog-wrap { max-width: 1100px; margin: 0 auto; padding: 18px 24px 28px; }
+.table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
+table.reg { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 820px; }
+table.reg thead th { background: var(--navy-d); color: #fff; text-align: left; vertical-align: bottom; padding: 12px 12px 8px; font-family: 'Consolas', monospace; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+table.reg tbody tr.row { border-top: 1px solid var(--border); cursor: pointer; }
+table.reg tbody tr.row:hover td { background: #FAFBFD; }
+table.reg tbody td { padding: 10px 12px; vertical-align: top; }
+.cl-date { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy-d); font-size: 12px; white-space: nowrap; }
+.cl-change { font-size: 12.5px; line-height: 1.5; max-width: 360px; }
+.cl-kind { font-size: 10px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: var(--navy); background: var(--navy-l); border-radius: 3px; padding: 3px 6px; white-space: nowrap; display: inline-block; }
+.cl-files { font-size: 10.5px; color: var(--lgray); font-family: 'Consolas', monospace; }
+tr.detail-row td { padding: 0 12px 16px; border-top: none; background: #FAFBFD; }
+tr.detail-row .detail-box { display: none; font-size: 12px; color: var(--gray); line-height: 1.6; background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
+tr.detail-row.open .detail-box { display: block; }
+.detail-box .field { margin-bottom: 8px; }
+.detail-box .field:last-child { margin-bottom: 0; }
+.detail-box .flabel { font-size: 10px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--lgray); margin-bottom: 2px; }
+.detail-box .fval { font-size: 12px; color: var(--dark); }
+.detail-box a { color: var(--navy); text-decoration: none; font-weight: 600; }
+.detail-box a:hover { text-decoration: underline; }
+.no-results { text-align: center; padding: 30px; color: var(--lgray); font-size: 13px; }
 
-footer { max-width: 900px; margin: 0 auto; padding: 20px 24px 40px; text-align: center; font-size: 12px; color: var(--lgray); line-height: 1.7; }
+footer { max-width: 1100px; margin: 0 auto; padding: 20px 24px 40px; text-align: center; font-size: 12px; color: var(--lgray); line-height: 1.7; }
 footer strong { color: var(--navy); }
 </style>
 </head>
 <body>
+
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Living tracker, updated by Tim + Claude alongside every production change — first entry Sept 23, 2026, per the Content Promotion Policy's proposed changelog.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
 
 <header class="masthead">
   <h1>Production Changelog</h1>
@@ -60,49 +88,133 @@ footer strong { color: var(--navy); }
 </header>
 
 <div class="intro">
-  <p class="lead">What actually shipped to the live site, when, and from where.</p>
-  <p>Every entry here is a change that was committed to the production repo and confirmed live — not a WIP proposal, not something Adopted-but-not-yet-shipped. See the <a href="index.html">WIP Hub</a> for items still in review. Each entry names every file the change touched, so a value that lives in more than one place (like the tagline) shows its full spread instead of hiding it in a single commit message.</p>
+  <p class="lead">One row per shipped change to the live, production framework — hitldrivenarchitecture.com.</p>
+  <p>Defined in <a href="content_promotion_policy.html" style="color:var(--navy);font-weight:600;text-decoration:none;">Content Promotion Policy — Sandbox / WIP / Production</a>: an entry gets added here before a task that touches production is considered closed, so the next drift shows up as a diff instead of being caught by eye weeks later. Living here rather than as a bare repo file, following the same pattern as the <a href="requirements_register.html" style="color:var(--navy);font-weight:600;text-decoration:none;">Requirements Register</a> — Tim and Claude read from and add to this page directly, GiGi can review it here too, and every entry is one click from expanding into the full record.</p>
 </div>
 
-<div class="entries-wrap" id="entriesWrap">
+<div class="summary-wrap" id="summaryWrap"></div>
 
-  <!-- Newest entries go at the top. Copy this block for each new entry. -->
+<div class="controls-wrap">
+  <input type="text" id="searchBox" placeholder="Search changes, files, sources…">
+  <select class="kind-select" id="kindSelect"><option value="all">All kinds</option></select>
+  <span class="result-count" id="resultCount"></span>
+</div>
 
-  <div class="entry">
-    <div class="entry-date">2026-09-21</div>
-    <div class="entry-desc">Added a new WIP proposal — "Working Relationship as the Primary Display Lens" — reflecting Tim and GiGi's decision to remove work-pattern labels/colors from all user-facing pages (keeping them backend-only for possible future analytics) and make the six Working-Relationship categories the primary displayed classification instead. Listed on the WIP hub for review and voting; no framework pages changed yet — this is the proposal, not the build.</div>
-    <div class="entry-meta">
-      <b>Files touched:</b><br/>
-      <span class="files-touched">docs/wip/working_relationship_display_migration.html (added)</span>
-      <span class="files-touched">docs/wip/index.html (1 edit — new catalog row)</span>
-      <br/><br/>
-      <b>Scope backing the proposal:</b> a live-repo scan for actual pattern-badge markup (not just word mentions) found 33 pages currently rendering a pattern badge &mdash; the 25 <code>rtp_*.html</code> pages (which already show Working Relationship correctly, so just need the pattern badge removed), plus <code>hitl_crud_pcf7/8/9_final.html</code>, <code>hitl_raci_pcf7/8/9_final.html</code>, and <code>hitl_maturity_pcf8/9_final.html</code> (8 pages needing both a badge removed and Working Relationship added). The 18 <code>vsp_*.html</code> pages are already clean. The proposal recommends marking the earlier "Work Pattern Color Standard" concept Superseded rather than Denied.<br/><br/>
-      <b>Source:</b> WIP-catalog item, not yet Adopted &mdash; awaiting Tim/GiGi review and vote.
-    </div>
-    <span class="verified yes">Verified live</span>
+<div class="catalog-wrap">
+  <div class="table-scroll">
+    <table class="reg">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Change</th>
+          <th>Kind</th>
+          <th>Files Touched</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
   </div>
-
-  <div class="entry">
-    <div class="entry-date">2026-09-21</div>
-    <div class="entry-desc">Retired the Excel Requirements Register in favor of the living HTML tracker, and fixed a broken link and stale counts that referenced it.</div>
-    <div class="entry-meta">
-      <b>Files touched:</b><br/>
-      <span class="files-touched">docs/HITL_Requirements_Register.xlsx (deleted)</span>
-      <span class="files-touched">wip/HITL_Requirements_Register.xlsx (deleted)</span>
-      <span class="files-touched">docs/wip/production_changelog.html (added)</span>
-      <span class="files-touched">docs/how_this_site_works.html (4 edits)</span>
-      <br/><br/>
-      <b>What changed in how_this_site_works.html:</b> the Requirements Register link (previously pointing at the now-deleted .xlsx, a 404) now points to <span class="files-touched">wip/requirements_register.html</span>; three descriptions that called it "a 35-row Excel spreadsheet, GR-001&ndash;GR-035" were updated to "a living HTML tracker, GR-001&ndash;GR-043" &mdash; matching the register's actual current row count, which had grown past the old description without anyone updating this page.<br/><br/>
-      <b>Source:</b> found during the 7.0 rebuild-scope audit, not a WIP-catalog item.
-    </div>
-    <span class="verified yes">Verified live</span>
-  </div>
-
+  <p class="no-results" id="noResults" style="display:none;">No changelog entries match that search/filter.</p>
 </div>
 
 <footer>
-  <strong>Production Changelog</strong> — maintained alongside every commit to the live site. Ask Claude to add an entry after anything ships, or add one directly.
+  <p>
+    <strong>Timothy P. King</strong> &nbsp;·&nbsp; Human Enterprise Architect<br>
+    Private review area — not part of the published framework<br>
+    hitldrivenarchitecture.com
+  </p>
 </footer>
 
+<script>
+const RECORDS = [
+  {
+    "id": "CL-001",
+    "date": "2026-09-23",
+    "summary": "HRBP Manager reportsTo corrected from VP People & Culture to Director of HR Ops.",
+    "kind": "Data Correction",
+    "files": ["docs/hitl_dashboard_final.html"],
+    "source": "reportsTo self-consistency check — see docs/wip/wr_progression_methodology_spec.html “Proven So Far,” confirmed by GiGi",
+    "reason": "VP People & Culture never appears as C or I across HRBP Manager's 11 owned (Accountable) L3 processes; Director of HR Ops appears 6 times with no other candidate close behind.",
+    "verified": "computeSpanOfControl / getRoleTaxonomy re-run clean for PCF 7.0 (no orphans or cycles); requirements register GR-035/GR-040 updated to Implemented."
+  }
+];
+
+function esc(s) {
+  if (s === null || s === undefined) return "";
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function renderSummary() {
+  const wrap = document.getElementById("summaryWrap");
+  const kinds = new Set(RECORDS.map(r => r.kind));
+  const files = new Set(RECORDS.flatMap(r => r.files));
+  wrap.innerHTML =
+    `<div class="summary-tile"><div class="n">${RECORDS.length}</div><div class="l">Total Entries</div></div>` +
+    `<div class="summary-tile"><div class="n">${kinds.size}</div><div class="l">Change Kinds</div></div>` +
+    `<div class="summary-tile"><div class="n">${files.size}</div><div class="l">Files Touched</div></div>`;
+}
+
+function populateKinds() {
+  const kinds = Array.from(new Set(RECORDS.map(r => r.kind).filter(Boolean))).sort();
+  const sel = document.getElementById("kindSelect");
+  kinds.forEach(k => {
+    const opt = document.createElement("option");
+    opt.value = k; opt.textContent = k;
+    sel.appendChild(opt);
+  });
+}
+
+function detailField(label, value) {
+  if (!value) return "";
+  return `<div class="field"><div class="flabel">${esc(label)}</div><div class="fval">${value}</div></div>`;
+}
+
+function renderTable() {
+  const q = document.getElementById("searchBox").value.trim().toLowerCase();
+  const kind = document.getElementById("kindSelect").value;
+  const tbody = document.getElementById("tbody");
+  tbody.innerHTML = "";
+  let shown = 0;
+  const sorted = [...RECORDS].sort((a, b) => b.date.localeCompare(a.date));
+  sorted.forEach((r, idx) => {
+    if (kind !== "all" && r.kind !== kind) return;
+    if (q) {
+      const hay = [r.id, r.summary, r.reason, r.source, r.verified, r.kind, ...r.files]
+        .filter(Boolean).join(" ").toLowerCase();
+      if (!hay.includes(q)) return;
+    }
+    shown++;
+    const rowTr = document.createElement("tr");
+    rowTr.className = "row";
+    rowTr.innerHTML = `
+      <td class="cl-date">${esc(r.date)}</td>
+      <td class="cl-change">${esc(r.summary)}</td>
+      <td><span class="cl-kind">${esc(r.kind)}</span></td>
+      <td class="cl-files">${r.files.map(esc).join("<br>")}</td>
+    `;
+    const detailTr = document.createElement("tr");
+    detailTr.className = "detail-row";
+    detailTr.innerHTML = `<td colspan="4"><div class="detail-box">
+      ${detailField("Source", r.source)}
+      ${detailField("Reason", r.reason)}
+      ${detailField("Verified", r.verified)}
+    </div></td>`;
+    rowTr.addEventListener("click", () => {
+      detailTr.classList.toggle("open");
+    });
+    tbody.appendChild(rowTr);
+    tbody.appendChild(detailTr);
+  });
+  document.getElementById("resultCount").textContent = shown + " of " + RECORDS.length + " entries";
+  document.getElementById("noResults").style.display = shown === 0 ? "block" : "none";
+}
+
+document.getElementById("searchBox").addEventListener("input", renderTable);
+document.getElementById("kindSelect").addEventListener("change", renderTable);
+
+renderSummary();
+populateKinds();
+renderTable();
+</script>
 </body>
 </html>
