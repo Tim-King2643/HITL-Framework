@@ -42,6 +42,16 @@ const TRACKED = [
     pattern: /"\d+(?:\.\d+)+"\s*:\s*\{[^}]*\b(rel|future|ceiling)\s*:/,
     label: "a WR classification/ceiling value in WR_DATA",
   },
+  {
+    file: "docs/sandbox/pcf7.html",
+    // The sandbox keeps its own ROLE_TAXONOMY copy (Organizational Role
+    // Taxonomy's PCF 7.0 catalog) — same field, same reason to track it as
+    // the dashboard's copy above. Per the Content Promotion Policy's
+    // master-data lane, this is the master table: it's edited first, then
+    // published to docs/hitl_dashboard_final.html.
+    pattern: /reportsTo\s*:\s*"/,
+    label: "a reportsTo edge in the sandbox's ROLE_TAXONOMY",
+  },
 ];
 
 function git(args) {
