@@ -133,7 +133,8 @@ const RECORDS = [
     "summary": "HRBP Manager reportsTo corrected from VP People & Culture to Director of HR Ops.",
     "kind": "Data Correction",
     "files": ["docs/hitl_dashboard_final.html"],
-    "source": "reportsTo self-consistency check — see docs/wip/wr_progression_methodology_spec.html “Proven So Far,” confirmed by GiGi",
+    "wipItem": null,
+    "source": "reportsTo self-consistency check — see docs/wip/wr_progression_methodology_spec.html “Proven So Far,” confirmed by GiGi directly rather than run through a voted WIP item",
     "reason": "VP People & Culture never appears as C or I across HRBP Manager's 11 owned (Accountable) L3 processes; Director of HR Ops appears 6 times with no other candidate close behind.",
     "verified": "computeSpanOfControl / getRoleTaxonomy re-run clean for PCF 7.0 (no orphans or cycles); requirements register GR-035/GR-040 updated to Implemented."
   }
@@ -195,6 +196,7 @@ function renderTable() {
     const detailTr = document.createElement("tr");
     detailTr.className = "detail-row";
     detailTr.innerHTML = `<td colspan="4"><div class="detail-box">
+      ${detailField("WIP item", r.wipItem ? esc(r.wipItem) : "&mdash; (not run through a voted WIP item)")}
       ${detailField("Source", r.source)}
       ${detailField("Reason", r.reason)}
       ${detailField("Verified", r.verified)}
