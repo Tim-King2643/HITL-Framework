@@ -258,6 +258,8 @@ td:first-child { text-align: left; }
    text starting at the same left edge column by column, instead of
    trailing off into ragged whitespace after the longest item in a row. */
 .gates-legend-box-inline { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px 28px; background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px 22px; margin: 8px 14px; }
+/* MODELED legend line (GR-014) spans two columns on wide layouts so it reads on two lines, not four */
+@media (min-width: 1100px) { .gates-legend-item-wide { grid-column: span 2; } }
 .gates-legend-item { display: flex; align-items: flex-start; gap: 8px; font-size: 11px; color: var(--gray); }
 .gates-legend-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; flex: 0 0 auto; }
 
@@ -433,7 +435,7 @@ td.crud-d .crud-entity { color: #991B1B; }
         <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
         <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Beyond the ceiling &mdash; greyed out, not in play for this activity</span>
         <span class="gates-legend-item"><span style="color:var(--navy);"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="4.6" r="1" fill="currentColor"/><rect x="7.2" y="7" width="1.6" height="5.2" rx="0.8" fill="currentColor"/></svg></span> Click any circle or step name (up to the ceiling) for its definition</span>
-        <span class="gates-legend-item"><span class="wr-prov wr-prov-classified">Modeled</span> Every % H is a modeled index, not measured data &mdash; click the chip for what it measures and how that row was calculated</span>
+        <span class="gates-legend-item gates-legend-item-wide"><span class="wr-prov wr-prov-classified">Modeled</span> Every % H is a modeled index, not measured data &mdash; click the chip for what it measures and how that row was calculated</span>
       </div>
       <div class="table-wrap">
         <table id="main-table">
@@ -509,7 +511,7 @@ td.crud-d .crud-entity { color: #991B1B; }
         <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
         <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Beyond the ceiling &mdash; greyed out, not in play for this activity</span>
         <span class="gates-legend-item"><span style="color:var(--navy);"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="4.6" r="1" fill="currentColor"/><rect x="7.2" y="7" width="1.6" height="5.2" rx="0.8" fill="currentColor"/></svg></span> Click any circle or step name (up to the ceiling) for its definition</span>
-        <span class="gates-legend-item"><span class="wr-prov wr-prov-classified">Modeled</span> Every % H is a modeled index, not measured data &mdash; click the chip for what it measures and how that row was calculated</span>
+        <span class="gates-legend-item gates-legend-item-wide"><span class="wr-prov wr-prov-classified">Modeled</span> Every % H is a modeled index, not measured data &mdash; click the chip for what it measures and how that row was calculated</span>
       </div>
       <div class="table-wrap">
         <table id="people-main-table">
@@ -2106,7 +2108,7 @@ function inlineLegendHtml(indentPx) {
     '<span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>' +
     '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Beyond the ceiling &mdash; greyed out, not in play for this activity</span>' +
     '<span class="gates-legend-item"><span style="color:var(--navy);"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="4.6" r="1" fill="currentColor"/><rect x="7.2" y="7" width="1.6" height="5.2" rx="0.8" fill="currentColor"/></svg></span> Click any circle or step name (up to the ceiling) for its definition</span>' +
-    '<span class="gates-legend-item"><span class="wr-prov wr-prov-classified">Modeled</span> Every % H is a modeled index, not measured data &mdash; click the chip for what it measures and how that row was calculated</span>' +
+    '<span class="gates-legend-item gates-legend-item-wide"><span class="wr-prov wr-prov-classified">Modeled</span> Every % H is a modeled index, not measured data &mdash; click the chip for what it measures and how that row was calculated</span>' +
     '</div>';
 }
 
