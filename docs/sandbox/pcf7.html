@@ -170,6 +170,19 @@ td:first-child { text-align: left; }
 .wr-prov-classified { background:rgba(32,68,116,.10); color:#204474; border:1px solid rgba(32,68,116,.3); }
 .wr-prov-pattern { background:rgba(122,156,198,.12); color:#5B7A9C; border:1px solid rgba(122,156,198,.3); }
 .wr-prov-rollup { background:rgba(27,143,130,.10); color:#12695F; border:1px solid rgba(27,143,130,.32); }
+/* GR-014 — MODELED chip in front of every % H value. Same chip as the
+   provenance column's "Modeled" badge; clicking it opens the same info box
+   (.wr-cons-pop + .gates-info-* type) the Consequence-of-Error and ceiling
+   checklists use, via the same toggleFactorPop/closeFactorPop pair. */
+.hpct { position: relative; display: inline-flex; align-items: baseline; gap: 5px; white-space: nowrap; }
+.hpct-chip { cursor: pointer; }
+.gates-rollup-inline .hpct .rollup-val { min-width: 38px; }
+.hpct-chip:hover { background: rgba(32,68,116,.18); }
+.hpct .wr-cons-pop.hpct-pop { position: absolute; top: 100%; left: 0; z-index: 6; width: 330px; white-space: normal; font-size: 11px; font-family: 'DM Sans', sans-serif; letter-spacing: normal; text-transform: none; }
+.hpct-anchor-list { display: flex; flex-wrap: wrap; gap: 3px 10px; margin: 0 0 8px; font-size: 11px; color: var(--gray); }
+.hpct-anchor-list span { white-space: nowrap; }
+.hpct-anchor-list b { font-weight: 600; color: var(--navy-d); font-variant-numeric: tabular-nums; }
+.hpct-calc { font-size: 11px; line-height: 1.5; color: var(--dark); margin: 0; font-variant-numeric: tabular-nums; }
 #thead-wr th.wr-col { min-width: 185px; }
 #thead-wr th.wr-col-pc { min-width: 207px; }
 #thead-wr th.wr-col-gates { min-width: 700px; }
@@ -420,6 +433,7 @@ td.crud-d .crud-entity { color: #991B1B; }
         <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
         <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Beyond the ceiling &mdash; greyed out, not in play for this activity</span>
         <span class="gates-legend-item"><span style="color:var(--navy);"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="4.6" r="1" fill="currentColor"/><rect x="7.2" y="7" width="1.6" height="5.2" rx="0.8" fill="currentColor"/></svg></span> Click any circle or step name (up to the ceiling) for its definition</span>
+        <span class="gates-legend-item"><span class="wr-prov wr-prov-classified">Modeled</span> Every % H is a modeled index, not measured data &mdash; click the chip for what it measures and how that row was calculated</span>
       </div>
       <div class="table-wrap">
         <table id="main-table">
@@ -495,6 +509,7 @@ td.crud-d .crud-entity { color: #991B1B; }
         <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
         <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Beyond the ceiling &mdash; greyed out, not in play for this activity</span>
         <span class="gates-legend-item"><span style="color:var(--navy);"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="4.6" r="1" fill="currentColor"/><rect x="7.2" y="7" width="1.6" height="5.2" rx="0.8" fill="currentColor"/></svg></span> Click any circle or step name (up to the ceiling) for its definition</span>
+        <span class="gates-legend-item"><span class="wr-prov wr-prov-classified">Modeled</span> Every % H is a modeled index, not measured data &mdash; click the chip for what it measures and how that row was calculated</span>
       </div>
       <div class="table-wrap">
         <table id="people-main-table">
@@ -902,7 +917,8 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
 // leaf L3s in PCF 7.0 that have no L4 children.
 //
 // rel   = Current State working-relationship category
-// h     = Current State H% (fixed per category: Automation 10, Agent-delegation 28,
+// h     = Current State H% — a modeled control index, not effort/time/FTE (GR-014)
+//         (fixed per category: Automation 10, Agent-delegation 28,
 //         Augmentation 48, Oversight 62, Judgment 82, Human-only 95+)
 // cons  = Consequence of Error tag (Low/Moderate/High/Critical) — GiGi's
 //         Human Criticality axis; every tag here is a starting position for
@@ -1338,7 +1354,77 @@ function wrRollupCell(l3s, field) {
   if (!rollup.ready) return '<span class="wr-blank">not yet aggregated &mdash; ' + rollup.l3ready + ' of ' + rollup.l3total + ' reasoned</span>';
   if (rollup.allOpen) return '<span class="wr-open">Open / undecided</span>';
   const openNote = rollup.anyOpen ? ' <span class="wr-cons-worst-note">(some open/undecided)</span>' : '';
-  return '<span class="wr-rollup-ready"><span class="rollup-val">' + rollup.mean.toFixed(1) + '% H</span></span>' + openNote;
+  return hpctValueHtml(rollup.mean, l3s, field) + openNote;
+}
+/* ── GR-014: what a % H value is, shown at the point of use ─────────────
+   Every % H in this sandbox is an average of fixed per-category anchor
+   values (WR_CATS[*].h). The chip labels it MODELED; the info box states
+   the unit, the anchor scale, and the exact arithmetic behind that row,
+   computed from the same l3WrCoverage() data the value itself comes from.
+   Displayed values round to whole numbers — one decimal on an average of
+   modeled anchors implied precision the number doesn't have (Rule 14). */
+const HPCT_UNIT_TEXT = 'An index of how much control over each instance of the work stays with a person. It is <strong>not</strong> a share of hours, effort, or FTE, and not a headcount estimate.';
+const HPCT_SCALE_NOTE = 'Each activity takes the fixed value of its working-relationship category. Claude modeled these values as an ordinal scale; they have not been calibrated against observed data &mdash; calibration is an open item for Tim and GiGi.';
+function fmt1(x) { return (Math.round(x * 10) / 10).toString(); }
+function hpctUnitTally(l3, field) {
+  const units = (l3.l4 && l3.l4.length) ? l3.l4.map(l4 => l4.code) : [l3.code];
+  const tally = {}; let open = 0, n = 0, sum = 0;
+  units.forEach(code => {
+    const d = WR_DATA[code];
+    const val = d ? d[field] : null;
+    if (val === 'Open / undecided') { open++; return; }
+    if (val && WR_CATS[val]) { tally[val] = (tally[val] || 0) + 1; n++; sum += WR_CATS[val].h; }
+  });
+  return { tally, open, n, sum, leaf: !(l3.l4 && l3.l4.length) };
+}
+function hpctCalcHtml(l3s, field) {
+  if (l3s.length === 1) {
+    const t = hpctUnitTally(l3s[0], field);
+    if (!t.n) return '';
+    const parts = CATS_ORDER.filter(c => t.tally[c]).map(c => t.tally[c] + ' &times; ' + c + ' (' + WR_CATS[c].h + ')');
+    const mean = t.sum / t.n;
+    let s;
+    if (t.leaf) {
+      s = 'This process has no L4 activities, so its value is its own category: ' + parts[0] + ' = <strong>' + Math.round(mean) + '% H</strong>.';
+    } else {
+      s = 'Average of this process&rsquo;s ' + t.n + ' activit' + (t.n === 1 ? 'y' : 'ies') + ': ' + parts.join(' + ') +
+        ' = ' + t.sum + ' &divide; ' + t.n + ' = ' + fmt1(mean) + ' &rarr; <strong>' + Math.round(mean) + '% H</strong>.';
+    }
+    if (t.open) s += ' ' + t.open + ' Open / undecided activit' + (t.open === 1 ? 'y is' : 'ies are') + ' left out, since they carry no value yet.';
+    return s;
+  }
+  // Several L3s (a role's Accountable processes): equal-weighted average of each L3's own average
+  const rows = [];
+  let openL3 = 0;
+  l3s.forEach(l3 => {
+    const t = hpctUnitTally(l3, field);
+    if (t.n) rows.push({ code: l3.code, mean: t.sum / t.n });
+    if (t.open) openL3++;
+  });
+  if (!rows.length) return '';
+  const total = rows.reduce((a, r) => a + r.mean, 0);
+  const mean = total / rows.length;
+  let s = 'Average of the ' + rows.length + ' processes this role is Accountable for, each weighted equally (each is itself the average of its own activities): ' +
+    rows.map(r => r.code + ' (' + fmt1(r.mean) + ')').join(' + ') +
+    ' = ' + fmt1(total) + ' &divide; ' + rows.length + ' = ' + fmt1(mean) + ' &rarr; <strong>' + Math.round(mean) + '% H</strong>.';
+  if (openL3) s += ' Open / undecided activities are left out, since they carry no value yet.';
+  return s;
+}
+function hpctValueHtml(mean, l3s, field) {
+  const which = field === 'ceiling' ? 'Progression Ceiling' : 'Current State';
+  const anchors = CATS_ORDER.map(c => '<span>' + c + ' <b>' + WR_CATS[c].h + '</b></span>').join('');
+  const calc = hpctCalcHtml(l3s, field);
+  return '<span class="hpct">' +
+    '<span class="wr-prov wr-prov-classified hpct-chip" role="button" tabindex="0" title="What this number means" onclick="toggleFactorPop(event, this)" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleFactorPop(event, this);}">Modeled</span>' +
+    '<div class="wr-cons-pop hpct-pop" onclick="event.stopPropagation()"><button type="button" class="gates-info-close" onclick="closeFactorPop(event, this)" aria-label="Close">&times;</button>' +
+      '<div class="gates-info-title">What this % H measures</div>' +
+      '<div class="gates-info-label">Unit</div><p class="gates-info-def">' + HPCT_UNIT_TEXT + '</p>' +
+      '<div class="gates-info-label gates-info-label-2">Modeled anchor values</div><div class="hpct-anchor-list">' + anchors + '</div>' +
+      '<p class="gates-info-def">' + HPCT_SCALE_NOTE + '</p>' +
+      (calc ? '<div class="gates-info-label gates-info-label-2">This row &mdash; ' + which + '</div><p class="hpct-calc">' + calc + '</p>' : '') +
+    '</div>' +
+    '<span class="wr-rollup-ready"><span class="rollup-val">' + Math.round(mean) + '% H</span></span>' +
+    '</span>';
 }
 function l3ConsCoverage(l3) {
   const units = (l3.l4 && l3.l4.length) ? l3.l4.map(l4 => l4.code) : [l3.code];
@@ -1574,7 +1660,7 @@ function renderGatesTable(cat) {
       const raci = l3.raci || { A: '—' };
       const cov = l3WrCoverage(l3);
       const rollupCell = cov.fullyClassified
-        ? '<span class="wr-rollup-ready"><span class="rollup-val">' + cov.mean.toFixed(1) + '% H</span></span>'
+        ? hpctValueHtml(cov.mean, [l3], 'rel')
         : '<span class="wr-blank">' + cov.classifiedCount + ' of ' + cov.total + ' classified</span>';
       html += '<tr class="row-l3">' +
         '<td class="indent-l3"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + l3.code + '</span></span><span class="row-text">' + l3.name + '</span></span></td>' +
@@ -2020,6 +2106,7 @@ function inlineLegendHtml(indentPx) {
     '<span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>' +
     '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Beyond the ceiling &mdash; greyed out, not in play for this activity</span>' +
     '<span class="gates-legend-item"><span style="color:var(--navy);"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="4.6" r="1" fill="currentColor"/><rect x="7.2" y="7" width="1.6" height="5.2" rx="0.8" fill="currentColor"/></svg></span> Click any circle or step name (up to the ceiling) for its definition</span>' +
+    '<span class="gates-legend-item"><span class="wr-prov wr-prov-classified">Modeled</span> Every % H is a modeled index, not measured data &mdash; click the chip for what it measures and how that row was calculated</span>' +
     '</div>';
 }
 

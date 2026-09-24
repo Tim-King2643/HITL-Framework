@@ -61,6 +61,19 @@ td.row-name { font-weight: 700; white-space: nowrap; }
 .pdf-download { display: inline-flex; align-items: center; gap: 6px; font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px; padding: 8px 14px; text-decoration: none; margin: 0 0 28px; }
 .pdf-download:hover { background: #DCE8F8; }
 
+.design-items td:first-child { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy-d); white-space: nowrap; }
+.design-items td:nth-child(2) { font-weight: 700; white-space: nowrap; }
+.mock-row { display: flex; align-items: baseline; gap: 6px; font-size: 12px; color: var(--gray); flex-wrap: wrap; }
+.mock-label { font-family: 'Consolas', monospace; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); }
+.mock-chip { font-family: 'Consolas', monospace; font-size: 9.5px; letter-spacing: .04em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; background: var(--navy-l); color: var(--navy); border: 1px solid #C6D8EE; }
+.mock-val { color: var(--navy); font-variant-numeric: tabular-nums; margin-right: 4px; }
+.mock-sep { color: var(--lgray); margin: 0 6px; }
+.mock-box { margin-top: 12px; max-width: 360px; background: #FAFBFD; border: 1px solid var(--border); border-radius: 7px; padding: 10px 14px; font-size: 11.5px; line-height: 1.5; color: var(--gray); }
+.mock-box .mb-title { font-weight: 700; color: var(--navy-d); margin-bottom: 6px; font-size: 12px; }
+.mock-box .mb-label { font-size: 9.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); margin: 8px 0 2px; }
+.mock-box .mb-label:first-of-type { margin-top: 0; }
+.mock-box p { font-size: 11.5px; line-height: 1.5; margin: 0; color: var(--gray); }
+
 footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
 footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
 footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
@@ -100,7 +113,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
     <span class="rr-label">Related Requirements — Requirements Register (GiGi’s evaluation docs)</span>
     <ul>
     <li><code>GR-008</code> — 20–25pt gap statement needs explicit modeled/observed labeling <em>(Designed — this badge operationalizes Rules 14 &amp; 16, the rules GR-008 maps to)</em></li>
-    <li><code>GR-014</code> — define H%'s unit of measure everywhere it's displayed <em>(Partially Addressed — this badge covers grounding/provenance, not the unit H% itself measures)</em></li>
+    <li><code>GR-014</code> — define H%'s unit of measure everywhere it's displayed <em>(Implemented in Sandbox 7.0, awaiting approval vote — see <a href="#unit-of-measure">Unit of Measure</a> below)</em></li>
     </ul>
   </div>
 
@@ -138,6 +151,48 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
 
   <h2>Build Note</h2>
   <p>Whenever this is implemented: the badge should flip automatically once a domain's <code>lenses.raci</code> is present, not require a manual per-domain flag — the same self-updating pattern already used by the People View toggle's <code>hasRaci && hasRoleTaxonomy</code> gate.</p>
+
+  <h2 id="unit-of-measure">Unit of Measure — Sandbox 7.0 Implementation</h2>
+  <p>The sections above answer one question about an H% figure: how well-grounded is the model behind it? GiGi's review asked a second one (GR-014): if an activity is &ldquo;65% human,&rdquo; 65% of <em>what</em>? Until now the framework had no answer. This section defines the unit and the design items that put it at the point of use in Sandbox 7.0 (<code>docs/sandbox/pcf7.html</code>). The scope is Sandbox 7.0 only. Production is out of scope until a full production update.</p>
+
+  <div class="mock-panel">
+    <div class="mock-row">
+      <span class="mock-label">Current</span><span class="mock-chip">Modeled</span><span class="mock-val">28% H</span>
+      <span class="mock-sep">&rarr;</span>
+      <span class="mock-label">Ceiling</span><span class="mock-chip">Modeled</span><span class="mock-val">23% H</span>
+    </div>
+    <div class="mock-box">
+      <div class="mb-title">What this % H measures</div>
+      <div class="mb-label">Unit</div>
+      <p>An index of how much control over each instance of the work stays with a person. It is not a share of hours, effort, or FTE, and not a headcount estimate.</p>
+      <div class="mb-label">Modeled anchor values</div>
+      <p>Human-only 95 · Judgment 82 · Oversight 62 · Augmentation 48 · Agent-delegation 28 · Automation 10</p>
+      <div class="mb-label">This row &mdash; Current State</div>
+      <p>Average of this process&rsquo;s 7 activities: 1 &times; Judgment (82) + 1 &times; Oversight (62) + 5 &times; Automation (10) = 194 &divide; 7 = 27.7 &rarr; <strong>28% H</strong>.</p>
+    </div>
+  </div>
+  <p style="font-size:12.5px;margin-top:-12px;">Example from 7.2.1 (Manage employee requisitions): the chip on each value, and the info box that opens when the chip is clicked. This is a mockup; the real box also carries the calibration note (U2).</p>
+
+  <h2>Implementation Design Items</h2>
+  <table class="design-items">
+    <thead><tr><th>ID</th><th>Item</th><th>Specification</th></tr></thead>
+    <tbody>
+      <tr><td>U1</td><td>Unit definition</td><td>H% is a modeled index of how much control over each instance of the work stays with a person. It counts direct execution, review, approval, and oversight, and excludes work that runs with no person in the loop. It is explicitly <strong>not</strong> a share of hours, effort, or FTE, and not a headcount estimate (consistent with Rule 16 and GR-008).</td></tr>
+      <tr><td>U2</td><td>Anchor scale</td><td>Each activity takes the fixed value of its working-relationship category: Human-only 95, Judgment 82, Oversight 62, Augmentation 48, Agent-delegation 28, Automation 10. Claude modeled these values as an ordinal scale, in roughly even steps with the ends pulled in from 0 and 100. They have not been calibrated against observed data, and that disclosure appears wherever the values are shown.</td></tr>
+      <tr><td>U3</td><td>Rollup rule</td><td>A process (L3) value is the plain average of its activities&rsquo; anchor values. A leaf L3 with no L4 activities takes its own category value. A role value is the equal-weighted average of the processes the role is Accountable for. Activities classified <em>Open / undecided</em> are left out, since they carry no value yet.</td></tr>
+      <tr><td>U4</td><td>MODELED chip</td><td>A MODELED chip sits in front of every Current State and Progression Ceiling % H value: process rows, People View role rollups, and the Readiness Gate table. It is one chip per value, not one per column, so a screenshot of any single row still carries the label. The chip reuses the sandbox&rsquo;s existing provenance-chip style, so no new colors are added (Rule 1).</td></tr>
+      <tr><td>U5</td><td>Info box</td><td>Clicking the chip, or pressing Enter/Space on it, opens the sandbox&rsquo;s standard info box: the same panel, &times; close, and click-outside-to-close behavior as the Consequence-of-Error and Progression Ceiling checklists. Only one box is open at a time. It shows the unit (U1), the anchor scale with its calibration note (U2), and that row&rsquo;s actual arithmetic, computed live from the classification data (U3).</td></tr>
+      <tr><td>U6</td><td>Display precision</td><td>Values display as whole numbers (27.7% &rarr; 28%). One decimal on an average of modeled anchor values implied a precision the number doesn&rsquo;t have (Rule 14). The info box shows the unrounded working so the rounding is visible.</td></tr>
+      <tr><td>U7</td><td>Legend</td><td>One line in the sandbox legend: &ldquo;Every % H is a modeled index, not measured data &mdash; click the chip for what it measures and how that row was calculated.&rdquo;</td></tr>
+      <tr><td>U8</td><td>Scope</td><td>Sandbox 7.0 only. Production pages are not referenced or changed. They move with the full production update.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>How This Relates to the Provenance Tokens</h2>
+  <p>In Sandbox 7.0 every activity is individually classified, so every H% there sits on the same footing. The chip therefore reads plain &ldquo;MODELED&rdquo; without a qualifier. The qualified tokens above (Pattern-Reference Estimate, RACI-Grounded) matter when figures of different grounding appear side by side across domains. When other domains come into the sandbox, the chip takes the matching qualified token instead. The unit definition (U1) stays the same across all of them.</p>
+
+  <h2>Open Items</h2>
+  <p><strong>Calibration of the anchor scale.</strong> Whether the six values should be calibrated, for example against a control-point rubric or against observed data, is an open item for Tim and GiGi. Changing them would shift every H% figure and point gap in the sandbox, and each change would be logged in the shared changelog (<code>changelog-data.js</code>).</p>
 
 </div>
 
