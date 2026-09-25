@@ -175,6 +175,12 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   </ul>
 
   <h2>5. Decision Logic</h2>
+  <p><strong>Production-mode rule.</strong> A work product takes its production mode from the activity that produces it: that activity's Current State and Progression Ceiling. Only creates and updates produce; reads and deletes do not.</p>
+  <ul class="plain">
+    <li><strong>More than one producer.</strong> Each create or update link carries its own activity's mode. The work product as a whole shows the producer furthest along the ramp, and names it, because any AI contribution makes the output AI-touched for everyone downstream. Current State and Progression Ceiling are each taken this way. In Sandbox 7.0, 12 of the 39 work products are created or updated in more than one process, such as the Employee Master Record, which is created in 7.7.3 and updated in 7.6.1, 7.6.2 and 7.6.3.</li>
+    <li><strong>Derived, never stored.</strong> Production mode is read from the activity's classification each time it is shown. Changing an activity's classification, logged once in the changelog, changes every work product it produces, with no second entry to keep in step.</li>
+    <li><strong>Gaps shown as gaps.</strong> An unclassified producer, or an Open / undecided ceiling, is displayed as such. It is never read as human-only.</li>
+  </ul>
   <p><strong>Verification point (proposed rule).</strong> A read is a verification point when the producing activity's Current State is Augmentation or further along the ramp, and the reading activity is at Judgment or Oversight or carries a High or Critical Consequence of Error. Uses existing data only.</p>
   <p><strong>Redefinition threshold (new, value not yet set).</strong> The share of a role's produced work products whose production mode reaches Agent-delegation or Automation. The sandbox already flags redefinition per step inside each activity; this rule lifts it to the role. The threshold value is for Tim and GiGi to set.</p>
 
@@ -184,7 +190,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
     <li><strong>Work-product catalog.</strong> Normalize the 39 free-text names into catalog entries with ID, definition, and system of record.</li>
     <li><strong>Activity-level CRUD.</strong> Move each create, read, update, and delete from the process to the specific activity, starting with the 18 processes that hold more than one activity.</li>
     <li><strong>Confirm the CRUD data.</strong> All 37 processes carry CRUD entries, but the sandbox marks only 22 as confirmed. Confirm or correct the other 15.</li>
-    <li><strong>Production-mode rule.</strong> Write down that a work product takes its producing activity's Current State and Progression Ceiling.</li>
+    <li><strong>Production-mode rule.</strong> A work product takes its producing activity's Current State and Progression Ceiling. Written in section 5, including the multi-producer case. <span class="tag">written</span></li>
     <li><strong>Consumer links.</strong> For every read, attach the reading activity's Accountable role, working relationship, and Consequence of Error.</li>
     <li><strong>Verification-point rule.</strong> Adopt the rule in section 5, or a revised one.</li>
     <li><strong>Verification-load and pays-twice definitions.</strong> Decide whether to weight the count by Consequence of Error; label it as exposure, not hours.</li>
