@@ -71,5 +71,24 @@ const CHANGE_LOG = [
     "source": "Tim, Sept 25, 2026: “We are not using ‘Future State’.” Requirement GR-049 in docs/wip/requirements_register.html.",
     "reason": "No sandbox view displayed Future State, and in 117 of 118 activities it equaled the Progression Ceiling. The one exception, 7.2.1.3 (Future State Oversight, ceiling Agent-delegation), keeps its ceiling; the governance choice to hold it at Oversight is already carried by its ceiling factors (governance, technical) and ceiling note. Whether its ceiling should drop to Oversight is open for Tim and GiGi.",
     "verified": "Every activity's Current State and Progression Ceiling compared before and after: all 118 unchanged. Sandbox views render with no errors. The CI audit now tracks rel and ceiling only."
+  },
+  {
+    "id": "CL-004",
+    "date": "2026-09-25",
+    "requestedBy": "Tim",
+    "kind": "wr-ceiling",
+    "target": {
+      "domain": "7.0",
+      "activity": "7.2.1.3"
+    },
+    "summary": "7.2.1.3 (Approve job requisition) Progression Ceiling lowered from Agent-delegation to Oversight, so the activity is now at its ceiling.",
+    "from": "Agent-delegation",
+    "to": "Oversight",
+    "files": [
+      "docs/sandbox/pcf7.html"
+    ],
+    "source": "Tim, Sept 25, 2026, settling the open question left by the Future State cleanup (GR-049, CL-003): the retired Future State had held this activity at Oversight while its ceiling said Agent-delegation.",
+    "reason": "Consequence of Error is High: this is the budget-commitment gate, and reversing an approved-then-wrong hire is a real financial and organizational cost. Human sign-off stays as a governance choice, so the ceiling is Oversight. Ceiling factors narrowed to Governance / Sign-off Choice (Technical Readiness Gap removed, since technology is no longer what sets the limit).",
+    "verified": "Sandbox views render with no errors; 7.2.1.3's ceiling info box shows the new note and links to this entry."
   }
 ];
