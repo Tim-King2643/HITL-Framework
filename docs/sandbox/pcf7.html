@@ -102,13 +102,13 @@ tbody tr:hover { background: #FAFBFF; }
 /* Level rows */
 .row-l1 td { background: #0D2D4F; color: #fff; font-weight: 700; font-size: 12px; border-top: 2px solid #1B4F8A; border-bottom: 2px solid #1B4F8A; }
 .row-l1 td .pcf-ref { font-family: 'DM Mono', monospace; font-size: 10px; color: #7A9CC6; margin-left: 6px; }
-.row-l2 td { background: #EEF3FA; font-weight: 600; font-size: 12px; color: #0D2D4F; border-top: 2px solid #7AAED6; }
+.row-l2 td { background: #EEF3FA; font-weight: 600; font-size: 12px; color: #0D2D4F; border-top: 2px solid #9FC0E8; }
 .row-l2 td .pcf-ref { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--lgray); margin-left: 6px; }
 .row-l3 td .pcf-ref, .row-l4 td .pcf-ref { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gray); }
 .row-l3 td { border-bottom: 1px solid #C7D2E3; color: var(--gray); font-size: 12px; }
-.row-l3:nth-child(even) td { background: #F9FBFD; }
+.row-l3:nth-child(even) td { background: #FAFBFD; }
 .row-l4 td { border-bottom: 1px solid #E3E8F2; color: var(--gray); font-size: 12px; }
-.row-l4:nth-child(even) td { background: #FBFCFE; }
+.row-l4:nth-child(even) td { background: #FAFBFD; }
 
 td { padding: 8px 10px; vertical-align: middle; }
 td:first-child { text-align: left; }
@@ -122,12 +122,6 @@ td:first-child { text-align: left; }
 .row-text { flex: 1 1 auto; min-width: 0; }
 
 /* Pattern badge (used by the RACI Table view's Pattern column) */
-.pat { display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: .05em; white-space: nowrap; }
-.pat-Decision   { background: #7B9FD1; color: #fff; }
-.pat-Knowledge  { background: #A79AE0; color: #fff; }
-.pat-Document   { background: #5EB8E0; color: #fff; }
-.pat-Transaction{ background: #6FC48C; color: #fff; }
-.pat-Exception  { background: #E88A8A; color: #fff; }
 
 /* Expand toggle */
 .toggle-l2, .toggle-l3 { cursor: pointer; user-select: none; }
@@ -338,7 +332,6 @@ td:first-child { text-align: left; }
      (Sept 14, 2026) — ported from the live dashboard's own CSS system,
      same tokens/classes, scoped to this single-domain sandbox page ───── */
 .lens-section { margin-top: 16px; }
-.pat-Mixed { background: #94A3B8; color: #fff; }
 
 .lens-empty { padding: 24px 18px; text-align: center; color: var(--lgray); font-style: italic; font-size: 12px; }
 
@@ -364,9 +357,6 @@ td.crud-d .crud-entity { color: #991B1B; }
 #raci-main-table td:not(:first-child), #crud-main-table td:not(:first-child) { text-align: left; font-family: inherit; font-size: 11px; }
 
 /* Pattern mix bar (thin segmented bar, used on RACI/Data/People rows) */
-.pat-mix-bar { display:inline-flex; width:56px; height:10px; overflow:hidden; vertical-align:middle; border-radius:2px; }
-.pat-mix-bar span { display:block; height:100%; box-sizing:border-box; border-right:1px solid #CBD5E1; }
-.pat-mix-bar span:last-child { border-right:none; }
 
 /* People View (Role Impact Table) */
 .role-toggle-icon { display: inline-block; width: 12px; font-weight: 700; color: var(--navy); margin-right: 4px; }
@@ -398,8 +388,9 @@ td.crud-d .crud-entity { color: #991B1B; }
   People View. The Working-Relationship Table shows each activity's
   <strong>Current State &rarr; Progression Ceiling</strong> plotted on the full six-step ramp, with the Per-Transition Evidence Ladder
   as clickable gates in between, plus Consequence of Error,
-  for the 118 activities that have been hand-classified by working relationship so far. Everything here is real data pulled from the
-  live framework &mdash; nothing is simulated. Leave a reaction or a note on any row using the <strong>Notes</strong> button; GiGi and Tim can both see
+  for the 118 activities that have been hand-classified by working relationship so far. The process structure, RACI, and CRUD data are
+  the framework&rsquo;s real PCF 7.0 data. Working-relationship classifications, Consequence-of-Error ratings, and every % H figure are
+  <strong>modeled</strong> &mdash; reasoned judgments for Tim and GiGi to pressure-test, not measured observations. Leave a reaction or a note on any row using the <strong>Notes</strong> button; GiGi and Tim can both see
   and add to them here.
 </div>
 
@@ -464,7 +455,6 @@ td.crud-d .crud-entity { color: #991B1B; }
           <thead>
             <tr>
               <th>Process</th>
-              <th>Pattern</th>
               <th>R</th>
               <th>A &#9733;</th>
               <th>C</th>
@@ -480,14 +470,13 @@ td.crud-d .crud-entity { color: #991B1B; }
     <div class="card lens-section" id="panel-data" style="display:none">
       <div class="card-header">
         <h3>Data View (CRUD Matrix) &mdash; PCF 7.0</h3>
-        <span>Entity &times; process CRUD, per L3 process &mdash; real data ported from the live dashboard's Data View lens</span>
+        <span>Entity &times; process CRUD, per L3 process &mdash; real CRUD data for PCF 7.0</span>
       </div>
       <div class="table-wrap">
         <table id="crud-main-table">
           <thead>
             <tr>
               <th>Process</th>
-              <th>Pattern</th>
               <th>Create</th>
               <th>Read</th>
               <th>Update</th>
@@ -1088,7 +1077,7 @@ const WR_DATA = {
   "7.6.2.4": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Support program design; low direct legal exposure.", consFactors:["legal"], ceilingFactors:["legal"], ceilingNote:"Outplacement terms and severance-related compliance (e.g. WARN Act notice requirements) keep a review step in the loop even as day-to-day case handling delegates further." },
   "7.6.3.1": { rel:"Oversight", future:"Oversight", ceiling:"Oversight", cons:"High", consNote:"Cross-border immigration/tax/labor-law compliance review — same review-before-acting logic as 7.4.5, compounded by the current role catalog's confirmed specialist-role gap (International HR Management isn't a named role).", consFactors:["legal"], ceilingFactors:["legal","governance"], ceilingNote:"Cross-border immigration/tax/labor-law compliance review — same “review-before-acting is the ceiling” logic as 7.4.5. Also the value stream's confirmed specialist-role gap (International HR Management isn't in the current role catalog)." },
   "7.7.1": { rel:"Agent-delegation", future:"Automation", ceiling:"Automation", cons:"Low", consNote:"Internal reporting mechanics; corrected at the next reporting cycle, no individual or legal exposure.", consFactors:["human","legal","reversibility"], ceilingFactors:["top"], ceilingNote:"Reporting execution against already-defined report specs — mechanical enough for full automation." },
-  "7.7.2": { rel:"Oversight", future:"Oversight", ceiling:"Oversight", cons:"Moderate", consNote:"Exception-pattern inquiries routinely surface sensitive edge cases (harassment concerns, pay disputes, leave confusion) before they're classified as something bigger — trust/duty-of-care drives this, at a lower stakes tier than an active grievance (7.4.4).", consFactors:["trust"], ceilingFactors:["floor"], ceilingNote:"Exception-pattern inquiries routinely surface sensitive edge cases (harassment concerns, pay disputes, leave confusion) before they're classified as something bigger — same confidentiality/duty-of-care logic as 7.4.4, at a lower stakes tier." },
+  "7.7.2": { rel:"Oversight", future:"Oversight", ceiling:"Oversight", cons:"Moderate", consNote:"Non-standard employee inquiries routinely surface sensitive edge cases (harassment concerns, pay disputes, leave confusion) before they're classified as something bigger — trust/duty-of-care drives this, at a lower stakes tier than an active grievance (7.4.4).", consFactors:["trust"], ceilingFactors:["floor"], ceilingNote:"Exception-pattern inquiries routinely surface sensitive edge cases (harassment concerns, pay disputes, leave confusion) before they're classified as something bigger — same confidentiality/duty-of-care logic as 7.4.4, at a lower stakes tier." },
   "7.7.3": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Moderate", consNote:"Rule-based record maintenance; errors cascade downstream into pay/benefits, but the step itself carries no standing legal duty of its own.", consFactors:["legal"], ceilingFactors:["top"], ceilingNote:"Rule-based record maintenance; errors cascade downstream into pay/benefits but the step itself carries no standing duty." },
   "7.7.4": { rel:"Automation", future:"Automation", ceiling:"Automation", cons:"Moderate", consNote:"System-administration work; an outage or misconfiguration has broad operational reach (every HR process depends on it) but is a technical fix, not a legal exposure.", consFactors:["legal","ops","reach"], ceilingFactors:["legal","top"], ceilingNote:"HRIS data-governance and privacy obligations sit in how the system is configured, not in each instance — day-to-day system management is mechanical enough for full automation." },
   "7.7.5": { rel:"Augmentation", future:"Agent-delegation", ceiling:"Agent-delegation", cons:"Low", consNote:"Metric-design work; corrected at the next measurement cycle.", consFactors:["reversibility"], ceilingFactors:["technical"], ceilingNote:"Measure design can move toward agent-delegation once which measures actually predict outcomes is proven." },
@@ -1111,47 +1100,9 @@ const WR_DATA = {
    (Sept 14, 2026) — ported from the live dashboard's own render functions,
    same logic, scoped to this single-domain (PCF 7.0) sandbox page. ────── */
 
-const TIER_COLORS = {
-  "Executive": { fill: "#FEE2E2", text: "#991B1B" },
-  "Managerial": { fill: "#EEF3FA", text: "#1B4F8A" },
-  "Operational": { fill: "#DCFCE7", text: "#166534" },
-  "External Participant": { fill: "#F5F5F5", text: "#666666" },
-};
-const PATTERN_META = {
-  Decision:    { fill: "#EEF3FA", text: "#1B4F8A", tagline: "Judgment & Authority — gates that stay human by design", m1: 92, m3: 80 },
-  Knowledge:   { fill: "#F3F0FE", text: "#534AB7", tagline: "Synthesis & Interpretation — judgment-driven work", m1: 85, m3: 65 },
-  Document:    { fill: "#E0F2FE", text: "#0369A1", tagline: "Content Generation — drafting and communication", m1: 72, m3: 40 },
-  Transaction: { fill: "#DCFCE7", text: "#166534", tagline: "Rules-Based Processing — suited to automation", m1: 60, m3: 35 },
-  Exception:   { fill: "#FEE2E2", text: "#991B1B", tagline: "Non-Standard Resolution — human-resolved by nature", m1: 95, m3: 82 },
-};
-const PATTERN_HEX = { Decision: '#7B9FD1', Knowledge: '#A79AE0', Document: '#5EB8E0', Transaction: '#6FC48C', Exception: '#E88A8A' };
-
-function countPatternsForL3s(l3s) {
-  const counts = { Decision: 0, Knowledge: 0, Document: 0, Transaction: 0, Exception: 0 };
-  l3s.forEach(l3 => {
-    if (l3.l4 && l3.l4.length) {
-      l3.l4.forEach(a => { if (counts[a.pattern] !== undefined) counts[a.pattern]++; });
-    } else if (counts[l3.pattern] !== undefined) {
-      counts[l3.pattern]++;
-    }
-  });
-  return counts;
-}
-function renderPatternMixBarForL3s(l3s) {
-  const counts = countPatternsForL3s(l3s);
-  const total = Object.values(counts).reduce((a, b) => a + b, 0) || 1;
-  const present = Object.entries(counts).filter(([, c]) => c > 0);
-  const segs = present.map(([p, c]) => '<span style="width:' + (c / total * 100).toFixed(1) + '%;background:' + PATTERN_HEX[p] + '" title="' + p + ' ' + c + '"></span>').join('');
-  const label = present.length === 1 ? present[0][0] + ' pattern' : 'Mixed pattern';
-  return '<span class="pat-mix-bar" role="img" aria-label="' + label + '">' + segs + '</span>';
-}
-function renderPatternMixBar(l3) { return renderPatternMixBarForL3s([l3]); }
-function renderRoleMixBar(l3s) {
-  const counts = countPatternsForL3s(l3s);
-  const total = Object.values(counts).reduce((a, b) => a + b, 0);
-  if (!total) return '<span style="color:#B8C0CC;font-style:italic;font-size:11px">—</span>';
-  return renderPatternMixBarForL3s(l3s);
-}
+/* Work-pattern display code removed Sept 24, 2026 (Sandbox 7.0 sweep, F1):
+   patterns are retired from user-facing display per Tim + GiGi. Every
+   activity still carries its \`pattern\` field in the data (GR-038). */
 
 /* ── RACI Table ───────────────────────────────────────────────────────── */
 function formatRaciCell(value, derived) {
@@ -1174,12 +1125,11 @@ function renderRaciTable(cat) {
   let html = '';
   cat.groups.forEach(g => {
     html += '<tr class="row-l2 toggle-row" data-raci-group="' + g.code + '">' +
-      '<td class="indent-l2 toggle-l2 collapsed" colspan="6" data-raci-group="' + g.code + '" onclick="toggleRaciGroup(\'' + g.code + '\',this)">' +
+      '<td class="indent-l2 toggle-l2 collapsed" colspan="5" data-raci-group="' + g.code + '" onclick="toggleRaciGroup(\'' + g.code + '\',this)">' +
       '<span class="row-flex"><span class="row-prefix"><span class="toggle-icon" title="Click to expand">+</span>' + g.code + '</span>' +
       '<span class="row-text">' + g.name + '</span></span></td></tr>';
     g.l3.forEach(l3 => {
       const hasL4 = l3.l4 && l3.l4.length > 0;
-      const patBadge = renderPatternMixBar(l3);
       const l3ToggleAttrs = hasL4
         ? 'class="indent-l3 toggle-l3 collapsed" data-raci-l3code="' + l3.code + '" onclick="toggleRaciL3(\'' + l3.code + '\',this)"'
         : 'class="indent-l3"';
@@ -1187,7 +1137,6 @@ function renderRaciTable(cat) {
       const raci = l3.raci || { R: '—', A: '—', C: '—', I: '—' };
       html += '<tr class="row-l3" data-raci-parent="' + g.code + '" data-raci-l3code="' + l3.code + '" style="display:none">' +
         '<td ' + l3ToggleAttrs + '><span class="row-flex"><span class="row-prefix">' + l3Icon + '<span class="pcf-ref">' + l3.code + '</span></span><span class="row-text">' + l3.name + '</span></span></td>' +
-        '<td>' + patBadge + '</td>' +
         '<td>' + formatRCell(raci) + '</td>' +
         '<td>' + formatRaciCell(raci.A) + '</td>' +
         '<td>' + formatRaciCell(raci.C) + '</td>' +
@@ -1195,7 +1144,6 @@ function renderRaciTable(cat) {
       (l3.l4 || []).forEach(l4 => {
         html += '<tr class="row-l4" data-raci-parent="' + g.code + '" data-raci-parent-l3="' + l3.code + '" style="display:none">' +
           '<td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + l4.code + '</span></span><span class="row-text">' + l4.name + '</span></span></td>' +
-          '<td><span class="pat pat-' + l4.pattern + '">' + l4.pattern + '</span></td>' +
           '<td>' + formatRCell(raci) + '</td>' +
           '<td>' + formatRaciCell(raci.A) + '</td>' +
           '<td>' + formatRaciCell(raci.C) + '</td>' +
@@ -1242,12 +1190,11 @@ function renderCrudTable(cat) {
   let html = '';
   cat.groups.forEach(g => {
     html += '<tr class="row-l2 toggle-row" data-crud-group="' + g.code + '">' +
-      '<td class="indent-l2 toggle-l2 collapsed" colspan="6" data-crud-group="' + g.code + '" onclick="toggleCrudGroup(\'' + g.code + '\',this)">' +
+      '<td class="indent-l2 toggle-l2 collapsed" colspan="5" data-crud-group="' + g.code + '" onclick="toggleCrudGroup(\'' + g.code + '\',this)">' +
       '<span class="row-flex"><span class="row-prefix"><span class="toggle-icon" title="Click to expand">+</span>' + g.code + '</span>' +
       '<span class="row-text">' + g.name + '</span></span></td></tr>';
     g.l3.forEach(l3 => {
       const hasL4 = l3.l4 && l3.l4.length > 0;
-      const patBadge = renderPatternMixBar(l3);
       const l3ToggleAttrs = hasL4
         ? 'class="indent-l3 toggle-l3 collapsed" data-crud-l3code="' + l3.code + '" onclick="toggleCrudL3(\'' + l3.code + '\',this)"'
         : 'class="indent-l3"';
@@ -1255,12 +1202,10 @@ function renderCrudTable(cat) {
       const cr = l3.crud || {};
       html += '<tr class="row-l3" data-crud-parent="' + g.code + '" data-crud-l3code="' + l3.code + '" style="display:none">' +
         '<td ' + l3ToggleAttrs + '><span class="row-flex"><span class="row-prefix">' + l3Icon + '<span class="pcf-ref">' + l3.code + '</span></span><span class="row-text">' + l3.name + '</span></span></td>' +
-        '<td>' + patBadge + '</td>' +
         formatCrudCell(cr.create, 'c') + formatCrudCell(cr.read, 'r') + formatCrudCell(cr.update, 'u') + formatCrudCell(cr.delete, 'd') + '</tr>';
       (l3.l4 || []).forEach(l4 => {
         html += '<tr class="row-l4" data-crud-parent="' + g.code + '" data-crud-parent-l3="' + l3.code + '" style="display:none">' +
           '<td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + l4.code + '</span></span><span class="row-text">' + l4.name + '</span></span></td>' +
-          '<td><span class="pat pat-' + l4.pattern + '">' + l4.pattern + '</span></td>' +
           formatCrudCell(cr.create, 'c') + formatCrudCell(cr.read, 'r') + formatCrudCell(cr.update, 'u') + formatCrudCell(cr.delete, 'd') + '</tr>';
       });
     });
@@ -2288,10 +2233,10 @@ function setView(v) {
 
   const notes = {
     wr: 'Current State and Progression Ceiling — the real model from Working_Relationship_Progression_Methodology.docx, plotted on the six-step ramp with the Per-Transition Evidence Ladder shown as gates in between. Blank rows mean that reasoning hasn’t been done yet, not that the answer is zero.',
-    raci: 'Real reasoned-match RACI, same data the live dashboard’s RACI Table renders. R falls back to the Accountable role (marked "from Accountable") wherever no separate Responsible was identified.',
-    data: 'Entity × process CRUD — 22 of 37 L3s have real confirmed CRUD data, ported unchanged from the live dashboard’s Data View lens.',
-    people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced. Each role’s WR rollup (Current State) is real — an equal-weighted mean across its Accountable L3s, shown only once every one of them is fully classified.',
-    gates: 'Per Working_Relationship_Progression_Methodology.docx §5 — three independent axes (Technical/Process, Role-level, Organizational-level) must all clear before an activity advances, gated here at L3 via its RACI Accountable role. Only the WR Rollup column is real; no instrument exists yet for any of the three gate axes, so those cells are honest placeholders, not a status.',
+    raci: 'Real reasoned-match RACI for PCF 7.0. R falls back to the Accountable role (marked "from Accountable") wherever no separate Responsible was identified.',
+    data: 'Entity × process CRUD — 22 of 37 L3s have real confirmed CRUD data.',
+    people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced. Each role’s WR rollup (Current State) is a modeled index — an equal-weighted mean across its Accountable L3s, computed live and shown only once every one of them is fully classified.',
+    gates: 'Per Working_Relationship_Progression_Methodology.docx §5 — three independent axes (Technical/Process, Role-level, Organizational-level) must all clear before an activity advances, gated here at L3 via its RACI Accountable role. Only the WR Rollup column carries a value (a modeled index, computed live from the classifications); no instrument exists yet for any of the three gate axes, so those cells are honest placeholders, not a status.',
   };
   document.getElementById('view-note').textContent = notes[v] || '';
 
