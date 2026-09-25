@@ -71,6 +71,9 @@ th { background: var(--navy); color: #fff; text-align: left; vertical-align: bot
 td { border: 1px solid var(--border); padding: 10px 12px; vertical-align: top; color: #222; }
 tr:nth-child(even) td { background: #FAFBFD; }
 td.ring-name { color: var(--navy); font-weight: 600; white-space: nowrap; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+ul.plain { margin: 0 0 16px 22px; }
+ul.plain li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
 
 .term-box {
   background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 6px;
@@ -175,8 +178,47 @@ footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
   <h2>The Framework's Answer: Containment Through Sequencing</h2>
   <p>This isn't a hypothetical the framework has no response to. Governed Decision Points holding accountability fixed at every stage, and a phased, one-domain-at-a-time rollout rather than a simultaneous org-wide push, are together a containment strategy against exactly this failure mode — even though nothing built so far has been described in those terms. Sequencing keeps the shock waves from overlapping in the first place; governance keeps accountability from being one of the things that erodes if they do.</p>
 
+  <h2>A Second Path: Work Product</h2>
+  <p>The five rings trace the wave from a role out through people. Work product carries it a second way. An activity's output &mdash; a record, a review, a report &mdash; is read by other processes, and each of those has its own Accountable role. When AI produces or drafts that output, every downstream Accountable role inherits a job: confirming it can be trusted before acting on it. GiGi named this the <em>verification tax</em> (HR Couch, Sept 23, 2026): &ldquo;If AI saves someone ten hours but another employee spends six hours checking the work&hellip; we did not eliminate ten hours. We moved the work somewhere else.&rdquo;</p>
+  <p>The framework can already trace where that work moves. The Data View records which process creates each work product and which processes read it; RACI names who is Accountable at each step; the working-relationship classification shows how much of the producing work AI does. Tracing the Performance Review through the Sandbox 7.0 data:</p>
+  <table>
+    <thead>
+      <tr><th>Reads the Performance Review</th><th>Accountable</th><th>Decision it feeds</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="ring-name">7.6.1 Manage promotion and demotion</td><td>HRBP Manager</td><td>Promotion and demotion (a Judgment call)</td></tr>
+      <tr><td class="ring-name">7.5.1 Reward, recognition, and motivation</td><td>Compensation &amp; Benefits Manager</td><td>Pay and recognition</td></tr>
+      <tr><td class="ring-name">7.4.1 Manage labor relations</td><td>HRBP Manager</td><td>Labor relations</td></tr>
+      <tr><td class="ring-name">7.5.3 Employee assistance and retention</td><td>HR Generalist</td><td>Retention</td></tr>
+    </tbody>
+  </table>
+  <p>The review is produced by 7.3.2 Manage employee performance, where one activity already runs at Agent-delegation and another at Augmentation. So an AI-drafted review does not stop at the review: it feeds promotion, pay, labor relations, and retention decisions. The verification tax lands on whoever is Accountable at each of those four points. The HRBP Manager pays it twice: once at the source, and again when their own promotion and labor decisions rely on it.</p>
+  <p>Running the same trace across every work product in Sandbox 7.0 shows where the verification load concentrates. Eleven work products have an AI-involved producer and at least one downstream reader:</p>
+  <table>
+    <colgroup><col style="width:34%"><col style="width:16%"><col style="width:50%"></colgroup>
+    <thead>
+      <tr><th>Accountable role</th><th>AI-touched work products</th><th>Pays twice on</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="ring-name">HRBP Manager</td><td class="num">6</td><td>Employee Master Record, Performance Review, ER Case Record</td></tr>
+      <tr><td class="ring-name">HRIS Analyst</td><td class="num">5</td><td>Employee Master Record, T&amp;A Record, HR Analytics Report</td></tr>
+      <tr><td class="ring-name">Director of HR Ops</td><td class="num">2</td><td>Workforce Plan, Regulatory Alert</td></tr>
+      <tr><td class="ring-name">HR Generalist</td><td class="num">2</td><td>&mdash;</td></tr>
+      <tr><td class="ring-name" style="white-space:normal">Director of L&amp;D, Recruiter, Onboarding Coordinator, Compensation &amp; Benefits Manager</td><td class="num">1 each</td><td>&mdash;</td></tr>
+    </tbody>
+  </table>
+  <p>The role that already holds the most Accountable judgment calls in 7.0 &mdash; grievances, promotions, labor relations &mdash; is also where the most AI-produced work lands for checking. For each work product, four things are worth measuring:</p>
+  <ul class="plain">
+    <li><strong>Fan-out:</strong> how many downstream processes read it. The Employee Master Record is written by an Automation-level process and read by 14.</li>
+    <li><strong>Consequence of what it feeds:</strong> a review feeding a promotion decision matters more than one feeding a newsletter.</li>
+    <li><strong>The verification point:</strong> the first place an AI-produced output meets a Judgment or Oversight step, or an Accountable role &mdash; where someone has to answer where it came from, whether it was verified, and who stands behind the decision.</li>
+    <li><strong>Verification load:</strong> the roles that sit at many verification points at once.</li>
+  </ul>
+  <p>These counts are modeled from Sandbox 7.0, not observed. &ldquo;AI-involved&rdquo; means at least one activity in the producing process sits at Augmentation or further along the ramp, and the Data View records CRUD per process for 22 of 37 processes, so the trace shows which process produces a work product but not yet which activity inside it.</p>
+
   <h2>Open Questions</h2>
   <p class="open-q"><strong>Manager and Team as measured rings.</strong> Both rings currently have structural data (reportsTo, span of control) but no measure of force or load — this is the same open ground as the framework's existing Trust and load/sustainability gaps, just named from a different direction.</p>
+  <p class="open-q"><strong>Verification load as the first measure of the middle rings.</strong> Counting AI-touched work products per Accountable role is a computed, repeatable signal of where load lands &mdash; the first real candidate for measuring the Manager and Team rings. It still counts exposure, not hours; turning it into effort would need observed data.</p>
   <p class="open-q"><strong>Whether interference is measurable, not just descriptive.</strong> Could the framework ever flag a real overlap — a manager or team sitting at the intersection of two simultaneously-transforming domains — before it happens, rather than only naming the concept after the fact?</p>
   <p class="open-q"><strong>Scope.</strong> Right now this is written from PCF 7.0 (HR) outward. Whether it stays a narrative frame or becomes something closer to a formal cross-domain lens is undecided.</p>
 
