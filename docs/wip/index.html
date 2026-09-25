@@ -97,6 +97,10 @@ table.catalog tbody tr.group-row td {
   background: var(--navy-l); padding: 9px 14px; border-top: 2px solid var(--border);
   font-family: 'Georgia', serif; font-weight: 700; font-size: 14px; color: var(--navy-d);
 }
+table.catalog tbody tr.subgroup-row td {
+  background: #F8FAFD; padding: 7px 14px 7px 28px; border-top: 1px solid var(--border);
+  font-family: 'Consolas', monospace; font-size: 10.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--navy);
+}
 table.catalog tbody tr.group-row .g-note {
   font-family: 'Segoe UI', sans-serif; font-weight: 400; font-style: italic; font-size: 11px;
   color: var(--lgray); margin-left: 10px;
@@ -194,12 +198,14 @@ footer a { color: var(--navy); text-decoration: none; }
       </thead>
       <tbody>
 
-        <tr class="group-row"><td colspan="4">Requirements Traceability <span class="g-note">A living register tracking every requirement GiGi has raised across her three review documents, traced to what addresses it and how far along that is. Reference-only — not itself a proposal to vote on, though its own rows link out to the votable/reference items that address each requirement.</span></td></tr>
+        <tr class="group-row"><td colspan="4">Administration <span class="g-note">The framework's records rather than its proposals: registers and logs, audit reports, and master data. Pages to consult and keep current. A governance proposal moves here once adopted.</span></td></tr>
+
+        <tr class="subgroup-row"><td colspan="4">Registers &amp; Logs</td></tr>
 
         <tr class="item-row">
           <td>
             <div class="item-title"><a href="requirements_register.html">Requirements Register<span class="lock"> (living tracker — HTML only)</span></a></div>
-            <div class="item-desc">43 atomic requirements (GR-001&ndash;GR-043) extracted from GiGi's Website &amp; Framework Review, her Human/AI Maturity Reflections, and her Working Thoughts &amp; Next Steps note &mdash; each traced to a design-spec doc or sandbox feature, with a status of Implemented/Designed/Partially Addressed/Open. Filterable, searchable, and includes the Standard Design Spec Template. Replaces passing HITL_Requirements_Register.xlsx back and forth &mdash; this page is the current version all three of us read from.</div>
+            <div class="item-desc">Every requirement raised by GiGi or Tim (GR-001 onward), from her review documents, Tim's framework direction and our working sessions &mdash; each with who raised it, owner, priority and acceptance criteria, traced to a design-spec doc or sandbox feature, with a status from Open through Pending Review to Implemented or Closed. Filterable, searchable, and includes the Standard Design Spec Template. Replaces passing HITL_Requirements_Register.xlsx back and forth &mdash; this page is the current version all three of us read from.</div>
           </td>
           <td><span class="status">Living tracker</span></td>
           <td><span class="stage">Ongoing</span></td>
@@ -211,7 +217,7 @@ footer a { color: var(--navy); text-decoration: none; }
         <tr class="item-row">
           <td>
             <div class="item-title"><a href="production_changelog.html">Production Changelog<span class="lock"> (living tracker — HTML only)</span></a></div>
-            <div class="item-desc">One row per shipped change to the live production framework, per the Content Promotion Policy's proposed changelog &mdash; date, what changed, which files, the source evidence, and how it was verified. First entry: the HRBP Manager reportsTo correction (Sept 23, 2026).</div>
+            <div class="item-desc">One entry per change to master data &mdash; reporting lines, working-relationship classifications and ceilings, and work-product CRUD &mdash; with who asked for it, what changed, which files, the evidence, and how it was verified. Read live by the sandbox; the automated changelog check fails any push that changes tracked data without an entry.</div>
           </td>
           <td><span class="status">Living tracker</span></td>
           <td><span class="stage">Ongoing</span></td>
@@ -220,7 +226,59 @@ footer a { color: var(--navy); text-decoration: none; }
           </td>
         </tr>
 
-        <tr class="group-row"><td colspan="4">Role Pattern Transition Narratives <span class="g-note">Stage-first M1 → M3 → M5 views, per role, grounded in real Accountable-process data. Live HTML rebuilt onto the standard site's own system (px-based Standing Type Scale, standard masthead/page chrome, live pattern legend) — see the Content Generation Rules compliance audit below; the Word/PDF exports keep their dedicated print layout, matched on fonts and colors only, per Token Lock.</span></td></tr>
+        <tr class="subgroup-row"><td colspan="4">Audit Reports</td></tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="content_rules_compliance_audit_wip_pass.html">Content Generation Rules — Compliance Audit (WIP Hub Pass)</a></div>
+            <div class="item-desc">A proof-of-concept pressure-test of the 17 proposed rules in the Framework Content Generation Rules against the WIP hub's own 9 documents. No real violations found; surfaced a Token Lock color-list gap (mostly fixed — 2 colors still open), a Rule 2 content gap (now fixed everywhere), and the 3 role-narrative pages' print-pipeline design system, since resolved by rebuilding them onto the standard system.</div>
+          </td>
+          <td><span class="status">Ready for review</span></td>
+          <td><span class="stage">Step 2 · Pressure Test</span></td>
+          <td class="fmt-links">
+            <a href="content_rules_compliance_audit_wip_pass.html">HTML</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="rebuild_scope_7_0_sweep_audit.html">7.0 (HR) Rebuild Scope &amp; Sweep Audit</a></div>
+            <div class="item-desc">The audit record for the 7.0 pass: the Sept 21 color audit of the production pages, then the Sept 24 re-run on Sandbox 7.0 after production was ruled stale. Records both sweeps, the fixes now live in the sandbox, Tim's rule decisions (Rules 1, 2, 5, 21), and where GR-002 to GR-011 landed: five pass, one closed, four still to come.</div>
+          </td>
+          <td><span class="status">Ready for review</span></td>
+          <td><span class="stage">Step 2 · Pressure Test</span></td>
+          <td class="fmt-links">
+            <a href="rebuild_scope_7_0_sweep_audit.html">HTML</a>
+          </td>
+        </tr>
+
+        <tr class="subgroup-row"><td colspan="4">Master Data</td></tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="organizational_role_taxonomy.html">Organizational Role Taxonomy &mdash; Sandbox 7.0<span class="lock"> (live view &mdash; HTML only)</span></a></div>
+            <div class="item-desc">The 14 PCF 7.0 roles with tier, reporting line, span of control, and Accountable and Responsible process counts, plus the reporting tree and the reporting-line change history. Read live from the sandbox's master copy each time it opens, so it can't drift; changes are made in the sandbox and logged, never here.</div>
+          </td>
+          <td><span class="status">Live view</span></td>
+          <td><span class="stage">Ongoing</span></td>
+          <td class="fmt-links">
+            <a href="organizational_role_taxonomy.html">HTML</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="work_product_catalog.html">Work-Product Catalog &mdash; Sandbox 7.0</a></div>
+            <div class="item-desc">Draft master data for item A1 of the Work Product spec: the 37 work products in PCF 7.0, each with a permanent ID, a one-line definition, a system of record and a model-output flag, plus the processes that produce and read each one. Records Tim's decisions on the five review questions (Sept 25) and two data findings.</div>
+          </td>
+          <td><span class="status" data-wip-status="work-product-catalog">Loading…</span></td>
+          <td><span class="stage">Concept</span></td>
+          <td class="fmt-links">
+            <a href="work_product_catalog.html">HTML</a>
+          </td>
+        </tr>
+
+        <tr class="group-row"><td colspan="4">Role Pattern Transition Narratives <span class="g-note">Stage-first M1 → M3 → M5 views, per role, grounded in real Accountable-process data. Live HTML rebuilt onto the standard site's own system (px-based Standing Type Scale, standard masthead/page chrome, live pattern legend) — see the Content Generation Rules compliance audit under Administration; the Word/PDF exports keep their dedicated print layout, matched on fonts and colors only, per Token Lock.</span></td></tr>
 
         <tr class="item-row">
           <td>
@@ -316,18 +374,6 @@ footer a { color: var(--navy); text-decoration: none; }
 
         <tr class="item-row">
           <td>
-            <div class="item-title"><a href="work_product_catalog.html">Work-Product Catalog &mdash; Sandbox 7.0</a></div>
-            <div class="item-desc">Draft master data for item A1 of the Work Product spec: the 39 work products in PCF 7.0, each with a permanent ID, a one-line definition and a system of record, plus the processes that produce and read each one. Five review questions and two data findings for Tim and GiGi.</div>
-          </td>
-          <td><span class="status" data-wip-status="work-product-catalog">Loading…</span></td>
-          <td><span class="stage">Concept</span></td>
-          <td class="fmt-links">
-            <a href="work_product_catalog.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
             <div class="item-title"><a href="working_relationship_display_migration.html">Working Relationship as the Primary Display Lens</a></div>
             <div class="item-desc">Removes the five work-pattern labels/colors from every user-facing page (CRUD, RACI, Maturity, RTP — 33 pages), keeps pattern data in the backend for future analytics, and extends the already-locked Working Relationship palette (Rule 20) — proven on the Value Stream Profile pages — to those page types instead. Supersedes the Work Pattern Color Standard concept below.</div>
           </td>
@@ -397,30 +443,6 @@ footer a { color: var(--navy); text-decoration: none; }
             <a href="Framework_Content_Generation_Rules.docx">Word</a><span class="sep">·</span>
             <a href="framework_content_generation_rules.html">HTML</a><span class="sep">·</span>
             <a class="pdf" href="framework_content_generation_rules.pdf">PDF</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="content_rules_compliance_audit_wip_pass.html">Content Generation Rules — Compliance Audit (WIP Hub Pass)</a></div>
-            <div class="item-desc">A proof-of-concept pressure-test of the 17 proposed rules above against the WIP hub's own 9 documents. No real violations found; surfaced a Token Lock color-list gap (mostly fixed — 2 colors still open), a Rule 2 content gap (now fixed everywhere), and the 3 role-narrative pages' print-pipeline design system, since resolved by rebuilding them onto the standard system.</div>
-          </td>
-          <td><span class="status">Ready for review</span></td>
-          <td><span class="stage">Step 2 · Pressure Test</span></td>
-          <td class="fmt-links">
-            <a href="content_rules_compliance_audit_wip_pass.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="rebuild_scope_7_0_sweep_audit.html">7.0 (HR) Rebuild Scope &amp; Sweep Audit</a></div>
-            <div class="item-desc">The audit record for the 7.0 pass: the Sept 21 color audit of the production pages, then the Sept 24 re-run on Sandbox 7.0 after production was ruled stale. Records both sweeps, the fixes now live in the sandbox, Tim's rule decisions (Rules 1, 2, 5, 21), and where GR-002 to GR-011 landed: five pass, one closed, four still to come.</div>
-          </td>
-          <td><span class="status">Ready for review</span></td>
-          <td><span class="stage">Step 2 · Pressure Test</span></td>
-          <td class="fmt-links">
-            <a href="rebuild_scope_7_0_sweep_audit.html">HTML</a>
           </td>
         </tr>
 
@@ -685,7 +707,9 @@ footer a { color: var(--navy); text-decoration: none; }
      structure, like the print-pipeline Pattern Transition Narratives) isn't
      compatible with the widget as-is; keep hand-maintaining its separate
      Word/PDF files until that page is rebuilt onto the standard layout.
-  5. Decide which group it belongs in — "Role Pattern Transition Narratives"
+  5. Decide which group it belongs in — "Administration" (a record rather
+     than a proposal: a register or log, an audit report, or a master-data
+     page; file it under the matching subgroup row), "Role Pattern Transition Narratives"
      (built-and-applied content, scoped to one specific role), "Concepts &
      Design Principles" (a framework-level idea/mechanism, not yet applied to
      any specific role or dataset), or "External & Partner Review Notes"

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Organizational Role Taxonomy — Sandbox 7.0 — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 960px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.approval-box { background: var(--amber-bg); border: 1px solid #F0C67A; border-left: 5px solid var(--amber); border-radius: 8px; padding: 18px 22px; margin-bottom: 28px; }
+.approval-box .ab-head { font-size: 14px; font-weight: 700; color: var(--amber-text); margin-bottom: 6px; }
+.approval-box p { font-size: 13px; color: #5A4315; line-height: 1.65; margin: 0; }
+
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 28px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 19px; margin: 36px 0 10px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 15px; margin: 20px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 14px; }
+p.lede { font-size: 15.5px; color: var(--dark); }
+ul.plain { margin: 0 0 16px 20px; }
+ul.plain li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.feature-box { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 8px 0 20px; }
+.feature-box h3 { margin-top: 0; }
+
+/* Sizing/alignment matched to the "Working Relationship" gates track in
+   docs/sandbox/pcf7.html (.gate-node/.gate-circle/.gate-label/.gate-arrow)
+   so this legend reads as the same visual system, not a bigger lookalike. */
+.ramp-row { display: flex; flex-wrap: wrap; gap: 0; margin: 12px 0 6px; align-items: flex-start; }
+.ramp-step { display: flex; flex-direction: column; align-items: center; min-width: 84px; flex: 0 0 auto; text-align: center; }
+.ramp-step .rs-dot { width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; }
+.ramp-step .rs-name { font-size: 11px; font-weight: 500; color: #000; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
+.ramp-arrow { width: 22px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; color: var(--lgray); font-size: 16px; font-weight: 700; }
+
+.proof-grid { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 20px; }
+.proof-card { flex: 1; min-width: 200px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.proof-card .pc-role { font-weight: 700; color: var(--navy-d); font-size: 13.5px; margin-bottom: 4px; }
+.proof-card .pc-tier { font-size: 10.5px; color: var(--lgray); text-transform: uppercase; letter-spacing: .03em; margin-bottom: 8px; }
+.proof-card p { font-size: 12.5px; margin: 0; }
+
+.open-item { border-left: 3px solid var(--lgray); padding: 4px 0 4px 14px; margin-bottom: 12px; }
+.open-item .oi-name { font-weight: 700; color: var(--dark); font-size: 13.5px; }
+.open-item p { font-size: 13px; margin: 3px 0 0; }
+
+.source-note { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 4px; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 22px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 12px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.5; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.k { font-weight: 700; color: var(--navy-d); }
+td.num { text-align: right; white-space: nowrap; }
+ol.plan { margin: 0 0 16px 22px; }
+ol.plan li { font-size: 14px; color: var(--gray); line-height: 1.65; margin-bottom: 7px; }
+ol.plan li strong { color: var(--dark); }
+.tag { font-family: 'Consolas', monospace; font-size: 10.5px; color: var(--navy); background: var(--navy-l); border: 1px solid #C6D8EE; border-radius: 3px; padding: 0 5px; margin-left: 4px; white-space: nowrap; }
+.wrap > p, .wrap > ul.plain, .wrap > h2, .wrap > h3, .wrap > .approval-box, .wrap > .related-reqs, .wrap > .open-item { max-width: 800px; }
+.tscroll { overflow-x: auto; }
+table.cat { font-size: 12.5px; min-width: 900px; }
+table.cat td { padding: 7px 10px; }
+table.cat td.nm { font-weight: 600; color: var(--navy-d); white-space: nowrap; }
+table.cat td.mono, .mono { font-family: 'Consolas', monospace; font-size: 11.5px; }
+table.cat td.k { white-space: nowrap; }
+table.cat sup { font-size: 8.5px; color: var(--navy); margin-left: 1px; }
+table.cat .c-un { border-bottom: 1px dashed var(--amber); }
+table.cat .none { color: #B0B8C6; font-family: 'Segoe UI', sans-serif; font-style: italic; }
+table.cat .del { margin-top: 3px; color: var(--lgray); font-family: 'Segoe UI', sans-serif; font-size: 11.5px; }
+.key-line { font-size: 12px; color: var(--lgray); margin: -4px 0 10px; }
+.key-line .c-un { border-bottom: 1px dashed var(--amber); font-family: 'Consolas', monospace; }
+.stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 6px 0 22px; max-width: 800px; }
+.stat { flex: 1; min-width: 150px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.stat .n { font-family: 'Georgia', serif; font-size: 24px; font-weight: 700; color: var(--navy-d); }
+.stat .l { font-size: 12px; color: var(--gray); line-height: 1.4; }
+
+.tree { list-style: none; margin: 0 0 0 0; padding: 0; }
+.tree ul { list-style: none; margin: 0 0 0 22px; padding: 0 0 0 14px; border-left: 1px dashed #C6D8EE; }
+.tree li { font-size: 13.5px; color: var(--dark); line-height: 1.5; margin: 5px 0; }
+.tree .tier { font-family: 'Consolas', monospace; font-size: 10px; color: var(--navy); background: var(--navy-l); border: 1px solid #C6D8EE; border-radius: 3px; padding: 0 5px; margin-left: 6px; }
+.tree .rn { font-weight: 600; color: var(--navy-d); }
+.tree .cd { font-size: 11.5px; color: var(--lgray); font-style: italic; margin-left: 6px; }
+table.tax td.role { font-weight: 600; color: var(--navy-d); }
+table.tax tr.tier-row td { background: var(--navy-l); font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); }
+table.tax td.num { text-align: right; font-family: 'Consolas', monospace; }
+table.tax .muted { color: #B0B8C6; font-style: italic; }
+.load-err { background: #FEE2E2; border: 1px solid #F5B5B5; border-radius: 6px; padding: 12px 16px; color: #7F1D1D; font-size: 13px; }
+.cl-list { margin: 0 0 16px 20px; }
+.cl-list a { color: var(--navy); font-weight: 600; }
+.cl-list li { font-size: 13.5px; color: var(--gray); line-height: 1.6; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">MASTER DATA &nbsp;·&nbsp; ADMINISTRATION &nbsp;·&nbsp; SANDBOX 7.0</div>
+  <h1>Organizational Role Taxonomy &mdash; Sandbox 7.0</h1>
+  <div class="subtitle">The roles in PCF 7.0, their tiers and reporting lines, read live from the sandbox's master copy</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-download-mount data-item="role-taxonomy"></div>
+
+<div class="wrap">
+
+  <div class="approval-box">
+    <div class="ab-head">Master data view &mdash; read live, not a copy</div>
+    <p>This page reads the role taxonomy and RACI straight from Sandbox 7.0 each time it opens, so it always matches the sandbox. Changes are never made here: a reporting line is corrected in the sandbox first and logged in the changelog, under the master-data lane of the Content Promotion Policy. The reporting lines began as a first-pass reasoned structure (July 31, 2026), not an externally sourced org chart.</p>
+  </div>
+
+  <div class="related-reqs">
+    <span class="rr-label">Related Requirements &mdash; Requirements Register</span>
+    <ul>
+      <li><code>GR-050</code> &mdash; Master Data Catalog and maintenance functions <em>(the role taxonomy is one of its entities)</em></li>
+      <li><code>GR-035</code>, <code>GR-040</code> &mdash; validating and correcting reporting lines</li>
+      <li><code>GR-020</code> &mdash; roles that evolve, merge, split, disappear or emerge</li>
+    </ul>
+  </div>
+
+  <div id="tax-root"><p class="source-note">Loading the taxonomy from Sandbox 7.0&hellip;</p></div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;·&nbsp; Master Data View<br>
+    © Timothy P. King 2026 · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+<script src="changelog-data.js"></script>
+<script>
+(function () {
+  var SANDBOX = '../sandbox/pcf7.html';
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function literalAfter(src, marker, open, close) {
+    var i = src.indexOf(marker); if (i < 0) return null;
+    var s = src.indexOf(open, i); var depth = 0;
+    for (var j = s; j < src.length; j++) {
+      var c = src[j];
+      if (c === '"') { j++; while (j < src.length && src[j] !== '"') { if (src[j] === '\\') j++; j++; } continue; }
+      if (c === open) depth++;
+      else if (c === close) { depth--; if (depth === 0) return src.slice(s, j + 1); }
+    }
+    return null;
+  }
+  function evalLiteral(txt) { return (new Function('return ' + txt))(); }
+
+  function render(src) {
+    var taxTxt = literalAfter(src, 'const ROLE_TAXONOMY =', '[', ']');
+    var aliasTxt = literalAfter(src, 'const ROLE_RACI_ALIASES =', '{', '}');
+    if (!taxTxt) throw new Error('ROLE_TAXONOMY not found in the sandbox file');
+    var roles = evalLiteral(taxTxt);
+    var aliases = aliasTxt ? evalLiteral(aliasTxt) : {};
+
+    // Same rules as the sandbox's normalizeRaciToken / parseRaciField.
+    function norm(tok) {
+      var base = tok.replace(/\s*\([^)]*\)\s*$/, '').trim();
+      if (base === '\u2014' || base === '' || base.slice(-1) === '*' || base === 'Legal' || base === 'All Managerial-tier') return null;
+      return aliases[base] || base;
+    }
+    function parse(f) { return f ? f.split('\u00b7').map(norm).filter(Boolean) : []; }
+
+    // Every L3 entry with a RACI: its code, name and RACI object.
+    var procs = [];
+    var re = /code:"(\d+(?:\.\d+)+)"[^\n]*?name:"([^"]*)"[^\n]*?raci:(\{[^}]*\})/g, m;
+    while ((m = re.exec(src))) procs.push({ code: m[1], name: m[2], raci: evalLiteral(m[3]) });
+
+    var byRole = {};
+    roles.forEach(function (r) { byRole[r.name] = { A: [], R: [], reports: [] }; });
+    procs.forEach(function (p) {
+      parse(p.raci.A).forEach(function (n) { if (byRole[n]) byRole[n].A.push(p); });
+      parse(p.raci.R).forEach(function (n) { if (byRole[n]) byRole[n].R.push(p); });
+    });
+    roles.forEach(function (r) { if (r.reportsTo && byRole[r.reportsTo]) byRole[r.reportsTo].reports.push(r.name); });
+    function span(name) { var t = 0; (byRole[name].reports).forEach(function (n) { t += 1 + span(n); }); return t; }
+
+    var tiers = ['Executive', 'Managerial', 'Operational'];
+    var nCD = roles.filter(function (r) { return r.contextDependent; }).length;
+    var nNone = roles.filter(function (r) { return !byRole[r.name].A.length && !byRole[r.name].R.length; }).length;
+
+    var html = '';
+    html += '<div class="stat-row">' +
+      '<div class="stat"><div class="n">' + roles.length + '</div><div class="l">roles in the PCF 7.0 catalog</div></div>' +
+      '<div class="stat"><div class="n">' + tiers.length + '</div><div class="l">tiers: Executive, Managerial, Operational</div></div>' +
+      '<div class="stat"><div class="n">' + procs.length + '</div><div class="l">processes with RACI</div></div>' +
+      '<div class="stat"><div class="n">' + nCD + '</div><div class="l">reporting line marked context-dependent</div></div>' +
+      '</div>';
+
+    html += '<h2>1. The Roles</h2>';
+    html += '<p>Accountable and Responsible counts come from the process RACI, using the same rules as the sandbox&rsquo;s People View. Hover a count to see the processes.</p>';
+    html += '<div class="tscroll"><table class="tax"><tr><th>Role</th><th>Reports to</th><th style="text-align:right">Direct reports</th><th style="text-align:right">Total in span</th><th style="text-align:right">Accountable</th><th style="text-align:right">Responsible</th></tr>';
+    tiers.forEach(function (tier) {
+      html += '<tr class="tier-row"><td colspan="6">' + tier + ' Tier</td></tr>';
+      roles.filter(function (r) { return r.tier === tier; }).forEach(function (r) {
+        var d = byRole[r.name];
+        function cnt(list) {
+          if (!list.length) return '<span class="muted">0</span>';
+          var t = list.map(function (p) { return p.code + ' ' + p.name; }).join('\n');
+          return '<span title="' + esc(t) + '">' + list.length + '</span>';
+        }
+        var rt = r.reportsTo ? esc(r.reportsTo) + (r.contextDependent ? ' <em class="muted" style="color:var(--lgray)">(context-dependent)</em>' : '') : '<span class="muted">Top of the org</span>';
+        html += '<tr><td class="role">' + esc(r.name) + '</td><td>' + rt + '</td><td class="num">' + d.reports.length + '</td><td class="num">' + span(r.name) + '</td><td class="num">' + cnt(d.A) + '</td><td class="num">' + cnt(d.R) + '</td></tr>';
+      });
+    });
+    html += '</table></div>';
+    if (nNone) html += '<p class="source-note">' + nNone + ' role' + (nNone === 1 ? ' has' : 's have') + ' no Responsible or Accountable touches in the current RACI (GR-031).</p>';
+
+    html += '<h2>2. Reporting Structure</h2>';
+    function tree(name) {
+      var r = roles.filter(function (x) { return x.name === name; })[0];
+      var kids = byRole[name].reports;
+      var s = '<li><span class="rn">' + esc(name) + '</span><span class="tier">' + esc(r.tier) + '</span>' + (r.contextDependent ? '<span class="cd">reporting line context-dependent</span>' : '');
+      if (kids.length) s += '<ul>' + kids.map(tree).join('') + '</ul>';
+      return s + '</li>';
+    }
+    var tops = roles.filter(function (r) { return !r.reportsTo; });
+    html += '<ul class="tree">' + tops.map(function (r) { return tree(r.name); }).join('') + '</ul>';
+    html += '<p class="source-note">The CHRO escalates to the CEO or Board, outside the role catalog.</p>';
+
+    html += '<h2>3. Change History</h2>';
+    var cl = (typeof CHANGE_LOG !== 'undefined' ? CHANGE_LOG : []).filter(function (e) { return e.kind === 'reportsTo'; });
+    if (cl.length) {
+      html += '<ul class="cl-list">' + cl.map(function (e) {
+        return '<li><strong>' + esc(e.id) + '</strong> (' + esc(e.date) + ', requested by ' + esc(e.requestedBy) + '): ' + esc(e.summary) +
+          ' <a href="production_changelog.html?q=' + encodeURIComponent(e.id) + '">Full entry</a></li>';
+      }).join('') + '</ul>';
+    } else {
+      html += '<p>No reporting-line changes are logged yet.</p>';
+    }
+    html += '<p>To change a reporting line: edit it in the sandbox, add a changelog entry saying who asked for it and on what evidence, and push both together. The automated changelog check fails the push if the entry is missing.</p>';
+
+    document.getElementById('tax-root').innerHTML = html;
+  }
+
+  fetch(SANDBOX, { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+    .then(render)
+    .catch(function (e) {
+      document.getElementById('tax-root').innerHTML = '<div class="load-err">Could not read the taxonomy from Sandbox 7.0 (' + esc(e.message) + '). Open the <a href="../sandbox/pcf7.html">sandbox</a> People View instead.</div>';
+    });
+})();
+</script>
+<script src="wip-download-widget.js"></script>
+</body>
+</html>
