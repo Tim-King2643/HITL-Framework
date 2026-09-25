@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Work Product in the Role Container — Design Spec — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 800px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.approval-box { background: var(--amber-bg); border: 1px solid #F0C67A; border-left: 5px solid var(--amber); border-radius: 8px; padding: 18px 22px; margin-bottom: 28px; }
+.approval-box .ab-head { font-size: 14px; font-weight: 700; color: var(--amber-text); margin-bottom: 6px; }
+.approval-box p { font-size: 13px; color: #5A4315; line-height: 1.65; margin: 0; }
+
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 28px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 19px; margin: 36px 0 10px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 15px; margin: 20px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 14px; }
+p.lede { font-size: 15.5px; color: var(--dark); }
+ul.plain { margin: 0 0 16px 20px; }
+ul.plain li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.feature-box { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 8px 0 20px; }
+.feature-box h3 { margin-top: 0; }
+
+/* Sizing/alignment matched to the "Working Relationship" gates track in
+   docs/sandbox/pcf7.html (.gate-node/.gate-circle/.gate-label/.gate-arrow)
+   so this legend reads as the same visual system, not a bigger lookalike. */
+.ramp-row { display: flex; flex-wrap: wrap; gap: 0; margin: 12px 0 6px; align-items: flex-start; }
+.ramp-step { display: flex; flex-direction: column; align-items: center; min-width: 84px; flex: 0 0 auto; text-align: center; }
+.ramp-step .rs-dot { width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; }
+.ramp-step .rs-name { font-size: 11px; font-weight: 500; color: #000; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
+.ramp-arrow { width: 22px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; color: var(--lgray); font-size: 16px; font-weight: 700; }
+
+.proof-grid { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 20px; }
+.proof-card { flex: 1; min-width: 200px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.proof-card .pc-role { font-weight: 700; color: var(--navy-d); font-size: 13.5px; margin-bottom: 4px; }
+.proof-card .pc-tier { font-size: 10.5px; color: var(--lgray); text-transform: uppercase; letter-spacing: .03em; margin-bottom: 8px; }
+.proof-card p { font-size: 12.5px; margin: 0; }
+
+.open-item { border-left: 3px solid var(--lgray); padding: 4px 0 4px 14px; margin-bottom: 12px; }
+.open-item .oi-name { font-weight: 700; color: var(--dark); font-size: 13.5px; }
+.open-item p { font-size: 13px; margin: 3px 0 0; }
+
+.source-note { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 4px; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 22px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 12px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.5; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.k { font-weight: 700; color: var(--navy-d); }
+td.num { text-align: right; white-space: nowrap; }
+ol.plan { margin: 0 0 16px 22px; }
+ol.plan li { font-size: 14px; color: var(--gray); line-height: 1.65; margin-bottom: 7px; }
+ol.plan li strong { color: var(--dark); }
+.tag { font-family: 'Consolas', monospace; font-size: 10.5px; color: var(--navy); background: var(--navy-l); border: 1px solid #C6D8EE; border-radius: 3px; padding: 0 5px; margin-left: 4px; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">DESIGN SPEC &nbsp;·&nbsp; TIM KING &amp; CLAUDE &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>Work Product in the Role Container</h1>
+  <div class="subtitle">How a role's work product changes as AI takes a larger part: what the role produces, who relies on it, and what the role must verify</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-docladder-mount data-item="work-product-spec"></div>
+<div data-wip-vote-mount data-item="work-product-spec" data-stage="Concept"></div>
+<div data-wip-download-mount data-item="work-product-spec"></div>
+
+<div class="wrap">
+
+  <div class="approval-box">
+    <div class="ab-head">Concept stage — design for GR-046, not yet built</div>
+    <p>Extends The Shock Wave Effect's &ldquo;A Second Path: Work Product&rdquo; into a buildable design. Every figure here is modeled from Sandbox 7.0 data, not observed. It covers the work side only: what happens to the work product inside a role. What the change means for the person holding the role is the human-transition side, and this spec does not substitute for it.</p>
+  </div>
+
+  <div class="related-reqs">
+    <span class="rr-label">Related Requirements — Requirements Register</span>
+    <ul>
+      <li><code>GR-046</code> — work product transition within the role container <em>(the requirement this spec designs)</em></li>
+      <li><code>GR-029</code> — Exception Escalation Effect <em>(verification load is its first measurable form)</em></li>
+      <li><code>GR-020</code>, <code>GR-024</code>, <code>GR-027</code> — role evolution, the composite executive view, per-role narratives</li>
+    </ul>
+  </div>
+
+  <h2>1. Why This Layer Exists</h2>
+  <p class="lede">A role is the container; what changes inside it is the work product. The framework could already show which activities move along the working-relationship ramp. It could not show where the output of that work goes, or who has to check it.</p>
+  <p>GiGi named the cost the <em>verification tax</em> (HR Couch, Sept 23, 2026): AI-produced work does not remove effort, it moves it to whoever must confirm the output before acting on it. Tracing the Performance Review through Sandbox 7.0 makes it concrete. It is produced by 7.3.2 Manage employee performance, where one activity already runs at Agent-delegation and another at Augmentation, and it feeds promotion (7.6.1), pay and recognition (7.5.1), labor relations (7.4.1), and retention (7.5.3). The HRBP Manager is Accountable at the source and again at two of those four decisions, so pays the verification tax twice.</p>
+  <p>Activity-level classification alone does not see this. This layer measures where AI-produced work lands, and on whom.</p>
+
+  <h2>2. Core Model</h2>
+  <table>
+    <thead><tr><th style="width:26%">Term</th><th>Definition</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Work product</td><td>A named output of an activity that other activities use: a record, review, plan, or report.</td></tr>
+      <tr><td class="k">Production mode</td><td>How the work product is produced, taken from the producing activity's working relationship: its Current State and Progression Ceiling.</td></tr>
+      <tr><td class="k">Consumer</td><td>An activity that reads the work product, with its Accountable role, working relationship, and Consequence of Error.</td></tr>
+      <tr><td class="k">Verification point</td><td>A place where an AI-produced work product meets a human decision that relies on it, and someone must confirm where it came from, whether it was verified, and who stands behind the decision.</td></tr>
+      <tr><td class="k">Verification load</td><td>The number of AI-touched work products a role relies on at verification points. A count of exposure, not hours.</td></tr>
+      <tr><td class="k">Pays twice</td><td>A role that is Accountable where a work product is produced and again where it is consumed.</td></tr>
+      <tr><td class="k">Role container</td><td>For one role, three views: what it <strong>produces</strong>, who <strong>relies on</strong> it, and what it <strong>must verify</strong>.</td></tr>
+      <tr><td class="k">Redefinition threshold</td><td>The point at which enough of a role's production reaches Agent-delegation or Automation that the role itself needs redefining.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. Data Model</h2>
+  <p>Two new structures, plus values derived from data the sandbox already holds.</p>
+  <table>
+    <thead><tr><th style="width:28%">Structure</th><th>Fields</th><th style="width:18%">Status</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Work-product catalog</td><td>ID, name, one-line definition, system of record</td><td>New</td></tr>
+      <tr><td class="k">Activity–work-product link</td><td>Activity code, work-product ID, operation (create, read, update, delete)</td><td>New; replaces process-level CRUD</td></tr>
+      <tr><td class="k">Production mode</td><td>Producing activity's Current State and Progression Ceiling</td><td>Derived from existing classification</td></tr>
+      <tr><td class="k">Consumer profile</td><td>Reading activity's Accountable role, working relationship, and Consequence of Error</td><td>Derived from existing RACI and classification</td></tr>
+    </tbody>
+  </table>
+  <p>Today the work products exist only as free-text strings inside process-level CRUD entries, such as &ldquo;Performance Review (Workday HCM).&rdquo; Sandbox 7.0 carries 114 such entries naming 39 distinct work products across all 37 processes.</p>
+
+  <h2>4. Granularity</h2>
+  <ul class="plain">
+    <li><strong>Activity level</strong> for every create, read, update, and delete link, because production mode comes from one activity's classification. In 18 of the 37 processes more than one activity shares the process's CRUD, so process level cannot say which activity produces a work product.</li>
+    <li><strong>Work-product level</strong> for fan-out and verification points, because one work product can feed many processes (the Employee Master Record is read 14 times).</li>
+    <li><strong>Role level</strong> for the container view and verification load, rolled up through RACI Accountable, the same way the People View already rolls up working relationships.</li>
+  </ul>
+
+  <h2>5. Decision Logic</h2>
+  <p><strong>Verification point (proposed rule).</strong> A read is a verification point when the producing activity's Current State is Augmentation or further along the ramp, and the reading activity is at Judgment or Oversight or carries a High or Critical Consequence of Error. Uses existing data only.</p>
+  <p><strong>Redefinition threshold (new, value not yet set).</strong> The share of a role's produced work products whose production mode reaches Agent-delegation or Automation. The sandbox already flags redefinition per step inside each activity; this rule lifts it to the role. The threshold value is for Tim and GiGi to set.</p>
+
+  <h2>6. Instrumentation and Build Work</h2>
+  <h3>A. Enabling work — making work product real at the activity level</h3>
+  <ol class="plan">
+    <li><strong>Work-product catalog.</strong> Normalize the 39 free-text names into catalog entries with ID, definition, and system of record.</li>
+    <li><strong>Activity-level CRUD.</strong> Move each create, read, update, and delete from the process to the specific activity, starting with the 18 processes that hold more than one activity.</li>
+    <li><strong>Confirm the CRUD data.</strong> All 37 processes carry CRUD entries, but the sandbox marks only 22 as confirmed. Confirm or correct the other 15.</li>
+    <li><strong>Production-mode rule.</strong> Write down that a work product takes its producing activity's Current State and Progression Ceiling.</li>
+    <li><strong>Consumer links.</strong> For every read, attach the reading activity's Accountable role, working relationship, and Consequence of Error.</li>
+    <li><strong>Verification-point rule.</strong> Adopt the rule in section 5, or a revised one.</li>
+    <li><strong>Verification-load and pays-twice definitions.</strong> Decide whether to weight the count by Consequence of Error; label it as exposure, not hours.</li>
+    <li><strong>Redefinition threshold.</strong> Set the value.</li>
+    <li><strong>Master-data governance.</strong> Treat the catalog and activity-level CRUD as master data: edit the sandbox first, log each change in the changelog, and extend the CI check to cover them.</li>
+    <li><strong>Provenance.</strong> Every derived count carries the MODELED chip and info box used for % H.</li>
+  </ol>
+  <h3>B. UI work — work-product elements in the sandbox</h3>
+  <ol class="plan">
+    <li><strong>Role work-product panel</strong> in People View, expandable under each role: Produces, Relied on by, Must verify. <span class="tag">buildable now</span></li>
+    <li><strong>Work-product chip</strong> showing production mode in the Rule 20 colors, as Current State &rarr; Progression Ceiling. <span class="tag">needs A2</span></li>
+    <li><strong>Work products on each activity card</strong>: what the activity creates, updates, and reads. <span class="tag">needs A2</span></li>
+    <li><strong>Work-product trace view</strong>: pick a work product and follow it from producer to every consumer, with verification points highlighted. <span class="tag">needs A2</span></li>
+    <li><strong>Verification-load indicator</strong> per role, with the pays-twice marker and the MODELED chip. <span class="tag">buildable now</span></li>
+    <li><strong>Role-level redefinition flag.</strong> <span class="tag">needs A8</span></li>
+    <li><strong>Legend and info-box definitions</strong> for work product, production mode, verification point, and verification load.</li>
+    <li><strong>Data View upgrade</strong>: activity rows show their own CRUD instead of inheriting the process's. <span class="tag">needs A2</span></li>
+  </ol>
+  <p>&ldquo;Buildable now&rdquo; items work on today's process-level data, labeled as such, and gain precision once A2 lands.</p>
+
+  <h2>7. Downstream Effects</h2>
+  <p>The work product carries change outward along a second path next to the Shock Wave's five rings: activity &rarr; work product &rarr; consuming activity &rarr; its Accountable role &rarr; that role's manager and team. Verification load is the first computed signal for the Manager and Team rings, which the framework does not measure today.</p>
+
+  <h2>8. Pilot — Sandbox 7.0</h2>
+  <h3>HRBP Manager: what the role produces</h3>
+  <table>
+    <thead><tr><th style="width:30%">Direction</th><th>Work products</th><th style="width:28%">Current State &rarr; Ceiling</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Stays human by design</td><td>Grievance Case, Collective Bargaining Agreement, Labor Partnership Record, Position Change Record, Compensation Record</td><td>Judgment &rarr; Judgment</td></tr>
+      <tr><td class="k">Human-checked, holding</td><td>Relocation Case, Assignment Letter</td><td>Oversight &rarr; Oversight</td></tr>
+      <tr><td class="k">AI producing, one more step allowed</td><td>Separation Record, Benefits Enrollment, Communication Plan, Communication Record, Requisition Record, Job Posting</td><td>Automation, Augmentation, or Agent-delegation &rarr; one step further</td></tr>
+      <tr><td class="k">Mixed</td><td>Performance Review</td><td>Judgment on the decisions; one drafting activity at Agent-delegation &rarr; Automation</td></tr>
+    </tbody>
+  </table>
+  <p>It relies on AI-touched work products from other roles, including the Employee Master Record, the Compensation Record, the Payroll Record, and the T&amp;A Record.</p>
+  <h3>Verification load across roles</h3>
+  <table>
+    <thead><tr><th style="width:34%">Accountable role</th><th style="width:16%">AI-touched work products</th><th>Pays twice on</th></tr></thead>
+    <tbody>
+      <tr><td class="k">HRBP Manager</td><td class="num">6</td><td>Employee Master Record, Performance Review, ER Case Record</td></tr>
+      <tr><td class="k">HRIS Analyst</td><td class="num">5</td><td>Employee Master Record, T&amp;A Record, HR Analytics Report</td></tr>
+      <tr><td class="k">Director of HR Ops</td><td class="num">2</td><td>Workforce Plan, Regulatory Alert</td></tr>
+      <tr><td class="k">HR Generalist</td><td class="num">2</td><td>&mdash;</td></tr>
+      <tr><td class="k">Four other roles</td><td class="num">1 each</td><td>&mdash;</td></tr>
+    </tbody>
+  </table>
+  <p>The role holding the most Accountable judgment calls in 7.0 is also where the most AI-produced work lands for checking. These counts use process-level CRUD and treat a producing process as AI-involved when at least one of its activities is at Augmentation or further along the ramp.</p>
+
+  <h2>9. Known Open Constructs</h2>
+  <div class="open-item"><div class="oi-name">Effort, not just exposure</div><p>Verification load counts work products, not hours. Turning it into effort needs observed data the framework does not have.</p></div>
+  <div class="open-item"><div class="oi-name">Consequence weighting</div><p>Whether a review feeding a promotion should count more than one feeding a newsletter, and by how much.</p></div>
+  <div class="open-item"><div class="oi-name">Redefinition threshold value</div><p>The rule is defined; the number is not. It is a judgment for Tim and GiGi.</p></div>
+  <div class="open-item"><div class="oi-name">Unconfirmed CRUD</div><p>15 of the 37 processes carry CRUD entries not yet marked confirmed; results that depend on them are provisional.</p></div>
+
+  <h2>10. Sourcing, Validation &amp; Scope Boundary</h2>
+  <p>Source data is Sandbox 7.0: the process structure, RACI, CRUD entries, and the working-relationship and Consequence-of-Error classifications. All derived figures are modeled. Scope is Sandbox 7.0; production is out of scope until the full production rebuild. The design is written to be domain-neutral so later domains can reuse it. It does not claim to measure effort, and it does not address what the change means for the person in the role.</p>
+
+  <div style="margin-top:28px;">
+    <span style="font-size:12px;color:var(--lgray)">Tim King &amp; Claude &nbsp;|&nbsp; Design Spec — For Review &nbsp;|&nbsp; September 2026</span>
+  </div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;·&nbsp; Design Spec — For Review<br>
+    © Timothy P. King 2026 · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+<script src="wip-vote-widget.js"></script>
+<script src="wip-download-widget.js"></script>
+</body>
+</html>

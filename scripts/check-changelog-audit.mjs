@@ -5,7 +5,7 @@
 // manually-written CHANGE_LOG entry (a human has to supply the "why"),
 // but *forgetting* to write one is exactly the kind of thing CI should
 // catch. This script fails the build when a commit range changes a
-// tracked modeled-data value (a reportsTo edge, a WR rel/future/ceiling
+// tracked modeled-data value (a reportsTo edge, a WR rel/ceiling
 // classification) without also adding a new entry to changelog-data.js.
 //
 // Usage:
@@ -34,12 +34,13 @@ const TRACKED = [
   {
     file: "docs/sandbox/pcf7.html",
     // WR_DATA activity entries are each authored as one line, e.g.
-    //   "7.2.1.1": { rel:"Judgment", future:"Judgment", ceiling:"Judgment", ... }
+    //   "7.2.1.1": { rel:"Judgment", ceiling:"Judgment", ... }
     // Matching on the activity-code key + a WR field is enough to catch
-    // an edit to rel/future/ceiling without matching unrelated code that
-    // happens to use the words "ceiling" or "future" elsewhere (e.g.
-    // ceilingFactors, ceilingNote, CSS custom properties).
-    pattern: /"\d+(?:\.\d+)+"\s*:\s*\{[^}]*\b(rel|future|ceiling)\s*:/,
+    // an edit to rel/ceiling without matching unrelated code that
+    // happens to use the word "ceiling" elsewhere (e.g. ceilingFactors,
+    // ceilingNote, CSS custom properties). Future State was retired
+    // Sept 25, 2026 (GR-049, CL-003), so it is no longer tracked.
+    pattern: /"\d+(?:\.\d+)+"\s*:\s*\{[^}]*\b(rel|ceiling)\s*:/,
     label: "a WR classification/ceiling value in WR_DATA",
   },
   {

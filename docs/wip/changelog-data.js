@@ -19,7 +19,7 @@
 //
 // Fields: id, date, requestedBy ("Tim" | "GiGi"), kind (a short slug for
 // the modeled-value type — "reportsTo", "wr-ceiling", "wr-current",
-// "wr-future", "wr-consequence", etc.), target (whichever keys locate the
+// "wr-consequence", "wr-model", etc.), target (whichever keys locate the
 // value: domain + activity for WR fields, domain + role for org-taxonomy
 // fields), summary, from, to, files touched, source (what raised it),
 // reason (what evidence drove it), verified (how it was checked).
@@ -52,5 +52,24 @@ const CHANGE_LOG = [
     "source": "This item's individual walkthrough against Working_Relationship_Progression_Methodology.docx had deliberately left the ceiling open/undecided",
     "reason": "A standing strategic/budget-authority duty — the same logic as the rest of 7.1.1's strategy-formation work — holds this ceiling permanently regardless of technical capability. WRPM Table 4 updated to match.",
     "verified": "Ceiling info box on 7.2.1.1 shows the locked note and links to this entry."
+  },
+  {
+    "id": "CL-003",
+    "date": "2026-09-25",
+    "requestedBy": "Tim",
+    "kind": "wr-model",
+    "target": {
+      "domain": "7.0"
+    },
+    "summary": "Future State retired from the working-relationship model: the future field removed from all 118 WR_DATA entries. Each activity now carries Current State and Progression Ceiling only.",
+    "from": "Current State, Future State, Progression Ceiling",
+    "to": "Current State, Progression Ceiling",
+    "files": [
+      "docs/sandbox/pcf7.html",
+      "scripts/check-changelog-audit.mjs"
+    ],
+    "source": "Tim, Sept 25, 2026: “We are not using ‘Future State’.” Requirement GR-049 in docs/wip/requirements_register.html.",
+    "reason": "No sandbox view displayed Future State, and in 117 of 118 activities it equaled the Progression Ceiling. The one exception, 7.2.1.3 (Future State Oversight, ceiling Agent-delegation), keeps its ceiling; the governance choice to hold it at Oversight is already carried by its ceiling factors (governance, technical) and ceiling note. Whether its ceiling should drop to Oversight is open for Tim and GiGi.",
+    "verified": "Every activity's Current State and Progression Ceiling compared before and after: all 118 unchanged. Sandbox views render with no errors. The CI audit now tracks rel and ceiling only."
   }
 ];
