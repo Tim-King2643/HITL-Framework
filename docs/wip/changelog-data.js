@@ -19,7 +19,7 @@
 //
 // Fields: id, date, requestedBy ("Tim" | "GiGi"), kind (a short slug for
 // the modeled-value type — "reportsTo", "wr-ceiling", "wr-current",
-// "wr-consequence", "wr-model", etc.), target (whichever keys locate the
+// "wr-consequence", "wr-model", "crud", etc.), target (whichever keys locate the
 // value: domain + activity for WR fields, domain + role for org-taxonomy
 // fields), summary, from, to, files touched, source (what raised it),
 // reason (what evidence drove it), verified (how it was checked).
@@ -90,5 +90,23 @@ const CHANGE_LOG = [
     "source": "Tim, Sept 25, 2026, settling the open question left by the Future State cleanup (GR-049, CL-003): the retired Future State had held this activity at Oversight while its ceiling said Agent-delegation.",
     "reason": "Consequence of Error is High: this is the budget-commitment gate, and reversing an approved-then-wrong hire is a real financial and organizational cost. Human sign-off stays as a governance choice, so the ceiling is Oversight. Ceiling factors narrowed to Governance / Sign-off Choice (Technical Readiness Gap removed, since technology is no longer what sets the limit).",
     "verified": "Sandbox views render with no errors; 7.2.1.3's ceiling info box shows the new note and links to this entry."
+  },
+  {
+    "id": "CL-005",
+    "date": "2026-09-25",
+    "requestedBy": "Tim",
+    "kind": "crud",
+    "target": {
+      "domain": "7.0"
+    },
+    "summary": "Work-product CRUD corrected from the catalog review: two merges, one rename, one system of record per work product, and one creating process per work product. 39 work products become 37.",
+    "from": "Candidate Profile and Applicant Record; HR Report and HR Analytics Report; T&A Record; Job Posting (iCIMS / LinkedIn Recruiter); Offer Letter (iCIMS / DocuSign); Payroll Record created in 7.5.1 and 7.5.4; HR Analytics Report created in 7.7.7 and 7.7.8",
+    "to": "Applicant Record (created 7.2.5; updated 7.2.2, 7.2.3, 7.2.4, 7.2.5); HR Analytics Report (Visier; created 7.7.8; updated 7.7.1); Time and Attendance Record; Job Posting (iCIMS); Offer Letter (iCIMS); Payroll Record created in 7.5.4, updated in 7.5.1; 7.7.7 no longer creates a report",
+    "files": [
+      "docs/sandbox/pcf7.html"
+    ],
+    "source": "Tim's answers, Sept 25, 2026, to the five review questions in docs/wip/work_product_catalog.html (item A1 of the Work Product spec).",
+    "reason": "Applicant Record's creator follows activity 7.2.5.2 “Create applicant record.” Payroll Record's creator is 7.5.4 Administer Payroll; 7.5.1 feeds reward payouts through 7.5.1.5. HR Analytics Report is produced by 7.7.8.2 and 7.7.8.3; none of 7.7.7's activities produces a report. LinkedIn Recruiter and DocuSign are channels, not systems of record.",
+    "verified": "Recount after the change: 113 CRUD entries, 37 work products, none with more than one creating process. Sandbox views render with no errors. Every Current State and Progression Ceiling unchanged."
   }
 ];

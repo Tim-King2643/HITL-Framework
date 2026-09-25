@@ -165,7 +165,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
       <tr><td class="k">Consumer profile</td><td>Reading activity's Accountable role, working relationship, and Consequence of Error</td><td>Derived from existing RACI and classification</td></tr>
     </tbody>
   </table>
-  <p>Today the work products exist only as free-text strings inside process-level CRUD entries, such as &ldquo;Performance Review (Workday HCM).&rdquo; Sandbox 7.0 carries 114 such entries naming 39 distinct work products across all 37 processes.</p>
+  <p>Today the work products exist only as free-text strings inside process-level CRUD entries, such as &ldquo;Performance Review (Lattice).&rdquo; Sandbox 7.0 carries 113 such entries naming 37 distinct work products across all 37 processes (39 before the Sept 25 catalog review merged two pairs).</p>
 
   <h2>4. Granularity</h2>
   <ul class="plain">
@@ -177,7 +177,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <h2>5. Decision Logic</h2>
   <p><strong>Production-mode rule.</strong> A work product takes its production mode from the activity that produces it: that activity's Current State and Progression Ceiling. Only creates and updates produce; reads and deletes do not.</p>
   <ul class="plain">
-    <li><strong>More than one producer.</strong> Each create or update link carries its own activity's mode. The work product as a whole shows the producer furthest along the ramp, and names it, because any AI contribution makes the output AI-touched for everyone downstream. Current State and Progression Ceiling are each taken this way. In Sandbox 7.0, 12 of the 39 work products are created or updated in more than one process, such as the Employee Master Record, which is created in 7.7.3 and updated in 7.6.1, 7.6.2 and 7.6.3.</li>
+    <li><strong>More than one producer.</strong> Each create or update link carries its own activity's mode. The work product as a whole shows the producer furthest along the ramp, and names it, because any AI contribution makes the output AI-touched for everyone downstream. Current State and Progression Ceiling are each taken this way. In Sandbox 7.0, 12 of the 37 work products are created or updated in more than one process, such as the Employee Master Record, which is created in 7.7.3 and updated in 7.6.1, 7.6.2 and 7.6.3.</li>
     <li><strong>Derived, never stored.</strong> Production mode is read from the activity's classification each time it is shown. Changing an activity's classification, logged once in the changelog, changes every work product it produces, with no second entry to keep in step.</li>
     <li><strong>Gaps shown as gaps.</strong> An unclassified producer, or an Open / undecided ceiling, is displayed as such. It is never read as human-only.</li>
   </ul>
@@ -187,7 +187,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <h2>6. Instrumentation and Build Work</h2>
   <h3>A. Enabling work — making work product real at the activity level</h3>
   <ol class="plan">
-    <li><strong>Work-product catalog.</strong> Normalize the 39 free-text names into catalog entries with ID, definition, and system of record. Draft in the <a href="work_product_catalog.html">Work-Product Catalog</a>. <span class="tag">drafted</span></li>
+    <li><strong>Work-product catalog.</strong> Normalize the free-text names into catalog entries with ID, definition, and system of record. Draft in the <a href="work_product_catalog.html">Work-Product Catalog</a>. <span class="tag">drafted</span></li>
     <li><strong>Activity-level CRUD.</strong> Move each create, read, update, and delete from the process to the specific activity, starting with the 18 processes that hold more than one activity.</li>
     <li><strong>Confirm the CRUD data.</strong> All 37 processes carry CRUD entries, but the sandbox marks only 22 as confirmed. Confirm or correct the other 15.</li>
     <li><strong>Production-mode rule.</strong> A work product takes its producing activity's Current State and Progression Ceiling. Written in section 5, including the multi-producer case. <span class="tag">written</span></li>
@@ -225,13 +225,13 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
       <tr><td class="k">Mixed</td><td>Performance Review</td><td>Judgment on the decisions; one drafting activity at Agent-delegation &rarr; Automation</td></tr>
     </tbody>
   </table>
-  <p>It relies on AI-touched work products from other roles, including the Employee Master Record, the Compensation Record, the Payroll Record, and the T&amp;A Record.</p>
+  <p>It relies on AI-touched work products from other roles, including the Employee Master Record, the Compensation Record, the Payroll Record, and the Time and Attendance Record.</p>
   <h3>Verification load across roles</h3>
   <table>
     <thead><tr><th style="width:34%">Accountable role</th><th style="width:16%">AI-touched work products</th><th>Pays twice on</th></tr></thead>
     <tbody>
       <tr><td class="k">HRBP Manager</td><td class="num">6</td><td>Employee Master Record, Performance Review, ER Case Record</td></tr>
-      <tr><td class="k">HRIS Analyst</td><td class="num">5</td><td>Employee Master Record, T&amp;A Record, HR Analytics Report</td></tr>
+      <tr><td class="k">HRIS Analyst</td><td class="num">5</td><td>Employee Master Record, Time and Attendance Record, HR Analytics Report</td></tr>
       <tr><td class="k">Director of HR Ops</td><td class="num">2</td><td>Workforce Plan, Regulatory Alert</td></tr>
       <tr><td class="k">HR Generalist</td><td class="num">2</td><td>&mdash;</td></tr>
       <tr><td class="k">Four other roles</td><td class="num">1 each</td><td>&mdash;</td></tr>
