@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Working Review: Document Update Process — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9FC2EE; margin-bottom: 10px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 8px; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.3; }
+.masthead .tagline2 { font-size: 14px; color: #9FC2EE; font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center; font-size: 12.5px; color: #7A5A1E;
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: #7A5A1E; font-weight: 600; }
+
+.wrap { max-width: 780px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.callout {
+  background: var(--amber-bg); border-left: 4px solid var(--amber); border-radius: 6px;
+  padding: 16px 20px; margin: 0 0 32px; font-size: 13.5px; color: #7A5A1E; font-style: italic; line-height: 1.6;
+}
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 40px 0 12px; }
+h3 { font-family: 'Segoe UI', sans-serif; font-weight: 600; color: var(--navy); font-size: 14.5px; margin: 26px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+ul { margin: 0 0 18px 22px; }
+li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.pull-quote {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 16px; line-height: 1.5;
+}
+.sequence {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 15px; line-height: 1.6;
+}
+
+.closing-quote {
+  background: var(--navy-d); color: #fff; border-radius: 8px; padding: 24px 28px; margin: 8px 0 8px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-size: 17px; line-height: 1.6;
+}
+.closing-line {
+  text-align: center; font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d);
+  font-size: 16px; line-height: 1.6; margin: 22px 0 6px;
+}
+
+.section-num {
+  display: inline-block; font-family: 'Consolas', monospace; font-size: 11px; color: var(--navy);
+  background: var(--navy-l); border-radius: 4px; padding: 2px 8px; margin-right: 8px; vertical-align: middle;
+}
+
+.pdf-download {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px;
+  padding: 8px 14px; text-decoration: none; margin: 0 0 28px;
+}
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+.lead-box { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 6px; padding: 16px 20px; margin: 0 0 28px; font-size: 14.5px; color: var(--navy-d); line-height: 1.65; }
+.lead-box strong { color: var(--navy-d); }
+.kv { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 13.5px; }
+.kv th { background: var(--navy); color: #fff; text-align: left; padding: 9px 12px; font-size: 11.5px; letter-spacing: .02em; text-transform: uppercase; }
+.kv td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.55; background: #fff; }
+.kv td.k { font-weight: 700; color: var(--navy-d); width: 34%; }
+ol { margin: 0 0 18px 24px; }
+ol li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+.term { font-weight: 700; color: var(--navy-d); }
+.example-entry { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; margin: 6px 0 20px; font-size: 14px; color: var(--gray); font-style: italic; line-height: 1.6; }
+.signoff { text-align: right; font-family: 'Georgia', serif; font-style: italic; color: var(--navy-d); font-size: 16px; margin: 18px 0 0; }
+.source-basis { font-size: 12.5px; color: var(--lgray); font-style: italic; border-top: 1px solid var(--border); padding-top: 12px; margin-top: 28px; }
+</style>
+</head>
+<body>
+
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; External review notes from GiGi Garcia, for joint discussion with Tim. Nothing on this page is official yet.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">External Review · GiGi Garcia · September 21, 2026</div>
+  <h1>Working Review: Document Update Process</h1>
+  <div class="tagline2">My perspective on how this should support the collaboration and co-development process</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-download-mount data-item="gigi-document-update-process-review"></div>
+
+<div class="wrap">
+
+  <div class="callout">
+    GiGi's review of the Document Update Process note (How This Document Stays Current, September 2026), sent to Tim September 21, 2026, transcribed here in the site's visual language. It concerns how the partnership's documents of record are kept, rather than framework content. The words and observations below are hers, not Tim's or Claude's — this page is a faithful transcription, not a response.
+  </div>
+
+  <a class="pdf-download" href="gigi_document_update_process_review.pdf">&#8595; GiGi&rsquo;s original PDF</a>
+
+  <div class="lead-box"><strong>My overall read:</strong> this is more than a file-management note. It is beginning to define how our collaboration becomes auditable, how changes become official, and how shared ideas are recorded over time.</div>
+
+  <h2><span class="section-num">1</span>What I Think This Gets Right</h2>
+  <p><strong>The master / snapshot distinction is clean.</strong> The Word file is clearly the editable master and the PDF is only the current recorded snapshot. That avoids multiple versions floating around and makes it obvious which file controls if anything is out of sync.</p>
+  <p><strong>The human decision comes before the AI production step.</strong> The process says Tim and Gigi discuss and agree on a change first. Only after that does the language get drafted, applied, logged, and regenerated. I like that because it keeps Claude in a drafting and production role rather than making it the authority on what becomes part of the collaboration.</p>
+  <p><strong>The Change Log is a good discipline.</strong> Having a record of what changed, when, and who agreed to it is much better than trying to reconstruct decisions months later by comparing files.</p>
+  <p><strong>Separating document changes from methodology changes is important.</strong> The note correctly distinguishes updates to the collaboration document from changes to the underlying methodology. I think we should protect that separation as the project gets more complex.</p>
+
+  <h2><span class="section-num">2</span>Where I Would Tighten the Process</h2>
+  <h3>Agreement needs two levels</h3>
+  <p>The phrase &ldquo;Tim and Gigi discuss a change and agree on it&rdquo; is directionally right, but I think we need to distinguish between agreeing with an idea and approving the exact wording that enters the document of record.</p>
+  <table class="kv">
+    <tr><th>Concept Agreement</th><th>Text Approval</th></tr>
+    <tr><td>We agree with the direction or principle.</td><td>We both approve the exact language that becomes part of the record.</td></tr>
+  </table>
+  <h3>The Change Log should capture the reason, not just the change</h3>
+  <p>I would add a &ldquo;Why&rdquo; field. Six months from now, knowing why something changed may be as important as knowing what changed. A simple entry could read:</p>
+  <div class="example-entry">9/17/26 - Human Agency - Added readiness gate - Pressure test exposed accountability without measurable agency - Agreed by Tim + Gigi.</div>
+  <h3>Origin and approval should not be treated as the same thing</h3>
+  <p>An idea can originate with one person, be refined together, and then be formally adopted by both. Those are three different facts. I think the co-development record should preserve that lineage instead of collapsing everything into &ldquo;approved by both.&rdquo;</p>
+  <div class="pull-quote">Suggested principle: Formal adoption should not erase attribution.</div>
+  <h3>We need a simple status system</h3>
+  <p>Not every concept is at the same level of maturity. A lightweight status system would keep us from treating an early idea as if it were already settled: Proposed; Under Review; Concept Agreed; Text Approved; Adopted; Retired / Superseded.</p>
+  <h3>There should be an explicit disagreement path</h3>
+  <p>The current process assumes agreement. I would add one simple rule: if we do not agree, the item remains Proposed or Under Review and does not enter the document of record.</p>
+
+  <h2><span class="section-num">3</span>How I Would Strengthen the Co-Development Principles Log</h2>
+  <p>Section 17 may become much more important than it looks today. If it tracks ideas that we formally review and adopt together, it can become the intellectual lineage of the collaboration — not just another version log.</p>
+  <table class="kv">
+    <tr><td class="k">Principle name</td><td>What we are calling the idea.</td></tr>
+    <tr><td class="k">Origin / originator</td><td>Where the idea first came from.</td></tr>
+    <tr><td class="k">Summary</td><td>What the principle actually means.</td></tr>
+    <tr><td class="k">Date introduced</td><td>When it first entered the work.</td></tr>
+    <tr><td class="k">Date adopted</td><td>When both of us formally approved it.</td></tr>
+    <tr><td class="k">Status</td><td>Proposed, under review, adopted, etc.</td></tr>
+    <tr><td class="k">Contributors</td><td>Who materially shaped or refined it.</td></tr>
+    <tr><td class="k">Framework location</td><td>Where the principle now appears or is used.</td></tr>
+  </table>
+
+  <h2><span class="section-num">4</span>How I See Claude&rsquo;s Role</h2>
+  <p>I am comfortable with Claude drafting, reconciling, formatting, maintaining the log, and regenerating the Word/PDF pair. I would just make one boundary explicit in the process:</p>
+  <div class="lead-box">Claude can help produce and maintain the record, but no substantive change becomes part of the document of record until Tim and Gigi approve it.</div>
+
+  <h2><span class="section-num">5</span>Three Different Records We Should Keep Separate</h2>
+  <p>As the project grows, I think we are really managing three different histories. Keeping them separate will make the collaboration much easier to understand later.</p>
+  <ul>
+    <li><span class="term">Collaboration Governance:</span> How Tim and Gigi work together, approve changes, and maintain the working agreement.</li>
+    <li><span class="term">Methodology Evolution:</span> Changes to HITL, working relationships, readiness, criticality, role analysis, and the underlying framework.</li>
+    <li><span class="term">Co-Developed Principles:</span> Ideas that are formally adopted, including origin, contributors, and where they are used.</li>
+  </ul>
+
+  <h2><span class="section-num">6</span>The Three Questions I Think the Process Should Always Answer</h2>
+  <ul>
+    <li><span class="term">What changed?</span> Version control.</li>
+    <li><span class="term">Who agreed to it?</span> Governance.</li>
+    <li><span class="term">Where did the idea come from?</span> Intellectual lineage.</li>
+  </ul>
+  <p>The current note already handles the first two reasonably well. The third — intellectual lineage — is the area I would strengthen most.</p>
+
+  <h2><span class="section-num">7</span>My Recommended Revisions</h2>
+  <ul>
+    <li>Distinguish Concept Agreement from final Text Approval.</li>
+    <li>Add a &ldquo;Why&rdquo; field to the Change Log.</li>
+    <li>Add origin / attribution fields to the Co-Development Principles Log.</li>
+    <li>Use a simple status system so early ideas are not mistaken for adopted principles.</li>
+    <li>Add a rule for unresolved disagreements.</li>
+    <li>Clarify that Claude is a drafting / production assistant, not the approval authority.</li>
+    <li>Keep collaboration governance, methodology changes, and co-developed principles in separate records.</li>
+  </ul>
+
+  <h2><span class="section-num">8</span>My Bottom Line</h2>
+  <p>I think the process note is a strong foundation. I would not overcomplicate it. The main opportunity is to make sure it protects more than file accuracy. It should also protect the integrity of the collaboration: what we agreed to, why we agreed to it, and how an idea moved from one person&rsquo;s thinking into something we formally adopted together.</p>
+  <div class="closing-quote">This should become a co-development governance process, not just a document-update procedure.</div>
+  <p class="source-basis">Source basis: Document Update Process — How This Document Stays Current, September 2026. This review reflects my interpretation and recommended refinements; it does not alter the source document.</p>
+
+</div>
+
+<footer>
+  <p>
+    Working notes — <strong style="color:var(--navy)">GiGi Garcia</strong><br>
+    Shared with <strong style="color:var(--navy)">Tim King</strong>, September 21, 2026 · HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+<script src="wip-download-widget.js"></script>
+</body>
+</html>

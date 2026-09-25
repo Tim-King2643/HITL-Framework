@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Co-Development Principles — GiGi&rsquo;s Review &amp; Recommended Clarifications — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9FC2EE; margin-bottom: 10px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 8px; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.3; }
+.masthead .tagline2 { font-size: 14px; color: #9FC2EE; font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center; font-size: 12.5px; color: #7A5A1E;
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: #7A5A1E; font-weight: 600; }
+
+.wrap { max-width: 780px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.callout {
+  background: var(--amber-bg); border-left: 4px solid var(--amber); border-radius: 6px;
+  padding: 16px 20px; margin: 0 0 32px; font-size: 13.5px; color: #7A5A1E; font-style: italic; line-height: 1.6;
+}
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 40px 0 12px; }
+h3 { font-family: 'Segoe UI', sans-serif; font-weight: 600; color: var(--navy); font-size: 14.5px; margin: 26px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+ul { margin: 0 0 18px 22px; }
+li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.pull-quote {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 16px; line-height: 1.5;
+}
+.sequence {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 15px; line-height: 1.6;
+}
+
+.closing-quote {
+  background: var(--navy-d); color: #fff; border-radius: 8px; padding: 24px 28px; margin: 8px 0 8px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-size: 17px; line-height: 1.6;
+}
+.closing-line {
+  text-align: center; font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d);
+  font-size: 16px; line-height: 1.6; margin: 22px 0 6px;
+}
+
+.section-num {
+  display: inline-block; font-family: 'Consolas', monospace; font-size: 11px; color: var(--navy);
+  background: var(--navy-l); border-radius: 4px; padding: 2px 8px; margin-right: 8px; vertical-align: middle;
+}
+
+.pdf-download {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px;
+  padding: 8px 14px; text-decoration: none; margin: 0 0 28px;
+}
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+.lead-box { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 6px; padding: 16px 20px; margin: 0 0 28px; font-size: 14.5px; color: var(--navy-d); line-height: 1.65; }
+.lead-box strong { color: var(--navy-d); }
+.kv { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 13.5px; }
+.kv th { background: var(--navy); color: #fff; text-align: left; padding: 9px 12px; font-size: 11.5px; letter-spacing: .02em; text-transform: uppercase; }
+.kv td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.55; background: #fff; }
+.kv td.k { font-weight: 700; color: var(--navy-d); width: 34%; }
+ol { margin: 0 0 18px 24px; }
+ol li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+.term { font-weight: 700; color: var(--navy-d); }
+.example-entry { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; margin: 6px 0 20px; font-size: 14px; color: var(--gray); font-style: italic; line-height: 1.6; }
+.signoff { text-align: right; font-family: 'Georgia', serif; font-style: italic; color: var(--navy-d); font-size: 16px; margin: 18px 0 0; }
+.source-basis { font-size: 12.5px; color: var(--lgray); font-style: italic; border-top: 1px solid var(--border); padding-top: 12px; margin-top: 28px; }
+</style>
+</head>
+<body>
+
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; External review notes from GiGi Garcia, for joint discussion with Tim. Nothing on this page is official yet.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">External Review · GiGi Garcia · September 21, 2026</div>
+  <h1>Working Collaboration &amp; Co-Development Principles: GiGi&rsquo;s Review &amp; Recommended Clarifications</h1>
+  <div class="tagline2">Thoughtful review of Version 1.1 | September 2026</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-download-mount data-item="gigi-codevelopment-principles-review"></div>
+
+<div class="wrap">
+
+  <div class="callout">
+    GiGi's review of the Working Collaboration &amp; Co-Development Principles, Version 1.1, sent to Tim September 21, 2026, transcribed here in the site's visual language. It concerns the partnership agreement itself rather than framework content. The words and observations below are hers, not Tim's or Claude's — this page is a faithful transcription, not a response.
+  </div>
+
+  <a class="pdf-download" href="gigi_codevelopment_principles_review.pdf">&#8595; GiGi&rsquo;s original PDF</a>
+
+  <div class="lead-box"><strong>Overall view:</strong> The document is directionally fair and gives both Tim and Gigi real, substantive lanes. The main work now is not to rewrite the collaboration, but to remove ambiguity around idea origin, Joint IP, decision rights, withdrawal, deadlock, and commercialization before the work becomes materially valuable.</div>
+
+  <h2><span class="section-num">1</span>My Overall Reaction</h2>
+  <p>I think this is the strongest collaboration document we have had so far. It is no longer simply describing how we want to work together; it is beginning to define ownership, decision-making, commercialization, continuity, and the intellectual boundaries between the two sides of the methodology.</p>
+  <p>What I like most is that the document does not position me as an HR reviewer attached to Tim&rsquo;s framework. It establishes two real architectures: Tim&rsquo;s Architecture of Work and my Architecture of Human Transition, with an integration layer we develop together. That is the right foundation.</p>
+  <p>I would not overhaul this document. I would tighten a handful of areas now, while the relationship is collaborative and the work is still early, because those are the exact issues that become difficult only after something gains value.</p>
+
+  <h2><span class="section-num">2</span>What I Think Is Strong and Should Stay</h2>
+  <h3>Clear intellectual lanes</h3>
+  <p>The document clearly gives Tim leadership over structural architecture, technical integrity, process architecture and RACI, while I lead the human-transition architecture, people readiness, employee experience, psychological safety, leadership/change dimensions, and workforce implications. I think that clarity is essential and should stay.</p>
+  <h3>The integration layer</h3>
+  <p>The goal is correctly framed as one integrated methodology, not a technical framework with an HR component attached. That matters because the real value is at the intersection: what happens to the person, role, manager, team and accountability when work changes.</p>
+  <h3>Background IP protection</h3>
+  <p>I agree with the principle that each of us keeps what we independently created before the collaboration, and that merely discussing or testing someone&rsquo;s prior work does not automatically convert it into jointly owned property.</p>
+  <h3>50/50 ownership of genuine Joint IP</h3>
+  <p>I am comfortable with the principle that work we genuinely create together for this initiative, after an agreed commencement date, is owned 50/50. The issue is not the percentage. The issue is defining clearly what qualifies as Joint IP and preserving the origin of ideas that enter the joint methodology.</p>
+  <h3>The prototype &rarr; pressure test &rarr; refine &rarr; pilot &rarr; validate &rarr; commercialize sequence</h3>
+  <p>This is the right discipline. We should resist jumping ahead to certification, licensing or platform development before the methodology survives real pressure testing and pilots.</p>
+
+  <h2><span class="section-num">3</span>The Most Important Clarification: Origin Is Not the Same as Ownership</h2>
+  <p>The biggest ambiguity I see is what happens when a concept begins in one person&rsquo;s lane, is then refined together, and eventually becomes part of the integrated methodology.</p>
+  <p>For example, a concept could originate in my Human Transition work, be pressure-tested using Tim&rsquo;s structural architecture, and then become part of the shared product. That may reasonably create a jointly owned integrated output, but I do not want the history of where the idea came from to disappear.</p>
+  <p>I think we should explicitly track four different things:</p>
+  <ul>
+    <li><span class="term">Origin</span> — who first created or introduced the concept.</li>
+    <li><span class="term">Development</span> — who materially refined, tested, operationalized or extended it.</li>
+    <li><span class="term">Adoption</span> — when we both formally agreed that it became part of the shared methodology.</li>
+    <li><span class="term">Ownership</span> — who legally owns the resulting work or integrated derivative.</li>
+  </ul>
+  <p><strong>My recommendation:</strong> add an &ldquo;Origin / Source&rdquo; field to the Co-Development Principles Log. Formal joint adoption should not erase attribution.</p>
+
+  <h2><span class="section-num">4</span>Background IP Should Be Documented Now</h2>
+  <p>The document protects Background IP in principle, but I think we should create a short appendix for each of us before the methodology goes much further. This does not need to disclose every detail. It simply needs to establish what each person brought into the collaboration before Joint Development began.</p>
+  <p>For my side, that could include categories such as human readiness, leadership readiness, psychological safety, workforce transition, organizational development approaches, role transition thinking, consulting methodologies, existing thought leadership and related pre-existing materials. Tim should have an equivalent schedule for his structural framework, architecture, process data and RACI-derived methodology.</p>
+  <p>The purpose is not to be territorial. It is to avoid relying on memory later.</p>
+
+  <h2><span class="section-num">5</span>Set the Joint Development Commencement Date</h2>
+  <p>This should no longer remain open. We are already doing substantive co-development: the pressure test, role analyses, working-relationship logic, Human Readiness, Human Intensity, Criticality and integration decisions are actively being developed. We should agree on an exact date in writing so there is a clean line between Background IP and Joint IP.</p>
+
+  <h2><span class="section-num">6</span>Protect Each Person&rsquo;s Lead Architecture</h2>
+  <p>The decision-right language is strong, but I would add one explicit rule: neither person should materially change the other person&rsquo;s lead architecture without that person&rsquo;s approval.</p>
+  <p>That means Tim should not redefine a Human Transition construct simply because it needs to fit a technical model, and I should not alter a structural/RACI rule simply because it produces a better People outcome. When the two architectures conflict, that is an integration-layer decision and should be resolved jointly.</p>
+
+  <h2><span class="section-num">7</span>Commercialization: Separate Ownership From Economics</h2>
+  <p>I agree with the document that 50/50 ownership of Joint IP does not automatically answer every compensation question. Before any paid work begins, I think we should separate four economic questions:</p>
+  <ul>
+    <li><span class="term">IP ownership</span> — who owns the methodology or product.</li>
+    <li><span class="term">Client origination</span> — who brought the opportunity or relationship.</li>
+    <li><span class="term">Delivery compensation</span> — who is actually doing the work and in what proportion.</li>
+    <li><span class="term">Residual profit / licensing economics</span> — how remaining economics are shared after agreed costs and delivery compensation.</li>
+  </ul>
+  <p>A client engagement should not begin until those economics are documented for that opportunity or governed by a standing formula we have both approved.</p>
+
+  <h2><span class="section-num">8</span>Add a Deadlock Process</h2>
+  <p>The current document correctly prevents either of us from making a material commitment involving Joint IP without agreement. The missing question is what happens if we cannot agree.</p>
+  <p>I would keep this simple at the working-principles stage:</p>
+  <ol>
+    <li>Good-faith discussion focused on the specific decision.</li>
+    <li>Each person documents the concern and the consequence of proceeding or not proceeding.</li>
+    <li>A short cooling-off period for material decisions.</li>
+    <li>If needed, consult a mutually agreed neutral advisor or mediator.</li>
+    <li>Until resolved, no unilateral action is taken with Joint IP.</li>
+  </ol>
+  <p>The final legal agreement can be more precise, but the operating principle should exist now.</p>
+
+  <h2><span class="section-num">9</span>Add a Voluntary Withdrawal / Inactivity Provision</h2>
+  <p>The document handles death and permanent incapacity thoughtfully, but it says much less about ordinary separation. We should decide what happens if one of us voluntarily steps away, becomes inactive, stops contributing for a long period, or no longer wants to commercialize the work.</p>
+  <p>The final agreement should eventually address ownership after departure, continued licensing rights, buyout options, use of jointly developed materials, ongoing obligations, and whether inactivity affects future economics. I do not think we need to solve every legal detail now, but we should acknowledge the issue and agree that it must be resolved before commercialization.</p>
+
+  <h2><span class="section-num">10</span>Keep the Personal Nature of the Partnership</h2>
+  <p>I strongly support the language that this collaboration is personal by design and that neither of us should be forced into an active creative or operating relationship with an unknown successor, heir, buyer or substituted third party. That reflects the actual reason this partnership exists.</p>
+  <p>I would keep the continuity language and later have counsel translate it into appropriate survivorship, buy-sell, transfer-restriction, valuation and estate provisions.</p>
+
+  <h2><span class="section-num">11</span>Clarify the Role of AI in the Development Process</h2>
+  <p>I agree that AI tools can support drafting, synthesis, analysis and production but are not owners or parties to the collaboration. I would add one operational principle: substantive AI-generated methodology language remains draft material until it is reviewed and adopted by Tim and/or Gigi according to the relevant decision-right lane.</p>
+  <p>That keeps human accountability consistent with the philosophy of the framework itself.</p>
+
+  <h2><span class="section-num">12</span>Recommended Improvements to the Principles and Change Logs</h2>
+  <p>The new logs are useful, but I think they can do more than record dates and approvals. I would use them to preserve the intellectual lineage of the collaboration.</p>
+  <table class="kv">
+    <tr><th>Field</th><th>Purpose</th></tr>
+    <tr><td class="k">Principle / Concept</td><td>Name of concept or principle</td></tr>
+    <tr><td class="k">Origin / Source</td><td>Who introduced it and where it first appeared</td></tr>
+    <tr><td class="k">Contributors</td><td>Who materially developed or tested it</td></tr>
+    <tr><td class="k">Status</td><td>Proposed / Under Review / Concept Agreed / Text Approved / Adopted / Retired</td></tr>
+    <tr><td class="k">Feasibility Review</td><td>Link or reference to supporting review</td></tr>
+    <tr><td class="k">Date Adopted</td><td>Date of formal shared adoption</td></tr>
+    <tr><td class="k">Ownership Treatment</td><td>Background IP / Joint IP / integrated derivative / to be determined</td></tr>
+    <tr><td class="k">Notes / Why</td><td>Why it changed or why it was adopted</td></tr>
+  </table>
+  <p>For the regular Change Log, I would also add a &ldquo;Why&rdquo; field. Six months from now, knowing why a substantive change was made will be just as valuable as knowing that it changed.</p>
+
+  <h2><span class="section-num">13</span>What I Would Want Resolved Before Treating This as Our Working Baseline</h2>
+  <ol>
+    <li>Confirm the Joint Development Commencement Date.</li>
+    <li>Create a short Background IP appendix for Tim and for Gigi.</li>
+    <li>Add Origin / Source attribution to the Co-Development Principles Log.</li>
+    <li>Clarify how individually originated concepts are treated when integrated into Joint IP.</li>
+    <li>Add the rule that neither lead materially alters the other&rsquo;s architecture without approval.</li>
+    <li>Add a simple deadlock process for joint decisions.</li>
+    <li>Acknowledge and later formalize voluntary withdrawal / inactivity rules.</li>
+    <li>Keep commercialization economics separate from the 50/50 ownership principle.</li>
+    <li>Clarify that AI-generated substantive content remains draft until human review and adoption.</li>
+  </ol>
+
+  <h2><span class="section-num">14</span>My Bottom Line</h2>
+  <p>I am comfortable with the direction of this document. I think it recognizes that both of us are bringing meaningful intellectual property and expertise into the collaboration, and it gives my Human Transition work a real and protected place in the methodology.</p>
+  <p>The remaining issues are not reasons to slow the work down. They are reasons to tighten the operating foundation now. The areas that still need clarity — attribution, Joint IP boundaries, withdrawal, deadlock, commercialization and succession — are exactly the areas that become difficult only after something becomes valuable.</p>
+  <p>My preference is to resolve the principles now, keep building, continue pressure-testing the methodology, and bring legal counsel in before significant commercialization or formation of a separate business entity.</p>
+  <div class="closing-quote">The goal is not to make the collaboration more complicated. It is to make the ownership, contribution and decision-making clear enough that we can keep our attention on building something valuable together.</div>
+
+</div>
+
+<footer>
+  <p>
+    Working notes — <strong style="color:var(--navy)">GiGi Garcia</strong><br>
+    Shared with <strong style="color:var(--navy)">Tim King</strong>, September 21, 2026 · HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+<script src="wip-download-widget.js"></script>
+</body>
+</html>

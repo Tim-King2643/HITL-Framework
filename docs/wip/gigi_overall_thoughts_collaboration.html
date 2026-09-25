@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Overall Thoughts on Collaboration, Governance &amp; Requirements — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9FC2EE; margin-bottom: 10px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 8px; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.3; }
+.masthead .tagline2 { font-size: 14px; color: #9FC2EE; font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center; font-size: 12.5px; color: #7A5A1E;
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: #7A5A1E; font-weight: 600; }
+
+.wrap { max-width: 780px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.callout {
+  background: var(--amber-bg); border-left: 4px solid var(--amber); border-radius: 6px;
+  padding: 16px 20px; margin: 0 0 32px; font-size: 13.5px; color: #7A5A1E; font-style: italic; line-height: 1.6;
+}
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 40px 0 12px; }
+h3 { font-family: 'Segoe UI', sans-serif; font-weight: 600; color: var(--navy); font-size: 14.5px; margin: 26px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+ul { margin: 0 0 18px 22px; }
+li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.pull-quote {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 16px; line-height: 1.5;
+}
+.sequence {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 15px; line-height: 1.6;
+}
+
+.closing-quote {
+  background: var(--navy-d); color: #fff; border-radius: 8px; padding: 24px 28px; margin: 8px 0 8px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-size: 17px; line-height: 1.6;
+}
+.closing-line {
+  text-align: center; font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d);
+  font-size: 16px; line-height: 1.6; margin: 22px 0 6px;
+}
+
+.section-num {
+  display: inline-block; font-family: 'Consolas', monospace; font-size: 11px; color: var(--navy);
+  background: var(--navy-l); border-radius: 4px; padding: 2px 8px; margin-right: 8px; vertical-align: middle;
+}
+
+.pdf-download {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px;
+  padding: 8px 14px; text-decoration: none; margin: 0 0 28px;
+}
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+.lead-box { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 6px; padding: 16px 20px; margin: 0 0 28px; font-size: 14.5px; color: var(--navy-d); line-height: 1.65; }
+.lead-box strong { color: var(--navy-d); }
+.kv { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 13.5px; }
+.kv th { background: var(--navy); color: #fff; text-align: left; padding: 9px 12px; font-size: 11.5px; letter-spacing: .02em; text-transform: uppercase; }
+.kv td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.55; background: #fff; }
+.kv td.k { font-weight: 700; color: var(--navy-d); width: 34%; }
+ol { margin: 0 0 18px 24px; }
+ol li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+.term { font-weight: 700; color: var(--navy-d); }
+.example-entry { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; margin: 6px 0 20px; font-size: 14px; color: var(--gray); font-style: italic; line-height: 1.6; }
+.signoff { text-align: right; font-family: 'Georgia', serif; font-style: italic; color: var(--navy-d); font-size: 16px; margin: 18px 0 0; }
+.source-basis { font-size: 12.5px; color: var(--lgray); font-style: italic; border-top: 1px solid var(--border); padding-top: 12px; margin-top: 28px; }
+</style>
+</head>
+<body>
+
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; External review notes from GiGi Garcia, for joint discussion with Tim. Nothing on this page is official yet.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">External Review · GiGi Garcia · September 21, 2026</div>
+  <h1>Overall Thoughts on Collaboration, Governance &amp; Requirements</h1>
+  <div class="tagline2">My overall thoughts after working through the collaboration principles, the document-update process, and the new Requirements Register.</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-download-mount data-item="gigi-overall-thoughts-collaboration"></div>
+
+<div class="wrap">
+
+  <div class="callout">
+    GiGi's email to Tim of September 21, 2026, covering her three reviews sent the same day (the Co-Development Principles, the Document Update Process, and the Requirements Register), transcribed here so it can be read alongside them. The words and observations below are hers, not Tim's or Claude's — this page is a faithful transcription, not a response.
+  </div>
+
+  <p>Dear Timothy,</p>
+  <p>I wanted to pull together a few overall thoughts after working through the collaboration principles, the document-update process, and the new Requirements Register.</p>
+  <p>What I like most is that the work is starting to feel much more disciplined. We are no longer just having good conversations and generating ideas — we are beginning to build the structure around how those ideas are developed, reviewed, attributed, adopted, and eventually incorporated into the framework.</p>
+
+  <h2>The Collaboration Principles</h2>
+  <p>The collaboration document gives us a strong foundation. I think the distinction between your Architecture of Work and my Architecture of Human Transition is clear and important, and I especially like that the integration layer is framed as something we genuinely co-develop rather than one side being added onto the other.</p>
+  <p>My main focus there is simply making sure we remove ambiguity while the relationship is still collaborative and the work is early. That means being very clear about the Joint Development Commencement Date, Background IP, how individually originated ideas become part of Joint IP, and how attribution is preserved even when something becomes jointly developed. I also think we eventually need simple rules around deadlock, voluntary withdrawal, and what happens if one of us becomes inactive. None of that needs to slow down the work now, but I would rather have clarity before the project becomes commercially valuable.</p>
+
+  <h2>The Document-Update Process</h2>
+  <p>The document-update process also makes sense to me. I like the distinction between the editable master and the PDF snapshot, and I like that changes only become part of the working document after we have actually agreed to them. I would just tighten the difference between agreeing on a concept and approving the final language. I also think the change log should capture not only what changed and who agreed to it, but why it changed. That reasoning will matter later when we are looking back at how the methodology evolved.</p>
+
+  <h2>The Requirements Register</h2>
+  <p>The Requirements Register feels like a very good next step. I like having one place where the feedback, design questions, and framework requirements are visible instead of being scattered across conversations, emails, and documents. The fact that it shows what is open, designed, partially addressed, and implemented is already useful.</p>
+  <p>Where I think it can become even stronger is by adding a few governance fields around each requirement: who owns the next move, what the next action is, how important the requirement is, and what has to be true before we consider it complete. I would also separate something being &ldquo;designed&rdquo; from something being &ldquo;reviewed and agreed,&rdquo; because those are not necessarily the same thing.</p>
+  <p>I also think the Requirements Register could become more than a tracker of my feedback. Over time, I could see it becoming the actual requirements-governance system for the framework — capturing input from both of us, pilots, practitioners, validation work, and eventually clients. That would give us a real record of how the methodology grows and why.</p>
+
+  <h2>Two Things at the Same Time</h2>
+  <p>The larger theme I keep coming back to is that we are building two things at the same time:</p>
+  <ul>
+    <li>the methodology itself,</li>
+    <li>and the governance around how the methodology is created.</li>
+  </ul>
+  <p>I think both matter.</p>
+  <p>If we get the second part right — contribution, attribution, review, decision rights, version control, and requirements tracking — it gives us the freedom to be much more experimental with the first part without losing track of who contributed what, why decisions were made, or what still needs to be tested.</p>
+  <p>I feel good about the direction. My instinct is not to overcomplicate any of this, but to put enough structure in place now that we can keep moving quickly without creating confusion later.</p>
+  <p class="signoff">Gigi</p>
+
+</div>
+
+<footer>
+  <p>
+    Working notes — <strong style="color:var(--navy)">GiGi Garcia</strong><br>
+    Shared with <strong style="color:var(--navy)">Tim King</strong>, September 21, 2026 · HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+<script src="wip-download-widget.js"></script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Initial Thoughts on the Requirements Register — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9FC2EE; margin-bottom: 10px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 8px; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.3; }
+.masthead .tagline2 { font-size: 14px; color: #9FC2EE; font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center; font-size: 12.5px; color: #7A5A1E;
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: #7A5A1E; font-weight: 600; }
+
+.wrap { max-width: 780px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.callout {
+  background: var(--amber-bg); border-left: 4px solid var(--amber); border-radius: 6px;
+  padding: 16px 20px; margin: 0 0 32px; font-size: 13.5px; color: #7A5A1E; font-style: italic; line-height: 1.6;
+}
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 40px 0 12px; }
+h3 { font-family: 'Segoe UI', sans-serif; font-weight: 600; color: var(--navy); font-size: 14.5px; margin: 26px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+ul { margin: 0 0 18px 22px; }
+li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.pull-quote {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 16px; line-height: 1.5;
+}
+.sequence {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 15px; line-height: 1.6;
+}
+
+.closing-quote {
+  background: var(--navy-d); color: #fff; border-radius: 8px; padding: 24px 28px; margin: 8px 0 8px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-size: 17px; line-height: 1.6;
+}
+.closing-line {
+  text-align: center; font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d);
+  font-size: 16px; line-height: 1.6; margin: 22px 0 6px;
+}
+
+.section-num {
+  display: inline-block; font-family: 'Consolas', monospace; font-size: 11px; color: var(--navy);
+  background: var(--navy-l); border-radius: 4px; padding: 2px 8px; margin-right: 8px; vertical-align: middle;
+}
+
+.pdf-download {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px;
+  padding: 8px 14px; text-decoration: none; margin: 0 0 28px;
+}
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+.lead-box { background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 6px; padding: 16px 20px; margin: 0 0 28px; font-size: 14.5px; color: var(--navy-d); line-height: 1.65; }
+.lead-box strong { color: var(--navy-d); }
+.kv { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 13.5px; }
+.kv th { background: var(--navy); color: #fff; text-align: left; padding: 9px 12px; font-size: 11.5px; letter-spacing: .02em; text-transform: uppercase; }
+.kv td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.55; background: #fff; }
+.kv td.k { font-weight: 700; color: var(--navy-d); width: 34%; }
+ol { margin: 0 0 18px 24px; }
+ol li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+.term { font-weight: 700; color: var(--navy-d); }
+.example-entry { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; margin: 6px 0 20px; font-size: 14px; color: var(--gray); font-style: italic; line-height: 1.6; }
+.signoff { text-align: right; font-family: 'Georgia', serif; font-style: italic; color: var(--navy-d); font-size: 16px; margin: 18px 0 0; }
+.source-basis { font-size: 12.5px; color: var(--lgray); font-style: italic; border-top: 1px solid var(--border); padding-top: 12px; margin-top: 28px; }
+</style>
+</head>
+<body>
+
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; External review notes from GiGi Garcia, for joint discussion with Tim. Nothing on this page is official yet.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">External Review · GiGi Garcia · September 21, 2026</div>
+  <h1>Initial Thoughts on the Requirements Register</h1>
+  <div class="tagline2">Working feedback for Timothy</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-download-mount data-item="gigi-requirements-register-initial-thoughts"></div>
+
+<div class="wrap">
+
+  <div class="callout">
+    GiGi's working feedback on the Requirements Register, sent to Tim September 21, 2026, transcribed here in the site's visual language. The words and observations below are hers, not Tim's or Claude's — this page is a faithful transcription, not a response.
+  </div>
+
+  <a class="pdf-download" href="gigi_requirements_register_initial_thoughts.pdf">&#8595; GiGi&rsquo;s original PDF</a>
+
+  <p>My first reaction is very positive. The register feels like the right next step because it gives us one place to see what has been raised, what has been designed, what is partially addressed, and what is actually implemented. More importantly, it creates a visible record of how the thinking is moving into the framework instead of allowing good ideas to disappear across calls, emails, working notes, and PDFs.</p>
+  <div class="pull-quote">What I like most is that this starts to give the collaboration memory — not just a list of comments, but a traceable path from concern to design to implementation.</div>
+
+  <h2>What Feels Strong Already</h2>
+  <ul>
+    <li>The top-level counts make the state of the work easy to understand at a glance. I can immediately see what is implemented, designed, partially addressed, and still open.</li>
+    <li>Tracing each requirement back to its source is valuable. It preserves context and makes it easier to understand why a requirement exists in the first place.</li>
+    <li>The categories are useful because they show that the feedback is not all the same kind of work. Website/UX, readiness, data model, executive view, and people/org taxonomy issues should not all be treated as one bucket.</li>
+    <li>The draft banner is also helpful. It makes clear that this is still a working tracker and not yet part of the formal framework.</li>
+  </ul>
+
+  <h2>Where I Think We Can Make It More Useful</h2>
+  <h3>1. Define the statuses more tightly</h3>
+  <p>Open / Partially Addressed / Designed / Implemented makes sense, but I would define exactly what each status means. &ldquo;Designed&rdquo; is the one I would be most careful with. Does it mean the concept has been drafted, that both of us reviewed it, that we agreed to it, or that it is ready to be built? Those are different stages.</p>
+  <h3>2. Add ownership and next action</h3>
+  <p>For every open or partial item, I would like to know who carries the next move and what that move is. That could simply be Tim, Gigi, Joint, or Technical Implementation. Without that, the register tells us where something stands but not how it moves forward.</p>
+  <h3>3. Add a sense of priority</h3>
+  <p>Not all requirements should carry the same weight. A typography adjustment and a Human Readiness gating issue are both legitimate requirements, but they do not have the same impact on the integrity of the methodology. I would use something simple such as Framework-Critical / Important / Enhancement, or High / Medium / Low.</p>
+  <h3>4. Make &ldquo;done&rdquo; explicit</h3>
+  <p>I would add acceptance criteria, even if it is only one sentence. That gives us a shared definition of what has to be true before something can be called implemented. It also prevents a requirement from being marked complete when the original concern was only partly solved.</p>
+
+  <h2>An Example of How I Would Use It</h2>
+  <table class="kv">
+    <tr><td class="k">Requirement</td><td>Human Accountability Anchor</td></tr>
+    <tr><td class="k">Status</td><td>Partially Addressed</td></tr>
+    <tr><td class="k">Owner</td><td>Joint</td></tr>
+    <tr><td class="k">Priority</td><td>Framework-Critical</td></tr>
+    <tr><td class="k">Next Action</td><td>Define when an activity requires an explicit accountability marker and test it against the three prototype roles.</td></tr>
+    <tr><td class="k">Acceptance Criteria</td><td>We can identify the human who remains accountable, their override/escalation rights, and how that accountability is represented in the framework.</td></tr>
+  </table>
+
+  <h2>One Distinction I Think Matters</h2>
+  <p>Designed is not the same as reviewed or agreed. I would consider a review step between those states so there is a visible difference between &ldquo;a solution has been designed&rdquo; and &ldquo;we have both reviewed and accepted that solution.&rdquo; That could be a formal status such as Pending Review, or it could be handled through an approval field.</p>
+
+  <h2>A Few Process Questions I Would Keep Open</h2>
+  <ul>
+    <li>When does a requirement move from this register into the actual framework?</li>
+    <li>Who can change a requirement or its status?</li>
+    <li>What evidence is needed before something moves from Designed to Implemented?</li>
+    <li>If we disagree that a requirement has been fully addressed, where is that disagreement recorded?</li>
+    <li>Should the register eventually capture input from both of us, pilots, practitioners, and clients — not only my initial requirements?</li>
+  </ul>
+
+  <h2>How I See This Evolving</h2>
+  <p>I would not want this to remain only a tracker of my comments. In the short term, that is a useful way to make sure my feedback is not lost. Longer term, I think it can become the requirements-governance system for the methodology itself — capturing requirements raised by either of us, findings from pilots, practitioner feedback, validation issues, and eventually client-driven requirements.</p>
+  <div class="pull-quote">If we get the definitions, ownership, next action, priority, and acceptance criteria right, this can become the backbone for how we manage the methodology as it grows.</div>
+
+  <h2>My Overall Reaction</h2>
+  <p>I think this is a strong move and exactly the kind of mechanism we needed. It makes the work visible, creates accountability around follow-through, and gives us a record of how ideas move from reflection into the architecture. My suggestions are mostly about making it a little more operational so that we can look at any row and immediately know not only where it stands, but what happens next and what &ldquo;complete&rdquo; really means.</p>
+  <p class="signoff">Gigi</p>
+
+</div>
+
+<footer>
+  <p>
+    Working notes — <strong style="color:var(--navy)">GiGi Garcia</strong><br>
+    Shared with <strong style="color:var(--navy)">Tim King</strong>, September 21, 2026 · HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+<script src="wip-download-widget.js"></script>
+</body>
+</html>
