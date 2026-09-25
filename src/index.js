@@ -36,7 +36,8 @@ const VOTABLE_ITEMS = {
   'wr-progression-methodology': '2026-09-21',
   'wr-palette': '2026-09-21',
   'content-promotion-policy': '2026-09-23',
-  'work-product-spec': '2026-09-25'
+  'work-product-spec': '2026-09-25',
+  'work-product-catalog': '2026-09-25'
 };
 
 // Friendly titles for notification emails — falls back to the raw itemId if
@@ -55,7 +56,8 @@ const ITEM_TITLES = {
   'wr-progression-methodology': 'Working-Relationship Progression — Plain-Language Spec',
   'wr-palette': 'WR Category Palette Standard',
   'content-promotion-policy': 'Content Promotion Policy — Sandbox / WIP / Production',
-  'work-product-spec': 'Work Product in the Role Container — Design Spec'
+  'work-product-spec': 'Work Product in the Role Container — Design Spec',
+  'work-product-catalog': 'Work-Product Catalog — Sandbox 7.0'
 };
 
 // Only Tim can request/complete a publish — GiGi reviews and votes, but
