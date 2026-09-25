@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] 7.0 (HR) Rebuild Scope &amp; Sweep Audit — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --accent: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 8px; }
+.masthead .tagline2 { font-size: 14px; color: var(--accent); font-style: italic; max-width: 660px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center; font-size: 12.5px; color: var(--amber-text);
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: var(--amber-text); font-weight: 600; }
+
+.wrap { max-width: 820px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.callout {
+  background: var(--amber-bg); border-left: 4px solid var(--amber); border-radius: 6px;
+  padding: 16px 20px; margin: 0 0 24px; font-size: 13.5px; color: var(--amber-text); font-style: italic; line-height: 1.65;
+}
+.callout strong { color: var(--amber-text); }
+
+.term-box {
+  background: var(--navy-l); border-left: 4px solid var(--navy); border-radius: 6px;
+  padding: 16px 20px; margin: 0 0 32px; font-size: 13.5px; color: #333; line-height: 1.65;
+}
+.term-box p { font-size: 13.5px; color: #333; margin-bottom: 10px; }
+.term-box p:last-child { margin-bottom: 0; }
+.term-box strong { color: var(--navy); }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 40px 0 12px; }
+h3.rule-h { font-family: 'Segoe UI', sans-serif; font-weight: 600; color: var(--navy-d); font-size: 14.5px; margin: 22px 0 6px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+p.note { font-size: 13px; color: var(--lgray); font-style: italic; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 14px 12px 7px; font-size: 12px; letter-spacing: .02em; }
+td { border: 1px solid var(--border); padding: 10px 12px; vertical-align: top; color: #222; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.row-name { color: var(--navy); font-weight: 600; white-space: nowrap; }
+td.verdict-cell { white-space: nowrap; width: 90px; }
+td.rule-cell { font-weight: 600; color: var(--navy-d); white-space: nowrap; }
+
+.verdict {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; border-radius: 3px; padding: 3px 8px; white-space: nowrap;
+}
+.verdict.na    { color: var(--lgray); background: var(--border); }
+.verdict.clean { color: var(--navy-d); background: var(--navy-l); }
+.verdict.mixed { color: var(--navy-d); background: var(--accent); }
+.verdict.gap   { color: var(--navy-d); background: #fff; border: 1.5px solid var(--navy); padding: 1.5px 6.5px; }
+
+.pdf-download {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px;
+  padding: 8px 14px; text-decoration: none; margin: 0 0 28px;
+}
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+h3 { font-family: 'Segoe UI', sans-serif; font-weight: 600; color: var(--navy-d); font-size: 15px; margin: 28px 0 8px; }
+ul, ol { margin: 0 0 16px 22px; }
+li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+code { font-family: 'Consolas', monospace; font-size: 12.5px; color: var(--navy-d); background: var(--navy-l); padding: 1px 4px; border-radius: 3px; }
+td code { font-size: 11.5px; }
+.wrap { max-width: 900px; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this with GiGi before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">HITL-Driven Architecture · Audit Record · Tim King &amp; Claude · September 2026</div>
+  <h1>7.0 (HR) Rebuild Scope &amp; Sweep Audit</h1>
+  <div class="tagline2">The 7.0 rebuild scope, the Sept 21 production audit, and the Sept 24 Sandbox 7.0 sweep: what was checked, what was fixed, and where each requirement landed.</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-download-mount data-item="rebuild-scope-7-0"></div>
+
+<div class="wrap">
+
+<p class="note">Snapshot as of Sept 24, 2026. The working copy is a living doc that Tim and Claude keep current; this page is republished when it changes.</p>
+
+<h2>Why 7.0 goes first</h2>
+<p>7.0 (HR) was the original domain build and is where the tagline drift, the Rule 1 Token Lock gap, and the unswept GR-002–GR-011 rules were all found. It's also the domain with the most history — which makes it the most likely place for other undetected drift, and the best test case for the new promotion policy (see the companion doc, <em>Content Promotion Policy — Sandbox / WIP / Production</em>) before rolling the same pass across 8.0 (IT) and 9.0 (Finance).</p>
+<p>The goal of this pass is not a redesign. It's an audit-and-reconcile: confirm every page in 7.0 reflects the currently Adopted tokens and rules, fix what doesn't, and run every fix through the new ladder (Proposed → … → Adopted → Published) so the fix itself is the first real proof the policy works. Same shape as how 7.0, 8.0, and 9.0 were originally each built as complete, self-contained passes — this is that same seam, run backwards as a cleanup.</p>
+<h2>What a 7.0 rebuild touches</h2>
+<p>Pulled directly from a Wrangler deploy export of the repo (uploaded 2026-09-21) and confirmed against the live file tree. Real paths, not placeholder categories.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+<th>What to check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docs/hitl_crud_pcf7_final.html</code></td>
+<td>Domain-wide CRUD reference</td>
+<td>Rule 1 token compliance</td>
+</tr>
+<tr>
+<td><code>docs/hitl_raci_pcf7_final.html</code></td>
+<td>Domain-wide RACI reference</td>
+<td>Rule 1 token compliance</td>
+</tr>
+<tr>
+<td><code>docs/process_catalog_pcf7.html</code></td>
+<td>Process catalog index</td>
+<td>Rule 1 token compliance, tagline</td>
+</tr>
+<tr>
+<td><code>docs/rtp_chro.html</code></td>
+<td>Role page: CHRO</td>
+<td>Rule 1 token compliance</td>
+</tr>
+<tr>
+<td><code>docs/rtp_director_of_hr_ops.html</code></td>
+<td>Role page: Director of HR Ops</td>
+<td>Rule 1 token compliance</td>
+</tr>
+<tr>
+<td><code>docs/rtp_hr_generalist.html</code></td>
+<td>Role page: HR Generalist</td>
+<td>Rule 1 token compliance</td>
+</tr>
+<tr>
+<td><code>docs/rtp_hrbp_manager.html</code></td>
+<td>Role page: HRBP Manager</td>
+<td>Rule 1 token compliance</td>
+</tr>
+<tr>
+<td><code>docs/rtp_hris_analyst.html</code></td>
+<td>Role page: HRIS Analyst</td>
+<td>Rule 1 token compliance</td>
+</tr>
+<tr>
+<td><code>docs/vsp_hr_vision_to_strategy.html</code></td>
+<td>Value stream 7.1</td>
+<td>Rule 1 + Rule 12 (WR palette) compliance</td>
+</tr>
+<tr>
+<td><code>docs/vsp_recruit_to_hire.html</code></td>
+<td>Value stream 7.2</td>
+<td>Rule 1 + Rule 12 compliance</td>
+</tr>
+<tr>
+<td><code>docs/vsp_perform_to_grow.html</code></td>
+<td>Value stream 7.3</td>
+<td>Rule 1 + Rule 12 compliance</td>
+</tr>
+<tr>
+<td><code>docs/vsp_reward_to_retain.html</code></td>
+<td>Value stream 7.5</td>
+<td>Rule 1 + Rule 12 compliance</td>
+</tr>
+<tr>
+<td><code>docs/vsp_move_to_exit.html</code></td>
+<td>Value stream 7.6</td>
+<td>Rule 1 + Rule 12 compliance</td>
+</tr>
+<tr>
+<td><code>docs/vsp_enable_and_govern.html</code></td>
+<td>Value stream 7.4/7.7/7.8</td>
+<td>Rule 1 + Rule 12 compliance</td>
+</tr>
+<tr>
+<td><code>docs/sandbox/pcf7.html</code></td>
+<td>Sandbox</td>
+<td>Out of promotion scope; confirm nothing leaked out unreviewed</td>
+</tr>
+<tr>
+<td><code>docs/wip/framework_content_generation_rules.html</code></td>
+<td>Rule 1–20 source of truth</td>
+<td>Reference only — this defines "correct"</td>
+</tr>
+<tr>
+<td><code>docs/HITL_Requirements_Register.xlsx</code></td>
+<td>GR-001–GR-035 tracker (docs copy)</td>
+<td><strong>Duplicate exists — see below</strong></td>
+</tr>
+<tr>
+<td><code>wip/HITL_Requirements_Register.xlsx</code></td>
+<td>GR-001–GR-035 tracker (wip copy)</td>
+<td><strong>Duplicate exists — see below</strong></td>
+</tr>
+<tr>
+<td><code>docs/wip/chro_pattern_transition_stagefirst.html</code></td>
+<td>WIP item, HR-tagged</td>
+<td>Candidate for Adopted/Published review</td>
+</tr>
+<tr>
+<td><code>docs/wip/hrbp_manager_pattern_transition_stagefirst.html</code></td>
+<td>WIP item, HR-tagged</td>
+<td>Candidate for Adopted/Published review</td>
+</tr>
+<tr>
+<td><code>docs/wip/talking_through_your_questions.html</code></td>
+<td>WIP item, HR-tagged</td>
+<td>Candidate for Adopted/Published review</td>
+</tr>
+<tr>
+<td><code>docs/wip/three_examples_by_tier.html</code></td>
+<td>WIP item, HR-tagged</td>
+<td>Candidate for Adopted/Published review</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Two findings worth flagging immediately:</strong></p>
+<ol>
+<li><strong><code>HITL_Requirements_Register.xlsx</code> exists in two places</strong> (<code>docs/</code> and <code>wip/</code>) with different file timestamps (Sept 17 vs. Sept 15), though their content is currently identical. This is a live example of exactly the drift risk the promotion policy targets — nothing enforces that these two stay in sync, or says which one is authoritative.</li>
+<li><strong>The tagline is not currently drifted.</strong> "Where human judgment belongs" appears identically in all 71 occurrences checked across the site, sandbox, and WIP. Earlier notes calling this out may be describing a state that's since been corrected — worth confirming with GiGi rather than treating as still-open.</li>
+</ol>
+<h2>What gets fixed in this pass</h2>
+<p>Checked directly against the repo. Two of the three original concerns turn out to be smaller or larger than described:</p>
+<ol>
+<li><strong>Tagline lock — confirmed already consistent.</strong> "Where human judgment belongs" appears identically in all 71 checked occurrences across live site, sandbox, and WIP. No fix needed here right now; this item can close, pending GiGi confirming she isn't seeing a different version somewhere I didn't check.</li>
+<li><strong>Rule 1 Token Lock colors — confirmed, and larger than expected.</strong> Every 7.0 page checked (<code>hitl_crud_pcf7_final.html</code>, <code>process_catalog_pcf7.html</code>, <code>rtp_chro.html</code>, <code>rtp_hr_generalist.html</code>, and others) uses 15–40+ distinct hex colors against Rule 1's locked set of 8 (navy <code>#1B4F8A</code>, navy-d <code>#0D2D4F</code>, navy-l <code>#EEF3FA</code>, gray <code>#444</code>, light gray <code>#888</code>, border <code>#DDE3EE</code>, amber <code>#B8873F</code>/<code>#FEF3C7</code>). Some of this may be legitimate — status badges, semantic colors (red/green for pass/fail), or WR-category colors governed by Rule 12 rather than Rule 1 — but the gap is large enough that this pass needs to first separate "legitimately governed by a different rule" from "actually out of compliance" before proposing fixes.</li>
+<li><strong>GR-002 through GR-011 — partially already swept.</strong> <code>docs/wip/framework_content_generation_rules.html</code> already maps each of these to a specific rule and status (e.g. GR-005 tagline → Rule 6 + Rule 12, Partially Addressed; GR-009 → Rule 17, Designed). The Requirements Register spreadsheet confirms the same statuses. What's still missing is the <em>page-by-page</em> confirmation — the rule-to-requirement mapping is designed, but no one has checked each 7.0 page against it yet.</li>
+</ol>
+<p>A fourth item, not in the original three: <strong>resolve the duplicate <code>HITL_Requirements_Register.xlsx</code></strong> (see inventory table above) — confirm which copy is authoritative and either delete the other or make clear one is a working copy that gets overwritten from the other.</p>
+<h2>Rebuild sequence</h2>
+<ol>
+<li><strong>Pull the real inventory.</strong> Get repo access (or Tim exports the 7.0 file list) and fill in the table above with actual paths, replacing the category placeholders.</li>
+<li><strong>Confirm current rule text.</strong> Re-read Rule 1's Token Lock and GR-002–GR-011 as currently written — the check is only as good as knowing exactly what "correct" means.</li>
+<li><strong>Audit page by page.</strong> For each 7.0 page: check tagline wording, check token/color compliance against Rule 1, check each of GR-002–GR-011. Record pass/fail per page, not just per rule.</li>
+<li><strong>Draft fixes.</strong> For anything failing, draft the corrected content or code. Anything touching wording or a locked token goes into WIP as Proposed, not straight to a file edit — this is the first real run of the new ladder.</li>
+<li><strong>Review and Adopt.</strong> Tim and GiGi review through Under Review → Concept Agreed → Text Approved → Adopted, same as any other WIP item.</li>
+<li><strong>Publish.</strong> Tim commits the Adopted fixes. Each commit is verified live and logged in the production changelog, including every file touched — this is where the tagline's three-file spread gets caught for good.</li>
+<li><strong>Close the loop.</strong> Update GR-002–GR-011's status from "not confirmed swept" to "swept as of &lt;date&gt;" with the audit results attached, so the next person doesn't have to redo this from scratch.</li>
+</ol>
+<h2>Explicitly out of scope</h2>
+<ul>
+<li><strong>No visual redesign.</strong> This is a compliance and consistency pass against existing rules and tokens, not a new look for 7.0.</li>
+<li><strong>No new features or pages.</strong> Anything net-new belongs in its own WIP proposal, evaluated separately from this cleanup.</li>
+<li><strong>8.0 and 9.0 content.</strong> Only touched if a shared partial (header/footer/nav) used by 7.0 is also used by them — in which case the fix and its changelog entry note every domain it affects, but the audit itself stays scoped to 7.0 pages.</li>
+<li><strong>Sandbox exploration.</strong> <code>docs/sandbox/pcf7.html</code> and similar stay sandbox; this pass checks that nothing leaked out of it unreviewed, but doesn't rework the sandbox itself.</li>
+<li><strong>Building the drift-check tooling</strong> mentioned in the promotion policy doc (an automated script that diffs a token across all files). Useful follow-on, but not a dependency for this pass, which can run manually.</li>
+</ul>
+<h2>After 7.0: 8.0 and 9.0</h2>
+<p>Once the 7.0 pass closes — tagline locked, Rule 1 confirmed, GR-002–GR-011 swept and logged — the same sequence repeats for 8.0 (IT) and then 9.0 (Finance), in the order they were originally built. Two things should be faster the second time:</p>
+<ul>
+<li>The inventory <em>shape</em> (the table in "What a 7.0 rebuild touches") carries over directly — only the file paths change.</li>
+<li>Any shared partials fixed during the 7.0 pass (header, footer, tagline, token source) are already correct for 8.0 and 9.0 if they truly are shared — the 8.0/9.0 passes just need to confirm that, not redo the fix.</li>
+</ul>
+<p>Each domain still gets its own audit against its own domain-specific rules, but the promotion mechanics and the changelog habit should need no re-explaining by the third pass.</p>
+<h2>Rule 1 &amp; Rule 2 Color Audit (run 2026-09-21)</h2>
+<p>Full hex-color extraction across all 15 live 7.0 pages from the same Wrangler export, classified against Rule 1 (Token Lock), Rule 20 (WR Category Palette Lock), and Rule 2 (One Pattern Legend)'s canonical dashboard palette.</p>
+<p><strong>Baseline sets used:</strong></p>
+<ul>
+<li>Rule 1: navy <code>#1B4F8A</code>, navy-d <code>#0D2D4F</code>, navy-l <code>#EEF3FA</code>, gray <code>#444</code>, light gray <code>#888</code>, border <code>#DDE3EE</code>, amber <code>#B8873F</code>/<code>#FEF3C7</code>, light-blue <code>#9FC2EE</code>/<code>#9FC0E8</code></li>
+<li>Rule 20: <code>#7DAEE0</code>, <code>#5A8DC4</code>, <code>#3D6FA8</code>, <code>#2457A3</code>, <code>#204474</code> (plus navy-d for Human-only)</li>
+<li>Rule 2 canonical (from the dashboard's <code>PATTERN_HEX</code>): Decision <code>#7B9FD1</code>, Knowledge <code>#A79AE0</code>, Document <code>#5EB8E0</code>, Transaction <code>#6FC48C</code>, Exception <code>#E88A8A</code></li>
+</ul>
+<h3>Rule 20 (WR Category Palette) — clean</h3>
+<p>All three VSP pages checked (<code>vsp_recruit_to_hire.html</code>, <code>vsp_hr_vision_to_strategy.html</code>, <code>vsp_enable_and_govern.html</code>) use the exact locked hex values, 2 occurrences each. No fix needed.</p>
+<h3>Rule 2 (One Pattern Legend) — confirmed, systemic violation</h3>
+<p>Two different color palettes exist for the same five HITL patterns, both in active use:</p>
+<ul>
+<li><strong>Dashboard canonical</strong> (<code>hitl_dashboard_final.html</code>'s <code>PATTERN_HEX</code>): Decision <code>#7B9FD1</code>, Knowledge <code>#A79AE0</code>, Document <code>#5EB8E0</code>, Transaction <code>#6FC48C</code>, Exception <code>#E88A8A</code></li>
+<li><strong>CRUD/RTP local scheme</strong> (defined as CSS variables on <code>hitl_crud_pcf7_final.html</code> and reused across all 5 <code>rtp_*.html</code> pages): Decision <code>#1B4F8A</code>/<code>#EEF3FA</code>, Knowledge <code>#534AB7</code>/<code>#F3F0FE</code>, Document <code>#0369A1</code>/<code>#E0F2FE</code>, Transaction <code>#166534</code>/<code>#DCFCE7</code>, Exception <code>#991B1B</code>/<code>#FEE2E2</code></li>
+</ul>
+<p>Worst case: <code>hitl_crud_pcf7_final.html</code> uses <strong>both</strong> in the same table row — the pattern-mix bar uses the dashboard-canonical color, and the pattern-name badge right next to it uses the local scheme's color, for the same pattern. Rule 2's own text already flags this as a known gap ("no single reusable legend component exists yet") — this confirms it's not just missing, it's actively inconsistent, and it's the dominant pattern across CRUD + all 5 RTP pages, not a one-off.</p>
+<h3>Rule 1 (Token Lock) — mostly clean on the literal set, but an unwritten extended palette</h3>
+<p>The 8 core tokens are used correctly everywhere. But a second, consistent set of UI colors appears on every single page checked and isn't written into Rule 1 at all: dark text <code>#0D1B2A</code>, body background <code>#F4F6FB</code>, masthead accent <code>#6E8CB8</code>, table-header tint <code>#CFE0F5</code>, card background <code>#FAFBFD</code>, plus the semantic status pair green <code>#166534</code>/<code>#DCFCE7</code> and red <code>#991B1B</code>/<code>#FEE2E2</code> (used consistently for status states like Implemented/Open across pages). This is the same shape of gap Rule 1's own history note already describes for the light-blue accent — de facto universal use, never folded into the locked list. Recommend folding these into Rule 1 as a second proposal, rather than treating every page as non-compliant for using them.</p>
+<h3>Per-page summary</h3>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>Distinct colors</th>
+<th>Outside Rule 1/20/2 canon</th>
+<th>Rule 2 double-palette present?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hitl_crud_pcf7_final.html</code></td>
+<td>30</td>
+<td>19</td>
+<td>Yes — both palettes on same row</td>
+</tr>
+<tr>
+<td><code>hitl_raci_pcf7_final.html</code></td>
+<td>27</td>
+<td>17</td>
+<td>Yes (local scheme only)</td>
+</tr>
+<tr>
+<td><code>process_catalog_pcf7.html</code></td>
+<td>14</td>
+<td>8</td>
+<td>No pattern badges present</td>
+</tr>
+<tr>
+<td><code>rtp_chro.html</code></td>
+<td>39</td>
+<td>30</td>
+<td>Yes (local scheme)</td>
+</tr>
+<tr>
+<td><code>rtp_director_of_hr_ops.html</code></td>
+<td>40</td>
+<td>30</td>
+<td>Yes (local scheme)</td>
+</tr>
+<tr>
+<td><code>rtp_hr_generalist.html</code></td>
+<td>41</td>
+<td>30</td>
+<td>Yes (local scheme)</td>
+</tr>
+<tr>
+<td><code>rtp_hrbp_manager.html</code></td>
+<td>41</td>
+<td>30</td>
+<td>Yes (local scheme)</td>
+</tr>
+<tr>
+<td><code>rtp_hris_analyst.html</code></td>
+<td>40</td>
+<td>30</td>
+<td>Yes (local scheme)</td>
+</tr>
+<tr>
+<td><code>vsp_hr_vision_to_strategy.html</code></td>
+<td>24</td>
+<td>13</td>
+<td>No (Rule 20 pages, clean)</td>
+</tr>
+<tr>
+<td><code>vsp_recruit_to_hire.html</code></td>
+<td>22</td>
+<td>11</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>vsp_perform_to_grow.html</code></td>
+<td>22</td>
+<td>11</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>vsp_reward_to_retain.html</code></td>
+<td>22</td>
+<td>11</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>vsp_move_to_exit.html</code></td>
+<td>22</td>
+<td>11</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>vsp_enable_and_govern.html</code></td>
+<td>22</td>
+<td>11</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>docs/sandbox/pcf7.html</code></td>
+<td>63</td>
+<td>45</td>
+<td>Mixed, plus many one-off sandbox colors</td>
+</tr>
+</tbody>
+</table>
+<h3>Recommendation</h3>
+<p>Two separate WIP proposals, not one:</p>
+<ol>
+<li><strong>Fix Rule 2 compliance</strong> — pick one pattern palette (the dashboard's, since it's the one Rule 2's own text points to) and update all 6 affected pages (CRUD + 5 RTP pages) to use it consistently, including fixing the CRUD page's same-row conflict.</li>
+<li><strong>Extend Rule 1's locked set</strong> — formally add the UI/status colors found universally in use (dark text, body bg, masthead accent, table tint, card bg, status green/red) so the rule actually describes current practice, the same way the light-blue accent was folded in previously.</li>
+</ol>
+<p>The sandbox page is excluded from both — it's explicitly out of promotion scope per this doc's earlier section.</p>
+<h2>Work Pattern → Working Relationship display migration (scoped 2026-09-21)</h2>
+<p>Tim and GiGi have agreed to a bigger change than reconciling the two pattern-color palettes above: the five work patterns (Decision, Knowledge, Document, Transaction, Exception) stop being shown to site visitors at all. They stay in the backend/data layer for possible future analytics, and the six Working-Relationship categories (Automation, Agent-delegation, Augmentation, Oversight, Judgment, Human-only) become the primary, actionable, user-facing lens instead. In GiGi's words, relayed by Tim: <em>"The working relationship is the thing that gives us something actionable... I do not think the end user needs to see both."</em></p>
+<p>This supersedes the standalone colorblind-safety fix framed earlier in this doc — a new pattern palette isn't needed if patterns aren't displayed at all.</p>
+<h3>Page inventory — where the badge markup actually lives</h3>
+<p>Counted directly against the live repo export by grepping for the rendered badge/card markup itself (<code>.pat-badge</code>, <code>.capmap</code>), not just the pattern words appearing in prose:</p>
+<ul>
+<li><strong>Role Transition Profiles</strong> (<code>rtp_*.html</code>, 25 pages) — show pattern badges <strong>and</strong> already show Working Relationship cards correctly. Lowest-effort group: badge removal only.</li>
+<li><strong>CRUD Tables</strong> (<code>hitl_crud_pcf7/8/9_final.html</code>, 3 pages) — pattern badges, no Working Relationship display yet. Needs badge removal + a Working Relationship column/chip added.</li>
+<li><strong>RACI Tables</strong> (<code>hitl_raci_pcf7/8/9_final.html</code>, 3 pages) — same as CRUD.</li>
+<li><strong>Maturity Tables</strong> (<code>hitl_maturity_pcf8/9_final.html</code>, 2 pages) — same as CRUD. (<code>hitl_maturity_scale.html</code> is narrative only, no badge markup, no change needed.)</li>
+<li><strong>Value Stream Profiles</strong> (<code>vsp_*.html</code>, 18 pages) — already clean: Working Relationship only, via inline-styled <code>.capmap-card</code> elements using Rule 20's locked palette. This is the pattern the other groups get brought up to.</li>
+<li><strong>Dashboard</strong> (<code>hitl_dashboard_final.html</code>) — shows an aggregate pattern-mix bar (not per-activity badges) alongside Working Relationship. Flagged as a separate decision — arguably the legitimate backend/analytics use GiGi described, not a per-item label.</li>
+</ul>
+<p>33 pages total need a pattern badge removed; 8 of those (CRUD/RACI/Maturity) also need Working Relationship added.</p>
+<h3>What I did with this</h3>
+<p>Drafted a new WIP proposal, <strong>"Working Relationship as the Primary Display Lens"</strong> (<code>docs/wip/working_relationship_display_migration.html</code>), following the same Rule 19 five-section shape as the existing proposals, and added it to the WIP hub (<code>docs/wip/index.html</code>). It recommends marking the existing Work Pattern Color Standard concept <strong>Superseded</strong> rather than Denied — its colorblind-accessibility finding is still true and worth keeping on record, it just no longer needs to become a live display change. Delivered to Tim as a zip with real repo-relative paths for direct extract-and-drop.</p>
+<h3>Still open</h3>
+<ul>
+<li>Tim/GiGi review and vote the new proposal through the normal WIP mechanism.</li>
+<li>The production build (badge removal across 33 files, Working Relationship added to 8 of them) is parked until the full production rebuild, per the Sept 24 Sandbox 7.0 scope. In the sandbox, the pattern display is already removed (Sweep F1, below).</li>
+</ul>
+<h2>Sandbox 7.0 Sweep — Sept 24, 2026</h2>
+<p>Both sweeps were re-run against <code>docs/sandbox/pcf7.html</code> on Sept 24 and every fix is live, verified byte-for-byte on GitHub. Five of GR-002–GR-011 now pass, one is closed, and four wait on the development methodology.</p>
+<p><strong>Scope change.</strong> Tim ruled production stale on Sept 24: 7.0 work is scoped to Sandbox 7.0 only, and production pages are neither referenced nor changed until the full production rebuild. The Sept 21 audit above covered the production pages, so it was re-run on the sandbox.</p>
+<h3>Sweep 1: tokens and fonts</h3>
+<p>All five views were checked with every row expanded, recording only colors actually drawn on screen.</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Count</th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rule 1 / Rule 20 locked colors</td>
+<td>~16</td>
+<td>Clean; all six WR colors match Rule 20</td>
+</tr>
+<tr>
+<td>Old pattern palette</td>
+<td>15</td>
+<td>Still drawn by a Pattern column in RACI and Data views; removed (F1)</td>
+</tr>
+<tr>
+<td>Consequence-of-Error colors</td>
+<td>4</td>
+<td>No rule; locked as new Rule 21</td>
+</tr>
+<tr>
+<td>Status and neutral UI colors</td>
+<td>~33</td>
+<td>Deliberate, unwritten; named in Rule 1</td>
+</tr>
+<tr>
+<td>Fonts (DM Sans, DM Mono, Playfair)</td>
+<td>3</td>
+<td>Kept: Rule 1 fonts now cover documents only</td>
+</tr>
+</tbody>
+</table>
+<h3>Sweep 2: GR-002 to GR-011</h3>
+<table>
+<thead>
+<tr>
+<th>Req</th>
+<th>Rule</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GR-002</td>
+<td>3/4</td>
+<td>Pass: one callout, no buried findings</td>
+</tr>
+<tr>
+<td>GR-003</td>
+<td>pattern identity</td>
+<td>Closed: patterns retired from display</td>
+</tr>
+<tr>
+<td>GR-004</td>
+<td>5</td>
+<td>Designed: Rule 5 now documents-only, with section spacing</td>
+</tr>
+<tr>
+<td>GR-005</td>
+<td>6/12</td>
+<td>Pass: tagline on its own masthead line</td>
+</tr>
+<tr>
+<td>GR-006</td>
+<td>9</td>
+<td>Waits on development methodology</td>
+</tr>
+<tr>
+<td>GR-007</td>
+<td>10</td>
+<td>Waits on development methodology</td>
+</tr>
+<tr>
+<td>GR-008</td>
+<td>14/16</td>
+<td>Pass after banner fix (F2)</td>
+</tr>
+<tr>
+<td>GR-009</td>
+<td>17</td>
+<td>Pass: no "optimal"</td>
+</tr>
+<tr>
+<td>GR-010</td>
+<td>15</td>
+<td>Pass: no absolute claims</td>
+</tr>
+<tr>
+<td>GR-011</td>
+<td>18</td>
+<td>Waits on development methodology</td>
+</tr>
+</tbody>
+</table>
+<h3>Fixes applied to the sandbox</h3>
+<ul>
+<li><strong>F1.</strong> Removed the Pattern column from the RACI Table and Data View, plus the unused pattern display code; every activity keeps its <code>pattern</code> field in the data (GR-038).</li>
+<li><strong>F2.</strong> Intro banner and view notes now say the process, RACI, and CRUD data are real, while classifications, Consequence-of-Error ratings, and every % H are modeled. References to the live dashboard removed.</li>
+<li><strong>F3.</strong> 7.7.2's consequence note reworded without the pattern label.</li>
+<li><strong>F4.</strong> Three row tints consolidated to <code>#FAFBFD</code>; L2 row border moved to Rule 1 light blue.</li>
+<li><strong>F5, not done.</strong> The unrendered value-stream narratives are master content for the future Value Stream pages, so they were kept. One block still counts activities by pattern and needs rewording before reuse.</li>
+</ul>
+<p>No master data changed: all 118 WR classifications and every reportsTo edge are byte-identical, so the changelog check does not apply.</p>
+<h3>Decisions (Tim)</h3>
+<ul>
+<li>Rule 1 fonts and Rule 5 sizes apply to documents only; the interactive UI keeps its current fonts and sizes.</li>
+<li>Rule 5 gains section spacing for documents: 36px above each H2 (27pt in Word), 16px between paragraphs (12pt). Including the paragraph rule was considered but rejected; implementing that in the UI would create a lot of white space and extra scrolling.</li>
+<li>Rule 2 (One Pattern Legend) retired, its number kept so citations stay correct.</li>
+<li>Rule 21 (Consequence-of-Error Palette Lock) added.</li>
+<li>GR-003 closed, using a new Closed status in the register.</li>
+<li>GR-006, GR-007, and GR-011 keep their current status and will reach the sandbox through the development methodology.</li>
+</ul>
+
+</div>
+
+<footer>
+  <p>
+    Audit record — reference only, nothing to vote on<br>
+    © Timothy P. King 2026 · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+<script src="wip-download-widget.js"></script>
+</body>
+</html>
