@@ -6,7 +6,7 @@
 // but *forgetting* to write one is exactly the kind of thing CI should
 // catch. This script fails the build when a commit range changes a
 // tracked modeled-data value (a reportsTo edge, a WR rel/ceiling
-// classification) without also adding a new entry to changelog-data.js.
+// classification, a work-product catalog entry, or activity/process CRUD) without also adding a new entry to changelog-data.js.
 //
 // Usage:
 //   node scripts/check-changelog-audit.mjs <baseRef> <headRef>
@@ -52,6 +52,27 @@ const TRACKED = [
     // published to docs/hitl_dashboard_final.html.
     pattern: /reportsTo\s*:\s*"/,
     label: "a reportsTo edge in the sandbox's ROLE_TAXONOMY",
+  },
+  {
+    file: "docs/sandbox/pcf7.html",
+    // Work-Product Catalog entries (GR-050), one per line, e.g.
+    //   { id:"WP-7-11", name:"Performance Review", system:"Lattice", ... },
+    pattern: /\{\s*id:\s*"WP-/,
+    label: "a Work-Product Catalog entry in WORK_PRODUCTS",
+  },
+  {
+    file: "docs/sandbox/pcf7.html",
+    // Activity-level CRUD entries, one per line, e.g.
+    //   "7.3.2.1": { create:["WP-7-11"], read:["WP-7-04"], ... },
+    pattern: /"\d+(?:\.\d+)+"\s*:\s*\{\s*create\s*:/,
+    label: "an activity's CRUD in ACTIVITY_CRUD",
+  },
+  {
+    file: "docs/sandbox/pcf7.html",
+    // A process's stored CRUD in PCF7 (or its switch to crud:"derived"), e.g.
+    //   { code:"7.5.4",crud:{"create":[...],...}, name:"Administer Payroll", ... }
+    pattern: /code:"\d+(?:\.\d+)+",\s?crud:/,
+    label: "a process's CRUD in PCF7",
   },
 ];
 

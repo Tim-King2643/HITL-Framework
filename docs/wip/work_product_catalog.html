@@ -101,6 +101,7 @@ table.cat .none { color: #B0B8C6; font-family: 'Segoe UI', sans-serif; font-styl
 table.cat .del { margin-top: 3px; color: var(--lgray); font-family: 'Segoe UI', sans-serif; font-size: 11.5px; }
 .key-line { font-size: 12px; color: var(--lgray); margin: -4px 0 10px; }
 .key-line .c-un { border-bottom: 1px dashed var(--amber); font-family: 'Consolas', monospace; }
+.load-err { background: #FEE2E2; border: 1px solid #F5B5B5; border-radius: 6px; padding: 12px 16px; color: #7F1D1D; font-size: 13px; }
 .stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 6px 0 22px; max-width: 800px; }
 .stat { flex: 1; min-width: 150px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
 .stat .n { font-family: 'Georgia', serif; font-size: 24px; font-weight: 700; color: var(--navy-d); }
@@ -121,9 +122,9 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
 </div>
 
 <div class="masthead">
-  <div class="eyebrow">MASTER DATA DRAFT &nbsp;·&nbsp; TIM KING &amp; CLAUDE &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <div class="eyebrow">MASTER DATA &nbsp;·&nbsp; ADMINISTRATION &nbsp;·&nbsp; SANDBOX 7.0</div>
   <h1>Work-Product Catalog &mdash; Sandbox 7.0</h1>
-  <div class="subtitle">The 37 work products in PCF 7.0, each with a permanent ID, a definition and a system of record</div>
+  <div class="subtitle">Every work product in PCF 7.0, with a permanent ID, a definition and a system of record, read live from the sandbox</div>
   <nav>
     <a href="../index.html">Documentation</a>
     <a href="../sandbox/pcf7.html">Dashboard</a>
@@ -138,8 +139,8 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
 <div class="wrap">
 
   <div class="approval-box">
-    <div class="ab-head">Draft for review &mdash; item A1 of the Work Product spec</div>
-    <p>Names and systems of record come from the CRUD entries in Sandbox 7.0; the definitions are Claude's first pass, for Tim and GiGi to correct. Tim settled the five review questions on Sept 25, 2026, and the sandbox CRUD was corrected to match (CL-005 in the changelog), so the catalog now holds 37 work products instead of 39. Once approved, it becomes master data in the sandbox, the first new entity under GR-050, and activity-level CRUD (A2) links to these IDs instead of free text.</p>
+    <div class="ab-head">Master data &mdash; read live from Sandbox 7.0</div>
+    <p>Since Sept 26, 2026 the catalog lives in the sandbox as master data (<code>WORK_PRODUCTS</code>, CL-007), and this page reads it, and the CRUD that names each work product, every time it opens, so it cannot drift. Changes are made in the sandbox first and logged in the changelog. Every entry is still Draft until Tim and GiGi confirm the definitions; the page keeps its vote for that.</p>
   </div>
 
   <div class="related-reqs">
@@ -154,63 +155,15 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <p class="lede">The catalog stores six fields per work product. Who produces it and who reads it are not stored here; they come from the CRUD links, so they can never disagree with them.</p>
   <div class="tscroll"><table>
     <tr><th style="width:26%">Field</th><th>Rule</th></tr>
-    <tr><td class="k">ID</td><td><span class="mono">WP-</span>domain<span class="mono">-</span>sequence, such as <span class="mono">WP-7-12</span>. Permanent once Active: a retired ID is never reused. While the catalog is Draft, IDs may be renumbered; they were renumbered after the two merges in section 3.</td></tr>
+    <tr><td class="k">ID</td><td><span class="mono">WP-</span>domain<span class="mono">-</span>sequence, such as <span class="mono">WP-7-12</span>. Permanent: a retired ID is never reused. New work products take the next number (WP-7-38 and WP-7-39 were added Sept 26).</td></tr>
     <tr><td class="k">Name</td><td>The work product as people in the role would name it, without the system.</td></tr>
     <tr><td class="k">Definition</td><td>One line saying what it is.</td></tr>
     <tr><td class="k">System of record</td><td>The one system that holds the authoritative copy. The vendors are Sandbox 7.0's illustrative examples.</td></tr>
-    <tr><td class="k">Status</td><td>Draft, Active or Retired. Retired entries stay in the catalog so changelog history and old links still resolve. Every entry below is Draft.</td></tr>
-    <tr><td class="k">Model output</td><td>Yes when the work product is itself the output of an AI or statistical model. It then counts as AI-touched for everyone downstream, whatever its producing activity's working relationship. Only the Retention Risk Score is marked Yes.</td></tr>
+    <tr><td class="k">Status</td><td>Draft, Active or Retired. Retired entries stay in the catalog so changelog history and old links still resolve.</td></tr>
+    <tr><td class="k">Model output</td><td>Yes when the work product is itself the output of an AI or statistical model. It then counts as AI-touched for everyone downstream, whatever its producing activity's working relationship. </td></tr>
   </table></div>
 
-  <div class="stat-row">
-    <div class="stat"><div class="n">37</div><div class="l">work products across 37 processes</div></div>
-    <div class="stat"><div class="n">12</div><div class="l">produced in more than one process</div></div>
-    <div class="stat"><div class="n">24</div><div class="l">with no process recorded as reading them</div></div>
-    <div class="stat"><div class="n">16</div><div class="l">produced only in processes whose CRUD is not yet confirmed</div></div>
-  </div>
-
-  <h2>2. The Catalog</h2>
-  <p class="key-line">Process codes: <sup>c</sup> creates it (the others update it); <span class="c-un">dashed</span> = CRUD not yet confirmed; hover a code for the process name. The <span class="tag">model output</span> tag marks a work product that is itself a model's output.</p>
-  <div class="tscroll"><table class="cat">
-    <tr><th style="width:74px">ID</th><th>Work product</th><th>Definition</th><th style="width:150px">System of record</th><th style="width:120px">Produced by</th><th style="width:150px">Read by</th></tr>
-    <tr><td class="k mono">WP-7-01</td><td class="nm">Workforce Plan</td><td>The forecast of headcount, skills and labor cost the function plans against for a period.</td><td>Workday HCM</td><td class="mono"><span title="Develop human resources strategy">7.1.1<sup>c</sup></span>, <span title="Monitor and update HR strategies, plans, and policies" class="c-un">7.1.3</span></td><td class="mono"><span title="Develop and implement workforce planning, policies, and strategies">7.1.2</span>, <span title="Monitor and update HR strategies, plans, and policies" class="c-un">7.1.3</span>, <span title="Develop competency management models" class="c-un">7.1.4</span></td></tr>
-    <tr><td class="k mono">WP-7-02</td><td class="nm">Requisition Record</td><td>An approved request to fill a position, tied to budget and the headcount plan.</td><td>iCIMS</td><td class="mono"><span title="Manage employee requisitions">7.2.1<sup>c</sup></span></td><td class="mono"><span title="Manage employee requisitions">7.2.1</span>, <span title="Recruit/Source candidates">7.2.2</span>, <span title="Screen and select candidates">7.2.3</span>, <span title="Manage new hire/re-hire">7.2.4</span></td></tr>
-    <tr><td class="k mono">WP-7-03</td><td class="nm">Policy Update Record</td><td>A new or revised HR policy, with what changed and when it takes effect.</td><td>UKG HR Service Delivery</td><td class="mono"><span title="Monitor and update HR strategies, plans, and policies" class="c-un">7.1.3<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-04</td><td class="nm">Competency Model</td><td>The skills and behaviors expected for each role family and level.</td><td>Workday Skills Cloud</td><td class="mono"><span title="Develop competency management models" class="c-un">7.1.4<sup>c</sup></span></td><td class="mono"><span title="Manage promotion and demotion process" class="c-un">7.6.1</span></td></tr>
-    <tr><td class="k mono">WP-7-05</td><td class="nm">Job Posting</td><td>The advertisement for an open requisition, published internally or externally.</td><td>iCIMS</td><td class="mono"><span title="Manage employee requisitions">7.2.1<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-06</td><td class="nm">Offer Letter</td><td>The written employment offer, its terms and its signature status.</td><td>iCIMS</td><td class="mono"><span title="Screen and select candidates">7.2.3<sup>c</sup></span>, <span title="Manage new hire/re-hire">7.2.4</span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-07</td><td class="nm">Background Check Record</td><td>The results of pre-employment screening for a new hire.</td><td>HireRight</td><td class="mono"><span title="Manage new hire/re-hire">7.2.4<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-08</td><td class="nm">Applicant Record</td><td>An applicant&#x27;s record through hiring: application, screening notes and interview feedback, retained after the decision for compliance.</td><td>iCIMS</td><td class="mono"><span title="Recruit/Source candidates">7.2.2</span>, <span title="Screen and select candidates">7.2.3</span>, <span title="Manage new hire/re-hire">7.2.4</span>, <span title="Manage applicant information">7.2.5<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-09</td><td class="nm">Onboarding Record</td><td>A new hire&#x27;s onboarding tasks, forms and completion status.</td><td>Workday HCM</td><td class="mono"><span title="Manage employee onboarding">7.3.1<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-10</td><td class="nm">System Access Profile</td><td>An employee&#x27;s accounts and access rights across systems, removed at separation.</td><td>Okta</td><td class="mono"><span title="Manage employee onboarding">7.3.1<sup>c</sup></span></td><td class="mono"><span class="none">none</span><div class="del">Deleted in <span title="Manage separation">7.6.2</span></div></td></tr>
-    <tr><td class="k mono">WP-7-11</td><td class="nm">Performance Review</td><td>An assessment of an employee&#x27;s performance for a review period, with ratings and manager comments.</td><td>Lattice</td><td class="mono"><span title="Manage employee performance">7.3.2<sup>c</sup></span>, <span title="Manage employee career development">7.3.3</span></td><td class="mono"><span title="Manage labor relations">7.4.1</span>, <span title="Develop and manage reward, recognition, and motivation programs">7.5.1</span>, <span title="Manage employee assistance and retention" class="c-un">7.5.3</span>, <span title="Manage promotion and demotion process" class="c-un">7.6.1</span></td></tr>
-    <tr><td class="k mono">WP-7-12</td><td class="nm">Development Plan</td><td>An employee&#x27;s agreed development goals and the actions to reach them.</td><td>Cornerstone OnDemand</td><td class="mono"><span title="Manage employee career development">7.3.3<sup>c</sup></span>, <span title="Develop and train employees">7.3.4</span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-13</td><td class="nm">Training Record</td><td>The learning an employee has completed and the certifications held.</td><td>Cornerstone OnDemand</td><td class="mono"><span title="Develop and train employees">7.3.4<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-14</td><td class="nm">ER Case Record</td><td>An employee-relations matter: the issue raised, the investigation and the outcome.</td><td>UKG HR Service Delivery</td><td class="mono"><span title="Manage labor relations">7.4.1<sup>c</sup></span>, <span title="Manage separation">7.6.2</span></td><td class="mono"><span title="Manage collective bargaining process" class="c-un">7.4.2</span>, <span title="Manage employee grievances" class="c-un">7.4.4</span></td></tr>
-    <tr><td class="k mono">WP-7-15</td><td class="nm">Collective Bargaining Agreement</td><td>The negotiated labor contract with a union, and its amendments.</td><td>CobbleStone CLM</td><td class="mono"><span title="Manage collective bargaining process" class="c-un">7.4.2<sup>c</sup></span></td><td class="mono"><span title="Manage labor management partnerships" class="c-un">7.4.3</span>, <span title="Manage employee grievances" class="c-un">7.4.4</span></td></tr>
-    <tr><td class="k mono">WP-7-16</td><td class="nm">Labor Partnership Record</td><td>The agreements and commitments from joint labor-management forums.</td><td>CobbleStone CLM</td><td class="mono"><span title="Manage labor management partnerships" class="c-un">7.4.3<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-17</td><td class="nm">Grievance Case</td><td>A formal grievance, the steps taken under the labor agreement, and its resolution.</td><td>NAVEX EthicsPoint</td><td class="mono"><span title="Manage employee grievances" class="c-un">7.4.4<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-18</td><td class="nm">Regulatory Alert</td><td>Notice of a new or changed employment law or regulation that may require action.</td><td>XpertHR</td><td class="mono"><span title="Monitor legal and regulatory environment" class="c-un">7.4.5<sup>c</sup></span></td><td class="mono"><span title="Monitor and update HR strategies, plans, and policies" class="c-un">7.1.3</span></td></tr>
-    <tr><td class="k mono">WP-7-19</td><td class="nm">Compensation Record</td><td>An employee&#x27;s pay: base pay, band, incentives and adjustments.</td><td>beqom</td><td class="mono"><span title="Develop and manage reward, recognition, and motivation programs">7.5.1<sup>c</sup></span>, <span title="Manage promotion and demotion process" class="c-un">7.6.1</span></td><td class="mono"><span title="Administer Payroll">7.5.4</span>, <span title="Manage separation">7.6.2</span>, <span title="Relocate employees and manage assignments" class="c-un">7.6.3</span></td></tr>
-    <tr><td class="k mono">WP-7-20</td><td class="nm">Benefits Enrollment</td><td>An employee&#x27;s elected benefit plans, coverage levels and covered dependents.</td><td>Businessolver</td><td class="mono"><span title="Manage and administer benefits">7.5.2<sup>c</sup></span>, <span title="Manage separation">7.6.2</span></td><td class="mono"><span title="Administer Payroll">7.5.4</span>, <span title="Manage separation">7.6.2</span></td></tr>
-    <tr><td class="k mono">WP-7-21</td><td class="nm">EAP Referral</td><td>A confidential referral of an employee to employee-assistance services.</td><td>Lyra Health</td><td class="mono"><span title="Manage employee assistance and retention" class="c-un">7.5.3<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-22</td><td class="nm">Retention Risk Score <span class="tag">model output</span></td><td>A modeled estimate of how likely an employee is to leave.</td><td>Visier</td><td class="mono"><span title="Manage employee assistance and retention" class="c-un">7.5.3<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-23</td><td class="nm">Payroll Record</td><td>Pay calculated and paid for each period, with earnings, deductions and taxes.</td><td>ADP Workforce Now</td><td class="mono"><span title="Develop and manage reward, recognition, and motivation programs">7.5.1</span>, <span title="Administer Payroll">7.5.4<sup>c</sup></span></td><td class="mono"><span title="Manage separation">7.6.2</span></td></tr>
-    <tr><td class="k mono">WP-7-24</td><td class="nm">Employee Suggestion</td><td>An idea or piece of feedback submitted by an employee, and what was done with it.</td><td>Qualtrics EmployeeXM</td><td class="mono"><span title="Manage/collect employee suggestions and perform employee research" class="c-un">7.5.5<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-25</td><td class="nm">Position Change Record</td><td>A promotion, demotion or transfer: the old and new title, band and effective date.</td><td>Workday HCM</td><td class="mono"><span title="Manage promotion and demotion process" class="c-un">7.6.1<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-26</td><td class="nm">Separation Record</td><td>An employee&#x27;s exit: reason, date, final pay and offboarding steps.</td><td>Workday HCM</td><td class="mono"><span title="Manage separation">7.6.2<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-27</td><td class="nm">Assignment Letter</td><td>The terms of an international or temporary assignment.</td><td>Equus Software</td><td class="mono"><span title="Relocate employees and manage assignments" class="c-un">7.6.3<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-28</td><td class="nm">Relocation Case</td><td>An employee relocation: the move, its benefits and its status.</td><td>Equus Software</td><td class="mono"><span title="Relocate employees and manage assignments" class="c-un">7.6.3<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-29</td><td class="nm">HR Inquiry Case</td><td>An employee question or request, how it was routed, and the answer given.</td><td>UKG HR Service Delivery</td><td class="mono"><span title="Manage employee inquiry process" class="c-un">7.7.2<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-30</td><td class="nm">Employee Master Record</td><td>The core record of each employee: identity, job, organization and employment status.</td><td>Workday HCM</td><td class="mono"><span title="Manage promotion and demotion process" class="c-un">7.6.1</span>, <span title="Manage separation">7.6.2</span>, <span title="Relocate employees and manage assignments" class="c-un">7.6.3</span>, <span title="Manage and maintain employee data">7.7.3<sup>c</sup></span></td><td class="mono"><span title="Manage employee onboarding">7.3.1</span>, <span title="Manage employee assistance and retention" class="c-un">7.5.3</span>, <span title="Manage/collect employee suggestions and perform employee research" class="c-un">7.5.5</span>, <span title="Relocate employees and manage assignments" class="c-un">7.6.3</span>, <span title="Manage reporting processes" class="c-un">7.7.1</span>, <span title="Manage employee inquiry process" class="c-un">7.7.2</span>, <span title="Manage human resource information systems" class="c-un">7.7.4</span>, <span title="Develop and manage employee measures" class="c-un">7.7.5</span>, <span title="Develop and manage time and attendance systems">7.7.6</span>, <span title="Develop workforce analytics">7.7.7</span>, <span title="Implement workforce analytics">7.7.8</span>, <span title="Develop employee communication plan" class="c-un">7.8.1</span>, <span title="Conduct employee engagement surveys">7.8.2</span>, <span title="Deliver employee communications">7.8.3</span></td></tr>
-    <tr><td class="k mono">WP-7-31</td><td class="nm">System Configuration Record</td><td>A change to how the HR system is set up: business processes, rules and security.</td><td>Workday HCM</td><td class="mono"><span title="Manage human resource information systems" class="c-un">7.7.4<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-32</td><td class="nm">HR Metric Definition</td><td>The agreed definition and formula for an HR measure.</td><td>Visier</td><td class="mono"><span title="Develop and manage employee measures" class="c-un">7.7.5<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-33</td><td class="nm">Time and Attendance Record</td><td>An employee&#x27;s time worked, absences and schedule.</td><td>UKG Pro Workforce Management</td><td class="mono"><span title="Develop and manage time and attendance systems">7.7.6<sup>c</sup></span></td><td class="mono"><span title="Manage separation">7.6.2</span>, <span title="Manage and maintain employee data">7.7.3</span></td></tr>
-    <tr><td class="k mono">WP-7-34</td><td class="nm">HR Analytics Report</td><td>Workforce analysis and recurring HR reporting built from HR data.</td><td>Visier</td><td class="mono"><span title="Manage reporting processes" class="c-un">7.7.1</span>, <span title="Implement workforce analytics">7.7.8<sup>c</sup></span></td><td class="mono"><span title="Manage reporting processes" class="c-un">7.7.1</span>, <span title="Develop and manage employee measures" class="c-un">7.7.5</span></td></tr>
-    <tr><td class="k mono">WP-7-35</td><td class="nm">Communication Plan</td><td>The planned messages, audiences and timing for an employee communication.</td><td>Staffbase</td><td class="mono"><span title="Develop employee communication plan" class="c-un">7.8.1<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-36</td><td class="nm">Survey Response</td><td>An employee&#x27;s answers to an engagement or pulse survey.</td><td>Qualtrics EmployeeXM</td><td class="mono"><span title="Conduct employee engagement surveys">7.8.2<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-    <tr><td class="k mono">WP-7-37</td><td class="nm">Communication Record</td><td>A communication as sent: content, audience and delivery date.</td><td>Staffbase</td><td class="mono"><span title="Deliver employee communications">7.8.3<sup>c</sup></span></td><td class="mono"><span class="none">none</span></td></tr>
-  </table></div>
+  <div id="cat-root"><p class="source-note">Loading the catalog from Sandbox 7.0&hellip;</p></div>
 
   <h2>3. Review Decisions &mdash; Tim, Sept 25, 2026</h2>
   <div class="open-item"><div class="oi-name">Q1 &mdash; One system of record: iCIMS</div><p>Job Posting and Offer Letter now name iCIMS alone. LinkedIn Recruiter is where postings are distributed and DocuSign is where offers are signed; neither holds the record.</p></div>
@@ -220,23 +173,110 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <div class="open-item"><div class="oi-name">Q4 &mdash; Renamed</div><p>&ldquo;T&amp;A Record&rdquo; is now &ldquo;Time and Attendance Record&rdquo; everywhere in the sandbox.</p></div>
   <div class="open-item"><div class="oi-name">Q5 &mdash; Model outputs flagged</div><p>Added the Model output field. The Retention Risk Score is marked Yes: it is AI-touched by nature, whatever its producing activity's working relationship.</p></div>
 
-  <h2>4. What the Draft Surfaced</h2>
-  <p><strong>The read side is thin.</strong> 24 of the 37 work products have no process recorded as reading them, including Onboarding Record, Survey Response and Retention Risk Score. Some are genuinely end points; most are probably reads the CRUD entries never captured. Verification load counts only reads, so today's figures in the Work Product spec undercount. Filling in reads belongs with activity-level CRUD (A2).</p>
-  <p><strong>Which 15 processes are unconfirmed is not recorded in the data.</strong> The sandbox says 22 of 37 processes have confirmed CRUD but carries no flag saying which. Fifteen entries are written in a slightly different format from the other 22, which matches the count, so the dashed codes above are an inference, not a record. Proposed: add a confirmed flag to each CRUD link when A2 moves CRUD to the activity.</p>
+  <h2>3a. Decisions from the Activity-Level Review &mdash; Tim, Sept 26, 2026</h2>
+  <div class="open-item"><div class="oi-name">Two new work products</div><p>Outputs found while reasoning each activity are added to the catalog when identified. WP-7-38 Staffing Plan is created in 7.2.1.1; WP-7-39 Performance Program is updated in 7.3.2.4, and its creator is not identified yet.</p></div>
+  <div class="open-item"><div class="oi-name">CRUD reasoned per activity, process CRUD derived</div><p>For the HRBP Manager&rsquo;s 11 processes, each activity&rsquo;s links are reasoned from the activity and the process CRUD is derived from them (CL-007). That dropped 7.6.2&rsquo;s update of the ER Case Record, which no activity supports, made offboarding the Separation Record&rsquo;s creator with retirement updating it, and added ten links the process CRUD never had. See <a href="activity_crud_hrbp_manager.html">Activity-Level CRUD &mdash; HRBP Manager</a>.</p></div>
+
+  <h2>4. What the Catalog Shows</h2>
+  <p><strong>The read side is still thin.</strong> The count of work products with no recorded reader is shown above, live. It falls as each role&rsquo;s activities are done, because reasoning from the activity finds reads the process CRUD never captured.</p>
+  <p><strong>Unconfirmed process CRUD is inferred, not recorded.</strong> Activity-level links carry the date Tim confirmed them. Stored process-level CRUD has no such flag: fifteen processes&rsquo; entries are written in a slightly different format from the other 22, matching the sandbox&rsquo;s own count of unconfirmed ones, and the dashed codes are that inference. The gap closes as each process moves to activity-level CRUD.</p>
 
   <h2>5. Next Step</h2>
-  <p>Once Tim and GiGi confirm the definitions, the catalog moves into Sandbox 7.0 as master data through the master-data lane, with a changelog entry and the changelog check extended to cover it (GR-050). Activity-level CRUD (A2) then links each create, read, update and delete to these IDs.</p>
+  <p>Tim and GiGi confirm the definitions, and each entry moves from Draft to Active. The add, change and retire functions for the catalog (GR-050) are still to be designed; until then, changes are hand-edited in the sandbox and caught by the changelog check.</p>
 
 </div>
 
 <footer>
   <p>
-    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;·&nbsp; Master Data Draft — For Review<br>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;·&nbsp; Master Data — Live View<br>
     © Timothy P. King 2026 · developed with the assistance of Claude (Anthropic)<br>
     <a href="index.html">Back to WIP hub</a>
   </p>
 </footer>
 
+<script>
+(function () {
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function literalAfter(src, marker, open, close) {
+    var i = src.indexOf(marker); if (i < 0) return null;
+    var s = src.indexOf(open, i), depth = 0;
+    for (var j = s; j < src.length; j++) {
+      var c = src[j];
+      if (c === '"') { j++; while (j < src.length && src[j] !== '"') { if (src[j] === '\\') j++; j++; } continue; }
+      if (c === open) depth++; else if (c === close) { depth--; if (depth === 0) return src.slice(s, j + 1); }
+    }
+    return null;
+  }
+  function ev(t) { return (new Function('return ' + t))(); }
+  function key(c) { return c.split('.').map(Number); }
+  function cmp(a, b) { var x = key(a), y = key(b); for (var i = 0; i < Math.max(x.length, y.length); i++) { var d = (x[i] || 0) - (y[i] || 0); if (d) return d; } return 0; }
+
+  function render(src) {
+    var WP = ev(literalAfter(src, 'const WORK_PRODUCTS =', '[', ']'));
+    var AC = ev(literalAfter(src, 'const ACTIVITY_CRUD =', '{', '}'));
+    var byName = {}; WP.forEach(function (w) { byName[w.name] = w; });
+    var names = {}, unconf = {};
+    var reN = /code:"(\d+(?:\.\d+)+)"[^\n]*?name:"([^"]*)"/g, m;
+    while ((m = reN.exec(src))) names[m[1]] = m[2];
+    var use = {}; WP.forEach(function (w) { use[w.id] = { prod: {}, creators: {}, reads: {}, dels: {} }; });
+    function add(id, op, code) {
+      var u = use[id]; if (!u) return;
+      if (op === 'create') { u.prod[code] = 1; u.creators[code] = 1; }
+      else if (op === 'update') u.prod[code] = 1;
+      else if (op === 'read') u.reads[code] = 1;
+      else if (op === 'delete') u.dels[code] = 1;
+    }
+    // Activity-level CRUD first.
+    Object.keys(AC).forEach(function (code) { ['create','read','update','delete'].forEach(function (op) { AC[code][op].forEach(function (id) { add(id, op, code); }); }); });
+    // Stored process-level CRUD for every process not yet derived.
+    var reP = /code:"(\d+\.\d+\.\d+)",(\s?)crud:(\{[^}]*\}|"derived")/g;
+    while ((m = reP.exec(src))) {
+      if (m[3] === '"derived"') continue;
+      if (m[2] === ' ') unconf[m[1]] = 1;
+      var cr = ev(m[3]);
+      Object.keys(cr).forEach(function (op) { cr[op].forEach(function (lab) {
+        var w = byName[lab.replace(/\s*\([^)]*\)\s*$/, '')]; if (w) add(w.id, op, m[1]);
+      }); });
+    }
+    function codes(obj, creators) {
+      var list = Object.keys(obj).sort(cmp);
+      if (!list.length) return '<span class="none">none</span>';
+      return list.map(function (c) {
+        return '<span title="' + esc(names[c] || '') + '"' + (unconf[c] ? ' class="c-un"' : '') + '>' + c + (creators && creators[c] ? '<sup>c</sup>' : '') + '</span>';
+      }).join(', ');
+    }
+    function procOf(c) { return c.split('.').slice(0, 3).join('.'); }
+    var nMulti = 0, nNoRead = 0, nModel = 0, nDraft = 0;
+    var rows = WP.map(function (w) {
+      var u = use[w.id];
+      var procs = {}; Object.keys(u.prod).forEach(function (c) { procs[procOf(c)] = 1; });
+      if (Object.keys(procs).length > 1) nMulti++;
+      if (!Object.keys(u.reads).length) nNoRead++;
+      if (w.modelOutput) nModel++;
+      if (w.status === 'Draft') nDraft++;
+      var tags = (w.modelOutput ? ' <span class="tag">model output</span>' : '') + (w.status !== 'Draft' ? ' <span class="tag">' + esc(w.status) + '</span>' : '');
+      var reads = codes(u.reads);
+      if (Object.keys(u.dels).length) reads += '<div class="del">Deleted in ' + codes(u.dels) + '</div>';
+      var prod = Object.keys(u.prod).length ? codes(u.prod, u.creators) : '<span class="none">not identified yet</span>';
+      return '<tr><td class="k mono">' + esc(w.id) + '</td><td class="nm">' + esc(w.name) + tags + '</td><td>' + esc(w.definition) + '</td><td>' + esc(w.system) + '</td><td class="mono">' + prod + '</td><td class="mono">' + reads + '</td></tr>';
+    }).join('');
+    var html = '<div class="stat-row">' +
+      '<div class="stat"><div class="n">' + WP.length + '</div><div class="l">work products in PCF 7.0</div></div>' +
+      '<div class="stat"><div class="n">' + nMulti + '</div><div class="l">produced in more than one process</div></div>' +
+      '<div class="stat"><div class="n">' + nNoRead + '</div><div class="l">with no recorded reader</div></div>' +
+      '<div class="stat"><div class="n">' + Object.keys(AC).length + '</div><div class="l">activities with their own CRUD so far</div></div>' +
+      '</div>' +
+      '<h2>2. The Catalog</h2>' +
+      '<p class="key-line">Four-part codes are activities with their own CRUD; three-part codes are processes whose activities are not done yet. <sup>c</sup> creates it (the others update it); <span class="c-un">dashed</span> = process CRUD not yet confirmed; hover a code for its name.</p>' +
+      '<div class="tscroll"><table class="cat"><tr><th style="width:74px">ID</th><th>Work product</th><th>Definition</th><th style="width:140px">System of record</th><th style="width:130px">Produced by</th><th style="width:160px">Read by</th></tr>' + rows + '</table></div>';
+    document.getElementById('cat-root').innerHTML = html;
+  }
+  fetch('../sandbox/pcf7.html', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+    .then(render)
+    .catch(function (e) { document.getElementById('cat-root').innerHTML = '<div class="load-err">Could not read the catalog from Sandbox 7.0 (' + esc(e.message) + ').</div>'; });
+})();
+</script>
 <script src="wip-vote-widget.js"></script>
 <script src="wip-download-widget.js"></script>
 </body>

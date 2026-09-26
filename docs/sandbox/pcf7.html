@@ -346,6 +346,7 @@ td.crud-c .crud-entity { color: #166534; }
 td.crud-r .crud-entity { color: #1B4F8A; }
 td.crud-u .crud-entity { color: #B45309; }
 td.crud-d .crud-entity { color: #991B1B; }
+td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #A8B2C0; }
 
 /* RACI cells */
 .raci-entry { margin-bottom: 6px; text-align: left; }
@@ -470,7 +471,7 @@ td.crud-d .crud-entity { color: #991B1B; }
     <div class="card lens-section" id="panel-data" style="display:none">
       <div class="card-header">
         <h3>Data View (CRUD Matrix) &mdash; PCF 7.0</h3>
-        <span>Entity &times; process CRUD, per L3 process &mdash; real CRUD data for PCF 7.0</span>
+        <span>Work-product CRUD per process, and per activity where the activities are done &mdash; names and systems from the Work-Product Catalog</span>
       </div>
       <div class="table-wrap">
         <table id="crud-main-table">
@@ -766,7 +767,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
       { code:"7.1.4", crud:{"create":["Competency Model (Workday Skills Cloud)"],"read":["Workforce Plan (Workday HCM)"],"update":["Competency Model (Workday Skills Cloud)"],"delete":[]}, name:"Develop competency management models", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Comp & Benefits Mgr · HRBP Manager",A:"Director of L&D",C:"VP People & Culture · CHRO",I:"Director of TA"}, l4:[] },
     ]},
     { code:"7.2", name:"Recruit, Source, and Select Employees", mv:[70, 60, 48, 36, 26], l3:[
-      { code:"7.2.1",crud:{"create":["Job Posting (iCIMS)","Requisition Record (iCIMS)"],"read":["Requisition Record (iCIMS)"],"update":["Requisition Record (iCIMS)"],"delete":[]}, name:"Manage employee requisitions", pattern:"Mixed", mv:[68, 58, 46, 33, 24], mixed:true, raci:{R:"HR Generalist · Recruiter",A:"HRBP Manager",C:"Director of TA",I:"Hiring Managers*"}, l4:[
+      { code:"7.2.1",crud:"derived", name:"Manage employee requisitions", pattern:"Mixed", mv:[68, 58, 46, 33, 24], mixed:true, raci:{R:"HR Generalist · Recruiter",A:"HRBP Manager",C:"Director of TA",I:"Hiring Managers*"}, l4:[
         { code:"7.2.1.1", name:"Align staffing plan to work force plan and business unit strategies/resource needs", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.2.1.2", name:"Open job requisitions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.2.1.3", name:"Approve job requisition", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
@@ -807,7 +808,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         { code:"7.3.1.2", name:"Implement employee onboarding program", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.3.1.3", name:"Monitor and update employee onboarding program", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"7.3.2",crud:{"create":["Performance Review (Lattice)"],"read":[],"update":["Performance Review (Lattice)"],"delete":[]}, name:"Manage employee performance", pattern:"Mixed", mv:[82, 73, 59, 46, 36], mixed:true, raci:{R:"HR Generalist (documentation) · Managers* (review conduct)",A:"HRBP Manager",C:"Director of HR Ops",I:"CHRO"}, l4:[
+      { code:"7.3.2",crud:"derived", name:"Manage employee performance", pattern:"Mixed", mv:[82, 73, 59, 46, 36], mixed:true, raci:{R:"HR Generalist (documentation) · Managers* (review conduct)",A:"HRBP Manager",C:"Director of HR Ops",I:"CHRO"}, l4:[
         { code:"7.3.2.1", name:"Define employee performance objectives", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.3.2.2", name:"Review employee performance", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.3.2.3", name:"Document employee performance", pattern:"Document", mv:[72, 58, 40, 28, 18] },
@@ -830,10 +831,10 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
       ]},
     ]},
     { code:"7.4", name:"Manage Employee Relations", mv:[90, 85, 74, 65, 56], l3:[
-      { code:"7.4.1",crud:{"create":["ER Case Record (UKG HR Service Delivery)"],"read":["Performance Review (Lattice)"],"update":[],"delete":[]}, name:"Manage labor relations", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal*",I:"Director of HR Ops"}, l4:[] },
-      { code:"7.4.2", crud:{"create":["Collective Bargaining Agreement (CobbleStone CLM)"],"read":["ER Case Record (UKG HR Service Delivery)"],"update":["Collective Bargaining Agreement (CobbleStone CLM)"],"delete":[]}, name:"Manage collective bargaining process", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal*",I:"Director of HR Ops"}, l4:[] },
-      { code:"7.4.3", crud:{"create":["Labor Partnership Record (CobbleStone CLM)"],"read":["Collective Bargaining Agreement (CobbleStone CLM)"],"update":["Labor Partnership Record (CobbleStone CLM)"],"delete":[]}, name:"Manage labor management partnerships", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"—",I:"Director of HR Ops"}, l4:[] },
-      { code:"7.4.4", crud:{"create":["Grievance Case (NAVEX EthicsPoint)"],"read":["ER Case Record (UKG HR Service Delivery)","Collective Bargaining Agreement (CobbleStone CLM)"],"update":["Grievance Case (NAVEX EthicsPoint)"],"delete":[]}, name:"Manage employee grievances", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"—",I:"Legal* · Director of HR Ops"}, l4:[] },
+      { code:"7.4.1",crud:"derived", name:"Manage labor relations", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal*",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.4.2", crud:"derived", name:"Manage collective bargaining process", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal*",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.4.3", crud:"derived", name:"Manage labor management partnerships", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"—",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.4.4", crud:"derived", name:"Manage employee grievances", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"—",I:"Legal* · Director of HR Ops"}, l4:[] },
       { code:"7.4.5", crud:{"create":["Regulatory Alert (XpertHR)"],"read":[],"update":["Regulatory Alert (XpertHR)"],"delete":[]}, name:"Monitor legal and regulatory environment", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"Director of HR Ops",C:"Legal*",I:"CHRO"}, l4:[] },
     ]},
     { code:"7.5", name:"Reward and Retain Employees", mv:[71, 61, 47, 34, 24], l3:[
@@ -862,14 +863,14 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
       { code:"7.5.5", crud:{"create":["Employee Suggestion (Qualtrics EmployeeXM)"],"read":["Employee Master Record (Workday HCM)"],"update":["Employee Suggestion (Qualtrics EmployeeXM)"],"delete":[]}, name:"Manage/collect employee suggestions and perform employee research", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HRIS Analyst (data/survey tooling)",A:"HR Generalist",C:"—",I:"HRBP Manager"}, l4:[] },
     ]},
     { code:"7.6", name:"Redeploy and Retire Employees", mv:[73, 64, 52, 41, 32], l3:[
-      { code:"7.6.1", crud:{"create":["Position Change Record (Workday HCM)"],"read":["Performance Review (Lattice)","Competency Model (Workday Skills Cloud)"],"update":["Position Change Record (Workday HCM)","Compensation Record (beqom)","Employee Master Record (Workday HCM)"],"delete":[]}, name:"Manage promotion and demotion process", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Compensation & Benefits Manager",I:"—"}, l4:[] },
-      { code:"7.6.2",crud:{"create":["Separation Record (Workday HCM)"],"read":["Compensation Record (beqom)","Benefits Enrollment (Businessolver)","Payroll Record (ADP Workforce Now)","Time and Attendance Record (UKG Pro Workforce Management)"],"update":["Benefits Enrollment (Businessolver)","ER Case Record (UKG HR Service Delivery)","Separation Record (Workday HCM)","Employee Master Record (Workday HCM)"],"delete":["System Access Profile (Okta)"]}, name:"Manage separation", pattern:"Mixed", mv:[66, 56, 42, 30, 20], mixed:true, raci:{R:"HR Generalist",A:"HRBP Manager",C:"Compensation & Benefits Manager",I:"Legal*"}, l4:[
+      { code:"7.6.1", crud:"derived", name:"Manage promotion and demotion process", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Compensation & Benefits Manager",I:"—"}, l4:[] },
+      { code:"7.6.2",crud:"derived", name:"Manage separation", pattern:"Mixed", mv:[66, 56, 42, 30, 20], mixed:true, raci:{R:"HR Generalist",A:"HRBP Manager",C:"Compensation & Benefits Manager",I:"Legal*"}, l4:[
         { code:"7.6.2.1", name:"Manage retirement", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.6.2.2", name:"Manage leave of absence", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.6.2.3", name:"Manage offboarding", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.6.2.4", name:"Develop and implement employee outplacement", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"7.6.3", crud:{"create":["Relocation Case (Equus Software)","Assignment Letter (Equus Software)"],"read":["Employee Master Record (Workday HCM)","Compensation Record (beqom)"],"update":["Relocation Case (Equus Software)","Employee Master Record (Workday HCM)"],"delete":[]}, name:"Relocate employees and manage assignments", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"HR Generalist (logistics)",A:"HRBP Manager (partial—see gap note)",C:"—",I:"—"}, l4:[
+      { code:"7.6.3", crud:"derived", name:"Relocate employees and manage assignments", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"HR Generalist (logistics)",A:"HRBP Manager (partial—see gap note)",C:"—",I:"—"}, l4:[
         { code:"7.6.3.1", name:"Manage expatriates", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
     ]},
@@ -894,9 +895,9 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
       ]},
     ]},
     { code:"7.8", name:"Manage Employee Communication", mv:[76, 65, 48, 36, 26], l3:[
-      { code:"7.8.1", crud:{"create":["Communication Plan (Staffbase)"],"read":["Employee Master Record (Workday HCM)"],"update":["Communication Plan (Staffbase)"],"delete":[]}, name:"Develop employee communication plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Director of HR Ops",I:"—"}, l4:[] },
+      { code:"7.8.1", crud:"derived", name:"Develop employee communication plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Director of HR Ops",I:"—"}, l4:[] },
       { code:"7.8.2",crud:{"create":["Survey Response (Qualtrics EmployeeXM)"],"read":["Employee Master Record (Workday HCM)"],"update":[],"delete":[]}, name:"Conduct employee engagement surveys", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HRIS Analyst (data/survey tooling)",A:"HR Generalist",C:"—",I:"HRBP Manager"}, l4:[] },
-      { code:"7.8.3",crud:{"create":["Communication Record (Staffbase)"],"read":["Employee Master Record (Workday HCM)"],"update":[],"delete":[]}, name:"Deliver employee communications", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HR Generalist (delivery execution)",A:"HRBP Manager",C:"—",I:"—"}, l4:[] },
+      { code:"7.8.3",crud:"derived", name:"Deliver employee communications", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HR Generalist (delivery execution)",A:"HRBP Manager",C:"—",I:"—"}, l4:[] },
     ]},
   ]};
 
@@ -1097,6 +1098,118 @@ const WR_DATA = {
   "7.8.3": { rel:"Agent-delegation", ceiling:"Automation", cons:"Low", consNote:"Delivery of already-approved messages; low risk since the content judgment happened upstream at 7.8.1.", consFactors:["reach"], ceilingFactors:["top"], ceilingNote:"Delivery of already-approved messages — explicitly named in the value-stream write-up as one of the framework's steepest AI-absorption opportunities." },
 };
 
+// ── Work-Product Catalog (master data) ─────────────────────────────────────
+// GR-050's first entity. One entry per work product: a permanent ID (never
+// reused once retired), name, system of record, one-line definition, whether
+// it is itself a model's output, and status (Draft / Active / Retired).
+// Moved into the sandbox Sept 26, 2026 (CL-007) from the WIP draft in
+// docs/wip/work_product_catalog.html, which now reads this list live.
+// Change it here first and log the change in ../wip/changelog-data.js.
+const WORK_PRODUCTS = [
+  { id:"WP-7-01", name:"Workforce Plan", system:"Workday HCM", definition:"The forecast of headcount, skills and labor cost the function plans against for a period.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-02", name:"Requisition Record", system:"iCIMS", definition:"An approved request to fill a position, tied to budget and the headcount plan.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-03", name:"Policy Update Record", system:"UKG HR Service Delivery", definition:"A new or revised HR policy, with what changed and when it takes effect.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-04", name:"Competency Model", system:"Workday Skills Cloud", definition:"The skills and behaviors expected for each role family and level.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-05", name:"Job Posting", system:"iCIMS", definition:"The advertisement for an open requisition, published internally or externally.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-06", name:"Offer Letter", system:"iCIMS", definition:"The written employment offer, its terms and its signature status.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-07", name:"Background Check Record", system:"HireRight", definition:"The results of pre-employment screening for a new hire.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-08", name:"Applicant Record", system:"iCIMS", definition:"An applicant's record through hiring: application, screening notes and interview feedback, retained after the decision for compliance.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-09", name:"Onboarding Record", system:"Workday HCM", definition:"A new hire's onboarding tasks, forms and completion status.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-10", name:"System Access Profile", system:"Okta", definition:"An employee's accounts and access rights across systems, removed at separation.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-11", name:"Performance Review", system:"Lattice", definition:"An assessment of an employee's performance for a review period, with ratings and manager comments.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-12", name:"Development Plan", system:"Cornerstone OnDemand", definition:"An employee's agreed development goals and the actions to reach them.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-13", name:"Training Record", system:"Cornerstone OnDemand", definition:"The learning an employee has completed and the certifications held.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-14", name:"ER Case Record", system:"UKG HR Service Delivery", definition:"An employee-relations matter: the issue raised, the investigation and the outcome.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-15", name:"Collective Bargaining Agreement", system:"CobbleStone CLM", definition:"The negotiated labor contract with a union, and its amendments.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-16", name:"Labor Partnership Record", system:"CobbleStone CLM", definition:"The agreements and commitments from joint labor-management forums.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-17", name:"Grievance Case", system:"NAVEX EthicsPoint", definition:"A formal grievance, the steps taken under the labor agreement, and its resolution.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-18", name:"Regulatory Alert", system:"XpertHR", definition:"Notice of a new or changed employment law or regulation that may require action.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-19", name:"Compensation Record", system:"beqom", definition:"An employee's pay: base pay, band, incentives and adjustments.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-20", name:"Benefits Enrollment", system:"Businessolver", definition:"An employee's elected benefit plans, coverage levels and covered dependents.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-21", name:"EAP Referral", system:"Lyra Health", definition:"A confidential referral of an employee to employee-assistance services.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-22", name:"Retention Risk Score", system:"Visier", definition:"A modeled estimate of how likely an employee is to leave.", modelOutput:true, status:"Draft" },
+  { id:"WP-7-23", name:"Payroll Record", system:"ADP Workforce Now", definition:"Pay calculated and paid for each period, with earnings, deductions and taxes.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-24", name:"Employee Suggestion", system:"Qualtrics EmployeeXM", definition:"An idea or piece of feedback submitted by an employee, and what was done with it.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-25", name:"Position Change Record", system:"Workday HCM", definition:"A promotion, demotion or transfer: the old and new title, band and effective date.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-26", name:"Separation Record", system:"Workday HCM", definition:"An employee's exit: reason, date, final pay and offboarding steps.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-27", name:"Assignment Letter", system:"Equus Software", definition:"The terms of an international or temporary assignment.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-28", name:"Relocation Case", system:"Equus Software", definition:"An employee relocation: the move, its benefits and its status.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-29", name:"HR Inquiry Case", system:"UKG HR Service Delivery", definition:"An employee question or request, how it was routed, and the answer given.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-30", name:"Employee Master Record", system:"Workday HCM", definition:"The core record of each employee: identity, job, organization and employment status.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-31", name:"System Configuration Record", system:"Workday HCM", definition:"A change to how the HR system is set up: business processes, rules and security.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-32", name:"HR Metric Definition", system:"Visier", definition:"The agreed definition and formula for an HR measure.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-33", name:"Time and Attendance Record", system:"UKG Pro Workforce Management", definition:"An employee's time worked, absences and schedule.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-34", name:"HR Analytics Report", system:"Visier", definition:"Workforce analysis and recurring HR reporting built from HR data.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-35", name:"Communication Plan", system:"Staffbase", definition:"The planned messages, audiences and timing for an employee communication.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-36", name:"Survey Response", system:"Qualtrics EmployeeXM", definition:"An employee's answers to an engagement or pulse survey.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-37", name:"Communication Record", system:"Staffbase", definition:"A communication as sent: content, audience and delivery date.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-38", name:"Staffing Plan", system:"Workday HCM", definition:"A business unit's planned roles and hiring for a period, aligned to the workforce plan.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-39", name:"Performance Program", system:"Lattice", definition:"The design of performance management: review cycle, forms, rating scale and guidance.", modelOutput:false, status:"Draft" },
+];
+
+// ── Activity-level CRUD (master data) ──────────────────────────────────────
+// Which activity creates, reads, updates and deletes each work product,
+// reasoned from the activity itself (Tim, Sept 26, 2026), never inherited
+// from its process. Keys are L4 codes, or a leaf L3's own code. Values are
+// WORK_PRODUCTS ids. An update implies a read, so an updating activity is
+// not also listed as reading. "confirmed" is the date Tim confirmed the
+// activity's links. First role done: the HRBP Manager's 11 Accountable
+// processes (CL-007; draft and review in docs/wip/activity_crud_hrbp_manager.html).
+//
+// A process whose activities are all listed here stores no CRUD of its own
+// (crud:"derived" in PCF7): applyActivityCrud() derives it as the rollup of
+// its activities, so the two cannot disagree. Every other process keeps its
+// stored process-level CRUD until its activities are done, process by process.
+const ACTIVITY_CRUD = {
+  "7.2.1.1": { create:["WP-7-38"], read:["WP-7-01"], update:[], delete:[], confirmed:"2026-09-26" },
+  "7.2.1.2": { create:["WP-7-02"], read:[], update:[], delete:[], confirmed:"2026-09-26" },
+  "7.2.1.3": { create:[], read:["WP-7-01"], update:["WP-7-02"], delete:[], confirmed:"2026-09-26" },
+  "7.2.1.4": { create:["WP-7-05"], read:["WP-7-02"], update:[], delete:[], confirmed:"2026-09-26" },
+  "7.2.1.5": { create:[], read:[], update:["WP-7-02"], delete:[], confirmed:"2026-09-26" },
+  "7.2.1.6": { create:[], read:["WP-7-02"], update:[], delete:[], confirmed:"2026-09-26" },
+  "7.2.1.7": { create:[], read:[], update:["WP-7-02"], delete:[], confirmed:"2026-09-26" },
+  "7.3.2.1": { create:["WP-7-11"], read:["WP-7-04"], update:[], delete:[], confirmed:"2026-09-26" },
+  "7.3.2.2": { create:[], read:[], update:["WP-7-11"], delete:[], confirmed:"2026-09-26" },
+  "7.3.2.3": { create:[], read:[], update:["WP-7-11"], delete:[], confirmed:"2026-09-26" },
+  "7.3.2.4": { create:[], read:["WP-7-11"], update:["WP-7-39"], delete:[], confirmed:"2026-09-26" },
+  "7.4.1": { create:["WP-7-14"], read:["WP-7-11", "WP-7-15"], update:["WP-7-14"], delete:[], confirmed:"2026-09-26" },
+  "7.4.2": { create:["WP-7-15"], read:["WP-7-14", "WP-7-19", "WP-7-17"], update:["WP-7-15"], delete:[], confirmed:"2026-09-26" },
+  "7.4.3": { create:["WP-7-16"], read:["WP-7-15"], update:["WP-7-16"], delete:[], confirmed:"2026-09-26" },
+  "7.4.4": { create:["WP-7-17"], read:["WP-7-15", "WP-7-14"], update:["WP-7-17"], delete:[], confirmed:"2026-09-26" },
+  "7.6.1": { create:["WP-7-25"], read:["WP-7-11", "WP-7-04"], update:["WP-7-25", "WP-7-19", "WP-7-30"], delete:[], confirmed:"2026-09-26" },
+  "7.6.2.1": { create:[], read:["WP-7-19", "WP-7-23"], update:["WP-7-26", "WP-7-20", "WP-7-30"], delete:[], confirmed:"2026-09-26" },
+  "7.6.2.2": { create:[], read:["WP-7-33"], update:["WP-7-20", "WP-7-30"], delete:[], confirmed:"2026-09-26" },
+  "7.6.2.3": { create:["WP-7-26"], read:["WP-7-23", "WP-7-33", "WP-7-19", "WP-7-20"], update:["WP-7-26", "WP-7-30"], delete:["WP-7-10"], confirmed:"2026-09-26" },
+  "7.6.2.4": { create:[], read:["WP-7-26", "WP-7-30"], update:[], delete:[], confirmed:"2026-09-26" },
+  "7.6.3.1": { create:["WP-7-28", "WP-7-27"], read:[], update:["WP-7-28", "WP-7-30", "WP-7-19"], delete:[], confirmed:"2026-09-26" },
+  "7.8.1": { create:["WP-7-35"], read:["WP-7-30", "WP-7-03", "WP-7-36"], update:["WP-7-35"], delete:[], confirmed:"2026-09-26" },
+  "7.8.3": { create:["WP-7-37"], read:["WP-7-35", "WP-7-30"], update:[], delete:[], confirmed:"2026-09-26" },
+};
+const WP_BY_ID = {};
+WORK_PRODUCTS.forEach(w => { WP_BY_ID[w.id] = w; });
+function wpLabel(id) { const w = WP_BY_ID[id]; return w ? w.name + ' (' + w.system + ')' : id; }
+function activityCrudLabels(code) {
+  const a = ACTIVITY_CRUD[code];
+  if (!a) return null;
+  return { create: a.create.map(wpLabel), read: a.read.map(wpLabel), update: a.update.map(wpLabel), delete: a.delete.map(wpLabel) };
+}
+function applyActivityCrud(cat) {
+  cat.groups.forEach(g => g.l3.forEach(l3 => {
+    if (l3.crud !== 'derived') return;
+    const codes = (l3.l4 && l3.l4.length) ? l3.l4.map(x => x.code) : [l3.code];
+    const out = { create: [], read: [], update: [], delete: [] };
+    let complete = true;
+    codes.forEach(c => {
+      const a = activityCrudLabels(c);
+      if (!a) { complete = false; return; }
+      Object.keys(out).forEach(op => a[op].forEach(x => { if (out[op].indexOf(x) === -1) out[op].push(x); }));
+    });
+    if (!complete) console.warn('applyActivityCrud: ' + l3.code + ' is marked derived but not every activity has CRUD');
+    l3.crud = out;
+    l3.crudDerived = true;
+  }));
+}
+
 
 /* ── Added for RACI / Data View / People View
    (Sept 14, 2026) — ported from the live dashboard's own render functions,
@@ -1206,9 +1319,15 @@ function renderCrudTable(cat) {
         '<td ' + l3ToggleAttrs + '><span class="row-flex"><span class="row-prefix">' + l3Icon + '<span class="pcf-ref">' + l3.code + '</span></span><span class="row-text">' + l3.name + '</span></span></td>' +
         formatCrudCell(cr.create, 'c') + formatCrudCell(cr.read, 'r') + formatCrudCell(cr.update, 'u') + formatCrudCell(cr.delete, 'd') + '</tr>';
       (l3.l4 || []).forEach(l4 => {
+        // An activity with its own CRUD shows it; otherwise the process's
+        // CRUD is repeated in grey, since it is not yet known which activity
+        // does what.
+        const own = activityCrudLabels(l4.code);
+        const acr = own || cr;
+        const inh = own ? '' : ' crud-inherited';
         html += '<tr class="row-l4" data-crud-parent="' + g.code + '" data-crud-parent-l3="' + l3.code + '" style="display:none">' +
           '<td class="indent-l4"><span class="row-flex"><span class="row-prefix"><span class="pcf-ref">' + l4.code + '</span></span><span class="row-text">' + l4.name + '</span></span></td>' +
-          formatCrudCell(cr.create, 'c') + formatCrudCell(cr.read, 'r') + formatCrudCell(cr.update, 'u') + formatCrudCell(cr.delete, 'd') + '</tr>';
+          formatCrudCell(acr.create, 'c' + inh) + formatCrudCell(acr.read, 'r' + inh) + formatCrudCell(acr.update, 'u' + inh) + formatCrudCell(acr.delete, 'd' + inh) + '</tr>';
       });
     });
   });
@@ -2235,7 +2354,7 @@ function setView(v) {
   const notes = {
     wr: 'Current State and Progression Ceiling — the real model from Working_Relationship_Progression_Methodology.docx, plotted on the six-step ramp with the Per-Transition Evidence Ladder shown as gates in between. Blank rows mean that reasoning hasn’t been done yet, not that the answer is zero.',
     raci: 'Real reasoned-match RACI for PCF 7.0. R falls back to the Accountable role (marked "from Accountable") wherever no separate Responsible was identified.',
-    data: 'Entity × process CRUD — 22 of 37 L3s have real confirmed CRUD data.',
+    data: 'Work-product CRUD. The HRBP Manager’s 11 processes have CRUD per activity, confirmed Sept 26, 2026, and their process rows are derived from it. Other processes show process-level CRUD, repeated in grey on each activity until their activities are done.',
     people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced. Each role’s WR rollup (Current State) is a modeled index — an equal-weighted mean across its Accountable L3s, computed live and shown only once every one of them is fully classified.',
     gates: 'Per Working_Relationship_Progression_Methodology.docx §5 — three independent axes (Technical/Process, Role-level, Organizational-level) must all clear before an activity advances, gated here at L3 via its RACI Accountable role. Only the WR Rollup column carries a value (a modeled index, computed live from the classifications); no instrument exists yet for any of the three gate axes, so those cells are honest placeholders, not a status.',
   };
@@ -2268,6 +2387,7 @@ function buildLegend() {
 
 renderTopPills();
 buildLegend();
+applyActivityCrud(cat);
 renderRaciTable(cat);
 renderCrudTable(cat);
 renderRoleImpactTable(cat);

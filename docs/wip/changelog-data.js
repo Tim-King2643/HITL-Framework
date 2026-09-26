@@ -127,5 +127,25 @@ const CHANGE_LOG = [
     "source": "Tim, Sept 26, 2026, reviewing the HRBP Manager activity-level CRUD draft (docs/wip/activity_crud_hrbp_manager.html).",
     "reason": "None of 7.1.2's sixteen activities opens a requisition; they plan the workforce, programs and policies. 7.2.1.2 is where the requisition record is opened in iCIMS. 7.1.2 keeps its read of the Workforce Plan and now creates nothing.",
     "verified": "Recount: Requisition Record has one creating process (7.2.1); still 37 work products with none created in more than one process. Sandbox views render with no errors; every Current State and Progression Ceiling unchanged."
+  },
+  {
+    "id": "CL-007",
+    "date": "2026-09-26",
+    "requestedBy": "Tim",
+    "kind": "crud",
+    "target": {
+      "domain": "7.0",
+      "role": "HRBP Manager"
+    },
+    "summary": "Activity-level CRUD confirmed and stored for the HRBP Manager's 11 Accountable processes; those processes' CRUD is now derived from their activities. The Work-Product Catalog moved into the sandbox as master data, with two new work products.",
+    "from": "Process-level CRUD stored for all 37 processes; catalog held only as a WIP draft",
+    "to": "ACTIVITY_CRUD for 23 activities (7.2.1, 7.3.2, 7.4.1-7.4.4, 7.6.1-7.6.3, 7.8.1, 7.8.3), process CRUD derived for those 11; WORK_PRODUCTS (39 entries, WP-7-38 Staffing Plan and WP-7-39 Performance Program new)",
+    "files": [
+      "docs/sandbox/pcf7.html",
+      "scripts/check-changelog-audit.mjs"
+    ],
+    "source": "Tim's answers, Sept 26, 2026, to the five questions in docs/wip/activity_crud_hrbp_manager.html.",
+    "reason": "Tim set the method: each activity's CRUD is reasoned from the activity, not inherited from its process, and a finished process's CRUD is derived from its activities, process by process. Decisions: 7.6.2's update of the ER Case Record dropped (no activity supports it); all 10 new links accepted; offboarding creates the Separation Record and retirement updates it; an update implies a read; outputs the catalog lacks are added when identified.",
+    "verified": "Derived CRUD recomputed for all 11 processes; every activity's links match the reviewed draft. Sandbox views render with no errors; every Current State and Progression Ceiling unchanged. The changelog check now also tracks WORK_PRODUCTS, ACTIVITY_CRUD and process CRUD lines."
   }
 ];
