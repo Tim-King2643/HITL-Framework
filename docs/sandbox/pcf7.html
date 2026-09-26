@@ -63,7 +63,12 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .org-banner:empty { display: none; }
 .org-banner.org-banner-test { background: #FEF3C7; border-color: #F0C67A; color: #5A4315; }
 .org-banner a { color: inherit; font-weight: 700; }
-.assess-ctl { display: inline-flex; align-items: center; gap: 6px; margin: 0 12px 0 auto; white-space: nowrap; }
+.assess-ctl { display: flex; align-items: flex-start; gap: 0; margin-left: auto; flex: 0 0 auto; white-space: nowrap; }
+.assess-ctl + .gates-card-cons { margin-left: 0; }
+/* Fixed-width, left-aligned columns so status and button line up card to
+   card, right before the Consequence of Error column (Tim, Sept 26). */
+.assess-ctl .as-status { width: 210px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.assess-ctl .as-btn { width: 96px; }
 .assess-ctl .as-chip { font-size: 10px; font-weight: 600; border-radius: 3px; padding: 1px 6px; color: #fff; }
 .assess-ctl .as-none { background: #EDEFF3; color: #6B7A90; }
 .assess-ctl .as-beyond { font-family: 'DM Mono', monospace; font-size: 9.5px; font-weight: 700; color: #991B1B; background: #FEE2E2; border: 1px solid #F5B5B5; border-radius: 3px; padding: 0 5px; }
@@ -2508,7 +2513,8 @@ function assessControlHtml(code) {
   const btn = OrgContext.reviewer()
     ? '<button type="button" onclick="event.stopPropagation();openAssess(\'' + code + '\')">' + (cur ? 'Reassess' : 'Assess') + '</button>'
     : '<button type="button" class="as-view" onclick="event.stopPropagation();openAssess(\'' + code + '\')">View</button>';
-  return '<span class="assess-ctl">' + chip + (beyond ? '<span class="as-beyond" title="Past its design intent">BEYOND</span>' : '') + btn + '</span>';
+  return '<span class="assess-ctl"><span class="as-status">' + chip + (beyond ? '<span class="as-beyond" title="Past its design intent">BEYOND</span>' : '') + '</span>' +
+    '<span class="as-btn">' + btn + '</span></span>';
 }
 function activityContext(code) {
   let found = null;
