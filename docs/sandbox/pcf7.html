@@ -739,7 +739,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         { code:"7.1.1.9", name:"Manage employer branding", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"7.1.1.10", name:"Design the employee experience", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"7.1.2",crud:{"create":["Requisition Record (iCIMS)"],"read":["Workforce Plan (Workday HCM)"],"update":[],"delete":[]}, name:"Develop and implement workforce planning, policies, and strategies", pattern:"Mixed", mv:[78, 69, 56, 43, 33], mixed:true, raci:{R:"Comp & Benefits Mgr · HRBP Mgr · Dir. of L&D · HR Generalist",A:"Director of HR Ops",C:"VP People & Culture",I:"CHRO · Director of TA"}, l4:[
+      { code:"7.1.2",crud:{"create":[],"read":["Workforce Plan (Workday HCM)"],"update":[],"delete":[]}, name:"Develop and implement workforce planning, policies, and strategies", pattern:"Mixed", mv:[78, 69, 56, 43, 33], mixed:true, raci:{R:"Comp & Benefits Mgr · HRBP Mgr · Dir. of L&D · HR Generalist",A:"Director of HR Ops",C:"VP People & Culture",I:"CHRO · Director of TA"}, l4:[
         { code:"7.1.2.1", name:"Perform strategic workforce planning", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.1.2.2", name:"Develop total compensation and rewards strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.1.2.3", name:"Develop succession plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -766,7 +766,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
       { code:"7.1.4", crud:{"create":["Competency Model (Workday Skills Cloud)"],"read":["Workforce Plan (Workday HCM)"],"update":["Competency Model (Workday Skills Cloud)"],"delete":[]}, name:"Develop competency management models", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Comp & Benefits Mgr · HRBP Manager",A:"Director of L&D",C:"VP People & Culture · CHRO",I:"Director of TA"}, l4:[] },
     ]},
     { code:"7.2", name:"Recruit, Source, and Select Employees", mv:[70, 60, 48, 36, 26], l3:[
-      { code:"7.2.1",crud:{"create":["Job Posting (iCIMS)"],"read":["Requisition Record (iCIMS)"],"update":["Requisition Record (iCIMS)"],"delete":[]}, name:"Manage employee requisitions", pattern:"Mixed", mv:[68, 58, 46, 33, 24], mixed:true, raci:{R:"HR Generalist · Recruiter",A:"HRBP Manager",C:"Director of TA",I:"Hiring Managers*"}, l4:[
+      { code:"7.2.1",crud:{"create":["Job Posting (iCIMS)","Requisition Record (iCIMS)"],"read":["Requisition Record (iCIMS)"],"update":["Requisition Record (iCIMS)"],"delete":[]}, name:"Manage employee requisitions", pattern:"Mixed", mv:[68, 58, 46, 33, 24], mixed:true, raci:{R:"HR Generalist · Recruiter",A:"HRBP Manager",C:"Director of TA",I:"Hiring Managers*"}, l4:[
         { code:"7.2.1.1", name:"Align staffing plan to work force plan and business unit strategies/resource needs", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.2.1.2", name:"Open job requisitions", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.2.1.3", name:"Approve job requisition", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
@@ -1428,7 +1428,7 @@ function consRollupValueOnly(l3s) {
    a reportsTo correction is reasoned and edited HERE first, logged as a
    CHANGE_LOG entry in docs/wip/changelog-data.js, then manually published
    to docs/hitl_dashboard_final.html's ROLE_TAXONOMY_BY_DOMAIN — not the
-   other direction. See CL-001: HRBP Manager corrected to Director
+   other direction. See CL-001/CL-003: HRBP Manager corrected to Director
    of HR Ops (Sept 23, 2026). ─────────────── */
 const ROLE_TAXONOMY = [
   { name: "CHRO", tier: "Executive", reportsTo: null },

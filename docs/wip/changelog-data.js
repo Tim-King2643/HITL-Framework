@@ -108,5 +108,24 @@ const CHANGE_LOG = [
     "source": "Tim's answers, Sept 25, 2026, to the five review questions in docs/wip/work_product_catalog.html (item A1 of the Work Product spec).",
     "reason": "Applicant Record's creator follows activity 7.2.5.2 “Create applicant record.” Payroll Record's creator is 7.5.4 Administer Payroll; 7.5.1 feeds reward payouts through 7.5.1.5. HR Analytics Report is produced by 7.7.8.2 and 7.7.8.3; none of 7.7.7's activities produces a report. LinkedIn Recruiter and DocuSign are channels, not systems of record.",
     "verified": "Recount after the change: 113 CRUD entries, 37 work products, none with more than one creating process. Sandbox views render with no errors. Every Current State and Progression Ceiling unchanged."
+  },
+  {
+    "id": "CL-006",
+    "date": "2026-09-26",
+    "requestedBy": "Tim",
+    "kind": "crud",
+    "target": {
+      "domain": "7.0",
+      "activity": "7.2.1.2"
+    },
+    "summary": "Requisition Record's creator moved from 7.1.2 to 7.2.1: the requisition is opened in 7.2.1.2 Open job requisitions.",
+    "from": "Created in 7.1.2 Develop and implement workforce planning, policies, and strategies",
+    "to": "Created in 7.2.1 Manage employee requisitions (activity 7.2.1.2)",
+    "files": [
+      "docs/sandbox/pcf7.html"
+    ],
+    "source": "Tim, Sept 26, 2026, reviewing the HRBP Manager activity-level CRUD draft (docs/wip/activity_crud_hrbp_manager.html).",
+    "reason": "None of 7.1.2's sixteen activities opens a requisition; they plan the workforce, programs and policies. 7.2.1.2 is where the requisition record is opened in iCIMS. 7.1.2 keeps its read of the Workforce Plan and now creates nothing.",
+    "verified": "Recount: Requisition Record has one creating process (7.2.1); still 37 work products with none created in more than one process. Sandbox views render with no errors; every Current State and Progression Ceiling unchanged."
   }
 ];
