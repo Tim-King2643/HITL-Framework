@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Reference Model and Organization Assessment Layer — Design Spec — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 800px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.approval-box { background: var(--amber-bg); border: 1px solid #F0C67A; border-left: 5px solid var(--amber); border-radius: 8px; padding: 18px 22px; margin-bottom: 28px; }
+.approval-box .ab-head { font-size: 14px; font-weight: 700; color: var(--amber-text); margin-bottom: 6px; }
+.approval-box p { font-size: 13px; color: #5A4315; line-height: 1.65; margin: 0; }
+
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 28px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 19px; margin: 36px 0 10px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 15px; margin: 20px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 14px; }
+p.lede { font-size: 15.5px; color: var(--dark); }
+ul.plain { margin: 0 0 16px 20px; }
+ul.plain li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.feature-box { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 8px 0 20px; }
+.feature-box h3 { margin-top: 0; }
+
+/* Sizing/alignment matched to the "Working Relationship" gates track in
+   docs/sandbox/pcf7.html (.gate-node/.gate-circle/.gate-label/.gate-arrow)
+   so this legend reads as the same visual system, not a bigger lookalike. */
+.ramp-row { display: flex; flex-wrap: wrap; gap: 0; margin: 12px 0 6px; align-items: flex-start; }
+.ramp-step { display: flex; flex-direction: column; align-items: center; min-width: 84px; flex: 0 0 auto; text-align: center; }
+.ramp-step .rs-dot { width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; }
+.ramp-step .rs-name { font-size: 11px; font-weight: 500; color: #000; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
+.ramp-arrow { width: 22px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; color: var(--lgray); font-size: 16px; font-weight: 700; }
+
+.proof-grid { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 20px; }
+.proof-card { flex: 1; min-width: 200px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.proof-card .pc-role { font-weight: 700; color: var(--navy-d); font-size: 13.5px; margin-bottom: 4px; }
+.proof-card .pc-tier { font-size: 10.5px; color: var(--lgray); text-transform: uppercase; letter-spacing: .03em; margin-bottom: 8px; }
+.proof-card p { font-size: 12.5px; margin: 0; }
+
+.open-item { border-left: 3px solid var(--lgray); padding: 4px 0 4px 14px; margin-bottom: 12px; }
+.open-item .oi-name { font-weight: 700; color: var(--dark); font-size: 13.5px; }
+.open-item p { font-size: 13px; margin: 3px 0 0; }
+
+.source-note { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 4px; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 22px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 12px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.5; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.k { font-weight: 700; color: var(--navy-d); }
+td.num { text-align: right; white-space: nowrap; }
+ol.plan { margin: 0 0 16px 22px; }
+ol.plan li { font-size: 14px; color: var(--gray); line-height: 1.65; margin-bottom: 7px; }
+ol.plan li strong { color: var(--dark); }
+.tag { font-family: 'Consolas', monospace; font-size: 10.5px; color: var(--navy); background: var(--navy-l); border: 1px solid #C6D8EE; border-radius: 3px; padding: 0 5px; margin-left: 4px; white-space: nowrap; }
+
+.ramp6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 14px 0 4px; }
+.ramp6 > * { min-width: 0; overflow-wrap: anywhere; }
+.ramp6 .cell { color: #fff; font-size: 11px; font-weight: 600; text-align: center; padding: 8px 2px; border-radius: 4px; }
+.ramp6 .zone { font-size: 11px; text-align: center; padding: 6px 4px; border-radius: 4px; line-height: 1.35; }
+.z-base { background: #EDEFF3; color: #333; }
+.z-space { background: var(--navy-l); color: var(--navy-d); border: 1px solid #C6D8EE; }
+.z-beyond { background: repeating-linear-gradient(45deg,#F6F7F9,#F6F7F9 6px,#ECEEF2 6px,#ECEEF2 12px); color: #666; }
+.ramp-cap { font-size: 12px; color: var(--lgray); font-style: italic; margin: 6px 0 20px; }
+.quote { border-left: 3px solid var(--amber); padding: 6px 0 6px 14px; margin: 0 0 18px; font-family: 'Georgia', serif; font-style: italic; color: var(--dark); font-size: 15px; line-height: 1.6; }
+@media (max-width: 600px) { .ramp6 .cell, .ramp6 .zone { font-size: 9.5px; padding: 6px 1px; } .wrap table { display: block; overflow-x: auto; } }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">DESIGN SPEC &nbsp;·&nbsp; TIM KING &amp; CLAUDE &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>Reference Model and Organization Assessment Layer</h1>
+  <div class="subtitle">The Progression Ceiling becomes the framework&rsquo;s design intent; each organization&rsquo;s assessment supplies its own Current State</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-docladder-mount data-item="reference-model-spec"></div>
+<div data-wip-vote-mount data-item="reference-model-spec" data-stage="Concept"></div>
+<div data-wip-download-mount data-item="reference-model-spec"></div>
+
+<div class="wrap">
+
+  <div class="approval-box">
+    <div class="ab-head">Concept stage &mdash; design for GR-052, not yet built</div>
+    <p>Captures Tim&rsquo;s Sept 26, 2026 design decision and works out what follows from it. Nothing in the sandbox has changed yet: the reset of Current State and the organization layer wait on the open decisions in section 9.</p>
+  </div>
+
+  <div class="related-reqs">
+    <span class="rr-label">Related Requirements &mdash; Requirements Register</span>
+    <ul>
+      <li><code>GR-052</code> &mdash; reference model and organization assessment layer <em>(the requirement this spec designs)</em></li>
+      <li><code>GR-028</code>, <code>GR-041</code> &mdash; the Progression Ceiling and when it freezes below Automation <em>(now the design intent)</em></li>
+      <li><code>GR-014</code> &mdash; the unit of % H <em>(its meaning changes by view)</em></li>
+      <li><code>GR-022</code>, <code>GR-037</code> &mdash; the workforce validation check and the evidence each step needs <em>(inputs to an assessment)</em></li>
+      <li><code>GR-046</code>, <code>GR-050</code> &mdash; work product and master data <em>(reference-layer content)</em></li>
+    </ul>
+  </div>
+
+  <h2>1. Why This Layer Exists</h2>
+  <p class="lede">The framework describes no specific organization, so it cannot know how any activity is done today. Its Current State values were modeled judgments of typical practice, shown as if they were readings.</p>
+  <p>The same question had already come up for systems of record, which were changed from vendors to generic categories on Sept 26 (CL-008). Applied to Current State, it leads somewhere bigger. Tim&rsquo;s answer:</p>
+  <div class="quote">&ldquo;I would like to design the framework for exactly that purpose. To have an organization assessment layer. That would enable the framework to become a real working reference model that guides organizational assessments and AI design intent. I would initialize our current reference to the Human-only stage. The ceiling is our reference point for what needs to stay human by design.&rdquo;</div>
+  <p>What the framework can say generically is what is true of the work itself: its consequence of error, the legal, relational and accountability limits on it, and so how far AI may take it. That is the Progression Ceiling. Where a particular organization stands today is a fact about that organization, and belongs to its assessment.</p>
+
+  <h2>2. Core Model</h2>
+  <div class="ramp6">
+    <div class="cell" style="background:#0D2D4F">Human-only</div>
+    <div class="cell" style="background:#204474">Judgment</div>
+    <div class="cell" style="background:#2457A3">Oversight</div>
+    <div class="cell" style="background:#3D6FA8">Augmentation</div>
+    <div class="cell" style="background:#5A8DC4">Agent-delegation</div>
+    <div class="cell" style="background:#7DAEE0">Automation</div>
+    <div class="zone z-base">Baseline</div>
+    <div class="zone z-space" style="grid-column: span 2">AI design space &mdash; the organization&rsquo;s assessed state falls here</div>
+    <div class="zone z-beyond" style="grid-column: span 3">Beyond design intent &mdash; stays human by design</div>
+  </div>
+  <p class="ramp-cap">Illustration using 7.2.1.3 Approve job requisition, whose Progression Ceiling is Oversight.</p>
+  <table>
+    <tr><th style="width:30%">Term</th><th>Definition</th></tr>
+    <tr><td class="k">Reference model</td><td>The framework&rsquo;s generic content: the process structure, RACI, roles, work products and CRUD, Consequence of Error, and the Progression Ceiling for every activity. True of the work, not of any organization.</td></tr>
+    <tr><td class="k">Baseline</td><td>Human-only: every activity&rsquo;s starting position in the reference, before any AI.</td></tr>
+    <tr><td class="k">Design intent</td><td>The Progression Ceiling: the furthest along the ramp AI may take the activity. Whatever lies beyond it stays human by design.</td></tr>
+    <tr><td class="k">Organization assessment</td><td>One organization&rsquo;s record of where each activity actually stands, with evidence, who gave it, and when.</td></tr>
+    <tr><td class="k">Assessed Current State</td><td>An activity&rsquo;s position on the ramp in that organization. Exists only in an assessment.</td></tr>
+    <tr><td class="k">AI design space</td><td>The distance from the assessed Current State to the design intent: how much further the organization may take AI in that activity.</td></tr>
+    <tr><td class="k">Beyond design intent</td><td>An assessed Current State past the ceiling: the organization already relies on AI more than the reference model permits. A finding, not an error.</td></tr>
+    <tr><td class="k">Governance ceiling</td><td>An organization&rsquo;s own choice to hold an activity below the reference ceiling.</td></tr>
+  </table>
+
+  <h2>3. Data Model</h2>
+  <table>
+    <tr><th style="width:24%">Layer</th><th>Holds</th><th style="width:26%">Where it lives</th></tr>
+    <tr><td class="k">Reference</td><td>Everything in the reference model above. Current State is no longer stored per activity: the baseline is Human-only for all. The modeled typical-practice values are recorded in the changelog when they are reset.</td><td>Sandbox master data, in the repo, under the changelog check.</td></tr>
+    <tr><td class="k">Organization</td><td>An organization record (name, size, industry, who assessed it, when). Per activity, only where assessed: Current State, an optional governance ceiling, the evidence, who gave it, the date and a confidence level.</td><td>Private storage behind the Worker and the Access login (the key-value store that already holds sandbox notes and votes), never the public repo. Access limited per organization.</td></tr>
+  </table>
+  <p>An organization with only part of its activities assessed still gets a complete picture: every unassessed activity shows the Human-only baseline, marked as not assessed.</p>
+
+  <h2>4. Granularity</h2>
+  <ul class="plain">
+    <li><strong>Activity level</strong> for every assessment, because the ceiling and consequence live there.</li>
+    <li><strong>Process and role level</strong> computed from activities, the same way the People View rolls up today, with coverage stated (&ldquo;23 of 118 activities assessed&rdquo;).</li>
+    <li><strong>Organization level</strong> for the whole picture: design space remaining, activities beyond design intent, and verification load across roles.</li>
+  </ul>
+
+  <h2>5. Decision Logic</h2>
+  <p><strong>Resolution rule.</strong> For each activity: Current State is the organization&rsquo;s assessed value where one exists, otherwise the Human-only baseline. The effective ceiling is the reference ceiling, or the organization&rsquo;s governance ceiling where it is lower.</p>
+  <p><strong>Ceilings can be lowered, not quietly raised.</strong> An organization may hold an activity lower as a governance choice. Setting it higher than the reference ceiling requires a recorded reason, and the activity stays flagged as a divergence from the reference model.</p>
+  <p><strong>What each figure means in each view:</strong></p>
+  <table>
+    <tr><th style="width:24%">Figure</th><th>Reference &mdash; baseline</th><th>Reference &mdash; design intent</th><th>Organization</th></tr>
+    <tr><td class="k">% H</td><td>95 everywhere; carries no information</td><td>The human share that stays by design</td><td>The organization&rsquo;s human share today</td></tr>
+    <tr><td class="k">Verification points and load</td><td>None: nothing is AI-touched</td><td>Where checks would fall at full permitted progression</td><td>Where checks fall today</td></tr>
+    <tr><td class="k">Production mode</td><td>Human-only</td><td>The ceiling of the producing activity</td><td>Assessed state &rarr; ceiling</td></tr>
+    <tr><td class="k">At ceiling / redefinition</td><td>Not applicable</td><td>Which roles would need redefining at full progression</td><td>Which activities and roles have reached, or passed, design intent</td></tr>
+  </table>
+
+  <h2>6. Instrumentation and Build Work</h2>
+  <h3>A. Enabling work</h3>
+  <ol class="plan">
+    <li><strong>Reset the reference Current State to Human-only</strong> for all 118 activities, logging the modeled values being retired.</li>
+    <li><strong>Review the ceilings as design intent</strong> with GiGi, since they now carry the framework&rsquo;s central claim. 42 activities have a ceiling at Automation, meaning nothing in them has to stay human.</li>
+    <li><strong>Organization data model and storage</strong>: the record shapes in section 3, stored privately behind the Worker; ABC Test Org in the repo.</li>
+    <li><strong>Resolution logic</strong>: the rule in section 5, used by every view and computed figure.</li>
+    <li><strong>Assessment method</strong>: how an activity is placed on the ramp and what evidence counts, building on the evidence ladder (GR-037) and GiGi&rsquo;s workforce validation check (GR-022). Built into the template in section 8a and revised through its pressure test.</li>
+    <li><strong>Access per organization</strong>: an organization&rsquo;s data visible only to those it names.</li>
+  </ol>
+  <h3>B. UI work</h3>
+  <ol class="plan">
+    <li><strong>View selector</strong>: Reference baseline, Reference design intent, or a named organization.</li>
+    <li><strong>Source chips</strong>: REFERENCE for reference values, ASSESSED (with date and assessor) for an organization&rsquo;s.</li>
+    <li><strong>Coverage</strong> on every rollup.</li>
+    <li><strong>Beyond-design-intent flag</strong> on any activity assessed past its ceiling.</li>
+    <li><strong>Gap view</strong>: an organization against design intent, activity by activity and role by role.</li>
+    <li><strong>Interactive activity assessment template</strong>: a guided page that walks each activity to a working relationship, records the evidence, and flags anything past design intent (section 8a).</li>
+  </ol>
+
+  <h2>7. Downstream Effects</h2>
+  <ul class="plain">
+    <li><strong>The Working-Relationship view</strong> reads as Human-only to ceiling in the reference, with an organization&rsquo;s assessed state placed between.</li>
+    <li><strong>Work product and the Shock Wave</strong>: verification load becomes an organization finding, with a design-intent version for the reference.</li>
+    <li><strong>Documentation (GR-048)</strong> describes Current State as an organization&rsquo;s assessed value, and the ceiling as design intent.</li>
+    <li><strong>How the framework can be offered</strong>: the reference model as a product in its own right, assessments against it as engagements, and, with each organization&rsquo;s consent, comparisons across assessed organizations. Commercial terms are for Tim and GiGi to settle separately, per their Co-Development Principles.</li>
+  </ul>
+
+  <h2>8. Prototype and Pilot</h2>
+  <p><strong>Prototype with a test organization.</strong> Components cannot be designed or tested without organization data, so the layer is built against <em>ABC Test Org</em>: a test organization defaulted to the reference, with every activity at Human-only and every ceiling the reference ceiling. Its Current State is then set through the interactive assessment template, working-relationship assessment first, with other areas (governance ceilings, role mapping, CRUD) added as we determine.</p>
+  <p><strong>Rules for test data.</strong> ABC Test Org carries a TEST chip on every value and a banner whenever it is selected; it is excluded from any benchmark or cross-organization comparison and is never cited as a finding. Because it is not confidential it can live in the repo, under the changelog check; real organizations never do.</p>
+  <p><strong>Pressure test.</strong> Tim and GiGi assess ABC through the template, starting with the HRBP Manager&rsquo;s 23 activities, and record where the questions, definitions or evidence prompts fail: ambiguous answers, boundary cases between categories, and time taken per activity. The template and the process are revised from that before any real organization is assessed.</p>
+
+  <h3>8a. The Interactive Activity Assessment Template</h3>
+  <p>For each activity the template shows what the reference model knows (process, activity, Accountable and Responsible roles, Consequence of Error, and the ceiling with its factors), then asks a short sequence of questions drawn from the locked category definitions:</p>
+  <ol class="plan">
+    <li>Does AI play any part in this activity&rsquo;s work? <em>No &rarr; Human-only.</em></li>
+    <li>Does AI only supply inputs (data, rankings, benchmarks) for a person&rsquo;s own reasoning? <em>Yes &rarr; Judgment.</em></li>
+    <li>Does a person remain the primary actor, with AI assisting in real time and no separate approval step? <em>Yes &rarr; Augmentation.</em></li>
+    <li>AI produces the complete work: does a person review and approve every instance before it takes effect? <em>Yes &rarr; Oversight.</em></li>
+    <li>Does a person handle only the exceptions the AI flags? <em>Yes &rarr; Agent-delegation. No person in the loop, exceptions included &rarr; Automation.</em></li>
+  </ol>
+  <p>The answers propose a working relationship, which the assessor confirms or overrides with a reason. The template then records the evidence type (observed practice, system configuration, interview, document), who gave it, a confidence level and a note, and flags the activity if the result is past its ceiling. Progress shows by process and by role.</p>
+  <h2>9. Known Open Constructs</h2>
+  <div class="open-item"><div class="oi-name">Default reference view</div><p>Whether the sandbox opens on the baseline, the design intent, or both side by side.</p></div>
+  <div class="open-item"><div class="oi-name">Ceilings under review</div><p>Whether the 42 Automation ceilings, and the rest, hold up as design intent before the reset is published.</p></div>
+  <div class="open-item"><div class="oi-name">Raising a ceiling</div><p>What reason is sufficient for an organization to go past the reference ceiling, and how it is reviewed.</p></div>
+  <div class="open-item"><div class="oi-name">Organization roles</div><p>Real organizations have their own roles. Mapping them to the reference role taxonomy is needed before role-level findings mean anything.</p></div>
+  <div class="open-item"><div class="oi-name">Reference versions</div><p>When a ceiling changes after an organization is assessed, which version its findings are read against.</p></div>
+  <div class="open-item"><div class="oi-name">Evidence standard and confidentiality</div><p>What evidence an assessment requires, and how organization data is protected and, if ever, aggregated.</p></div>
+
+  <h2>10. Sourcing, Validation &amp; Scope Boundary</h2>
+  <p>Source is Tim&rsquo;s design decision of Sept 26, 2026 and Sandbox 7.0&rsquo;s current data (118 classified activities; ceilings: 28 Judgment, 5 Oversight, 8 Augmentation, 35 Agent-delegation, 42 Automation). Scope is PCF 7.0 in the sandbox; the design is domain-neutral so every domain can use it. Production is out of scope until the full production rebuild.</p>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;·&nbsp; Design Spec — For Review<br>
+    © Timothy P. King 2026 · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+<script src="wip-vote-widget.js"></script>
+<script src="wip-download-widget.js"></script>
+</body>
+</html>
