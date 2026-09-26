@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Activity-Level CRUD — HRBP Manager — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.approval-box { background: var(--amber-bg); border: 1px solid #F0C67A; border-left: 5px solid var(--amber); border-radius: 8px; padding: 18px 22px; margin-bottom: 28px; }
+.approval-box .ab-head { font-size: 14px; font-weight: 700; color: var(--amber-text); margin-bottom: 6px; }
+.approval-box p { font-size: 13px; color: #5A4315; line-height: 1.65; margin: 0; }
+
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 28px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 19px; margin: 36px 0 10px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 15px; margin: 20px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 14px; }
+p.lede { font-size: 15.5px; color: var(--dark); }
+ul.plain { margin: 0 0 16px 20px; }
+ul.plain li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.feature-box { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 8px 0 20px; }
+.feature-box h3 { margin-top: 0; }
+
+/* Sizing/alignment matched to the "Working Relationship" gates track in
+   docs/sandbox/pcf7.html (.gate-node/.gate-circle/.gate-label/.gate-arrow)
+   so this legend reads as the same visual system, not a bigger lookalike. */
+.ramp-row { display: flex; flex-wrap: wrap; gap: 0; margin: 12px 0 6px; align-items: flex-start; }
+.ramp-step { display: flex; flex-direction: column; align-items: center; min-width: 84px; flex: 0 0 auto; text-align: center; }
+.ramp-step .rs-dot { width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; }
+.ramp-step .rs-name { font-size: 11px; font-weight: 500; color: #000; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
+.ramp-arrow { width: 22px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; color: var(--lgray); font-size: 16px; font-weight: 700; }
+
+.proof-grid { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 20px; }
+.proof-card { flex: 1; min-width: 200px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.proof-card .pc-role { font-weight: 700; color: var(--navy-d); font-size: 13.5px; margin-bottom: 4px; }
+.proof-card .pc-tier { font-size: 10.5px; color: var(--lgray); text-transform: uppercase; letter-spacing: .03em; margin-bottom: 8px; }
+.proof-card p { font-size: 12.5px; margin: 0; }
+
+.open-item { border-left: 3px solid var(--lgray); padding: 4px 0 4px 14px; margin-bottom: 12px; }
+.open-item .oi-name { font-weight: 700; color: var(--dark); font-size: 13.5px; }
+.open-item p { font-size: 13px; margin: 3px 0 0; }
+
+.source-note { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 4px; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 22px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 12px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.5; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.k { font-weight: 700; color: var(--navy-d); }
+td.num { text-align: right; white-space: nowrap; }
+ol.plan { margin: 0 0 16px 22px; }
+ol.plan li { font-size: 14px; color: var(--gray); line-height: 1.65; margin-bottom: 7px; }
+ol.plan li strong { color: var(--dark); }
+.tag { font-family: 'Consolas', monospace; font-size: 10.5px; color: var(--navy); background: var(--navy-l); border: 1px solid #C6D8EE; border-radius: 3px; padding: 0 5px; margin-left: 4px; white-space: nowrap; }
+.wrap > p, .wrap > ul.plain, .wrap > h2, .wrap > h3, .wrap > .approval-box, .wrap > .related-reqs, .wrap > .open-item { max-width: 800px; }
+.tscroll { overflow-x: auto; }
+table.cat { font-size: 12.5px; min-width: 900px; }
+table.cat td { padding: 7px 10px; }
+table.cat td.nm { font-weight: 600; color: var(--navy-d); white-space: nowrap; }
+table.cat td.mono, .mono { font-family: 'Consolas', monospace; font-size: 11.5px; }
+table.cat td.k { white-space: nowrap; }
+table.cat sup { font-size: 8.5px; color: var(--navy); margin-left: 1px; }
+table.cat .c-un { border-bottom: 1px dashed var(--amber); }
+table.cat .none { color: #B0B8C6; font-family: 'Segoe UI', sans-serif; font-style: italic; }
+table.cat .del { margin-top: 3px; color: var(--lgray); font-family: 'Segoe UI', sans-serif; font-size: 11.5px; }
+.key-line { font-size: 12px; color: var(--lgray); margin: -4px 0 10px; }
+.key-line .c-un { border-bottom: 1px dashed var(--amber); font-family: 'Consolas', monospace; }
+.stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 6px 0 22px; max-width: 800px; }
+.stat { flex: 1; min-width: 150px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.stat .n { font-family: 'Georgia', serif; font-size: 24px; font-weight: 700; color: var(--navy-d); }
+.stat .l { font-size: 12px; color: var(--gray); line-height: 1.4; }
+
+table.ac { font-size: 12.5px; min-width: 860px; }
+table.ac td { padding: 8px 10px; }
+table.ac td.act { color: var(--dark); font-weight: 600; }
+.code { font-family: 'Consolas', monospace; font-size: 11.5px; color: var(--navy); font-weight: 700; }
+.wrline { margin-top: 5px; font-weight: 400; }
+.wr { display: inline-block; color: #fff; font-size: 10px; font-weight: 600; border-radius: 3px; padding: 1px 6px; }
+.arr { color: var(--lgray); margin: 0 3px; font-size: 11px; }
+.cons { font-size: 11px; color: var(--lgray); margin-left: 4px; }
+.wp { display: inline-block; margin: 1px 0; line-height: 1.45; }
+.wp-add { background: #FEF3C7; border-radius: 3px; padding: 0 4px; }
+.wpid { font-family: 'Consolas', monospace; font-size: 10.5px; color: var(--navy); }
+.none { color: #B0B8C6; }
+.tag-j { color: #7A5A1E; background: #FEF3C7; border-color: #F0C67A; }
+.pmeta { font-size: 12.5px; color: var(--lgray); margin: -4px 0 8px; max-width: none; }
+ul.why { margin: -12px 0 22px 20px; }
+ul.why li { font-size: 12.5px; color: var(--gray); line-height: 1.6; }
+.wrap > h3 { max-width: none; margin-top: 26px; }
+.mono { font-family: 'Consolas', monospace; font-size: 11.5px; }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;
+border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;
+font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft
+  — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; Reviewing this before it's finalized. Nothing
+  here is official yet.
+  &nbsp;·&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">
+  Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">MASTER DATA DRAFT &nbsp;·&nbsp; TIM KING &amp; CLAUDE &nbsp;·&nbsp; SEPTEMBER 2026</div>
+  <h1>Activity-Level CRUD &mdash; HRBP Manager</h1>
+  <div class="subtitle">Which activity creates, reads, updates and deletes each work product, for the HRBP Manager's eleven Accountable processes</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-download-mount data-item="activity-crud-hrbp"></div>
+
+<div class="wrap">
+
+  <div class="approval-box">
+    <div class="ab-head">Draft for review &mdash; item A2 of the Work Product spec, first role</div>
+    <p>Today the sandbox records CRUD per process. This draft moves it down to the activity for the HRBP Manager's 11 Accountable processes, using the Work-Product Catalog's IDs. Once Tim settles the questions in section 4, it goes into the sandbox as master data with a changelog entry. Every link starts unconfirmed.</p>
+  </div>
+
+  <div class="related-reqs">
+    <span class="rr-label">Related</span>
+    <ul>
+      <li><code>GR-046</code> &mdash; work product in the role container (<a href="work_product_role_container_spec.html">Work Product spec</a>, item A2)</li>
+      <li><code>GR-050</code> &mdash; master data; links use the <a href="work_product_catalog.html">Work-Product Catalog</a> IDs</li>
+    </ul>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat"><div class="n">23</div><div class="l">activities across 11 processes</div></div>
+    <div class="stat"><div class="n">70</div><div class="l">activity links, every one unconfirmed</div></div>
+    <div class="stat"><div class="n">58</div><div class="l">carried down from the process CRUD</div></div>
+    <div class="stat"><div class="n">12</div><div class="l">reads added, not in the process CRUD</div></div>
+  </div>
+
+  <h2>1. How the Draft Was Built</h2>
+  <ul class="plain">
+    <li><strong>Every process link is placed.</strong> Each create, read, update and delete in the process CRUD is assigned to the activity that does it. None was dropped.</li>
+    <li><strong>Eight processes have a single activity</strong> (7.4.1&ndash;7.4.4, 7.6.1, 7.8.1 and 7.8.3, plus 7.6.3, whose only activity is 7.6.3.1), so their links move down unchanged. The judgment calls are in 7.2.1, 7.3.2 and 7.6.2.</li>
+    <li><strong>Reads were filled in</strong> where an activity plainly uses a work product the process CRUD never recorded. They are highlighted, with the reason under each table.</li>
+    <li><strong>An update implies a read.</strong> An activity that updates a work product is not also listed as reading it.</li>
+    <li><strong>Hover a link</strong> to see why it was placed there, where that is not obvious.</li>
+  </ul>
+
+  <h2>2. The Draft, by Process</h2>
+  <h3><span class="code">7.2.1</span> Manage employee requisitions <span class="tag tag-j">needs judgment</span></h3>
+  <p class="pmeta">Accountable: HRBP Manager &nbsp;·&nbsp; 7 activities &nbsp;·&nbsp; process CRUD marked confirmed</p>
+  <div class="tscroll"><table class="ac"><tr><th style="width:30%">Activity</th><th>Creates</th><th>Reads</th><th>Updates</th><th>Deletes</th></tr>
+  <tr><td class="act"><span class="code">7.2.1.1</span> Align staffing plan to work force plan and business unit strategies/resource needs<div class="wrline"><span class="wr" style="background:#204474">Judgment</span><span class="arr">&rarr;</span><span class="wr" style="background:#204474">Judgment</span> <span class="cons">Moderate consequence</span></div></td><td><span class="none">&mdash;</span></td><td><span class="wp wp-add" title="Aligning the staffing plan needs the workforce plan it aligns to."><span class="wpid">WP-7-01</span> Workforce Plan <span class=tag>added</span></span><br><span class="wp"><span class="wpid">WP-7-02</span> Requisition Record</span></td><td><span class="none">&mdash;</span></td><td><span class="none">&mdash;</span></td></tr><tr><td class="act"><span class="code">7.2.1.2</span> Open job requisitions<div class="wrline"><span class="wr" style="background:#7DAEE0">Automation</span><span class="arr">&rarr;</span><span class="wr" style="background:#7DAEE0">Automation</span> <span class="cons">Low consequence</span></div></td><td><span class="none">&mdash;</span></td><td><span class="none">&mdash;</span></td><td><span class="wp" title="Opens the requisition created in 7.1.2."><span class="wpid">WP-7-02</span> Requisition Record</span></td><td><span class="none">&mdash;</span></td></tr><tr><td class="act"><span class="code">7.2.1.3</span> Approve job requisition<div class="wrline"><span class="wr" style="background:#2457A3">Oversight</span><span class="arr">&rarr;</span><span class="wr" style="background:#2457A3">Oversight</span> <span class="cons">High consequence</span></div></td><td><span class="none">&mdash;</span></td><td><span class="wp"><span class="wpid">WP-7-02</span> Requisition Record</span><br><span class="wp wp-add" title="Its Governed Decision Point checks the requisition against budget and the approved headcount plan."><span class="wpid">WP-7-01</span> Workforce Plan <span class=tag>added</span></span></td><td><span class="wp" title="Records the approval."><span class="wpid">WP-7-02</span> Requisition Record</span></td><td><span class="none">&mdash;</span></td></tr><tr><td class="act"><span class="code">7.2.1.4</span> Post job requisitions<div class="wrline"><span class="wr" style="background:#7DAEE0">Automation</span><span class="arr">&rarr;</span><span class="wr" style="background:#7DAEE0">Automation</span> <span class="cons">Low consequence</span></div></td><td><span class="wp"><span class="wpid">WP-7-05</span> Job Posting</span></td><td><span class="wp"><span class="wpid">WP-7-02</span> Requisition Record</span></td><td><span class="none">&mdash;</span></td><td><span class="none">&mdash;</span></td></tr><tr><td class="act"><span class="code">7.2.1.5</span> Modify job requisitions<div class="wrline"><span class="wr" style="background:#7DAEE0">Automation</span><span class="arr">&rarr;</span><span class="wr" style="background:#7DAEE0">Automation</span> <span class="cons">Low consequence</span></div></td><td><span class="none">&mdash;</span></td><td><span class="none">&mdash;</span></td><td><span class="wp"><span class="wpid">WP-7-02</span> Requisition Record</span></td><td><span class="none">&mdash;</span></td></tr><tr><td class="act"><span class="code">7.2.1.6</span> Notify hiring manager<div class="wrline"><span class="wr" style="background:#7DAEE0">Automation</span><span class="arr">&rarr;</span><span class="wr" style="background:#7DAEE0">Automation</span> <span class="cons">Low consequence</span></div></td><td><span class="none">&mdash;</span></td><td><span class="wp"><span class="wpid">WP-7-02</span> Requisition Record</span></td><td><span class="none">&mdash;</span></td><td><span class="none">&mdash;</span></td></tr><tr><td class="act"><span class="code">7.2.1.7</span> Manage requisition dates<div class="wrline"><span class="wr" style="background:#7DAEE0">Automation</span><span class="arr">&rarr;</span><span class="wr" style="background:#7DAEE0">Automation</span> <span class="cons">Low consequence</span></div></td><td><span class="none">&mdash;</span></td><td><span class="none">&mdash;</span></td><td><span class="wp"><span class="wpid">WP-7-02</span> Requisition Record</span></td><td><span class="none">&mdash;</span></td></tr>
+  </table></div>
+  <ul class="why"><li><span class="code">7.2.1.1</span> reads <strong>Workforce Plan</strong>: Aligning the staffing plan needs the workforce plan it aligns to.</li><li><span class="code">7.2.1.3</span> reads <strong>Workforce Plan</strong>: Its Governed Decision Point checks the requisition against budget and the approved headcount plan.</li></ul>
+  <h3><span class="code">7.3.2</span> Manage employee performance <span class="tag tag-j">needs judgment</span></h3>
+  <p class="pmeta">Accountable: HRBP Manager &nbsp;·&nbsp; 4 activities &nbsp;·&nbsp; process CRUD marked confirmed</p>
+  <div class="tscroll"><table class="ac"><tr><th style="width:30%">Activity</th><th>Creates</th><th>Reads</th><th>Updates</th><th>Deletes</th></tr>
+  <tr><td class="act"><span class="code">7.3.2.1</span> Define employee performance objectives<div class="wrline"><span class="wr" style="background:#204474">Judgment</span><span class="arr">&rarr;</span><span class="wr" style="background:#204474">Judgment</span> <span class="cons">Moderate consequence</span></div></td><td><span class="wp" title="Objectives open the review for the cycle."><span class="wpid">WP-7-11</span> Performance Review</span></td><td><span class="wp wp-add" title="Objectives are set against the role&#x27;s expected competencies."><span class="wpid">WP-7-04</span> Competency Model <span class=tag>added</span></span></td><td><span class="none">&mdash;</span></td><td><span class="none">&mdash;</span></td></tr><tr><td class="act"><span class="code">7.3.2.2</span> Review employee performance<div class="wrline"><span class="wr" style="background:#204474">Judgment</span><span class="arr">&rarr;</span><span class="wr" style="background:#204474">Judgment</span> <span class="cons">High consequence</span></div></td><td><span class="none">&mdash;</span></td><td><span class="none">&mdash;</span></td><td><span class="wp" title="Records the rating and the manager&#x27;s assessment."><span class="wpid">WP-7-11</span> Performance Review</span></td><td><span class="none">&mdash;</span></td></tr><tr><td class="act"><span class="code">7.3.2.3</span> Document employee performance<div class="wrline"><span class="wr" style="background:#3D6FA8">Augmentation</span><span class="arr">&rarr;</span><span class="wr" style="background:#3D6FA8">Augmentation</span> <span class="cons">High consequence</span></div></td><td><span class="none">&mdash;</span></td><td><span class="none">&mdash;</span></td><td><span class="wp" title="Drafts and records the written documentation."><span class="wpid">WP-7-11</span> Performance Review</span></td><td><span class="none">&mdash;</span></td></tr><tr><td class="act"><span class="code">7.3.2.4</span> Monitor and update performance program<div class="wrline"><span class="wr" style="background:#5A8DC4">Agent-delegation</span><span class="arr">&rarr;</span><span class="wr" style="background:#7DAEE0">Automation</span> <span class="cons">Low consequence</span></div></td><td><span class="none">&mdash;</span></td><td><span class="wp wp-add" title="Monitors the program across reviews; updates the program, not individual reviews."><span class="wpid">WP-7-11</span> Performance Review <span class=tag>added</span></span></td><td><span class="none">&mdash;</span></td><td><span class="none">&mdash;</span></td></tr>
+  </table></div>
+  <ul class="why"><li><span class="code">7.3.2.1</span> reads <strong>Competency Model</strong>: Objectives are set against the role&#x27;s expected competencies.</li><li><span class="code">7.3.2.4</span> reads <strong>Performance Review</strong>: Monitors the program across reviews; updates the program, not individual reviews.</li></ul>
+  <h3><span class="code">7.4.1</span> Manage labor relations</h3>
+  <p class="pmeta">Accountable: HRBP Manager &nbsp;·&nbsp; one activity &nbsp;·&nbsp; process CRUD marked confirmed</p>
+  <div class="tscroll"><table class="ac"><tr><th style="width:30%">Activity</th><th>Creates</th><th>Reads</th><th>Updates</th><th>Deletes</th></tr>
+  <tr><td class="act"><span class="code">7.4.1</span> Manage labor relations<div class="wrline"><span class="wr" style="background:#204474">Judgment</span><span class="arr">&rarr;</span><span class="wr" style="background:#204474">Judgment</span> <span class="cons">Critical consequence</span></div></td><td><span class="wp"><span class="wpid">WP-7-14</span> ER Case Record</span></td><td><span class="wp"><span class="wpid">WP-7-11</span> Performance Review</span><br><span class="wp wp-add" title="Labor-relations matters are handled under the agreement&#x27;s terms."><span class="wpid">WP-7-15</span> Collective Bargaining Agreement <span class=tag>added</span></span></td><td><span class="none">&mdash;</span></td><td><span class="none">&mdash;</span></td></tr>
+  </table></div>
+  <ul class="why"><li><span class="code">7.4.1</span> reads <strong>Collective Bargaining Agreement</strong>: Labor-relations matters are handled under the agreement&#x27;s terms.</li></ul>
+  <h3><span class="code">7.4.2</span> Manage collective bargaining process</h3>
+  <p class="pmeta">Accountable: HRBP Manager &nbsp;·&nbsp; one activity &nbsp;·&nbsp; process CRUD not yet confirmed</p>
+  <div class="tscroll"><table class="ac"><tr><th style="width:30%">Activity</th><th>Creates</th><th>Reads</th><th>Updates</th><th>Deletes</th></tr>
+  <tr><td class="act"><span class="code">7.4.2</span> Manage collective bargaining process<div class="wrline"><span class="wr" style="background:#204474">Judgment</span><span class="arr">&rarr;</span><span class="wr" style="background:#204474">Judgment</span> <span class="cons">Critical consequence</span></div></td><td><span class="wp"><span class="wpid">WP-7-15</span> Collective Bargaining Agreement</span></td><td><span class="wp"><span class="wpid">WP-7-14</span> ER Case Record</span><br><span class="wp wp-add" title="Wage terms are bargained against current pay."><span class="wpid">WP-7-19</span> Compensation Record <span class=tag>added</span></span><br><span class="wp wp-add" title="Grievance history informs what is bargained."><span class="wpid">WP-7-17</span> Grievance Case <span class=tag>added</span></span></td><td><span class="wp"><span class="wpid">WP-7-15</span> Collective Bargaining Agreement</span></td><td><span class="none">&mdash;</span></td></tr>
+  </table></div>
+  <ul class="why"><li><span class="code">7.4.2</span> reads <strong>Compensation Record</strong>: Wage terms are bargained against current pay.</li><li><span class="code">7.4.2</span> reads <strong>Grievance Case</strong>: Grievance history informs what is bargained.</li></ul>
+  <h3><span class="code">7.4.3</span> Manage labor management partnerships</h3>
+  <p class="pmeta">Accountable: HRBP Manager &nbsp;·&nbsp; one activity &nbsp;·&nbsp; process CRUD not yet confirmed</p>
+  <div class="tscroll"><table class="ac"><tr><th style="width:30%">Activity</th><th>Creates</th><th>Reads</th><th>Updates</th><th>Deletes</th></tr>
+  <tr><td class="act"><span class="code">7.4.3</span> Manage labor management partnerships<div class="wrline"><span class="wr" style="background:#204474">Judgment</span><span class="arr">&rarr;</span><span class="wr" style="background:#204474">Judgment</span> <span class="cons">Moderate consequence</span></div></td><td><span class="wp"><span class="wpid">WP-7-16</span> Labor Partnership Record</span></td><td><span class="wp"><span class="wpid">WP-7-15</span> Collective Bargaining Agreement</span></td><td><span class="wp"><span class="wpid">WP-7-16</span> Labor Partnership Record</span></td><td><span class="none">&mdash;</span></td></tr>
+  </table></div>
+  
+  <h3><span class="code">7.4.4</span> Manage employee grievances</h3>
+  <p class="pmeta">Accountable: HRBP Manager &nbsp;·&nbsp; one activity &nbsp;·&nbsp; process CRUD not yet confirmed</p>
+  <div class="tscroll"><table class="ac"><tr><th style="width:30%">Activity</th><th>Creates</th><th>Reads</th><th>Updates</th><th>Deletes</th></tr>
+  <tr><td class="act"><span class="code">7.4.4</span> Manage employee grievances<div class="wrline"><span class="wr" style="background:#204474">Judgment</span><span class="arr">&rarr;</span><span class="wr" style="background:#204474">Judgment</span> <span class="cons">Critical consequence</span></div></td><td><span class="wp"><span class="wpid">WP-7-17</span> Grievance Case</span></td><td><span class="wp"><span class="wpid">WP-7-14</span> ER Case Record</span><br><span class="wp"><span class="wpid">WP-7-15</span> Collective Bargaining Agreement</span></td><td><span class="wp"><span class="wpid">WP-7-17</span> Grievance Case</span></td><td><span class="none">&mdash;</span></td></tr>
+  </table></div>
+  
+  <h3><span class="code">7.6.1</span> Manage promotion and demotion process</h3>
+  <p class="pmeta">Accountable: HRBP Manager &nbsp;·&nbsp; one activity &nbsp;·&nbsp; process CRUD not yet confirmed</p>
+  <div class="tscroll"><table class="ac"><tr><th style="width:30%">Activity</th><th>Creates</th><th>Reads</th><th>Updates</th><th>Deletes</th></tr>
+  <tr><td class="act"><span class="code">7.6.1</span> Manage promotion and demotion process<div class="wrline"><span class="wr" style="background:#204474">Judgment</span><span class="arr">&rarr;</span><span class="wr" style="background:#204474">Judgment</span> <span class="cons">High consequence</span></div></td><td><span class="wp"><span class="wpid">WP-7-25</span> Position Change Record</span></td><td><span class="wp"><span class="wpid">WP-7-11</span> Performance Review</span><br><span class="wp"><span class="wpid">WP-7-04</span> Competency Model</span></td><td><span class="wp"><span class="wpid">WP-7-25</span> Position Change Record</span><br><span class="wp"><span class="wpid">WP-7-19</span> Compensation Record</span><br><span class="wp"><span class="wpid">WP-7-30</span> Employee Master Record</span></td><td><span class="none">&mdash;</span></td></tr>
+  </table></div>
+  
+  <h3><span class="code">7.6.2</span> Manage separation <span class="tag tag-j">needs judgment</span></h3>
+  <p class="pmeta">Accountable: HRBP Manager &nbsp;·&nbsp; 4 activities &nbsp;·&nbsp; process CRUD marked confirmed</p>
+  <div class="tscroll"><table class="ac"><tr><th style="width:30%">Activity</th><th>Creates</th><th>Reads</th><th>Updates</th><th>Deletes</th></tr>
+  <tr><td class="act"><span class="code">7.6.2.1</span> Manage retirement<div class="wrline"><span class="wr" style="background:#7DAEE0">Automation</span><span class="arr">&rarr;</span><span class="wr" style="background:#7DAEE0">Automation</span> <span class="cons">Moderate consequence</span></div></td><td><span class="wp" title="A retirement is a separation."><span class="wpid">WP-7-26</span> Separation Record</span></td><td><span class="wp"><span class="wpid">WP-7-19</span> Compensation Record</span><br><span class="wp"><span class="wpid">WP-7-23</span> Payroll Record</span></td><td><span class="wp" title="Retirement benefit elections."><span class="wpid">WP-7-20</span> Benefits Enrollment</span><br><span class="wp"><span class="wpid">WP-7-30</span> Employee Master Record</span></td><td><span class="none">&mdash;</span></td></tr><tr><td class="act"><span class="code">7.6.2.2</span> Manage leave of absence<div class="wrline"><span class="wr" style="background:#7DAEE0">Automation</span><span class="arr">&rarr;</span><span class="wr" style="background:#7DAEE0">Automation</span> <span class="cons">High consequence</span></div></td><td><span class="none">&mdash;</span></td><td><span class="wp" title="Leave balances and time taken."><span class="wpid">WP-7-33</span> Time and Attendance Record</span></td><td><span class="wp" title="Coverage during leave."><span class="wpid">WP-7-20</span> Benefits Enrollment</span><br><span class="wp" title="Leave status."><span class="wpid">WP-7-30</span> Employee Master Record</span></td><td><span class="none">&mdash;</span></td></tr><tr><td class="act"><span class="code">7.6.2.3</span> Manage offboarding<div class="wrline"><span class="wr" style="background:#7DAEE0">Automation</span><span class="arr">&rarr;</span><span class="wr" style="background:#7DAEE0">Automation</span> <span class="cons">High consequence</span></div></td><td><span class="wp"><span class="wpid">WP-7-26</span> Separation Record</span></td><td><span class="wp" title="Final pay."><span class="wpid">WP-7-23</span> Payroll Record</span><br><span class="wp" title="Final pay."><span class="wpid">WP-7-33</span> Time and Attendance Record</span><br><span class="wp"><span class="wpid">WP-7-19</span> Compensation Record</span><br><span class="wp" title="Continuation coverage."><span class="wpid">WP-7-20</span> Benefits Enrollment</span></td><td><span class="wp"><span class="wpid">WP-7-26</span> Separation Record</span><br><span class="wp" title="Closes any open employee-relations matter."><span class="wpid">WP-7-14</span> ER Case Record</span><br><span class="wp"><span class="wpid">WP-7-30</span> Employee Master Record</span></td><td><span class="wp" title="Removes access."><span class="wpid">WP-7-10</span> System Access Profile</span></td></tr><tr><td class="act"><span class="code">7.6.2.4</span> Develop and implement employee outplacement<div class="wrline"><span class="wr" style="background:#3D6FA8">Augmentation</span><span class="arr">&rarr;</span><span class="wr" style="background:#5A8DC4">Agent-delegation</span> <span class="cons">Low consequence</span></div></td><td><span class="none">&mdash;</span></td><td><span class="wp wp-add" title="Outplacement starts from the separation&#x27;s terms."><span class="wpid">WP-7-26</span> Separation Record <span class=tag>added</span></span><br><span class="wp wp-add"><span class="wpid">WP-7-30</span> Employee Master Record <span class=tag>added</span></span></td><td><span class="none">&mdash;</span></td><td><span class="none">&mdash;</span></td></tr>
+  </table></div>
+  <ul class="why"><li><span class="code">7.6.2.4</span> reads <strong>Separation Record</strong>: Outplacement starts from the separation&#x27;s terms.</li><li><span class="code">7.6.2.4</span> reads <strong>Employee Master Record</strong>: </li></ul>
+  <h3><span class="code">7.6.3</span> Relocate employees and manage assignments</h3>
+  <p class="pmeta">Accountable: HRBP Manager (partial—see gap note) &nbsp;·&nbsp; 1 activity &nbsp;·&nbsp; process CRUD not yet confirmed</p>
+  <div class="tscroll"><table class="ac"><tr><th style="width:30%">Activity</th><th>Creates</th><th>Reads</th><th>Updates</th><th>Deletes</th></tr>
+  <tr><td class="act"><span class="code">7.6.3.1</span> Manage expatriates<div class="wrline"><span class="wr" style="background:#2457A3">Oversight</span><span class="arr">&rarr;</span><span class="wr" style="background:#2457A3">Oversight</span> <span class="cons">High consequence</span></div></td><td><span class="wp"><span class="wpid">WP-7-28</span> Relocation Case</span><br><span class="wp"><span class="wpid">WP-7-27</span> Assignment Letter</span></td><td><span class="wp"><span class="wpid">WP-7-30</span> Employee Master Record</span><br><span class="wp"><span class="wpid">WP-7-19</span> Compensation Record</span></td><td><span class="wp"><span class="wpid">WP-7-28</span> Relocation Case</span><br><span class="wp"><span class="wpid">WP-7-30</span> Employee Master Record</span></td><td><span class="none">&mdash;</span></td></tr>
+  </table></div>
+  
+  <h3><span class="code">7.8.1</span> Develop employee communication plan</h3>
+  <p class="pmeta">Accountable: HRBP Manager &nbsp;·&nbsp; one activity &nbsp;·&nbsp; process CRUD not yet confirmed</p>
+  <div class="tscroll"><table class="ac"><tr><th style="width:30%">Activity</th><th>Creates</th><th>Reads</th><th>Updates</th><th>Deletes</th></tr>
+  <tr><td class="act"><span class="code">7.8.1</span> Develop employee communication plan<div class="wrline"><span class="wr" style="background:#3D6FA8">Augmentation</span><span class="arr">&rarr;</span><span class="wr" style="background:#5A8DC4">Agent-delegation</span> <span class="cons">Low consequence</span></div></td><td><span class="wp"><span class="wpid">WP-7-35</span> Communication Plan</span></td><td><span class="wp"><span class="wpid">WP-7-30</span> Employee Master Record</span><br><span class="wp wp-add" title="Policy changes are a main subject of employee communication."><span class="wpid">WP-7-03</span> Policy Update Record <span class=tag>added</span></span><br><span class="wp wp-add" title="Engagement results shape what is communicated."><span class="wpid">WP-7-36</span> Survey Response <span class=tag>added</span></span></td><td><span class="wp"><span class="wpid">WP-7-35</span> Communication Plan</span></td><td><span class="none">&mdash;</span></td></tr>
+  </table></div>
+  <ul class="why"><li><span class="code">7.8.1</span> reads <strong>Policy Update Record</strong>: Policy changes are a main subject of employee communication.</li><li><span class="code">7.8.1</span> reads <strong>Survey Response</strong>: Engagement results shape what is communicated.</li></ul>
+  <h3><span class="code">7.8.3</span> Deliver employee communications</h3>
+  <p class="pmeta">Accountable: HRBP Manager &nbsp;·&nbsp; one activity &nbsp;·&nbsp; process CRUD marked confirmed</p>
+  <div class="tscroll"><table class="ac"><tr><th style="width:30%">Activity</th><th>Creates</th><th>Reads</th><th>Updates</th><th>Deletes</th></tr>
+  <tr><td class="act"><span class="code">7.8.3</span> Deliver employee communications<div class="wrline"><span class="wr" style="background:#5A8DC4">Agent-delegation</span><span class="arr">&rarr;</span><span class="wr" style="background:#7DAEE0">Automation</span> <span class="cons">Low consequence</span></div></td><td><span class="wp"><span class="wpid">WP-7-37</span> Communication Record</span></td><td><span class="wp"><span class="wpid">WP-7-30</span> Employee Master Record</span><br><span class="wp wp-add" title="Communications are delivered to the plan."><span class="wpid">WP-7-35</span> Communication Plan <span class=tag>added</span></span></td><td><span class="none">&mdash;</span></td><td><span class="none">&mdash;</span></td></tr>
+  </table></div>
+  <ul class="why"><li><span class="code">7.8.3</span> reads <strong>Communication Plan</strong>: Communications are delivered to the plan.</li></ul>
+
+  <h2>3. What Changes for the HRBP Manager</h2>
+  <p>The Work Product spec's verification-point rule, run on this draft: a read is a verification point when the work product's producer is at Augmentation or further along the ramp, and the reading activity is at Judgment or Oversight or carries a High or Critical Consequence of Error. Producers outside these eleven processes are still judged at process level.</p>
+  <div class="tscroll"><table>
+    <tr><th>Work product</th><th>AI-touched because its most automated producer is</th><th style="width:22%">Read at a verification point by</th></tr>
+    <tr><td><span class="wpid">WP-7-01</span> Workforce Plan <span class="tag">new</span></td><td>Agent-delegation at <span class="code">7.1.3.2</span> Measure contribution of HR to business strategy</td><td class="mono">7.2.1.1, 7.2.1.3</td></tr><tr><td><span class="wpid">WP-7-02</span> Requisition Record</td><td>Automation at <span class="code">7.2.1.7</span> Manage requisition dates</td><td class="mono">7.2.1.1, 7.2.1.3</td></tr><tr><td><span class="wpid">WP-7-11</span> Performance Review</td><td>Agent-delegation at <span class="code">7.3.3.3</span> Manage employee skill and competency development</td><td class="mono">7.4.1, 7.6.1</td></tr><tr><td><span class="wpid">WP-7-14</span> ER Case Record</td><td>Automation at <span class="code">7.6.2.3</span> Manage offboarding</td><td class="mono">7.4.2, 7.4.4</td></tr><tr><td><span class="wpid">WP-7-19</span> Compensation Record</td><td>Automation at <span class="code">7.5.1.5</span> Administer compensation and rewards to employees</td><td class="mono">7.4.2, 7.6.2.3, 7.6.3.1</td></tr><tr><td><span class="wpid">WP-7-20</span> Benefits Enrollment</td><td>Automation at <span class="code">7.5.2.3</span> Process benefits claims</td><td class="mono">7.6.2.3</td></tr><tr><td><span class="wpid">WP-7-23</span> Payroll Record</td><td>Automation at <span class="code">7.5.1.5</span> Administer compensation and rewards to employees</td><td class="mono">7.6.2.3</td></tr><tr><td><span class="wpid">WP-7-30</span> Employee Master Record</td><td>Automation at <span class="code">7.7.3</span> Manage and maintain employee data</td><td class="mono">7.6.3.1</td></tr><tr><td><span class="wpid">WP-7-33</span> Time and Attendance Record</td><td>Automation at <span class="code">7.7.6</span> Develop and manage time and attendance systems</td><td class="mono">7.6.2.2, 7.6.2.3</td></tr>
+  </table></div>
+  <p>At process level the same rule gives the HRBP Manager 8 work products to verify; at activity level it gives 9. The new one is the Workforce Plan, read by 7.2.1.1 (Judgment) and 7.2.1.3 (the Oversight requisition approval). The activity-level list also names <em>which</em> activity carries each check, which process level could not.</p>
+
+  <h2>4. Questions for Tim</h2>
+  <div class="open-item"><div class="oi-name">Q1 &mdash; Two activities create the Separation Record</div><p>7.6.2.1 Manage retirement and 7.6.2.3 Manage offboarding both create it, since a retirement is a separation. Keep both as creators, or have offboarding create it and retirement update it? Both are at Automation, so the production mode is the same either way.</p></div>
+  <div class="open-item"><div class="oi-name">Q2 &mdash; Does offboarding update the ER Case Record?</div><p>The process CRUD says 7.6.2 updates it; the draft places that on 7.6.2.3 (closing any open matter at exit). Because 7.6.2.3 is at Automation, that one update makes the ER Case Record AI-touched, so the HRBP Manager carries a verification point on it in 7.4.2 and 7.4.4. If closing the case at exit is only a status flag rather than a change to the record, the update should go and the ER Case Record stays human-produced.</p></div>
+  <div class="open-item"><div class="oi-name">Q3 &mdash; Accept the 12 added reads?</div><p>Each is highlighted in its table with the reason. Five give a reader to a work product that had none: the Grievance Case, Separation Record, Policy Update Record, Survey Response and Communication Plan. That cuts the catalog's work products with no recorded reader from 24 to 19.</p></div>
+  <div class="open-item"><div class="oi-name">Q4 &mdash; Keep &ldquo;an update implies a read&rdquo;?</div><p>It keeps the tables readable. The alternative lists the read explicitly every time, which roughly doubles the links on update-heavy activities.</p></div>
+
+  <h2>5. What the Draft Surfaced</h2>
+  <p><strong>The Performance Review's AI involvement comes from outside the HRBP's process.</strong> Inside 7.3.2, the most automated producer is 7.3.2.3 Document employee performance, at Augmentation. 7.3.2.4, at Agent-delegation, monitors the program rather than producing reviews. The review is still AI-touched at Agent-delegation, but through 7.3.3.3 Manage employee skill and competency development, in the Director of L&amp;D's process, which is still at process level. The spec's pilot sentence that 7.3.2 has &ldquo;one activity already at Agent-delegation&rdquo; is true of the process but not of any activity that produces the review.</p>
+  <p><strong>Six of the eleven processes rest on CRUD not yet confirmed</strong> (7.4.2, 7.4.3, 7.4.4, 7.6.1, 7.6.3, 7.8.1). Confirming the links here is the chance to confirm those too.</p>
+
+  <h2>6. Next Step</h2>
+  <p>Once the questions are settled, the activity links go into Sandbox 7.0 as master data with a changelog entry, and the changelog check is extended to cover them. The next roles to run are the HRIS Analyst and the HR Generalist, which hold the next-largest sets of Accountable and Responsible processes.</p>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;·&nbsp; Master Data Draft — For Review<br>
+    © Timothy P. King 2026 · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a>
+  </p>
+</footer>
+
+<script src="wip-download-widget.js"></script>
+</body>
+</html>
