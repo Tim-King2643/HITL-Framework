@@ -67,8 +67,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--d
 .assess-ctl + .gates-card-cons { margin-left: 0; }
 /* Fixed-width, left-aligned columns so status and button line up card to
    card, right before the Consequence of Error column (Tim, Sept 26). */
-.assess-ctl .as-status { width: 210px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
-.assess-ctl .as-btn { width: 96px; }
+.assess-ctl .as-btn { width: 96px; padding-top: 1px; }
+.assess-ctl .as-status { width: 190px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+.assess-ctl .as-status-val { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
 .assess-ctl .as-chip { font-size: 10px; font-weight: 600; border-radius: 3px; padding: 1px 6px; color: #fff; }
 .assess-ctl .as-none { background: #EDEFF3; color: #6B7A90; }
 .assess-ctl .as-beyond { font-family: 'DM Mono', monospace; font-size: 9.5px; font-weight: 700; color: #991B1B; background: #FEE2E2; border: 1px solid #F5B5B5; border-radius: 3px; padding: 0 5px; }
@@ -442,7 +443,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
         <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Colored step &mdash; one of the six Working-Relationship categories, Human-only through Automation</span>
         <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#166534;font-weight:700;">&#10003;</span> Passed &mdash; evidence already cleared this step</span>
         <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open &mdash; reachable next, not required yet</span>
-        <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
+        <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Design intent (Progression Ceiling) &mdash; click the lock for why it stops here</span>
         <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Beyond the ceiling &mdash; greyed out, not in play for this activity</span>
         <span class="gates-legend-item"><span style="color:var(--navy);"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="4.6" r="1" fill="currentColor"/><rect x="7.2" y="7" width="1.6" height="5.2" rx="0.8" fill="currentColor"/></svg></span> Click any circle or step name (up to the ceiling) for its definition</span>
         <span class="gates-legend-item gates-legend-item-wide"><span class="wr-prov wr-prov-classified">Modeled</span> Every % H is a modeled index, not measured data &mdash; click the chip for what it measures and how that row was calculated</span>
@@ -452,7 +453,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
           <thead id="thead-wr">
             <tr>
               <th>L1-Domain/L2-Process Group/L3-Process/L4-Activity</th>
-              <th class="nowrap wr-col-gates">Working Relationship &mdash; Current State &rarr; Progression Ceiling, plus Consequence of Error</th>
+              <th class="nowrap wr-col-gates">Working Relationship &mdash; Current State &rarr; Design Intent (Progression Ceiling), plus Consequence of Error</th>
             </tr>
           </thead>
           <tbody id="table-body"></tbody>
@@ -516,7 +517,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
         <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Colored step &mdash; one of the six Working-Relationship categories, Human-only through Automation</span>
         <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#166534;font-weight:700;">&#10003;</span> Passed &mdash; evidence already cleared this step</span>
         <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open &mdash; reachable next, not required yet</span>
-        <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
+        <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Design intent (Progression Ceiling) &mdash; click the lock for why it stops here</span>
         <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Beyond the ceiling &mdash; greyed out, not in play for this activity</span>
         <span class="gates-legend-item"><span style="color:var(--navy);"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="4.6" r="1" fill="currentColor"/><rect x="7.2" y="7" width="1.6" height="5.2" rx="0.8" fill="currentColor"/></svg></span> Click any circle or step name (up to the ceiling) for its definition</span>
         <span class="gates-legend-item gates-legend-item-wide"><span class="wr-prov wr-prov-classified">Modeled</span> Every % H is a modeled index, not measured data &mdash; click the chip for what it measures and how that row was calculated</span>
@@ -526,7 +527,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
           <thead>
             <tr>
               <th>Role</th>
-              <th class="nowrap wr-col-gates">Working Relationship &mdash; Current State &rarr; Progression Ceiling, plus Consequence of Error</th>
+              <th class="nowrap wr-col-gates">Working Relationship &mdash; Current State &rarr; Design Intent (Progression Ceiling), plus Consequence of Error</th>
             </tr>
           </thead>
           <tbody id="role-impact-table-body"></tbody>
@@ -1681,7 +1682,7 @@ function roleRollupInlineHtml(accL3s) {
     '<div class="gates-rollup-toprow">' +
     '<div class="gates-rollup-cons-group" style="margin-left:0;">' +
     '<div class="gates-rollup gates-rollup-inline"><span class="gates-rollup-label">Current</span>' + wrRollupCell(accL3s, 'rel') +
-    '<span class="gates-rollup-sep">&rarr;</span><span class="gates-rollup-label">Ceiling</span>' + wrRollupCell(accL3s, 'ceiling') + '</div>' +
+    '<span class="gates-rollup-sep">&rarr;</span><span class="gates-rollup-label">Design intent</span>' + wrRollupCell(accL3s, 'ceiling') + '</div>' +
     '<div class="gates-card-cons gates-card-cons-tight">' +
     '<span class="gates-cons-label">Consequence of Error - Worst Case</span>' + consRollupValueOnly(accL3s) +
     '</div>' +
@@ -2192,7 +2193,7 @@ function rollupRowHtml(l3, icon) {
     '<span class="row-text">' + l3.name + '</span></span>' +
     '<div class="gates-rollup-cons-group">' +
     '<div class="gates-rollup gates-rollup-inline"><span class="gates-rollup-label">Current</span>' + wrRollupCell(l3s, 'rel') +
-    '<span class="gates-rollup-sep">&rarr;</span><span class="gates-rollup-label">Ceiling</span>' + wrRollupCell(l3s, 'ceiling') + '</div>' +
+    '<span class="gates-rollup-sep">&rarr;</span><span class="gates-rollup-label">Design intent</span>' + wrRollupCell(l3s, 'ceiling') + '</div>' +
     '<div class="gates-card-cons gates-card-cons-tight">' +
     '<span class="gates-cons-label">Consequence of Error - Worst Case</span>' + consRollupValueOnly(l3s) +
     '</div>' +
@@ -2216,7 +2217,7 @@ function inlineLegendHtml(indentPx) {
     '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Colored step &mdash; one of the six Working-Relationship categories, Human-only through Automation</span>' +
     '<span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#166534;font-weight:700;">&#10003;</span> Passed &mdash; evidence already cleared this step</span>' +
     '<span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open &mdash; reachable next, not required yet</span>' +
-    '<span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>' +
+    '<span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Design intent (Progression Ceiling) &mdash; click the lock for why it stops here</span>' +
     '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Beyond the ceiling &mdash; greyed out, not in play for this activity</span>' +
     '<span class="gates-legend-item"><span style="color:var(--navy);"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="4.6" r="1" fill="currentColor"/><rect x="7.2" y="7" width="1.6" height="5.2" rx="0.8" fill="currentColor"/></svg></span> Click any circle or step name (up to the ceiling) for its definition</span>' +
     '</div>';
@@ -2508,13 +2509,16 @@ function assessControlHtml(code) {
   const ceil = WR_DATA[code] && WR_DATA[code].ceiling;
   const beyond = cur && ceil && CATS_ORDER.indexOf(cur) > CATS_ORDER.indexOf(ceil);
   const chip = cur
-    ? '<span class="as-chip" style="background:' + WR_CATS[cur].color + '">Assessed: ' + cur + '</span>'
+    ? '<span class="as-chip" style="background:' + WR_CATS[cur].color + '">' + cur + '</span>'
     : '<span class="as-chip as-none">Not assessed</span>';
   const btn = OrgContext.reviewer()
     ? '<button type="button" onclick="event.stopPropagation();openAssess(\'' + code + '\')">' + (cur ? 'Reassess' : 'Assess') + '</button>'
     : '<button type="button" class="as-view" onclick="event.stopPropagation();openAssess(\'' + code + '\')">View</button>';
-  return '<span class="assess-ctl"><span class="as-status">' + chip + (beyond ? '<span class="as-beyond" title="Past its design intent">BEYOND</span>' : '') + '</span>' +
-    '<span class="as-btn">' + btn + '</span></span>';
+  // Button first, then the organization's Current State right beside
+  // Consequence of Error (Tim, Sept 26).
+  return '<span class="assess-ctl"><span class="as-btn">' + btn + '</span>' +
+    '<span class="as-status"><span class="gates-cons-label">Current State</span><span class="as-status-val">' + chip +
+    (beyond ? '<span class="as-beyond" title="Past its design intent">BEYOND</span>' : '') + '</span></span></span>';
 }
 function activityContext(code) {
   let found = null;
