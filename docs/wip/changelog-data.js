@@ -147,5 +147,23 @@ const CHANGE_LOG = [
     "source": "Tim's answers, Sept 26, 2026, to the five questions in docs/wip/activity_crud_hrbp_manager.html.",
     "reason": "Tim set the method: each activity's CRUD is reasoned from the activity, not inherited from its process, and a finished process's CRUD is derived from its activities, process by process. Decisions: 7.6.2's update of the ER Case Record dropped (no activity supports it); all 10 new links accepted; offboarding creates the Separation Record and retirement updates it; an update implies a read; outputs the catalog lacks are added when identified.",
     "verified": "Derived CRUD recomputed for all 11 processes; every activity's links match the reviewed draft. Sandbox views render with no errors; every Current State and Progression Ceiling unchanged. The changelog check now also tracks WORK_PRODUCTS, ACTIVITY_CRUD and process CRUD lines."
+  },
+  {
+    "id": "CL-008",
+    "date": "2026-09-26",
+    "requestedBy": "Tim",
+    "kind": "crud",
+    "target": {
+      "domain": "7.0"
+    },
+    "summary": "Every system of record renamed from a vendor to a generic category of system, in the Work-Product Catalog and in all stored process CRUD.",
+    "from": "Vendor names, e.g. Workday HCM, iCIMS, Lattice, Visier, ADP Workforce Now",
+    "to": "Generic categories, e.g. Core HR System (HCM), Applicant Tracking System, Performance Management System, People Analytics Platform, Payroll System",
+    "files": [
+      "docs/sandbox/pcf7.html"
+    ],
+    "source": "Tim, Sept 26, 2026: “Shouldn't the systems be generic since we don't know what systems since the framework isn't based on a specific organization?”",
+    "reason": "The framework describes a generic organization, so vendor names implied a technology stack nobody chose. The category (applicant tracking, payroll, and so on) carries what matters: the kind of system holding the authoritative record. Mapping: Workday HCM → Core HR System (HCM); iCIMS → Applicant Tracking System; HireRight → Background Screening Service; Lattice → Performance Management System; Cornerstone OnDemand → Learning Management System; Workday Skills Cloud → Skills Management System; UKG HR Service Delivery → HR Case Management System; NAVEX EthicsPoint → Ethics & Grievance Case System; CobbleStone CLM → Contract Management System; XpertHR → Regulatory Research Service; beqom → Compensation Management System; ADP Workforce Now → Payroll System; Businessolver → Benefits Administration System; Lyra Health → Employee Assistance Provider; UKG Pro Workforce Management → Time & Attendance System; Visier → People Analytics Platform; Qualtrics EmployeeXM → Employee Survey Platform; Equus Software → Global Mobility System; Okta → Identity & Access Management; Staffbase → Employee Communications Platform. Changelog entries before this one keep the vendor names that were in the data at the time.",
+    "verified": "No vendor name remains in the sandbox's catalog or CRUD; 39 catalog entries and 68 CRUD strings renamed. Sandbox views render with no errors; every Current State and Progression Ceiling unchanged."
   }
 ];

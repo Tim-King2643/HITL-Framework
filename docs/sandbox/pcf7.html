@@ -728,7 +728,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
     },
     groups:[
     { code:"7.1", name:"Develop and Manage HR Planning, Policies, and Strategies", mv:[82, 74, 60, 47, 37], l3:[
-      { code:"7.1.1",crud:{"create":["Workforce Plan (Workday HCM)"],"read":[],"update":[],"delete":[]}, name:"Develop human resources strategy", pattern:"Mixed", mv:[82, 74, 60, 47, 37], mixed:true, raci:{R:"HRBP Manager · Director of HR Ops",A:"CHRO",C:"Director of TA",I:"All Managerial-tier"}, l4:[
+      { code:"7.1.1",crud:{"create":["Workforce Plan (Core HR System (HCM))"],"read":[],"update":[],"delete":[]}, name:"Develop human resources strategy", pattern:"Mixed", mv:[82, 74, 60, 47, 37], mixed:true, raci:{R:"HRBP Manager · Director of HR Ops",A:"CHRO",C:"Director of TA",I:"All Managerial-tier"}, l4:[
         { code:"7.1.1.1", name:"Identify strategic HR needs", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.1.1.2", name:"Define HR and business function roles and accountability", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.1.1.3", name:"Determine HR function roles and structure", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -740,7 +740,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         { code:"7.1.1.9", name:"Manage employer branding", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"7.1.1.10", name:"Design the employee experience", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"7.1.2",crud:{"create":[],"read":["Workforce Plan (Workday HCM)"],"update":[],"delete":[]}, name:"Develop and implement workforce planning, policies, and strategies", pattern:"Mixed", mv:[78, 69, 56, 43, 33], mixed:true, raci:{R:"Comp & Benefits Mgr · HRBP Mgr · Dir. of L&D · HR Generalist",A:"Director of HR Ops",C:"VP People & Culture",I:"CHRO · Director of TA"}, l4:[
+      { code:"7.1.2",crud:{"create":[],"read":["Workforce Plan (Core HR System (HCM))"],"update":[],"delete":[]}, name:"Develop and implement workforce planning, policies, and strategies", pattern:"Mixed", mv:[78, 69, 56, 43, 33], mixed:true, raci:{R:"Comp & Benefits Mgr · HRBP Mgr · Dir. of L&D · HR Generalist",A:"Director of HR Ops",C:"VP People & Culture",I:"CHRO · Director of TA"}, l4:[
         { code:"7.1.2.1", name:"Perform strategic workforce planning", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.1.2.2", name:"Develop total compensation and rewards strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.1.2.3", name:"Develop succession plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -758,13 +758,13 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         { code:"7.1.2.15", name:"Manage job families", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.1.2.16", name:"Develop and maintain job descriptions", pattern:"Document", mv:[72, 58, 40, 28, 18] },
       ]},
-      { code:"7.1.3", crud:{"create":["Policy Update Record (UKG HR Service Delivery)"],"read":["Workforce Plan (Workday HCM)","Regulatory Alert (XpertHR)"],"update":["Workforce Plan (Workday HCM)","Policy Update Record (UKG HR Service Delivery)"],"delete":[]}, name:"Monitor and update HR strategies, plans, and policies", pattern:"Mixed", mv:[82, 73, 59, 46, 36], mixed:true, raci:{R:"HRBP Manager",A:"Director of HR Ops",C:"VP People & Culture",I:"CHRO · All Managerial-tier"}, l4:[
+      { code:"7.1.3", crud:{"create":["Policy Update Record (HR Case Management System)"],"read":["Workforce Plan (Core HR System (HCM))","Regulatory Alert (Regulatory Research Service)"],"update":["Workforce Plan (Core HR System (HCM))","Policy Update Record (HR Case Management System)"],"delete":[]}, name:"Monitor and update HR strategies, plans, and policies", pattern:"Mixed", mv:[82, 73, 59, 46, 36], mixed:true, raci:{R:"HRBP Manager",A:"Director of HR Ops",C:"VP People & Culture",I:"CHRO · All Managerial-tier"}, l4:[
         { code:"7.1.3.1", name:"Measure realization of HR objectives", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.1.3.2", name:"Measure contribution of HR to business strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.1.3.3", name:"Communicate HR plans and provide updates to stakeholders", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"7.1.3.4", name:"Review and revise HR plans", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"7.1.4", crud:{"create":["Competency Model (Workday Skills Cloud)"],"read":["Workforce Plan (Workday HCM)"],"update":["Competency Model (Workday Skills Cloud)"],"delete":[]}, name:"Develop competency management models", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Comp & Benefits Mgr · HRBP Manager",A:"Director of L&D",C:"VP People & Culture · CHRO",I:"Director of TA"}, l4:[] },
+      { code:"7.1.4", crud:{"create":["Competency Model (Skills Management System)"],"read":["Workforce Plan (Core HR System (HCM))"],"update":["Competency Model (Skills Management System)"],"delete":[]}, name:"Develop competency management models", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Comp & Benefits Mgr · HRBP Manager",A:"Director of L&D",C:"VP People & Culture · CHRO",I:"Director of TA"}, l4:[] },
     ]},
     { code:"7.2", name:"Recruit, Source, and Select Employees", mv:[70, 60, 48, 36, 26], l3:[
       { code:"7.2.1",crud:"derived", name:"Manage employee requisitions", pattern:"Mixed", mv:[68, 58, 46, 33, 24], mixed:true, raci:{R:"HR Generalist · Recruiter",A:"HRBP Manager",C:"Director of TA",I:"Hiring Managers*"}, l4:[
@@ -776,7 +776,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         { code:"7.2.1.6", name:"Notify hiring manager", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.2.1.7", name:"Manage requisition dates", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"7.2.2",crud:{"create":[],"read":["Requisition Record (iCIMS)"],"update":["Applicant Record (iCIMS)"],"delete":[]}, name:"Recruit/Source candidates", pattern:"Mixed", mv:[68, 58, 45, 32, 22], mixed:true, raci:{R:"HR Generalist (referrals)",A:"Recruiter",C:"Director of TA",I:"HRBP Manager"}, l4:[
+      { code:"7.2.2",crud:{"create":[],"read":["Requisition Record (Applicant Tracking System)"],"update":["Applicant Record (Applicant Tracking System)"],"delete":[]}, name:"Recruit/Source candidates", pattern:"Mixed", mv:[68, 58, 45, 32, 22], mixed:true, raci:{R:"HR Generalist (referrals)",A:"Recruiter",C:"Director of TA",I:"HRBP Manager"}, l4:[
         { code:"7.2.2.1", name:"Determine recruitment methods and channels", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.2.2.2", name:"Perform recruiting activities/events", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.2.2.3", name:"Develop and maintain candidate pool", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -784,18 +784,18 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         { code:"7.2.2.5", name:"Manage employee referral programs", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.2.2.6", name:"Manage recruitment channels", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"7.2.3",crud:{"create":["Offer Letter (iCIMS)"],"read":["Requisition Record (iCIMS)"],"update":["Applicant Record (iCIMS)"],"delete":[]}, name:"Screen and select candidates", pattern:"Mixed", mv:[80, 73, 61, 50, 40], mixed:true, raci:{R:"Hiring Managers*",A:"Recruiter",C:"Director of TA",I:"HRBP Manager"}, l4:[
+      { code:"7.2.3",crud:{"create":["Offer Letter (Applicant Tracking System)"],"read":["Requisition Record (Applicant Tracking System)"],"update":["Applicant Record (Applicant Tracking System)"],"delete":[]}, name:"Screen and select candidates", pattern:"Mixed", mv:[80, 73, 61, 50, 40], mixed:true, raci:{R:"Hiring Managers*",A:"Recruiter",C:"Director of TA",I:"HRBP Manager"}, l4:[
         { code:"7.2.3.1", name:"Identify and deploy candidate selection tools", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.2.3.2", name:"Interview candidates", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.2.3.3", name:"Test candidates", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.2.3.4", name:"Select and reject candidates", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
       ]},
-      { code:"7.2.4",crud:{"create":["Background Check Record (HireRight)"],"read":["Requisition Record (iCIMS)"],"update":["Applicant Record (iCIMS)","Offer Letter (iCIMS)"],"delete":[]}, name:"Manage new hire/re-hire", pattern:"Mixed", mv:[75, 65, 52, 41, 32], mixed:true, raci:{R:"Comp & Benefits Mgr (offer terms)",A:"Recruiter",C:"Director of TA",I:"HRIS Analyst"}, l4:[
+      { code:"7.2.4",crud:{"create":["Background Check Record (Background Screening Service)"],"read":["Requisition Record (Applicant Tracking System)"],"update":["Applicant Record (Applicant Tracking System)","Offer Letter (Applicant Tracking System)"],"delete":[]}, name:"Manage new hire/re-hire", pattern:"Mixed", mv:[75, 65, 52, 41, 32], mixed:true, raci:{R:"Comp & Benefits Mgr (offer terms)",A:"Recruiter",C:"Director of TA",I:"HRIS Analyst"}, l4:[
         { code:"7.2.4.1", name:"Draw up and make offer", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"7.2.4.2", name:"Negotiate offer", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"7.2.4.3", name:"Hire candidate", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"7.2.5",crud:{"create":["Applicant Record (iCIMS)"],"read":[],"update":["Applicant Record (iCIMS)"],"delete":[]}, name:"Manage applicant information", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Recruiter (data entry)",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[
+      { code:"7.2.5",crud:{"create":["Applicant Record (Applicant Tracking System)"],"read":[],"update":["Applicant Record (Applicant Tracking System)"],"delete":[]}, name:"Manage applicant information", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Recruiter (data entry)",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[
         { code:"7.2.5.1", name:"Obtain candidate background information", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.2.5.2", name:"Create applicant record", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.2.5.3", name:"Manage/Track applicant data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -803,7 +803,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
       ]},
     ]},
     { code:"7.3", name:"Develop and Counsel Employees", mv:[79, 71, 58, 45, 35], l3:[
-      { code:"7.3.1",crud:{"create":["Onboarding Record (Workday HCM)","System Access Profile (Okta)"],"read":["Employee Master Record (Workday HCM)"],"update":[],"delete":[]}, name:"Manage employee onboarding", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, raci:{R:"—",A:"Onboarding Coordinator",C:"Director of HR Ops",I:"HRBP Manager"}, l4:[
+      { code:"7.3.1",crud:{"create":["Onboarding Record (Core HR System (HCM))","System Access Profile (Identity & Access Management)"],"read":["Employee Master Record (Core HR System (HCM))"],"update":[],"delete":[]}, name:"Manage employee onboarding", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, raci:{R:"—",A:"Onboarding Coordinator",C:"Director of HR Ops",I:"HRBP Manager"}, l4:[
         { code:"7.3.1.1", name:"Develop employee onboarding program", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.3.1.2", name:"Implement employee onboarding program", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.3.1.3", name:"Monitor and update employee onboarding program", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -814,13 +814,13 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         { code:"7.3.2.3", name:"Document employee performance", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"7.3.2.4", name:"Monitor and update performance program", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"7.3.3",crud:{"create":["Development Plan (Cornerstone OnDemand)"],"read":[],"update":["Performance Review (Lattice)"],"delete":[]}, name:"Manage employee career development", pattern:"Mixed", mv:[80, 73, 61, 50, 40], mixed:true, raci:{R:"HRBP Manager (guidelines/succession) · L&D Specialist (skill execution)",A:"Director of L&D",C:"VP People & Culture",I:"Director of TA"}, l4:[
+      { code:"7.3.3",crud:{"create":["Development Plan (Learning Management System)"],"read":[],"update":["Performance Review (Performance Management System)"],"delete":[]}, name:"Manage employee career development", pattern:"Mixed", mv:[80, 73, 61, 50, 40], mixed:true, raci:{R:"HRBP Manager (guidelines/succession) · L&D Specialist (skill execution)",A:"Director of L&D",C:"VP People & Culture",I:"Director of TA"}, l4:[
         { code:"7.3.3.1", name:"Define employee development guidelines", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.3.3.2", name:"Develop employee career plans and career paths", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.3.3.3", name:"Manage employee skill and competency development", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.3.3.4", name:"Establish succession plans", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
       ]},
-      { code:"7.3.4",crud:{"create":["Training Record (Cornerstone OnDemand)"],"read":[],"update":["Development Plan (Cornerstone OnDemand)"],"delete":[]}, name:"Develop and train employees", pattern:"Mixed", mv:[78, 69, 56, 43, 33], mixed:true, raci:{R:"Director of L&D (strategy) · L&D Specialist (execution)",A:"Director of L&D",C:"HRBP Manager",I:"CHRO"}, l4:[
+      { code:"7.3.4",crud:{"create":["Training Record (Learning Management System)"],"read":[],"update":["Development Plan (Learning Management System)"],"delete":[]}, name:"Develop and train employees", pattern:"Mixed", mv:[78, 69, 56, 43, 33], mixed:true, raci:{R:"Director of L&D (strategy) · L&D Specialist (execution)",A:"Director of L&D",C:"HRBP Manager",I:"CHRO"}, l4:[
         { code:"7.3.4.1", name:"Align organizational development needs to employees", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.3.4.2", name:"Define employees competencies and skills", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.3.4.3", name:"Align learning programs with competencies and skills", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -835,10 +835,10 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
       { code:"7.4.2", crud:"derived", name:"Manage collective bargaining process", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal*",I:"Director of HR Ops"}, l4:[] },
       { code:"7.4.3", crud:"derived", name:"Manage labor management partnerships", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"—",I:"Director of HR Ops"}, l4:[] },
       { code:"7.4.4", crud:"derived", name:"Manage employee grievances", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"—",I:"Legal* · Director of HR Ops"}, l4:[] },
-      { code:"7.4.5", crud:{"create":["Regulatory Alert (XpertHR)"],"read":[],"update":["Regulatory Alert (XpertHR)"],"delete":[]}, name:"Monitor legal and regulatory environment", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"Director of HR Ops",C:"Legal*",I:"CHRO"}, l4:[] },
+      { code:"7.4.5", crud:{"create":["Regulatory Alert (Regulatory Research Service)"],"read":[],"update":["Regulatory Alert (Regulatory Research Service)"],"delete":[]}, name:"Monitor legal and regulatory environment", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"Director of HR Ops",C:"Legal*",I:"CHRO"}, l4:[] },
     ]},
     { code:"7.5", name:"Reward and Retain Employees", mv:[71, 61, 47, 34, 24], l3:[
-      { code:"7.5.1",crud:{"create":["Compensation Record (beqom)"],"read":["Performance Review (Lattice)"],"update":["Payroll Record (ADP Workforce Now)"],"delete":[]}, name:"Develop and manage reward, recognition, and motivation programs", pattern:"Mixed", mv:[79, 71, 58, 45, 35], mixed:true, raci:{R:"Compensation Analyst (admin-tier activities)",A:"Compensation & Benefits Manager",C:"—",I:"HRBP Manager"}, l4:[
+      { code:"7.5.1",crud:{"create":["Compensation Record (Compensation Management System)"],"read":["Performance Review (Performance Management System)"],"update":["Payroll Record (Payroll System)"],"delete":[]}, name:"Develop and manage reward, recognition, and motivation programs", pattern:"Mixed", mv:[79, 71, 58, 45, 35], mixed:true, raci:{R:"Compensation Analyst (admin-tier activities)",A:"Compensation & Benefits Manager",C:"—",I:"HRBP Manager"}, l4:[
         { code:"7.5.1.1", name:"Develop salary/compensation structure and plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.5.1.2", name:"Develop benefits and rewards plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.5.1.3", name:"Perform competitive analysis of benefits and rewards", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -849,18 +849,18 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         { code:"7.5.1.8", name:"Review compensation plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.5.1.9", name:"Review benefits and rewards plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"7.5.2",crud:{"create":["Benefits Enrollment (Businessolver)"],"read":[],"update":[],"delete":[]}, name:"Manage and administer benefits", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"Compensation Analyst",C:"Compensation & Benefits Manager",I:"HRIS Analyst"}, l4:[
+      { code:"7.5.2",crud:{"create":["Benefits Enrollment (Benefits Administration System)"],"read":[],"update":[],"delete":[]}, name:"Manage and administer benefits", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"Compensation Analyst",C:"Compensation & Benefits Manager",I:"HRIS Analyst"}, l4:[
         { code:"7.5.2.1", name:"Deliver employee benefits program", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.5.2.2", name:"Administer benefit enrollment", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.5.2.3", name:"Process benefits claims", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.5.2.4", name:"Perform benefit reconciliation", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"7.5.3", crud:{"create":["EAP Referral (Lyra Health)","Retention Risk Score (Visier)"],"read":["Performance Review (Lattice)","Employee Master Record (Workday HCM)"],"update":["EAP Referral (Lyra Health)","Retention Risk Score (Visier)"],"delete":[]}, name:"Manage employee assistance and retention", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HR Generalist",C:"HRBP Manager",I:"Director of HR Ops"}, l4:[
+      { code:"7.5.3", crud:{"create":["EAP Referral (Employee Assistance Provider)","Retention Risk Score (People Analytics Platform)"],"read":["Performance Review (Performance Management System)","Employee Master Record (Core HR System (HCM))"],"update":["EAP Referral (Employee Assistance Provider)","Retention Risk Score (People Analytics Platform)"],"delete":[]}, name:"Manage employee assistance and retention", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HR Generalist",C:"HRBP Manager",I:"Director of HR Ops"}, l4:[
         { code:"7.5.3.1", name:"Deliver programs to support work/life balance for employees", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.5.3.2", name:"Develop employee and family support systems", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"7.5.4",crud:{"create":["Payroll Record (ADP Workforce Now)"],"read":["Compensation Record (beqom)","Benefits Enrollment (Businessolver)"],"update":[],"delete":[]}, name:"Administer Payroll", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst (HR-owned scope)",C:"Compensation Analyst",I:"Finance*"}, l4:[] },
-      { code:"7.5.5", crud:{"create":["Employee Suggestion (Qualtrics EmployeeXM)"],"read":["Employee Master Record (Workday HCM)"],"update":["Employee Suggestion (Qualtrics EmployeeXM)"],"delete":[]}, name:"Manage/collect employee suggestions and perform employee research", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HRIS Analyst (data/survey tooling)",A:"HR Generalist",C:"—",I:"HRBP Manager"}, l4:[] },
+      { code:"7.5.4",crud:{"create":["Payroll Record (Payroll System)"],"read":["Compensation Record (Compensation Management System)","Benefits Enrollment (Benefits Administration System)"],"update":[],"delete":[]}, name:"Administer Payroll", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst (HR-owned scope)",C:"Compensation Analyst",I:"Finance*"}, l4:[] },
+      { code:"7.5.5", crud:{"create":["Employee Suggestion (Employee Survey Platform)"],"read":["Employee Master Record (Core HR System (HCM))"],"update":["Employee Suggestion (Employee Survey Platform)"],"delete":[]}, name:"Manage/collect employee suggestions and perform employee research", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HRIS Analyst (data/survey tooling)",A:"HR Generalist",C:"—",I:"HRBP Manager"}, l4:[] },
     ]},
     { code:"7.6", name:"Redeploy and Retire Employees", mv:[73, 64, 52, 41, 32], l3:[
       { code:"7.6.1", crud:"derived", name:"Manage promotion and demotion process", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Compensation & Benefits Manager",I:"—"}, l4:[] },
@@ -875,20 +875,20 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
       ]},
     ]},
     { code:"7.7", name:"Manage Employee Information", mv:[73, 63, 50, 38, 29], l3:[
-      { code:"7.7.1", crud:{"create":[],"read":["Employee Master Record (Workday HCM)","HR Analytics Report (Visier)"],"update":["HR Analytics Report (Visier)"],"delete":[]}, name:"Manage reporting processes", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[] },
-      { code:"7.7.2", crud:{"create":["HR Inquiry Case (UKG HR Service Delivery)"],"read":["Employee Master Record (Workday HCM)"],"update":["HR Inquiry Case (UKG HR Service Delivery)"],"delete":[]}, name:"Manage employee inquiry process", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"—",A:"HR Generalist",C:"HRBP Manager",I:"—"}, l4:[] },
-      { code:"7.7.3",crud:{"create":["Employee Master Record (Workday HCM)"],"read":["Time and Attendance Record (UKG Pro Workforce Management)"],"update":[],"delete":[]}, name:"Manage and maintain employee data", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"—"}, l4:[] },
-      { code:"7.7.4", crud:{"create":["System Configuration Record (Workday HCM)"],"read":["Employee Master Record (Workday HCM)"],"update":["System Configuration Record (Workday HCM)"],"delete":[]}, name:"Manage human resource information systems", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[] },
-      { code:"7.7.5", crud:{"create":["HR Metric Definition (Visier)"],"read":["Employee Master Record (Workday HCM)","HR Analytics Report (Visier)"],"update":["HR Metric Definition (Visier)"],"delete":[]}, name:"Develop and manage employee measures", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"Director of HR Ops",I:"—"}, l4:[] },
-      { code:"7.7.6",crud:{"create":["Time and Attendance Record (UKG Pro Workforce Management)"],"read":["Employee Master Record (Workday HCM)"],"update":[],"delete":[]}, name:"Develop and manage time and attendance systems", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"—"}, l4:[] },
-      { code:"7.7.7",crud:{"create":[],"read":["Employee Master Record (Workday HCM)"],"update":[],"delete":[]}, name:"Develop workforce analytics", pattern:"Mixed", mv:[81, 74, 62, 50, 41], mixed:true, raci:{R:"—",A:"HRIS Analyst",C:"Director of HR Ops",I:"—"}, l4:[
+      { code:"7.7.1", crud:{"create":[],"read":["Employee Master Record (Core HR System (HCM))","HR Analytics Report (People Analytics Platform)"],"update":["HR Analytics Report (People Analytics Platform)"],"delete":[]}, name:"Manage reporting processes", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.7.2", crud:{"create":["HR Inquiry Case (HR Case Management System)"],"read":["Employee Master Record (Core HR System (HCM))"],"update":["HR Inquiry Case (HR Case Management System)"],"delete":[]}, name:"Manage employee inquiry process", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"—",A:"HR Generalist",C:"HRBP Manager",I:"—"}, l4:[] },
+      { code:"7.7.3",crud:{"create":["Employee Master Record (Core HR System (HCM))"],"read":["Time and Attendance Record (Time & Attendance System)"],"update":[],"delete":[]}, name:"Manage and maintain employee data", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"—"}, l4:[] },
+      { code:"7.7.4", crud:{"create":["System Configuration Record (Core HR System (HCM))"],"read":["Employee Master Record (Core HR System (HCM))"],"update":["System Configuration Record (Core HR System (HCM))"],"delete":[]}, name:"Manage human resource information systems", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.7.5", crud:{"create":["HR Metric Definition (People Analytics Platform)"],"read":["Employee Master Record (Core HR System (HCM))","HR Analytics Report (People Analytics Platform)"],"update":["HR Metric Definition (People Analytics Platform)"],"delete":[]}, name:"Develop and manage employee measures", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"Director of HR Ops",I:"—"}, l4:[] },
+      { code:"7.7.6",crud:{"create":["Time and Attendance Record (Time & Attendance System)"],"read":["Employee Master Record (Core HR System (HCM))"],"update":[],"delete":[]}, name:"Develop and manage time and attendance systems", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"—"}, l4:[] },
+      { code:"7.7.7",crud:{"create":[],"read":["Employee Master Record (Core HR System (HCM))"],"update":[],"delete":[]}, name:"Develop workforce analytics", pattern:"Mixed", mv:[81, 74, 62, 50, 41], mixed:true, raci:{R:"—",A:"HRIS Analyst",C:"Director of HR Ops",I:"—"}, l4:[
         { code:"7.7.7.1", name:"Determine stakeholder requirements", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.7.7.2", name:"Identify research questions", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.7.7.3", name:"Select workforce analysis methodology", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"7.7.7.4", name:"Identify workforce data sources", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.7.7.5", name:"Gather workforce data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"7.7.8",crud:{"create":["HR Analytics Report (Visier)"],"read":["Employee Master Record (Workday HCM)"],"update":[],"delete":[]}, name:"Implement workforce analytics", pattern:"Mixed", mv:[72, 61, 47, 34, 24], mixed:true, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[
+      { code:"7.7.8",crud:{"create":["HR Analytics Report (People Analytics Platform)"],"read":["Employee Master Record (Core HR System (HCM))"],"update":[],"delete":[]}, name:"Implement workforce analytics", pattern:"Mixed", mv:[72, 61, 47, 34, 24], mixed:true, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[
         { code:"7.7.8.1", name:"Transform workforce analysis data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.7.8.2", name:"Develop insights into workforce analytics outcomes", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.7.8.3", name:"Communicate workforce analysis outcomes", pattern:"Document", mv:[72, 58, 40, 28, 18] },
@@ -896,7 +896,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
     ]},
     { code:"7.8", name:"Manage Employee Communication", mv:[76, 65, 48, 36, 26], l3:[
       { code:"7.8.1", crud:"derived", name:"Develop employee communication plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Director of HR Ops",I:"—"}, l4:[] },
-      { code:"7.8.2",crud:{"create":["Survey Response (Qualtrics EmployeeXM)"],"read":["Employee Master Record (Workday HCM)"],"update":[],"delete":[]}, name:"Conduct employee engagement surveys", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HRIS Analyst (data/survey tooling)",A:"HR Generalist",C:"—",I:"HRBP Manager"}, l4:[] },
+      { code:"7.8.2",crud:{"create":["Survey Response (Employee Survey Platform)"],"read":["Employee Master Record (Core HR System (HCM))"],"update":[],"delete":[]}, name:"Conduct employee engagement surveys", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HRIS Analyst (data/survey tooling)",A:"HR Generalist",C:"—",I:"HRBP Manager"}, l4:[] },
       { code:"7.8.3",crud:"derived", name:"Deliver employee communications", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HR Generalist (delivery execution)",A:"HRBP Manager",C:"—",I:"—"}, l4:[] },
     ]},
   ]};
@@ -1100,51 +1100,53 @@ const WR_DATA = {
 
 // ── Work-Product Catalog (master data) ─────────────────────────────────────
 // GR-050's first entity. One entry per work product: a permanent ID (never
-// reused once retired), name, system of record, one-line definition, whether
+// reused once retired), name, system of record (a generic category of
+// system, never a vendor: the framework describes no specific organization;
+// Tim, Sept 26, 2026, CL-008), one-line definition, whether
 // it is itself a model's output, and status (Draft / Active / Retired).
 // Moved into the sandbox Sept 26, 2026 (CL-007) from the WIP draft in
 // docs/wip/work_product_catalog.html, which now reads this list live.
 // Change it here first and log the change in ../wip/changelog-data.js.
 const WORK_PRODUCTS = [
-  { id:"WP-7-01", name:"Workforce Plan", system:"Workday HCM", definition:"The forecast of headcount, skills and labor cost the function plans against for a period.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-02", name:"Requisition Record", system:"iCIMS", definition:"An approved request to fill a position, tied to budget and the headcount plan.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-03", name:"Policy Update Record", system:"UKG HR Service Delivery", definition:"A new or revised HR policy, with what changed and when it takes effect.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-04", name:"Competency Model", system:"Workday Skills Cloud", definition:"The skills and behaviors expected for each role family and level.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-05", name:"Job Posting", system:"iCIMS", definition:"The advertisement for an open requisition, published internally or externally.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-06", name:"Offer Letter", system:"iCIMS", definition:"The written employment offer, its terms and its signature status.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-07", name:"Background Check Record", system:"HireRight", definition:"The results of pre-employment screening for a new hire.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-08", name:"Applicant Record", system:"iCIMS", definition:"An applicant's record through hiring: application, screening notes and interview feedback, retained after the decision for compliance.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-09", name:"Onboarding Record", system:"Workday HCM", definition:"A new hire's onboarding tasks, forms and completion status.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-10", name:"System Access Profile", system:"Okta", definition:"An employee's accounts and access rights across systems, removed at separation.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-11", name:"Performance Review", system:"Lattice", definition:"An assessment of an employee's performance for a review period, with ratings and manager comments.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-12", name:"Development Plan", system:"Cornerstone OnDemand", definition:"An employee's agreed development goals and the actions to reach them.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-13", name:"Training Record", system:"Cornerstone OnDemand", definition:"The learning an employee has completed and the certifications held.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-14", name:"ER Case Record", system:"UKG HR Service Delivery", definition:"An employee-relations matter: the issue raised, the investigation and the outcome.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-15", name:"Collective Bargaining Agreement", system:"CobbleStone CLM", definition:"The negotiated labor contract with a union, and its amendments.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-16", name:"Labor Partnership Record", system:"CobbleStone CLM", definition:"The agreements and commitments from joint labor-management forums.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-17", name:"Grievance Case", system:"NAVEX EthicsPoint", definition:"A formal grievance, the steps taken under the labor agreement, and its resolution.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-18", name:"Regulatory Alert", system:"XpertHR", definition:"Notice of a new or changed employment law or regulation that may require action.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-19", name:"Compensation Record", system:"beqom", definition:"An employee's pay: base pay, band, incentives and adjustments.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-20", name:"Benefits Enrollment", system:"Businessolver", definition:"An employee's elected benefit plans, coverage levels and covered dependents.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-21", name:"EAP Referral", system:"Lyra Health", definition:"A confidential referral of an employee to employee-assistance services.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-22", name:"Retention Risk Score", system:"Visier", definition:"A modeled estimate of how likely an employee is to leave.", modelOutput:true, status:"Draft" },
-  { id:"WP-7-23", name:"Payroll Record", system:"ADP Workforce Now", definition:"Pay calculated and paid for each period, with earnings, deductions and taxes.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-24", name:"Employee Suggestion", system:"Qualtrics EmployeeXM", definition:"An idea or piece of feedback submitted by an employee, and what was done with it.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-25", name:"Position Change Record", system:"Workday HCM", definition:"A promotion, demotion or transfer: the old and new title, band and effective date.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-26", name:"Separation Record", system:"Workday HCM", definition:"An employee's exit: reason, date, final pay and offboarding steps.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-27", name:"Assignment Letter", system:"Equus Software", definition:"The terms of an international or temporary assignment.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-28", name:"Relocation Case", system:"Equus Software", definition:"An employee relocation: the move, its benefits and its status.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-29", name:"HR Inquiry Case", system:"UKG HR Service Delivery", definition:"An employee question or request, how it was routed, and the answer given.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-30", name:"Employee Master Record", system:"Workday HCM", definition:"The core record of each employee: identity, job, organization and employment status.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-31", name:"System Configuration Record", system:"Workday HCM", definition:"A change to how the HR system is set up: business processes, rules and security.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-32", name:"HR Metric Definition", system:"Visier", definition:"The agreed definition and formula for an HR measure.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-33", name:"Time and Attendance Record", system:"UKG Pro Workforce Management", definition:"An employee's time worked, absences and schedule.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-34", name:"HR Analytics Report", system:"Visier", definition:"Workforce analysis and recurring HR reporting built from HR data.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-35", name:"Communication Plan", system:"Staffbase", definition:"The planned messages, audiences and timing for an employee communication.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-36", name:"Survey Response", system:"Qualtrics EmployeeXM", definition:"An employee's answers to an engagement or pulse survey.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-37", name:"Communication Record", system:"Staffbase", definition:"A communication as sent: content, audience and delivery date.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-38", name:"Staffing Plan", system:"Workday HCM", definition:"A business unit's planned roles and hiring for a period, aligned to the workforce plan.", modelOutput:false, status:"Draft" },
-  { id:"WP-7-39", name:"Performance Program", system:"Lattice", definition:"The design of performance management: review cycle, forms, rating scale and guidance.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-01", name:"Workforce Plan", system:"Core HR System (HCM)", definition:"The forecast of headcount, skills and labor cost the function plans against for a period.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-02", name:"Requisition Record", system:"Applicant Tracking System", definition:"An approved request to fill a position, tied to budget and the headcount plan.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-03", name:"Policy Update Record", system:"HR Case Management System", definition:"A new or revised HR policy, with what changed and when it takes effect.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-04", name:"Competency Model", system:"Skills Management System", definition:"The skills and behaviors expected for each role family and level.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-05", name:"Job Posting", system:"Applicant Tracking System", definition:"The advertisement for an open requisition, published internally or externally.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-06", name:"Offer Letter", system:"Applicant Tracking System", definition:"The written employment offer, its terms and its signature status.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-07", name:"Background Check Record", system:"Background Screening Service", definition:"The results of pre-employment screening for a new hire.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-08", name:"Applicant Record", system:"Applicant Tracking System", definition:"An applicant's record through hiring: application, screening notes and interview feedback, retained after the decision for compliance.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-09", name:"Onboarding Record", system:"Core HR System (HCM)", definition:"A new hire's onboarding tasks, forms and completion status.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-10", name:"System Access Profile", system:"Identity & Access Management", definition:"An employee's accounts and access rights across systems, removed at separation.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-11", name:"Performance Review", system:"Performance Management System", definition:"An assessment of an employee's performance for a review period, with ratings and manager comments.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-12", name:"Development Plan", system:"Learning Management System", definition:"An employee's agreed development goals and the actions to reach them.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-13", name:"Training Record", system:"Learning Management System", definition:"The learning an employee has completed and the certifications held.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-14", name:"ER Case Record", system:"HR Case Management System", definition:"An employee-relations matter: the issue raised, the investigation and the outcome.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-15", name:"Collective Bargaining Agreement", system:"Contract Management System", definition:"The negotiated labor contract with a union, and its amendments.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-16", name:"Labor Partnership Record", system:"Contract Management System", definition:"The agreements and commitments from joint labor-management forums.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-17", name:"Grievance Case", system:"Ethics & Grievance Case System", definition:"A formal grievance, the steps taken under the labor agreement, and its resolution.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-18", name:"Regulatory Alert", system:"Regulatory Research Service", definition:"Notice of a new or changed employment law or regulation that may require action.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-19", name:"Compensation Record", system:"Compensation Management System", definition:"An employee's pay: base pay, band, incentives and adjustments.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-20", name:"Benefits Enrollment", system:"Benefits Administration System", definition:"An employee's elected benefit plans, coverage levels and covered dependents.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-21", name:"EAP Referral", system:"Employee Assistance Provider", definition:"A confidential referral of an employee to employee-assistance services.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-22", name:"Retention Risk Score", system:"People Analytics Platform", definition:"A modeled estimate of how likely an employee is to leave.", modelOutput:true, status:"Draft" },
+  { id:"WP-7-23", name:"Payroll Record", system:"Payroll System", definition:"Pay calculated and paid for each period, with earnings, deductions and taxes.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-24", name:"Employee Suggestion", system:"Employee Survey Platform", definition:"An idea or piece of feedback submitted by an employee, and what was done with it.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-25", name:"Position Change Record", system:"Core HR System (HCM)", definition:"A promotion, demotion or transfer: the old and new title, band and effective date.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-26", name:"Separation Record", system:"Core HR System (HCM)", definition:"An employee's exit: reason, date, final pay and offboarding steps.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-27", name:"Assignment Letter", system:"Global Mobility System", definition:"The terms of an international or temporary assignment.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-28", name:"Relocation Case", system:"Global Mobility System", definition:"An employee relocation: the move, its benefits and its status.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-29", name:"HR Inquiry Case", system:"HR Case Management System", definition:"An employee question or request, how it was routed, and the answer given.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-30", name:"Employee Master Record", system:"Core HR System (HCM)", definition:"The core record of each employee: identity, job, organization and employment status.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-31", name:"System Configuration Record", system:"Core HR System (HCM)", definition:"A change to how the HR system is set up: business processes, rules and security.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-32", name:"HR Metric Definition", system:"People Analytics Platform", definition:"The agreed definition and formula for an HR measure.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-33", name:"Time and Attendance Record", system:"Time & Attendance System", definition:"An employee's time worked, absences and schedule.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-34", name:"HR Analytics Report", system:"People Analytics Platform", definition:"Workforce analysis and recurring HR reporting built from HR data.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-35", name:"Communication Plan", system:"Employee Communications Platform", definition:"The planned messages, audiences and timing for an employee communication.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-36", name:"Survey Response", system:"Employee Survey Platform", definition:"An employee's answers to an engagement or pulse survey.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-37", name:"Communication Record", system:"Employee Communications Platform", definition:"A communication as sent: content, audience and delivery date.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-38", name:"Staffing Plan", system:"Core HR System (HCM)", definition:"A business unit's planned roles and hiring for a period, aligned to the workforce plan.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-39", name:"Performance Program", system:"Performance Management System", definition:"The design of performance management: review cycle, forms, rating scale and guidance.", modelOutput:false, status:"Draft" },
 ];
 
 // ── Activity-level CRUD (master data) ──────────────────────────────────────
@@ -1293,7 +1295,7 @@ function toggleRaciL3(code, el) { setRaciL3Expanded(code, el.classList.contains(
 function formatCrudCell(entries, opClass) {
   if (!entries || !entries.length) return '<td class="crud crud-empty">&middot;</td>';
   const items = entries.map(e => {
-    const m = e.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+    const m = e.match(/^(.*?)\s*\((.+)\)\s*$/);  // system names may hold their own parentheses, e.g. Core HR System (HCM)
     return m
       ? '<div class="crud-entry"><span class="crud-entity">' + m[1] + '</span><span class="crud-sys">' + m[2] + '</span></div>'
       : '<div class="crud-entry"><span class="crud-entity">' + e + '</span></div>';

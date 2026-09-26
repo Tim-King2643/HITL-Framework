@@ -158,7 +158,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
     <tr><td class="k">ID</td><td><span class="mono">WP-</span>domain<span class="mono">-</span>sequence, such as <span class="mono">WP-7-12</span>. Permanent: a retired ID is never reused. New work products take the next number (WP-7-38 and WP-7-39 were added Sept 26).</td></tr>
     <tr><td class="k">Name</td><td>The work product as people in the role would name it, without the system.</td></tr>
     <tr><td class="k">Definition</td><td>One line saying what it is.</td></tr>
-    <tr><td class="k">System of record</td><td>The one system that holds the authoritative copy. The vendors are Sandbox 7.0's illustrative examples.</td></tr>
+    <tr><td class="k">System of record</td><td>The kind of system that holds the authoritative copy, named as a generic category (for example, Applicant Tracking System), never a vendor: the framework describes no specific organization.</td></tr>
     <tr><td class="k">Status</td><td>Draft, Active or Retired. Retired entries stay in the catalog so changelog history and old links still resolve.</td></tr>
     <tr><td class="k">Model output</td><td>Yes when the work product is itself the output of an AI or statistical model. It then counts as AI-touched for everyone downstream, whatever its producing activity's working relationship. </td></tr>
   </table></div>
@@ -175,6 +175,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
 
   <h2>3a. Decisions from the Activity-Level Review &mdash; Tim, Sept 26, 2026</h2>
   <div class="open-item"><div class="oi-name">Two new work products</div><p>Outputs found while reasoning each activity are added to the catalog when identified. WP-7-38 Staffing Plan is created in 7.2.1.1; WP-7-39 Performance Program is updated in 7.3.2.4, and its creator is not identified yet.</p></div>
+  <div class="open-item"><div class="oi-name">Systems named generically</div><p>Every system of record is now a generic category rather than a vendor, since the framework is not based on a specific organization (CL-008). The Sept 25 decisions above name the vendors that were in the data at the time; iCIMS is now the Applicant Tracking System and Visier the People Analytics Platform.</p></div>
   <div class="open-item"><div class="oi-name">CRUD reasoned per activity, process CRUD derived</div><p>For the HRBP Manager&rsquo;s 11 processes, each activity&rsquo;s links are reasoned from the activity and the process CRUD is derived from them (CL-007). That dropped 7.6.2&rsquo;s update of the ER Case Record, which no activity supports, made offboarding the Separation Record&rsquo;s creator with retirement updating it, and added ten links the process CRUD never had. See <a href="activity_crud_hrbp_manager.html">Activity-Level CRUD &mdash; HRBP Manager</a>.</p></div>
 
   <h2>4. What the Catalog Shows</h2>
@@ -235,7 +236,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
       if (m[2] === ' ') unconf[m[1]] = 1;
       var cr = ev(m[3]);
       Object.keys(cr).forEach(function (op) { cr[op].forEach(function (lab) {
-        var w = byName[lab.replace(/\s*\([^)]*\)\s*$/, '')]; if (w) add(w.id, op, m[1]);
+        var w = byName[lab.replace(/\s*\(.*\)\s*$/, '')]; if (w) add(w.id, op, m[1]);
       }); });
     }
     function codes(obj, creators) {
