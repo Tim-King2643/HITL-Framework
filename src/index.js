@@ -507,6 +507,159 @@ async function handleApi(request, env, url) {
   return json({ error: 'not found' }, { status: 404 });
 }
 
+
+// ── Organizations & Assessments (docs/sandbox/*.html) ───────────────────
+// Added Sept 26, 2026 for GR-052 / GR-053 (docs/wip/reference_model_
+// assessment_layer_spec.html). The reference model is not stored here: it
+// is the sandbox's own master data, and every page lists it first as the
+// read-only "Reference Model" entry. This store holds the organizations
+// assessed against it, and their activity-by-activity assessments.
+//
+// Keys (same SANDBOX_NOTES namespace, separate prefixes):
+//   org:<orgId>             -> { id, name, industry, size, test, createdBy, createdAt }
+//   assess:<orgId>:<code>   -> { current, proposed, answers, overrideReason,
+//                                evidenceType, source, confidence, note,
+//                                assessedBy, assessedAt, history: [...] }
+// An activity with no assess: key is unassessed and reads as the reference
+// baseline (Human-only). Resetting an activity keeps its history.
+//
+// Only recognized reviewers (Tim, GiGi) can create organizations or save
+// assessments; the Access login gates who can read. Per-organization access
+// comes later, with real clients.
+
+const ORG_ID_RE = /^[a-z0-9][a-z0-9-]{1,40}$/;
+const ASSESS_CODE_RE = /^7(\.\d+){2,3}$/;
+const WR_STEPS = ['Human-only', 'Judgment', 'Oversight', 'Augmentation', 'Agent-delegation', 'Automation'];
+const EVIDENCE_TYPES = new Set(['observed', 'system', 'interview', 'document']);
+const CONFIDENCE = new Set(['high', 'medium', 'low']);
+const ORG_MAX = 200, NOTE_MAX = 2000, HISTORY_MAX = 25;
+
+function clip(v, n) { return typeof v === 'string' ? v.trim().slice(0, n) : ''; }
+function slugify(name) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 36) || 'org';
+}
+async function listKeys(env, prefix) {
+  const out = []; let cursor;
+  do {
+    const page = await env.SANDBOX_NOTES.list({ prefix, cursor });
+    page.keys.forEach(k => out.push(k.name));
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor);
+  return out;
+}
+async function readOrg(env, id) {
+  const raw = await env.SANDBOX_NOTES.get('org:' + id);
+  return raw ? JSON.parse(raw) : null;
+}
+
+async function handleOrgApi(request, env, url) {
+  const reviewer = reviewerFromRequest(request);
+
+  if (url.pathname === '/org-api/orgs' && request.method === 'GET') {
+    const keys = await listKeys(env, 'org:');
+    const orgs = [];
+    for (const k of keys) {
+      const raw = await env.SANDBOX_NOTES.get(k);
+      if (!raw) continue;
+      const org = JSON.parse(raw);
+      const aKeys = await listKeys(env, 'assess:' + org.id + ':');
+      let assessed = 0;
+      for (const ak of aKeys) {
+        const rec = JSON.parse(await env.SANDBOX_NOTES.get(ak) || 'null');
+        if (rec && rec.current) assessed++;
+      }
+      org.assessedCount = assessed;
+      orgs.push(org);
+    }
+    orgs.sort((a, b) => a.name.localeCompare(b.name));
+    return json({ reviewer, orgs });
+  }
+
+  if (url.pathname === '/org-api/orgs' && request.method === 'POST') {
+    if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
+    let body;
+    try { body = await request.json(); } catch (e) { return json({ error: 'invalid JSON body' }, { status: 400 }); }
+    const name = clip(body && body.name, ORG_MAX);
+    if (!name) return json({ error: 'an organization needs a name' }, { status: 400 });
+    if (/^reference model$/i.test(name)) return json({ error: 'that name is reserved for the reference model' }, { status: 400 });
+    let id = slugify(name), n = 2;
+    const base = id;
+    while (await readOrg(env, id)) id = base + '-' + (n++);
+    const org = {
+      id, name,
+      industry: clip(body.industry, ORG_MAX),
+      size: clip(body.size, ORG_MAX),
+      test: body.test === true,
+      createdBy: reviewer,
+      createdAt: Date.now()
+    };
+    await env.SANDBOX_NOTES.put('org:' + id, JSON.stringify(org));
+    org.assessedCount = 0;
+    return json({ ok: true, org });
+  }
+
+  if (url.pathname === '/org-api/assessment' && request.method === 'GET') {
+    const orgId = url.searchParams.get('org') || '';
+    if (!ORG_ID_RE.test(orgId)) return json({ error: 'unknown organization' }, { status: 400 });
+    const org = await readOrg(env, orgId);
+    if (!org) return json({ error: 'unknown organization' }, { status: 404 });
+    const prefix = 'assess:' + orgId + ':';
+    const records = {};
+    for (const k of await listKeys(env, prefix)) {
+      const raw = await env.SANDBOX_NOTES.get(k);
+      if (raw) records[k.slice(prefix.length)] = JSON.parse(raw);
+    }
+    return json({ reviewer, org, records });
+  }
+
+  if (url.pathname === '/org-api/assessment' && (request.method === 'POST' || request.method === 'DELETE')) {
+    if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
+    let body;
+    try { body = await request.json(); } catch (e) { return json({ error: 'invalid JSON body' }, { status: 400 }); }
+    const orgId = body && body.org, code = body && body.code;
+    if (typeof orgId !== 'string' || !ORG_ID_RE.test(orgId) || !(await readOrg(env, orgId))) {
+      return json({ error: 'unknown organization' }, { status: 400 });
+    }
+    if (typeof code !== 'string' || !ASSESS_CODE_RE.test(code)) return json({ error: 'unknown activity' }, { status: 400 });
+    const key = 'assess:' + orgId + ':' + code;
+    const prevRaw = await env.SANDBOX_NOTES.get(key);
+    const prev = prevRaw ? JSON.parse(prevRaw) : null;
+    const history = prev ? (prev.history || []) : [];
+    if (prev && prev.current) {
+      const snap = Object.assign({}, prev); delete snap.history;
+      history.unshift(snap);
+    }
+    if (request.method === 'DELETE') {
+      const rec = { current: null, resetBy: reviewer, resetAt: Date.now(), history: history.slice(0, HISTORY_MAX) };
+      await env.SANDBOX_NOTES.put(key, JSON.stringify(rec));
+      return json({ ok: true, record: rec });
+    }
+    const current = body.current;
+    if (!WR_STEPS.includes(current)) return json({ error: 'unknown working relationship' }, { status: 400 });
+    const proposed = WR_STEPS.includes(body.proposed) ? body.proposed : null;
+    const overrideReason = clip(body.overrideReason, NOTE_MAX);
+    if (proposed && proposed !== current && !overrideReason) {
+      return json({ error: 'overriding the proposed working relationship needs a reason' }, { status: 400 });
+    }
+    const evidenceType = EVIDENCE_TYPES.has(body.evidenceType) ? body.evidenceType : null;
+    const confidence = CONFIDENCE.has(body.confidence) ? body.confidence : null;
+    if (!evidenceType || !confidence) return json({ error: 'an assessment needs an evidence type and a confidence level' }, { status: 400 });
+    const answers = Array.isArray(body.answers) ? body.answers.slice(0, 5).map(a => a === true || a === false ? a : null) : [];
+    const rec = {
+      current, proposed, answers, overrideReason, evidenceType, confidence,
+      source: clip(body.source, ORG_MAX),
+      note: clip(body.note, NOTE_MAX),
+      assessedBy: reviewer,
+      assessedAt: Date.now(),
+      history: history.slice(0, HISTORY_MAX)
+    };
+    await env.SANDBOX_NOTES.put(key, JSON.stringify(rec));
+    return json({ ok: true, record: rec });
+  }
+
+  return json({ error: 'not found' }, { status: 404 });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -515,6 +668,9 @@ export default {
     }
     if (url.pathname.startsWith('/sandbox-api/')) {
       return handleSandboxApi(request, env, url);
+    }
+    if (url.pathname.startsWith('/org-api/')) {
+      return handleOrgApi(request, env, url);
     }
     return env.ASSETS.fetch(request);
   }

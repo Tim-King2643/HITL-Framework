@@ -133,7 +133,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
 
   <div class="approval-box">
     <div class="ab-head">Concept stage &mdash; design for GR-052, not yet built</div>
-    <p>Captures Tim&rsquo;s Sept 26, 2026 design decision and works out what follows from it. Nothing in the sandbox has changed yet: the reset of Current State and the organization layer wait on the open decisions in section 9.</p>
+    <p>Captures Tim&rsquo;s Sept 26, 2026 design decision and works out what follows from it. Built the same day as a prototype: the reference reset to the Human-only baseline (CL-009), the organization list and selector, and assessment from the Working Relationship view. The remaining open decisions are in section 9.</p>
   </div>
 
   <div class="related-reqs">
@@ -182,7 +182,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <table>
     <tr><th style="width:24%">Layer</th><th>Holds</th><th style="width:26%">Where it lives</th></tr>
     <tr><td class="k">Reference</td><td>Everything in the reference model above. Current State is no longer stored per activity: the baseline is Human-only for all. The modeled typical-practice values are recorded in the changelog when they are reset.</td><td>Sandbox master data, in the repo, under the changelog check.</td></tr>
-    <tr><td class="k">Organization</td><td>An organization record (name, size, industry, who assessed it, when). Per activity, only where assessed: Current State, an optional governance ceiling, the evidence, who gave it, the date and a confidence level.</td><td>Private storage behind the Worker and the Access login (the key-value store that already holds sandbox notes and votes), never the public repo. Access limited per organization.</td></tr>
+    <tr><td class="k">Organization</td><td>An organization list whose first entry is always the read-only <strong>Reference Model</strong>, the default. Each organization record holds name, industry, size, whether it is test data, who created it and when. Per activity, only where assessed: Current State, an optional governance ceiling, the evidence, who gave it, the date and a confidence level.</td><td>Private storage behind the Worker and the Access login (the key-value store that already holds sandbox notes and votes), never the public repo. Access limited per organization.</td></tr>
   </table>
   <p>An organization with only part of its activities assessed still gets a complete picture: every unassessed activity shows the Human-only baseline, marked as not assessed.</p>
 
@@ -194,6 +194,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   </ul>
 
   <h2>5. Decision Logic</h2>
+  <p><strong>Default view.</strong> The sandbox opens on the Reference Model with the Working Relationship view (Tim, Sept 26).</p>
   <p><strong>Resolution rule.</strong> For each activity: Current State is the organization&rsquo;s assessed value where one exists, otherwise the Human-only baseline. The effective ceiling is the reference ceiling, or the organization&rsquo;s governance ceiling where it is lower.</p>
   <p><strong>Ceilings can be lowered, not quietly raised.</strong> An organization may hold an activity lower as a governance choice. Setting it higher than the reference ceiling requires a recorded reason, and the activity stays flagged as a divergence from the reference model.</p>
   <p><strong>What each figure means in each view:</strong></p>
@@ -208,21 +209,21 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <h2>6. Instrumentation and Build Work</h2>
   <h3>A. Enabling work</h3>
   <ol class="plan">
-    <li><strong>Reset the reference Current State to Human-only</strong> for all 118 activities, logging the modeled values being retired.</li>
+    <li><strong>Reset the reference Current State to Human-only</strong> for all 118 activities, logging the modeled values being retired. <span class="tag">done Sept 26, CL-009</span></li>
     <li><strong>Review the ceilings as design intent</strong> with GiGi, since they now carry the framework&rsquo;s central claim. 42 activities have a ceiling at Automation, meaning nothing in them has to stay human.</li>
-    <li><strong>Organization data model and storage</strong>: the record shapes in section 3, stored privately behind the Worker; ABC Test Org in the repo.</li>
+    <li><strong>Organization data model and storage</strong>: the record shapes in section 3, stored privately behind the Worker, test organizations included. <span class="tag">prototype built</span></li>
     <li><strong>Resolution logic</strong>: the rule in section 5, used by every view and computed figure.</li>
     <li><strong>Assessment method</strong>: how an activity is placed on the ramp and what evidence counts, building on the evidence ladder (GR-037) and GiGi&rsquo;s workforce validation check (GR-022). Built into the template in section 8a and revised through its pressure test.</li>
     <li><strong>Access per organization</strong>: an organization&rsquo;s data visible only to those it names.</li>
   </ol>
   <h3>B. UI work</h3>
   <ol class="plan">
-    <li><strong>View selector</strong>: Reference baseline, Reference design intent, or a named organization.</li>
+    <li><strong>Organization selector</strong>: the Reference Model first and by default, opening on the Working Relationship view; then every organization with an assessment, its coverage and a TEST tag where it applies; and &ldquo;New organization&hellip;&rdquo;, which creates one as a copy of the reference. <span class="tag">prototype built</span></li>
     <li><strong>Source chips</strong>: REFERENCE for reference values, ASSESSED (with date and assessor) for an organization&rsquo;s.</li>
     <li><strong>Coverage</strong> on every rollup.</li>
     <li><strong>Beyond-design-intent flag</strong> on any activity assessed past its ceiling.</li>
     <li><strong>Gap view</strong>: an organization against design intent, activity by activity and role by role.</li>
-    <li><strong>Interactive activity assessment template</strong>: a guided page that walks each activity to a working relationship, records the evidence, and flags anything past design intent (section 8a).</li>
+    <li><strong>Interactive activity assessment</strong>: in the standard Working Relationship view, with an organization selected, every activity card shows its assessed state and an Assess button that opens the guided panel in section 8a. <span class="tag">prototype built</span></li>
   </ol>
 
   <h2>7. Downstream Effects</h2>
@@ -235,11 +236,12 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
 
   <h2>8. Prototype and Pilot</h2>
   <p><strong>Prototype with a test organization.</strong> Components cannot be designed or tested without organization data, so the layer is built against <em>ABC Test Org</em>: a test organization defaulted to the reference, with every activity at Human-only and every ceiling the reference ceiling. Its Current State is then set through the interactive assessment template, working-relationship assessment first, with other areas (governance ceilings, role mapping, CRUD) added as we determine.</p>
-  <p><strong>Rules for test data.</strong> ABC Test Org carries a TEST chip on every value and a banner whenever it is selected; it is excluded from any benchmark or cross-organization comparison and is never cited as a finding. Because it is not confidential it can live in the repo, under the changelog check; real organizations never do.</p>
-  <p><strong>Pressure test.</strong> Tim and GiGi assess ABC through the template, starting with the HRBP Manager&rsquo;s 23 activities, and record where the questions, definitions or evidence prompts fail: ambiguous answers, boundary cases between categories, and time taken per activity. The template and the process are revised from that before any real organization is assessed.</p>
+  <p><strong>Rules for test data.</strong> ABC Test Org carries a TEST chip on every value and a banner whenever it is selected; it is excluded from any benchmark or cross-organization comparison and is never cited as a finding. It is created through &ldquo;New organization&hellip;&rdquo; with the test box ticked and saved through the Worker like any organization, so the prototype exercises the real path.</p>
+  <p><strong>Pressure test.</strong> Tim and GiGi assess ABC process by process in the Working Relationship view, starting with 7.2.1 Manage employee requisitions, 7.3.2 Manage employee performance and 7.6.2 Manage separation (15 activities across different parts of the ramp), and record where the questions, definitions or evidence prompts fail: ambiguous answers, boundary cases between categories, and time taken per activity. The template and the process are revised from that before any real organization is assessed.</p>
 
   <h3>8a. The Interactive Activity Assessment Template</h3>
-  <p>For each activity the template shows what the reference model knows (process, activity, Accountable and Responsible roles, Consequence of Error, and the ceiling with its factors), then asks a short sequence of questions drawn from the locked category definitions:</p>
+  <p class="source-note">Prototype built Sept 26, 2026, inside the <a href="../sandbox/pcf7.html">sandbox&rsquo;s Working Relationship view</a>: choose an organization, open a process, and choose Assess on an activity.</p>
+  <p>For each activity the panel shows what the reference model knows (process, activity, Accountable and Responsible roles, Consequence of Error, and the ceiling with its factors), then asks a short sequence of questions drawn from the locked category definitions:</p>
   <ol class="plan">
     <li>Does AI play any part in this activity&rsquo;s work? <em>No &rarr; Human-only.</em></li>
     <li>Does AI only supply inputs (data, rankings, benchmarks) for a person&rsquo;s own reasoning? <em>Yes &rarr; Judgment.</em></li>
@@ -249,8 +251,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   </ol>
   <p>The answers propose a working relationship, which the assessor confirms or overrides with a reason. The template then records the evidence type (observed practice, system configuration, interview, document), who gave it, a confidence level and a note, and flags the activity if the result is past its ceiling. Progress shows by process and by role.</p>
   <h2>9. Known Open Constructs</h2>
-  <div class="open-item"><div class="oi-name">Default reference view</div><p>Whether the sandbox opens on the baseline, the design intent, or both side by side.</p></div>
-  <div class="open-item"><div class="oi-name">Ceilings under review</div><p>Whether the 42 Automation ceilings, and the rest, hold up as design intent before the reset is published.</p></div>
+  <div class="open-item"><div class="oi-name">Ceilings under review</div><p>Whether the 42 Automation ceilings, and the rest, hold up as design intent now that they carry the reference model&rsquo;s central claim.</p></div>
   <div class="open-item"><div class="oi-name">Raising a ceiling</div><p>What reason is sufficient for an organization to go past the reference ceiling, and how it is reviewed.</p></div>
   <div class="open-item"><div class="oi-name">Organization roles</div><p>Real organizations have their own roles. Mapping them to the reference role taxonomy is needed before role-level findings mean anything.</p></div>
   <div class="open-item"><div class="oi-name">Reference versions</div><p>When a ceiling changes after an organization is assessed, which version its findings are read against.</p></div>
