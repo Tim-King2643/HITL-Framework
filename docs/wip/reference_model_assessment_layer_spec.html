@@ -145,7 +145,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
       <li><code>GR-014</code> &mdash; the unit of % H <em>(its meaning changes by view)</em></li>
       <li><code>GR-022</code>, <code>GR-037</code> &mdash; the workforce validation check and the evidence each step needs <em>(inputs to an assessment)</em></li>
       <li><code>GR-053</code> &mdash; the interactive activity assessment template <em>(section 8a)</em></li>
-      <li><code>GR-054</code> &mdash; overriding the Progression Ceiling <em>(section 8b)</em></li>
+      <li><code>GR-054</code> &mdash; overriding the Progression Ceiling <em>(sections 8b and 8c)</em></li>
       <li><code>GR-046</code>, <code>GR-050</code> &mdash; work product and master data <em>(reference-layer content)</em></li>
     </ul>
   </div>
@@ -269,10 +269,41 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   </table>
   <p>On the reference model, 49 of the 118 activities are eligible: Consequence of Error Low or Moderate, with a ceiling below Automation. An activity assessed past its ceiling with no override stays a finding, shown in red and counted in the organization&rsquo;s figures, until it is brought back within the ceiling or an override is approved.</p>
   <p><strong>Where the rule is checked.</strong> The Worker checks every override against the reference itself, not against what the page sends. It reads each activity&rsquo;s Consequence of Error, ceiling and ceiling factors from <code>docs/sandbox/reference-wr.json</code>, which a script generates from the sandbox&rsquo;s master data and CI keeps in step with it. Each override records the version of the reference it was approved against.</p>
-  <p><strong>Deferred (Tim, Sept 27).</strong> Whether one consistency rule should govern the reference and overrides alike where Consequence of Error is High or Critical. Today 11 High activities have a ceiling at Agent-delegation or Automation, above anything an override could reach for them.</p>
+  <h3>8c. Proposed Revision: The Ceiling Factors Decide</h3>
+  <p class="source-note">For Tim and GiGi to decide (Tim, Sept 27, 2026: &ldquo;It&rsquo;s the ceiling factors [that] determine&rdquo;). Nothing here is built yet; the Worker keeps the rule in section 8b until this is settled.</p>
+  <p><strong>The problem.</strong> An organization cannot override a High Consequence of Error ceiling, but the reference itself gives 11 High activities a ceiling at Agent-delegation or Automation, where no person handles each instance. So the reference allows more than any organization could be approved for. The same rule should govern both.</p>
+  <p><strong>Patterns were considered and set aside.</strong> Every one of the 11 that carries a pattern is Transaction, so a pattern cap cannot tell the ones that should come down from the ones that should stay; 9 Knowledge and Document activities already have Automation ceilings; 11 activities have no pattern; and patterns are retired from display and from the documentation (GR-048). The ceiling factors do separate the cases.</p>
+  <table>
+    <tr><th style="width:24%">Ceiling factor</th><th>In the reference, where Consequence of Error is High or Critical</th><th style="width:34%">Override</th></tr>
+    <tr><td class="k">Governance / sign-off</td><td>A person stays on every instance: the ceiling is at most Augmentation.</td><td>Allowed at Low or Moderate, where the sign-off is the organization&rsquo;s own choice. Not at High or Critical.</td></tr>
+    <tr><td class="k">Legal / fiduciary</td><td>Above Augmentation only when the ceiling names the control that catches errors at scale (reconciliation, audit, exception reporting).</td><td>Allowed at Low or Moderate, naming the control. Not at High or Critical.</td></tr>
+    <tr><td class="k">Technical readiness gap</td><td>No constraint.</td><td>Allowed at any Consequence of Error, because the gap can close. The only case where a High ceiling can be overridden.</td></tr>
+    <tr><td class="k">Human judgment floor, accountability, relational</td><td>No constraint beyond the ceiling itself.</td><td>Never. These describe the work, not a gap an organization can close.</td></tr>
+  </table>
+  <p>Consequence of Error still sets the bar: at High or Critical, only a technical readiness gap can be named in an override.</p>
+
+  <p><strong>The 11 High activities.</strong> The Decision column is for Tim and GiGi.</p>
+  <table>
+    <tr><th style="width:8%">Activity</th><th style="width:20%">Name</th><th style="width:12%">Ceiling</th><th style="width:16%">Ceiling factors</th><th>Proposed</th><th style="width:12%">Decision</th></tr>
+    <tr><td class="k">7.1.2.6</td><td>Implement diversity, equity, and inclusion plan</td><td>Agent-delegation</td><td>Legal; Governance / sign-off</td><td>Oversight. The note names the review checkpoint as the safeguard.</td><td></td></tr>
+    <tr><td class="k">7.2.3.3</td><td>Test candidates</td><td>Agent-delegation</td><td>Legal; Governance / sign-off</td><td>Oversight. The note names the review checkpoint (test validity and adverse impact) as the ceiling.</td><td></td></tr>
+    <tr><td class="k">7.4.5</td><td>Monitor legal and regulatory environment</td><td>Agent-delegation</td><td>Legal; Governance / sign-off</td><td>Oversight. The note names the review-before-acting step as the ceiling.</td><td></td></tr>
+    <tr><td class="k">7.3.4.5</td><td>Develop, conduct, and manage employee training programs</td><td>Agent-delegation</td><td>Legal; Technical readiness gap</td><td>Decide: keep Agent-delegation with a named control (tracking of statutory training deadlines), or bring down to Oversight. See below.</td><td></td></tr>
+    <tr><td class="k">7.2.5.1</td><td>Obtain candidate background information</td><td>Automation</td><td>Legal</td><td>Keep, naming the control. Suggested: the FCRA adverse-action process, with an audit of how results are used.</td><td></td></tr>
+    <tr><td class="k">7.3.4.6</td><td>Manage examinations and certifications</td><td>Automation</td><td>Legal</td><td>Keep, naming the control. Suggested: credential-expiry alerts and a periodic audit of required credentials.</td><td></td></tr>
+    <tr><td class="k">7.5.1.5</td><td>Administer compensation and rewards to employees</td><td>Automation</td><td>Legal</td><td>Keep, naming the control. Suggested: pay-change reconciliation against approved compensation decisions.</td><td></td></tr>
+    <tr><td class="k">7.5.4</td><td>Administer payroll</td><td>Automation</td><td>Legal</td><td>Keep, naming the control. Suggested: pre-payroll audit and post-payroll reconciliation.</td><td></td></tr>
+    <tr><td class="k">7.6.2.2</td><td>Manage leave of absence</td><td>Automation</td><td>Legal</td><td>Keep, naming the control. Suggested: eligibility rules with an audit of denials and FMLA/ADA timelines.</td><td></td></tr>
+    <tr><td class="k">7.6.2.3</td><td>Manage offboarding</td><td>Automation</td><td>Legal</td><td>Keep, naming the control. Suggested: final-pay reconciliation and access-removal verification.</td><td></td></tr>
+    <tr><td class="k">7.7.6</td><td>Develop and manage time and attendance systems</td><td>Automation</td><td>Legal</td><td>Keep, naming the control. Suggested: exception reports reconciled against payroll each cycle.</td><td></td></tr>
+  </table>
+  <p><strong>7.3.4.5 is the odd one.</strong> Its factors are legal and a technical readiness gap, not governance, and its note says the work is deadline-tracking mechanics, not content judgment. Under the revised rule its legal factor needs a named control to stay at Agent-delegation, and its technical factor would make it the one High activity an organization could override.</p>
+  <p><strong>Effect on overrides.</strong> Of the 49 activities eligible today (Low or Moderate, ceiling below Automation), 15 would no longer be eligible, because their only factors are the human judgment floor or accountability. They include 7.2.1.1 and 7.3.2.1, the two Moderate activities in the pressure-test processes. 7.3.4.5 would become eligible through its technical factor.</p>
+  <p><strong>When decided.</strong> Ceilings that change are logged in the changelog; each control is recorded on its activity in the master data; the rule is added to the Worker&rsquo;s check, which already reads each activity&rsquo;s factors from the reference lookup.</p>
+
   <h2>9. Known Open Constructs</h2>
   <div class="open-item"><div class="oi-name">Ceilings under review</div><p>Whether the 42 Automation ceilings, and the rest, hold up now that they carry the reference model&rsquo;s central claim.</p></div>
-  <div class="open-item"><div class="oi-name">Raising a ceiling</div><p>The rule is set (section 8b). Still open: what happens when an override&rsquo;s review date passes, and whether a Moderate override needs a second approver.</p></div>
+  <div class="open-item"><div class="oi-name">Raising a ceiling</div><p>The rule is set (section 8b), with a proposed revision in section 8c for decision. Still open: what happens when an override&rsquo;s review date passes, and whether a Moderate override needs a second approver.</p></div>
   <div class="open-item"><div class="oi-name">Organization roles</div><p>Real organizations have their own roles. Mapping them to the reference role taxonomy is needed before role-level findings mean anything.</p></div>
   <div class="open-item"><div class="oi-name">Reference versions</div><p>When a ceiling changes after an organization is assessed, which version its findings are read against. Overrides already record the reference version they were approved against; assessments do not yet.</p></div>
   <div class="open-item"><div class="oi-name">Evidence standard and confidentiality</div><p>What evidence an assessment requires, and how organization data is protected and, if ever, aggregated.</p></div>
