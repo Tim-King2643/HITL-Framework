@@ -134,7 +134,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <div class="approval-box">
     <div class="ab-head">Concept stage &mdash; design for GR-052, not yet built</div>
     <p>Captures Tim&rsquo;s Sept 26, 2026 design decision and works out what follows from it. Built the same day as a prototype: the reference reset to the Human-only baseline (CL-009), the organization list and selector, and assessment from the Working Relationship view. The remaining open decisions are in section 9.</p>
-    <p><strong>Sept 27, 2026 (Tim):</strong> the pages say <em>Progression Ceiling</em>, not &ldquo;design intent&rdquo;, which does not carry the same weight. The ceiling is a limit, and an organization can raise it only through a governed override (section 8b, GR-054).</p>
+    <p><strong>Sept 27, 2026 (Tim):</strong> the pages use <em>Progression Ceiling</em> throughout. The ceiling is a limit, and an organization can raise it only through a governed override (section 8b, GR-054).</p>
   </div>
 
   <div class="related-reqs">
@@ -153,7 +153,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <h2>1. Why This Layer Exists</h2>
   <p class="lede">The framework describes no specific organization, so it cannot know how any activity is done today. Its Current State values were modeled judgments of typical practice, shown as if they were readings.</p>
   <p>The same question had already come up for systems of record, which were changed from vendors to generic categories on Sept 26 (CL-008). Applied to Current State, it leads somewhere bigger. Tim&rsquo;s answer:</p>
-  <div class="quote">&ldquo;I would like to design the framework for exactly that purpose. To have an organization assessment layer. That would enable the framework to become a real working reference model that guides organizational assessments and AI design intent. I would initialize our current reference to the Human-only stage. The ceiling is our reference point for what needs to stay human by design.&rdquo;</div>
+  <div class="quote">&ldquo;I would like to design the framework for exactly that purpose. To have an organization assessment layer. That would enable the framework to become a real working reference model that guides organizational assessments. I would initialize our current reference to the Human-only stage. The ceiling is our reference point for what needs to stay human by design.&rdquo;</div>
   <p>What the framework can say generically is what is true of the work itself: its consequence of error, the legal, relational and accountability limits on it, and so how far AI may take it. That is the Progression Ceiling. Where a particular organization stands today is a fact about that organization, and belongs to its assessment.</p>
 
   <h2>2. Core Model</h2>
@@ -268,11 +268,13 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
     <tr><td class="k">Review date</td><td>Required, one year by default, so an override does not quietly become permanent.</td></tr>
   </table>
   <p>On the reference model, 49 of the 118 activities are eligible: Consequence of Error Low or Moderate, with a ceiling below Automation. An activity assessed past its ceiling with no override stays a finding, shown in red and counted in the organization&rsquo;s figures, until it is brought back within the ceiling or an override is approved.</p>
+  <p><strong>Where the rule is checked.</strong> The Worker checks every override against the reference itself, not against what the page sends. It reads each activity&rsquo;s Consequence of Error, ceiling and ceiling factors from <code>docs/sandbox/reference-wr.json</code>, which a script generates from the sandbox&rsquo;s master data and CI keeps in step with it. Each override records the version of the reference it was approved against.</p>
+  <p><strong>Deferred (Tim, Sept 27).</strong> Whether one consistency rule should govern the reference and overrides alike where Consequence of Error is High or Critical. Today 11 High activities have a ceiling at Agent-delegation or Automation, above anything an override could reach for them.</p>
   <h2>9. Known Open Constructs</h2>
   <div class="open-item"><div class="oi-name">Ceilings under review</div><p>Whether the 42 Automation ceilings, and the rest, hold up now that they carry the reference model&rsquo;s central claim.</p></div>
   <div class="open-item"><div class="oi-name">Raising a ceiling</div><p>The rule is set (section 8b). Still open: what happens when an override&rsquo;s review date passes, and whether a Moderate override needs a second approver.</p></div>
   <div class="open-item"><div class="oi-name">Organization roles</div><p>Real organizations have their own roles. Mapping them to the reference role taxonomy is needed before role-level findings mean anything.</p></div>
-  <div class="open-item"><div class="oi-name">Reference versions</div><p>When a ceiling changes after an organization is assessed, which version its findings are read against.</p></div>
+  <div class="open-item"><div class="oi-name">Reference versions</div><p>When a ceiling changes after an organization is assessed, which version its findings are read against. Overrides already record the reference version they were approved against; assessments do not yet.</p></div>
   <div class="open-item"><div class="oi-name">Evidence standard and confidentiality</div><p>What evidence an assessment requires, and how organization data is protected and, if ever, aggregated.</p></div>
 
   <h2>10. Sourcing, Validation &amp; Scope Boundary</h2>

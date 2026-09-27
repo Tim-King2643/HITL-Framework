@@ -31,3 +31,9 @@ jobs:
             HEAD="${{ github.sha }}"
           fi
           node scripts/check-changelog-audit.mjs "$BASE" "$HEAD"
+
+      # GR-054: the Worker checks ceiling overrides against
+      # docs/sandbox/reference-wr.json, generated from WR_DATA. Fail if a
+      # WR_DATA change was pushed without regenerating it.
+      - name: Check the reference lookup is up to date
+        run: node scripts/build-reference-wr.mjs --check

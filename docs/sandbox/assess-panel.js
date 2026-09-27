@@ -124,7 +124,7 @@
           '<dt>Evidence</dt><dd>' + esc(ov.evidence) + '</dd>' +
           '<dt>Approved by</dt><dd>' + esc(ov.approverName) + ' (' + esc(ov.approverRole) + ')</dd>' +
           '<dt>Review by</dt><dd>' + esc(ov.reviewDate) + '</dd>' +
-          '<dt>Recorded</dt><dd>' + esc(ov.approvedBy) + ', ' + new Date(ov.approvedAt).toLocaleDateString() + '</dd></dl>';
+          '<dt>Recorded</dt><dd>' + esc(ov.approvedBy) + ', ' + new Date(ov.approvedAt).toLocaleDateString() + (ov.refVersion ? ' <span style="color:#6B7A90">&middot; reference version ' + esc(ov.refVersion) + '</span>' : '') + '</dd></dl>';
       } else if (!ovFormOpen) {
         h += '<p class="muted">None. The reference ceiling of ' + esc(w.ceiling) + ' applies. An override raises it for ' + esc(o.org.name) + ' only, where the organization can show that a ceiling factor no longer holds.</p>';
       }
@@ -135,7 +135,6 @@
       }
       var above = STEPS.slice(rank(w.ceiling) + 1);
       var keys = (w.ceilingFactors || []).filter(function (k) { return k !== 'top'; });
-      if (!keys.length) keys = Object.keys(o.cfLabels).filter(function (k) { return k !== 'top'; });
       var d = new Date(); d.setFullYear(d.getFullYear() + 1);
       var review = ov ? ov.reviewDate : d.toISOString().slice(0, 10);
       h += '<label for="ov-level">Raise the ceiling to</label><select id="ov-level">' +
@@ -165,7 +164,7 @@
       if (bSave) bSave.onclick = function () {
         var m = el.querySelector('#ov-msg');
         var body = {
-          org: o.org.id, code: o.code, cons: w.cons, refCeiling: w.ceiling,
+          org: o.org.id, code: o.code,
           level: el.querySelector('#ov-level').value,
           factor: el.querySelector('#ov-factor').value,
           evidence: el.querySelector('#ov-evidence').value,

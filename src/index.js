@@ -521,18 +521,21 @@ async function handleApi(request, env, url) {
 //                                evidenceType, source, confidence, note,
 //                                assessedBy, assessedAt, history: [...] }
 //   ceil:<orgId>:<code>     -> { level, factor, evidence, approverRole, approverName,
-//                                reviewDate, cons, refCeiling, approvedBy,
-//                                approvedAt, history: [...] }
+//                                reviewDate, cons, refCeiling, refVersion,
+//                                approvedBy, approvedAt, history: [...] }
 // An activity with no assess: key is unassessed and reads as the reference
 // baseline (Human-only). Resetting an activity keeps its history.
 //
 // A ceiling override (GR-054, Sept 27, 2026) is a governance decision, kept
 // apart from the assessment: it raises one activity's Progression Ceiling for
 // one organization. It is allowed only where Consequence of Error is Low or
-// Moderate, must name the ceiling factor that no longer holds, and carries
-// its evidence, the Accountable role's approval and a review date. The page
-// sends the activity's reference Consequence of Error and ceiling; the Worker
-// re-checks the rule against them.
+// Moderate, must name one of the activity's own ceiling factors that no
+// longer holds, and carries its evidence, the Accountable role's approval
+// and a review date. The Worker takes the activity's Consequence of Error,
+// ceiling and ceiling factors from the reference lookup
+// (docs/sandbox/reference-wr.json, generated from WR_DATA by
+// scripts/build-reference-wr.mjs and checked in CI), never from the page, and
+// records the lookup's version on the override.
 //
 // Only recognized reviewers (Tim, GiGi) can create organizations or save
 // assessments; the Access login gates who can read. Per-organization access
@@ -547,6 +550,21 @@ const ORG_MAX = 200, NOTE_MAX = 2000, HISTORY_MAX = 25;
 const OVERRIDE_CONS = new Set(['Low', 'Moderate']);
 const CEILING_FACTOR_KEYS = new Set(['technical', 'governance', 'legal', 'relational', 'floor', 'accountability']);
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const REFERENCE_PATH = '/sandbox/reference-wr.json';
+
+// The reference lookup, read from the site's own static assets (deployed with
+// the same push as the page it is generated from) and kept for the life of
+// this Worker instance.
+let referenceCache = null;
+async function loadReference(env, request) {
+  if (referenceCache) return referenceCache;
+  const res = await env.ASSETS.fetch(new Request(new URL(REFERENCE_PATH, request.url)));
+  if (!res.ok) throw new Error('reference lookup unavailable');
+  const ref = await res.json();
+  if (!ref || !ref.activities || !ref.version) throw new Error('reference lookup unreadable');
+  referenceCache = ref;
+  return ref;
+}
 
 function clip(v, n) { return typeof v === 'string' ? v.trim().slice(0, n) : ''; }
 function slugify(name) {
@@ -699,14 +717,20 @@ async function handleOrgApi(request, env, url) {
       await env.SANDBOX_NOTES.put(key, JSON.stringify(rec));
       return json({ ok: true, override: rec });
     }
-    const cons = body.cons, refCeiling = body.refCeiling, level = body.level;
+    let ref;
+    try { ref = await loadReference(env, request); } catch (e) { return json({ error: e.message }, { status: 503 }); }
+    const refAct = ref.activities[code];
+    if (!refAct) return json({ error: 'activity not in the reference model' }, { status: 400 });
+    const cons = refAct.cons, refCeiling = refAct.ceiling, level = body.level;
     if (!OVERRIDE_CONS.has(cons)) {
       return json({ error: 'the Progression Ceiling cannot be overridden where Consequence of Error is above Moderate' }, { status: 400 });
     }
     if (!WR_STEPS.includes(refCeiling) || !WR_STEPS.includes(level) || WR_STEPS.indexOf(level) <= WR_STEPS.indexOf(refCeiling)) {
       return json({ error: 'an override must raise the ceiling above the reference ceiling' }, { status: 400 });
     }
-    if (!CEILING_FACTOR_KEYS.has(body.factor)) return json({ error: 'name the ceiling factor that no longer holds' }, { status: 400 });
+    if (!CEILING_FACTOR_KEYS.has(body.factor) || !(refAct.ceilingFactors || []).includes(body.factor)) {
+      return json({ error: 'name one of this activity\'s ceiling factors that no longer holds' }, { status: 400 });
+    }
     const evidence = clip(body.evidence, NOTE_MAX);
     const approverRole = clip(body.approverRole, ORG_MAX);
     const approverName = clip(body.approverName, ORG_MAX);
@@ -716,6 +740,7 @@ async function handleOrgApi(request, env, url) {
     if (!reviewDate || reviewDate <= new Date().toISOString().slice(0, 10)) return json({ error: 'an override needs a review date in the future' }, { status: 400 });
     const rec = {
       level, factor: body.factor, evidence, approverRole, approverName, reviewDate, cons, refCeiling,
+      refVersion: ref.version,
       approvedBy: reviewer, approvedAt: Date.now(),
       history: history.slice(0, HISTORY_MAX)
     };
