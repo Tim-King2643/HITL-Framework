@@ -2,18 +2,25 @@
 // sandbox's Working Relationship view while an organization is selected.
 //
 // It shows what the reference model knows about the activity (roles,
-// Consequence of Error, the ceiling as design intent), walks five questions
+// Consequence of Error, the Progression Ceiling), walks five questions
 // drawn from the locked category definitions to a proposed working
-// relationship, and records the assessor's confirmation or override, the
+// relationship, and records the assessor's confirmation or change, the
 // evidence, source, confidence and a note. Saving goes through the Worker
 // (OrgContext.saveAssessment); the page then re-applies the organization's
 // overlay and re-renders.
 //
+// A separate section records a ceiling override (GR-054): a governance
+// decision raising this activity's Progression Ceiling for this
+// organization. It is offered only where Consequence of Error is Low or
+// Moderate, and needs the ceiling factor that no longer holds, evidence, the
+// Accountable role's approval and a review date.
+//
 // AssessPanel.open({
 //   org, code, name, process, A, R,        // activity and its roles
 //   ref: { ceiling, cons, ceilingFactors, ceilingNote },
-//   record, defs, cats, cfLabels, consColor, canEdit,
-//   onSaved(record)                         // after a save or a reset
+//   record, override, defs, cats, cfLabels, consColor, canEdit,
+//   onSaved(record),                        // after a save or a reset
+//   onOverrideSaved(override)               // after an override is saved or removed
 // })
 (function () {
   var STEPS = ['Human-only', 'Judgment', 'Oversight', 'Augmentation', 'Agent-delegation', 'Automation'];
@@ -24,6 +31,7 @@
     { q: 'AI produces or proposes the complete work. Does a person review and approve every instance before it takes effect?', yes: 'Oversight', no: 4 },
     { q: 'Does a person handle only the exceptions the AI flags, rather than every instance?', yes: 'Agent-delegation', no: 'Automation' }
   ];
+  var OVERRIDE_CONS = { Low: 1, Moderate: 1 };
   var EVIDENCE = [['observed', 'Observed practice'], ['system', 'System configuration'], ['interview', 'Interview'], ['document', 'Document']];
   function rank(c) { return STEPS.indexOf(c); }
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -67,7 +75,9 @@
       '.ap .msg{font-size:12px;}' +
       '.ap .msg.err{color:#991B1B;}' +
       '.ap .msg.ok{color:#166534;}' +
-      '.ap .hist{font-size:12px;color:#6B7A90;margin-top:10px;}';
+      '.ap .hist{font-size:12px;color:#6B7A90;margin-top:10px;}' +
+      '.ap .ovr{margin-top:4px;padding:8px 10px;border-radius:6px;background:#F8FAFD;border:1px solid #DDE3EE;font-size:12.5px;line-height:1.5;}' +
+      '.ap .muted{color:#6B7A90;font-size:12.5px;line-height:1.5;margin:0;}';
     document.head.appendChild(st);
   }
 
@@ -79,6 +89,8 @@
     document.body.appendChild(back);
     var el = back.firstChild;
     var rec = o.record;
+    var ov = o.override && o.override.level ? o.override : null;
+    var ovFormOpen = false;
     var answers = (rec && rec.current && rec.answers && rec.answers.length) ? rec.answers.slice() : [null, null, null, null, null];
     function close() { back.remove(); document.removeEventListener('keydown', onKey); }
     function onKey(e) { if (e.key === 'Escape') close(); }
@@ -101,6 +113,77 @@
       }
     }
 
+    function overrideHtml() {
+      var w = o.ref;
+      var h = '<div class="sec"><h4>Ceiling override</h4>';
+      if (!w.ceiling || rank(w.ceiling) >= STEPS.length - 1) return h + '<p class="muted">The ceiling is already Automation, the top of the ramp.</p></div>';
+      if (!OVERRIDE_CONS[w.cons]) return h + '<p class="muted">Not available. Consequence of Error is <strong>' + esc(w.cons || 'not set') + '</strong>; a Progression Ceiling can be overridden only where it is Low or Moderate.</p></div>';
+      if (ov) {
+        h += '<dl><dt>Raised to</dt><dd>' + chip(ov.level) + ' <span style="color:#6B7A90">from ' + esc(w.ceiling) + '</span></dd>' +
+          '<dt>Factor no longer holding</dt><dd>' + esc(o.cfLabels[ov.factor] || ov.factor) + '</dd>' +
+          '<dt>Evidence</dt><dd>' + esc(ov.evidence) + '</dd>' +
+          '<dt>Approved by</dt><dd>' + esc(ov.approverName) + ' (' + esc(ov.approverRole) + ')</dd>' +
+          '<dt>Review by</dt><dd>' + esc(ov.reviewDate) + '</dd>' +
+          '<dt>Recorded</dt><dd>' + esc(ov.approvedBy) + ', ' + new Date(ov.approvedAt).toLocaleDateString() + '</dd></dl>';
+      } else if (!ovFormOpen) {
+        h += '<p class="muted">None. The reference ceiling of ' + esc(w.ceiling) + ' applies. An override raises it for ' + esc(o.org.name) + ' only, where the organization can show that a ceiling factor no longer holds.</p>';
+      }
+      if (!o.canEdit) return h + '</div>';
+      if (!ovFormOpen) {
+        return h + '<div class="actions"><button type="button" id="ov-open">' + (ov ? 'Change override' : 'Override the ceiling&hellip;') + '</button>' +
+          (ov ? '<button type="button" id="ov-remove">Remove override</button>' : '') + '<span class="msg" id="ov-msg"></span></div></div>';
+      }
+      var above = STEPS.slice(rank(w.ceiling) + 1);
+      var keys = (w.ceilingFactors || []).filter(function (k) { return k !== 'top'; });
+      if (!keys.length) keys = Object.keys(o.cfLabels).filter(function (k) { return k !== 'top'; });
+      var d = new Date(); d.setFullYear(d.getFullYear() + 1);
+      var review = ov ? ov.reviewDate : d.toISOString().slice(0, 10);
+      h += '<label for="ov-level">Raise the ceiling to</label><select id="ov-level">' +
+          above.map(function (s) { return '<option' + (ov && ov.level === s ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select>' +
+        '<label for="ov-factor">Which ceiling factor no longer holds here?</label><select id="ov-factor"><option value="">Choose&hellip;</option>' +
+          keys.map(function (k) { return '<option value="' + k + '"' + (ov && ov.factor === k ? ' selected' : '') + '>' + esc(o.cfLabels[k] || k) + '</option>'; }).join('') + '</select>' +
+        '<label for="ov-evidence">Evidence that it no longer holds</label><textarea id="ov-evidence">' + esc(ov && ov.evidence || '') + '</textarea>' +
+        '<label for="ov-role">Approved by (Accountable role)</label>' +
+          (o.A.length ? '<select id="ov-role">' + o.A.map(function (a) { return '<option' + (ov && ov.approverRole === a ? ' selected' : '') + '>' + esc(a) + '</option>'; }).join('') + '</select>'
+                      : '<input type="text" id="ov-role" value="' + esc(ov && ov.approverRole || '') + '">') +
+        '<label for="ov-name">Approver&rsquo;s name</label><input type="text" id="ov-name" value="' + esc(ov && ov.approverName || '') + '">' +
+        '<label for="ov-review">Review by</label><input type="text" id="ov-review" value="' + esc(review) + '" placeholder="YYYY-MM-DD">' +
+        '<div class="actions"><button type="button" class="primary" id="ov-save">Save override</button><button type="button" id="ov-cancel">Cancel</button><span class="msg" id="ov-msg"></span></div>';
+      return h + '</div>';
+    }
+    function wireOverride() {
+      var w = o.ref;
+      var bOpen = el.querySelector('#ov-open'); if (bOpen) bOpen.onclick = function () { ovFormOpen = true; draw(); var f = el.querySelector('#ov-level'); if (f) f.focus(); };
+      var bCancel = el.querySelector('#ov-cancel'); if (bCancel) bCancel.onclick = function () { ovFormOpen = false; draw(); };
+      var bRemove = el.querySelector('#ov-remove');
+      if (bRemove) bRemove.onclick = function () {
+        OrgContext.removeOverride(o.org.id, o.code).then(function () {
+          ov = null; ovFormOpen = false; if (o.onOverrideSaved) o.onOverrideSaved(null); draw();
+        }).catch(function (e) { var m = el.querySelector('#ov-msg'); m.className = 'msg err'; m.textContent = e.message; });
+      };
+      var bSave = el.querySelector('#ov-save');
+      if (bSave) bSave.onclick = function () {
+        var m = el.querySelector('#ov-msg');
+        var body = {
+          org: o.org.id, code: o.code, cons: w.cons, refCeiling: w.ceiling,
+          level: el.querySelector('#ov-level').value,
+          factor: el.querySelector('#ov-factor').value,
+          evidence: el.querySelector('#ov-evidence').value,
+          approverRole: el.querySelector('#ov-role').value,
+          approverName: el.querySelector('#ov-name').value,
+          reviewDate: el.querySelector('#ov-review').value.trim()
+        };
+        if (!body.factor) { m.className = 'msg err'; m.textContent = 'Name the ceiling factor that no longer holds.'; return; }
+        if (!body.evidence.trim()) { m.className = 'msg err'; m.textContent = 'Give the evidence.'; return; }
+        if (!body.approverRole.trim() || !body.approverName.trim()) { m.className = 'msg err'; m.textContent = 'Give the Accountable role and the approver.'; return; }
+        bSave.disabled = true;
+        OrgContext.saveOverride(body).then(function (j) {
+          ov = j.override; ovFormOpen = false; if (o.onOverrideSaved) o.onOverrideSaved(ov); draw();
+          var m2 = el.querySelector('#ov-msg'); if (m2) { m2.className = 'msg ok'; m2.textContent = 'Override saved.'; }
+        }).catch(function (e) { bSave.disabled = false; m.className = 'msg err'; m.textContent = e.message; });
+      };
+    }
+
     function draw() {
       var w = o.ref, st = walk();
       var factors = (w.ceilingFactors || []).map(function (k) { return '<li>' + esc(o.cfLabels[k] || k) + '</li>'; }).join('');
@@ -111,7 +194,8 @@
         '<dt>Accountable</dt><dd>' + (esc(o.A.join(', ')) || '&mdash;') + '</dd>' +
         '<dt>Responsible</dt><dd>' + (esc(o.R.join(', ')) || '&mdash;') + '</dd>' +
         '<dt>Consequence of Error</dt><dd>' + (w.cons ? '<span style="color:' + (o.consColor[w.cons] || '#333') + ';font-weight:600">' + esc(w.cons) + '</span>' : '&mdash;') + '</dd>' +
-        '<dt>Design intent (ceiling)</dt><dd>' + chip(w.ceiling) + (factors ? '<ul>' + factors + '</ul>' : '') + (w.ceilingNote ? '<div style="color:#555;margin-top:4px">' + esc(w.ceilingNote) + '</div>' : '') + '</dd>' +
+        '<dt>Progression Ceiling</dt><dd>' + chip(w.ceiling) + (factors ? '<ul>' + factors + '</ul>' : '') + (w.ceilingNote ? '<div style="color:#555;margin-top:4px">' + esc(w.ceilingNote) + '</div>' : '') +
+          (ov ? '<div class="ovr"><strong>Overridden to ' + esc(ov.level) + '</strong> for ' + esc(o.org.name) + ' &mdash; review by ' + esc(ov.reviewDate) + '</div>' : '') + '</dd>' +
         '<dt>Current State</dt><dd>' + chip(rec && rec.current) + (rec && rec.current ? ' <span style="color:#6B7A90">by ' + esc(rec.assessedBy) + ', ' + new Date(rec.assessedAt).toLocaleDateString() + '</span>' : ' <span style="color:#6B7A90">reads as the Human-only baseline</span>') + '</dd>' +
         '</dl>';
       html += '<div class="sec"><h4>How is this activity done in ' + esc(o.org.name) + '?</h4>';
@@ -130,7 +214,7 @@
         html += '<div class="proposal">Proposed: ' + chip(p) + '<div style="margin-top:4px">' + esc(o.defs[p] || '') + '</div></div>' +
           '<label for="ap-current">Working relationship</label><select id="ap-current"' + dis + '>' +
           STEPS.map(function (s) { return '<option' + (s === chosen ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select>' +
-          '<div id="ap-reason-wrap" style="display:none"><label for="ap-reason">Reason for overriding the proposal</label><textarea id="ap-reason"' + dis + '>' + esc(rec && rec.overrideReason || '') + '</textarea></div>' +
+          '<div id="ap-reason-wrap" style="display:none"><label for="ap-reason">Reason for changing the proposal</label><textarea id="ap-reason"' + dis + '>' + esc(rec && rec.overrideReason || '') + '</textarea></div>' +
           '<label for="ap-evidence">Evidence</label><select id="ap-evidence"' + dis + '><option value="">Choose&hellip;</option>' +
           EVIDENCE.map(function (e) { return '<option value="' + e[0] + '"' + (rec && rec.evidenceType === e[0] ? ' selected' : '') + '>' + e[1] + '</option>'; }).join('') + '</select>' +
           '<label for="ap-source">Source (who or what it came from)</label><input type="text" id="ap-source" value="' + esc(rec && rec.source || '') + '"' + dis + '>' +
@@ -143,7 +227,9 @@
           '<span class="msg" id="ap-msg"></span></div>';
       }
       if (rec && rec.history && rec.history.length) html += '<div class="hist">' + rec.history.length + ' earlier version' + (rec.history.length === 1 ? '' : 's') + ' kept.</div>';
+      html += overrideHtml();
       el.innerHTML = html;
+      wireOverride();
 
       el.querySelector('.ap-close').onclick = close;
       Array.prototype.forEach.call(el.querySelectorAll('button[data-q]'), function (b) {
@@ -158,12 +244,17 @@
       });
       var rs = el.querySelector('#ap-restart'); if (rs) rs.onclick = function () { answers = [null, null, null, null, null]; draw(); };
       if (!st.proposed) return;
+      var w = o.ref;
       var cur = el.querySelector('#ap-current'), p2 = st.proposed;
       function sync() {
         var v = cur.value;
         el.querySelector('#ap-reason-wrap').style.display = v !== p2 ? '' : 'none';
-        el.querySelector('#ap-beyond').innerHTML = (w.ceiling && rank(v) > rank(w.ceiling))
-          ? '<div class="warn"><strong>Beyond design intent.</strong> ' + esc(v) + ' is past this activity&rsquo;s ceiling of ' + esc(w.ceiling) + '. That is a finding to record, not an error: this organization relies on AI here more than the reference model permits.</div>' : '';
+        var past = w.ceiling && rank(v) > rank(w.ceiling);
+        var covered = past && ov && rank(v) <= rank(ov.level);
+        el.querySelector('#ap-beyond').innerHTML = !past ? '' : covered
+          ? '<div class="ovr"><strong>Past the Progression Ceiling, within the approved override.</strong> ' + esc(v) + ' is above the reference ceiling of ' + esc(w.ceiling) + ', and inside the override to ' + esc(ov.level) + '.</div>'
+          : '<div class="warn"><strong>Past the Progression Ceiling.</strong> ' + esc(v) + ' is above this activity&rsquo;s ceiling of ' + esc(w.ceiling) + '. Record it: it is a finding about how this organization works, not an error in the assessment. ' +
+            (OVERRIDE_CONS[w.cons] ? 'Unless a ceiling override is approved below, it shows in red.' : 'Consequence of Error is ' + esc(w.cons) + ', so the ceiling cannot be overridden; it shows in red until the work comes back within it.') + '</div>';
       }
       cur.onchange = sync; sync();
       var save = el.querySelector('#ap-save');

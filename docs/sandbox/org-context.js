@@ -16,9 +16,11 @@
 // Usage:
 //   OrgContext.mountSelector(el, { includeReference, onChange })
 //   OrgContext.selectedId()                -> 'reference' or an org id
-//   OrgContext.getAssessment(orgId)        -> { org, records, reviewer }
+//   OrgContext.getAssessment(orgId)        -> { org, records, overrides, reviewer }
 //   OrgContext.saveAssessment(record)      -> { record }
 //   OrgContext.resetAssessment(orgId, code)
+//   OrgContext.saveOverride(record)        -> { override }  (ceiling override, GR-054)
+//   OrgContext.removeOverride(orgId, code)
 (function () {
   var REFERENCE = {
     id: 'reference',
@@ -176,6 +178,8 @@
     getAssessment: function (orgId) { return api('GET', '/org-api/assessment?org=' + encodeURIComponent(orgId)); },
     saveAssessment: function (rec) { return api('POST', '/org-api/assessment', rec); },
     resetAssessment: function (orgId, code) { return api('DELETE', '/org-api/assessment', { org: orgId, code: code }); },
+    saveOverride: function (rec) { return api('POST', '/org-api/ceiling-override', rec); },
+    removeOverride: function (orgId, code) { return api('DELETE', '/org-api/ceiling-override', { org: orgId, code: code }); },
     chip: function (o) {
       if (!o) return '';
       if (o.reference) return '<span class="org-chip org-chip-ref">REFERENCE</span>';

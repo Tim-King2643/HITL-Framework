@@ -117,7 +117,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
 <div class="masthead">
   <div class="eyebrow">DESIGN SPEC &nbsp;·&nbsp; TIM KING &amp; CLAUDE &nbsp;·&nbsp; SEPTEMBER 2026</div>
   <h1>Reference Model and Organization Assessment Layer</h1>
-  <div class="subtitle">The Progression Ceiling becomes the framework&rsquo;s design intent; each organization&rsquo;s assessment supplies its own Current State</div>
+  <div class="subtitle">The Progression Ceiling is the framework&rsquo;s reference limit; each organization&rsquo;s assessment supplies its own Current State</div>
   <nav>
     <a href="../index.html">Documentation</a>
     <a href="../sandbox/pcf7.html">Dashboard</a>
@@ -134,15 +134,18 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <div class="approval-box">
     <div class="ab-head">Concept stage &mdash; design for GR-052, not yet built</div>
     <p>Captures Tim&rsquo;s Sept 26, 2026 design decision and works out what follows from it. Built the same day as a prototype: the reference reset to the Human-only baseline (CL-009), the organization list and selector, and assessment from the Working Relationship view. The remaining open decisions are in section 9.</p>
+    <p><strong>Sept 27, 2026 (Tim):</strong> the pages say <em>Progression Ceiling</em>, not &ldquo;design intent&rdquo;, which does not carry the same weight. The ceiling is a limit, and an organization can raise it only through a governed override (section 8b, GR-054).</p>
   </div>
 
   <div class="related-reqs">
     <span class="rr-label">Related Requirements &mdash; Requirements Register</span>
     <ul>
       <li><code>GR-052</code> &mdash; reference model and organization assessment layer <em>(the requirement this spec designs)</em></li>
-      <li><code>GR-028</code>, <code>GR-041</code> &mdash; the Progression Ceiling and when it freezes below Automation <em>(now the design intent)</em></li>
+      <li><code>GR-028</code>, <code>GR-041</code> &mdash; the Progression Ceiling and when it freezes below Automation <em>(the reference limit)</em></li>
       <li><code>GR-014</code> &mdash; the unit of % H <em>(its meaning changes by view)</em></li>
       <li><code>GR-022</code>, <code>GR-037</code> &mdash; the workforce validation check and the evidence each step needs <em>(inputs to an assessment)</em></li>
+      <li><code>GR-053</code> &mdash; the interactive activity assessment template <em>(section 8a)</em></li>
+      <li><code>GR-054</code> &mdash; overriding the Progression Ceiling <em>(section 8b)</em></li>
       <li><code>GR-046</code>, <code>GR-050</code> &mdash; work product and master data <em>(reference-layer content)</em></li>
     </ul>
   </div>
@@ -163,18 +166,19 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
     <div class="cell" style="background:#7DAEE0">Automation</div>
     <div class="zone z-base">Baseline</div>
     <div class="zone z-space" style="grid-column: span 2">AI design space &mdash; the organization&rsquo;s assessed state falls here</div>
-    <div class="zone z-beyond" style="grid-column: span 3">Beyond design intent &mdash; stays human by design</div>
+    <div class="zone z-beyond" style="grid-column: span 3">Above the ceiling &mdash; stays human unless overridden</div>
   </div>
   <p class="ramp-cap">Illustration using 7.2.1.3 Approve job requisition, whose Progression Ceiling is Oversight.</p>
   <table>
     <tr><th style="width:30%">Term</th><th>Definition</th></tr>
     <tr><td class="k">Reference model</td><td>The framework&rsquo;s generic content: the process structure, RACI, roles, work products and CRUD, Consequence of Error, and the Progression Ceiling for every activity. True of the work, not of any organization.</td></tr>
     <tr><td class="k">Baseline</td><td>Human-only: every activity&rsquo;s starting position in the reference, before any AI.</td></tr>
-    <tr><td class="k">Design intent</td><td>The Progression Ceiling: the furthest along the ramp AI may take the activity. Whatever lies beyond it stays human by design.</td></tr>
+    <tr><td class="k">Progression Ceiling</td><td>The furthest along the ramp AI may take the activity, set in the reference from its ceiling factors and Consequence of Error. Whatever lies above it stays human unless an override is approved.</td></tr>
     <tr><td class="k">Organization assessment</td><td>One organization&rsquo;s record of where each activity actually stands, with evidence, who gave it, and when.</td></tr>
     <tr><td class="k">Assessed Current State</td><td>An activity&rsquo;s position on the ramp in that organization. Exists only in an assessment.</td></tr>
-    <tr><td class="k">AI design space</td><td>The distance from the assessed Current State to the design intent: how much further the organization may take AI in that activity.</td></tr>
-    <tr><td class="k">Beyond design intent</td><td>An assessed Current State past the ceiling: the organization already relies on AI more than the reference model permits. A finding, not an error.</td></tr>
+    <tr><td class="k">AI design space</td><td>The distance from the assessed Current State to the ceiling: how much further the organization may take AI in that activity.</td></tr>
+    <tr><td class="k">Past the ceiling</td><td>An assessed Current State above the ceiling with no override covering it: the organization already relies on AI more than the reference model permits. A finding to resolve, not an error in the assessment.</td></tr>
+    <tr><td class="k">Ceiling override</td><td>A governance decision raising one activity&rsquo;s ceiling for one organization, kept apart from its assessment. Allowed only where Consequence of Error is Low or Moderate, and only on evidence that a named ceiling factor no longer holds (section 8b).</td></tr>
     <tr><td class="k">Governance ceiling</td><td>An organization&rsquo;s own choice to hold an activity below the reference ceiling.</td></tr>
   </table>
 
@@ -182,7 +186,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <table>
     <tr><th style="width:24%">Layer</th><th>Holds</th><th style="width:26%">Where it lives</th></tr>
     <tr><td class="k">Reference</td><td>Everything in the reference model above. Current State is no longer stored per activity: the baseline is Human-only for all. The modeled typical-practice values are recorded in the changelog when they are reset.</td><td>Sandbox master data, in the repo, under the changelog check.</td></tr>
-    <tr><td class="k">Organization</td><td>An organization list whose first entry is always the read-only <strong>Reference Model</strong>, the default. Each organization record holds name, industry, size, whether it is test data, who created it and when. Per activity, only where assessed: Current State, an optional governance ceiling, the evidence, who gave it, the date and a confidence level.</td><td>Private storage behind the Worker and the Access login (the key-value store that already holds sandbox notes and votes), never the public repo. Access limited per organization.</td></tr>
+    <tr><td class="k">Organization</td><td>An organization list whose first entry is always the read-only <strong>Reference Model</strong>, the default. Each organization record holds name, industry, size, whether it is test data, who created it and when. Per activity, only where assessed: Current State, an optional governance ceiling or ceiling override, the evidence, who gave it, the date and a confidence level.</td><td>Private storage behind the Worker and the Access login (the key-value store that already holds sandbox notes and votes), never the public repo. Access limited per organization.</td></tr>
   </table>
   <p>An organization with only part of its activities assessed still gets a complete picture: every unassessed activity shows the Human-only baseline, marked as not assessed.</p>
 
@@ -190,27 +194,27 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <ul class="plain">
     <li><strong>Activity level</strong> for every assessment, because the ceiling and consequence live there.</li>
     <li><strong>Process and role level</strong> computed from activities, the same way the People View rolls up today, with coverage stated (&ldquo;23 of 118 activities assessed&rdquo;).</li>
-    <li><strong>Organization level</strong> for the whole picture: design space remaining, activities beyond design intent, and verification load across roles.</li>
+    <li><strong>Organization level</strong> for the whole picture: design space remaining, activities past the ceiling with no override, and verification load across roles.</li>
   </ul>
 
   <h2>5. Decision Logic</h2>
   <p><strong>Default view.</strong> The sandbox opens on the Reference Model with the Working Relationship view (Tim, Sept 26).</p>
-  <p><strong>Resolution rule.</strong> For each activity: Current State is the organization&rsquo;s assessed value where one exists, otherwise the Human-only baseline. The effective ceiling is the reference ceiling, or the organization&rsquo;s governance ceiling where it is lower.</p>
-  <p><strong>Ceilings can be lowered, not quietly raised.</strong> An organization may hold an activity lower as a governance choice. Setting it higher than the reference ceiling requires a recorded reason, and the activity stays flagged as a divergence from the reference model.</p>
+  <p><strong>Resolution rule.</strong> For each activity: Current State is the organization&rsquo;s assessed value where one exists, otherwise the Human-only baseline. The effective ceiling is the reference ceiling, the organization&rsquo;s governance ceiling where it is lower, or its approved override where it is higher.</p>
+  <p><strong>Ceilings can be lowered, not quietly raised.</strong> An organization may hold an activity lower as a governance choice. Raising it takes a ceiling override under the rule in section 8b, and the activity stays marked as a divergence from the reference model.</p>
   <p><strong>What each figure means in each view:</strong></p>
   <table>
-    <tr><th style="width:24%">Figure</th><th>Reference &mdash; baseline</th><th>Reference &mdash; design intent</th><th>Organization</th></tr>
+    <tr><th style="width:24%">Figure</th><th>Reference &mdash; baseline</th><th>Reference &mdash; at ceiling</th><th>Organization</th></tr>
     <tr><td class="k">% H</td><td>95 everywhere; carries no information</td><td>The human share that stays by design</td><td>The organization&rsquo;s human share today</td></tr>
     <tr><td class="k">Verification points and load</td><td>None: nothing is AI-touched</td><td>Where checks would fall at full permitted progression</td><td>Where checks fall today</td></tr>
     <tr><td class="k">Production mode</td><td>Human-only</td><td>The ceiling of the producing activity</td><td>Assessed state &rarr; ceiling</td></tr>
-    <tr><td class="k">At ceiling / redefinition</td><td>Not applicable</td><td>Which roles would need redefining at full progression</td><td>Which activities and roles have reached, or passed, design intent</td></tr>
+    <tr><td class="k">At ceiling / redefinition</td><td>Not applicable</td><td>Which roles would need redefining at full progression</td><td>Which activities and roles have reached, or passed, the ceiling</td></tr>
   </table>
 
   <h2>6. Instrumentation and Build Work</h2>
   <h3>A. Enabling work</h3>
   <ol class="plan">
     <li><strong>Reset the reference Current State to Human-only</strong> for all 118 activities, logging the modeled values being retired. <span class="tag">done Sept 26, CL-009</span></li>
-    <li><strong>Review the ceilings as design intent</strong> with GiGi, since they now carry the framework&rsquo;s central claim. 42 activities have a ceiling at Automation, meaning nothing in them has to stay human.</li>
+    <li><strong>Review the ceilings</strong> with GiGi, since they now carry the framework&rsquo;s central claim. 42 activities have a ceiling at Automation, meaning nothing in them has to stay human.</li>
     <li><strong>Organization data model and storage</strong>: the record shapes in section 3, stored privately behind the Worker, test organizations included. <span class="tag">prototype built</span></li>
     <li><strong>Resolution logic</strong>: the rule in section 5, used by every view and computed figure.</li>
     <li><strong>Assessment method</strong>: how an activity is placed on the ramp and what evidence counts, building on the evidence ladder (GR-037) and GiGi&rsquo;s workforce validation check (GR-022). Built into the template in section 8a and revised through its pressure test.</li>
@@ -221,16 +225,16 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
     <li><strong>Organization selector</strong>: the Reference Model first and by default, opening on the Working Relationship view; then every organization with an assessment, its coverage and a TEST tag where it applies; and &ldquo;New organization&hellip;&rdquo;, which creates one as a copy of the reference. <span class="tag">prototype built</span></li>
     <li><strong>Source chips</strong>: REFERENCE for reference values, ASSESSED (with date and assessor) for an organization&rsquo;s.</li>
     <li><strong>Coverage</strong> on every rollup.</li>
-    <li><strong>Beyond-design-intent flag</strong> on any activity assessed past its ceiling.</li>
-    <li><strong>Gap view</strong>: an organization against design intent, activity by activity and role by role.</li>
-    <li><strong>Interactive activity assessment</strong>: in the standard Working Relationship view, with an organization selected, every activity card shows its assessed state and an Assess button that opens the guided panel in section 8a. <span class="tag">prototype built</span></li>
+    <li><strong>Past-ceiling marker</strong> on any activity assessed above its ceiling: a red ring on the ramp where no override covers it, and a stage-colored ring inside an approved override. <span class="tag">prototype built</span></li>
+    <li><strong>Gap view</strong>: an organization against its ceilings, activity by activity and role by role.</li>
+    <li><strong>Interactive activity assessment</strong>: in the standard Working Relationship view, with an organization selected, every activity card shows its assessed state on the ramp and an Assess button that opens the guided panel in section 8a. <span class="tag">prototype built</span></li>
   </ol>
 
   <h2>7. Downstream Effects</h2>
   <ul class="plain">
     <li><strong>The Working-Relationship view</strong> reads as Human-only to ceiling in the reference, with an organization&rsquo;s assessed state placed between.</li>
-    <li><strong>Work product and the Shock Wave</strong>: verification load becomes an organization finding, with a design-intent version for the reference.</li>
-    <li><strong>Documentation (GR-048)</strong> describes Current State as an organization&rsquo;s assessed value, and the ceiling as design intent.</li>
+    <li><strong>Work product and the Shock Wave</strong>: verification load becomes an organization finding, with an at-ceiling version for the reference.</li>
+    <li><strong>Documentation (GR-048)</strong> describes Current State as an organization&rsquo;s assessed value, and the ceiling as the reference limit an organization can raise only by override.</li>
     <li><strong>How the framework can be offered</strong>: the reference model as a product in its own right, assessments against it as engagements, and, with each organization&rsquo;s consent, comparisons across assessed organizations. Commercial terms are for Tim and GiGi to settle separately, per their Co-Development Principles.</li>
   </ul>
 
@@ -249,10 +253,24 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
     <li>AI produces the complete work: does a person review and approve every instance before it takes effect? <em>Yes &rarr; Oversight.</em></li>
     <li>Does a person handle only the exceptions the AI flags? <em>Yes &rarr; Agent-delegation. No person in the loop, exceptions included &rarr; Automation.</em></li>
   </ol>
-  <p>The answers propose a working relationship, which the assessor confirms or overrides with a reason. The template then records the evidence type (observed practice, system configuration, interview, document), who gave it, a confidence level and a note, and flags the activity if the result is past its ceiling. Progress shows by process and by role.</p>
+  <p>The answers propose a working relationship, which the assessor confirms or changes with a reason. The template then records the evidence type (observed practice, system configuration, interview, document), who gave it, a confidence level and a note, and flags the activity if the result is past its ceiling. Progress shows by process and by role.</p>
+  <p><strong>On the ramp</strong> (Tim, Sept 26&ndash;27): at or below the ceiling, a step is filled with its Working-Relationship color once the Current State reaches it, and grey until then; the Reference Model shows only Human-only filled. Above the ceiling every step stays grey: a stage-colored ring marks a step inside an approved override (dashed until reached), and a red ring a step reached with no override. The lock stays right after the reference ceiling. The Assess button is white, like the view buttons, so it does not compete with the ramp.</p>
+
+  <h3>8b. Ceiling Overrides</h3>
+  <p class="source-note">Tim, Sept 27, 2026 (GR-054): &ldquo;It&rsquo;s the ceiling factors [that] determine; the CoE should not be allowed to exceed Moderate.&rdquo; Prototype built the same day, in the assessment panel.</p>
+  <p>An override raises one activity&rsquo;s Progression Ceiling for one organization. It is a governance decision, not an assessment finding, and is stored apart from the assessment, with its own history.</p>
+  <table>
+    <tr><th style="width:30%">Condition</th><th>Rule</th></tr>
+    <tr><td class="k">Consequence of Error</td><td>Low or Moderate only. Where it is High or Critical the ceiling cannot be overridden, because the cost of an error does not change from one organization to the next.</td></tr>
+    <tr><td class="k">Ceiling factor</td><td>The override names which of the activity&rsquo;s own ceiling factors no longer holds in this organization (for example a technical readiness gap that has closed).</td></tr>
+    <tr><td class="k">Evidence</td><td>What shows that the factor no longer holds.</td></tr>
+    <tr><td class="k">Approval</td><td>The activity&rsquo;s Accountable role, with the approver&rsquo;s name.</td></tr>
+    <tr><td class="k">Review date</td><td>Required, one year by default, so an override does not quietly become permanent.</td></tr>
+  </table>
+  <p>On the reference model, 49 of the 118 activities are eligible: Consequence of Error Low or Moderate, with a ceiling below Automation. An activity assessed past its ceiling with no override stays a finding, shown in red and counted in the organization&rsquo;s figures, until it is brought back within the ceiling or an override is approved.</p>
   <h2>9. Known Open Constructs</h2>
-  <div class="open-item"><div class="oi-name">Ceilings under review</div><p>Whether the 42 Automation ceilings, and the rest, hold up as design intent now that they carry the reference model&rsquo;s central claim.</p></div>
-  <div class="open-item"><div class="oi-name">Raising a ceiling</div><p>What reason is sufficient for an organization to go past the reference ceiling, and how it is reviewed.</p></div>
+  <div class="open-item"><div class="oi-name">Ceilings under review</div><p>Whether the 42 Automation ceilings, and the rest, hold up now that they carry the reference model&rsquo;s central claim.</p></div>
+  <div class="open-item"><div class="oi-name">Raising a ceiling</div><p>The rule is set (section 8b). Still open: what happens when an override&rsquo;s review date passes, and whether a Moderate override needs a second approver.</p></div>
   <div class="open-item"><div class="oi-name">Organization roles</div><p>Real organizations have their own roles. Mapping them to the reference role taxonomy is needed before role-level findings mean anything.</p></div>
   <div class="open-item"><div class="oi-name">Reference versions</div><p>When a ceiling changes after an organization is assessed, which version its findings are read against.</p></div>
   <div class="open-item"><div class="oi-name">Evidence standard and confidentiality</div><p>What evidence an assessment requires, and how organization data is protected and, if ever, aggregated.</p></div>
