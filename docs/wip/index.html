@@ -205,7 +205,7 @@ footer a { color: var(--navy); text-decoration: none; }
         <tr class="item-row">
           <td>
             <div class="item-title"><a href="requirements_register.html">Requirements Register<span class="lock"> (living tracker — HTML only)</span></a></div>
-            <div class="item-desc">Every requirement raised by GiGi or Tim (GR-001 onward), from her review documents, Tim's framework direction and our working sessions &mdash; each with who raised it, owner, priority and acceptance criteria, traced to a design-spec doc or sandbox feature, with a status from Open through Pending Review to Implemented or Closed. Filterable, searchable, and includes the Standard Design Spec Template. Replaces passing HITL_Requirements_Register.xlsx back and forth &mdash; this page is the current version all three of us read from.</div>
+            <div class="item-desc">Every requirement for the framework, how far along it is, and what Tim and GiGi need to decide. Opens on <b>Needs a decision</b>: approve, not approve or defer each one right there (reworked Sept 28, 2026). The standard design-spec template is at the bottom.</div>
           </td>
           <td><span class="status">Living tracker</span></td>
           <td><span class="stage">Ongoing</span></td>
@@ -339,12 +339,36 @@ footer a { color: var(--navy); text-decoration: none; }
         <tr class="item-row">
           <td>
             <div class="item-title"><a href="reference_model_assessment_layer_spec.html">Reference Model and Organization Assessment Layer &mdash; Design Spec</a></div>
-            <div class="item-desc">The design for GR-052 (Tim, Sept 26): the framework becomes a reference model whose Progression Ceiling is the limit on AI, with every activity's baseline at Human-only; each organization's assessment supplies its own Current State and is compared against the ceiling, which it can raise only by a governed override (GR-054). Covers the data layers, the resolution rule, what every figure means in each view, the build work, and the open decisions.</div>
+            <div class="item-desc">The design for GR-052: the framework is a reference model describing the work, and each organization&rsquo;s assessment supplies where it stands, compared against the Progression Ceilings. Rewritten Sept 28 with a one-screen decision brief; the assessment template and ceiling overrides now have their own specs, below.</div>
           </td>
           <td><span class="status" data-wip-status="reference-model-spec">Loading…</span></td>
           <td><span class="stage">Concept</span></td>
           <td class="fmt-links">
             <a href="reference_model_assessment_layer_spec.html">HTML</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="assessment_template_spec.html">Interactive Activity Assessment Template &mdash; Design Spec</a></div>
+            <div class="item-desc">The design for GR-053: five questions that place an activity on the ramp for one organization, with the evidence behind the answer. No decision pending; next is the ABC Test Org pressure test.</div>
+          </td>
+          <td><span class="status">In progress</span></td>
+          <td><span class="stage">Concept</span></td>
+          <td class="fmt-links">
+            <a href="assessment_template_spec.html">HTML</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="ceiling_override_spec.html">Ceiling Overrides &mdash; Design Spec</a></div>
+            <div class="item-desc">The design for GR-054: when an organization may raise an activity&rsquo;s Progression Ceiling, and how the override is reviewed. Awaiting a decision on the factor-based rule and the 11 High activities.</div>
+          </td>
+          <td><span class="status">Awaiting decision</span></td>
+          <td><span class="stage">Concept</span></td>
+          <td class="fmt-links">
+            <a href="ceiling_override_spec.html">HTML</a>
           </td>
         </tr>
 

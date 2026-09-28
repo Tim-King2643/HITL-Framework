@@ -358,11 +358,67 @@ async function handleSandboxApi(request, env, url) {
   return json({ error: 'not found' }, { status: 404 });
 }
 
+const DECISION_KEY_RE = /^GR-\d{3}:[a-z0-9-]{1,40}$/;
+const DECISION_CHOICES = new Set(['approve', 'not-approve', 'defer']);
+async function listDecisionKeys(env) {
+  const out = []; let cursor;
+  do {
+    const page = await env.WIP_VOTES.list({ prefix: 'decision:', cursor });
+    page.keys.forEach(k => out.push(k.name));
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor);
+  return out;
+}
+// outcome: 'approve' | 'not-approve' | 'defer' once both agree; 'split' when
+// they differ; 'awaiting-tim' / 'awaiting-gigi' with one choice in; 'awaiting'.
+function decisionPayload(rec) {
+  const tim = rec.Tim || null, gigi = rec.GiGi || null;
+  let outcome = 'awaiting';
+  if (tim && gigi) outcome = tim.choice === gigi.choice ? tim.choice : 'split';
+  else if (tim) outcome = 'awaiting-gigi';
+  else if (gigi) outcome = 'awaiting-tim';
+  return { tim, gigi, outcome, history: rec.history || [] };
+}
+
 async function handleApi(request, env, url) {
   const reviewer = reviewerFromRequest(request);
 
   if (url.pathname === '/wip-api/me') {
     return json({ reviewer });
+  }
+
+  // ── Requirement decisions (Sept 28, 2026) ────────────────────────────
+  // Each requirement in docs/wip/requirements-data.js can carry one pending
+  // decision (Approve / Not approve / Defer) with a key "<GR-id>:<decision-id>".
+  // Tim and GiGi each record a choice; the outcome is the shared choice once
+  // both agree. Stored in WIP_VOTES under "decision:<key>", with every change
+  // kept in history. Claude folds resolved decisions into the register file.
+  if (url.pathname === '/wip-api/decisions' && request.method === 'GET') {
+    const keys = await listDecisionKeys(env);
+    const decisions = {};
+    for (const k of keys) {
+      const raw = await env.WIP_VOTES.get(k);
+      if (raw) decisions[k.slice('decision:'.length)] = decisionPayload(JSON.parse(raw));
+    }
+    return json({ reviewer, decisions });
+  }
+
+  if (url.pathname === '/wip-api/decision' && request.method === 'POST') {
+    if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
+    let body;
+    try { body = await request.json(); } catch (e) { return json({ error: 'invalid JSON body' }, { status: 400 }); }
+    const key = body && body.key, choice = body && body.choice;
+    if (typeof key !== 'string' || !DECISION_KEY_RE.test(key)) return json({ error: 'unknown decision' }, { status: 400 });
+    if (!DECISION_CHOICES.has(choice)) return json({ error: 'unknown choice' }, { status: 400 });
+    const note = typeof body.note === 'string' ? body.note.trim().slice(0, 2000) : '';
+    const kvKey = 'decision:' + key;
+    const raw = await env.WIP_VOTES.get(kvKey);
+    const rec = raw ? JSON.parse(raw) : { Tim: null, GiGi: null, history: [] };
+    const entry = { choice, note, at: new Date().toISOString() };
+    rec[reviewer] = entry;
+    rec.history = [Object.assign({ reviewer }, entry)].concat(rec.history || []).slice(0, 50);
+    await env.WIP_VOTES.put(kvKey, JSON.stringify(rec));
+    return json({ ok: true, key, decision: decisionPayload(rec) });
   }
 
   if (url.pathname === '/wip-api/votes' && request.method === 'GET') {

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>[DRAFT] Reference Model and Organization Assessment Layer — Human-AI Partnership Framework</title>
+<title>[DRAFT] Interactive Activity Assessment Template — Human-AI Partnership Framework</title>
 <meta name="robots" content="noindex, nofollow"/>
 <link rel="stylesheet" href="wip-print.css" media="print"/>
 <style>
@@ -124,9 +124,9 @@ details.fold[open] { padding-bottom: 6px; }
 </div>
 
 <div class="masthead">
-  <div class="eyebrow">DESIGN SPEC &nbsp;&middot;&nbsp; GR-052 &nbsp;&middot;&nbsp; TIM KING &amp; CLAUDE &nbsp;&middot;&nbsp; SEPTEMBER 2026</div>
-  <h1>Reference Model and Organization Assessment Layer</h1>
-  <div class="subtitle">The framework describes the work; each organization&rsquo;s assessment supplies where it stands</div>
+  <div class="eyebrow">DESIGN SPEC &nbsp;&middot;&nbsp; GR-053 &nbsp;&middot;&nbsp; TIM KING &amp; CLAUDE &nbsp;&middot;&nbsp; SEPTEMBER 2026</div>
+  <h1>Interactive Activity Assessment Template</h1>
+  <div class="subtitle">Five questions that place an activity on the ramp for one organization, with the evidence behind the answer</div>
   <nav>
     <a href="../index.html">Documentation</a>
     <a href="../sandbox/pcf7.html">Dashboard</a>
@@ -134,88 +134,52 @@ details.fold[open] { padding-bottom: 6px; }
   </nav>
 </div>
 
-<div data-wip-docladder-mount data-item="reference-model-spec"></div>
-<div data-wip-vote-mount data-item="reference-model-spec" data-stage="Concept"></div>
-<div data-wip-download-mount data-item="reference-model-spec"></div>
-
 <div class="wrap">
 <div class="brief">
   <div class="b-label">What this is</div>
-  <p>The framework is a reference model: it describes the work itself &mdash; process, RACI, work products, Consequence of Error and a Progression Ceiling for every activity &mdash; and no particular organization. Each organization&rsquo;s assessment supplies its own Current State, activity by activity, and is compared against the ceilings.</p>
+  <p>A guided panel for placing one activity on the working-relationship ramp for one organization. Opened from any activity card in the sandbox&rsquo;s Working Relationship view; five questions propose a working relationship, and the assessor confirms or changes it and records the evidence.</p>
   <div class="b-label">Decided</div>
   <ul>
-    <li><b>Sept 26:</b> every activity&rsquo;s reference Current State is the Human-only baseline (all 118; CL-009).</li>
-    <li><b>Sept 26:</b> the Reference Model is the default organization in the sandbox, and assessment happens inside its Working Relationship view.</li>
-    <li><b>Sept 27:</b> the ceiling is called the Progression Ceiling throughout. It is a limit; an organization can raise it only through a governed override (<a href="ceiling_override_spec.html">Ceiling Overrides</a>).</li>
+    <li><b>Sept 26:</b> assess process by process inside the standard Working Relationship view &mdash; not on a separate page, and not by role.</li>
+    <li><b>Sept 26:</b> build and pressure-test against ABC Test Org, clearly labeled test data, before any real organization.</li>
+    <li><b>Sept 26&ndash;28:</b> the ramp itself shows the assessed state; the card carries only the Assess button.</li>
   </ul>
   <div class="b-label">Awaiting your decision</div>
-  <div data-decision-for="GR-052"></div>
-  <div class="b-label">If approved</div>
-  <p class="small">The remaining pieces get built: ASSESSED source chips, coverage on every rollup, the gap view, and access limited per organization.</p>
-  <div class="reqline">Designs <a href="requirements_register.html#GR-052">GR-052</a>. Related: <a href="requirements_register.html#GR-053">GR-053</a> <a href="assessment_template_spec.html">assessment template</a> &middot; <a href="requirements_register.html#GR-054">GR-054</a> <a href="ceiling_override_spec.html">ceiling overrides</a>.</div>
+  <p class="small">None pending. Next step: Tim and GiGi assess 7.2.1, 7.3.2 and 7.6.2 in ABC Test Org and note where the questions, definitions or evidence prompts fall short.</p>
+  <div class="reqline">Designs <a href="requirements_register.html#GR-053">GR-053</a>. Part of <a href="requirements_register.html#GR-052">GR-052</a> <a href="reference_model_assessment_layer_spec.html">reference model</a>.</div>
 </div>
 
   <h2>1. The problem</h2>
-  <p>The framework describes no specific organization, so it cannot know how any activity is done today. Its old Current State values were modeled judgments of typical practice, shown as if they were readings. What it can say generically is what is true of the work: its consequence of error, the legal, relational and accountability limits on it, and so how far AI may take it. Where a particular organization stands is a fact about that organization.</p>
+  <p>An assessment is only useful if two assessors looking at the same activity reach the same answer. That needs questions drawn from the locked category definitions, and a record of the evidence behind each answer, rather than a free choice from six labels.</p>
 
   <h2>2. The design</h2>
-  <div class="ramp6">
-    <div class="cell" style="background:#0D2D4F">Human-only</div>
-    <div class="cell" style="background:#204474">Judgment</div>
-    <div class="cell" style="background:#2457A3">Oversight</div>
-    <div class="cell" style="background:#3D6FA8">Augmentation</div>
-    <div class="cell" style="background:#5A8DC4">Agent-delegation</div>
-    <div class="cell" style="background:#7DAEE0">Automation</div>
-    <div class="zone z-base">Baseline</div>
-    <div class="zone z-space" style="grid-column: span 2">Room for AI &mdash; an organization&rsquo;s assessed state falls here</div>
-    <div class="zone z-beyond" style="grid-column: span 3">Above the ceiling &mdash; stays human unless overridden</div>
-  </div>
-  <p class="ramp-cap">Illustration: 7.2.1.3 Approve job requisition, whose Progression Ceiling is Oversight.</p>
+  <p>With an organization selected, each activity card has an Assess button (Reassess once assessed; View for anyone not signed in as Tim or GiGi). The panel shows what the reference knows &mdash; roles, Consequence of Error, the ceiling and its factors &mdash; then asks:</p>
+  <ol class="plan">
+    <li>Does AI play any part in this activity&rsquo;s work? <em>No &rarr; Human-only.</em></li>
+    <li>Does AI only supply inputs (data, rankings, benchmarks) for a person&rsquo;s own reasoning? <em>Yes &rarr; Judgment.</em></li>
+    <li>Does a person remain the primary actor, with AI assisting in real time and no separate approval step? <em>Yes &rarr; Augmentation.</em></li>
+    <li>AI produces the complete work: does a person review and approve every instance? <em>Yes &rarr; Oversight.</em></li>
+    <li>Does a person handle only the exceptions the AI flags? <em>Yes &rarr; Agent-delegation; no &rarr; Automation.</em></li>
+  </ol>
   <table>
-    <tr><th style="width:30%">Term</th><th>Meaning</th></tr>
-    <tr><td class="k">Reference model</td><td>The generic content: process structure, RACI, roles, work products and CRUD, Consequence of Error, and the Progression Ceiling for every activity.</td></tr>
-    <tr><td class="k">Baseline</td><td>Human-only: every activity&rsquo;s starting position in the reference.</td></tr>
-    <tr><td class="k">Progression Ceiling</td><td>The furthest along the ramp AI may take the activity, set from its ceiling factors and Consequence of Error.</td></tr>
-    <tr><td class="k">Assessed Current State</td><td>Where the activity stands in one organization. Exists only in an assessment.</td></tr>
-    <tr><td class="k">Past the ceiling</td><td>An assessed Current State above the ceiling with no override covering it: a finding to resolve, not an error.</td></tr>
+    <tr><th style="width:30%">Recorded</th><th>Rule</th></tr>
+    <tr><td class="k">Working relationship</td><td>The proposal, confirmed or changed; a change needs a reason.</td></tr>
+    <tr><td class="k">Evidence</td><td>Observed practice, system configuration, interview or document &mdash; required.</td></tr>
+    <tr><td class="k">Source, confidence, note</td><td>Who or what it came from; high, medium or low (required); a free note.</td></tr>
+    <tr><td class="k">History</td><td>Every earlier version is kept. &ldquo;Reset to baseline&rdquo; returns the activity to Human-only.</td></tr>
   </table>
-  <p><strong>Two layers.</strong> The reference lives in the sandbox&rsquo;s master data, in the repo, under the changelog check. Each organization &mdash; name, industry, size, whether it is test data &mdash; and its assessments live in private storage behind the Worker and the Access login, never in the public repo.</p>
-  <p><strong>Resolution rule.</strong> An activity&rsquo;s Current State is the organization&rsquo;s assessed value where one exists, otherwise the Human-only baseline. Its ceiling is the reference ceiling, or the organization&rsquo;s approved override where one applies.</p>
-  <p><strong>Granularity.</strong> Assessments are made per activity, where the ceiling and consequence live. Process and role figures roll up from activities, with coverage stated (&ldquo;23 of 118 assessed&rdquo;). The organization view shows room left for AI, activities past the ceiling, and verification load across roles.</p>
+  <p><strong>On the ramp.</strong> At or below the ceiling, a step is filled with its color once the Current State reaches it, grey until then. Above the ceiling every step stays grey: a stage-colored ring marks a step inside an approved override (dashed until reached), a red ring a step reached with no override. The lock stays after the reference ceiling.</p>
+  <p><strong>Test data.</strong> ABC Test Org carries a TEST chip and banner, is excluded from any comparison, and is never cited as a finding. It is saved through the Worker like any organization, so the test exercises the real path.</p>
 
   <h2>3. What is built</h2>
   <ul class="plain">
-    <li>The reference reset to Human-only for all 118 activities (CL-009).</li>
-    <li>The organization selector in the <a href="../sandbox/pcf7.html">sandbox</a>: Reference Model by default, every organization with its coverage, and &ldquo;New organization&hellip;&rdquo;. ABC Test Org is the test data.</li>
-    <li>Assessment from any activity in the Working Relationship view (<a href="assessment_template_spec.html">assessment template</a>), and ceiling overrides (<a href="ceiling_override_spec.html">ceiling overrides</a>).</li>
-    <li><strong>Not yet:</strong> ASSESSED source chips (values still read MODELED), coverage on every rollup, the gap view, and access limited per organization.</li>
+    <li>The panel, the questions, the record and its history, in the <a href="../sandbox/pcf7.html">sandbox</a>, saved through the Worker.</li>
+    <li>The ramp display, and the organization&rsquo;s figures: assessed count, at ceiling, and past the ceiling with no override.</li>
+    <li><strong>Not yet:</strong> ASSESSED source chips; progress shown by process and by role.</li>
   </ul>
 
   <h2>4. Open questions</h2>
-  <div class="open-item"><div class="oi-name">Ceilings under review &mdash; Tim and GiGi</div><p>Whether the ceilings hold up now that they carry the reference model&rsquo;s central claim, starting with the 42 at Automation.</p></div>
-  <div class="open-item"><div class="oi-name">Organization roles &mdash; Tim and GiGi</div><p>How an organization&rsquo;s own roles map to the reference role taxonomy, before role-level findings mean anything.</p></div>
-  <div class="open-item"><div class="oi-name">Reference versions &mdash; Tim</div><p>Which version of the reference an assessment is read against after a ceiling changes. Overrides record it; assessments do not yet.</p></div>
-  <div class="open-item"><div class="oi-name">Evidence standard and confidentiality &mdash; Tim and GiGi</div><p>What evidence an assessment requires, and how organization data is protected and, if ever, aggregated.</p></div>
-
-  <details class="fold">
-    <summary>Reference: what each figure means in each view</summary>
-    <table>
-      <tr><th style="width:24%">Figure</th><th>Reference &mdash; baseline</th><th>Reference &mdash; at ceiling</th><th>Organization</th></tr>
-      <tr><td class="k">% H</td><td>95 everywhere; carries no information</td><td>The human share that stays at the ceiling</td><td>The organization&rsquo;s human share today</td></tr>
-      <tr><td class="k">Verification load</td><td>None: nothing is AI-touched</td><td>Where checks would fall at full progression</td><td>Where checks fall today</td></tr>
-      <tr><td class="k">Production mode</td><td>Human-only</td><td>The ceiling of the producing activity</td><td>Assessed state &rarr; ceiling</td></tr>
-      <tr><td class="k">At ceiling / redefinition</td><td>Not applicable</td><td>Roles that would need redefining at full progression</td><td>Activities and roles that have reached, or passed, the ceiling</td></tr>
-    </table>
-  </details>
-  <details class="fold">
-    <summary>Reference: downstream effects, sourcing and scope</summary>
-    <ul class="plain">
-      <li><strong>Work product and the Shock Wave:</strong> verification load becomes an organization finding, with an at-ceiling version for the reference.</li>
-      <li><strong>Documentation (GR-048):</strong> describes Current State as an organization&rsquo;s assessed value, and the ceiling as the limit an organization can raise only by override.</li>
-      <li><strong>Offering the framework:</strong> the reference model as a product, assessments against it as engagements, and, with consent, comparisons across organizations. Commercial terms are for Tim and GiGi to settle separately.</li>
-      <li><strong>Source and scope:</strong> Sandbox 7.0&rsquo;s data (118 activities; ceilings 28 Judgment, 5 Oversight, 8 Augmentation, 35 Agent-delegation, 42 Automation). PCF 7.0 only for now; the design is domain-neutral. Production waits for the full rebuild.</li>
-    </ul>
-  </details>
+  <div class="open-item"><div class="oi-name">What the pressure test must show &mdash; Tim and GiGi</div><p>Where answers are ambiguous, which boundary cases the questions do not settle, and how long an activity takes to assess.</p></div>
 
 </div>
 
@@ -230,7 +194,5 @@ details.fold[open] { padding-bottom: 6px; }
 <script src="requirements-data.js"></script>
 <script src="decision-widget.js"></script>
 <script>document.querySelectorAll('[data-decision-for]').forEach(function (el) { DecisionWidget.mount(el, el.getAttribute('data-decision-for')); });</script>
-<script src="wip-vote-widget.js"></script>
-<script src="wip-download-widget.js"></script>
 </body>
 </html>
