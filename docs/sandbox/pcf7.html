@@ -253,7 +253,7 @@ td:first-child { text-align: left; }
 .gates-card-cons .wr-cf-trigger:hover { text-decoration: underline; }
 .gates-card-cons-tight { gap: 0; margin-left: 0; }
 
-.gates-legend-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px 28px; padding: 16px 22px; margin: 8px 0; background: #fff; border: 1px solid var(--border); border-radius: 10px; }
+.gates-legend-box { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 28px; padding: 16px 22px; margin: 8px 0; background: #fff; border: 1px solid var(--border); border-radius: 10px; }
 /* Sized and positioned to match the activity card below it exactly — same
    background, border, radius and padding as .gates-card, and the same
    margin scheme (class sets margin:8px 14px; the per-row inline style
@@ -263,9 +263,9 @@ td:first-child { text-align: left; }
    popup-sized box. A grid (not a flex row that wraps) keeps every item's
    text starting at the same left edge column by column, instead of
    trailing off into ragged whitespace after the longest item in a row. */
-.gates-legend-box-inline { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px 28px; background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px 22px; margin: 8px 14px; }
 /* MODELED legend line (GR-014) spans two columns on wide layouts so it reads on two lines, not four */
-@media (min-width: 1100px) { .gates-legend-item-wide { grid-column: span 2; } }
+@media (max-width: 1050px) { .gates-legend-box { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .gates-legend-box { grid-template-columns: 1fr; } }
 .gates-legend-item { display: flex; align-items: flex-start; gap: 8px; font-size: 11px; color: var(--gray); }
 .gates-legend-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; flex: 0 0 auto; }
 
@@ -436,14 +436,15 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
         <span>118 L4 activities &middot; 37 L3 processes &middot; 8 process groups &middot; 118 with a Progression Ceiling &middot; click a step, its circle, or a gate arrow for detail</span>
       </div>
       <div class="gates-legend-box">
-        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Colored step &mdash; the Current State and every step before it, up to the ceiling, in its Working-Relationship color (the Reference Model sits at Human-only)</span>
-        <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#166534;font-weight:700;">&#10003;</span> Passed &mdash; evidence already cleared this step</span>
-        <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open &mdash; reachable next, not required yet</span>
-        <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
-        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Grey step &mdash; not yet reached, or above the Progression Ceiling</span>
-        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:2.5px solid #3D6FA8;box-sizing:border-box;"></span><span class="gates-legend-dot" style="background:#EDEFF3;border:2.5px solid #B91C1C;box-sizing:border-box;margin-left:-4px;"></span>Ring above the ceiling &mdash; stage color: within an approved override (dashed until reached); red: reached with no override</span>
-        <span class="gates-legend-item"><span style="color:var(--navy);"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="4.6" r="1" fill="currentColor"/><rect x="7.2" y="7" width="1.6" height="5.2" rx="0.8" fill="currentColor"/></svg></span> Click any circle or step name (up to the ceiling) for its definition</span>
-        <span class="gates-legend-item gates-legend-item-wide"><span class="wr-prov wr-prov-classified">Modeled</span> Every % H is a modeled index, not measured data &mdash; click the chip for what it measures and how that row was calculated</span>
+        <!-- Two rows of four (Tim, Sept 28). Clicking a step for its definition is in the table's subtitle. -->
+        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Reached &mdash; up to the Current State</span>
+        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);box-sizing:border-box;"></span>Not yet reached, or above the ceiling</span>
+        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:2.5px solid #3D6FA8;box-sizing:border-box;"></span>Approved override (dashed until reached)</span>
+        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:2.5px solid #B91C1C;box-sizing:border-box;"></span>Past the ceiling, no override</span>
+        <span class="gates-legend-item"><span style="color:#166534;font-weight:700;">&#10003;</span> Passed &mdash; evidence cleared this step</span>
+        <span class="gates-legend-item"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open &mdash; reachable next</span>
+        <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why</span>
+        <span class="gates-legend-item"><span class="wr-prov wr-prov-classified">Modeled</span> % H is modeled, not measured</span>
       </div>
       <div class="table-wrap">
         <table id="main-table">
@@ -511,14 +512,15 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
         <span>14-role catalog &middot; reportsTo/span of control is a first-pass reasoned structure, not yet externally sourced &middot; a role&rsquo;s own row is an equal-weighted rollup across its RACI-Accountable L3s &mdash; click a role open to see each underlying process&rsquo;s own real ramp, the same six-step Current State &rarr; Progression Ceiling track used in the process view</span>
       </div>
       <div class="gates-legend-box">
-        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Colored step &mdash; the Current State and every step before it, up to the ceiling, in its Working-Relationship color (the Reference Model sits at Human-only)</span>
-        <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#166534;font-weight:700;">&#10003;</span> Passed &mdash; evidence already cleared this step</span>
-        <span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open &mdash; reachable next, not required yet</span>
-        <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>
-        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Grey step &mdash; not yet reached, or above the Progression Ceiling</span>
-        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:2.5px solid #3D6FA8;box-sizing:border-box;"></span><span class="gates-legend-dot" style="background:#EDEFF3;border:2.5px solid #B91C1C;box-sizing:border-box;margin-left:-4px;"></span>Ring above the ceiling &mdash; stage color: within an approved override (dashed until reached); red: reached with no override</span>
-        <span class="gates-legend-item"><span style="color:var(--navy);"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="4.6" r="1" fill="currentColor"/><rect x="7.2" y="7" width="1.6" height="5.2" rx="0.8" fill="currentColor"/></svg></span> Click any circle or step name (up to the ceiling) for its definition</span>
-        <span class="gates-legend-item gates-legend-item-wide"><span class="wr-prov wr-prov-classified">Modeled</span> Every % H is a modeled index, not measured data &mdash; click the chip for what it measures and how that row was calculated</span>
+        <!-- Two rows of four (Tim, Sept 28). Clicking a step for its definition is in the table's subtitle. -->
+        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Reached &mdash; up to the Current State</span>
+        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);box-sizing:border-box;"></span>Not yet reached, or above the ceiling</span>
+        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:2.5px solid #3D6FA8;box-sizing:border-box;"></span>Approved override (dashed until reached)</span>
+        <span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:2.5px solid #B91C1C;box-sizing:border-box;"></span>Past the ceiling, no override</span>
+        <span class="gates-legend-item"><span style="color:#166534;font-weight:700;">&#10003;</span> Passed &mdash; evidence cleared this step</span>
+        <span class="gates-legend-item"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open &mdash; reachable next</span>
+        <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why</span>
+        <span class="gates-legend-item"><span class="wr-prov wr-prov-classified">Modeled</span> % H is modeled, not measured</span>
       </div>
       <div class="table-wrap">
         <table id="people-main-table">
@@ -2214,26 +2216,6 @@ function rollupRowHtml(l3, icon) {
     '</div>';
 }
 
-// Restatement of the top-of-page gates legend, inserted as its own row
-// right before the activity card(s) it explains (right after an
-// L3-with-children row, or right before a leaf L3's own card). Sized and
-// aligned to match that activity card exactly: same background, border,
-// radius and padding, and margin-left set to indentPx alone (the same
-// override activityCardHtml applies to its own card), so both sit at the
-// same left edge and run the same full width.
-function inlineLegendHtml(indentPx) {
-  // Full table width, same as the top-of-page legend (per Tim, Sept 24, 2026),
-  // rather than indented to the activity cards' left edge. indentPx kept in
-  // the signature so the two call sites don't change.
-  return '<div class="gates-legend-box gates-legend-box-inline" style="margin-left:0;margin-right:0;">' +
-    '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:var(--navy);"></span>Colored step &mdash; the Current State and every step before it, up to the ceiling, in its Working-Relationship color (the Reference Model sits at Human-only)</span>' +
-    '<span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#166534;font-weight:700;">&#10003;</span> Passed &mdash; evidence already cleared this step</span>' +
-    '<span class="gates-legend-item" style="white-space:nowrap;"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open &mdash; reachable next, not required yet</span>' +
-    '<span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why it stops here</span>' +
-    '<span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:1px solid var(--border);"></span>Grey step &mdash; not yet reached, or above the Progression Ceiling</span><span class="gates-legend-item"><span class="gates-legend-dot" style="background:#EDEFF3;border:2.5px solid #3D6FA8;box-sizing:border-box;"></span><span class="gates-legend-dot" style="background:#EDEFF3;border:2.5px solid #B91C1C;box-sizing:border-box;margin-left:-4px;"></span>Ring above the ceiling &mdash; stage color: within an approved override (dashed until reached); red: reached with no override</span>' +
-    '<span class="gates-legend-item"><span style="color:var(--navy);"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="4.6" r="1" fill="currentColor"/><rect x="7.2" y="7" width="1.6" height="5.2" rx="0.8" fill="currentColor"/></svg></span> Click any circle or step name (up to the ceiling) for its definition</span>' +
-    '</div>';
-}
 
 function factorChecklistPop(code, factorList, activeFactors, note) {
   if (!activeFactors || !activeFactors.length) return '';
@@ -2325,7 +2307,8 @@ function render() {
     // repeat the legend before every single one, show it only once, right
     // before the first leaf L3 of each such run; a rollup (hasL4) row
     // breaks the run, since it gets its own legend when expanded.
-    let leafLegendShown = false;
+    // Process-level legends were removed (Tim, Sept 28): they only repeated
+    // the legend at the top of the table.
 
     g.l3.forEach(l3 => {
       const hasL4 = l3.l4.length > 0;
@@ -2336,20 +2319,10 @@ function render() {
         ? '<span class="toggle-icon" title="Click to expand">+</span>'
         : '<span class="toggle-icon placeholder"></span>';
       if (hasL4) {
-        leafLegendShown = false;
         html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '" style="display:none">' +
           '<td colspan="2" ' + l3ToggleAttrs + '>' + rollupRowHtml(l3, l3Icon) + '</td>' +
           '</tr>';
-        html += '<tr class="row-l4 row-legend-inline" data-parent="' + g.code + '" data-parent-l3="' + l3.code + '" style="display:none">' +
-          '<td colspan="2" style="padding:0;">' + inlineLegendHtml(48) + '</td>' +
-          '</tr>';
       } else {
-        if (!leafLegendShown) {
-          html += '<tr class="row-legend-inline" data-parent="' + g.code + '" data-l3code="' + l3.code + '" style="display:none">' +
-            '<td colspan="2" style="padding:0;">' + inlineLegendHtml(32) + '</td>' +
-            '</tr>';
-          leafLegendShown = true;
-        }
         html += '<tr class="row-l3" data-parent="' + g.code + '" data-l3code="' + l3.code + '" style="display:none">' +
           '<td colspan="2" style="padding:0;">' + activityCardHtml(l3.code, l3.name, 32) + '</td>' +
           '</tr>';
@@ -2379,7 +2352,6 @@ function setGroupExpanded(code, expanded) {
   td.classList.toggle('collapsed', !expanded);
   setIcon(td, expanded);
   document.querySelectorAll('tr.row-l3[data-parent="' + code + '"]').forEach(r => { r.style.display = expanded ? '' : 'none'; });
-  document.querySelectorAll('tr.row-legend-inline[data-parent="' + code + '"]:not([data-parent-l3])').forEach(r => { r.style.display = expanded ? '' : 'none'; });
   if (!expanded) {
     document.querySelectorAll('tr.row-l3.toggle-l3[data-parent="' + code + '"]').forEach(l3row => { l3row.classList.add('collapsed'); setIcon(l3row, false); });
     document.querySelectorAll('tr.row-l4[data-parent="' + code + '"]').forEach(l4row => { l4row.style.display = 'none'; });
