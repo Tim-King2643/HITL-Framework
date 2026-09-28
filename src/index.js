@@ -521,8 +521,9 @@ async function handleApi(request, env, url) {
 //                                evidenceType, source, confidence, note,
 //                                assessedBy, assessedAt, history: [...] }
 //   ceil:<orgId>:<code>     -> { level, factor, evidence, approverRole, approverName,
-//                                reviewDate, cons, refCeiling, refVersion,
-//                                approvedBy, approvedAt, history: [...] }
+//                                cons, refCeiling, refVersion, refSnapshot,
+//                                approvedBy, approvedAt, lastReviewedAt,
+//                                lastReviewedBy, reviews: [...], history: [...] }
 // An activity with no assess: key is unassessed and reads as the reference
 // baseline (Human-only). Resetting an activity keeps its history.
 //
@@ -531,7 +532,10 @@ async function handleApi(request, env, url) {
 // one organization. It is allowed only where Consequence of Error is Low or
 // Moderate, must name one of the activity's own ceiling factors that no
 // longer holds, and carries its evidence, the Accountable role's approval
-// and a review date. The Worker takes the activity's Consequence of Error,
+// and is signed off by the Accountable role alone (Tim, Sept 28: no second
+// approver). There is no fixed review date: the process owner's own audits
+// re-confirm an override, recorded through /org-api/ceiling-override/review,
+// and the page shows how long ago that was. The Worker takes the activity's Consequence of Error,
 // ceiling and ceiling factors from the reference lookup
 // (docs/sandbox/reference-wr.json, generated from WR_DATA by
 // scripts/build-reference-wr.mjs and checked in CI), never from the page, and
@@ -549,7 +553,6 @@ const CONFIDENCE = new Set(['high', 'medium', 'low']);
 const ORG_MAX = 200, NOTE_MAX = 2000, HISTORY_MAX = 25;
 const OVERRIDE_CONS = new Set(['Low', 'Moderate']);
 const CEILING_FACTOR_KEYS = new Set(['technical', 'governance', 'legal', 'relational', 'floor', 'accountability']);
-const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const REFERENCE_PATH = '/sandbox/reference-wr.json';
 
 // The reference lookup, read from the site's own static assets (deployed with
@@ -695,6 +698,42 @@ async function handleOrgApi(request, env, url) {
     return json({ ok: true, record: rec });
   }
 
+  // Re-confirm an override after the process owner's audit: stamps the date
+  // and who confirmed it, and re-checks it against the current reference.
+  if (url.pathname === '/org-api/ceiling-override/review' && request.method === 'POST') {
+    if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
+    let body;
+    try { body = await request.json(); } catch (e) { return json({ error: 'invalid JSON body' }, { status: 400 }); }
+    const orgId = body && body.org, code = body && body.code;
+    if (typeof orgId !== 'string' || !ORG_ID_RE.test(orgId) || !(await readOrg(env, orgId))) {
+      return json({ error: 'unknown organization' }, { status: 400 });
+    }
+    if (typeof code !== 'string' || !ASSESS_CODE_RE.test(code)) return json({ error: 'unknown activity' }, { status: 400 });
+    const key = 'ceil:' + orgId + ':' + code;
+    const raw = await env.SANDBOX_NOTES.get(key);
+    const rec = raw ? JSON.parse(raw) : null;
+    if (!rec || !rec.level) return json({ error: 'no override to review' }, { status: 404 });
+    const confirmedBy = clip(body.confirmedBy, ORG_MAX);
+    if (!confirmedBy) return json({ error: 'give the name of the person who confirmed the override' }, { status: 400 });
+    let ref;
+    try { ref = await loadReference(env, request); } catch (e) { return json({ error: e.message }, { status: 503 }); }
+    const refAct = ref.activities[code];
+    const stillValid = refAct && OVERRIDE_CONS.has(refAct.cons) &&
+      WR_STEPS.indexOf(rec.level) > WR_STEPS.indexOf(refAct.ceiling) &&
+      (refAct.ceilingFactors || []).includes(rec.factor);
+    if (!stillValid) {
+      return json({ error: 'the reference has changed and this override no longer meets the rule; change or remove it' }, { status: 409 });
+    }
+    const now = Date.now();
+    rec.reviews = [{ at: now, by: confirmedBy, recordedBy: reviewer, note: clip(body.note, NOTE_MAX) }].concat(rec.reviews || []).slice(0, HISTORY_MAX);
+    rec.lastReviewedAt = now;
+    rec.lastReviewedBy = confirmedBy;
+    rec.cons = refAct.cons; rec.refCeiling = refAct.ceiling; rec.refVersion = ref.version;
+    rec.refSnapshot = { ceiling: refAct.ceiling, cons: refAct.cons, ceilingFactors: refAct.ceilingFactors || [] };
+    await env.SANDBOX_NOTES.put(key, JSON.stringify(rec));
+    return json({ ok: true, override: rec });
+  }
+
   if (url.pathname === '/org-api/ceiling-override' && (request.method === 'POST' || request.method === 'DELETE')) {
     if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
     let body;
@@ -734,14 +773,16 @@ async function handleOrgApi(request, env, url) {
     const evidence = clip(body.evidence, NOTE_MAX);
     const approverRole = clip(body.approverRole, ORG_MAX);
     const approverName = clip(body.approverName, ORG_MAX);
-    const reviewDate = typeof body.reviewDate === 'string' && DATE_RE.test(body.reviewDate) ? body.reviewDate : '';
     if (!evidence) return json({ error: 'an override needs evidence that the ceiling factor no longer holds' }, { status: 400 });
     if (!approverRole || !approverName) return json({ error: 'an override needs the Accountable role and the person who approved it' }, { status: 400 });
-    if (!reviewDate || reviewDate <= new Date().toISOString().slice(0, 10)) return json({ error: 'an override needs a review date in the future' }, { status: 400 });
+    const now = Date.now();
     const rec = {
-      level, factor: body.factor, evidence, approverRole, approverName, reviewDate, cons, refCeiling,
+      level, factor: body.factor, evidence, approverRole, approverName, cons, refCeiling,
       refVersion: ref.version,
-      approvedBy: reviewer, approvedAt: Date.now(),
+      refSnapshot: { ceiling: refAct.ceiling, cons: refAct.cons, ceilingFactors: refAct.ceilingFactors || [] },
+      approvedBy: reviewer, approvedAt: now,
+      lastReviewedAt: now, lastReviewedBy: approverName,
+      reviews: [],
       history: history.slice(0, HISTORY_MAX)
     };
     await env.SANDBOX_NOTES.put(key, JSON.stringify(rec));

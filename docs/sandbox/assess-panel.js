@@ -13,7 +13,9 @@
 // decision raising this activity's Progression Ceiling for this
 // organization. It is offered only where Consequence of Error is Low or
 // Moderate, and needs the ceiling factor that no longer holds, evidence, the
-// Accountable role's approval and a review date.
+// Accountable role's approval. There is no fixed review date: after the
+// process owner's audit, "Record a review" re-confirms it, and the panel
+// shows how long ago that was and whether the reference has changed since.
 //
 // AssessPanel.open({
 //   org, code, name, process, A, R,        // activity and its roles
@@ -90,7 +92,7 @@
     var el = back.firstChild;
     var rec = o.record;
     var ov = o.override && o.override.level ? o.override : null;
-    var ovFormOpen = false;
+    var ovFormOpen = false, ovReviewOpen = false;
     var answers = (rec && rec.current && rec.answers && rec.answers.length) ? rec.answers.slice() : [null, null, null, null, null];
     function close() { back.remove(); document.removeEventListener('keydown', onKey); }
     function onKey(e) { if (e.key === 'Escape') close(); }
@@ -113,6 +115,21 @@
       }
     }
 
+    function ago(t) {
+      var days = Math.floor((Date.now() - t) / 86400000);
+      if (days < 1) return 'today';
+      if (days < 60) return days + ' day' + (days === 1 ? '' : 's') + ' ago';
+      var months = Math.floor(days / 30.4);
+      return months + ' months ago';
+    }
+    // Has the reference changed for this activity since the override was
+    // approved or last reviewed?
+    function refChanged(v) {
+      var w = o.ref, snap = v.refSnapshot;
+      if (!snap) return (v.refCeiling && v.refCeiling !== w.ceiling) || (v.cons && v.cons !== w.cons);
+      return snap.ceiling !== w.ceiling || snap.cons !== w.cons ||
+        (snap.ceilingFactors || []).slice().sort().join() !== (w.ceilingFactors || []).slice().sort().join();
+    }
     function overrideHtml() {
       var w = o.ref;
       var h = '<div class="sec"><h4>Ceiling override</h4>';
@@ -123,20 +140,25 @@
           '<dt>Factor no longer holding</dt><dd>' + esc(o.cfLabels[ov.factor] || ov.factor) + '</dd>' +
           '<dt>Evidence</dt><dd>' + esc(ov.evidence) + '</dd>' +
           '<dt>Approved by</dt><dd>' + esc(ov.approverName) + ' (' + esc(ov.approverRole) + ')</dd>' +
-          '<dt>Review by</dt><dd>' + esc(ov.reviewDate) + '</dd>' +
+          '<dt>Last reviewed</dt><dd>' + (ov.lastReviewedAt ? new Date(ov.lastReviewedAt).toLocaleDateString() + ' by ' + esc(ov.lastReviewedBy || ov.approverName) + ' <span style="color:#6B7A90">(' + ago(ov.lastReviewedAt) + ')</span>' : new Date(ov.approvedAt).toLocaleDateString() + ' <span style="color:#6B7A90">(at approval, ' + ago(ov.approvedAt) + ')</span>') + '</dd>' +
           '<dt>Recorded</dt><dd>' + esc(ov.approvedBy) + ', ' + new Date(ov.approvedAt).toLocaleDateString() + (ov.refVersion ? ' <span style="color:#6B7A90">&middot; reference version ' + esc(ov.refVersion) + '</span>' : '') + '</dd></dl>';
+        if (refChanged(ov)) h += '<div class="warn"><strong>Re-review needed.</strong> This activity&rsquo;s ceiling, Consequence of Error or ceiling factors have changed in the reference since the override was approved or last reviewed.</div>';
       } else if (!ovFormOpen) {
         h += '<p class="muted">None. The reference ceiling of ' + esc(w.ceiling) + ' applies. An override raises it for ' + esc(o.org.name) + ' only, where the organization can show that a ceiling factor no longer holds.</p>';
       }
       if (!o.canEdit) return h + '</div>';
+      if (ov && ovReviewOpen) {
+        return h + '<label for="ov-confirmed">Confirmed by (after the process owner&rsquo;s audit)</label><input type="text" id="ov-confirmed" value="' + esc(ov.approverName || '') + '">' +
+          '<label for="ov-rnote">Note (optional)</label><input type="text" id="ov-rnote">' +
+          '<div class="actions"><button type="button" class="primary" id="ov-rsave">Save review</button><button type="button" id="ov-rcancel">Cancel</button><span class="msg" id="ov-msg"></span></div></div>';
+      }
       if (!ovFormOpen) {
-        return h + '<div class="actions"><button type="button" id="ov-open">' + (ov ? 'Change override' : 'Override the ceiling&hellip;') + '</button>' +
+        return h + '<div class="actions">' + (ov ? '<button type="button" id="ov-review">Record a review</button>' : '') +
+          '<button type="button" id="ov-open">' + (ov ? 'Change override' : 'Override the ceiling&hellip;') + '</button>' +
           (ov ? '<button type="button" id="ov-remove">Remove override</button>' : '') + '<span class="msg" id="ov-msg"></span></div></div>';
       }
       var above = STEPS.slice(rank(w.ceiling) + 1);
       var keys = (w.ceilingFactors || []).filter(function (k) { return k !== 'top'; });
-      var d = new Date(); d.setFullYear(d.getFullYear() + 1);
-      var review = ov ? ov.reviewDate : d.toISOString().slice(0, 10);
       h += '<label for="ov-level">Raise the ceiling to</label><select id="ov-level">' +
           above.map(function (s) { return '<option' + (ov && ov.level === s ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select>' +
         '<label for="ov-factor">Which ceiling factor no longer holds here?</label><select id="ov-factor"><option value="">Choose&hellip;</option>' +
@@ -146,7 +168,6 @@
           (o.A.length ? '<select id="ov-role">' + o.A.map(function (a) { return '<option' + (ov && ov.approverRole === a ? ' selected' : '') + '>' + esc(a) + '</option>'; }).join('') + '</select>'
                       : '<input type="text" id="ov-role" value="' + esc(ov && ov.approverRole || '') + '">') +
         '<label for="ov-name">Approver&rsquo;s name</label><input type="text" id="ov-name" value="' + esc(ov && ov.approverName || '') + '">' +
-        '<label for="ov-review">Review by</label><input type="text" id="ov-review" value="' + esc(review) + '" placeholder="YYYY-MM-DD">' +
         '<div class="actions"><button type="button" class="primary" id="ov-save">Save override</button><button type="button" id="ov-cancel">Cancel</button><span class="msg" id="ov-msg"></span></div>';
       return h + '</div>';
     }
@@ -154,6 +175,19 @@
       var w = o.ref;
       var bOpen = el.querySelector('#ov-open'); if (bOpen) bOpen.onclick = function () { ovFormOpen = true; draw(); var f = el.querySelector('#ov-level'); if (f) f.focus(); };
       var bCancel = el.querySelector('#ov-cancel'); if (bCancel) bCancel.onclick = function () { ovFormOpen = false; draw(); };
+      var bRev = el.querySelector('#ov-review'); if (bRev) bRev.onclick = function () { ovReviewOpen = true; draw(); var f = el.querySelector('#ov-confirmed'); if (f) f.focus(); };
+      var bRc = el.querySelector('#ov-rcancel'); if (bRc) bRc.onclick = function () { ovReviewOpen = false; draw(); };
+      var bRs = el.querySelector('#ov-rsave');
+      if (bRs) bRs.onclick = function () {
+        var m = el.querySelector('#ov-msg');
+        var who = el.querySelector('#ov-confirmed').value.trim();
+        if (!who) { m.className = 'msg err'; m.textContent = 'Give the name of the person who confirmed it.'; return; }
+        bRs.disabled = true;
+        OrgContext.reviewOverride(o.org.id, o.code, who, el.querySelector('#ov-rnote').value).then(function (j) {
+          ov = j.override; ovReviewOpen = false; if (o.onOverrideSaved) o.onOverrideSaved(ov); draw();
+          var m2 = el.querySelector('#ov-msg'); if (m2) { m2.className = 'msg ok'; m2.textContent = 'Review recorded.'; }
+        }).catch(function (e) { bRs.disabled = false; m.className = 'msg err'; m.textContent = e.message; });
+      };
       var bRemove = el.querySelector('#ov-remove');
       if (bRemove) bRemove.onclick = function () {
         OrgContext.removeOverride(o.org.id, o.code).then(function () {
@@ -169,8 +203,7 @@
           factor: el.querySelector('#ov-factor').value,
           evidence: el.querySelector('#ov-evidence').value,
           approverRole: el.querySelector('#ov-role').value,
-          approverName: el.querySelector('#ov-name').value,
-          reviewDate: el.querySelector('#ov-review').value.trim()
+          approverName: el.querySelector('#ov-name').value
         };
         if (!body.factor) { m.className = 'msg err'; m.textContent = 'Name the ceiling factor that no longer holds.'; return; }
         if (!body.evidence.trim()) { m.className = 'msg err'; m.textContent = 'Give the evidence.'; return; }
@@ -194,7 +227,7 @@
         '<dt>Responsible</dt><dd>' + (esc(o.R.join(', ')) || '&mdash;') + '</dd>' +
         '<dt>Consequence of Error</dt><dd>' + (w.cons ? '<span style="color:' + (o.consColor[w.cons] || '#333') + ';font-weight:600">' + esc(w.cons) + '</span>' : '&mdash;') + '</dd>' +
         '<dt>Progression Ceiling</dt><dd>' + chip(w.ceiling) + (factors ? '<ul>' + factors + '</ul>' : '') + (w.ceilingNote ? '<div style="color:#555;margin-top:4px">' + esc(w.ceilingNote) + '</div>' : '') +
-          (ov ? '<div class="ovr"><strong>Overridden to ' + esc(ov.level) + '</strong> for ' + esc(o.org.name) + ' &mdash; review by ' + esc(ov.reviewDate) + '</div>' : '') + '</dd>' +
+          (ov ? '<div class="ovr"><strong>Overridden to ' + esc(ov.level) + '</strong> for ' + esc(o.org.name) + ' &mdash; last reviewed ' + ago(ov.lastReviewedAt || ov.approvedAt) + (refChanged(ov) ? ' &middot; <strong style="color:#991B1B">re-review needed</strong>' : '') + '</div>' : '') + '</dd>' +
         '<dt>Current State</dt><dd>' + chip(rec && rec.current) + (rec && rec.current ? ' <span style="color:#6B7A90">by ' + esc(rec.assessedBy) + ', ' + new Date(rec.assessedAt).toLocaleDateString() + '</span>' : ' <span style="color:#6B7A90">reads as the Human-only baseline</span>') + '</dd>' +
         '</dl>';
       html += '<div class="sec"><h4>How is this activity done in ' + esc(o.org.name) + '?</h4>';

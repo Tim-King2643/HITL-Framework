@@ -21,6 +21,7 @@
 //   OrgContext.resetAssessment(orgId, code)
 //   OrgContext.saveOverride(record)        -> { override }  (ceiling override, GR-054)
 //   OrgContext.removeOverride(orgId, code)
+//   OrgContext.reviewOverride(orgId, code, confirmedBy, note)  (after the owner's audit)
 (function () {
   var REFERENCE = {
     id: 'reference',
@@ -180,6 +181,7 @@
     resetAssessment: function (orgId, code) { return api('DELETE', '/org-api/assessment', { org: orgId, code: code }); },
     saveOverride: function (rec) { return api('POST', '/org-api/ceiling-override', rec); },
     removeOverride: function (orgId, code) { return api('DELETE', '/org-api/ceiling-override', { org: orgId, code: code }); },
+    reviewOverride: function (orgId, code, confirmedBy, note) { return api('POST', '/org-api/ceiling-override/review', { org: orgId, code: code, confirmedBy: confirmedBy, note: note || '' }); },
     chip: function (o) {
       if (!o) return '';
       if (o.reference) return '<span class="org-chip org-chip-ref">REFERENCE</span>';
