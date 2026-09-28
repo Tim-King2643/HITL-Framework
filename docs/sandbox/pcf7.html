@@ -212,7 +212,7 @@ td:first-child { text-align: left; }
 .gates-info-label { font-size: 9px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); margin-bottom: 3px; }
 .gates-info-label-2 { border-top: 1px solid var(--border); padding-top: 8px; margin-top: 2px; }
 .gates-info-def { font-size: 11px; line-height: 1.45; color: var(--gray); margin: 0 0 8px; }
-.wr-role-flag { color: #B45309; text-transform: none; letter-spacing: 0; font-weight: 700; }
+.wr-role-flag { color: #B45309; font-weight: 700; } /* same size, case and spacing as its section title (Tim, Sept 27) */
 .gates-req-list { list-style: none; margin: 0 0 8px; padding: 0; }
 .gates-req-list li { display: flex; align-items: flex-start; gap: 7px; font-size: 11px; line-height: 1.5; padding: 2px 0; color: var(--gray); }
 .gates-req-list li::before { content: ''; flex: 0 0 auto; width: 13px; height: 13px; margin-top: 1px; border-radius: 3px; border: 1.3px dashed #C6CDD9; display: inline-block; }
@@ -1891,7 +1891,7 @@ const CEILING_FACTORS = [
 // ── Progression Gates track — the six-step ramp per activity, ported from
 // the "Progression Gates" mockup exploration (Sept 19, 2026). Reuses
 // WR_DATA (real, already-classified data) unchanged. The only new content
-// is the per-step "what the work looks like here" text, templated from the
+// is the per-step "what the work looks like at this stage" text, templated from the
 // six standard category definitions (Table 2 of the methodology doc)
 // applied to each activity's own name and RACI-Accountable role — not
 // hand-authored per activity, given the scale (118 activities × 6 steps).
@@ -2060,7 +2060,7 @@ function gatesInfoContent(code, key) {
     const act = lowerFirst(info.name);
     const role = info.role;
     const rn = roleImpactNote(ni, currentIdx, act, role);
-    return '<div class="gates-info-title">' + label + ' — what the work looks like here</div>' +
+    return '<div class="gates-info-title">' + label + ' — what the work looks like at this stage</div>' +
       '<div class="gates-info-label">Standard definition</div>' +
       '<p class="gates-info-def">' + STEP_DEFINITIONS[label] + '</p>' +
       '<div class="gates-info-label gates-info-label-2">What moves to AI</div>' +
