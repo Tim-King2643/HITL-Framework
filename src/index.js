@@ -576,10 +576,10 @@ async function handleApi(request, env, url) {
 //   assess:<orgId>:<code>   -> { current, proposed, answers, overrideReason,
 //                                evidenceType, source, confidence, note,
 //                                assessedBy, assessedAt, history: [...] }
-//   ceil:<orgId>:<code>     -> { level, factor, evidence, approverRole, approverName,
+//   ceil:<orgId>:<code>     -> { level, factor, evidence, approverRole,
 //                                cons, refCeiling, refVersion, refSnapshot,
 //                                approvedBy, approvedAt, lastReviewedAt,
-//                                lastReviewedBy, reviews: [...], history: [...] }
+//                                lastReviewedRole, reviews: [...], history: [...] }
 // An activity with no assess: key is unassessed and reads as the reference
 // baseline (Human-only). Resetting an activity keeps its history.
 //
@@ -771,8 +771,9 @@ async function handleOrgApi(request, env, url) {
     const raw = await env.SANDBOX_NOTES.get(key);
     const rec = raw ? JSON.parse(raw) : null;
     if (!rec || !rec.level) return json({ error: 'no override to review' }, { status: 404 });
-    const confirmedBy = clip(body.confirmedBy, ORG_MAX);
-    if (!confirmedBy) return json({ error: 'give the name of the person who confirmed the override' }, { status: 400 });
+    // The Accountable role that confirmed it — roles, not people (Sept 29).
+    const confirmedRole = clip(body.confirmedRole || body.confirmedBy, ORG_MAX);
+    if (!confirmedRole) return json({ error: 'name the Accountable role that confirmed the override' }, { status: 400 });
     let ref;
     try { ref = await loadReference(env, request); } catch (e) { return json({ error: e.message }, { status: 503 }); }
     const refAct = ref.activities[code];
@@ -783,9 +784,10 @@ async function handleOrgApi(request, env, url) {
       return json({ error: 'the reference has changed and this override no longer meets the rule; change or remove it' }, { status: 409 });
     }
     const now = Date.now();
-    rec.reviews = [{ at: now, by: confirmedBy, recordedBy: reviewer, note: clip(body.note, NOTE_MAX) }].concat(rec.reviews || []).slice(0, HISTORY_MAX);
+    rec.reviews = [{ at: now, role: confirmedRole, recordedBy: reviewer, note: clip(body.note, NOTE_MAX) }].concat(rec.reviews || []).slice(0, HISTORY_MAX);
     rec.lastReviewedAt = now;
-    rec.lastReviewedBy = confirmedBy;
+    rec.lastReviewedRole = confirmedRole;
+    delete rec.lastReviewedBy;
     rec.cons = refAct.cons; rec.refCeiling = refAct.ceiling; rec.refVersion = ref.version;
     rec.refSnapshot = { ceiling: refAct.ceiling, cons: refAct.cons, ceilingFactors: refAct.ceilingFactors || [] };
     await env.SANDBOX_NOTES.put(key, JSON.stringify(rec));
@@ -830,16 +832,15 @@ async function handleOrgApi(request, env, url) {
     }
     const evidence = clip(body.evidence, NOTE_MAX);
     const approverRole = clip(body.approverRole, ORG_MAX);
-    const approverName = clip(body.approverName, ORG_MAX);
     if (!evidence) return json({ error: 'an override needs evidence that the ceiling factor no longer holds' }, { status: 400 });
-    if (!approverRole || !approverName) return json({ error: 'an override needs the Accountable role and the person who approved it' }, { status: 400 });
+    if (!approverRole) return json({ error: 'an override needs the Accountable role that approved it' }, { status: 400 });
     const now = Date.now();
     const rec = {
-      level, factor: body.factor, evidence, approverRole, approverName, cons, refCeiling,
+      level, factor: body.factor, evidence, approverRole, cons, refCeiling,
       refVersion: ref.version,
       refSnapshot: { ceiling: refAct.ceiling, cons: refAct.cons, ceilingFactors: refAct.ceilingFactors || [] },
       approvedBy: reviewer, approvedAt: now,
-      lastReviewedAt: now, lastReviewedBy: approverName,
+      lastReviewedAt: now, lastReviewedRole: approverRole,
       reviews: [],
       history: history.slice(0, HISTORY_MAX)
     };

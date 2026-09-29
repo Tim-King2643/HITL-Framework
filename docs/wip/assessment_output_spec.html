@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>[DRAFT] Ceiling Overrides — Human-AI Partnership Framework</title>
+<title>[DRAFT] Organization Assessment Output — Human-AI Partnership Framework</title>
 <meta name="robots" content="noindex, nofollow"/>
 <link rel="stylesheet" href="wip-print.css" media="print"/>
 <style>
@@ -116,17 +116,17 @@ details.fold[open] { padding-bottom: 6px; }
 </style>
 </head>
 <body>
-
 <div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
   <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft &mdash; Not Yet Part of the Framework</strong>
   &nbsp;&middot;&nbsp; Reviewing this before it&rsquo;s finalized. Nothing here is official yet.
   &nbsp;&middot;&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">Back to WIP hub</a>
 </div>
 
+
 <div class="masthead">
-  <div class="eyebrow">DESIGN SPEC &nbsp;&middot;&nbsp; GR-054 &nbsp;&middot;&nbsp; TIM KING &amp; CLAUDE &nbsp;&middot;&nbsp; SEPTEMBER 2026</div>
-  <h1>Ceiling Overrides</h1>
-  <div class="subtitle">When an organization may raise an activity&rsquo;s Progression Ceiling, and how the override is kept honest</div>
+  <div class="eyebrow">DESIGN SPEC &nbsp;&middot;&nbsp; GR-056 &nbsp;&middot;&nbsp; TIM KING &amp; CLAUDE &nbsp;&middot;&nbsp; SEPTEMBER 2026</div>
+  <h1>Organization Assessment Output</h1>
+  <div class="subtitle">What the work-side assessment produces for an organization, and the hand-off that feeds the human-impact side</div>
   <nav>
     <a href="../index.html">Documentation</a>
     <a href="../sandbox/pcf7.html">Dashboard</a>
@@ -135,74 +135,67 @@ details.fold[open] { padding-bottom: 6px; }
 </div>
 
 <div class="wrap">
+
 <div class="brief">
   <div class="b-label">What this is</div>
-  <p>A ceiling override raises one activity&rsquo;s Progression Ceiling for one organization. It is a governance decision, signed off by the activity&rsquo;s process owner and kept apart from the assessment; an activity assessed past its ceiling with no override stays a finding.</p>
+  <p>The set of outputs an organization receives from its work-side assessment &mdash; an executive summary, a dashboard, the exceptions report and the process detail &mdash; and a defined hand-off of work-side results to the human-impact side. It covers the architecture of work only. Readiness and human impact are GiGi&rsquo;s design; this spec produces what they build on and stops where they begin.</p>
   <div class="b-label">Decided</div>
   <ul>
-    <li><b>Sept 27:</b> allowed only where Consequence of Error is Low or Moderate, naming one of the activity&rsquo;s own ceiling factors that no longer holds, with evidence and the Accountable role&rsquo;s approval.</li>
-    <li><b>Sept 27:</b> the Worker checks every override against the reference itself, not against what the page sends.</li>
-    <li><b>Sept 28:</b> no fixed review date and no second approver. The process owner&rsquo;s audits are recorded as reviews; an override is flagged when the activity&rsquo;s reference values change.</li>
-    <li><b>Sept 29:</b> approvals and reviews record the Accountable role, not a person&rsquo;s name.</li>
+    <li><b>Sept 29:</b> the work side&rsquo;s responsibility is the assessment output for the work, built to enable and feed the human-impact side (Tim).</li>
+    <li><b>Sept 29:</b> roles, never names, in every output; Assessed and Modeled values always labeled.</li>
+    <li><b>Sept 29:</b> the Exceptions Report is the first output built.</li>
   </ul>
   <div class="b-label">Awaiting your decision</div>
-  <div data-decision-for="GR-054"></div>
+  <div data-decision-for="GR-056"></div>
   <div class="b-label">If approved</div>
-  <p class="small">7.1.2.6, 7.2.3.3 and 7.4.5 come down to Oversight; the seven Automation activities each record their control; the rule goes into the Worker&rsquo;s check. 15 activities whose only factors are the judgment floor or accountability can no longer be overridden, including 7.2.1.1 and 7.3.2.1.</p>
-  <div class="reqline">Designs <a href="requirements_register.html#GR-054">GR-054</a>. Part of <a href="requirements_register.html#GR-052">GR-052</a> <a href="reference_model_assessment_layer_spec.html">reference model</a>.</div>
+  <p class="small">The executive summary is built next, then the role hand-off, then the dashboard. GiGi confirms what the hand-off must carry for her side; the infographic waits until both sides have output to show.</p>
+  <div class="reqline">Designs <a href="requirements_register.html#GR-056">GR-056</a>. Builds on <a href="requirements_register.html#GR-052">GR-052</a> <a href="reference_model_assessment_layer_spec.html">reference model</a> &middot; <a href="requirements_register.html#GR-053">GR-053</a> <a href="assessment_template_spec.html">assessment template</a> &middot; <a href="requirements_register.html#GR-054">GR-054</a> <a href="ceiling_override_spec.html">ceiling overrides</a> &middot; <a href="requirements_register.html#GR-046">GR-046</a> <a href="work_product_role_container_spec.html">work product</a>.</div>
 </div>
 
   <h2>1. The problem</h2>
-  <p>An organization cannot override a High Consequence of Error ceiling, yet the reference gives 11 High activities a ceiling at Agent-delegation or Automation, where no person handles each instance. The reference allows more than any organization could be approved for. One rule should govern both, and the ceiling factors &mdash; the reasons each ceiling sits where it does &mdash; are what separate the cases.</p>
+  <p>The sandbox can now assess an organization activity by activity, but what the organization gets back is a working tool, not an answer. An executive needs to see in a few minutes where the organization stands against the reference and what needs a decision. And the human-impact side needs a clean, defined set of work-side results to start from, rather than reading them off the sandbox.</p>
 
-  <h2>2. The design</h2>
-  <h3>The rule today</h3>
-  <table>
-    <tr><th style="width:30%">Condition</th><th>Rule</th></tr>
-    <tr><td class="k">Consequence of Error</td><td>Low or Moderate only.</td></tr>
-    <tr><td class="k">Ceiling factor</td><td>Names which of the activity&rsquo;s own ceiling factors no longer holds in this organization.</td></tr>
-    <tr><td class="k">Evidence and approval</td><td>What shows the factor no longer holds; the Accountable role that approved it. Reviews record the Accountable role that confirmed it. No one&rsquo;s name is recorded.</td></tr>
-    <tr><td class="k">Review</td><td>Each audit by the process owner is recorded (date, who confirmed, note); the panel shows how long ago. A review re-checks the override against the current reference and is refused if it no longer meets the rule.</td></tr>
-  </table>
-  <h3>The proposed revision: the ceiling factors decide</h3>
-  <table>
-    <tr><th style="width:24%">Ceiling factor</th><th>In the reference, at High or Critical</th><th style="width:34%">Override</th></tr>
-    <tr><td class="k">Governance / sign-off</td><td>A person stays on every instance: the ceiling is at most Augmentation.</td><td>At Low or Moderate only.</td></tr>
-    <tr><td class="k">Legal / fiduciary</td><td>Above Augmentation only when the ceiling names the control that catches errors at scale.</td><td>At Low or Moderate only, naming the control.</td></tr>
-    <tr><td class="k">Technical readiness gap</td><td>No constraint.</td><td>At any Consequence of Error: the gap can close.</td></tr>
-    <tr><td class="k">Judgment floor, accountability, relational</td><td>No constraint beyond the ceiling.</td><td>Never.</td></tr>
-  </table>
-  <p>Patterns were considered as the criterion and set aside: all 11 High activities that carry a pattern are Transaction, so a pattern cap cannot separate them.</p>
-  <details class="fold">
-    <summary>The 11 High activities and what the revision does to each</summary>
-    <table>
-      <tr><th style="width:9%">Activity</th><th style="width:22%">Name</th><th style="width:13%">Ceiling</th><th style="width:18%">Factors</th><th>Proposed</th></tr>
-      <tr><td class="k">7.1.2.6</td><td>Implement diversity, equity, and inclusion plan</td><td>Agent-delegation</td><td>Legal; Governance / sign-off</td><td>Oversight. Its note names the review checkpoint as the safeguard.</td></tr>
-      <tr><td class="k">7.2.3.3</td><td>Test candidates</td><td>Agent-delegation</td><td>Legal; Governance / sign-off</td><td>Oversight. Its note names the review checkpoint as the ceiling.</td></tr>
-      <tr><td class="k">7.4.5</td><td>Monitor legal and regulatory environment</td><td>Agent-delegation</td><td>Legal; Governance / sign-off</td><td>Oversight. Its note names the review-before-acting step as the ceiling.</td></tr>
-      <tr><td class="k">7.3.4.5</td><td>Develop, conduct, and manage employee training programs</td><td>Agent-delegation</td><td>Legal; Technical readiness gap</td><td>Decide: keep Agent-delegation, naming the control (tracking of statutory training deadlines), or bring down to Oversight.</td></tr>
-      <tr><td class="k">7.2.5.1</td><td>Obtain candidate background information</td><td>Automation</td><td>Legal</td><td>Keep, naming the control. Suggested: the FCRA adverse-action process, with an audit of how results are used.</td></tr>
-      <tr><td class="k">7.3.4.6</td><td>Manage examinations and certifications</td><td>Automation</td><td>Legal</td><td>Keep, naming the control. Suggested: credential-expiry alerts and a periodic audit of required credentials.</td></tr>
-      <tr><td class="k">7.5.1.5</td><td>Administer compensation and rewards to employees</td><td>Automation</td><td>Legal</td><td>Keep, naming the control. Suggested: pay-change reconciliation against approved compensation decisions.</td></tr>
-      <tr><td class="k">7.5.4</td><td>Administer payroll</td><td>Automation</td><td>Legal</td><td>Keep, naming the control. Suggested: pre-payroll audit and post-payroll reconciliation.</td></tr>
-      <tr><td class="k">7.6.2.2</td><td>Manage leave of absence</td><td>Automation</td><td>Legal</td><td>Keep, naming the control. Suggested: eligibility rules with an audit of denials and FMLA/ADA timelines.</td></tr>
-      <tr><td class="k">7.6.2.3</td><td>Manage offboarding</td><td>Automation</td><td>Legal</td><td>Keep, naming the control. Suggested: final-pay reconciliation and access-removal verification.</td></tr>
-      <tr><td class="k">7.7.6</td><td>Develop and manage time and attendance systems</td><td>Automation</td><td>Legal</td><td>Keep, naming the control. Suggested: exception reports reconciled against payroll each cycle.</td></tr>
-    </table>
-    <p class="small"><strong>7.3.4.5</strong> is the odd one: its factors are legal and a technical readiness gap, not governance, so it would be the one High activity an organization could override.</p>
-  </details>
+  <h2>2. Where the work side stops</h2>
+  <p>GiGi&rsquo;s Human Impact Pathway gives the seam:</p>
+  <p class="quote" style="font-style:normal">Work Change &rarr; Role Impact &rarr; <span style="color:var(--lgray)">Human Impact &rarr; Manager Absorption &rarr; Team Effect &rarr; Accountability &rarr; Org Outcome</span></p>
+  <p>The work side produces the first two stages &mdash; what changed in the work, and which roles it lands on &mdash; plus the accountability facts it already holds (who is Accountable for each activity, and that accountability does not move with the work). Everything from Human Impact onward is the human-impact side. In GiGi&rsquo;s executive view, this is &ldquo;Story 1: Structural AI Opportunity&rdquo;; &ldquo;Story 2: Human Consequence&rdquo; is hers.</p>
 
-  <h2>3. What is built</h2>
+  <h2>3. The outputs</h2>
+  <table>
+    <tr><th style="width:24%">Output</th><th style="width:20%">Reader</th><th>What it answers</th><th style="width:13%">Status</th></tr>
+    <tr><td class="k">Executive summary</td><td>Executives, sponsor</td><td>How much has been assessed; where the work stands against the Progression Ceiling by process group and for the category; how many exceptions of each type; the few items that need an executive decision (past the ceiling at High or Critical CoE, overrides due for re-review). One to two pages.</td><td>Not built</td></tr>
+    <tr><td class="k">Dashboard</td><td>HR and process leaders</td><td>The same results, explorable: process group &times; working relationship, Current State against ceiling, coverage, filterable to the activity.</td><td>Not built; the sandbox has the pieces</td></tr>
+    <tr><td class="k">Exceptions report</td><td>Governance, audit</td><td>Proposal changes, ceiling overrides, and past the ceiling with no override, each rolled up activity &rarr; process &rarr; process group &rarr; category.</td><td>Built Sept 29</td></tr>
+    <tr><td class="k">Process detail</td><td>Assessors, process owners</td><td>The ramp for every activity, with its assessment record.</td><td>Built</td></tr>
+    <tr><td class="k">Role hand-off</td><td>The human-impact side</td><td>For each role, the work change that lands on it (section 4). The input to Human Impact.</td><td>Not built</td></tr>
+    <tr><td class="k">Infographic</td><td>Wider communication</td><td>A one-page visual drawn from the executive summary. Best shaped with GiGi, who controls release to her network, once both stories have output.</td><td>Later</td></tr>
+  </table>
+  <p>All six read the same assessment and override records, so no two can disagree.</p>
+
+  <h2>4. The role hand-off</h2>
+  <p>For each role, the work-side facts the human-impact side starts from. Every item is computed from assessment records and the reference; none is a judgment about people.</p>
+  <table>
+    <tr><th style="width:30%">Item</th><th>What it carries</th></tr>
+    <tr><td class="k">Work that changes</td><td>The activities where the role is Accountable or Responsible, each with Current State, Progression Ceiling (or approved override), and how many steps apart they are.</td></tr>
+    <tr><td class="k">Work leaving the role&rsquo;s hands</td><td>Activities whose Current State or ceiling is Agent-delegation or Automation, where the role&rsquo;s hands-on work thins to exceptions or none &mdash; the existing &ldquo;redefinition recommended&rdquo; flag.</td></tr>
+    <tr><td class="k">Judgment that stays</td><td>Activities held at Judgment or Oversight, with their Consequence of Error. As other work leaves, this is what remains concentrated in the role &mdash; the work-side evidence for GiGi&rsquo;s Judgment Density.</td></tr>
+    <tr><td class="k">Accountability held</td><td>Activities where the role stays Accountable while the work moves to AI &mdash; the work-side evidence for Accountability Concentration.</td></tr>
+    <tr><td class="k">Exceptions on the role</td><td>Any proposal change, override or past-the-ceiling finding on the role&rsquo;s activities.</td></tr>
+    <tr><td class="k">Basis</td><td>Coverage (how many of the role&rsquo;s activities are assessed), evidence type and confidence, Assessed or Modeled.</td></tr>
+  </table>
+  <p>Delivered two ways: a role section in the executive summary and dashboard, and a downloadable data file (one row per role and activity) the human-impact side can use directly.</p>
+
+  <h2>5. Rules for every output</h2>
   <ul class="plain">
-    <li>The Ceiling override section of the assessment panel: record, change, remove, and record a review.</li>
-    <li>The Worker&rsquo;s check against <code>reference-wr.json</code>, generated from the master data and kept in step by CI; each override records the reference version it was approved against.</li>
-    <li>The ramp rings, and the organization&rsquo;s &ldquo;past ceiling, no override&rdquo; count.</li>
-    <li><strong>Not yet:</strong> the proposed revision, pending the decision above.</li>
+    <li>Every figure says whether it is Assessed or Modeled, and states coverage. An executive summary built on three assessed processes says so on its first line.</li>
+    <li>Roles, never names. No individual appears in any output.</li>
+    <li>Test data (ABC Test Org) carries its TEST label everywhere and is never cited as a finding.</li>
+    <li>The work side reports what changes in the work. It does not score readiness, predict workforce outcomes, or imply headcount.</li>
   </ul>
 
-  <h2>4. Open questions</h2>
-  <div class="open-item"><div class="oi-name">7.3.4.5 &mdash; Tim and GiGi</div><p>Keep at Agent-delegation with a named control, or bring down to Oversight.</p></div>
-  <div class="open-item"><div class="oi-name">The seven controls &mdash; Tim and GiGi</div><p>Confirm or replace each suggested control in the table above.</p></div>
+  <h2>6. Open questions</h2>
+  <div class="open-item"><div class="oi-name">What the hand-off must carry &mdash; GiGi</div><p>Whether the items in section 4 are the ones the human-impact side needs, and at what level (role, process group, or both).</p></div>
+  <div class="open-item"><div class="oi-name">One report or two stories side by side &mdash; Tim and GiGi</div><p>Whether the executive summary eventually carries both stories in one document, or each side produces its own and they are read together.</p></div>
 
 </div>
 

@@ -218,6 +218,52 @@ body.org-active .legend-ref-only { display: none; }
 #main-table td.wr-left { text-align: left !important; }
 #thead-wr th { text-align: left !important; }
 
+/* ── Exceptions Report (Sept 29, 2026) ──────────────────────────────────
+   One place for executive review of where an organization departs from
+   the reference: proposal changes, ceiling overrides, and activities past
+   the ceiling with no override — each rolled up activity → process →
+   process group → category. Reads the same records the ramp does. */
+.xr-wrap { padding: 18px 22px 24px; }
+.xr-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+.xr-org { font-size: 15px; font-weight: 600; color: var(--navy-d); }
+.xr-meta { font-size: 12px; color: var(--gray); margin-top: 3px; }
+.xr-print { font: inherit; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); background: #fff; color: var(--navy); cursor: pointer; }
+.xr-print:hover { border-color: var(--navy); }
+.xr-empty { padding: 22px; color: var(--gray); font-size: 13px; }
+.xr-h { font-size: 13px; font-weight: 700; color: var(--navy-d); margin: 22px 0 4px; display: flex; align-items: baseline; gap: 10px; }
+.xr-h .xr-n { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 400; color: var(--gray); }
+.xr-def { font-size: 12px; color: var(--gray); margin: 0 0 8px; line-height: 1.5; }
+table.xr-t { width: 100%; border-collapse: collapse; font-size: 12px; }
+.xr-t th { text-align: left; font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase; color: #fff; background: var(--navy-d); padding: 7px 10px; font-weight: 600; }
+.xr-t td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.45; }
+.xr-t td.xr-num { font-variant-numeric: tabular-nums; text-align: right; width: 1%; white-space: nowrap; }
+.xr-t th.xr-num { text-align: right; }
+/* the page's generic thead rules (300px first column, sticky headers) don't suit the report */
+.xr-t thead th:first-child, .xr-t thead th:nth-child(2) { min-width: 0; }
+.xr-t thead th { position: static; }
+.xr-t td:first-child { min-width: 180px; }
+.xr-sum th.xr-num { min-width: 108px; }
+.xr-t tr.xr-l1 td { background: #EEF3FA; font-weight: 700; color: var(--navy-d); }
+.xr-t tr.xr-l2 td { background: #F6F8FB; font-weight: 600; color: var(--navy-d); }
+.xr-t tr.xr-l3 td { font-weight: 600; color: var(--dark); padding-left: 22px; }
+.xr-t tr.xr-l4 td:first-child { padding-left: 36px; }
+.xr-t .xr-zero { color: #B5BECB; }
+.xr-code { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray); margin-right: 6px; }
+.xr-cat { display: inline-block; font-size: 10px; font-weight: 600; border-radius: 3px; padding: 1px 6px; color: #fff; white-space: nowrap; }
+.xr-arrow { color: var(--gray); margin: 0 4px; }
+.xr-sub { font-size: 11px; color: var(--gray); }
+.xr-flag { font-size: 11px; font-weight: 600; color: #991B1B; }
+@media print {
+  @page { size: letter landscape; margin: 0.5in; }
+  /* printExceptionsReport() lifts the panel to the top of <body> while printing */
+  body.print-report > *:not(#panel-report) { display: none !important; }
+  body.print-report { min-width: 0 !important; background: #fff !important; }
+  body.print-report #panel-report { display: block !important; width: auto; margin: 0; border: none; box-shadow: none; }
+  body.print-report .xr-print { display: none; }
+  .xr-t tr { break-inside: avoid; }
+  .xr-t th, .xr-t tr.xr-l1 td, .xr-t tr.xr-l2 td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
 /* ── Progression Gates track — the six-step ramp per activity, ported from
    the "Progression Gates" mockup exploration (Sept 19, 2026). One open
    info panel per row at a time, same pattern as .wr-cons-pop. ─────────── */
@@ -449,6 +495,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
     <button class="view-toggle-btn" id="btn-data" onclick="setView('data')">Data View (CRUD)</button>
     <button class="view-toggle-btn" id="btn-people" onclick="setView('people')">People View</button>
     <button class="view-toggle-btn" id="btn-gates" onclick="setView('gates')">Readiness Gate</button>
+    <button class="view-toggle-btn" id="btn-report" onclick="setView('report')">Exceptions Report</button>
   </div>
   <div class="view-note" id="view-note"></div>
 
@@ -587,12 +634,20 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
         </table>
       </div>
     </div>
+
+    <div class="card lens-section" id="panel-report" style="display:none">
+      <div class="card-header">
+        <h3>Exceptions Report &mdash; PCF 7.0</h3>
+        <span>Where the selected organization departs from the reference, by type &mdash; rolled up from activity to process, process group and category for executive review</span>
+      </div>
+      <div class="xr-wrap" id="xr-body"></div>
+    </div>
   </div>
 </div>
 
 <script src="sandbox-notes-widget.js"></script>
 <script src="org-context.js?v=20260929b"></script>
-<script src="assess-panel.js?v=20260929e"></script>
+<script src="assess-panel.js?v=20260929g"></script>
 <script src="../wip/changelog-data.js"></script>
 <script>
 /* ── Real PCF 7.0 data, extracted from the live dashboard ────────────── */
@@ -1564,6 +1619,10 @@ function fmtAssessDateShort(ms) {
   if (!ms) return '';
   return new Date(ms).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
+// Assessments show the role behind them, never a person's name (Tim, Sept 29).
+// Records saved before Source role existed have none; they say so rather
+// than fall back to the signed-in name or the old free-text source.
+function assessRole(r) { return r && r.sourceRole ? r.sourceRole : 'role not recorded'; }
 function escHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function orgActive() { return !!(typeof ACTIVE_ORG !== 'undefined' && ACTIVE_ORG && !ACTIVE_ORG.reference); }
 function orgRecord(code) {
@@ -1587,7 +1646,7 @@ function hpctSource(l3s, field) {
       ' been assessed for ' + orgName + ' yet, so ' + (total === 1 ? 'it reads' : 'they all read') + ' as the Human-only baseline. Open an activity and choose Assess to set its Current State.</p>' };
   }
   const items = done.slice(0, HPCT_SRC_LIST_MAX).map(x =>
-    '<li><b>' + x.code + '</b> ' + escHtml(x.rec.current) + ' &mdash; ' + escHtml(x.rec.assessedBy || 'unknown') + ', ' + fmtAssessDate(x.rec.assessedAt) + '</li>').join('');
+    '<li><b>' + x.code + '</b> ' + escHtml(x.rec.current) + ' &mdash; ' + escHtml(assessRole(x.rec)) + ', ' + fmtAssessDate(x.rec.assessedAt) + '</li>').join('');
   const more = n > HPCT_SRC_LIST_MAX ? '<li>&hellip; and ' + (n - HPCT_SRC_LIST_MAX) + ' more</li>' : '';
   const html =
     '<div class="gates-info-label">Assessed for ' + orgName + ' &mdash; ' + n + ' of ' + total + '</div>' +
@@ -1597,7 +1656,7 @@ function hpctSource(l3s, field) {
   if (!rest) {
     const latest = done[0].rec;
     const title = n === 1
-      ? 'Assessed by ' + (latest.assessedBy || 'unknown') + ', ' + fmtAssessDate(latest.assessedAt)
+      ? 'Assessed with ' + assessRole(latest) + ', ' + fmtAssessDate(latest.assessedAt)
       : 'All ' + n + ' activities assessed; latest ' + fmtAssessDate(latest.assessedAt);
     return { cls: 'wr-prov-assessed', label: 'Assessed', title: escHtml(title), html: html };
   }
@@ -2450,7 +2509,7 @@ function toggleL3(code, el) { setL3Expanded(code, el.classList.contains('collaps
 
 function setView(v) {
   currentView = v;
-  ['wr', 'raci', 'data', 'people', 'gates'].forEach(name => {
+  ['wr', 'raci', 'data', 'people', 'gates', 'report'].forEach(name => {
     const btn = document.getElementById('btn-' + name);
     if (btn) btn.classList.toggle('active', v === name);
   });
@@ -2459,17 +2518,20 @@ function setView(v) {
   document.getElementById('panel-data').style.display = v === 'data' ? '' : 'none';
   document.getElementById('panel-people').style.display = v === 'people' ? '' : 'none';
   document.getElementById('panel-gates').style.display = v === 'gates' ? '' : 'none';
+  document.getElementById('panel-report').style.display = v === 'report' ? '' : 'none';
 
   const notes = {
     wr: 'Current State and Progression Ceiling on the six-step ramp, with the Per-Transition Evidence Ladder as gates in between. In the Reference Model every activity starts at the Human-only baseline; with an organization selected, Current State is its assessed value, and each activity opens to be assessed.',
     raci: 'Real reasoned-match RACI for PCF 7.0. R falls back to the Accountable role (marked "from Accountable") wherever no separate Responsible was identified.',
     data: 'Work-product CRUD. The HRBP Manager’s 11 processes have CRUD per activity, confirmed Sept 26, 2026, and their process rows are derived from it. Other processes show process-level CRUD, repeated in grey on each activity until their activities are done.',
     people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced. Each role’s WR rollup (Current State) is a modeled index — an equal-weighted mean across its Accountable L3s, computed live and shown only once every one of them is fully classified.',
+    report: 'Every place the selected organization departs from the reference, by type of exception, rolled up from activity to process, process group and category. Built live from its assessment and override records. Print or save it as a PDF for executive review.',
     gates: 'Per Working_Relationship_Progression_Methodology.docx section 5 — three independent axes (Technical/Process, Role-level, Organizational-level) must all clear before an activity advances, gated here at L3 via its RACI Accountable role. Only the WR Rollup column carries a value (a modeled index, computed live from the classifications); no instrument exists yet for any of the three gate axes, so those cells are honest placeholders, not a status.',
   };
   document.getElementById('view-note').textContent = notes[v] || '';
 
   if (v === 'wr') render();
+  if (v === 'report') renderExceptionsReport();
 }
 
 function buildLegendInto(elId) {
@@ -2586,22 +2648,21 @@ function assessControlHtml(code) {
 const ASSESS_EVIDENCE_LABEL = { observed: 'Observed practice', system: 'System configuration', audit: 'Audit or control test', interview: 'Interview', document: 'Document' };
 function assessedChipHtml(code, r) {
   if (!r || !r.current) return '';
-  const who = escHtml(r.assessedBy || 'unknown');
+  const who = escHtml(assessRole(r));
   const cat = WR_CATS[r.current];
   const catBadge = '<span style="display:inline-block;font-size:10px;font-weight:600;border-radius:3px;padding:1px 6px;color:#fff;background:' + ((cat && cat.color) || '#888') + '">' + escHtml(r.current) + '</span>';
   const rows = [
     ['Current State', catBadge],
-    ['Assessed by', who],
+    ['Source role', who],
     ['Date', fmtAssessDate(r.assessedAt)],
     r.evidenceType ? ['Evidence', escHtml(ASSESS_EVIDENCE_LABEL[r.evidenceType] || r.evidenceType)] : null,
     r.confidence ? ['Confidence', escHtml(r.confidence.charAt(0).toUpperCase() + r.confidence.slice(1))] : null,
-    r.sourceRole ? ['Source role', escHtml(r.sourceRole)] : (r.source ? ['Source', escHtml(r.source)] : null),
     r.reference ? ['Reference', escHtml(r.reference)] : null,
     r.note ? ['Note', escHtml(r.note)] : null
   ].filter(Boolean).map(x => '<dt>' + x[0] + '</dt><dd>' + x[1] + '</dd>').join('');
   const hist = (r.history && r.history.length) ? '<p class="gates-info-def" style="margin-top:8px">Reassessed ' + r.history.length + ' time' + (r.history.length === 1 ? '' : 's') + ' before; the full history is in the Assess panel.</p>' : '';
   return '<span class="as-src">' +
-    '<span class="wr-prov wr-prov-assessed" role="button" tabindex="0" title="Assessed by ' + who + ', ' + fmtAssessDate(r.assessedAt) + '" onclick="toggleFactorPop(event, this)" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleFactorPop(event, this);}">Assessed ' + fmtAssessDateShort(r.assessedAt) + ' &middot; ' + who + '</span>' +
+    '<span class="wr-prov wr-prov-assessed" role="button" tabindex="0" title="Assessed with ' + who + ', ' + fmtAssessDate(r.assessedAt) + '" onclick="toggleFactorPop(event, this)" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleFactorPop(event, this);}">Assessed ' + fmtAssessDateShort(r.assessedAt) + ' &middot; ' + who + '</span>' +
     '<div class="wr-cons-pop as-src-pop" onclick="event.stopPropagation()"><button type="button" class="gates-info-close" onclick="closeFactorPop(event, this)" aria-label="Close">&times;</button>' +
       '<div class="gates-info-title">Assessed for ' + escHtml(ACTIVE_ORG.name) + '</div>' +
       '<dl class="as-src-dl">' + rows + '</dl>' + hist +
@@ -2653,6 +2714,173 @@ function rerenderKeepingOpen() {
   openL3.forEach(c => { const td = document.querySelector('td.toggle-l3[data-l3code="' + c + '"]'); if (td && td.classList.contains('collapsed')) td.click(); });
   window.scrollTo(0, y);
 }
+
+// ── Exceptions Report (Sept 29, 2026, Tim) ─────────────────────────────────
+// Three kinds of departure from the reference, each listed by type and rolled
+// up activity → process (L3) → process group (L2) → category (L1):
+//   1. Proposal changes — the assessor chose a working relationship other
+//      than the one the five questions proposed (reason recorded).
+//   2. Ceiling overrides — approved raises of the Progression Ceiling (GR-054).
+//   3. Past the ceiling, no override — assessed above the ceiling with nothing
+//      approved; CoE says whether an override is even possible.
+// Built from the same ORG_RECORDS / ORG_OVERRIDES the ramp uses; roles only.
+const XR_RAMP = ['Human-only', 'Judgment', 'Oversight', 'Augmentation', 'Agent-delegation', 'Automation'];
+const XR_OVERRIDE_CONS = { Low: 1, Moderate: 1 };
+function xrCat(c) {
+  const k = WR_CATS[c];
+  return '<span class="xr-cat" style="background:' + ((k && k.color) || '#888') + '">' + escHtml(c || '—') + '</span>';
+}
+function xrCons(c) {
+  return c ? '<span style="color:' + (CONS_COLOR[c] || '#333') + ';font-weight:600">' + escHtml(c) + '</span>' : '&mdash;';
+}
+function xrFactorLabel(k) {
+  const f = CEILING_FACTORS.find(x => x.key === k);
+  return f ? f.label : (k || '—');
+}
+// Every activity in the hierarchy, with its place in it.
+function xrUnits() {
+  const out = [];
+  cat.groups.forEach(g => g.l3.forEach(l3 => {
+    const units = (l3.l4 && l3.l4.length) ? l3.l4 : [l3];
+    units.forEach(u => out.push({ code: u.code, name: u.name, g: g, l3: l3 }));
+  }));
+  return out;
+}
+function xrItems() {
+  const items = { proposal: [], override: [], past: [] };
+  xrUnits().forEach(u => {
+    const w = WR_DATA[u.code] || {};
+    const r = ORG_RECORDS[u.code];
+    const ov = ORG_OVERRIDES[u.code];
+    if (r && r.current && r.proposed && r.current !== r.proposed) items.proposal.push({ u, w, r });
+    if (ov && ov.level) items.override.push({ u, w, ov });
+    if (r && r.current) {
+      const lim = Math.max(XR_RAMP.indexOf(w.ceiling), ov && ov.level ? XR_RAMP.indexOf(ov.level) : -1);
+      if (XR_RAMP.indexOf(r.current) > lim) items.past.push({ u, w, r });
+    }
+  });
+  return items;
+}
+// Rows for one section: category → group → process → activity, only where
+// something sits underneath, each level carrying its count.
+function xrSectionRows(list, cols, detail) {
+  const byG = new Map();
+  list.forEach(it => {
+    if (!byG.has(it.u.g)) byG.set(it.u.g, new Map());
+    const byL3 = byG.get(it.u.g);
+    if (!byL3.has(it.u.l3)) byL3.set(it.u.l3, []);
+    byL3.get(it.u.l3).push(it);
+  });
+  let h = '<tr class="xr-l1"><td colspan="' + (cols - 1) + '"><span class="xr-code">' + cat.code + '</span>' + escHtml(cat.name) + ' &mdash; category</td><td class="xr-num">' + list.length + '</td></tr>';
+  cat.groups.forEach(g => {
+    const byL3 = byG.get(g); if (!byL3) return;
+    let gn = 0; byL3.forEach(a => { gn += a.length; });
+    h += '<tr class="xr-l2"><td colspan="' + (cols - 1) + '"><span class="xr-code">' + g.code + '</span>' + escHtml(g.name) + '</td><td class="xr-num">' + gn + '</td></tr>';
+    g.l3.forEach(l3 => {
+      const arr = byL3.get(l3); if (!arr) return;
+      h += '<tr class="xr-l3"><td colspan="' + (cols - 1) + '"><span class="xr-code">' + l3.code + '</span>' + escHtml(l3.name) + '</td><td class="xr-num">' + arr.length + '</td></tr>';
+      arr.forEach(it => { h += '<tr class="xr-l4">' + detail(it) + '</tr>'; });
+    });
+  });
+  return h;
+}
+function xrActCell(it) {
+  return '<td><span class="xr-code">' + it.u.code + '</span>' + escHtml(it.u.name) + '</td>';
+}
+function renderExceptionsReport() {
+  const el = document.getElementById('xr-body');
+  if (!el) return;
+  if (!orgActive()) {
+    el.innerHTML = '<div class="xr-empty">The Reference Model has no exceptions: it is the baseline every organization is compared against. Choose an organization above to see its report.</div>';
+    return;
+  }
+  const items = xrItems();
+  const units = xrUnits();
+  const assessed = units.filter(u => orgRecord(u.code)).length;
+  const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  let h = '<div class="xr-head"><div><div class="xr-org">' + OrgContext.chip(ACTIVE_ORG) + ' ' + escHtml(ACTIVE_ORG.name) + '</div>' +
+    '<div class="xr-meta">As of ' + today + ' &middot; ' + assessed + ' of ' + units.length + ' activities assessed &middot; unassessed activities read as the Human-only baseline and carry no exceptions' +
+    (ACTIVE_ORG.test ? ' &middot; test data, not a real organization' : '') + '</div></div>' +
+    '<button type="button" class="xr-print" onclick="printExceptionsReport()">Print / save as PDF</button></div>';
+
+  // Summary: each process group and the category total, by type.
+  const count = (list, g) => list.filter(it => it.u.g === g).length;
+  const n = (v) => v ? String(v) : '<span class="xr-zero">0</span>';
+  h += '<div class="xr-h">Summary</div>' +
+    '<table class="xr-t xr-sum"><thead><tr><th>Process group</th><th class="xr-num">Assessed</th><th class="xr-num">Proposal changes</th><th class="xr-num">Ceiling overrides</th><th class="xr-num">Past ceiling, no override</th></tr></thead><tbody>';
+  cat.groups.forEach(g => {
+    const gUnits = units.filter(u => u.g === g);
+    const ga = gUnits.filter(u => orgRecord(u.code)).length;
+    h += '<tr><td><span class="xr-code">' + g.code + '</span>' + escHtml(g.name) + '</td>' +
+      '<td class="xr-num">' + (ga ? ga + ' of ' + gUnits.length : '<span class="xr-zero">0 of ' + gUnits.length + '</span>') + '</td>' +
+      '<td class="xr-num">' + n(count(items.proposal, g)) + '</td><td class="xr-num">' + n(count(items.override, g)) + '</td><td class="xr-num">' + n(count(items.past, g)) + '</td></tr>';
+  });
+  h += '<tr class="xr-l1"><td><span class="xr-code">' + cat.code + '</span>' + escHtml(cat.name) + ' &mdash; category</td><td class="xr-num">' + assessed + ' of ' + units.length + '</td>' +
+    '<td class="xr-num">' + items.proposal.length + '</td><td class="xr-num">' + items.override.length + '</td><td class="xr-num">' + items.past.length + '</td></tr></tbody></table>';
+
+  // 1. Proposal changes
+  h += '<div class="xr-h">1. Proposal changes <span class="xr-n">' + items.proposal.length + '</span></div>' +
+    '<p class="xr-def">The assessor chose a working relationship other than the one the five assessment questions proposed, and gave a reason.</p>';
+  h += items.proposal.length
+    ? '<table class="xr-t"><thead><tr><th>Activity</th><th>Proposed &rarr; chosen</th><th>Reason</th><th>Source role &middot; date</th><th class="xr-num">Count</th></tr></thead><tbody>' +
+      xrSectionRows(items.proposal, 5, it =>
+        xrActCell(it) +
+        '<td style="white-space:nowrap">' + xrCat(it.r.proposed) + '<span class="xr-arrow">&rarr;</span>' + xrCat(it.r.current) + '</td>' +
+        '<td>' + (it.r.overrideReason ? escHtml(it.r.overrideReason) : '<span class="xr-sub">no reason recorded</span>') + '</td>' +
+        '<td class="xr-sub">' + escHtml(assessRole(it.r)) + '<br>' + fmtAssessDate(it.r.assessedAt) + '</td><td></td>') +
+      '</tbody></table>'
+    : '<div class="xr-empty" style="padding:6px 0">None.</div>';
+
+  // 2. Ceiling overrides
+  h += '<div class="xr-h">2. Ceiling overrides <span class="xr-n">' + items.override.length + '</span></div>' +
+    '<p class="xr-def">Approved raises of an activity&rsquo;s Progression Ceiling for this organization. Allowed only where Consequence of Error is Low or Moderate, naming a ceiling factor that no longer holds, with evidence and the Accountable role&rsquo;s approval.</p>';
+  h += items.override.length
+    ? '<table class="xr-t"><thead><tr><th>Activity</th><th>Ceiling &rarr; raised to</th><th>CoE</th><th>Factor no longer holding &middot; evidence</th><th>Approved &middot; last reviewed</th><th class="xr-num">Count</th></tr></thead><tbody>' +
+      xrSectionRows(items.override, 6, it => {
+        const snap = it.ov.refSnapshot;
+        const stale = snap && (snap.ceiling !== it.w.ceiling || snap.cons !== it.w.cons);
+        return xrActCell(it) +
+          '<td style="white-space:nowrap">' + xrCat(it.w.ceiling) + '<span class="xr-arrow">&rarr;</span>' + xrCat(it.ov.level) + '</td>' +
+          '<td>' + xrCons(it.w.cons) + '</td>' +
+          '<td><strong>' + escHtml(xrFactorLabel(it.ov.factor)) + '</strong><br>' + escHtml(it.ov.evidence || '') + '</td>' +
+          '<td class="xr-sub">' + escHtml(it.ov.approverRole || 'role not recorded') + ', ' + fmtAssessDate(it.ov.approvedAt) +
+            '<br>reviewed ' + fmtAssessDate(it.ov.lastReviewedAt || it.ov.approvedAt) + (stale ? '<br><span class="xr-flag">re-review needed</span>' : '') + '</td><td></td>';
+      }) +
+      '</tbody></table>'
+    : '<div class="xr-empty" style="padding:6px 0">None.</div>';
+
+  // 3. Past the ceiling, no override
+  h += '<div class="xr-h">3. Past the ceiling, no override <span class="xr-n">' + items.past.length + '</span></div>' +
+    '<p class="xr-def">Assessed above the Progression Ceiling with no approved override. A finding about how the organization works today: where Consequence of Error is Low or Moderate it can be resolved with an override; where it is High or Critical the work has to come back within the ceiling.</p>';
+  h += items.past.length
+    ? '<table class="xr-t"><thead><tr><th>Activity</th><th>Ceiling &rarr; assessed</th><th>CoE</th><th>Resolution path</th><th>Source role &middot; date</th><th class="xr-num">Count</th></tr></thead><tbody>' +
+      xrSectionRows(items.past, 6, it =>
+        xrActCell(it) +
+        '<td style="white-space:nowrap">' + xrCat(it.w.ceiling) + '<span class="xr-arrow">&rarr;</span>' + xrCat(it.r.current) + '</td>' +
+        '<td>' + xrCons(it.w.cons) + '</td>' +
+        '<td>' + (XR_OVERRIDE_CONS[it.w.cons] ? 'Override possible, with evidence that a ceiling factor no longer holds' : '<span class="xr-flag">Not overridable</span> &mdash; bring the work back within the ceiling') + '</td>' +
+        '<td class="xr-sub">' + escHtml(assessRole(it.r)) + '<br>' + fmtAssessDate(it.r.assessedAt) + '</td><td></td>') +
+      '</tbody></table>'
+    : '<div class="xr-empty" style="padding:6px 0">None.</div>';
+
+  el.innerHTML = h;
+}
+// Print only the report: lift its panel to the top of <body> (so none of the
+// page's wide layout clips it), print, then put it back where it was.
+function printExceptionsReport() {
+  const panel = document.getElementById('panel-report');
+  const home = panel.parentNode, next = panel.nextSibling;
+  document.body.appendChild(panel);
+  document.body.classList.add('print-report');
+  const done = () => {
+    document.body.classList.remove('print-report');
+    home.insertBefore(panel, next);
+    window.removeEventListener('afterprint', done);
+  };
+  window.addEventListener('afterprint', done);
+  window.print();
+}
+
 if (window.OrgContext) {
   orgBanner(null, 0);
   OrgContext.mountSelector(document.getElementById('org-mount'), { includeReference: true, onChange: applyOrg });
