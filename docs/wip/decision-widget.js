@@ -2,7 +2,8 @@
 // Register and the design specs.
 //
 // A requirement in requirements-data.js can carry one pending decision:
-//   decision: { id, type: 'accept'|'design'|'question', question, via? }
+//   decision: { id, type: 'accept'|'design'|'question', question, summary, via? }
+//   summary: one or two sentences — what's built (accept) or what happens if approved.
 // Its key is "<GR-id>:<decision id>". Tim and GiGi each choose Approve, Not
 // approve or Defer (Worker routes /wip-api/decisions and /wip-api/decision);
 // the outcome is the shared choice once both agree. Where a decision is
@@ -55,6 +56,8 @@
       '.dw{background:#fff;border:1px solid #DDE3EE;border-left:4px solid #1B4F8A;border-radius:8px;padding:12px 14px;margin:0;font-size:13px;line-height:1.5;color:#0D1B2A;}' +
       '.dw-q{font-weight:600;color:#0D2D4F;margin:4px 0 8px;}' +
       '.dw-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:#6B7A90;font-weight:700;}' +
+      '.dw-sum{font-size:12.5px;color:#444;line-height:1.5;background:#F8FAFD;border:1px solid #E6EBF3;border-radius:6px;padding:7px 10px;margin:0 0 10px;}' +
+      '.dw-sum span{display:block;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#6B7A90;margin-bottom:2px;}' +
       '.dw-who{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:#444;margin-bottom:8px;}' +
       '.dw-who b{color:#0D1B2A;}' +
       '.dw-btns{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}' +
@@ -127,7 +130,8 @@
     if (!d) return '';
     var h = '<div class="dw" data-dw-key="' + esc(keyOf(req)) + '">' +
       '<div class="dw-head">' + esc(req.id) + ' &middot; ' + (d.type === 'accept' ? 'Accept' : d.type === 'design' ? 'Approve the design' : 'Decide') + ' ' + chip(req) + '</div>' +
-      '<div class="dw-q">' + esc(d.question) + '</div>';
+      '<div class="dw-q">' + esc(d.question) + '</div>' +
+      (d.summary ? '<div class="dw-sum"><span>' + (d.type === 'accept' ? 'What&rsquo;s built' : 'If approved') + '</span>' + esc(d.summary) + '</div>' : '');
     if (d.via) {
       var page = VIA_PAGES[d.via];
       var here = page && location.pathname.slice(-page.length) === page;

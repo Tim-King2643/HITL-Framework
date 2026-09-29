@@ -3,7 +3,7 @@
 // the design specs can read the same records and show the same decisions.
 //   progress:  Open | Designed | In progress | Built | Done | Closed
 //   decision:  the one decision pending on it, or null; key "<id>:<decision.id>".
-//              type accept | design | question; via = a WIP item whose vote decides it.
+//              type accept | design | question; summary = what is built (accept) or what happens if approved; via = a WIP item whose vote decides it.
 //   decisions: resolved decisions, newest first: { id, question, outcome, date, tim, gigi }
 //   log:       dated history (was "notes"); shown folded.
 //   legacy_status: the status before Sept 28, 2026, kept for reference.
@@ -29,7 +29,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "design",
    "type": "design",
-   "question": "Approve the readiness-verdict design (WRPM §5): a verdict beside each ceiling once the Readiness Gate has instruments."
+   "question": "Approve the readiness-verdict design (WRPM §5): a verdict beside each ceiling once the Readiness Gate has instruments.",
+   "summary": "The readiness verdict is adopted as the design. Nothing is built yet: it waits for the Readiness Gate's instruments (GR-012, GR-037)."
   },
   "decisions": [],
   "log": "§5 names the axes and what they measure; neither has an instrument in this sandbox yet (see GR-012).",
@@ -56,7 +57,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "Sandbox 7.0 passes: one callout, within the limit of three, and no findings buried in prose. Production pages wait for the rebuild."
   },
   "decisions": [],
   "log": "Sept 24, 2026 — Sandbox 7.0 sweep (scope: docs/sandbox/pcf7.html only; production out of scope until the full update): Pass. The sandbox carries one callout (the intro banner), within Rule 4's limit, and renders no findings buried in prose (Rule 3). Earlier notes: Rule 3 requires exactly this (pull-quote treatment instead of buried findings), Rule 4 caps it at 3 callouts/page so it doesn't sprawl. Rule exists and is catalogued; not yet confirmed swept across every live page.",
@@ -107,7 +109,8 @@ window.REQUIREMENTS = [
    "id": "design",
    "type": "design",
    "question": "Approve Rule 5, the standing type scale, through the rule catalog.",
-   "via": "rule-catalog"
+   "via": "rule-catalog",
+   "summary": "Rule 5 becomes the standard for documents: its type scale plus 36px above each heading and 16px between paragraphs. Documents are brought into line in the GR-048 rewrite; the sandbox and dashboard are not covered."
   },
   "decisions": [],
   "log": "Sept 24, 2026: Rule 5 now covers the rest of this ask for documents (docx, PDF, document-style HTML pages): larger titles and stronger headings through its type scale, and breathing room between major ideas through a new section-spacing standard (36px above each H2, 16px between paragraphs). Including the paragraph rule was considered but rejected. Implementing that in the UI would create a lot of white space and extra scrolling. The interactive UI (sandbox, dashboard) is not governed by Rule 5. Status Designed: the rule exists; documents have not yet been swept against the new spacing standard. Earlier notes: Rule 5 only locks type scale (H1 22–28px, body 13–14.5px) as the new default — it doesn't speak to whitespace between ideas or paragraph width, which GiGi also asked for. Type-scale half covered; spacing/width half still open.",
@@ -134,7 +137,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "Sandbox 7.0 passes: its masthead sets “Where human judgment belongs” on its own line. Production pages wait for the rebuild."
   },
   "decisions": [],
   "log": "Sept 24, 2026 — Sandbox 7.0 sweep (scope: docs/sandbox/pcf7.html only; production out of scope until the full update): Pass. The sandbox masthead sets “Where human judgment belongs” on its own line, visually distinct from the framework name (Rules 6/12). Earlier notes: The line itself is already adopted; Rule 6/12 now lock its protection and required visual distinctness formally. One real instance already restyled (docs/wip/index.html's own masthead, Sept 7: 18px Georgia italic white + accent rule) — but that's the WIP hub, not confirmed applied to the published framework's own pages yet.",
@@ -162,7 +166,8 @@ window.REQUIREMENTS = [
    "id": "design",
    "type": "design",
    "question": "Approve Rule 9, problem-first entry points, through the rule catalog.",
-   "via": "rule-catalog"
+   "via": "rule-catalog",
+   "summary": "Rule 9 becomes the standard: problem-first entry points added alongside the existing navigation. Built during the GR-048 rewrite."
   },
   "decisions": [],
   "log": "Rule 9 requires exactly this, explicitly additive (existing taxonomy nav stays). Rule exists; no problem-first entry points confirmed built into live navigation yet.",
@@ -212,7 +217,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "Sandbox 7.0 passes: every % H carries a MODELED chip with the not-a-headcount definition, and the intro no longer claims all data is real. Production pages wait for the rebuild."
   },
   "decisions": [],
   "log": "Sept 24, 2026 — Sandbox 7.0 sweep (scope: docs/sandbox/pcf7.html only; production out of scope until the full update): Pass after one fix. Every % H carries a MODELED chip with the not-a-headcount definition (GR-014). The intro banner claimed “everything here is real data … nothing is simulated”; it now says the process, RACI, and CRUD data are real while classifications, Consequence-of-Error ratings, and every % H are modeled. The People and Readiness Gate view notes were corrected the same way. Earlier notes: Rule 14 requires modeled/observed labeling on every statistic; Rule 16 requires the headcount-reduction disclaimer specifically. Rules exist and are the two rules the H% Provenance Badge itself cites as its authority. Not yet confirmed that the specific 20–25pt statement carries both labels everywhere it appears.",
@@ -239,7 +245,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "Sandbox 7.0 passes: “optimal” appears nowhere. Production pages wait for the rebuild."
   },
   "decisions": [],
   "log": "Sept 24, 2026 — Sandbox 7.0 sweep (scope: docs/sandbox/pcf7.html only; production out of scope until the full update): Pass. “Optimal” does not appear anywhere in the sandbox's visible text or info boxes. Earlier notes: Rule 17 is a near-verbatim match. Rule exists and is catalogued; not yet confirmed every live instance of “optimal” has actually been swept and replaced.",
@@ -266,7 +273,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "Sandbox 7.0 passes: no absolute safety or control claims. Production pages wait for the rebuild."
   },
   "decisions": [],
   "log": "Sept 24, 2026 — Sandbox 7.0 sweep (scope: docs/sandbox/pcf7.html only; production out of scope until the full update): Pass. No absolute safety or control claims (“impossible,” “black box,” “no human in the loop,” “guarantee”) appear in the sandbox. Earlier notes: Rule 15 is a direct match (“harder to occur,” not “impossible”). Rule exists; not yet confirmed every live instance of these three phrases has actually been rewritten.",
@@ -294,7 +302,8 @@ window.REQUIREMENTS = [
    "id": "design",
    "type": "design",
    "question": "Approve Rule 18, HAL as origin story, through the rule catalog.",
-   "via": "rule-catalog"
+   "via": "rule-catalog",
+   "summary": "Rule 18 becomes the standard: the HAL 90/10 example is always framed as how the framework was built. The passage is reframed in the GR-048 rewrite."
   },
   "decisions": [],
   "log": "Rule 18 is a near word-for-word match. Rule exists and is catalogued; not yet confirmed the live HAL 9000 passage has actually been reframed to match it.",
@@ -368,7 +377,8 @@ window.REQUIREMENTS = [
    "id": "accept",
    "type": "accept",
    "question": "Accept the H% unit definition, through the H% Provenance Badge item.",
-   "via": "hpct-badge"
+   "via": "hpct-badge",
+   "summary": "Every % H in Sandbox 7.0 carries a MODELED chip that opens its unit definition (control over each instance of the work, not hours or headcount), the six anchor values and the arithmetic behind the row."
   },
   "decisions": [],
   "log": "Sept 24, 2026: completed in Sandbox 7.0, awaiting approval vote on the H% Provenance Badge WIP item (hpct-badge), which now carries the design as items U1–U8 in a new “Unit of Measure — Sandbox 7.0 Implementation” section. H% is defined as a modeled index of how much control over each instance of the work stays with a person. It is explicitly not a share of hours, effort, or FTE, and not a headcount estimate (reinforces GR-008). Every Current and Ceiling % H value in docs/sandbox/pcf7.html (process rows, People View role rollups, Readiness Gate table) now carries a MODELED chip. Clicking it opens the sandbox's standard info box with the unit definition, the six modeled anchor values (Human-only 95 · Judgment 82 · Oversight 62 · Augmentation 48 · Agent-delegation 28 · Automation 10), and the exact arithmetic behind that row, computed live from WR_DATA. Displayed values now round to whole numbers (27.7% → 28%), because one decimal on an average of modeled anchors implied false precision (Rule 14). The anchor values were modeled by Claude as an ordinal scale and are disclosed as uncalibrated. Calibration against observed data is an open item for Tim and GiGi. Scope is Sandbox 7.0 only; production is out of scope until a full production update. The H% Provenance Badge (hpct-badge) remains the related standard for epistemic grounding, which is a different question from the unit.",
@@ -441,7 +451,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "Every activity in Sandbox 7.0 has a Consequence of Error tier (Low to Critical) backed by a six-factor checklist, shown in the Working Relationship, People and Readiness Gate views."
   },
   "decisions": [],
   "log": "Live today: WR_DATA's `cons` field, shown as its own column across the WR, People, and Gates views.",
@@ -537,7 +548,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "gdp-anchor",
    "type": "question",
-   "question": "Should the Governed Decision Point record (GR-042) serve as the Human Accountability Anchor?"
+   "question": "Should the Governed Decision Point record (GR-042) serve as the Human Accountability Anchor?",
+   "summary": "The Governed Decision Point record is the Human Accountability Anchor: GR-042 defines its fields, then every AI-supported activity shows its anchor role in the sandbox."
   },
   "decisions": [],
   "log": "RACI's Accountable field and the Gates view's Accountable-role column already surface who's accountable, but not framed as an explicit “anchor” concept. The Shock Wave Effect's GDP (Governed Decision Point — who decides, who it escalates to, the trigger condition) is the closest existing language to this ask, and is named as the framework's containment mechanism — but it's still a WIP concept doc, not a built UI marker.",
@@ -587,7 +599,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "Every activity in Sandbox 7.0 is classified into one of the six working relationships on the ramp, in place of a blended percentage."
   },
   "decisions": [],
   "log": "Exactly the WR Ramp's six categories, live today in WR_CATS/WR_DATA and every WR-derived view.",
@@ -637,7 +650,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "prepare-step",
    "type": "question",
-   "question": "Add \"Prepare for it\" as a fifth step: Find it, Define it, Measure it, Prepare for it, Govern it?"
+   "question": "Add \"Prepare for it\" as a fifth step: Find it, Define it, Measure it, Prepare for it, Govern it?",
+   "summary": "“Prepare for it” joins the core principle as its fourth step, and Rule 10's locked summary is amended to match."
   },
   "decisions": [],
   "log": "Framework-wide principle-statement change, not yet adopted anywhere. Real conflict discovered Sept 15, 2026: Rule 10 locks Technology Capability→Work Design→Human Judgment→Accountability→Readiness as “the sole canonical framework summary; no paraphrasing or reordering permitted” — that rule, as written, would block adopting this requirement's 5-step principle sequence without a formal rule change first. Flagged to Tim; not resolved.",
@@ -664,7 +678,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "The core measures include human consequence — Consequence of Error and the Progression Ceiling — not only human presence."
   },
   "decisions": [],
   "log": "This is WRPM's own founding rationale, almost verbatim — the WR ramp + Consequence-of-Error tag operationalize it.",
@@ -714,7 +729,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "Every activity with a governance or accountability limit has a Progression Ceiling below Automation, with its reason recorded from the ceiling factors."
   },
   "decisions": [],
   "log": "Same judgment call as WRPM's Progression Ceiling, approached from the opposite direction (floor on H% vs. ceiling on automation) — converged per Tim's Sept 11, 2026 reconciliation.",
@@ -833,7 +849,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "design",
    "type": "design",
-   "question": "Approve the seven-stage Human Impact Pathway design (WRPM §7)."
+   "question": "Approve the seven-stage Human Impact Pathway design (WRPM §7).",
+   "summary": "The seven-stage Human Impact Pathway is adopted as the design; the next step is a sandbox data structure so it can run for any activity, not only the three hand-walked pilots."
   },
   "decisions": [],
   "log": "Adopted near-verbatim as WRPM §7 and walked by hand for all three pilots in §8 — but that's the methodology being applied manually, not a built sandbox feature. No UI/data structure exists for it in pcf7.html yet.",
@@ -883,7 +900,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "The one provisional edge the evidence challenged is corrected: HRBP Manager now reports to Director of HR Ops, logged in the changelog. The other edges stand as provisional."
   },
   "decisions": [],
   "log": "WRPM §7 argued HRBP Manager's real escalation path is Director of HR Ops, not VP People & Culture. Applied Sept 23, 2026, per GiGi's direction to correct reportsTo edges the data supports: ROLE_TAXONOMY_BY_DOMAIN[\"7.0\"] in hitl_dashboard_final.html now has HRBP Manager reporting to Director of HR Ops. Logged in docs/wip/production_changelog.html.",
@@ -910,7 +928,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "The six categories have locked, boundary-tested definitions, five boundary rules and four resolved edge cases, used word for word in the sandbox and the methodology."
   },
   "decisions": [],
   "log": "Six definitions rewritten with an explicit boundary test against each neighbor (not just a description), five boundary rules between adjacent categories, and 4 resolved edge cases (7.1.1.5, 7.1.1.6, 7.2.1.3, Align staffing plan/7.2.1.1). Propagated into both live artifacts: pcf7.html's STEP_DEFINITIONS constant and WRPM's Table 2 now carry the locked wording verbatim; the 7.2.1.1 ceiling discrepancy this surfaced was resolved (locked at Judgment permanently, Sept 20, 2026) and WRPM Table 4 updated to match.",
@@ -960,7 +979,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "Every activity keeps its original work pattern in the data; no user-facing view shows it."
   },
   "decisions": [],
   "log": "Every activity in pcf7.html's data already carries its original `pattern` field alongside the newer working-relationship (`WR_DATA`) layer; the working-relationship view doesn't display it, but nothing removed it from the backend. Matches GiGi's own framing exactly (\"I would keep the original patterns in the backend... I do not think the end user needs to see both\").",
@@ -1010,7 +1030,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "Corrections backed by evidence are applied to the master data and logged with their evidence; the first is HRBP Manager → Director of HR Ops."
   },
   "decisions": [],
   "log": "Same underlying construct as GR-035: WRPM §7 argued HRBP Manager's real escalation path is Director of HR Ops, not VP People & Culture. This is the first correction actually applied to live data under this requirement's exact ask — appears in docs/wip/production_changelog.html as its first entry.",
@@ -1037,7 +1058,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "Any activity's ceiling can sit below Automation, with its reason tagged from the ceiling factors and a note; real examples are locked (7.1.1.2, 7.2.1.1, 7.2.1.3, 7.4.4)."
   },
   "decisions": [],
   "log": "The Current State and Progression Ceiling model already caps progression independent of technical readiness, and the locked doc names 6 explicit freeze reasons (legal/regulatory, relational/emotional, executive/structural, technical infeasibility, explicit governance choice, open/undecided). The sandbox's CEILING_FACTORS checklist operationalizes 5 of the 6 as taggable checkboxes per activity (technical, governance, legal, relational, floor, accountability, top — relational added Sept 20, 2026 to close the last gap), each with a supporting note. Real examples locked: 7.4.4 (already at ceiling), 7.1.1.2 (executive/structural), 7.2.1.3 (explicit governance policy), 7.2.1.1 (accountability, locked Sept 20, 2026). Sept 25, 2026: 7.2.1.3's ceiling lowered from Agent-delegation to Oversight on its High Consequence of Error, a governance choice to keep human sign-off on the budget-commitment gate (CL-004).",
@@ -1087,7 +1109,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "Every change to a classification, ceiling or reportsTo edge is logged in one shared changelog, and CI fails any push that changes one without a new entry."
   },
   "decisions": [],
   "log": "Sept 23, 2026: reworked from a first pass that stored history inline per-activity in WR_DATA — that duplicated data the Production Changelog also needed to carry, so it was replaced with a single shared source: docs/wip/changelog-data.js's CHANGE_LOG array (one entry per changed modeled value, whoever requested it — Tim or GiGi — across reportsTo edges, WR classification/ceiling values, etc.), loaded by both docs/wip/production_changelog.html (which renders the whole log) and docs/sandbox/pcf7.html (which reads it live). The ceiling info panel no longer renders history text inline; when CHANGE_LOG has a wr-ceiling entry for that activity, it shows a Change History link to production_changelog.html?q=<activity>, deep-linked and auto-opened to that entry. Backfilled the one real known case: 7.2.1.1's ceiling lock (Sept 20, 2026, CL-002). The remaining gap — nothing stopped a future edit from skipping the changelog — is now closed: scripts/check-changelog-audit.mjs, run by .github/workflows/changelog-audit.yml on every push/PR, diffs docs/hitl_dashboard_final.html's reportsTo edges and docs/sandbox/pcf7.html's WR_DATA rel/ceiling values (future dropped Sept 25, 2026 with GR-049) against the base ref and fails CI if either changed without a matching new entry in changelog-data.js. The entry's content (who requested it, the evidence, how it was verified) still has to be written by a person — that part can't be automated — but forgetting to write one at all is now caught mechanically rather than by eye.",
@@ -1114,7 +1137,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "accept",
    "type": "accept",
-   "question": "Accept as done: it meets its acceptance criteria."
+   "question": "Accept as done: it meets its acceptance criteria.",
+   "summary": "All of PCF 7.0 is explorable in Sandbox 7.0 — Working Relationship, RACI, Data, People and Readiness Gate views — with notes on any row."
   },
   "decisions": [],
   "log": "Built and confirmed live at docs/sandbox/pcf7.html (Sept 14, 2026 initial build; not a docs/wip/ catalog item — hosted separately as a standalone working environment, reactions/notes backed by a dedicated Cloudflare KV namespace). Substantially extended through Sept 19-21, 2026: the Working-Relationship view was rebuilt into a six-step Progression Gates track (Human-only through Automation) with per-step Current State/Progression Ceiling, a per-step info panel (What moves to AI / What stays human / Change impact / Role impact) across all 118 PCF 7.0 activities, and a six-factor Consequence-of-Error checklist (Human Impact, Legal/Regulatory Exposure, Operational/Financial Impact, Trust/Reputation, Reach, Reversibility) backing every tier. Tim confirmed \"Published\" and called it \"looking really useful\" at the close of that round. Backfilled into this register now since the original ask predated the register's existence (Sept 15, 2026) and was never logged as a formal requirement until this entry.",
@@ -1142,7 +1166,8 @@ window.REQUIREMENTS = [
    "id": "design",
    "type": "design",
    "question": "Approve the Content Promotion Policy.",
-   "via": "content-promotion-policy"
+   "via": "content-promotion-policy",
+   "summary": "The promotion policy is adopted: Sandbox, WIP and Production as three tiers, the review ladder with a separate Published step, and the master-data lane for corrections."
   },
   "decisions": [],
   "log": "Full policy drafted as a design-spec doc and added to the WIP catalog for review Sept 21, 2026. Defines the three tiers, extends GiGi's Proposed→Under Review→Concept Agreed→Text Approved→Adopted ladder with a Published step (the key fix: Adopted ≠ Published), sets a four-item promotion checklist, and proposes a production changelog. Sept 24, 2026: added a second, explicit lane for master data corrections (reportsTo edges, WR/ceiling classifications) per Tim's direction — these skip the status ladder entirely rather than going through WIP review/voting, since the evidence behind a correction (a RACI self-consistency check, an evidence walkthrough) already is the review. That lane's three steps: record the change in docs/wip/changelog-data.js's CHANGE_LOG, edit the sandbox's master table (docs/sandbox/pcf7.html — now documented as the master copy, edited first) to match, then manually publish the value into the corresponding production file. This formalizes what CL-001/CL-003 already did in practice. Not yet adopted or wired into the vote/deploy pipeline for the content ladder — open questions in the doc itself include whether WIP's existing ‘Approved’ status should be relabeled to match this ladder.",
@@ -1170,7 +1195,8 @@ window.REQUIREMENTS = [
    "id": "design",
    "type": "design",
    "question": "Approve the Work Product in the Role Container spec.",
-   "via": "work-product-spec"
+   "via": "work-product-spec",
+   "summary": "The spec is adopted and building starts: activity-level CRUD for the remaining roles, then a work-product panel under each role in the People View with its verification load."
   },
   "decisions": [],
   "log": "Sept 25, 2026: replaces the retired Role Transition Profile idea with a clearer framing — the role is the container, and what changes is the work product inside it, not the person moving roles (that is the human-transition side). Part 3 already exists as a documented measure: The Shock Wave Effect's new “A Second Path: Work Product” section counts the AI-touched work products each Accountable role relies on in Sandbox 7.0 (HRBP Manager 6, HRIS Analyst 5, Director of HR Ops 2) and which ones it pays for twice. Parts 1 and 2 were demonstrated for the HRBP Manager in the working session (16 work products produced, grouped by direction: stays human, human-checked and holding, AI already producing with one more step allowed, mixed) but are not yet built. Proposed home: an expandable section under each role in the sandbox's People View. Limits: CRUD is recorded per process, not per activity, so in the 18 processes that hold more than one activity it cannot yet say which activity produces which work product; all 37 processes carry CRUD entries, 22 of them marked confirmed. Sept 25, 2026: design spec written on the standard template (work-product-spec, Concept stage, votable), including the enabling data work (A1–A10) and the sandbox UI work (B1–B8); status moved to Designed. Sept 25, 2026: production-mode rule (spec §6 A4) written into spec §5. A work product takes its producing activity's Current State and Progression Ceiling; when there are several producers it shows the one furthest along the ramp, and names it. The mode is derived at display time, never stored. Sept 25-26, 2026: activity-level CRUD (A2) drafted for the first role, the HRBP Manager (docs/wip/activity_crud_hrbp_manager.html). Method set by Tim on Sept 26: each activity's CRUD is reasoned from the activity itself, not inherited from the process, and the old process CRUD is only a cross-check; once a process's activities are confirmed, its CRUD is derived from them rather than stored, process by process. Result: 23 activities, 67 links, 10 new and 1 old process link unsupported (7.6.2's update of the ER Case Record). Verification load is 9 work products at activity level against 7 at process level. The cross-check also caught the requisition's creator (7.2.1, not 7.1.2; CL-006). Sept 26, 2026: Tim answered the review questions and the HRBP Manager's activity-level CRUD was applied to the sandbox as master data (ACTIVITY_CRUD, 23 activities; CL-007). Those 11 processes' CRUD is now derived from their activities, and the Data View shows each activity's own CRUD, with not-yet-done activities shown in grey.",
@@ -1198,7 +1224,8 @@ window.REQUIREMENTS = [
    "id": "accept",
    "type": "accept",
    "question": "Accept the working relationship as the core classification, through the display-migration item.",
-   "via": "wr-display-migration"
+   "via": "wr-display-migration",
+   "summary": "Working relationship becomes the only classification on user-facing pages, as it already is in the sandbox; production follows in the rebuild."
   },
   "decisions": [],
   "log": "Sept 25, 2026: logged as Tim's own top requirement. The working-relationship model is built and live in Sandbox 7.0: all 118 activities classified with Current State and Progression Ceiling; the six category definitions locked (GR-036); patterns removed from every sandbox view in the Sept 24 sweep, while every activity keeps its pattern field in the data (GR-038). Pending Review because the display-migration proposal (wr-display-migration) still awaits Tim and GiGi's vote. Production is out of scope until the full production rebuild.",
@@ -1271,7 +1298,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "catalog-defs",
    "type": "question",
-   "question": "Confirm the Master Data Catalog definitions, moving entries from Draft to Active."
+   "question": "Confirm the Master Data Catalog definitions, moving entries from Draft to Active.",
+   "summary": "The catalog's entries, starting with the 39 work products, move from Draft to Active and become the master list; the add, change and retire functions are designed next."
   },
   "decisions": [],
   "log": "Sept 25, 2026: raised as the step before activity-level CRUD, so work products are cataloged once rather than copied as free text into 118 activities. Entities held in Sandbox 7.0 today, as a starting inventory: the PCF process hierarchy (L1–L4); the role taxonomy with tier and reportsTo; RACI per process; CRUD per process (114 entries naming 39 distinct work products, all free text); working-relationship data per activity (Current State, Progression Ceiling, Consequence of Error, factors and notes); the fixed H% anchors per category; and Governed Decision Points. New: the work-product catalog (ID, definition, system of record). Maintenance today is hand-editing the sandbox file and hand-writing a changelog entry; CI catches a missing entry only for reportsTo and working-relationship values. Retire rather than delete, so changelog history and downstream references stay valid. Scope is Sandbox 7.0 and the design is domain-neutral for later domains; production is out of scope until the full production rebuild. Sept 25, 2026: first entity drafted, the Work-Product Catalog (39 entries, IDs WP-7-01 to WP-7-39, all Draft) with five review questions. The draft found that 26 of the 39 work products have no process recorded as reading them, and that the sandbox does not record which 15 processes have unconfirmed CRUD. It proposes a confirmed flag on each CRUD link. Sept 25, 2026 (later): Tim settled the five review questions. Candidate Profile merged into Applicant Record and HR Report into HR Analytics Report; T&A Record renamed Time and Attendance Record; iCIMS is the single system of record for Job Posting and Offer Letter; each work product now has one creating process; and a Model output field was added, marking the Retention Risk Score. The sandbox CRUD was corrected to match (CL-005): 37 work products, 24 with no recorded reader. Sept 25, 2026: the WIP hub gained an Administration section (Registers & Logs, Audit Reports, Master Data) as the home for these records. Its second Master Data entry, the Organizational Role Taxonomy page, reads the role taxonomy and RACI live from the sandbox rather than keeping a copy. Sept 26, 2026: the Work-Product Catalog moved into the sandbox as master data (WORK_PRODUCTS, 39 entries, two added: WP-7-38 Staffing Plan and WP-7-39 Performance Program; CL-007), and the catalog page now reads it live. The changelog check now also covers WORK_PRODUCTS, ACTIVITY_CRUD and process CRUD. Tim's rule: outputs the catalog lacks are added when identified. Sept 26, 2026: systems of record are generic categories, not vendors, since the framework describes no specific organization (Tim; CL-008).",
@@ -1298,7 +1326,8 @@ window.REQUIREMENTS = [
   "decision": {
    "id": "register-rules",
    "type": "accept",
-   "question": "Accept the register's working rules: progress and decision tracked separately, and the Needs a decision queue."
+   "question": "Accept the register's working rules: progress and decision tracked separately, and the Needs a decision queue.",
+   "summary": "The register works as it does now: progress and decisions tracked separately, and this Needs a decision queue as the place decisions are made."
   },
   "decisions": [],
   "log": "Sept 25, 2026: Owner, Priority, Acceptance criteria and the Pending Review status were added first; Next Action, the status definitions and the proposed status rules followed the same day. The register also now accepts requirements from either of us, pilots, practitioners and eventually clients, as GiGi suggested. The Owner, Priority, Acceptance and Next Action values are a first pass by Claude. Pending Review until Tim and GiGi confirm the definitions and rules.\n\nSept 28, 2026 (Tim): the register was hard to navigate and to tell what needs approval. Reworked: progress (Open, Designed, In progress, Built, Done, Closed) is tracked separately from decisions; each requirement carries at most one pending decision, which Tim and GiGi settle with Approve / Not approve / Defer buttons saved through the Worker; the page opens on Needs a decision; rows are compact, with history folded. Requirements marked Implemented before this were never formally accepted by both, so they are now Built with an Accept decision. Data moved to requirements-data.js so the design specs show the same decisions. The design-spec template was revised: a one-screen decision brief, the current design only, detail folded, history kept here.",
@@ -1326,7 +1355,8 @@ window.REQUIREMENTS = [
    "id": "design",
    "type": "design",
    "question": "Approve the reference model and organization assessment layer design.",
-   "via": "reference-model-spec"
+   "via": "reference-model-spec",
+   "summary": "The reference-model design is adopted, and the remaining pieces get built: ASSESSED source chips, coverage on every rollup, the gap view, and access per organization."
   },
   "decisions": [],
   "log": "Sept 26, 2026: raised by Tim after systems of record were made generic (CL-008), when the same question was asked of Current State: a generic framework cannot know how any organization works today. The existing Current State values are Claude's modeled judgments of typical practice and would be retired, logged in the changelog, when the reference is reset to Human-only. Design drafted the same day; nothing in the sandbox has changed yet. Open decisions are in the spec's section 9. Later Sept 26: Tim set the prototype approach: build against ABC Test Org (defaulted to the reference, clearly labeled test data, never cited as a finding), starting with the working-relationship assessment, then other areas as determined; and build, test and pressure-test an interactive activity assessment template and the process before any real organization (GR-053). Spec section 8 updated. Later Sept 26: Tim added that the reference model is itself an entry in the organization list, named Reference Model and selected by default with the Working Relationship view; other organizations are selectable when they have an assessment, and 'New organization…' creates one. Prototype built: organization and assessment storage in the Worker (/org-api/), the selector in the sandbox, and the new-organization form. Later Sept 26: the reference was reset to the Human-only baseline for all 118 activities (CL-009, which records the retired modeled values activity by activity). The Reference Model's pills now describe the ceilings: 76 activities capped below Automation, 33 with a ceiling at Judgment or Oversight. Sept 27, 2026 (Tim): the pages use “Progression Ceiling” throughout. The ceiling is a limit, and raising it for an organization is a governed override (GR-054).\n\nSept 28, 2026: the reference-model spec was split into three short specs under the revised template, one per requirement; this one is reference_model_assessment_layer_spec.html. Its history now lives here, not in the spec.",
@@ -1377,7 +1407,8 @@ window.REQUIREMENTS = [
    "id": "factor-rule",
    "type": "question",
    "question": "Approve the factor-based override rule and the proposed changes to the 11 High activities.",
-   "spec": "ceiling_override_spec.html"
+   "spec": "ceiling_override_spec.html",
+   "summary": "7.1.2.6, 7.2.3.3 and 7.4.5 come down to Oversight; the seven Automation activities record their control; the rule goes into the Worker's check. 15 activities whose only factors are the judgment floor or accountability can no longer be overridden."
   },
   "decisions": [],
   "log": "Sept 27, 2026: built in the sandbox. The assessment panel has a Ceiling override section: not available where Consequence of Error is High or Critical, or where the ceiling is already Automation; otherwise it records the raised level, the ceiling factor that no longer holds (from the activity's own ceiling factors), evidence, the Accountable role and approver, and a review date (default one year). The Worker stores overrides under their own keys (ceil:<org>:<code>), with history, and re-checks the rule. On the reference model, 49 of the 118 activities are eligible (Low or Moderate, ceiling below Automation). Sept 27, 2026: the Worker no longer takes the activity's Consequence of Error, ceiling or ceiling factors from the page. It reads them from docs/sandbox/reference-wr.json, generated from WR_DATA by scripts/build-reference-wr.mjs; CI fails if the file is out of date. The override must name one of that activity's own ceiling factors, and records the lookup's version. Open: what happens when a review date passes; whether a Moderate override needs a second approver. Later Sept 27 (Tim): the reference and overrides should follow the same rule, decided by the ceiling factors, with Consequence of Error as the bar. Patterns were considered as the criterion and set aside: all 11 High activities with a pattern are Transaction, so a pattern cap cannot separate them, and patterns are retired (GR-048). Proposed revision, for decision (spec §8c): governance / sign-off keeps a person on every instance at High or Critical (ceiling at most Augmentation) and is overridable only at Low or Moderate; legal / fiduciary goes above Augmentation only by naming a control, overridable only at Low or Moderate; a technical readiness gap is overridable at any Consequence of Error; human judgment floor, accountability and relational are never overridden. Applied to the 11 High activities: 7.1.2.6, 7.2.3.3 and 7.4.5 come down to Oversight; 7.3.4.5 to be decided; the other 7 keep Automation by naming their control. Overrides: 15 of today's 49 eligible activities would no longer be eligible (including 7.2.1.1 and 7.3.2.1); 7.3.4.5 would become eligible. Sept 28, 2026 (Tim): no fixed review date, since the process owner should already be auditing the process; each audit is recorded against the override as a review (date, who confirmed it, optional note), the panel shows how long ago the last one was, and an override is flagged for re-review when the activity's reference values change. A review re-checks the override against the current reference and is refused if it no longer meets the rule. No second approver: only the process owner / Accountable role signs off.\n\nSept 28, 2026: the reference-model spec was split into three short specs under the revised template, one per requirement; this one is ceiling_override_spec.html. Its history now lives here, not in the spec.",
