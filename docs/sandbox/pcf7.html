@@ -184,6 +184,29 @@ td:first-child { text-align: left; }
 .hpct-chip { cursor: pointer; }
 .gates-rollup-inline .hpct .rollup-val { min-width: 38px; }
 .hpct-chip:hover { background: rgba(32,68,116,.18); }
+/* ASSESSED source chips (GR-053) — with an organization selected, a value
+   that comes from its own assessment says so instead of MODELED: green
+   ASSESSED where every activity behind it is assessed, "Assessed n/m" where
+   only some are, grey BASELINE where none are (the Human-only baseline).
+   Ceilings stay MODELED — they are the reference's. */
+.wr-prov-assessed { background:rgba(22,101,52,.10); color:#166534; border:1px solid rgba(22,101,52,.34); }
+.wr-prov-assessed.hpct-chip:hover, .as-src .wr-prov-assessed:hover { background:rgba(22,101,52,.18); }
+.wr-prov-baseline { background:#F1F3F6; color:#6B7A90; border:1px solid #D5DBE4; }
+.wr-prov-baseline.hpct-chip:hover { background:#E6EAF0; }
+.as-src { position: relative; display: inline-flex; align-items: center; margin-right: 10px; padding-top: 3px; }
+.as-src .wr-prov { cursor: pointer; }
+.as-src .wr-cons-pop.as-src-pop { position: absolute; top: 100%; right: 0; left: auto; z-index: 6; width: 320px; white-space: normal; font-size: 11px; font-family: 'DM Sans', sans-serif; letter-spacing: normal; text-transform: none; text-align: left; }
+.as-src-dl { display: grid; grid-template-columns: 92px 1fr; gap: 4px 10px; margin: 0; font-size: 11px; }
+/* The popover's × sits inside .assess-ctl, whose button rule would otherwise restyle it */
+.assess-ctl .as-src .gates-info-close { min-width: 0; width: 18px; height: 18px; padding: 0; border: 0; background: transparent; font-size: 15px; font-weight: 400; color: var(--lgray); }
+.assess-ctl .as-src .gates-info-close:hover { color: var(--navy-d); background: #EEF1F6; }
+.as-src-dl dt { color: var(--gray); }
+.as-src-dl dd { margin: 0; color: var(--dark); }
+.hpct-src-list { list-style: none; margin: 0 0 6px; padding: 0; font-size: 11px; line-height: 1.5; color: var(--dark); }
+.hpct-src-list b { font-weight: 600; color: var(--navy-d); font-variant-numeric: tabular-nums; }
+.legend-org-only { display: none; }
+body.org-active .legend-org-only { display: inline; }
+body.org-active .legend-ref-only { display: none; }
 .hpct .wr-cons-pop.hpct-pop { position: absolute; top: 100%; left: 0; z-index: 6; width: 330px; white-space: normal; font-size: 11px; font-family: 'DM Sans', sans-serif; letter-spacing: normal; text-transform: none; }
 .hpct-anchor-list { display: flex; flex-wrap: wrap; gap: 3px 10px; margin: 0 0 8px; font-size: 11px; color: var(--gray); }
 .hpct-anchor-list span { white-space: nowrap; }
@@ -444,7 +467,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
         <span class="gates-legend-item"><span style="color:#166534;font-weight:700;">&#10003;</span> Passed &mdash; evidence cleared this step</span>
         <span class="gates-legend-item"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open &mdash; reachable next</span>
         <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why</span>
-        <span class="gates-legend-item"><span class="wr-prov wr-prov-classified">Modeled</span> % H is modeled, not measured</span>
+        <span class="gates-legend-item"><span class="legend-ref-only"><span class="wr-prov wr-prov-classified">Modeled</span> % H is modeled, not measured</span><span class="legend-org-only"><span class="wr-prov wr-prov-assessed">Assessed</span> this organization&rsquo;s record &middot; <span class="wr-prov wr-prov-classified">Modeled</span> reference</span></span>
       </div>
       <div class="table-wrap">
         <table id="main-table">
@@ -520,7 +543,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
         <span class="gates-legend-item"><span style="color:#166534;font-weight:700;">&#10003;</span> Passed &mdash; evidence cleared this step</span>
         <span class="gates-legend-item"><span style="color:#2457A3;font-weight:700;">&rarr;</span> Open &mdash; reachable next</span>
         <span class="gates-legend-item"><span style="color:#475569;"><svg width="11" height="12" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-1px;"><rect x="4" y="11" width="16" height="13" rx="2" fill="currentColor"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2.6" fill="none"/></svg></span> Progression Ceiling &mdash; click the lock for why</span>
-        <span class="gates-legend-item"><span class="wr-prov wr-prov-classified">Modeled</span> % H is modeled, not measured</span>
+        <span class="gates-legend-item"><span class="legend-ref-only"><span class="wr-prov wr-prov-classified">Modeled</span> % H is modeled, not measured</span><span class="legend-org-only"><span class="wr-prov wr-prov-assessed">Assessed</span> this organization&rsquo;s record &middot; <span class="wr-prov wr-prov-classified">Modeled</span> reference</span></span>
       </div>
       <div class="table-wrap">
         <table id="people-main-table">
@@ -1510,17 +1533,75 @@ function hpctValueHtml(mean, l3s, field) {
   const which = field === 'ceiling' ? 'Progression Ceiling' : 'Current State';
   const anchors = CATS_ORDER.map(c => '<span>' + c + ' <b>' + WR_CATS[c].h + '</b></span>').join('');
   const calc = hpctCalcHtml(l3s, field);
+  const src = hpctSource(l3s, field);
   return '<span class="hpct">' +
-    '<span class="wr-prov wr-prov-classified hpct-chip" role="button" tabindex="0" title="What this number means" onclick="toggleFactorPop(event, this)" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleFactorPop(event, this);}">Modeled</span>' +
+    '<span class="wr-prov ' + src.cls + ' hpct-chip" role="button" tabindex="0" title="' + src.title + '" onclick="toggleFactorPop(event, this)" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleFactorPop(event, this);}">' + src.label + '</span>' +
     '<div class="wr-cons-pop hpct-pop" onclick="event.stopPropagation()"><button type="button" class="gates-info-close" onclick="closeFactorPop(event, this)" aria-label="Close">&times;</button>' +
-      '<div class="gates-info-title">What this % H measures</div>' +
-      '<div class="gates-info-label">Unit</div><p class="gates-info-def">' + HPCT_UNIT_TEXT + '</p>' +
+      (src.html
+        ? '<div class="gates-info-title">Where this Current State comes from</div>' + src.html +
+          '<div class="gates-info-label gates-info-label-2">Unit</div><p class="gates-info-def">' + HPCT_UNIT_TEXT + '</p>'
+        : '<div class="gates-info-title">What this % H measures</div>' +
+          '<div class="gates-info-label">Unit</div><p class="gates-info-def">' + HPCT_UNIT_TEXT + '</p>') +
       '<div class="gates-info-label gates-info-label-2">Modeled anchor values</div><div class="hpct-anchor-list">' + anchors + '</div>' +
       '<p class="gates-info-def">' + HPCT_SCALE_NOTE + '</p>' +
       (calc ? '<div class="gates-info-label gates-info-label-2">This row &mdash; ' + which + '</div><p class="hpct-calc">' + calc + '</p>' : '') +
     '</div>' +
     '<span class="wr-rollup-ready"><span class="rollup-val">' + Math.round(mean) + '% H</span></span>' +
     '</span>';
+}
+/* ── ASSESSED source chips (GR-053) ─────────────────────────────────────
+   With an organization selected, a Current State value comes from that
+   organization's assessment records, not the model. The chip says which:
+   ASSESSED (every activity behind the value assessed), "Assessed n/m"
+   (some), or BASELINE (none — every activity reads as Human-only). The
+   category is assessed; the % H it converts to still uses the modeled
+   anchor values, and the info box says both. Ceilings stay MODELED. */
+function fmtAssessDate(ms) {
+  if (!ms) return '';
+  return new Date(ms).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function fmtAssessDateShort(ms) {
+  if (!ms) return '';
+  return new Date(ms).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+function escHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function orgActive() { return !!(typeof ACTIVE_ORG !== 'undefined' && ACTIVE_ORG && !ACTIVE_ORG.reference); }
+function orgRecord(code) {
+  if (!orgActive() || typeof ORG_RECORDS === 'undefined' || !ORG_RECORDS) return null;
+  const r = ORG_RECORDS[code];
+  return r && r.current ? r : null;
+}
+const HPCT_SRC_LIST_MAX = 8;
+function hpctSource(l3s, field) {
+  const modeled = { cls: 'wr-prov-classified', label: 'Modeled', title: 'What this number means', html: '' };
+  if (field !== 'rel' || !orgActive()) return modeled;
+  const codes = [];
+  l3s.forEach(l3 => { ((l3.l4 && l3.l4.length) ? l3.l4.map(u => u.code) : [l3.code]).forEach(c => codes.push(c)); });
+  const done = codes.map(c => ({ code: c, rec: orgRecord(c) })).filter(x => x.rec)
+    .sort((a, b) => (b.rec.assessedAt || 0) - (a.rec.assessedAt || 0));
+  const n = done.length, total = codes.length, rest = total - n;
+  const orgName = escHtml(ACTIVE_ORG.name);
+  if (!n) {
+    return { cls: 'wr-prov-baseline', label: 'Baseline', title: 'Not yet assessed', html:
+      '<p class="gates-info-def">None of the ' + total + ' activit' + (total === 1 ? 'y' : 'ies') + ' behind this value ' + (total === 1 ? 'has' : 'have') +
+      ' been assessed for ' + orgName + ' yet, so ' + (total === 1 ? 'it reads' : 'they all read') + ' as the Human-only baseline. Open an activity and choose Assess to set its Current State.</p>' };
+  }
+  const items = done.slice(0, HPCT_SRC_LIST_MAX).map(x =>
+    '<li><b>' + x.code + '</b> ' + escHtml(x.rec.current) + ' &mdash; ' + escHtml(x.rec.assessedBy || 'unknown') + ', ' + fmtAssessDate(x.rec.assessedAt) + '</li>').join('');
+  const more = n > HPCT_SRC_LIST_MAX ? '<li>&hellip; and ' + (n - HPCT_SRC_LIST_MAX) + ' more</li>' : '';
+  const html =
+    '<div class="gates-info-label">Assessed for ' + orgName + ' &mdash; ' + n + ' of ' + total + '</div>' +
+    '<ul class="hpct-src-list">' + items + more + '</ul>' +
+    (rest ? '<p class="gates-info-def">The other ' + rest + ' read' + (rest === 1 ? 's' : '') + ' as the Human-only baseline until assessed.</p>' : '') +
+    '<p class="gates-info-def">The working-relationship category of each activity is assessed; the % H it converts to uses the modeled anchor values below.</p>';
+  if (!rest) {
+    const latest = done[0].rec;
+    const title = n === 1
+      ? 'Assessed by ' + (latest.assessedBy || 'unknown') + ', ' + fmtAssessDate(latest.assessedAt)
+      : 'All ' + n + ' activities assessed; latest ' + fmtAssessDate(latest.assessedAt);
+    return { cls: 'wr-prov-assessed', label: 'Assessed', title: escHtml(title), html: html };
+  }
+  return { cls: 'wr-prov-assessed', label: 'Assessed ' + n + '/' + total, title: n + ' of ' + total + ' activities assessed', html: html };
 }
 function l3ConsCoverage(l3) {
   const units = (l3.l4 && l3.l4.length) ? l3.l4.map(l4 => l4.code) : [l3.code];
@@ -2462,6 +2543,7 @@ function orgBanner(org, assessed) {
 }
 function applyOrg(org) {
   ACTIVE_ORG = org;
+  document.body.classList.toggle('org-active', !!(org && !org.reference));
   if (!org || org.reference) {
     ORG_RECORDS = {};
     ORG_OVERRIDES = {};
@@ -2497,8 +2579,32 @@ function assessControlHtml(code) {
   const btn = OrgContext.reviewer()
     ? '<button type="button" onclick="event.stopPropagation();openAssess(\'' + code + '\')">' + (cur ? 'Reassess' : 'Assess') + '</button>'
     : '<button type="button" class="as-view" onclick="event.stopPropagation();openAssess(\'' + code + '\')">View</button>';
-  // Just the button: the assessed Current State shows on the ramp itself.
-  return '<span class="assess-ctl"><span class="as-btn">' + btn + '</span></span>';
+  // The button, plus an ASSESSED chip (date and assessor) once the activity
+  // has an assessed Current State — the value itself shows on the ramp.
+  return '<span class="assess-ctl">' + assessedChipHtml(code, r) + '<span class="as-btn">' + btn + '</span></span>';
+}
+const ASSESS_EVIDENCE_LABEL = { observed: 'Observed practice', system: 'System configuration', interview: 'Interview', document: 'Document' };
+function assessedChipHtml(code, r) {
+  if (!r || !r.current) return '';
+  const who = escHtml(r.assessedBy || 'unknown');
+  const cat = WR_CATS[r.current];
+  const catBadge = '<span style="display:inline-block;font-size:10px;font-weight:600;border-radius:3px;padding:1px 6px;color:#fff;background:' + ((cat && cat.color) || '#888') + '">' + escHtml(r.current) + '</span>';
+  const rows = [
+    ['Current State', catBadge],
+    ['Assessed by', who],
+    ['Date', fmtAssessDate(r.assessedAt)],
+    r.evidenceType ? ['Evidence', escHtml(ASSESS_EVIDENCE_LABEL[r.evidenceType] || r.evidenceType)] : null,
+    r.confidence ? ['Confidence', escHtml(r.confidence.charAt(0).toUpperCase() + r.confidence.slice(1))] : null,
+    r.source ? ['Source', escHtml(r.source)] : null,
+    r.note ? ['Note', escHtml(r.note)] : null
+  ].filter(Boolean).map(x => '<dt>' + x[0] + '</dt><dd>' + x[1] + '</dd>').join('');
+  const hist = (r.history && r.history.length) ? '<p class="gates-info-def" style="margin-top:8px">Reassessed ' + r.history.length + ' time' + (r.history.length === 1 ? '' : 's') + ' before; the full history is in the Assess panel.</p>' : '';
+  return '<span class="as-src">' +
+    '<span class="wr-prov wr-prov-assessed" role="button" tabindex="0" title="Assessed by ' + who + ', ' + fmtAssessDate(r.assessedAt) + '" onclick="toggleFactorPop(event, this)" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleFactorPop(event, this);}">Assessed ' + fmtAssessDateShort(r.assessedAt) + ' &middot; ' + who + '</span>' +
+    '<div class="wr-cons-pop as-src-pop" onclick="event.stopPropagation()"><button type="button" class="gates-info-close" onclick="closeFactorPop(event, this)" aria-label="Close">&times;</button>' +
+      '<div class="gates-info-title">Assessed for ' + escHtml(ACTIVE_ORG.name) + '</div>' +
+      '<dl class="as-src-dl">' + rows + '</dl>' + hist +
+    '</div></span>';
 }
 function activityContext(code) {
   let found = null;
