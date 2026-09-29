@@ -604,7 +604,7 @@ async function handleApi(request, env, url) {
 const ORG_ID_RE = /^[a-z0-9][a-z0-9-]{1,40}$/;
 const ASSESS_CODE_RE = /^7(\.\d+){2,3}$/;
 const WR_STEPS = ['Human-only', 'Judgment', 'Oversight', 'Augmentation', 'Agent-delegation', 'Automation'];
-const EVIDENCE_TYPES = new Set(['observed', 'system', 'interview', 'document']);
+const EVIDENCE_TYPES = new Set(['observed', 'system', 'audit', 'interview', 'document']);
 const CONFIDENCE = new Set(['high', 'medium', 'low']);
 const ORG_MAX = 200, NOTE_MAX = 2000, HISTORY_MAX = 25;
 const OVERRIDE_CONS = new Set(['Low', 'Moderate']);

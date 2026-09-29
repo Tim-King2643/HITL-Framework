@@ -592,7 +592,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
 
 <script src="sandbox-notes-widget.js"></script>
 <script src="org-context.js?v=20260929b"></script>
-<script src="assess-panel.js?v=20260929b"></script>
+<script src="assess-panel.js?v=20260929c"></script>
 <script src="../wip/changelog-data.js"></script>
 <script>
 /* ── Real PCF 7.0 data, extracted from the live dashboard ────────────── */
@@ -2583,7 +2583,7 @@ function assessControlHtml(code) {
   // has an assessed Current State — the value itself shows on the ramp.
   return '<span class="assess-ctl">' + assessedChipHtml(code, r) + '<span class="as-btn">' + btn + '</span></span>';
 }
-const ASSESS_EVIDENCE_LABEL = { observed: 'Observed practice', system: 'System configuration', interview: 'Interview', document: 'Document' };
+const ASSESS_EVIDENCE_LABEL = { observed: 'Observed practice', system: 'System configuration', audit: 'Audit or control test', interview: 'Interview', document: 'Document' };
 function assessedChipHtml(code, r) {
   if (!r || !r.current) return '';
   const who = escHtml(r.assessedBy || 'unknown');

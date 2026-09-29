@@ -31,10 +31,10 @@
     { q: 'Does AI only supply inputs &mdash; data, rankings, benchmarks &mdash; for a person&rsquo;s own reasoning, without proposing the decision or producing the work?', yes: 'Judgment', no: 2 },
     { q: 'Does a person remain the primary actor, doing the work with AI assisting in real time and no separate approval step?', yes: 'Augmentation', no: 3 },
     { q: 'AI produces or proposes the complete work. Does a person review and approve every instance before it takes effect?', yes: 'Oversight', no: 4 },
-    { q: 'Does a person handle only the exceptions the AI flags, rather than every instance?', yes: 'Agent-delegation', no: 'Automation' }
+    { q: 'When the AI flags an exception, does that instance wait for a person to resolve it before it completes?', hint: 'After-the-fact monitoring, sampling or audit reports don&rsquo;t count &mdash; that&rsquo;s Automation.', yes: 'Agent-delegation', no: 'Automation' }
   ];
   var OVERRIDE_CONS = { Low: 1, Moderate: 1 };
-  var EVIDENCE = [['observed', 'Observed practice'], ['system', 'System configuration'], ['interview', 'Interview'], ['document', 'Document']];
+  var EVIDENCE = [['observed', 'Observed practice'], ['system', 'System configuration'], ['audit', 'Audit or control test'], ['interview', 'Interview'], ['document', 'Document']];
   function rank(c) { return STEPS.indexOf(c); }
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
@@ -58,6 +58,7 @@
       '.ap h4{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#1B4F8A;margin:0 0 8px;}' +
       '.ap .q{background:#F8FAFD;border:1px solid #DDE3EE;border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:13px;line-height:1.5;}' +
       '.ap .q.done{opacity:.75;}' +
+      '.ap .qhint{font-size:11.5px;color:#6B7A90;margin-top:3px;}' +
       '.ap .qn{font-family:"DM Mono",monospace;font-size:10.5px;color:#6B7A90;margin-right:4px;}' +
       '.ap .ans{margin-top:8px;display:flex;gap:8px;}' +
       '.ap button{font:inherit;font-size:12.5px;font-weight:600;padding:6px 13px;border-radius:6px;border:1px solid #C6D8EE;background:#fff;color:#0D2D4F;cursor:pointer;}' +
@@ -238,7 +239,7 @@
       html += '<div class="sec"><h4>How is this activity done in ' + esc(o.org.name) + '?</h4>';
       st.path.forEach(function (qi) {
         var a = answers[qi];
-        html += '<div class="q' + (a === null || a === undefined ? '' : ' done') + '"><span class="qn">Q' + (qi + 1) + '</span>' + QUESTIONS[qi].q +
+        html += '<div class="q' + (a === null || a === undefined ? '' : ' done') + '"><span class="qn">Q' + (qi + 1) + '</span>' + QUESTIONS[qi].q + (QUESTIONS[qi].hint ? '<div class="qhint">' + QUESTIONS[qi].hint + '</div>' : '') +
           '<div class="ans"><button type="button" data-q="' + qi + '" data-a="1" class="' + (a === true ? 'on' : '') + '"' + (o.canEdit ? '' : ' disabled') + '>Yes</button>' +
           '<button type="button" data-q="' + qi + '" data-a="0" class="' + (a === false ? 'on' : '') + '"' + (o.canEdit ? '' : ' disabled') + '>No</button></div></div>';
       });

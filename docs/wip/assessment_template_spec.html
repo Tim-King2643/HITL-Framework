@@ -143,6 +143,8 @@ details.fold[open] { padding-bottom: 6px; }
     <li><b>Sept 26:</b> assess process by process inside the standard Working Relationship view &mdash; not on a separate page, and not by role.</li>
     <li><b>Sept 26:</b> build and pressure-test against ABC Test Org, clearly labeled test data, before any real organization.</li>
     <li><b>Sept 26&ndash;28:</b> the ramp itself shows the assessed state; the card carries only the Assess button.</li>
+    <li><b>Sept 29:</b> an assessed activity&rsquo;s card also carries an ASSESSED chip (date and assessor); Current % H rollups show ASSESSED, Assessed n/m or BASELINE instead of MODELED.</li>
+    <li><b>Sept 29:</b> the Automation test is whether a flagged exception waits for a person; after-the-fact review is Automation. &ldquo;Audit or control test&rdquo; added as an evidence type.</li>
   </ul>
   <div class="b-label">Awaiting your decision</div>
   <p class="small">None pending. Next step: Tim and GiGi assess 7.2.1, 7.3.2 and 7.6.2 in ABC Test Org and note where the questions, definitions or evidence prompts fall short.</p>
@@ -159,12 +161,12 @@ details.fold[open] { padding-bottom: 6px; }
     <li>Does AI only supply inputs (data, rankings, benchmarks) for a person&rsquo;s own reasoning? <em>Yes &rarr; Judgment.</em></li>
     <li>Does a person remain the primary actor, with AI assisting in real time and no separate approval step? <em>Yes &rarr; Augmentation.</em></li>
     <li>AI produces the complete work: does a person review and approve every instance? <em>Yes &rarr; Oversight.</em></li>
-    <li>Does a person handle only the exceptions the AI flags? <em>Yes &rarr; Agent-delegation; no &rarr; Automation.</em></li>
+    <li>When the AI flags an exception, does that instance wait for a person to resolve it before it completes? <em>Yes &rarr; Agent-delegation; no &rarr; Automation.</em> After-the-fact monitoring, sampling or audit reports don&rsquo;t count &mdash; that&rsquo;s Automation.</li>
   </ol>
   <table>
     <tr><th style="width:30%">Recorded</th><th>Rule</th></tr>
     <tr><td class="k">Working relationship</td><td>The proposal, confirmed or changed; a change needs a reason.</td></tr>
-    <tr><td class="k">Evidence</td><td>Observed practice, system configuration, interview or document &mdash; required.</td></tr>
+    <tr><td class="k">Evidence</td><td>Observed practice, system configuration, audit or control test, interview or document &mdash; required.</td></tr>
     <tr><td class="k">Source, confidence, note</td><td>Who or what it came from; high, medium or low (required); a free note.</td></tr>
     <tr><td class="k">History</td><td>Every earlier version is kept. &ldquo;Reset to baseline&rdquo; returns the activity to Human-only.</td></tr>
   </table>
