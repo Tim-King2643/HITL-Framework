@@ -82,10 +82,6 @@ tr.detail-row td { padding: 0 12px 16px; background: #FAFBFD; }
 tr.detail-row .detail-box { display: none; font-size: 12.5px; color: var(--gray); line-height: 1.6; background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
 tr.detail-row.open .detail-box { display: block; }
 .detail-box .dw { margin-bottom: 12px; }
-.design-links { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-.dl-btn { display: inline-flex; flex-direction: column; font-size: 12.5px; font-weight: 700; color: #fff !important; background: var(--navy); border-radius: 6px; padding: 7px 12px; text-decoration: none !important; }
-.dl-btn span { font-size: 10.5px; font-weight: 400; color: #CFE0F5; font-family: 'Consolas', monospace; }
-.dl-btn:hover { background: var(--navy-d); }
 .detail-box .field { margin-bottom: 8px; }
 .detail-box .flabel { font-size: 10px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--lgray); margin-bottom: 2px; }
 .detail-box .fval { font-size: 12.5px; color: var(--dark); }
@@ -344,13 +340,8 @@ const LINK_LABEL = href => {
   if (f === "pcf7.html") return "Open the sandbox";
   return "Open the design spec";
 };
-function designButtons(r) {
-  const links = designLinks(r);
-  if (!links.length) return "";
-  return '<div class="design-links">' + links.map(h => '<a class="dl-btn" href="' + esc(h) + '">' + LINK_LABEL(h) + ' &rarr;<span>' + esc(h.replace(/^.*\//, "")) + '</span></a>').join("") + '</div>';
-}
 function detailHtml(r) {
-  return designButtons(r) + (r.decision ? DecisionWidget.html(r) : '') +
+  return (r.decision ? DecisionWidget.html(r) : '') +
     field("Requirement", esc(r.distilled)) +
     field("Acceptance criteria", esc(r.acceptance)) +
     field("Next action", esc(r.next_action)) +
