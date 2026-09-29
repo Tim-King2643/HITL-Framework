@@ -745,6 +745,8 @@ async function handleOrgApi(request, env, url) {
     const rec = {
       current, proposed, answers, overrideReason, evidenceType, confidence,
       source: clip(body.source, ORG_MAX),
+      sourceRole: clip(body.sourceRole, ORG_MAX),
+      reference: clip(body.reference, ORG_MAX),
       note: clip(body.note, NOTE_MAX),
       assessedBy: reviewer,
       assessedAt: Date.now(),

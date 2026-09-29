@@ -592,7 +592,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
 
 <script src="sandbox-notes-widget.js"></script>
 <script src="org-context.js?v=20260929b"></script>
-<script src="assess-panel.js?v=20260929d"></script>
+<script src="assess-panel.js?v=20260929e"></script>
 <script src="../wip/changelog-data.js"></script>
 <script>
 /* ── Real PCF 7.0 data, extracted from the live dashboard ────────────── */
@@ -2595,7 +2595,8 @@ function assessedChipHtml(code, r) {
     ['Date', fmtAssessDate(r.assessedAt)],
     r.evidenceType ? ['Evidence', escHtml(ASSESS_EVIDENCE_LABEL[r.evidenceType] || r.evidenceType)] : null,
     r.confidence ? ['Confidence', escHtml(r.confidence.charAt(0).toUpperCase() + r.confidence.slice(1))] : null,
-    r.source ? ['Source', escHtml(r.source)] : null,
+    r.sourceRole ? ['Source role', escHtml(r.sourceRole)] : (r.source ? ['Source', escHtml(r.source)] : null),
+    r.reference ? ['Reference', escHtml(r.reference)] : null,
     r.note ? ['Note', escHtml(r.note)] : null
   ].filter(Boolean).map(x => '<dt>' + x[0] + '</dt><dd>' + x[1] + '</dd>').join('');
   const hist = (r.history && r.history.length) ? '<p class="gates-info-def" style="margin-top:8px">Reassessed ' + r.history.length + ' time' + (r.history.length === 1 ? '' : 's') + ' before; the full history is in the Assess panel.</p>' : '';

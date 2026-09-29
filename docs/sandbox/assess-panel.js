@@ -34,6 +34,9 @@
     { q: 'When the AI flags an exception, does that instance wait for a person to resolve it before it completes?', hint: 'After-the-fact monitoring, sampling or audit reports don&rsquo;t count &mdash; that&rsquo;s Automation.', yes: 'Agent-delegation', no: 'Automation' }
   ];
   var OVERRIDE_CONS = { Low: 1, Moderate: 1 };
+  // Evidence that points at a thing (a system, a document, an audit) rather
+  // than only a person gets a Reference field naming it.
+  var REF_EVIDENCE = { system: 'Which system and where in it (e.g. ATS requisition workflow)', document: 'Which document (e.g. policy or procedure name)', audit: 'Which audit or control test (e.g. Q2 internal audit)' };
   var EVIDENCE = [['observed', 'Observed practice'], ['system', 'System configuration'], ['audit', 'Audit or control test'], ['interview', 'Interview'], ['document', 'Document']];
   function rank(c) { return STEPS.indexOf(c); }
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -80,6 +83,7 @@
       '.ap label{display:block;font-size:12px;font-weight:600;color:#0D2D4F;margin:10px 0 4px;}' +
       '.ap select,.ap input[type=text],.ap textarea{font:inherit;font-size:13px;width:100%;box-sizing:border-box;padding:7px 9px;border:1px solid #C6D8EE;border-radius:6px;background:#fff;}' +
       '.ap textarea{min-height:60px;resize:vertical;}' +
+      '.ap [hidden]{display:none !important;}' +
       '.ap .radios{display:flex;gap:14px;font-size:13px;}' +
       '.ap .radios label{font-weight:400;margin:0;display:inline;}' +
       '.ap .warn{margin-top:10px;padding:9px 12px;border-radius:6px;background:#FEE2E2;border:1px solid #F5B5B5;color:#7F1D1D;font-size:12.5px;line-height:1.5;}' +
@@ -246,7 +250,30 @@
       }).join('');
       return '<button type="button" id="ap-cons" class="cons-btn" aria-expanded="' + consOpen + '" style="' + style + '">' + esc(w.cons) +
         ' <span class="cons-caret">' + (consOpen ? '&#9652;' : '&#9662;') + '</span></button>' +
-        (consOpen ? '<div class="cons-detail"><ul class="cf-list">' + items + '</ul>' + (w.consNote ? '<div class="cons-note">' + esc(w.consNote) + '</div>' : '') + '</div>' : '');
+        '<div class="cons-detail"' + (consOpen ? '' : ' hidden') + '><ul class="cf-list">' + items + '</ul>' + (w.consNote ? '<div class="cons-note">' + esc(w.consNote) + '</div>' : '') + '</div>';
+    }
+
+    // Source: the role that provided or confirmed the answer — the activity's
+    // own Accountable and Responsible roles, defaulting to the Accountable
+    // role — plus a Reference for system, document and audit evidence. Roles,
+    // not people: no individual's name is recorded. An earlier free-text
+    // source opens under Other.
+    function sourceFieldsHtml(dis) {
+      var roles = [];
+      o.A.forEach(function (r) { if (r && roles.indexOf(r) === -1) roles.push(r); });
+      var nA = roles.length;
+      o.R.forEach(function (r) { if (r && roles.indexOf(r) === -1) roles.push(r); });
+      var cur = rec && rec.sourceRole ? rec.sourceRole : (rec && rec.source ? '' : (roles[0] || ''));
+      var other = rec && rec.sourceRole ? (roles.indexOf(rec.sourceRole) === -1 ? rec.sourceRole : '') : (rec && rec.source || '');
+      var isOther = !!other || !roles.length;
+      var opts = roles.map(function (r, i) {
+        return '<option value="' + esc(r) + '"' + (!isOther && r === cur ? ' selected' : '') + '>' + esc(r) + (i < nA ? ' (Accountable)' : ' (Responsible)') + '</option>';
+      }).join('') + '<option value="__other__"' + (isOther ? ' selected' : '') + '>Other&hellip;</option>';
+      var ev = rec && rec.evidenceType;
+      return '<label for="ap-srole">Source role (who provided or confirmed it)</label><select id="ap-srole"' + dis + '>' + opts + '</select>' +
+        '<input type="text" autocomplete="off" id="ap-srole-other" placeholder="Role" value="' + esc(other) + '"' + (isOther ? '' : ' hidden') + dis + ' style="margin-top:6px">' +
+        '<div id="ap-ref-wrap"' + (REF_EVIDENCE[ev] ? '' : ' hidden') + '><label for="ap-ref">Reference</label>' +
+        '<input type="text" autocomplete="off" id="ap-ref" placeholder="' + esc(REF_EVIDENCE[ev] || '') + '" value="' + esc(rec && rec.reference || '') + '"' + dis + '></div>';
     }
 
     function draw() {
@@ -282,7 +309,7 @@
           '<div id="ap-reason-wrap" style="display:none"><label for="ap-reason">Reason for changing the proposal</label><textarea autocomplete="off" id="ap-reason"' + dis + '>' + esc(rec && rec.overrideReason || '') + '</textarea></div>' +
           '<label for="ap-evidence">Evidence</label><select id="ap-evidence"' + dis + '><option value="">Choose&hellip;</option>' +
           EVIDENCE.map(function (e) { return '<option value="' + e[0] + '"' + (rec && rec.evidenceType === e[0] ? ' selected' : '') + '>' + e[1] + '</option>'; }).join('') + '</select>' +
-          '<label for="ap-source">Source (who or what it came from)</label><input type="text" autocomplete="off" id="ap-source" value="' + esc(rec && rec.source || '') + '"' + dis + '>' +
+          sourceFieldsHtml(dis) +
           '<label>Confidence</label><div class="radios">' +
           ['high', 'medium', 'low'].map(function (c) { return '<label><input type="radio" name="ap-conf" value="' + c + '"' + (rec && rec.confidence === c ? ' checked' : '') + dis + '> ' + c.charAt(0).toUpperCase() + c.slice(1) + '</label>'; }).join('') + '</div>' +
           '<label for="ap-note">Note</label><textarea autocomplete="off" id="ap-note"' + dis + '>' + esc(rec && rec.note || '') + '</textarea>' +
@@ -298,7 +325,13 @@
 
       el.querySelector('.ap-close').onclick = close;
       var consBtn = el.querySelector('#ap-cons');
-      if (consBtn) consBtn.onclick = function () { consOpen = !consOpen; draw(); };
+      // Show/hide in place — a redraw would drop anything typed in the form below.
+      if (consBtn) consBtn.onclick = function () {
+        consOpen = !consOpen;
+        el.querySelector('.cons-detail').hidden = !consOpen;
+        consBtn.setAttribute('aria-expanded', consOpen);
+        consBtn.querySelector('.cons-caret').innerHTML = consOpen ? '&#9652;' : '&#9662;';
+      };
       Array.prototype.forEach.call(el.querySelectorAll('button[data-q]'), function (b) {
         b.onclick = function () {
           var qi = +b.getAttribute('data-q');
@@ -324,6 +357,10 @@
             (OVERRIDE_CONS[w.cons] ? 'Unless a ceiling override is approved below, it shows in red.' : 'Consequence of Error is ' + esc(w.cons) + ', so the ceiling cannot be overridden; it shows in red until the work comes back within it.') + '</div>';
       }
       cur.onchange = sync; sync();
+      var srole = el.querySelector('#ap-srole'), sother = el.querySelector('#ap-srole-other');
+      srole.onchange = function () { sother.hidden = srole.value !== '__other__'; if (!sother.hidden) sother.focus(); };
+      var evSel = el.querySelector('#ap-evidence'), refWrap = el.querySelector('#ap-ref-wrap'), refIn = el.querySelector('#ap-ref');
+      evSel.addEventListener('change', function () { refWrap.hidden = !REF_EVIDENCE[evSel.value]; refIn.placeholder = REF_EVIDENCE[evSel.value] || ''; });
       var save = el.querySelector('#ap-save');
       if (save) save.onclick = function () {
         var conf = el.querySelector('input[name="ap-conf"]:checked');
@@ -333,11 +370,15 @@
           overrideReason: el.querySelector('#ap-reason').value,
           evidenceType: el.querySelector('#ap-evidence').value,
           confidence: conf ? conf.value : '',
-          source: el.querySelector('#ap-source').value,
+          sourceRole: srole.value === '__other__' ? sother.value.trim() : srole.value,
+          reference: REF_EVIDENCE[evSel.value] ? refIn.value.trim() : '',
           note: el.querySelector('#ap-note').value
         };
         if (body.current !== p2 && !body.overrideReason.trim()) { msg.className = 'msg err'; msg.textContent = 'Give a reason for overriding the proposal.'; return; }
         if (!body.evidenceType || !body.confidence) { msg.className = 'msg err'; msg.textContent = 'Choose the evidence and a confidence level.'; return; }
+        if (!body.sourceRole) { msg.className = 'msg err'; msg.textContent = 'Name the source role.'; return; }
+        // Kept for older readers of the record: role, then reference.
+        body.source = body.sourceRole + (body.reference ? ' \u00b7 ' + body.reference : '');
         save.disabled = true;
         OrgContext.saveAssessment(body).then(function (j) {
           rec = j.record; o.onSaved(rec); draw();
