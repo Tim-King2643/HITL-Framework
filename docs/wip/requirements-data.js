@@ -1080,8 +1080,8 @@ window.REQUIREMENTS = [
   "acceptance": "Every change to a classification or reportsTo edge appears in the shared changelog, enforced by the CI check.",
   "raw": "Keeping version history so we can see why a classification changed and what evidence drove the change.",
   "converged": null,
-  "spec_doc": null,
-  "spec_section": null,
+  "spec_doc": "docs/wip/changelog-data.js",
+  "spec_section": "Production Changelog",
   "wip_item": null,
   "next_action": "",
   "decision": {
@@ -1107,8 +1107,8 @@ window.REQUIREMENTS = [
   "acceptance": "GiGi can explore all of PCF 7.0 in the sandbox and leave notes on any row.",
   "raw": "No verbatim quote available — GiGi asked, in conversation, whether a sandbox environment could be built for PCF 7.0 so she could explore the domain directly rather than working from static docs.",
   "converged": null,
-  "spec_doc": null,
-  "spec_section": null,
+  "spec_doc": "docs/sandbox/pcf7.html",
+  "spec_section": "Sandbox 7.0",
   "wip_item": null,
   "next_action": "",
   "decision": {

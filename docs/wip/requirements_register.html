@@ -82,6 +82,10 @@ tr.detail-row td { padding: 0 12px 16px; background: #FAFBFD; }
 tr.detail-row .detail-box { display: none; font-size: 12.5px; color: var(--gray); line-height: 1.6; background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
 tr.detail-row.open .detail-box { display: block; }
 .detail-box .dw { margin-bottom: 12px; }
+.design-links { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.dl-btn { display: inline-flex; flex-direction: column; font-size: 12.5px; font-weight: 700; color: #fff !important; background: var(--navy); border-radius: 6px; padding: 7px 12px; text-decoration: none !important; }
+.dl-btn span { font-size: 10.5px; font-weight: 400; color: #CFE0F5; font-family: 'Consolas', monospace; }
+.dl-btn:hover { background: var(--navy-d); }
 .detail-box .field { margin-bottom: 8px; }
 .detail-box .flabel { font-size: 10px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--lgray); margin-bottom: 2px; }
 .detail-box .fval { font-size: 12.5px; color: var(--dark); }
@@ -255,6 +259,13 @@ const KNOWN_LINKS = {
   "CHRO / HRBP Manager / Recruiter Pattern Transition Narratives": "chro_pattern_transition_stagefirst.html",
   "pcf7.html (sandbox data layer)": "../sandbox/pcf7.html",
   "Initial Thoughts on the Requirements Register": "gigi_requirements_register_initial_thoughts.html",
+  "Working_Relationship_Progression_Methodology.docx": "working_relationship_progression_methodology.pdf",
+  "Content Promotion Policy — Sandbox / WIP / Production": "content_promotion_policy.html",
+  "docs/wip/work_product_role_container_spec.html": "work_product_role_container_spec.html",
+  "docs/wip/content_promotion_policy.html": "content_promotion_policy.html",
+  "docs/wip/changelog-data.js": "production_changelog.html",
+  "docs/wip/requirements_register.html": "requirements_register.html",
+  "docs/sandbox/pcf7.html": "../sandbox/pcf7.html",
   "Website Framework Review": "gigi_website_framework_review.html",
   "Maturity Reflections UPDATED": "gigi_reflections_updated.html",
   "HITL Working Thoughts & Next Steps": "gigi_working_thoughts_next_steps.html"
@@ -312,8 +323,34 @@ const docLink = r => {
   return null;
 };
 function field(label, value) { return value ? '<div class="field"><div class="flabel">' + esc(label) + '</div><div class="fval">' + value + '</div></div>' : ''; }
+// Every design document a requirement names that is on the site, in order.
+function designLinks(r) {
+  const out = [];
+  [r.spec_doc, r.wip_item].forEach(t => {
+    if (!t) return;
+    let cursor = 0;
+    while (cursor < t.length) {
+      let m = null;
+      for (const k of KNOWN_KEYS) if (t.startsWith(k, cursor)) { m = k; break; }
+      if (m) { if (out.indexOf(KNOWN_LINKS[m]) === -1) out.push(KNOWN_LINKS[m]); cursor += m.length; } else cursor++;
+    }
+  });
+  if (r.decision && r.decision.spec && out.indexOf(r.decision.spec) === -1) out.unshift(r.decision.spec);
+  return out;
+}
+const LINK_LABEL = href => {
+  const f = href.replace(/^.*\//, "");
+  if (/\.pdf$/.test(f)) return "Open the design (PDF)";
+  if (f === "pcf7.html") return "Open the sandbox";
+  return "Open the design spec";
+};
+function designButtons(r) {
+  const links = designLinks(r);
+  if (!links.length) return "";
+  return '<div class="design-links">' + links.map(h => '<a class="dl-btn" href="' + esc(h) + '">' + LINK_LABEL(h) + ' &rarr;<span>' + esc(h.replace(/^.*\//, "")) + '</span></a>').join("") + '</div>';
+}
 function detailHtml(r) {
-  return (r.decision ? DecisionWidget.html(r) : '') +
+  return designButtons(r) + (r.decision ? DecisionWidget.html(r) : '') +
     field("Requirement", esc(r.distilled)) +
     field("Acceptance criteria", esc(r.acceptance)) +
     field("Next action", esc(r.next_action)) +
@@ -349,10 +386,10 @@ function render() {
       if (!list.length) return "";
       return '<div class="group"><h2>' + g[1] + ' (' + list.length + ')</h2><p class="gsub">' + g[2] + '</p><div class="qcards">' +
         list.map(r => {
-          const link = r.decision.spec || docLink(r);
+          const link = designLinks(r)[0];
           return '<div class="qcard"><div class="qtitle"><a href="#' + r.id + '" data-open="' + r.id + '">' + esc(r.id) + ' &middot; ' + esc(r.title) + '</a></div>' +
             DecisionWidget.html(r) +
-            '<div class="qlinks"><a href="#' + r.id + '" data-open="' + r.id + '">Details</a>' + (link ? '<a href="' + esc(link) + '">Design</a>' : '') + '</div></div>';
+            '<div class="qlinks"><a href="#' + r.id + '" data-open="' + r.id + '">Details</a>' + (link ? '<a href="' + esc(link) + '">' + LINK_LABEL(link) + ' &rarr;</a>' : '') + '</div></div>';
         }).join("") + '</div></div>';
     }).join("");
     DecisionWidget.wire(view, render);
