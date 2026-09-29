@@ -36,7 +36,8 @@
     'rule-catalog': 'framework_content_generation_rules.html',
     'content-promotion-policy': 'content_promotion_policy.html',
     'work-product-spec': 'work_product_role_container_spec.html',
-    'reference-model-spec': 'reference_model_assessment_layer_spec.html'
+    'reference-model-spec': 'reference_model_assessment_layer_spec.html',
+    'wr-progression-methodology': 'wr_progression_methodology_spec.html'
   };
   var state = { loaded: null, reviewer: null, decisions: {}, votes: {} };
 

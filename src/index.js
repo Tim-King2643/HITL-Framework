@@ -31,14 +31,14 @@ const VOTABLE_ITEMS = {
   'shock-wave': '2026-09-15',
   'concept-to-principle': '2026-09-15',
   'rule-catalog': '2026-09-08',
-  'wrpm': '2026-09-15',
+  'wrpm': '2026-09-29',
   'wr-display-migration': '2026-09-22',
-  'wr-progression-methodology': '2026-09-21',
+  'wr-progression-methodology': '2026-09-29',
   'wr-palette': '2026-09-21',
-  'content-promotion-policy': '2026-09-23',
-  'work-product-spec': '2026-09-25',
+  'content-promotion-policy': '2026-09-29',
+  'work-product-spec': '2026-09-29',
   'work-product-catalog': '2026-09-25',
-  'reference-model-spec': '2026-09-26'
+  'reference-model-spec': '2026-09-28'
 };
 
 // Friendly titles for notification emails — falls back to the raw itemId if
