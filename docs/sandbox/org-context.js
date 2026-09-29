@@ -9,9 +9,10 @@
 // reference ceiling. Its values change only through the assessment panel
 // (assess-panel.js), opened from an activity in the Working Relationship view.
 //
-// The selected organization is remembered per viewer (URL ?org= first, then
-// this browser's localStorage) purely as a convenience; nothing about an
-// organization is stored in the browser.
+// Launching the sandbox always opens the Reference Model (Tim, Sept 29).
+// An organization opens only when the URL names it (?org=), which the
+// selector keeps in step so a reload or a shared link stays on it. Nothing
+// about the selection or an organization is stored in the browser.
 //
 // Usage:
 //   OrgContext.mountSelector(el, { includeReference, onChange })
@@ -34,15 +35,14 @@
 
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
-  function readStored() { try { return localStorage.getItem(STORE_KEY); } catch (e) { return null; } }
-  function writeStored(v) { try { localStorage.setItem(STORE_KEY, v); } catch (e) { /* private window: fine */ } }
+  // Clear the old remembered choice left by earlier versions of this file.
+  try { localStorage.removeItem(STORE_KEY); } catch (e) { /* private window: fine */ }
 
   function selectedId() {
     var p = new URLSearchParams(location.search).get('org');
-    return p || readStored() || REFERENCE.id;
+    return p || REFERENCE.id;
   }
   function setSelected(id) {
-    writeStored(id);
     var u = new URL(location.href);
     if (id === REFERENCE.id) u.searchParams.delete('org'); else u.searchParams.set('org', id);
     history.replaceState(null, '', u.toString());

@@ -97,7 +97,12 @@
     function close() { back.remove(); document.removeEventListener('keydown', onKey); }
     function onKey(e) { if (e.key === 'Escape') close(); }
     document.addEventListener('keydown', onKey);
-    back.addEventListener('click', function (e) { if (e.target === back) close(); });
+    // Close only on a genuine click on the dimmed background: the press and
+    // the release both on it. A browser autofill pick ("Saved info") or a
+    // text drag that ends outside the panel must not close it.
+    var downOnBack = false;
+    back.addEventListener('mousedown', function (e) { downOnBack = (e.target === back); });
+    back.addEventListener('click', function (e) { if (e.target === back && downOnBack) close(); downOnBack = false; });
 
     function chip(c) {
       if (!c) return '<span class="chip chip-none">Not assessed</span>';
@@ -148,8 +153,8 @@
       }
       if (!o.canEdit) return h + '</div>';
       if (ov && ovReviewOpen) {
-        return h + '<label for="ov-confirmed">Confirmed by (after the process owner&rsquo;s audit)</label><input type="text" id="ov-confirmed" value="' + esc(ov.approverName || '') + '">' +
-          '<label for="ov-rnote">Note (optional)</label><input type="text" id="ov-rnote">' +
+        return h + '<label for="ov-confirmed">Confirmed by (after the process owner&rsquo;s audit)</label><input type="text" autocomplete="off" id="ov-confirmed" value="' + esc(ov.approverName || '') + '">' +
+          '<label for="ov-rnote">Note (optional)</label><input type="text" autocomplete="off" id="ov-rnote">' +
           '<div class="actions"><button type="button" class="primary" id="ov-rsave">Save review</button><button type="button" id="ov-rcancel">Cancel</button><span class="msg" id="ov-msg"></span></div></div>';
       }
       if (!ovFormOpen) {
@@ -163,11 +168,11 @@
           above.map(function (s) { return '<option' + (ov && ov.level === s ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select>' +
         '<label for="ov-factor">Which ceiling factor no longer holds here?</label><select id="ov-factor"><option value="">Choose&hellip;</option>' +
           keys.map(function (k) { return '<option value="' + k + '"' + (ov && ov.factor === k ? ' selected' : '') + '>' + esc(o.cfLabels[k] || k) + '</option>'; }).join('') + '</select>' +
-        '<label for="ov-evidence">Evidence that it no longer holds</label><textarea id="ov-evidence">' + esc(ov && ov.evidence || '') + '</textarea>' +
+        '<label for="ov-evidence">Evidence that it no longer holds</label><textarea autocomplete="off" id="ov-evidence">' + esc(ov && ov.evidence || '') + '</textarea>' +
         '<label for="ov-role">Approved by (Accountable role)</label>' +
           (o.A.length ? '<select id="ov-role">' + o.A.map(function (a) { return '<option' + (ov && ov.approverRole === a ? ' selected' : '') + '>' + esc(a) + '</option>'; }).join('') + '</select>'
-                      : '<input type="text" id="ov-role" value="' + esc(ov && ov.approverRole || '') + '">') +
-        '<label for="ov-name">Approver&rsquo;s name</label><input type="text" id="ov-name" value="' + esc(ov && ov.approverName || '') + '">' +
+                      : '<input type="text" autocomplete="off" id="ov-role" value="' + esc(ov && ov.approverRole || '') + '">') +
+        '<label for="ov-name">Approver&rsquo;s name</label><input type="text" autocomplete="off" id="ov-name" value="' + esc(ov && ov.approverName || '') + '">' +
         '<div class="actions"><button type="button" class="primary" id="ov-save">Save override</button><button type="button" id="ov-cancel">Cancel</button><span class="msg" id="ov-msg"></span></div>';
       return h + '</div>';
     }
@@ -246,13 +251,13 @@
         html += '<div class="proposal">Proposed: ' + chip(p) + '<div style="margin-top:4px">' + esc(o.defs[p] || '') + '</div></div>' +
           '<label for="ap-current">Working relationship</label><select id="ap-current"' + dis + '>' +
           STEPS.map(function (s) { return '<option' + (s === chosen ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select>' +
-          '<div id="ap-reason-wrap" style="display:none"><label for="ap-reason">Reason for changing the proposal</label><textarea id="ap-reason"' + dis + '>' + esc(rec && rec.overrideReason || '') + '</textarea></div>' +
+          '<div id="ap-reason-wrap" style="display:none"><label for="ap-reason">Reason for changing the proposal</label><textarea autocomplete="off" id="ap-reason"' + dis + '>' + esc(rec && rec.overrideReason || '') + '</textarea></div>' +
           '<label for="ap-evidence">Evidence</label><select id="ap-evidence"' + dis + '><option value="">Choose&hellip;</option>' +
           EVIDENCE.map(function (e) { return '<option value="' + e[0] + '"' + (rec && rec.evidenceType === e[0] ? ' selected' : '') + '>' + e[1] + '</option>'; }).join('') + '</select>' +
-          '<label for="ap-source">Source (who or what it came from)</label><input type="text" id="ap-source" value="' + esc(rec && rec.source || '') + '"' + dis + '>' +
+          '<label for="ap-source">Source (who or what it came from)</label><input type="text" autocomplete="off" id="ap-source" value="' + esc(rec && rec.source || '') + '"' + dis + '>' +
           '<label>Confidence</label><div class="radios">' +
           ['high', 'medium', 'low'].map(function (c) { return '<label><input type="radio" name="ap-conf" value="' + c + '"' + (rec && rec.confidence === c ? ' checked' : '') + dis + '> ' + c.charAt(0).toUpperCase() + c.slice(1) + '</label>'; }).join('') + '</div>' +
-          '<label for="ap-note">Note</label><textarea id="ap-note"' + dis + '>' + esc(rec && rec.note || '') + '</textarea>' +
+          '<label for="ap-note">Note</label><textarea autocomplete="off" id="ap-note"' + dis + '>' + esc(rec && rec.note || '') + '</textarea>' +
           '<div id="ap-beyond"></div>' +
           '<div class="actions">' + (o.canEdit ? '<button type="button" class="primary" id="ap-save">Save assessment</button>' : '<span class="msg">Sign in as Tim or GiGi to save.</span>') +
           (o.canEdit && rec && rec.current ? '<button type="button" id="ap-reset">Reset to baseline</button>' : '') +
