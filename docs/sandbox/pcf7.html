@@ -592,7 +592,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
 
 <script src="sandbox-notes-widget.js"></script>
 <script src="org-context.js?v=20260929b"></script>
-<script src="assess-panel.js?v=20260929c"></script>
+<script src="assess-panel.js?v=20260929d"></script>
 <script src="../wip/changelog-data.js"></script>
 <script>
 /* ── Real PCF 7.0 data, extracted from the live dashboard ────────────── */
@@ -2624,10 +2624,10 @@ function openAssess(code) {
     process: ctx ? ctx.l3.code + ' ' + ctx.l3.name : '',
     A: ctx && ctx.l3.raci ? parseRaciField(ctx.l3.raci.A) : [],
     R: ctx && ctx.l3.raci ? parseRaciField(ctx.l3.raci.R) : [],
-    ref: { ceiling: w.ceiling, cons: w.cons, ceilingFactors: w.ceilingFactors, ceilingNote: w.ceilingNote },
+    ref: { ceiling: w.ceiling, cons: w.cons, consFactors: w.consFactors, consNote: w.consNote, ceilingFactors: w.ceilingFactors, ceilingNote: w.ceilingNote },
     record: ORG_RECORDS[code] || null,
     override: ORG_OVERRIDES[code] || null,
-    defs: STEP_DEFINITIONS, cats: WR_CATS, cfLabels: cfLabels, consColor: CONS_COLOR,
+    defs: STEP_DEFINITIONS, cats: WR_CATS, cfLabels: cfLabels, consLabels: CONS_FACTORS, consColor: CONS_COLOR,
     canEdit: !!OrgContext.reviewer(),
     onSaved: function (rec) {
       ORG_RECORDS[code] = rec;

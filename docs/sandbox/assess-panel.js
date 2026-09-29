@@ -19,8 +19,8 @@
 //
 // AssessPanel.open({
 //   org, code, name, process, A, R,        // activity and its roles
-//   ref: { ceiling, cons, ceilingFactors, ceilingNote },
-//   record, override, defs, cats, cfLabels, consColor, canEdit,
+//   ref: { ceiling, cons, consFactors, consNote, ceilingFactors, ceilingNote },
+//   record, override, defs, cats, cfLabels, consLabels, consColor, canEdit,
 //   onSaved(record),                        // after a save or a reset
 //   onOverrideSaved(override)               // after an override is saved or removed
 // })
@@ -54,6 +54,15 @@
       '.ap dt{color:#6B7A90;font-weight:600;}' +
       '.ap dd{margin:0;}' +
       '.ap dd ul{margin:2px 0 0 16px;}' +
+      '.ap .cons-btn{font:inherit;font-size:12.5px;background:none;border:none;padding:0;cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;}' +
+      '.ap .cons-caret{font-size:10px;color:#6B7A90;}' +
+      '.ap .cons-detail{margin-top:6px;padding:8px 10px;background:#F8FAFD;border:1px solid #DDE3EE;border-radius:6px;}' +
+      '.ap ul.cf-list{list-style:none;margin:0 0 6px;padding:0;}' +
+      '.ap .cf-list li{display:flex;align-items:center;gap:7px;font-size:12px;line-height:1.7;}' +
+      '.ap .cf-list li.cf-off{color:#8A96A8;}' +
+      '.ap .cf-box{flex:0 0 auto;width:13px;height:13px;border-radius:3px;border:1.3px solid #C6CDD9;display:inline-flex;align-items:center;justify-content:center;font-size:9px;color:#fff;}' +
+      '.ap .cf-on .cf-box{background:#1B4F8A;border-color:#1B4F8A;}' +
+      '.ap .cons-note{font-size:12px;color:#555;border-top:1px solid #DDE3EE;padding-top:6px;}' +
       '.ap .sec{border-top:1px solid #DDE3EE;padding-top:14px;margin-top:14px;}' +
       '.ap h4{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#1B4F8A;margin:0 0 8px;}' +
       '.ap .q{background:#F8FAFD;border:1px solid #DDE3EE;border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:13px;line-height:1.5;}' +
@@ -93,7 +102,7 @@
     var el = back.firstChild;
     var rec = o.record;
     var ov = o.override && o.override.level ? o.override : null;
-    var ovFormOpen = false, ovReviewOpen = false;
+    var ovFormOpen = false, ovReviewOpen = false, consOpen = false;
     var answers = (rec && rec.current && rec.answers && rec.answers.length) ? rec.answers.slice() : [null, null, null, null, null];
     function close() { back.remove(); document.removeEventListener('keydown', onKey); }
     function onKey(e) { if (e.key === 'Escape') close(); }
@@ -222,6 +231,24 @@
       };
     }
 
+    // Consequence of Error: click the rating to see which of the six factors
+    // put it there, with the rating note — the same checklist the activity
+    // card's rating opens.
+    function consHtml(w) {
+      if (!w.cons) return '&mdash;';
+      var labels = o.consLabels || [];
+      var style = 'color:' + (o.consColor[w.cons] || '#333') + ';font-weight:600';
+      if (!labels.length || !((w.consFactors && w.consFactors.length) || w.consNote)) return '<span style="' + style + '">' + esc(w.cons) + '</span>';
+      var on = w.consFactors || [];
+      var items = labels.map(function (f) {
+        var hit = on.indexOf(f.key) !== -1;
+        return '<li class="' + (hit ? 'cf-on' : 'cf-off') + '"><span class="cf-box">' + (hit ? '&#10003;' : '') + '</span>' + esc(f.label) + '</li>';
+      }).join('');
+      return '<button type="button" id="ap-cons" class="cons-btn" aria-expanded="' + consOpen + '" style="' + style + '">' + esc(w.cons) +
+        ' <span class="cons-caret">' + (consOpen ? '&#9652;' : '&#9662;') + '</span></button>' +
+        (consOpen ? '<div class="cons-detail"><ul class="cf-list">' + items + '</ul>' + (w.consNote ? '<div class="cons-note">' + esc(w.consNote) + '</div>' : '') + '</div>' : '');
+    }
+
     function draw() {
       var w = o.ref, st = walk();
       var factors = (w.ceilingFactors || []).map(function (k) { return '<li>' + esc(o.cfLabels[k] || k) + '</li>'; }).join('');
@@ -231,7 +258,7 @@
         '<dl>' +
         '<dt>Accountable</dt><dd>' + (esc(o.A.join(', ')) || '&mdash;') + '</dd>' +
         '<dt>Responsible</dt><dd>' + (esc(o.R.join(', ')) || '&mdash;') + '</dd>' +
-        '<dt>Consequence of Error</dt><dd>' + (w.cons ? '<span style="color:' + (o.consColor[w.cons] || '#333') + ';font-weight:600">' + esc(w.cons) + '</span>' : '&mdash;') + '</dd>' +
+        '<dt>Consequence of Error</dt><dd>' + consHtml(w) + '</dd>' +
         '<dt>Progression Ceiling</dt><dd>' + chip(w.ceiling) + (factors ? '<ul>' + factors + '</ul>' : '') + (w.ceilingNote ? '<div style="color:#555;margin-top:4px">' + esc(w.ceilingNote) + '</div>' : '') +
           (ov ? '<div class="ovr"><strong>Overridden to ' + esc(ov.level) + '</strong> for ' + esc(o.org.name) + ' &mdash; last reviewed ' + ago(ov.lastReviewedAt || ov.approvedAt) + (refChanged(ov) ? ' &middot; <strong style="color:#991B1B">re-review needed</strong>' : '') + '</div>' : '') + '</dd>' +
         '<dt>Current State</dt><dd>' + chip(rec && rec.current) + (rec && rec.current ? ' <span style="color:#6B7A90">by ' + esc(rec.assessedBy) + ', ' + new Date(rec.assessedAt).toLocaleDateString() + '</span>' : ' <span style="color:#6B7A90">reads as the Human-only baseline</span>') + '</dd>' +
@@ -270,6 +297,8 @@
       wireOverride();
 
       el.querySelector('.ap-close').onclick = close;
+      var consBtn = el.querySelector('#ap-cons');
+      if (consBtn) consBtn.onclick = function () { consOpen = !consOpen; draw(); };
       Array.prototype.forEach.call(el.querySelectorAll('button[data-q]'), function (b) {
         b.onclick = function () {
           var qi = +b.getAttribute('data-q');
