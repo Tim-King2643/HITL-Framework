@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Register Grouping by Framework Layer — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 800px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.approval-box { background: var(--amber-bg); border: 1px solid #F0C67A; border-left: 5px solid var(--amber); border-radius: 8px; padding: 18px 22px; margin-bottom: 28px; }
+.approval-box .ab-head { font-size: 14px; font-weight: 700; color: var(--amber-text); margin-bottom: 6px; }
+.approval-box p { font-size: 13px; color: #5A4315; line-height: 1.65; margin: 0; }
+
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 28px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 19px; margin: 36px 0 10px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 15px; margin: 20px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 14px; }
+p.lede { font-size: 15.5px; color: var(--dark); }
+ul.plain { margin: 0 0 16px 20px; }
+ul.plain li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.feature-box { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 8px 0 20px; }
+.feature-box h3 { margin-top: 0; }
+
+/* Sizing/alignment matched to the "Working Relationship" gates track in
+   docs/sandbox/pcf7.html (.gate-node/.gate-circle/.gate-label/.gate-arrow)
+   so this legend reads as the same visual system, not a bigger lookalike. */
+.ramp-row { display: flex; flex-wrap: wrap; gap: 0; margin: 12px 0 6px; align-items: flex-start; }
+.ramp-step { display: flex; flex-direction: column; align-items: center; min-width: 84px; flex: 0 0 auto; text-align: center; }
+.ramp-step .rs-dot { width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; }
+.ramp-step .rs-name { font-size: 11px; font-weight: 500; color: #000; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
+.ramp-arrow { width: 22px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; color: var(--lgray); font-size: 16px; font-weight: 700; }
+
+.proof-grid { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 20px; }
+.proof-card { flex: 1; min-width: 200px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.proof-card .pc-role { font-weight: 700; color: var(--navy-d); font-size: 13.5px; margin-bottom: 4px; }
+.proof-card .pc-tier { font-size: 10.5px; color: var(--lgray); text-transform: uppercase; letter-spacing: .03em; margin-bottom: 8px; }
+.proof-card p { font-size: 12.5px; margin: 0; }
+
+.open-item { border-left: 3px solid var(--lgray); padding: 4px 0 4px 14px; margin-bottom: 12px; }
+.open-item .oi-name { font-weight: 700; color: var(--dark); font-size: 13.5px; }
+.open-item p { font-size: 13px; margin: 3px 0 0; }
+
+.source-note { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 4px; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 22px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 12px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.5; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.k { font-weight: 700; color: var(--navy-d); }
+td.num { text-align: right; white-space: nowrap; }
+ol.plan { margin: 0 0 16px 22px; }
+ol.plan li { font-size: 14px; color: var(--gray); line-height: 1.65; margin-bottom: 7px; }
+ol.plan li strong { color: var(--dark); }
+.tag { font-family: 'Consolas', monospace; font-size: 10.5px; color: var(--navy); background: var(--navy-l); border: 1px solid #C6D8EE; border-radius: 3px; padding: 0 5px; margin-left: 4px; white-space: nowrap; }
+
+.ramp6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 14px 0 4px; }
+.ramp6 > * { min-width: 0; overflow-wrap: anywhere; }
+.ramp6 .cell { color: #fff; font-size: 11px; font-weight: 600; text-align: center; padding: 8px 2px; border-radius: 4px; }
+.ramp6 .zone { font-size: 11px; text-align: center; padding: 6px 4px; border-radius: 4px; line-height: 1.35; }
+.z-base { background: #EDEFF3; color: #333; }
+.z-space { background: var(--navy-l); color: var(--navy-d); border: 1px solid #C6D8EE; }
+.z-beyond { background: repeating-linear-gradient(45deg,#F6F7F9,#F6F7F9 6px,#ECEEF2 6px,#ECEEF2 12px); color: #666; }
+.ramp-cap { font-size: 12px; color: var(--lgray); font-style: italic; margin: 6px 0 20px; }
+.quote { border-left: 3px solid var(--amber); padding: 6px 0 6px 14px; margin: 0 0 18px; font-family: 'Georgia', serif; font-style: italic; color: var(--dark); font-size: 15px; line-height: 1.6; }
+@media (max-width: 600px) { .ramp6 .cell, .ramp6 .zone { font-size: 9.5px; padding: 6px 1px; } .wrap table { display: block; overflow-x: auto; } }
+
+.brief { background: #fff; border: 1px solid var(--border); border-top: 4px solid var(--navy); border-radius: 8px; padding: 20px 24px 18px; margin-bottom: 30px; }
+.brief .b-label { font-family: 'Consolas', monospace; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--lgray); margin: 14px 0 6px; }
+.brief .b-label:first-child { margin-top: 0; }
+.brief p { font-size: 14.5px; color: var(--dark); margin-bottom: 0; }
+.brief ul { margin: 0 0 0 18px; }
+.brief li { font-size: 14px; color: var(--gray); line-height: 1.6; margin-bottom: 4px; }
+.brief li b { color: var(--dark); }
+.brief .reqline { font-size: 12px; color: var(--lgray); margin-top: 14px; }
+.brief .reqline a { color: var(--navy); font-weight: 600; text-decoration: none; }
+details.fold { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0 18px; margin: 10px 0 20px; }
+details.fold summary { cursor: pointer; font-weight: 700; color: var(--navy); font-size: 14px; padding: 12px 0; }
+details.fold[open] { padding-bottom: 6px; }
+.small { font-size: 13px; }
+.grp td { background: var(--navy-l) !important; border-top: 2px solid #C6D8EE; }
+.gcount { font-family: 'Consolas', monospace; font-size: 11px; color: var(--navy); }
+.gdesc { font-size: 12px; color: var(--gray); font-weight: 400; }
+td.topic { font-size: 12px; color: var(--lgray); white-space: nowrap; }
+.bd { color: var(--amber); font-size: 11px; }
+td.k a { color: var(--navy-d); text-decoration: none; }
+</style>
+</head>
+<body>
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft &mdash; Not Yet Part of the Framework</strong>
+  &nbsp;&middot;&nbsp; Reviewing this before it&rsquo;s finalized. Nothing here is official yet.
+  &nbsp;&middot;&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">Back to WIP hub</a>
+</div>
+
+
+
+<div class="masthead">
+  <div class="eyebrow">DESIGN SPEC &nbsp;&middot;&nbsp; GR-057 &nbsp;&middot;&nbsp; TIM KING &amp; CLAUDE &nbsp;&middot;&nbsp; SEPTEMBER 2026</div>
+  <h1>Register Grouping by Framework Layer</h1>
+  <div class="subtitle">Five groups that file every requirement by where it sits in the framework, with the current category kept as a topic tag</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+<div class="brief">
+  <div class="b-label">What this is</div>
+  <p>A new first-level grouping for the requirements register: Administration, Reference Model, Organizational Assessment, Assessment Output, and Human Impact &amp; Readiness. It follows the framework&rsquo;s own layers &mdash; the reference, assessing an organization against it, what the organization gets back &mdash; and gives GiGi&rsquo;s side its own group, so the seam between the work side and the human-impact side shows in the register itself.</p>
+  <div class="b-label">Decided</div>
+  <ul>
+    <li><b>Sept 29:</b> group requirements by framework layer (Tim), with a fifth group for the human-impact side, GiGi&rsquo;s lead.</li>
+    <li><b>Sept 29:</b> the current category stays on every requirement as a second-level topic tag; nothing is lost.</li>
+    <li><b>Sept 29:</b> taken as a decision for both, since it files GiGi&rsquo;s requirements under a group that defines her lead.</li>
+  </ul>
+  <div class="b-label">Awaiting your decision</div>
+  <div data-decision-for="GR-057"></div>
+  <div class="b-label">If approved</div>
+  <p class="small">Each requirement gets a group field and the register a group filter, applied as mapped in section 2 with any moves recorded in the decision notes. The category stays as the topic tag. Seven placements are marked &#9670; as judgment calls (section 3).</p>
+  <div class="reqline">Designs <a href="requirements_register.html#GR-057">GR-057</a>. Related: <a href="requirements_register.html#GR-051">GR-051</a> make the register operational &middot; <a href="requirements_register.html#GR-056">GR-056</a> <a href="assessment_output_spec.html">assessment output</a>.</div>
+</div>
+
+  <h2>1. The groups</h2>
+  <table>
+    <tr><th style="width:28%">Group</th><th>What belongs here</th></tr>
+    <tr><td class="k">Administration</td><td>Running, publishing and communicating the framework: website, language and precision, documentation, promotion, the register, the sandbox environment.</td></tr>
+    <tr><td class="k">Reference Model</td><td>The work-side model: the six categories and their definitions, Progression Ceilings and Consequence of Error, RACI and reporting, the change log and master data, the methodology.</td></tr>
+    <tr><td class="k">Organizational Assessment</td><td>Assessing one organization against the reference: the assessment template, ceiling overrides, evidence rules.</td></tr>
+    <tr><td class="k">Assessment Output</td><td>What the organization gets back and the role hand-off to the human-impact side (GR-056), including the per-role executive views.</td></tr>
+    <tr><td class="k">Human Impact &amp; Readiness</td><td>GiGi&rsquo;s lead, from Human Impact onward: readiness, meaningful human control, judgment development, transition distance, the Human Impact Pathway.</td></tr>
+  </table>
+
+  <h2>2. The mapping</h2>
+  <p class="small">Administration 16 &middot; Reference Model 23 &middot; Organizational Assessment 3 &middot; Assessment Output 4 &middot; Human Impact &amp; Readiness 11. Current category shown as the topic tag. &#9670; marks a judgment call.</p>
+  <table>
+    <tr><th style="width:12%">ID</th><th>Requirement</th><th style="width:18%">Topic (current category)</th><th style="width:12%">Owner</th></tr>
+    <tr class="grp"><td colspan="4"><strong>Administration</strong> &nbsp;<span class="gcount">16</span><br><span class="gdesc">How the framework is run, published and communicated.</span></td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-002">GR-002</a></td><td>Pull key findings into callouts</td><td class="topic">Website/UX</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-003">GR-003</a></td><td>Visual identity for the five work patterns</td><td class="topic">Website/UX</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-004">GR-004</a></td><td>Modernize typography and spacing</td><td class="topic">Website/UX</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-005">GR-005</a></td><td>Give the tagline more prominence</td><td class="topic">Website/UX</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-006">GR-006</a></td><td>Problem-first navigation entry points</td><td class="topic">Website/UX</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-007">GR-007</a> <span class="bd">&#9670;</span></td><td>One-glance framework sequence diagram</td><td class="topic">Core Principle</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-008">GR-008</a></td><td>Label the human-involvement gap as modeled</td><td class="topic">Language/Precision</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-009">GR-009</a></td><td>&quot;Designed,&quot; not &quot;optimal,&quot; balance</td><td class="topic">Language/Precision</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-010">GR-010</a></td><td>No absolute claims about safety or control</td><td class="topic">Language/Precision</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-011">GR-011</a></td><td>Reframe 90/10 as origin story</td><td class="topic">Language/Precision</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-014">GR-014</a></td><td>Define the unit of H%</td><td class="topic">Language/Precision</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-044">GR-044</a></td><td>Live sandbox for PCF 7.0</td><td class="topic">Sandbox Environment</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-045">GR-045</a></td><td>Content promotion pipeline</td><td class="topic">Process/Governance</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-048">GR-048</a></td><td>Rewrite the 7.0 documentation</td><td class="topic">Documentation</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-051">GR-051</a></td><td>Make the register operational</td><td class="topic">Process/Governance</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-057">GR-057</a></td><td>Group the register by framework layer</td><td class="topic">Process/Governance</td><td class="topic">Tim + GiGi</td></tr>
+    <tr class="grp"><td colspan="4"><strong>Reference Model</strong> &nbsp;<span class="gcount">23</span><br><span class="gdesc">The work-side model every organization is compared against.</span></td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-015">GR-015</a></td><td>L4 exceptions to L3 RACI inheritance</td><td class="topic">Data Model</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-016">GR-016</a></td><td>Why human involvement remains</td><td class="topic">Data Model</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-017">GR-017</a></td><td>Consequence of Error axis</td><td class="topic">Data Model</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-021">GR-021</a></td><td>Human Accountability Anchor</td><td class="topic">Data Model</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-023">GR-023</a></td><td>Six separate working-relationship categories</td><td class="topic">Data Model</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-025">GR-025</a></td><td>Add &quot;Prepare for it&quot; to the core sequence</td><td class="topic">Core Principle</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-028">GR-028</a></td><td>Human Judgment Floor</td><td class="topic">Data Model</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-031">GR-031</a></td><td>&quot;No R/A touches&quot; is a visibility limit</td><td class="topic">People/Org Taxonomy</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-034">GR-034</a></td><td>Agree the framework&#x27;s core intent</td><td class="topic">Core Principle</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-035">GR-035</a></td><td>Validate reportsTo edges in practice</td><td class="topic">People/Org Taxonomy</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-036">GR-036</a></td><td>Lock the six category definitions</td><td class="topic">Data Model</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-038">GR-038</a></td><td>Keep the five patterns as backend data</td><td class="topic">Data Model</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-039">GR-039</a></td><td>Override an L4 inherited RACI</td><td class="topic">People/Org Taxonomy</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-040">GR-040</a></td><td>Apply reportsTo corrections from evidence</td><td class="topic">People/Org Taxonomy</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-041">GR-041</a></td><td>Freeze a ceiling below Automation</td><td class="topic">Readiness Gate</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-042">GR-042</a></td><td>Governed Decision Point field set</td><td class="topic">Data Model</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-043">GR-043</a></td><td>Change log of classification changes</td><td class="topic">Data Model</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-046">GR-046</a> <span class="bd">&#9670;</span></td><td>Work product in the role container</td><td class="topic">People/Org Taxonomy</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-047">GR-047</a></td><td>Working relationship as the core classification</td><td class="topic">Core Principle</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-049">GR-049</a></td><td>Retire Future State</td><td class="topic">Data Model</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-050">GR-050</a></td><td>Master Data Catalog and maintenance</td><td class="topic">Data Model</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-052">GR-052</a> <span class="bd">&#9670;</span></td><td>Reference model with an assessment layer</td><td class="topic">Core Principle</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-055">GR-055</a></td><td>Approve the Working-Relationship Progression methodology</td><td class="topic">Core Principle</td><td class="topic">Tim + GiGi</td></tr>
+    <tr class="grp"><td colspan="4"><strong>Organizational Assessment</strong> &nbsp;<span class="gcount">3</span><br><span class="gdesc">Assessing one organization against the reference.</span></td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-037">GR-037</a> <span class="bd">&#9670;</span></td><td>Evidence required before progressing</td><td class="topic">Readiness Gate</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-053">GR-053</a></td><td>Interactive activity assessment template</td><td class="topic">Readiness Gate</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-054">GR-054</a></td><td>Overriding the Progression Ceiling</td><td class="topic">Core Principle</td><td class="topic">Tim + GiGi</td></tr>
+    <tr class="grp"><td colspan="4"><strong>Assessment Output</strong> &nbsp;<span class="gcount">4</span><br><span class="gdesc">What the organization gets back, and the hand-off to the human-impact side.</span></td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-024">GR-024</a> <span class="bd">&#9670;</span></td><td>Executive per-role view</td><td class="topic">Executive View</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-027">GR-027</a></td><td>Per-role narrative of remaining human work</td><td class="topic">Executive View</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-030">GR-030</a> <span class="bd">&#9670;</span></td><td>Accountability Concentration</td><td class="topic">Executive View</td><td class="topic">Tim</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-056">GR-056</a></td><td>Organization assessment output (work side) and hand-off to the human-impact side</td><td class="topic">Executive View</td><td class="topic">Tim + GiGi</td></tr>
+    <tr class="grp"><td colspan="4"><strong>Human Impact &amp; Readiness</strong> &nbsp;<span class="gcount">11</span><br><span class="gdesc">GiGi&rsquo;s lead: from Human Impact onward.</span></td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-001">GR-001</a></td><td>Organizational readiness beside each ceiling</td><td class="topic">Readiness Gate</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-012">GR-012</a></td><td>Human Operating Readiness instrument</td><td class="topic">Readiness Gate</td><td class="topic">GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-013">GR-013</a></td><td>Human presence vs. meaningful control</td><td class="topic">Readiness Gate</td><td class="topic">GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-018">GR-018</a> <span class="bd">&#9670;</span></td><td>Judgment Density</td><td class="topic">Data Model</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-019">GR-019</a></td><td>How judgment develops after AI takes entry work</td><td class="topic">People/Org Taxonomy</td><td class="topic">GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-020">GR-020</a></td><td>Model role evolution</td><td class="topic">People/Org Taxonomy</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-022">GR-022</a></td><td>Pre-transition workforce validation</td><td class="topic">Readiness Gate</td><td class="topic">GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-026">GR-026</a></td><td>Measure human consequence, not just presence</td><td class="topic">Core Principle</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-029">GR-029</a></td><td>Exception Escalation Effect</td><td class="topic">Data Model</td><td class="topic">Tim + GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-032">GR-032</a></td><td>Broaden Transition Distance</td><td class="topic">Data Model</td><td class="topic">GiGi</td></tr>
+    <tr><td class="k"><a href="requirements_register.html#GR-033">GR-033</a></td><td>Seven-stage Human Impact Pathway</td><td class="topic">Data Model</td><td class="topic">Tim + GiGi</td></tr>
+  </table>
+
+  <h2>3. The judgment calls</h2>
+  <table>
+    <tr><th style="width:10%">ID</th><th style="width:26%">Requirement</th><th style="width:18%">Placed in</th><th>Why, and the alternative</th></tr>
+    <tr><td class="k">GR-007</td><td>One-glance framework sequence diagram</td><td>Administration</td><td>Explains the framework rather than defining it, so Administration rather than Reference Model.</td></tr>
+    <tr><td class="k">GR-046</td><td>Work product in the role container</td><td>Reference Model</td><td>Reference data today; feeds the role hand-off (GR-056) later.</td></tr>
+    <tr><td class="k">GR-052</td><td>Reference model with an assessment layer</td><td>Reference Model</td><td>Both the reference model and the assessment layer; the assessment pieces have their own requirements (GR-053, GR-054).</td></tr>
+    <tr><td class="k">GR-037</td><td>Evidence required before progressing</td><td>Organizational Assessment</td><td>Could sit with Human Impact &amp; Readiness, since the readiness gate&rsquo;s organizational axis is GiGi&rsquo;s; kept here because the evidence rules apply per activity.</td></tr>
+    <tr><td class="k">GR-024</td><td>Executive per-role view</td><td>Assessment Output</td><td>Combines process movement with human-consequence dimensions &mdash; both stories; the human-impact side supplies its human dimensions.</td></tr>
+    <tr><td class="k">GR-030</td><td>Accountability Concentration</td><td>Assessment Output</td><td>The work side supplies the evidence through the hand-off; filed by owner (Tim).</td></tr>
+    <tr><td class="k">GR-018</td><td>Judgment Density</td><td>Human Impact &amp; Readiness</td><td>The work side supplies evidence through the hand-off (&ldquo;judgment that stays&rdquo;); filed by origin (GiGi).</td></tr>
+  </table>
+
+  <h2>4. Open questions</h2>
+  <div class="open-item"><div class="oi-name">The Human Impact &amp; Readiness group &mdash; GiGi</div><p>Whether these eleven are the right set, and whether any of them belongs with the work side instead.</p></div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;&middot;&nbsp; Design Spec &mdash; For Review<br>
+    &copy; Timothy P. King 2026 &middot; developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a> &nbsp;&middot;&nbsp; <a href="requirements_register.html">Requirements Register</a>
+  </p>
+</footer>
+
+<script src="requirements-data.js"></script>
+<script src="decision-widget.js"></script>
+<script>document.querySelectorAll('[data-decision-for]').forEach(function (el) { DecisionWidget.mount(el, el.getAttribute('data-decision-for')); });</script>
+</body>
+</html>

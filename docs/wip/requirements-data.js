@@ -1471,5 +1471,34 @@ window.REQUIREMENTS = [
   "decisions": [],
   "log": "Sept 29, 2026 (Tim, after completing the 7.2.1 pressure test): asked what the organizational assessment output should include — report, graphs, readiness, dashboard, infographic. Scoped the same day: the work side produces the assessment output for the work, built to enable and feed GiGi's human-impact side; readiness is hers. Spec drafted (assessment_output_spec.html), using GiGi's Human Impact Pathway as the seam (the work side covers Work Change and Role Impact) and her executive view's Story 1 / Story 2 split. The Exceptions Report, built the same day, is the first output (logged under GR-053).",
   "legacy_status": null
+ },
+ {
+  "id": "GR-057",
+  "title": "Group the register by framework layer",
+  "progress": "Designed",
+  "category": "Process/Governance",
+  "priority": "Medium",
+  "owner": "Tim + GiGi",
+  "raised_by": "Tim King",
+  "source_doc": "Tim King — framework direction (Sept 2026)",
+  "source_section": "Working session, Sept 29, 2026",
+  "distilled": "Add a first-level grouping to the requirements register that files every requirement by where it sits in the framework — Administration, Reference Model, Organizational Assessment, Assessment Output, and Human Impact & Readiness (GiGi's lead) — keeping the current category as a second-level topic tag.",
+  "acceptance": "Tim and GiGi have approved the groups and the mapping; every requirement carries a group; the register filters by group and still shows each requirement's topic.",
+  "raw": "“Should we consider the similar groupings for the requirements register something like: Administration - Reference model - Organizational Assessment - Assessment Output?” (Tim, Sept 29, 2026)",
+  "converged": "GR-051, GR-056",
+  "spec_doc": "docs/wip/register_grouping_spec.html",
+  "spec_section": "Whole spec",
+  "wip_item": null,
+  "next_action": "Tim and GiGi decide the grouping; GiGi reviews the Human Impact & Readiness group and any judgment calls she would place differently.",
+  "decision": {
+   "id": "grouping",
+   "type": "question",
+   "question": "Approve grouping the register by framework layer, with the mapping as proposed.",
+   "spec": "register_grouping_spec.html",
+   "summary": "Each requirement gets one of five groups and the register a group filter; the current category stays as the topic tag. Any requirement either of you would place differently goes in your decision note and is applied with the rest."
+  },
+  "decisions": [],
+  "log": "Sept 29, 2026 (Tim): proposed grouping the register by framework layer — Administration, Reference Model, Organizational Assessment, Assessment Output. Claude added a fifth group for GiGi's human-impact side (11 requirements that fit none of the four) and suggested keeping the current category as a topic tag. Tim agreed to take it as a decision for both, since it files GiGi's requirements under a group that defines her lead. Spec with the full mapping and seven judgment calls: register_grouping_spec.html. This supersedes the same day's interim move of GR-052, GR-053, GR-054 and GR-056 into an 'Assessment Output' category, which was not published.",
+  "legacy_status": null
  }
 ];
