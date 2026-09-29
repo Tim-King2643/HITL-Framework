@@ -183,5 +183,19 @@ const CHANGE_LOG = [
     "source": "Tim, Sept 26, 2026: “I would initialize our current reference to the Human-only stage. The ceiling is our reference point for what needs to stay human by design.” GR-052; docs/wip/reference_model_assessment_layer_spec.html.",
     "reason": "A generic framework cannot know how any organization works today; the retired values were Claude's modeled judgments of typical practice. The reference now states only what is true of the work, and each organization's Current State comes from its assessment. The retired values are kept above, activity by activity.",
     "verified": "All 118 WR_DATA entries read Human-only; every Progression Ceiling, Consequence of Error and ceiling factor unchanged. Sandbox views render with no errors; selecting an organization overlays its assessed values and switching back restores the baseline."
+  },
+  {
+    "id": "CL-010",
+    "date": "2026-09-29",
+    "requestedBy": "Tim",
+    "kind": "wr-note",
+    "target": { "domain": "7.0", "activity": "7.2.1.1" },
+    "summary": "Wording only: 7.2.1.1's ceiling note now says \u201cWRPM section 3\u201d instead of \u201cWRPM \u00a73\u201d.",
+    "from": "superseding WRPM \u00a73's earlier open/undecided flag",
+    "to": "superseding WRPM section 3's earlier open/undecided flag",
+    "files": ["docs/sandbox/pcf7.html"],
+    "source": "Tim, Sept 29, 2026: write section references out as \u201csection\u201d rather than the \u00a7 sign, across the register, specs and sandbox.",
+    "reason": "Readability. The note sits on a working-relationship data line, so the changelog check requires an entry even for a wording change.",
+    "verified": "7.2.1.1's Progression Ceiling, Current State, Consequence of Error and ceiling factors are unchanged; only the note's wording differs. reference-wr.json is unaffected."
   }
 ];
