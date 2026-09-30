@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] My Review and Thoughts on GR-012 — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9FC2EE; margin-bottom: 10px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 8px; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.3; }
+.masthead .tagline2 { font-size: 14px; color: #9FC2EE; font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center; font-size: 12.5px; color: #7A5A1E;
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: #7A5A1E; font-weight: 600; }
+
+.wrap { max-width: 780px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.callout {
+  background: var(--amber-bg); border-left: 4px solid var(--amber); border-radius: 6px;
+  padding: 16px 20px; margin: 0 0 32px; font-size: 13.5px; color: #7A5A1E; font-style: italic; line-height: 1.6;
+}
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 40px 0 12px; }
+h3 { font-family: 'Segoe UI', sans-serif; font-weight: 600; color: var(--navy); font-size: 14.5px; margin: 26px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+ul { margin: 0 0 18px 22px; }
+li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.pull-quote {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 16px; line-height: 1.5;
+}
+.sequence {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 15px; line-height: 1.6;
+}
+
+.closing-quote {
+  background: var(--navy-d); color: #fff; border-radius: 8px; padding: 24px 28px; margin: 8px 0 8px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-size: 17px; line-height: 1.6;
+}
+.closing-line {
+  text-align: center; font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d);
+  font-size: 16px; line-height: 1.6; margin: 22px 0 6px;
+}
+
+.section-num {
+  display: inline-block; font-family: 'Consolas', monospace; font-size: 11px; color: var(--navy);
+  background: var(--navy-l); border-radius: 4px; padding: 2px 8px; margin-right: 8px; vertical-align: middle;
+}
+
+.pdf-download {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px;
+  padding: 8px 14px; text-decoration: none; margin: 0 0 28px;
+}
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+table.gt { width: 100%; border-collapse: collapse; margin: 10px 0 24px; font-size: 13px; }
+.gt th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 10px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+.gt td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.55; }
+.gt tr:nth-child(even) td { background: #FAFBFD; }
+.gt td.k { font-weight: 700; color: var(--navy-d); }
+.dim { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin: 0 0 14px; }
+.dim h3 { margin: 0 0 6px; }
+.dim p { margin-bottom: 8px; }
+.dim p:last-child { margin-bottom: 0; }
+.dim .lbl { font-weight: 600; color: var(--navy-d); }
+.qbox { background: var(--navy-l); border-radius: 6px; padding: 14px 20px; margin: 14px 0 20px; }
+.qbox p { margin: 0 0 8px; color: var(--navy-d); }
+.qbox ul { margin-bottom: 0; }
+.qbox li { color: var(--dark); }
+.find { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; border-radius: 4px; padding: 2px 8px; white-space: nowrap; }
+.f-green { background: #DCFCE7; color: #166534; border: 1px solid #86EFAC; }
+.f-yellow { background: #FEF9C3; color: #854D0E; border: 1px solid #FDE047; }
+.f-red { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+.f-gray { background: #F1F3F6; color: #475569; border: 1px solid #CBD5E1; }
+.cover-line { text-align: center; font-size: 13px; color: var(--lgray); font-style: italic; margin: -4px 0 26px; }
+</style>
+</head>
+
+<body>
+
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; External review notes from GiGi Garcia, for joint discussion with Tim. Nothing on this page is official yet.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">External Review · GiGi Garcia · GR-012 · September 2026</div>
+  <h1>My Review and Thoughts on GR-012</h1>
+  <div class="tagline2">Human Operating Readiness Instrument v0.1</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-download-mount data-item="gigi-gr012-review-thoughts"></div>
+
+<div class="wrap">
+
+  <div class="callout">
+    GiGi's working review of her own <a href="gigi_gr012_human_operating_readiness.html" style="color:#7A5A1E;font-weight:600;">Human Operating Readiness Instrument v0.1</a>, sent to Tim September 29, 2026 attached to her email &ldquo;Decisions &amp; GR-012 Review&rdquo;, transcribed here in the site's visual language so it can be read alongside the draft it reviews. The words and recommendations below are hers, not Tim's or Claude's — this page is a faithful transcription of her review, not a response to it. Her original is the PDF.
+  </div>
+
+  <p><strong>From her covering email.</strong> Her email summarizes the same five refinements and adds one detail to the Manager Readiness rename: it should also work for executive roles &ldquo;where the oversight relationship may be a governance body rather than a traditional manager.&rdquo; She also noted that she had made decisions on key items in the Requirements Register so work can keep moving.</p>
+
+  <div class="pull-quote">My overall reaction: keep the instrument. The direction is right. I would refine the boundaries and tighten the evidence logic before we treat v0.1 as settled.</div>
+
+  <h2><span class="section-num">1</span>Overall View</h2>
+  <p>I think GR-012 is aligned with what we have been trying to build. The framework already tells us where an activity is today, how far it may be allowed to progress, and what technical evidence supports that move. This instrument adds the part I do not want us to skip: whether the people and the organization can actually operate the new relationship once the design changes.</p>
+  <p>What I like most is that this does not turn into a generic AI-readiness survey. It is tied to a specific transition. That matters because the same organization can be ready for one type of AI-supported work and not ready for another.</p>
+  <p>I also think the instrument is strongest when it refuses to pretend that everything can be reduced to one score. A serious gap in authority, capability, workload, or governance should not disappear inside a strong average. The Ready / Conditional / Not Ready / Insufficient Evidence structure feels much more honest for this stage of the work.</p>
+
+  <h2><span class="section-num">2</span>What Feels Most Aligned</h2>
+  <p><strong>Specific transition, not broad AI readiness:</strong> The instrument asks whether people can operate a defined change in the Working Relationship rather than whether the company is generally &ldquo;ready for AI.&rdquo; That keeps the assessment useful.</p>
+  <p><strong>Evidence instead of sentiment:</strong> The questions focus on authority, skill, workload, governance, escalation, and evidence. That is much closer to an operating-readiness check than a culture or engagement survey.</p>
+  <p><strong>Human presence is not the same as human control:</strong> The instrument correctly challenges the idea that simply leaving a person in the loop is enough. If the person cannot see, challenge, override, pause, or escalate, the human role may be ceremonial.</p>
+  <p><strong>Insufficient Evidence is a legitimate outcome:</strong> I want the methodology to be comfortable saying &ldquo;we do not know yet.&rdquo; That is much stronger than turning a modeled assumption into a readiness finding.</p>
+  <p><strong>Each finding leaves a trail:</strong> I like that the assessment records evidence, gaps, controls, owners, timing, and version. That makes the result explainable and auditable rather than just a color on a dashboard.</p>
+
+  <h2><span class="section-num">3</span>What I Would Refine Before We Lock v0.1</h2>
+  <table class="gt">
+    <tr><th style="width:22%">Area</th><th>My thought</th><th style="width:30%">Why it matters</th></tr>
+    <tr><td class="k">Make the readiness layers more visible</td><td>I would group the ten dimensions so the reader can see which ones are role-level and which ones are organizational-level. I would not remove any dimensions; I would make the architecture clearer.</td><td>It preserves the distinction we already built between technical/process, role, and organization readiness.</td></tr>
+    <tr><td class="k">Tighten Trust / Evidence Quality</td><td>GR-012 should not re-run Tim&rsquo;s technical validation. It should ask whether the human has enough visibility into the evidence, limits, and failure modes to know when reliance is appropriate.</td><td>This keeps the People instrument from duplicating the technical/process lane.</td></tr>
+    <tr><td class="k">Be stricter about Yellow vs. Gray</td><td>In the HRBP grievance example, if we do not have organization-specific evidence, I would rather mark the finding Gray and note the risk hypothesis than call it Yellow.</td><td>Unknown should stay unknown. Yellow should mean we have actual evidence of a gap or condition.</td></tr>
+    <tr><td class="k">Broaden Manager Readiness</td><td>I would rename this Manager / Oversight Readiness so the same instrument still works for a CHRO or another top-of-structure role.</td><td>We should not need a separate version of the methodology for executive roles.</td></tr>
+    <tr><td class="k">Do not lock hard gates yet</td><td>The current hard-gate list is a useful hypothesis, but I want the first pilots to tell us which dimensions truly behave like non-negotiable gates.</td><td>We should learn from the pilots before turning an early design assumption into a permanent rule.</td></tr>
+  </table>
+
+  <h2><span class="section-num">4</span>How I Would Organize the Ten Dimensions</h2>
+  <p>I would keep all ten dimensions, but I would show the layers more explicitly so users can see what part of readiness each question is testing.</p>
+  <table class="gt">
+    <tr><th style="width:50%">Role / human operating conditions</th><th>Organizational operating conditions</th></tr>
+    <tr><td>Role clarity</td><td>Manager / Oversight readiness</td></tr>
+    <tr><td>Decision authority</td><td>Leadership support / governance</td></tr>
+    <tr><td>Capability / skill</td><td>Change capacity</td></tr>
+    <tr><td>Confidence / decision fluency</td><td></td></tr>
+    <tr><td>Psychological safety</td><td></td></tr>
+    <tr><td>Capacity / workload</td><td></td></tr>
+  </table>
+  <p><strong>Shared evidence condition:</strong> Trust / Evidence Quality should sit at the boundary. Technical evidence comes from the technical/process lane; GR-012 tests whether the human can see enough of that evidence, understand its limits, and rely on it appropriately.</p>
+
+  <h2><span class="section-num">5</span>My Read on the HRBP Manager / Grievance Pilot</h2>
+  <p>I think this is the right first pressure test because grievance work makes the human side visible. The proposed transition is not &ldquo;AI decides the grievance.&rdquo; The idea is that AI takes more of the administrative shell &mdash; intake, precedent research, case preparation, and documentation &mdash; while the HRBP Manager keeps interpretation, determination, escalation judgment, and accountability.</p>
+  <p>The instrument immediately surfaces questions that the technical progression model cannot answer by itself: can the HRBP Manager actually override the system, do they have enough time to review the work properly, what evidence is good enough to rely on AI-prepared material, can they challenge the system without pressure to keep moving, and is the escalation structure prepared to absorb more difficult cases?</p>
+  <p>My one change would be to be more conservative with the first ratings. Where we only have a reference-model hypothesis and no organization-specific evidence, I would mark the dimension Gray &mdash; Insufficient Evidence &mdash; and record the concern separately. That gives us a cleaner distinction between what the framework predicts may matter and what we actually know about a real organization.</p>
+
+  <h2><span class="section-num">6</span>Where I Think GR-012 Fits in the Larger Architecture</h2>
+  <table class="gt">
+    <tr><td class="k" style="width:34%">Technical / Process Readiness</td><td>Can the technology and process support the proposed transition?</td></tr>
+    <tr><td class="k">GR-012 Human Operating Readiness</td><td>Can the people and organization actually operate the transition?</td></tr>
+    <tr><td class="k">GR-013 Meaningful Human Control / Agency</td><td>When something goes wrong, can the human recognize it, challenge it, intervene, and escalate?</td></tr>
+    <tr><td class="k">Human Intensity</td><td>What happens to the difficulty and burden of the human work that remains?</td></tr>
+    <tr><td class="k">Human Impact Pathway</td><td>Where does the impact of the change travel through the role, manager, team, accountability structure, and organization?</td></tr>
+  </table>
+  <p>This is the point where the People side starts to feel like a coherent Human Transition Architecture instead of a collection of HR concepts.</p>
+
+  <h2><span class="section-num">7</span>My Recommendation</h2>
+  <div class="pull-quote">Keep GR-012. Refine it, do not rethink it.</div>
+  <p>I would make the small structural edits above before treating v0.1 as a proposed spec.</p>
+  <p>Then I would run the revised instrument manually against the HRBP Manager grievance transition and document exactly what evidence would move each Gray finding to Yellow, Green, or Red.</p>
+  <p>Only after that would I run the same instrument on Recruiter and CHRO. If the same questions hold but produce different findings, that is a strong sign the method is reusable. If we have to rewrite the instrument for each role, we need to simplify it.</p>
+  <p>After the first three pilots, I would revisit the hard-gate logic and decide what belongs in GR-012 versus GR-013 so the two do not duplicate each other.</p>
+
+  <h2><span class="section-num">8</span>What I Would Say to Tim</h2>
+  <div class="qbox"><p style="margin:0">I think GR-012 is going in the right direction and I want to keep it. What I like is that it gives us a way to separate technical capability from whether the people can actually operate the new relationship. I would make a few refinements before we lock it: make the role-level and organizational-level layers more visible, keep technical validation out of the People instrument, be stricter about Gray versus Yellow when we do not have real evidence, and make Manager Readiness broad enough to work for executive roles. I also want the pilots to tell us which dimensions are true hard gates rather than locking that too early. My goal is to make this a reusable operating-readiness instrument, not another scorecard or culture survey.</p></div>
+
+  <h2><span class="section-num">9</span>Immediate Next Steps</h2>
+  <ol style="margin:0 0 18px 22px;">
+    <li>Revise GR-012 to show role-level versus organization-level readiness explicitly.</li>
+    <li>Rewrite Trust / Evidence Quality so it consumes technical evidence rather than duplicates technical validation.</li>
+    <li>Change unsupported Yellow pilot findings to Gray and record modeled concerns separately.</li>
+    <li>Rename Manager Readiness to Manager / Oversight Readiness.</li>
+    <li>Run the revised HRBP grievance pilot manually and document evidence requirements for every dimension.</li>
+    <li>Then move to GR-013 Meaningful Human Control / Human Agency and make sure it sharpens GR-012 instead of repeating it.</li>
+  </ol>
+
+  <div class="closing-line">Working review &mdash; for discussion and pressure testing before adoption</div>
+
+</div>
+
+<footer>
+  <p>
+    Working review &mdash; <strong style="color:var(--navy)">GiGi Garcia</strong> &middot; GR-012 Review Thoughts<br>
+    Shared with <strong style="color:var(--navy)">Tim King</strong>, September 2026 · HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a> &nbsp;&middot;&nbsp; <a href="gigi_gr012_human_operating_readiness.html">The v0.1 draft</a> &nbsp;&middot;&nbsp; <a href="requirements_register.html#GR-012">GR-012 in the Requirements Register</a>
+  </p>
+</footer>
+
+<script src="wip-download-widget.js"></script>
+</body>
+</html>
