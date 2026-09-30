@@ -97,10 +97,6 @@ table.catalog tbody tr.group-row td {
   background: var(--navy-l); padding: 9px 14px; border-top: 2px solid var(--border);
   font-family: 'Georgia', serif; font-weight: 700; font-size: 14px; color: var(--navy-d);
 }
-table.catalog tbody tr.subgroup-row td {
-  background: #F8FAFD; padding: 7px 14px 7px 28px; border-top: 1px solid var(--border);
-  font-family: 'Consolas', monospace; font-size: 10.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--navy);
-}
 table.catalog tbody tr.group-row .g-note {
   font-family: 'Segoe UI', sans-serif; font-weight: 400; font-style: italic; font-size: 11px;
   color: var(--lgray); margin-left: 10px;
@@ -154,7 +150,7 @@ footer a { color: var(--navy); text-decoration: none; }
   <div class="tagline2">Where human judgment belongs</div>
   <nav>
     <a href="../index.html">Documentation</a>
-    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="../hitl_dashboard_final.html">Dashboard</a>
     <a href="index.html" class="active">Work in Progress</a>
   </nav>
 </div>
@@ -185,7 +181,7 @@ footer a { color: var(--navy); text-decoration: none; }
 </div>
 
 <div class="catalog-wrap">
-  <p class="catalog-caption">23 items · sorted by group, oldest work first within each</p>
+  <p class="catalog-caption">19 items · sorted by group, oldest work first within each</p>
   <div class="table-scroll">
     <table class="catalog">
       <thead>
@@ -198,99 +194,22 @@ footer a { color: var(--navy); text-decoration: none; }
       </thead>
       <tbody>
 
-        <tr class="group-row"><td colspan="4">Administration <span class="g-note">The framework's records rather than its proposals: registers and logs, audit reports, and master data. Pages to consult and keep current. A governance proposal moves here once adopted.</span></td></tr>
-
-        <tr class="subgroup-row"><td colspan="4">Registers &amp; Logs</td></tr>
+        <tr class="group-row"><td colspan="4">Requirements Traceability <span class="g-note">A living register tracking every requirement GiGi has raised across her three review documents, traced to what addresses it and how far along that is. Reference-only — not itself a proposal to vote on, though its own rows link out to the votable/reference items that address each requirement.</span></td></tr>
 
         <tr class="item-row">
           <td>
             <div class="item-title"><a href="requirements_register.html">Requirements Register<span class="lock"> (living tracker — HTML only)</span></a></div>
-            <div class="item-desc">Every requirement for the framework, how far along it is, and what Tim and GiGi need to decide. Opens on <b>Needs a decision</b>: approve, not approve or defer each one right there (reworked Sept 28, 2026). The standard design-spec template is at the bottom.</div>
+            <div class="item-desc">43 atomic requirements (GR-001&ndash;GR-043) extracted from GiGi's Website &amp; Framework Review, her Human/AI Maturity Reflections, and her Working Thoughts &amp; Next Steps note &mdash; each traced to a design-spec doc or sandbox feature, with a status of Implemented/Designed/Partially Addressed/Open. Filterable, searchable, and includes the Standard Design Spec Template. Replaces passing HITL_Requirements_Register.xlsx back and forth &mdash; this page is the current version all three of us read from.</div>
           </td>
           <td><span class="status">Living tracker</span></td>
           <td><span class="stage">Ongoing</span></td>
           <td class="fmt-links">
+            <span class="unavailable">Word n/a</span><span class="sep">·</span>
             <a href="requirements_register.html">HTML</a>
           </td>
         </tr>
 
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="production_changelog.html">Production Changelog<span class="lock"> (living tracker — HTML only)</span></a></div>
-            <div class="item-desc">One entry per change to master data &mdash; reporting lines, working-relationship classifications and ceilings, and work-product CRUD &mdash; with who asked for it, what changed, which files, the evidence, and how it was verified. Read live by the sandbox; the automated changelog check fails any push that changes tracked data without an entry.</div>
-          </td>
-          <td><span class="status">Living tracker</span></td>
-          <td><span class="stage">Ongoing</span></td>
-          <td class="fmt-links">
-            <a href="production_changelog.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="subgroup-row"><td colspan="4">Audit Reports</td></tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="content_rules_compliance_audit_wip_pass.html">Content Generation Rules — Compliance Audit (WIP Hub Pass)</a></div>
-            <div class="item-desc">A proof-of-concept pressure-test of the 17 proposed rules in the Framework Content Generation Rules against the WIP hub's own 9 documents. No real violations found; surfaced a Token Lock color-list gap (mostly fixed — 2 colors still open), a Rule 2 content gap (now fixed everywhere), and the 3 role-narrative pages' print-pipeline design system, since resolved by rebuilding them onto the standard system.</div>
-          </td>
-          <td><span class="status">Ready for review</span></td>
-          <td><span class="stage">Step 2 · Pressure Test</span></td>
-          <td class="fmt-links">
-            <a href="content_rules_compliance_audit_wip_pass.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="rebuild_scope_7_0_sweep_audit.html">7.0 (HR) Rebuild Scope &amp; Sweep Audit</a></div>
-            <div class="item-desc">The audit record for the 7.0 pass: the Sept 21 color audit of the production pages, then the Sept 24 re-run on Sandbox 7.0 after production was ruled stale. Records both sweeps, the fixes now live in the sandbox, Tim's rule decisions (Rules 1, 2, 5, 21), and where GR-002 to GR-011 landed: five pass, one closed, four still to come.</div>
-          </td>
-          <td><span class="status">Ready for review</span></td>
-          <td><span class="stage">Step 2 · Pressure Test</span></td>
-          <td class="fmt-links">
-            <a href="rebuild_scope_7_0_sweep_audit.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="subgroup-row"><td colspan="4">Master Data</td></tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="organizational_role_taxonomy.html">Organizational Role Taxonomy &mdash; Sandbox 7.0<span class="lock"> (live view &mdash; HTML only)</span></a></div>
-            <div class="item-desc">The 14 PCF 7.0 roles with tier, reporting line, span of control, and Accountable and Responsible process counts, plus the reporting tree and the reporting-line change history. Read live from the sandbox's master copy each time it opens, so it can't drift; changes are made in the sandbox and logged, never here.</div>
-          </td>
-          <td><span class="status">Live view</span></td>
-          <td><span class="stage">Ongoing</span></td>
-          <td class="fmt-links">
-            <a href="organizational_role_taxonomy.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="work_product_catalog.html">Work-Product Catalog &mdash; Sandbox 7.0</a></div>
-            <div class="item-desc">Master data, read live from the sandbox since Sept 26: every work product in PCF 7.0 (39) with a permanent ID, definition, system of record and model-output flag, plus the activities or processes that produce and read each one. Records Tim's review decisions. Keeps its vote for confirming the definitions.</div>
-          </td>
-          <td><span class="status" data-wip-status="work-product-catalog">Loading…</span></td>
-          <td><span class="stage">Concept</span></td>
-          <td class="fmt-links">
-            <a href="work_product_catalog.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="activity_crud_hrbp_manager.html">Activity-Level CRUD &mdash; HRBP Manager<span class="lock"> (confirmed &mdash; HTML only)</span></a></div>
-            <div class="item-desc">Item A2 of the Work Product spec, first role, confirmed by Tim Sept 26 and applied to the sandbox: which activity creates, reads, updates and deletes each work product across the HRBP Manager's 11 Accountable processes, reasoned from each activity and cross-checked against the old process CRUD. Those processes' CRUD is now derived from their activities. Shows how the HRBP Manager's verification load changes at activity level.</div>
-          </td>
-          <td><span class="status">Confirmed</span></td>
-          <td><span class="stage">Step 1 · Prototype</span></td>
-          <td class="fmt-links">
-            <a href="activity_crud_hrbp_manager.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="group-row"><td colspan="4">Role Pattern Transition Narratives <span class="g-note">Stage-first M1 → M3 → M5 views, per role, grounded in real Accountable-process data. Live HTML rebuilt onto the standard site's own system (px-based Standing Type Scale, standard masthead/page chrome, live pattern legend) — see the Content Generation Rules compliance audit under Administration; the Word/PDF exports keep their dedicated print layout, matched on fonts and colors only, per Token Lock.</span></td></tr>
+        <tr class="group-row"><td colspan="4">Role Pattern Transition Narratives <span class="g-note">Stage-first M1 → M3 → M5 views, per role, grounded in real Accountable-process data. Live HTML rebuilt onto the standard site's own system (px-based Standing Type Scale, standard masthead/page chrome, live pattern legend) — see the Content Generation Rules compliance audit below; the Word/PDF exports keep their dedicated print layout, matched on fonts and colors only, per Token Lock.</span></td></tr>
 
         <tr class="item-row">
           <td>
@@ -338,133 +257,29 @@ footer a { color: var(--navy); text-decoration: none; }
 
         <tr class="item-row">
           <td>
-            <div class="item-title"><a href="reference_model_assessment_layer_spec.html">Reference Model and Organization Assessment Layer &mdash; Design Spec</a></div>
-            <div class="item-desc">The design for GR-052: the framework is a reference model describing the work, and each organization&rsquo;s assessment supplies where it stands, compared against the Progression Ceilings. Rewritten Sept 28 with a one-screen decision brief; the assessment template and ceiling overrides now have their own specs, below.</div>
-          </td>
-          <td><span class="status" data-wip-status="reference-model-spec">Loading…</span></td>
-          <td><span class="stage">Concept</span></td>
-          <td class="fmt-links">
-            <a href="reference_model_assessment_layer_spec.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="assessment_template_spec.html">Interactive Activity Assessment Template &mdash; Design Spec</a></div>
-            <div class="item-desc">The design for GR-053: five questions that place an activity on the ramp for one organization, with the evidence behind the answer. No decision pending; next is the ABC Test Org pressure test.</div>
-          </td>
-          <td><span class="status">In progress</span></td>
-          <td><span class="stage">Concept</span></td>
-          <td class="fmt-links">
-            <a href="assessment_template_spec.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="ceiling_override_spec.html">Ceiling Overrides &mdash; Design Spec</a></div>
-            <div class="item-desc">The design for GR-054: when an organization may raise an activity&rsquo;s Progression Ceiling, and how the override is reviewed. Awaiting a decision on the factor-based rule and the 11 High activities.</div>
-          </td>
-          <td><span class="status">Awaiting decision</span></td>
-          <td><span class="stage">Concept</span></td>
-          <td class="fmt-links">
-            <a href="ceiling_override_spec.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="assessment_output_spec.html">Organization Assessment Output &mdash; Design Spec</a></div>
-            <div class="item-desc">The design for GR-056: what an organization gets from its work-side assessment (executive summary, dashboard, exceptions report, process detail) and the role hand-off that feeds the human-impact side. Awaiting a decision on the output set and the hand-off seam.</div>
-          </td>
-          <td><span class="status">Awaiting decision</span></td>
-          <td><span class="stage">Concept</span></td>
-          <td class="fmt-links">
-            <a href="assessment_output_spec.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="register_grouping_spec.html">Register Grouping by Framework Layer &mdash; Design Spec</a></div>
-            <div class="item-desc">The design for GR-057: five groups that file every requirement by where it sits in the framework (Administration, Reference Model, Organizational Assessment, Assessment Output, Human Impact &amp; Readiness), with the full mapping. Awaiting a decision.</div>
-          </td>
-          <td><span class="status">Awaiting decision</span></td>
-          <td><span class="stage">Concept</span></td>
-          <td class="fmt-links">
-            <a href="register_grouping_spec.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="grievance_pilot_pack.html">Grievance Pilot Pack &mdash; GR-012 Pressure Test</a></div>
-            <div class="item-desc">Preparation for running GiGi&rsquo;s Human Operating Readiness instrument by hand on HRBP Manager / 7.4.4 Manage employee grievances: the transition part by part in the six categories (three parts past the Judgment ceiling, flagged), the technical evidence Trust / Evidence Quality consumes, a worksheet on her assessment record with every finding starting Gray, and Tim&rsquo;s draft answers to her seven questions.</div>
-          </td>
-          <td><span class="status">Ready for review</span></td>
-          <td><span class="stage">Step 2 · Pressure Test</span></td>
-          <td class="fmt-links">
-            <a href="grievance_pilot_pack.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="../sandbox/pcf7.html">Activity Assessment &mdash; in the Sandbox (Prototype)<span class="lock"> (sandbox tool)</span></a></div>
-            <div class="item-desc">The interactive activity assessment for GR-053, built into the sandbox's Working Relationship view: choose or create an organization, open a process, and choose Assess on any activity. Five questions propose a working relationship; the assessor confirms or changes it, records the evidence, source and confidence, and sees anything past the ceiling flagged in red. Where Consequence of Error is Low or Moderate, the ceiling can be overridden with evidence and the Accountable role's approval, re-confirmed through the process owner's audits. For Tim and GiGi to pressure-test with ABC Test Org on 7.2.1, 7.3.2 and 7.6.2.</div>
-          </td>
-          <td><span class="status">Ready to pressure-test</span></td>
-          <td><span class="stage">Step 1 · Prototype</span></td>
-          <td class="fmt-links">
-            <a href="../sandbox/pcf7.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="h_pct_provenance_badge_standard.html">H% Provenance Badge — Naming &amp; Placement Standard</a></div>
+            <div class="item-title"><a href="H_Pct_Provenance_Badge_Standard.docx">H% Provenance Badge — Naming &amp; Placement Standard</a></div>
             <div class="item-desc">A per-domain status badge (MODELED — Pattern-Reference Estimate / MODELED — RACI-Grounded) for the Maturity Table's H% figures, operationalizing Rule 14 and Rule 16 of the unified Framework Content Generation Rules.</div>
           </td>
           <td><span class="status" data-wip-status="hpct-badge">Loading…</span></td>
           <td><span class="stage">Concept</span></td>
           <td class="fmt-links">
-            <a href="h_pct_provenance_badge_standard.html">HTML</a>
+            <a href="H_Pct_Provenance_Badge_Standard.docx">Word</a><span class="sep">·</span>
+            <a href="h_pct_provenance_badge_standard.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="h_pct_provenance_badge_standard.pdf">PDF</a>
           </td>
         </tr>
 
         <tr class="item-row">
           <td>
-            <div class="item-title"><a href="work_pattern_color_standard.html">Work Pattern Color Standard</a></div>
+            <div class="item-title"><a href="Work_Pattern_Color_Standard.docx">Work Pattern Color Standard</a></div>
             <div class="item-desc">A validated, colorblind-safe color mapping for the five work patterns (Decision/Knowledge/Document/Transaction/Exception) — fixes a real CVD accessibility failure in the current palette and operationalizes Rule 2 of the unified Framework Content Generation Rules.</div>
           </td>
           <td><span class="status" data-wip-status="pattern-color">Loading…</span></td>
           <td><span class="stage">Concept</span></td>
           <td class="fmt-links">
-            <a href="work_pattern_color_standard.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="wr_progression_methodology_spec.html">Working-Relationship Progression — Plain-Language Spec</a></div>
-            <div class="item-desc">A plain-language companion to the full Working-Relationship Progression methodology: the six-step ramp, Current State and Progression Ceiling, the three checks before moving on, and the ripple question set. Rewritten Sept 29 with a one-screen brief, updated for the reference model.</div>
-          </td>
-          <td><span class="status" data-wip-status="wr-progression-methodology">Loading…</span></td>
-          <td><span class="stage">Step 1 &middot; Prototype</span></td>
-          <td class="fmt-links">
-            <a href="wr_progression_methodology_spec.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="work_product_role_container_spec.html">Work Product in the Role Container &mdash; Design Spec</a></div>
-            <div class="item-desc">The design for GR-046: for each role, the work products it produces, who relies on them, and what AI-touched work it must verify (verification load). Rewritten Sept 29 with a one-screen decision brief; the pilot figures are folded and marked for recomputation after the reference reset.</div>
-          </td>
-          <td><span class="status" data-wip-status="work-product-spec">Loading…</span></td>
-          <td><span class="stage">Concept</span></td>
-          <td class="fmt-links">
-            <a href="work_product_role_container_spec.html">HTML</a>
+            <a href="Work_Pattern_Color_Standard.docx">Word</a><span class="sep">·</span>
+            <a href="work_pattern_color_standard.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="work_pattern_color_standard.pdf">PDF</a>
           </td>
         </tr>
 
@@ -494,37 +309,29 @@ footer a { color: var(--navy); text-decoration: none; }
 
         <tr class="item-row">
           <td>
-            <div class="item-title"><a href="content_promotion_policy.html">Content Promotion Policy — Sandbox / WIP / Production</a></div>
-            <div class="item-desc">Three tiers (Sandbox, WIP, Production), the review ladder for content with Adopted kept separate from Published, and the lighter lane for master-data corrections through the changelog. Rewritten Sept 29 with a one-screen decision brief.</div>
-          </td>
-          <td><span class="status" data-wip-status="content-promotion-policy">Loading…</span></td>
-          <td><span class="stage">Concept</span></td>
-          <td class="fmt-links">
-            <a href="content_promotion_policy.html">HTML</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="the_shock_wave_effect.html">The Shock Wave Effect</a></div>
+            <div class="item-title"><a href="The_Shock_Wave_Effect.docx">The Shock Wave Effect</a></div>
             <div class="item-desc">How change propagates through an organization in five rings (Role, Person, Manager, Team, Accountability) — and what happens when multiple domains transform at once.</div>
           </td>
           <td><span class="status" data-wip-status="shock-wave">Loading…</span></td>
           <td><span class="stage">Concept</span></td>
           <td class="fmt-links">
-            <a href="the_shock_wave_effect.html">HTML</a>
+            <a href="The_Shock_Wave_Effect.docx">Word</a><span class="sep">·</span>
+            <a href="the_shock_wave_effect.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="the_shock_wave_effect.pdf">PDF</a>
           </td>
         </tr>
 
         <tr class="item-row">
           <td>
-            <div class="item-title"><a href="from_concept_to_principle.html">From Concept to Principle</a></div>
+            <div class="item-title"><a href="From_Concept_to_Principle.docx">From Concept to Principle</a></div>
             <div class="item-desc">A proposed governance layer: how an idea moves from Concept through Claude's feasibility review to Approved, requiring sign-off from both Tim and GiGi.</div>
           </td>
           <td><span class="status" data-wip-status="concept-to-principle">Loading…</span></td>
           <td><span class="stage">Concept</span></td>
           <td class="fmt-links">
-            <a href="from_concept_to_principle.html">HTML</a>
+            <a href="From_Concept_to_Principle.docx">Word</a><span class="sep">·</span>
+            <a href="from_concept_to_principle.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="from_concept_to_principle.pdf">PDF</a>
           </td>
         </tr>
 
@@ -539,6 +346,20 @@ footer a { color: var(--navy); text-decoration: none; }
             <a href="Framework_Content_Generation_Rules.docx">Word</a><span class="sep">·</span>
             <a href="framework_content_generation_rules.html">HTML</a><span class="sep">·</span>
             <a class="pdf" href="framework_content_generation_rules.pdf">PDF</a>
+          </td>
+        </tr>
+
+        <tr class="item-row">
+          <td>
+            <div class="item-title"><a href="Content_Rules_Compliance_Audit_WIP_Pass.docx">Content Generation Rules — Compliance Audit (WIP Hub Pass)</a></div>
+            <div class="item-desc">A proof-of-concept pressure-test of the 17 proposed rules above against the WIP hub's own 9 documents. No real violations found; surfaced a Token Lock color-list gap (mostly fixed — 2 colors still open), a Rule 2 content gap (now fixed everywhere), and the 3 role-narrative pages' print-pipeline design system, since resolved by rebuilding them onto the standard system.</div>
+          </td>
+          <td><span class="status">Ready for review</span></td>
+          <td><span class="stage">Step 2 · Pressure Test</span></td>
+          <td class="fmt-links">
+            <a href="Content_Rules_Compliance_Audit_WIP_Pass.docx">Word</a><span class="sep">·</span>
+            <a href="content_rules_compliance_audit_wip_pass.html">HTML</a><span class="sep">·</span>
+            <a class="pdf" href="content_rules_compliance_audit_wip_pass.pdf">PDF</a>
           </td>
         </tr>
 
@@ -672,94 +493,10 @@ footer a { color: var(--navy); text-decoration: none; }
           </td>
         </tr>
 
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="gigi_overall_thoughts_collaboration.html">Overall Thoughts on Collaboration, Governance &amp; Requirements<span class="lock"> (GiGi's own words — HTML only)</span></a></div>
-            <div class="item-desc">GiGi's Sept 21 email covering the three reviews below: the collaboration principles, the document-update process and the Requirements Register, and her theme that we are building the methodology and the governance around how it is created at the same time.</div>
-          </td>
-          <td><span class="status">Ready for review</span></td>
-          <td><span class="stage">External Review</span></td>
-          <td class="fmt-links">
-            <span class="unavailable">Word n/a</span><span class="sep">·</span>
-            <a href="gigi_overall_thoughts_collaboration.html">HTML</a><span class="sep">·</span>
-            <span class="unavailable">PDF n/a</span>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="gigi_requirements_register_initial_thoughts.html">Initial Thoughts on the Requirements Register<span class="lock"> (GiGi's own words — HTML only)</span></a></div>
-            <div class="item-desc">GiGi's Sept 21 feedback on the register: tighter status definitions, owner and next action, priority, explicit acceptance criteria, a review step between Designed and agreed, and the register growing into the methodology's requirements-governance system.</div>
-          </td>
-          <td><span class="status">Ready for review</span></td>
-          <td><span class="stage">External Review</span></td>
-          <td class="fmt-links">
-            <span class="unavailable">Word n/a</span><span class="sep">·</span>
-            <a href="gigi_requirements_register_initial_thoughts.html">HTML</a><span class="sep">·</span>
-            <a class="pdf" href="gigi_requirements_register_initial_thoughts.pdf">PDF</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="gigi_codevelopment_principles_review.html">Co-Development Principles — Review &amp; Recommended Clarifications<span class="lock"> (GiGi's own words — HTML only)</span></a></div>
-            <div class="item-desc">GiGi's Sept 21 review of the Working Collaboration &amp; Co-Development Principles, Version 1.1: origin versus ownership, Background IP, the commencement date, protecting each lead architecture, commercialization economics, deadlock, withdrawal, and AI's role. About the partnership agreement, not framework content.</div>
-          </td>
-          <td><span class="status">Ready for review</span></td>
-          <td><span class="stage">External Review</span></td>
-          <td class="fmt-links">
-            <span class="unavailable">Word n/a</span><span class="sep">·</span>
-            <a href="gigi_codevelopment_principles_review.html">HTML</a><span class="sep">·</span>
-            <a class="pdf" href="gigi_codevelopment_principles_review.pdf">PDF</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="gigi_document_update_process_review.html">Working Review: Document Update Process<span class="lock"> (GiGi's own words — HTML only)</span></a></div>
-            <div class="item-desc">GiGi's Sept 21 review of how the partnership's documents of record stay current: concept agreement versus text approval, a Why field in the Change Log, attribution in the Co-Development Principles Log, a status system, a disagreement path, and three separate records. About the partnership's process, not framework content.</div>
-          </td>
-          <td><span class="status">Ready for review</span></td>
-          <td><span class="stage">External Review</span></td>
-          <td class="fmt-links">
-            <span class="unavailable">Word n/a</span><span class="sep">·</span>
-            <a href="gigi_document_update_process_review.html">HTML</a><span class="sep">·</span>
-            <a class="pdf" href="gigi_document_update_process_review.pdf">PDF</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="gigi_gr012_human_operating_readiness.html">Human Operating Readiness Instrument v0.1 (GR-012)<span class="lock"> (GiGi's own words — HTML only)</span></a></div>
-            <div class="item-desc">GiGi's working draft turning GR-012 into an instrument: ten readiness dimensions, each giving a Green / Yellow / Red / Gray finding with its evidence rather than a single score; a gating hypothesis (six potential hard gates); a first pressure test on HRBP Manager / employee grievances (verdict: Insufficient Evidence); a proposed assessment record; seven questions for Tim; and a one-transition plan for the next working session.</div>
-          </td>
-          <td><span class="status">Ready for review</span></td>
-          <td><span class="stage">External Review</span></td>
-          <td class="fmt-links">
-            <span class="unavailable">Word n/a</span><span class="sep">·</span>
-            <a href="gigi_gr012_human_operating_readiness.html">HTML</a><span class="sep">·</span>
-            <a class="pdf" href="gigi_gr012_human_operating_readiness.pdf">PDF</a>
-          </td>
-        </tr>
-
-        <tr class="item-row">
-          <td>
-            <div class="item-title"><a href="gigi_gr012_review_thoughts.html">My Review and Thoughts on GR-012<span class="lock"> (GiGi's own words — HTML only)</span></a></div>
-            <div class="item-desc">GiGi's review of her own Human Operating Readiness Instrument v0.1: keep it, refine rather than rethink. Group the ten dimensions into role-level and organizational-level, with Trust / Evidence Quality at the boundary consuming technical evidence rather than re-running it; mark unsupported findings Gray, not Yellow; rename Manager Readiness to Manager / Oversight Readiness; let the pilots decide the hard gates. Places GR-012 among technical readiness, GR-013, Human Intensity and the Human Impact Pathway.</div>
-          </td>
-          <td><span class="status">Ready for review</span></td>
-          <td><span class="stage">External Review</span></td>
-          <td class="fmt-links">
-            <span class="unavailable">Word n/a</span><span class="sep">·</span>
-            <a href="gigi_gr012_review_thoughts.html">HTML</a><span class="sep">·</span>
-            <a class="pdf" href="gigi_gr012_review_thoughts.pdf">PDF</a>
-          </td>
-        </tr>
-
       </tbody>
     </table>
   </div>
-  <p class="catalog-footnote">Most items now carry a single HTML file as the source of truth, with "Download PDF"/"Download Word" buttons on the page itself generating both formats on the spot — nothing to keep in sync by hand. A few older items still ship separate Word/PDF files directly (the three Pattern Transition Narratives, which run a different print-oriented layout; Framework Content Generation Rules and Five Worked Examples, not yet converted). GiGi's own-words review notes stay HTML-only since reformatting her words into a Word doc isn't ours to do. The Formats column always shows what's actually available.</p>
+  <p class="catalog-footnote">Every item's title links to its Word document — the format built for a proper sit-down review — where one exists. GiGi's four review notes stay HTML-only since reformatting her own words into a Word doc isn't ours to do; a few of our own pressure-test and worked-example items (Five Worked Examples, and the new Human Judgment Chain pages) are HTML/PDF only for now — add a Word version if a sit-down review needs one. The Formats column always shows what's actually available.</p>
 </div>
 
 <!--
@@ -810,36 +547,20 @@ footer a { color: var(--navy); text-decoration: none; }
      Reference-only items skip this step entirely — no vote mount, no script
      tag, no VOTABLE_ITEMS entry.
 
-  4. Wire up the download widget — the .html file is the single source of
-     truth; Word and PDF are generated client-side, at click time, from the
-     page's own rendered content, so there is no separate .docx/.pdf file to
-     build or keep in sync:
-       - In <head>, right after the robots <meta> tag, add:
-           <link rel="stylesheet" href="wip-print.css" media="print"/>
-       - Immediately after the vote-mount div (votable items) or the
-         masthead's closing </div> (reference-only items), add:
-           <div data-wip-download-mount data-item="ITEMID"></div>
-         (reuse the same itemId as step 3a for a votable item; for a
-         reference-only item just pick a short kebab-case id — it's only
-         used to name the downloaded file.)
-       - Immediately before </body>, add:
-           <script src="wip-download-widget.js"></script>
-     Skip this step only for a partner's own original words (like GiGi's
-     review notes) — reformatting someone else's words into a downloadable
-     Word doc isn't ours to do, so those stay HTML-only with no download
-     buttons. A page with an unconventional layout (no .masthead/.wrap
-     structure, like the print-pipeline Pattern Transition Narratives) isn't
-     compatible with the widget as-is; keep hand-maintaining its separate
-     Word/PDF files until that page is rebuilt onto the standard layout.
-  5. Decide which group it belongs in — "Administration" (a record rather
-     than a proposal: a register or log, an audit report, or a master-data
-     page; file it under the matching subgroup row), "Role Pattern Transition Narratives"
+  4. Build a matching Word document (.docx) for the item — the format this
+     catalog links to first — UNLESS the item is another partner's own
+     original words (like GiGi's review notes), in which case it stays
+     HTML/PDF only rather than being reformatted into a Word doc on their
+     behalf. Render (or export) matching PDFs for both the HTML page and,
+     where one exists, the Word doc, and drop everything in this same folder.
+  5. Decide which group it belongs in — "Role Pattern Transition Narratives"
      (built-and-applied content, scoped to one specific role), "Concepts &
      Design Principles" (a framework-level idea/mechanism, not yet applied to
      any specific role or dataset), or "External & Partner Review Notes"
      (someone else's own words). Add a new group row if none fit.
   6. Add one <tr class="item-row"> to the table below: the item-title link
-     points at the .html page, the item-desc is a one-line summary, and:
+     points at the Word doc (or the HTML page if there isn't one), the
+     item-desc is a one-line summary, and:
        - "status" cell — VOTABLE items: <span class="status"
          data-wip-status="ITEMID">Loading…</span> (same itemId as step 3a;
          the widget fills in the live Approved/Needs Revision/Parked/Denied/
@@ -850,12 +571,9 @@ footer a { color: var(--navy); text-decoration: none; }
        - class="stage": where it actually sits against the Section 5 steps in
          the legend above. A framework-level idea that hasn't been applied to
          specific roles yet is "Concept," not "Step 1" — don't round up.
-     Fill in the Formats cell with just <a href="ITEM.html">HTML</a> for an
-     item that got the download widget in step 4 (the buttons on the page
-     cover Word/PDF). Only an item that kept separate hand-maintained
-     Word/PDF files (an unconverted print-pipeline page, or a words-only
-     partner document with no Word doc) still lists them here, matching
-     whichever of Word / HTML / PDF actually exist for it.
+     Fill in the Formats cell with whichever of Word / HTML / PDF actually
+     exist — use the "Word n/a" treatment (see GiGi's rows) for words-only
+     content with no Word doc.
   7. Leave it OUT of docs/index.html, hitl_dashboard_final.html, and any other
      nav until it's approved — that's what keeps it "WIP."
   8. Once Approved (both Tim and GiGi picked Approve — check the live status,
