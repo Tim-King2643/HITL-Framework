@@ -236,5 +236,24 @@ const CHANGE_LOG = [
     "source": "Tim, Sept 30, 2026, after CL-011: remove the retired maturity vocabulary from the ceiling notes.",
     "reason": "The maturity model (M1–M5) was retired on Sept 25, 2026 in favour of Current State and Progression Ceiling. The phrase meant a real ceiling rather than a temporary shortfall; the new wording says that without the retired term.",
     "verified": "Ceilings, Current State, Consequence of Error and ceiling factors of all six activities are unchanged; only the note wording differs. reference-wr.json does not carry notes and is unaffected."
+  },
+  {
+    "id": "CL-013",
+    "date": "2026-09-30",
+    "requestedBy": "Tim",
+    "kind": "wr-note",
+    "target": {
+      "domain": "7.0",
+      "activity": "7.2.1.1, 7.2.1.3, 7.2.3.3, 7.2.5.1, 7.3.2.3, 7.3.4.5, 7.3.4.6, 7.4.1, 7.4.2"
+    },
+    "summary": "Wording only: nine ceiling notes no longer carry names, dates or change history — only the reason the ceiling sits where it does.",
+    "from": "Notes opening or closing with decision records, e.g. “Resolved by Tim (Sept 20, 2026), superseding WRPM section 3's earlier open/undecided flag. See CL-002…”, “Decided by Tim (Sept 25, 2026), replacing the earlier Agent-delegation ceiling. See CL-004…”, “Moved up to High on individual walkthrough (Sept 14, 2026) —”, “Moved to Critical (Tim, Sept 16, 2026) —”.",
+    "to": "The same notes with the decision records removed; each keeps its reason unchanged in substance.",
+    "files": [
+      "docs/sandbox/pcf7.html"
+    ],
+    "source": "Tim, Sept 30, 2026, reviewing 7.2.1.1 in ABC Test Org's Assess panel: remove references to names and history from assessment cards.",
+    "reason": "Reference notes are read by every assessed organization. Who decided a ceiling and what it replaced is maintenance history, already recorded in this changelog (CL-002, CL-004 and the Sept 14 and 16 walkthroughs); on an organization's card it reads as internal record-keeping and names people.",
+    "verified": "Ceilings, Current State, Consequence of Error and ceiling factors of all nine activities are unchanged; only note wording differs. reference-wr.json does not carry notes and is unaffected. No ceiling note now names a person, a date or a changelog entry."
   }
 ];

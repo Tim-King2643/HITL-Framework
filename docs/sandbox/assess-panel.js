@@ -320,7 +320,7 @@
           (o.canEdit && rec && rec.current ? '<button type="button" id="ap-reset">Reset to baseline</button>' : '') +
           '<span class="msg" id="ap-msg"></span></div>';
       }
-      if (rec && rec.history && rec.history.length) html += '<div class="hist">' + rec.history.length + ' earlier version' + (rec.history.length === 1 ? '' : 's') + ' kept.</div>';
+      // Earlier versions are kept in the record, not shown on the card (Sept 30, 2026).
       html += overrideHtml();
       el.innerHTML = html;
       wireOverride();
