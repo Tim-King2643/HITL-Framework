@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Grievance Pilot Pack — GR-012 Pressure Test — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 800px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.approval-box { background: var(--amber-bg); border: 1px solid #F0C67A; border-left: 5px solid var(--amber); border-radius: 8px; padding: 18px 22px; margin-bottom: 28px; }
+.approval-box .ab-head { font-size: 14px; font-weight: 700; color: var(--amber-text); margin-bottom: 6px; }
+.approval-box p { font-size: 13px; color: #5A4315; line-height: 1.65; margin: 0; }
+
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 28px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 19px; margin: 36px 0 10px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 15px; margin: 20px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 14px; }
+p.lede { font-size: 15.5px; color: var(--dark); }
+ul.plain { margin: 0 0 16px 20px; }
+ul.plain li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.feature-box { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 8px 0 20px; }
+.feature-box h3 { margin-top: 0; }
+
+/* Sizing/alignment matched to the "Working Relationship" gates track in
+   docs/sandbox/pcf7.html (.gate-node/.gate-circle/.gate-label/.gate-arrow)
+   so this legend reads as the same visual system, not a bigger lookalike. */
+.ramp-row { display: flex; flex-wrap: wrap; gap: 0; margin: 12px 0 6px; align-items: flex-start; }
+.ramp-step { display: flex; flex-direction: column; align-items: center; min-width: 84px; flex: 0 0 auto; text-align: center; }
+.ramp-step .rs-dot { width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; }
+.ramp-step .rs-name { font-size: 11px; font-weight: 500; color: #000; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
+.ramp-arrow { width: 22px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; color: var(--lgray); font-size: 16px; font-weight: 700; }
+
+.proof-grid { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 20px; }
+.proof-card { flex: 1; min-width: 200px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.proof-card .pc-role { font-weight: 700; color: var(--navy-d); font-size: 13.5px; margin-bottom: 4px; }
+.proof-card .pc-tier { font-size: 10.5px; color: var(--lgray); text-transform: uppercase; letter-spacing: .03em; margin-bottom: 8px; }
+.proof-card p { font-size: 12.5px; margin: 0; }
+
+.open-item { border-left: 3px solid var(--lgray); padding: 4px 0 4px 14px; margin-bottom: 12px; }
+.open-item .oi-name { font-weight: 700; color: var(--dark); font-size: 13.5px; }
+.open-item p { font-size: 13px; margin: 3px 0 0; }
+
+.source-note { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 4px; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 22px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 12px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.5; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.k { font-weight: 700; color: var(--navy-d); }
+td.num { text-align: right; white-space: nowrap; }
+ol.plan { margin: 0 0 16px 22px; }
+ol.plan li { font-size: 14px; color: var(--gray); line-height: 1.65; margin-bottom: 7px; }
+ol.plan li strong { color: var(--dark); }
+.tag { font-family: 'Consolas', monospace; font-size: 10.5px; color: var(--navy); background: var(--navy-l); border: 1px solid #C6D8EE; border-radius: 3px; padding: 0 5px; margin-left: 4px; white-space: nowrap; }
+
+.ramp6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 14px 0 4px; }
+.ramp6 > * { min-width: 0; overflow-wrap: anywhere; }
+.ramp6 .cell { color: #fff; font-size: 11px; font-weight: 600; text-align: center; padding: 8px 2px; border-radius: 4px; }
+.ramp6 .zone { font-size: 11px; text-align: center; padding: 6px 4px; border-radius: 4px; line-height: 1.35; }
+.z-base { background: #EDEFF3; color: #333; }
+.z-space { background: var(--navy-l); color: var(--navy-d); border: 1px solid #C6D8EE; }
+.z-beyond { background: repeating-linear-gradient(45deg,#F6F7F9,#F6F7F9 6px,#ECEEF2 6px,#ECEEF2 12px); color: #666; }
+.ramp-cap { font-size: 12px; color: var(--lgray); font-style: italic; margin: 6px 0 20px; }
+.quote { border-left: 3px solid var(--amber); padding: 6px 0 6px 14px; margin: 0 0 18px; font-family: 'Georgia', serif; font-style: italic; color: var(--dark); font-size: 15px; line-height: 1.6; }
+@media (max-width: 600px) { .ramp6 .cell, .ramp6 .zone { font-size: 9.5px; padding: 6px 1px; } .wrap table { display: block; overflow-x: auto; } }
+
+.brief { background: #fff; border: 1px solid var(--border); border-top: 4px solid var(--navy); border-radius: 8px; padding: 20px 24px 18px; margin-bottom: 30px; }
+.brief .b-label { font-family: 'Consolas', monospace; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--lgray); margin: 14px 0 6px; }
+.brief .b-label:first-child { margin-top: 0; }
+.brief p { font-size: 14.5px; color: var(--dark); margin-bottom: 0; }
+.brief ul { margin: 0 0 0 18px; }
+.brief li { font-size: 14px; color: var(--gray); line-height: 1.6; margin-bottom: 4px; }
+.brief li b { color: var(--dark); }
+.brief .reqline { font-size: 12px; color: var(--lgray); margin-top: 14px; }
+.brief .reqline a { color: var(--navy); font-weight: 600; text-decoration: none; }
+details.fold { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0 18px; margin: 10px 0 20px; }
+details.fold summary { cursor: pointer; font-weight: 700; color: var(--navy); font-size: 14px; padding: 12px 0; }
+details.fold[open] { padding-bottom: 6px; }
+.small { font-size: 13px; }
+.ws th { font-size: 10.5px; }
+.ws td { font-size: 12.5px; }
+.ws td.fill { background: #FFFDF5 !important; min-width: 90px; }
+.grp td { background: var(--navy-l) !important; font-weight: 700; color: var(--navy-d); }
+.find { display: inline-block; font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 1px 7px; white-space: nowrap; background: #F1F3F6; color: #475569; border: 1px solid #CBD5E1; }
+.past { color: #991B1B; font-weight: 700; font-size: 12px; }
+.within { color: #166534; font-weight: 700; font-size: 12px; }
+.cat { display: inline-block; font-size: 10.5px; font-weight: 600; border-radius: 3px; padding: 1px 6px; color: #fff; white-space: nowrap; }
+.voice { background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--navy); border-radius: 6px; padding: 12px 18px; margin: 0 0 14px; }
+.voice .q { font-weight: 700; color: var(--navy-d); font-size: 13.5px; margin-bottom: 6px; }
+.voice p { margin: 0; font-size: 14px; }
+.voice .st { font-family: 'Consolas', monospace; font-size: 10.5px; color: var(--lgray); text-transform: uppercase; letter-spacing: .05em; }
+</style>
+</head>
+<body>
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft &mdash; Not Yet Part of the Framework</strong>
+  &nbsp;&middot;&nbsp; Reviewing this before it&rsquo;s finalized. Nothing here is official yet.
+  &nbsp;&middot;&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">Back to WIP hub</a>
+</div>
+
+
+<div class="masthead">
+  <div class="eyebrow">PILOT PACK &nbsp;&middot;&nbsp; GR-012 &nbsp;&middot;&nbsp; TIM KING &amp; CLAUDE &nbsp;&middot;&nbsp; SEPTEMBER 2026</div>
+  <h1>Grievance Pilot Pack</h1>
+  <div class="subtitle">Everything needed to run GiGi&rsquo;s Human Operating Readiness instrument by hand on one transition: HRBP Manager, 7.4.4 Manage employee grievances</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-download-mount data-item="grievance-pilot-pack"></div>
+
+<div class="wrap">
+
+<div class="brief">
+  <div class="b-label">What this is</div>
+  <p>The work-side preparation for the pressure test GiGi proposed in her <a href="gigi_gr012_review_thoughts.html">review of GR-012</a>: the transition stated in the six working-relationship categories, what the technical lane would supply as evidence, a worksheet built on her assessment record, and Tim&rsquo;s draft answers to her seven questions. It is run by hand in the working session; nothing goes into the sandbox yet.</p>
+  <div class="b-label">Decided</div>
+  <ul>
+    <li><b>Sept 29 (Tim):</b> 7.4.4 stays one activity in the reference model. The work is split into parts in this worksheet only; parts past the Judgment ceiling are flagged as findings, not treated as allowed.</li>
+    <li><b>Sept 29 (GiGi&rsquo;s review):</b> findings without organization-specific evidence are Gray, with the modeled concern recorded separately; Trust / Evidence Quality consumes technical evidence rather than re-testing it.</li>
+  </ul>
+  <div class="b-label">Still GiGi&rsquo;s</div>
+  <p class="small">Her v0.2 revisions to the instrument itself. This pack already uses her proposed grouping and the Manager / Oversight Readiness name, so it works with v0.1 or v0.2.</p>
+  <div class="reqline">Supports <a href="requirements_register.html#GR-012">GR-012</a>. Related: <a href="gigi_gr012_human_operating_readiness.html">Instrument v0.1</a> &middot; <a href="requirements_register.html#GR-037">GR-037</a> technical evidence &middot; <a href="requirements_register.html#GR-013">GR-013</a> Human Agency.</div>
+</div>
+
+  <h2>1. The activity in the reference model</h2>
+  <table>
+    <tr><th style="width:30%">Reference</th><th>Value</th></tr>
+    <tr><td class="k">Activity</td><td>7.4.4 Manage employee grievances &mdash; an APQC process with no activities beneath it, so it is assessed as one activity.</td></tr>
+    <tr><td class="k">Current State (reference)</td><td>Human-only baseline, as for every activity until an organization is assessed.</td></tr>
+    <tr><td class="k">Progression Ceiling</td><td><span class="cat" style="background:#204474">Judgment</span> &mdash; ceiling factors: Standing Legal / Fiduciary Duty, Relational / Emotional Stakes, Human Judgment Floor.</td></tr>
+    <tr><td class="k">Consequence of Error</td><td><strong style="color:#991B1B">Critical</strong> (Human Impact, Legal / Regulatory Exposure). The ceiling cannot be overridden.</td></tr>
+    <tr><td class="k">Roles</td><td>Accountable: HRBP Manager. No separate Responsible role. Informed: Legal, Director of HR Ops.</td></tr>
+    <tr><td class="k">Governed decision</td><td>Investigate and resolve employee complaint or grievance. Escalates to Director of HR Ops / Legal / CHRO when a case involves potential litigation, an executive-level employee, or regulatory exposure.</td></tr>
+    <tr><td class="k">Reference version</td><td><code>8d68033fca61</code> (reference-wr.json, September 29, 2026) &mdash; record this on the worksheet.</td></tr>
+  </table>
+
+  <h2>2. The transition, part by part</h2>
+  <p>GiGi&rsquo;s scenario: AI takes the administrative shell &mdash; intake, precedent research, case preparation and documentation &mdash; while the HRBP Manager keeps interpretation, determination, escalation judgment and accountability. Stated in the six categories, the parts land differently against the Judgment ceiling. The proposed relationships are Claude&rsquo;s reading of her scenario, for Tim and GiGi to confirm or correct in the session.</p>
+  <table class="ws">
+    <tr><th style="width:15%">Part</th><th style="width:26%">The work</th><th>Proposed relationship</th><th style="width:13%">Against the ceiling</th><th style="width:14%">Current state (fill in)</th></tr>
+<tr><td class="k">Intake</td><td>AI captures the complaint, structures it and routes it to the case.</td><td><span class="cat" style="background:#2457A3">Oversight</span><div class="small" style="margin-top:4px">AI produces the intake record; the HRBP Manager reviews and accepts each one before the case proceeds.</div></td><td><span class="past">Past the ceiling</span></td><td class="fill"></td></tr>
+<tr><td class="k">Precedent research</td><td>AI retrieves prior cases, policy and collective-agreement clauses relevant to the complaint.</td><td><span class="cat" style="background:#204474">Judgment</span><div class="small" style="margin-top:4px">AI supplies inputs; the HRBP Manager does their own reasoning with them.</div></td><td><span class="within">Within the ceiling</span></td><td class="fill"></td></tr>
+<tr><td class="k">Case preparation</td><td>AI assembles the case file: chronology, statements, summary of issues.</td><td><span class="cat" style="background:#2457A3">Oversight</span><div class="small" style="margin-top:4px">AI produces the case file; the HRBP Manager reviews and approves it before it is relied on.</div></td><td><span class="past">Past the ceiling</span></td><td class="fill"></td></tr>
+<tr><td class="k">Documentation</td><td>AI drafts case notes and correspondence.</td><td><span class="cat" style="background:#2457A3">Oversight</span><div class="small" style="margin-top:4px">AI drafts; the HRBP Manager reviews and approves every document before it is issued.</div></td><td><span class="past">Past the ceiling</span></td><td class="fill"></td></tr>
+<tr><td class="k">Interpretation and determination</td><td>Weighing the facts and deciding the outcome.</td><td><span class="cat" style="background:#204474">Judgment</span><div class="small" style="margin-top:4px">The HRBP Manager decides, using AI-supplied inputs only.</div></td><td><span class="within">Within the ceiling</span></td><td class="fill"></td></tr>
+<tr><td class="k">Escalation and accountability</td><td>Deciding when a case goes to the Director of HR Ops, Legal or the CHRO; owning the outcome.</td><td><span class="cat" style="background:#0D2D4F">Human-only</span><div class="small" style="margin-top:4px">Stays entirely with the HRBP Manager; accountability does not move.</div></td><td><span class="within">Within the ceiling</span></td><td class="fill"></td></tr>
+  </table>
+  <p><strong>What the flags mean.</strong> Intake, case preparation and documentation have AI producing work, which is past Judgment; at Critical Consequence of Error the ceiling cannot be overridden. Readiness findings for those parts are findings about a transition the reference model does not currently allow. That is useful evidence, not a problem: if the parts behave differently in the pilot, it is the case for giving processes like 7.4.4 activities of their own &mdash; a decision to take once, for all 18 processes that have none, after the pilots.</p>
+  <p><strong>Current state.</strong> GiGi&rsquo;s draft describes it as human judgment with AI assistance limited or absent, which could be Human-only or Judgment. Settle it per part at the start of the session; with ABC Test Org, 7.4.4 can be assessed through the Assess panel first, so the pilot starts from a recorded assessment.</p>
+
+  <h2>3. What the technical lane would supply</h2>
+  <p>Trust / Evidence Quality now consumes this evidence rather than re-testing it. For the pilot the honest entry everywhere is &ldquo;not yet available&rdquo;, which keeps that dimension Gray.</p>
+  <table class="ws">
+    <tr><th style="width:20%">Part</th><th>Evidence the technical / process lane would supply</th><th style="width:20%">Pilot entry</th></tr>
+<tr><td class="k">Intake</td><td>How accurately complaints are captured and classified; how often a retaliation, discrimination or collective-agreement issue is missed.</td><td class="fill">Not yet available</td></tr>
+<tr><td class="k">Precedent research</td><td>Relevance and completeness of retrieved precedent; known gaps (for example, clauses or local agreements it does not index).</td><td class="fill">Not yet available</td></tr>
+<tr><td class="k">Case preparation</td><td>Accuracy of chronology and summary against source statements; omissions found on review.</td><td class="fill">Not yet available</td></tr>
+<tr><td class="k">Documentation</td><td>Error and correction rate on drafted notes and correspondence; tone or content issues found on review.</td><td class="fill">Not yet available</td></tr>
+<tr><td class="k">All parts</td><td>Known failure modes, behaviour at real operating volume, and how errors surface.</td><td class="fill">Not yet available</td></tr>
+  </table>
+
+  <h2>4. The worksheet</h2>
+  <p>One row per dimension, grouped as GiGi proposed. Every finding starts Gray: there is no organization-specific evidence yet. Her v0.1 working reads are kept in &ldquo;Modeled concern&rdquo; &mdash; recorded separately, as her review asks &mdash; and &ldquo;What would move it&rdquo; is what she said she still needs. The last three columns are filled in the session. Owner is a role, never a name.</p>
+  <table style="margin-bottom:10px">
+    <tr><th style="width:30%">Record header</th><th>Fill in</th></tr>
+    <tr><td class="k">Transition</td><td>7.4.4, part(s) assessed, current &rarr; proposed relationship (section 2)</td></tr>
+    <tr><td class="k">Roles affected</td><td>HRBP Manager (Accountable); escalation to Director of HR Ops</td></tr>
+    <tr><td class="k">Version / timing</td><td>Assessment date &middot; evidence date &middot; reference version 8d68033fca61 &middot; review trigger</td></tr>
+    <tr><td class="k">Roll-up rule</td><td>Critical Consequence of Error: weakest link, if question 3 is agreed</td></tr>
+  </table>
+  <table class="ws">
+    <tr><th style="width:13%">Dimension</th><th style="width:7%">Finding</th><th style="width:22%">Modeled concern (GiGi, v0.1)</th><th style="width:22%">What would move it</th><th>Evidence (type &middot; source role &middot; reference &middot; date)</th><th>Gap &middot; required action</th><th style="width:9%">Owner (role)</th></tr>
+<tr class="grp"><td colspan="7">Role / human operating conditions</td></tr>
+<tr><td class="k">Role clarity</td><td><span class="find">GRAY</span></td><td>The design distinction is conceptually clear: AI supports the administrative work; the HRBP Manager retains the judgment.</td><td>Org-specific workflow and role language showing the boundary in practice.</td><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+<tr><td class="k">Decision authority</td><td><span class="find">GRAY</span></td><td>The HRBP Manager is the accountable human in the reference model, but actual override power is not measured.</td><td>Proof that the role can reject, pause, override, and escalate AI-supported recommendations.</td><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+<tr><td class="k">Capability / skill</td><td><span class="find">GRAY</span></td><td>The role is judgment-heavy, but accountability does not prove the person has the skill to evaluate AI-prepared material.</td><td>Case-based evidence or scenario testing showing the person can recognize a bad precedent, weak reasoning, or missing context.</td><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+<tr><td class="k">Confidence / decision fluency</td><td><span class="find">GRAY</span></td><td>No evidence yet on whether the person will challenge a confident-looking AI output.</td><td>Scenario exercise or observed behavior under disagreement.</td><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+<tr><td class="k">Psychological safety</td><td><span class="find">GRAY</span></td><td>No evidence yet on whether slowing or challenging an AI-supported process is actually supported.</td><td>Employee and manager evidence that challenge and escalation are safe in practice.</td><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+<tr><td class="k">Capacity / workload</td><td><span class="find">GRAY</span></td><td>The design suggests a verification tax: less administrative production may create more review, exception, and escalation work.</td><td>Caseload, review time, exception rate, and whether freed capacity is real or simply reallocated.</td><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+<tr class="grp"><td colspan="7">Organizational operating conditions</td></tr>
+<tr><td class="k">Manager / Oversight readiness</td><td><span class="find">GRAY</span></td><td>The escalation path identifies Director of HR Ops, but that does not tell us whether the manager is prepared to coach and intervene in the new model.</td><td>Manager expectations, escalation criteria, monitoring, and coaching readiness.</td><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+<tr><td class="k">Leadership support / governance</td><td><span class="find">GRAY</span></td><td>There is a governance concept and a named accountable role, but the organization-specific operating rules are still unknown.</td><td>Named stop conditions, escalation rights, and clarity on who can pause or reverse the transition.</td><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+<tr><td class="k">Change capacity</td><td><span class="find">GRAY</span></td><td>No organization-specific information is available.</td><td>Competing changes, staffing pressure, implementation timing, and leadership capacity.</td><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+<tr class="grp"><td colspan="7">Shared evidence condition (boundary with the technical/process lane)</td></tr>
+<tr><td class="k">Trust / evidence quality</td><td><span class="find">GRAY</span></td><td>No real-volume evidence has been supplied for AI-supported precedent research or grievance preparation.</td><td>Validation results, known failure modes, error data, and examples at real operating volume &mdash; consumed from the technical/process lane (section 3), not re-tested.</td><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>
+  </table>
+  <p class="small">Findings: Green &mdash; in place and supported by evidence; Yellow &mdash; actual evidence of a gap that a named control resolves; Red &mdash; a material gating condition; Gray &mdash; not enough evidence for a defensible finding. Gray never converts to anything by default.</p>
+
+  <h2>5. Tim&rsquo;s draft answers to GiGi&rsquo;s seven questions</h2>
+  <p class="small">From section 11 of her v0.1 draft. Drafts for Tim to edit before they are shared; nothing here is agreed until both have said so.</p>
+<div class="voice"><div class="st">Answered in your review</div><div class="q">1. Is GR-012 assessing human and organizational operating conditions, not re-testing the technology?</div><p>Yes, agreed. Trust / Evidence Quality takes the technical lane&rsquo;s evidence as given and asks whether the person can see it, understand its limits and rely on it appropriately.</p></div>
+<div class="voice"><div class="st">Deferred to the pilots</div><div class="q">2. Which dimensions are true gates, and which can stay Yellow with a mitigation plan?</div><p>Agreed to keep the six as a hypothesis. Let HRBP Manager, Recruiter and CHRO tell us which really behave as gates; nothing needs deciding before this first pilot.</p></div>
+<div class="voice"><div class="st">Proposed answer</div><div class="q">3. Should a High / Critical consequence activity automatically use a weakest-link rule?</div><p>Yes. It matches the work side, where High and Critical ceilings cannot be overridden: at that level of consequence, one failed dimension should not be averaged away. 7.4.4 is Critical, so this pilot tests it directly.</p></div>
+<div class="voice"><div class="st">Deferred to after the three pilots</div><div class="q">4. Where should Human Agency sit?</div><p>As a working answer, in GR-013 as its own layer, with GR-012&rsquo;s Decision authority and Psychological safety findings feeding it &mdash; which matches your architecture in section 6. We confirm after the pilots.</p></div>
+<div class="voice"><div class="st">Proposed answer</div><div class="q">5. What evidence should the sandbox store for each readiness finding?</div><p>Your assessment record, plus the fields the work side already uses: evidence type, source role, reference, confidence and date &mdash; so both sides record evidence the same way. For now that is the record&rsquo;s design, used by hand in this worksheet; nothing goes into the sandbox until the logic has survived the pilots.</p></div>
+<div class="voice"><div class="st">Proposed answer; not tested by this pilot</div><div class="q">6. How should multiple Responsible roles be handled?</div><p>Separate findings per role, rolled up weakest-link where Consequence of Error is High or Critical (ties to question 3). 7.4.4 has only an Accountable role, so the Recruiter pilot is where this gets tested.</p></div>
+<div class="voice"><div class="st">Partly answered in your review</div><div class="q">7. What would count as GR-012 having &ldquo;held without modification&rdquo;?</div><p>Your test &mdash; the same questions hold across all three roles and produce different findings &mdash; plus two more: no dimension added, dropped or redefined between pilots, and every finding traceable to recorded evidence.</p></div>
+
+  <h2>6. Register changes</h2>
+  <ul class="plain">
+    <li><b>GR-012 acceptance wording &mdash; proposed, needs GiGi&rsquo;s agreement.</b> Change &ldquo;scores all 10 readiness dimensions&rdquo; to &ldquo;produces a finding, with its evidence, for each of the ten dimensions&rdquo;, matching her instrument. Not changed until she agrees.</li>
+    <li><b>GR-013 sequencing &mdash; recorded.</b> Meaningful Human Control / Human Agency follows the three pilots, so it sharpens GR-012 rather than repeating it (her review&rsquo;s sequence).</li>
+  </ul>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;&middot;&nbsp; Design Spec &mdash; For Review<br>
+    &copy; Timothy P. King 2026 &middot; developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a> &nbsp;&middot;&nbsp; <a href="requirements_register.html">Requirements Register</a>
+  </p>
+</footer>
+
+<script src="wip-download-widget.js"></script>
+</body>
+</html>
