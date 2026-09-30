@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Human Operating Readiness Instrument v0.1 (GR-012) — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9FC2EE; margin-bottom: 10px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 8px; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.3; }
+.masthead .tagline2 { font-size: 14px; color: #9FC2EE; font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center; font-size: 12.5px; color: #7A5A1E;
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: #7A5A1E; font-weight: 600; }
+
+.wrap { max-width: 780px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.callout {
+  background: var(--amber-bg); border-left: 4px solid var(--amber); border-radius: 6px;
+  padding: 16px 20px; margin: 0 0 32px; font-size: 13.5px; color: #7A5A1E; font-style: italic; line-height: 1.6;
+}
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 40px 0 12px; }
+h3 { font-family: 'Segoe UI', sans-serif; font-weight: 600; color: var(--navy); font-size: 14.5px; margin: 26px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+ul { margin: 0 0 18px 22px; }
+li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.pull-quote {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 16px; line-height: 1.5;
+}
+.sequence {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 15px; line-height: 1.6;
+}
+
+.closing-quote {
+  background: var(--navy-d); color: #fff; border-radius: 8px; padding: 24px 28px; margin: 8px 0 8px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-size: 17px; line-height: 1.6;
+}
+.closing-line {
+  text-align: center; font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d);
+  font-size: 16px; line-height: 1.6; margin: 22px 0 6px;
+}
+
+.section-num {
+  display: inline-block; font-family: 'Consolas', monospace; font-size: 11px; color: var(--navy);
+  background: var(--navy-l); border-radius: 4px; padding: 2px 8px; margin-right: 8px; vertical-align: middle;
+}
+
+.pdf-download {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px;
+  padding: 8px 14px; text-decoration: none; margin: 0 0 28px;
+}
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+table.gt { width: 100%; border-collapse: collapse; margin: 10px 0 24px; font-size: 13px; }
+.gt th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 10px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+.gt td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.55; }
+.gt tr:nth-child(even) td { background: #FAFBFD; }
+.gt td.k { font-weight: 700; color: var(--navy-d); }
+.dim { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin: 0 0 14px; }
+.dim h3 { margin: 0 0 6px; }
+.dim p { margin-bottom: 8px; }
+.dim p:last-child { margin-bottom: 0; }
+.dim .lbl { font-weight: 600; color: var(--navy-d); }
+.qbox { background: var(--navy-l); border-radius: 6px; padding: 14px 20px; margin: 14px 0 20px; }
+.qbox p { margin: 0 0 8px; color: var(--navy-d); }
+.qbox ul { margin-bottom: 0; }
+.qbox li { color: var(--dark); }
+.find { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; border-radius: 4px; padding: 2px 8px; white-space: nowrap; }
+.f-green { background: #DCFCE7; color: #166534; border: 1px solid #86EFAC; }
+.f-yellow { background: #FEF9C3; color: #854D0E; border: 1px solid #FDE047; }
+.f-red { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+.f-gray { background: #F1F3F6; color: #475569; border: 1px solid #CBD5E1; }
+.cover-line { text-align: center; font-size: 13px; color: var(--lgray); font-style: italic; margin: -4px 0 26px; }
+</style>
+</head>
+
+<body>
+
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; External review notes from GiGi Garcia, for joint discussion with Tim. Nothing on this page is official yet.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">External Review · GiGi Garcia · GR-012 · September 2026</div>
+  <h1>Human Operating Readiness Instrument v0.1</h1>
+  <div class="tagline2">Working methodology + first HRBP Manager / employee grievance pressure test</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-download-mount data-item="gigi-gr012-human-operating-readiness"></div>
+
+<div class="wrap">
+
+  <div class="callout">
+    GiGi's working draft for GR-012 (Human Operating Readiness), sent to Tim September 29, 2026, transcribed here in the site's visual language so it can be read and referenced alongside the rest of the framework. The words, dimensions, findings and questions below are hers, not Tim's or Claude's — this page is a faithful transcription of her draft, not a response to it. Her original is the PDF.
+  </div>
+
+  <div class="pull-quote">My goal with this draft is simple: before we let an activity move further into an AI-supported working relationship, I want us to be able to say what has to be true of the people and the organization that will actually live with that change.</div>
+  <p class="cover-line">This is a working draft for pressure testing. It is not a scorecard, not an employee sentiment survey, and not a final framework standard. Based on the current Working-Relationship Progression methodology, Requirements Register decisions, and the HRBP Manager / Recruiter / CHRO pilot findings.</p>
+
+  <h2><span class="section-num">1</span>Why I Think GR-012 Matters</h2>
+  <p>The framework is now much clearer about three separate questions: where an activity is today, how far it should be allowed to progress, and what evidence supports the technical transition. GR-012 adds the piece I do not want us to skip: are the people and the organization actually ready to operate the new relationship once the design changes?</p>
+  <p>For me, readiness is not whether people are excited about AI. It is whether the human side of the operating model is real. Does the person know what remains theirs? Can they challenge the system? Do they have the authority, skill, time, evidence, and support to intervene when needed? Is the manager prepared? Is the organization asking them to carry a responsibility that looks good on paper but is impossible in practice?</p>
+  <p>If we can answer those questions consistently, the readiness layer becomes more than an HR overlay. It becomes a real gate in the methodology.</p>
+
+  <h2><span class="section-num">2</span>Core Design Principle</h2>
+  <p>The question I want this instrument to answer is:</p>
+  <div class="pull-quote">Can the organization operate this proposed human-AI relationship with real authority, capability, evidence, capacity, and escalation?</div>
+  <p>A transition should not be considered ready simply because the technology performs well. A person can technically remain &ldquo;in the loop&rdquo; and still have very little meaningful control if they do not have enough information, authority, skill, time, psychological safety, or organizational support to act.</p>
+  <p>That is the distinction I want GR-012 to protect: human presence is not the same as human control.</p>
+
+  <h2><span class="section-num">3</span>What This Instrument Is — and Is Not</h2>
+  <table class="gt">
+    <tr><th style="width:50%">It is</th><th>It is not</th></tr>
+    <tr><td>A readiness check for one specific proposed transition.</td><td>A generic &ldquo;AI readiness&rdquo; score for the whole company.</td></tr>
+    <tr><td>An evidence-based view of the human operating conditions around the transition.</td><td>A sentiment survey about whether people like or trust AI.</td></tr>
+    <tr><td>A way to surface gaps, controls, and required interventions before progression.</td><td>A substitute for technical performance testing.</td></tr>
+    <tr><td>A repeatable method that should work across roles.</td><td>A custom questionnaire that gets reinvented for every job.</td></tr>
+  </table>
+
+  <h2><span class="section-num">4</span>Unit of Assessment</h2>
+  <p>GR-012 should always be applied to a specific change in the working relationship. I do not want us asking, &ldquo;Is HR ready for AI?&rdquo; That is too broad to be useful.</p>
+  <div class="qbox">
+    <p><strong>The assessment should read more like this:</strong></p>
+    <ul>
+      <li><strong>Activity:</strong> Manage employee grievances.</li>
+      <li><strong>Current relationship:</strong> human judgment with AI assistance limited or absent.</li>
+      <li><strong>Proposed relationship:</strong> AI handles intake, precedent research, case preparation, and documentation; the HRBP Manager retains interpretation, determination, escalation, and accountability.</li>
+      <li><strong>Readiness question:</strong> what must be true of the HRBP Manager and surrounding organization for that relationship to work in practice?</li>
+    </ul>
+  </div>
+
+  <h2><span class="section-num">5</span>Human Operating Readiness Dimensions</h2>
+  <p>I would start with ten dimensions. I do not see these as ten equal scores. I see them as ten places where a transition can either hold up in the real world or quietly fail.</p>
+  <div class="dim"><h3>1. Role clarity</h3><p>Does the person understand what AI is allowed to do, what stays human, what must be reviewed, what must be decided, and what cannot be delegated?</p><p><span class="lbl">What I would look for:</span> Role description, workflow, decision-rights language, RACI, training, scenario walkthrough.</p><p><span class="lbl">What would concern me:</span> The person cannot explain who owns the outcome or assumes AI owns a decision that is still human.</p></div>
+  <div class="dim"><h3>2. Decision authority</h3><p>When the person believes the AI-supported result is wrong, what are they actually allowed to do?</p><p><span class="lbl">What I would look for:</span> Override rights, system permissions, escalation process, approval matrix, governed decision points.</p><p><span class="lbl">What would concern me:</span> The person is expected to review but cannot stop, reject, change, or escalate the outcome.</p></div>
+  <div class="dim"><h3>3. Capability / skill</h3><p>Does the person have enough domain expertise and judgment to evaluate the AI-supported work independently?</p><p><span class="lbl">What I would look for:</span> Experience, case review, scenario testing, manager observation, qualifications, exception-handling history.</p><p><span class="lbl">What would concern me:</span> The reviewer cannot reliably recognize a bad, incomplete, or inappropriate output.</p></div>
+  <div class="dim"><h3>4. Confidence / decision fluency</h3><p>If the person and the system disagree, will the person make and defend an independent decision?</p><p><span class="lbl">What I would look for:</span> Scenario exercises, interviews, observed override behavior, manager feedback.</p><p><span class="lbl">What would concern me:</span> The person has authority but consistently defers to the system because it appears more certain or more data-driven.</p></div>
+  <div class="dim"><h3>5. Psychological safety</h3><p>Can the person say &ldquo;the system may be wrong&rdquo; and act on that concern without unreasonable personal or professional risk?</p><p><span class="lbl">What I would look for:</span> Speak-up history, employee interviews, leadership behavior, escalation norms, incident reviews.</p><p><span class="lbl">What would concern me:</span> A formal override exists, but people believe using it will hurt their standing or performance.</p></div>
+  <div class="dim"><h3>6. Capacity / workload</h3><p>Does the new relationship create enough real capacity for meaningful review, exception handling, and escalation?</p><p><span class="lbl">What I would look for:</span> Caseload, review time, exception volume, backlog, staffing, verification effort, context switching.</p><p><span class="lbl">What would concern me:</span> Oversight exists on paper, but workload makes substantive review unrealistic.</p></div>
+  <div class="dim"><h3>7. Manager readiness</h3><p>Does the manager know how to lead this new operating model rather than supervise the old job with AI added to it?</p><p><span class="lbl">What I would look for:</span> Manager training, monitoring process, coaching expectations, escalation criteria, performance measures.</p><p><span class="lbl">What would concern me:</span> The role changes but the manager has no way to coach, monitor, or recognize when the transition is failing.</p></div>
+  <div class="dim"><h3>8. Leadership support / governance</h3><p>Who owns the outcome, and what happens when the new human-AI relationship fails?</p><p><span class="lbl">What I would look for:</span> Decision rights, risk tolerance, stop conditions, escalation routes, named owners, governance standards.</p><p><span class="lbl">What would concern me:</span> Accountability is unclear or no one has authority to pause or reverse the operating model.</p></div>
+  <div class="dim"><h3>9. Trust / evidence quality</h3><p>What evidence justifies asking the person to rely on the system at this level?</p><p><span class="lbl">What I would look for:</span> Audit results, error rates, exception data, validation history, known limitations, real-volume testing.</p><p><span class="lbl">What would concern me:</span> People are expected to rely on a system whose performance has not been demonstrated for the proposed transition.</p></div>
+  <div class="dim"><h3>10. Change capacity</h3><p>Even if this is the right transition, is this the right time for the organization to make it?</p><p><span class="lbl">What I would look for:</span> Competing initiatives, staffing changes, implementation calendar, leadership capacity, change fatigue.</p><p><span class="lbl">What would concern me:</span> The design is sound but the organization cannot absorb another major operating change right now.</p></div>
+
+  <h2><span class="section-num">6</span>How I Would Rate Readiness in v0.1</h2>
+  <p>I would avoid a single readiness percentage at this stage. A strong average can hide one serious failure. If a person has no real authority to override an AI-supported decision, nine other good scores should not wash that out.</p>
+  <table class="gt">
+    <tr><th style="width:36%">Finding</th><th>Meaning</th></tr>
+    <tr><td><span class="find f-green">GREEN</span> Ready</td><td>The condition is in place and supported by evidence.</td></tr>
+    <tr><td><span class="find f-yellow">YELLOW</span> Conditional</td><td>The transition may proceed only if a named gap or control is resolved.</td></tr>
+    <tr><td><span class="find f-red">RED</span> Not Ready</td><td>A material gating condition prevents responsible progression right now.</td></tr>
+    <tr><td><span class="find f-gray">GRAY</span> Insufficient Evidence</td><td>We do not know enough to make a defensible finding.</td></tr>
+  </table>
+
+  <h2><span class="section-num">7</span>Gating Logic I Want to Pressure-Test</h2>
+  <p>I would treat this as a working hypothesis, not a locked rule. Some dimensions feel close to hard gates because if they fail, the human control we think we have may not actually exist.</p>
+  <table class="gt">
+    <tr><th style="width:50%">Potential hard gates</th><th>Usually remediable / conditional</th></tr>
+    <tr><td>Decision authority</td><td>Role clarity</td></tr>
+    <tr><td>Capability / skill</td><td>Confidence / decision fluency</td></tr>
+    <tr><td>Psychological safety</td><td>Manager readiness</td></tr>
+    <tr><td>Capacity / workload</td><td>Change capacity</td></tr>
+    <tr><td>Leadership / governance</td><td></td></tr>
+    <tr><td>Trust / evidence quality</td><td></td></tr>
+  </table>
+  <p>I expect the pilots to challenge this split. For example, manager readiness may turn out to be a hard gate in some transitions. That is exactly why I want to test the instrument manually before we build scoring or automate it.</p>
+
+  <h2><span class="section-num">8</span>First Pressure Test: HRBP Manager / Employee Grievances</h2>
+  <p>I chose employee grievances because the existing pilot already gives us enough structure to test the instrument without pretending we have organization-specific evidence that we do not actually have.</p>
+  <p>The working scenario is: AI takes on the administrative shell &mdash; intake, precedent research, case preparation, and documentation. The HRBP Manager keeps the determination, escalation judgment, and accountability.</p>
+  <p>The existing methodology already suggests three things worth testing: the remaining human work may become more intense, the HRBP Manager&rsquo;s ability to override AI-supported work is not yet measured, and the practical escalation path points to the Director of HR Ops.</p>
+  <table class="gt">
+    <tr><th style="width:17%">Dimension</th><th style="width:13%">Initial working read</th><th>What we know / what the model suggests</th><th style="width:30%">What I still need before a real verdict</th></tr>
+    <tr><td class="k">Role clarity</td><td><span class="find f-yellow">YELLOW</span></td><td>The design distinction is conceptually clear: AI supports the administrative work; the HRBP Manager retains the judgment.</td><td>Org-specific workflow and role language showing the boundary in practice.</td></tr>
+    <tr><td class="k">Decision authority</td><td><span class="find f-gray">GRAY</span></td><td>The HRBP Manager is the accountable human in the reference model, but actual override power is not measured.</td><td>Proof that the role can reject, pause, override, and escalate AI-supported recommendations.</td></tr>
+    <tr><td class="k">Capability / skill</td><td><span class="find f-gray">GRAY</span></td><td>The role is judgment-heavy, but accountability does not prove the person has the skill to evaluate AI-prepared material.</td><td>Case-based evidence or scenario testing showing the person can recognize a bad precedent, weak reasoning, or missing context.</td></tr>
+    <tr><td class="k">Confidence / fluency</td><td><span class="find f-gray">GRAY</span></td><td>No evidence yet on whether the person will challenge a confident-looking AI output.</td><td>Scenario exercise or observed behavior under disagreement.</td></tr>
+    <tr><td class="k">Psychological safety</td><td><span class="find f-gray">GRAY</span></td><td>No evidence yet on whether slowing or challenging an AI-supported process is actually supported.</td><td>Employee and manager evidence that challenge and escalation are safe in practice.</td></tr>
+    <tr><td class="k">Capacity / workload</td><td><span class="find f-yellow">YELLOW</span></td><td>The design suggests a verification tax: less administrative production may create more review, exception, and escalation work.</td><td>Caseload, review time, exception rate, and whether freed capacity is real or simply reallocated.</td></tr>
+    <tr><td class="k">Manager readiness</td><td><span class="find f-gray">GRAY</span></td><td>The escalation path identifies Director of HR Ops, but that does not tell us whether the manager is prepared to coach and intervene in the new model.</td><td>Manager expectations, escalation criteria, monitoring, and coaching readiness.</td></tr>
+    <tr><td class="k">Leadership / governance</td><td><span class="find f-yellow">YELLOW</span></td><td>There is a governance concept and a named accountable role, but the organization-specific operating rules are still unknown.</td><td>Named stop conditions, escalation rights, and clarity on who can pause or reverse the transition.</td></tr>
+    <tr><td class="k">Trust / evidence quality</td><td><span class="find f-gray">GRAY</span></td><td>No real-volume evidence has been supplied for AI-supported precedent research or grievance preparation.</td><td>Validation results, known failure modes, error data, and examples at real operating volume.</td></tr>
+    <tr><td class="k">Change capacity</td><td><span class="find f-gray">GRAY</span></td><td>No organization-specific information is available.</td><td>Competing changes, staffing pressure, implementation timing, and leadership capacity.</td></tr>
+  </table>
+
+  <h2><span class="section-num">9</span>My Initial Pilot Read</h2>
+  <p>I would not call this organization Ready or Not Ready from the information we have. We do not have the organization-specific evidence needed to make that claim.</p>
+  <p>My working conclusion is: the proposed relationship is reasonable enough to continue pressure-testing, but the real readiness verdict is currently Insufficient Evidence.</p>
+  <p>That is not a weakness in the instrument. It is actually the result I want the instrument to be able to produce. It should be comfortable saying &ldquo;we do not know yet&rdquo; instead of turning assumptions into a readiness score.</p>
+  <div class="qbox">
+    <p><strong>The most important gaps this pilot surfaces are:</strong></p>
+    <ul>
+      <li>Can the HRBP Manager actually override or stop an AI-supported recommendation?</li>
+      <li>Does the role have enough time to perform real review once verification and exception work are counted?</li>
+      <li>What evidence is good enough to rely on AI-prepared grievance material?</li>
+      <li>Can the person challenge the system without pressure to keep the process moving?</li>
+      <li>Is the Director of HR Ops ready to coach and absorb escalations under the new model?</li>
+    </ul>
+  </div>
+
+  <h2><span class="section-num">10</span>Proposed Assessment Record</h2>
+  <p>Every GR-012 assessment should leave behind the same short record:</p>
+  <table class="gt">
+    <tr><th style="width:30%">Field</th><th>What gets recorded</th></tr>
+    <tr><td class="k">Activity / transition</td><td>Specific activity, current relationship, proposed next relationship, progression ceiling.</td></tr>
+    <tr><td class="k">Roles affected</td><td>Responsible role(s), accountable role, manager / escalation path where relevant.</td></tr>
+    <tr><td class="k">Dimension finding</td><td>Green / Yellow / Red / Gray.</td></tr>
+    <tr><td class="k">Evidence</td><td>What we actually know and where it came from.</td></tr>
+    <tr><td class="k">Gap</td><td>What is missing or uncertain.</td></tr>
+    <tr><td class="k">Required action / control</td><td>What must happen before progression.</td></tr>
+    <tr><td class="k">Owner</td><td>Who is responsible for closing the gap.</td></tr>
+    <tr><td class="k">Version / timing</td><td>Assessment date, evidence date, reference-model version, review trigger.</td></tr>
+  </table>
+
+  <h2><span class="section-num">11</span>Questions I Want to Put in Front of Tim</h2>
+  <ul>
+    <li>Do we agree that GR-012 is assessing human and organizational operating conditions, not re-testing the technology?</li>
+    <li>Which of the ten dimensions are true gates, and which are diagnostics that can remain Yellow with a mitigation plan?</li>
+    <li>Should a High/Critical consequence activity automatically use a weakest-link rule?</li>
+    <li>Where should Human Agency sit: inside GR-012, inside the Human Impact Pathway, or as a shared construct used by both?</li>
+    <li>What evidence do we want the sandbox to store for each readiness finding? I do not want only a color or score.</li>
+    <li>How should we handle multiple Responsible roles &mdash; weakest link, separate findings, or role-specific readiness views?</li>
+    <li>What would count as enough evidence to say GR-012 &lsquo;held without modification&rsquo; across HRBP Manager, Recruiter, and CHRO?</li>
+  </ul>
+
+  <h2><span class="section-num">12</span>What I Do Not Want to Build Yet</h2>
+  <ul>
+    <li>A single 0&ndash;100 readiness score.</li>
+    <li>A giant employee survey.</li>
+    <li>A new readiness instrument for every role.</li>
+    <li>A dashboard before the questions and evidence logic have survived manual pressure testing.</li>
+    <li>A rule that converts Gray / unknown into Green, Human-only, or any other inferred finding.</li>
+    <li>Another construct unless it changes a real progression, governance, role, or intervention decision.</li>
+  </ul>
+
+  <h2><span class="section-num">13</span>Next Working Session</h2>
+  <p>I would use the next session to work one transition all the way through instead of reviewing a long list of requirements.</p>
+  <table class="gt">
+    <tr><th style="width:12%">Step</th><th>Working-session goal</th></tr>
+    <tr><td class="k">1</td><td>Confirm the boundary between Technical/Process readiness and GR-012.</td></tr>
+    <tr><td class="k">2</td><td>Run all 10 dimensions against HRBP Manager / grievance work.</td></tr>
+    <tr><td class="k">3</td><td>Decide which findings are hard gates versus conditional.</td></tr>
+    <tr><td class="k">4</td><td>Agree what evidence gets recorded for each finding.</td></tr>
+    <tr><td class="k">5</td><td>Define where Meaningful Human Control / Human Agency sits.</td></tr>
+    <tr><td class="k">6</td><td>Decide what we need to test next on Recruiter and CHRO.</td></tr>
+  </table>
+
+  <h2><span class="section-num">14</span>Note I Would Send Tim</h2>
+  <p>Tim &mdash; I started turning GR-012 into an actual Human Operating Readiness instrument rather than another concept. I am using ten dimensions, but I am deliberately not averaging them into a score yet. Each dimension produces a finding, the evidence behind it, the gap or control that still needs to be addressed, and the readiness implication. The overall outcome is Ready, Conditional, Not Ready, or Insufficient Evidence.</p>
+  <p>I also ran a first pressure test against HRBP Manager / employee grievances. The biggest value for me is that the instrument is already surfacing things the technical progression logic does not answer on its own &mdash; override authority, verification capacity, psychological safety, manager readiness, and the evidence needed before we ask someone to rely on AI-prepared work.</p>
+  <p>My suggestion for our next session is that we work this one transition all the way through and decide which dimensions are true gates, what evidence we actually want to capture, and where Human Agency should sit in the architecture before we put anything into the sandbox.</p>
+
+  <div class="closing-line">Working draft &mdash; pressure test before adoption</div>
+
+</div>
+
+<footer>
+  <p>
+    Working draft &mdash; <strong style="color:var(--navy)">GiGi Garcia</strong> &middot; GR-012 Human Operating Readiness v0.1<br>
+    Shared with <strong style="color:var(--navy)">Tim King</strong>, September 2026 · HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a> &nbsp;&middot;&nbsp; <a href="requirements_register.html#GR-012">GR-012 in the Requirements Register</a>
+  </p>
+</footer>
+
+<script src="wip-download-widget.js"></script>
+</body>
+</html>
