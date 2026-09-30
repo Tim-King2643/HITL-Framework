@@ -19,7 +19,7 @@ window.REQUIREMENTS = [
   "source_doc": "Website Framework Review (Sept 2026)",
   "source_section": "Section 1, Overall Reaction",
   "distilled": "Extend the framework beyond “what changes” into “is the organization ready for that change”.",
-  "acceptance": "Every classified activity shows a readiness verdict next to its Progression Ceiling, drawn from all three Readiness Gate axes.",
+  "acceptance": "Every classified activity shows a readiness verdict next to its Progression Ceiling, drawn from all three Readiness Gate axes. GiGi's condition, with her approval (Sept 29, 2026): “the verdict should not become an unexplained single score. Once GR-012 and GR-037 are defined, I would want the user to be able to see what is driving the readiness result, what evidence supports it, and which readiness dimension is holding the activity back.” Approval covers the design concept; the verdict logic is pressure-tested once the instruments are built.",
   "raw": "The opportunity I keep seeing is to extend the framework from work transition into organizational readiness — whether people, leaders, roles, development paths and accountability structures are actually ready for that change.",
   "converged": "Role-level & Organizational-level axes",
   "spec_doc": "Working_Relationship_Progression_Methodology.docx",
@@ -33,7 +33,7 @@ window.REQUIREMENTS = [
    "summary": "The readiness verdict is adopted as the design. Nothing is built yet: it waits for the Readiness Gate's instruments (GR-012, GR-037)."
   },
   "decisions": [],
-  "log": "Section 5 names the axes and what they measure; neither has an instrument in this sandbox yet (see GR-012).",
+  "log": "Section 5 names the axes and what they measure; neither has an instrument in this sandbox yet (see GR-012).\n\nSept 29, 2026: GiGi approved the design with a condition — the verdict must not become an unexplained single score; users see what drives it, the evidence behind it, and which readiness dimension holds the activity back. Written into the acceptance criteria in her words, and carried into GR-012 and GR-037, the instruments the verdict draws on.",
   "legacy_status": "Designed"
  },
  {
@@ -320,7 +320,7 @@ window.REQUIREMENTS = [
   "source_doc": "Website Framework Review (Sept 2026)",
   "source_section": "Section 5, The Missing Layer: Human Operating Readiness",
   "distilled": "Build a Human Operating Readiness instrument across the 10 named dimensions, testing whether people/org can actually exercise the responsibility a role is given.",
-  "acceptance": "An instrument exists that scores all 10 readiness dimensions for a role, and it has been piloted on at least one real role.",
+  "acceptance": "An instrument exists that scores all 10 readiness dimensions for a role, and it has been piloted on at least one real role. Its results show which dimensions drive a role's readiness and the evidence behind each, so GR-001's verdict can show what is holding an activity back rather than a single score (GiGi's condition on GR-001, Sept 29, 2026).",
   "raw": "Human Readiness should test whether the person and organization can actually exercise the responsibility: role clarity, decision authority, capability and judgment, trust in AI, psychological safety, leadership readiness, change capacity, sustainable workload, accountability, career and development architecture.",
   "converged": "Role-level & Organizational-level axes",
   "spec_doc": "Working_Relationship_Progression_Methodology.docx",
@@ -329,7 +329,7 @@ window.REQUIREMENTS = [
   "next_action": "GiGi drafts the 10-dimension readiness instrument and picks a role to pilot it on.",
   "decision": null,
   "decisions": [],
-  "log": "This is the exact content gap behind Role-level/Organizational-level. Per Tim (Sept 15, 2026): the existing AI Transition Pathways self-assessment/TMI tool is explicitly NOT to be used to fill this — that's GiGi's separate lane. So this remains fully unserved. The Shock Wave Effect's own “Open Questions” (Manager and Team measurement) names an overlapping but distinct gap — no instrument built for either.",
+  "log": "This is the exact content gap behind Role-level/Organizational-level. Per Tim (Sept 15, 2026): the existing AI Transition Pathways self-assessment/TMI tool is explicitly NOT to be used to fill this — that's GiGi's separate lane. So this remains fully unserved. The Shock Wave Effect's own “Open Questions” (Manager and Team measurement) names an overlapping but distinct gap — no instrument built for either.\n\nSept 29, 2026: acceptance extended with GiGi's condition from her GR-001 approval — the instrument's results must show their drivers and evidence, since the readiness verdict beside each ceiling draws on them.",
   "legacy_status": "Open"
  },
  {
@@ -946,7 +946,7 @@ window.REQUIREMENTS = [
   "source_doc": "HITL Working Thoughts & Next Steps (Sept 2026)",
   "source_section": "Where Tim Can Keep Driving the Architecture",
   "distilled": "Define the evidence threshold(s) required before an activity's working relationship actually progresses, not just what technology makes possible.",
-  "acceptance": "Each step on the ramp has a defined evidence threshold that must be met before an activity advances.",
+  "acceptance": "Each step on the ramp has a defined evidence threshold that must be met before an activity advances. The evidence behind each threshold is recorded and visible, so GR-001's verdict can show what evidence supports it (GiGi's condition on GR-001, Sept 29, 2026).",
   "raw": "Defining what evidence would move an activity from one working relationship to another.",
   "converged": null,
   "spec_doc": "Working_Relationship_Progression_Methodology.docx",
@@ -955,7 +955,7 @@ window.REQUIREMENTS = [
   "next_action": "Define the technical/process readiness signal and the evidence each step on the ramp requires.",
   "decision": null,
   "decisions": [],
-  "log": "Tim has confirmed readiness should be an AND-gate (org-readiness self-assessment + a technical/process-readiness signal), and WRPM section 6 names a Per-Transition Evidence Ladder — but the technical/process-readiness signal itself doesn't exist anywhere in the framework yet. No instrument built.",
+  "log": "Tim has confirmed readiness should be an AND-gate (org-readiness self-assessment + a technical/process-readiness signal), and WRPM section 6 names a Per-Transition Evidence Ladder — but the technical/process-readiness signal itself doesn't exist anywhere in the framework yet. No instrument built.\n\nSept 29, 2026: acceptance extended with GiGi's condition from her GR-001 approval — the evidence behind each threshold must be visible, since the readiness verdict beside each ceiling draws on it.",
   "legacy_status": "Open"
  },
  {
