@@ -613,10 +613,10 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
     <div class="card lens-section" id="panel-gates" style="display:none">
       <div class="card-header">
         <h3>Readiness Gate &mdash; PCF 7.0</h3>
-        <span>Per Working_Relationship_Progression_Methodology.docx &sect;5 &mdash; an activity advances toward its Progression Ceiling only once all three independent axes clear, gated at L3 via its RACI Accountable role</span>
+        <span>Per Working_Relationship_Progression_Methodology.docx section 5 &mdash; an activity advances toward its Progression Ceiling only once all three independent axes clear, gated at L3 via its RACI Accountable role</span>
       </div>
       <div class="lens-empty" style="text-align:left;padding:14px 18px;border-bottom:1px solid var(--border);font-style:normal;">
-        <strong style="color:var(--navy-d);">None of the three axes has a real instrument yet.</strong> Technical/Process and Organizational-level have no instrument anywhere in the framework (per &sect;5/&sect;9). Role-level is meant to reuse the AI Transition Pathways self-assessment / TMI tier output, joined by this L3&rsquo;s Accountable role &mdash; but those per-role results haven&rsquo;t been ported into this sandbox yet. Every cell below is an honest blank, not a zero &mdash; this view exists to hold the shape of the gate, not to imply readiness has been measured.
+        <strong style="color:var(--navy-d);">None of the three axes has a working instrument in this sandbox yet.</strong> Technical/Process is the Per-Transition Evidence Ladder (the gates between ramp steps), with no measured evidence behind it yet. Role-level and Organizational-level readiness will come from GR-012, GiGi&rsquo;s Human Operating Readiness instrument, which groups its dimensions into role-level and organizational conditions; it is being pressure-tested by hand on the HRBP Manager grievance transition before anything is built here. Every cell below is an honest blank, not a zero &mdash; this view exists to hold the shape of the gate, not to imply readiness has been measured.
       </div>
       <div class="table-wrap">
         <table id="gates-main-table">
@@ -1892,14 +1892,13 @@ function toggleRoleRow(rowId) {
    Per Working_Relationship_Progression_Methodology.docx section 5 — an activity
    only advances toward its Progression Ceiling once THREE independent axes all
    clear: Technical/Process (per L4/leaf-L3, per transition), Role-level
-   (per role, via RACI Responsible touches — meant to reuse the AI
-   Transition Pathways self-assessment / TMI tier), and Organizational-
+   (per role, via RACI Responsible touches — to come from GR-012's
+   Human Operating Readiness instrument), and Organizational-
    level (domain/company-wide). Gated here at L3 via its RACI Accountable
    role, per Tim's Sept 14, 2026 confirmation. Technical/Process and
    Organizational-level have no instrument anywhere in the framework yet
-   (section 5/section 9); Role-level's source instrument exists (per the AI Transition
-   Pathways work) but its per-role numeric output hasn't been ported into
-   this sandbox. So all three axis cells are honest placeholders — never
+   (section 5/section 9); Role-level and Organizational-level readiness will
+   come from GR-012 once its manual pilots have tested it. So all three axis cells are honest placeholders — never
    a fabricated reading. Only the WR Rollup column is real, computed live
    from WR_DATA with the same l3WrCoverage() rule the People View
    Aggregation rollup uses. ─────────────────────────────────────────── */
@@ -2213,7 +2212,7 @@ function gatesInfoContent(code, key) {
     const gi = parseInt(key.slice(1), 10);
     return '<div class="gates-info-title">Gate: ' + GATE_TITLES[gi] + '</div>' +
       '<ul class="gates-req-list">' + GATE_EVIDENCE[gi].map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>' +
-      '<p class="wr-cf-note">This is the generic Evidence Ladder requirement for this transition type — the same for every activity crossing it, not specific to ' + code + '.</p>';
+      '<p class="wr-cf-note">This is the generic Evidence Ladder requirement for this transition type — the same for every activity crossing it, not specific to ' + code + '. It is the technical/process evidence only; role-level and organizational readiness are assessed separately (GR-012).</p>';
   }
   if (key.charAt(0) === 'n') {
     const ni = parseInt(key.slice(1), 10);
