@@ -145,6 +145,7 @@ details.fold[open] { padding-bottom: 6px; }
     <li><b>Sept 26&ndash;28:</b> the ramp itself shows the assessed state; the card carries only the Assess button.</li>
     <li><b>Sept 29:</b> an assessed activity&rsquo;s card also carries an ASSESSED chip (date and source role); Current % H rollups show ASSESSED, Assessed n/m or BASELINE instead of MODELED.</li>
     <li><b>Sept 29:</b> the source is recorded as a role (defaulting to the Accountable role) plus a reference for system, document and audit evidence; no individual&rsquo;s name is kept.</li>
+    <li><b>Sept 30:</b> each assessment records the reference it was made against, and is flagged when that activity&rsquo;s reference values change.</li>
     <li><b>Sept 29:</b> the Automation test is whether a flagged exception waits for a person; after-the-fact review is Automation. &ldquo;Audit or control test&rdquo; added as an evidence type.</li>
   </ul>
   <div class="b-label">Awaiting your decision</div>
@@ -171,6 +172,7 @@ details.fold[open] { padding-bottom: 6px; }
     <tr><td class="k">Source role</td><td>The role that provided or confirmed the answer &mdash; the activity&rsquo;s Accountable or Responsible roles, defaulting to the Accountable role, or another role (required). Roles, not people: no individual&rsquo;s name is recorded.</td></tr>
     <tr><td class="k">Reference</td><td>For system configuration, document, or audit or control test evidence: which system, document or audit.</td></tr>
     <tr><td class="k">Confidence, note</td><td>High, medium or low (required); a free note.</td></tr>
+    <tr><td class="k">Reference model</td><td>Stamped on save (Sept 30): the reference version and this activity&rsquo;s ceiling, Consequence of Error and ceiling factors at that moment. If any of them later change, the assessment is flagged &ldquo;reference changed&rdquo; for reassessment; its Current State is not changed.</td></tr>
     <tr><td class="k">History</td><td>Every earlier version is kept. &ldquo;Reset to baseline&rdquo; returns the activity to Human-only.</td></tr>
   </table>
   <p><strong>On the ramp.</strong> At or below the ceiling, a step is filled with its color once the Current State reaches it, grey until then. Above the ceiling every step stays grey: a stage-colored ring marks a step inside an approved override (dashed until reached), a red ring a step reached with no override. The lock stays after the reference ceiling.</p>

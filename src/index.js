@@ -742,8 +742,19 @@ async function handleOrgApi(request, env, url) {
     const confidence = CONFIDENCE.has(body.confidence) ? body.confidence : null;
     if (!evidenceType || !confidence) return json({ error: 'an assessment needs an evidence type and a confidence level' }, { status: 400 });
     const answers = Array.isArray(body.answers) ? body.answers.slice(0, 5).map(a => a === true || a === false ? a : null) : [];
+    // Stamp the reference the assessment was made against (Sept 30, 2026), so
+    // a later change to this activity's ceiling, Consequence of Error or
+    // ceiling factors can be flagged on the assessment, as overrides already
+    // are. If the reference can't be read, the assessment still saves,
+    // unstamped, rather than blocking the assessor.
+    let refStamp = {};
+    try {
+      const ref = await loadReference(env, request);
+      const refAct = ref.activities[code];
+      if (refAct) refStamp = { refVersion: ref.version, refSnapshot: { ceiling: refAct.ceiling, cons: refAct.cons, ceilingFactors: refAct.ceilingFactors || [] } };
+    } catch (e) { /* saved without a reference stamp */ }
     const rec = {
-      current, proposed, answers, overrideReason, evidenceType, confidence,
+      current, proposed, answers, overrideReason, evidenceType, confidence, ...refStamp,
       source: clip(body.source, ORG_MAX),
       sourceRole: clip(body.sourceRole, ORG_MAX),
       reference: clip(body.reference, ORG_MAX),

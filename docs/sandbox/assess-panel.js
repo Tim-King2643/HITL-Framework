@@ -289,7 +289,8 @@
         '<dt>Consequence of Error</dt><dd>' + consHtml(w) + '</dd>' +
         '<dt>Progression Ceiling</dt><dd>' + chip(w.ceiling) + (factors ? '<ul>' + factors + '</ul>' : '') + (w.ceilingNote ? '<div style="color:#555;margin-top:4px">' + esc(w.ceilingNote) + '</div>' : '') +
           (ov ? '<div class="ovr"><strong>Overridden to ' + esc(ov.level) + '</strong> for ' + esc(o.org.name) + ' &mdash; last reviewed ' + ago(ov.lastReviewedAt || ov.approvedAt) + (refChanged(ov) ? ' &middot; <strong style="color:#991B1B">re-review needed</strong>' : '') + '</div>' : '') + '</dd>' +
-        '<dt>Current State</dt><dd>' + chip(rec && rec.current) + (rec && rec.current ? ' <span style="color:#6B7A90">' + esc(rec.sourceRole || 'role not recorded') + ', ' + new Date(rec.assessedAt).toLocaleDateString() + '</span>' : ' <span style="color:#6B7A90">reads as the Human-only baseline</span>') + '</dd>' +
+        '<dt>Current State</dt><dd>' + chip(rec && rec.current) + (rec && rec.current ? ' <span style="color:#6B7A90">' + esc(rec.sourceRole || 'role not recorded') + ', ' + new Date(rec.assessedAt).toLocaleDateString() + '</span>' : ' <span style="color:#6B7A90">reads as the Human-only baseline</span>') +
+          (rec && rec.current && rec.refSnapshot && refChanged(rec) ? '<div class="warn" style="margin-top:6px"><strong>Reference changed since assessed.</strong> This activity&rsquo;s ceiling, Consequence of Error or ceiling factors have changed in the reference since this assessment was saved. Reassess to confirm the Current State still holds.</div>' : '') + '</dd>' +
         '</dl>';
       html += '<div class="sec"><h4>How is this activity done in ' + esc(o.org.name) + '?</h4>';
       st.path.forEach(function (qi) {

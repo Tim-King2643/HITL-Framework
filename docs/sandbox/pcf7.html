@@ -196,6 +196,7 @@ td:first-child { text-align: left; }
 .as-src { position: relative; display: inline-flex; align-items: center; margin-right: 10px; padding-top: 3px; }
 .as-src .wr-prov { cursor: pointer; }
 .as-src .wr-cons-pop.as-src-pop { position: absolute; top: 100%; right: 0; left: auto; z-index: 6; width: 320px; white-space: normal; font-size: 11px; font-family: 'DM Sans', sans-serif; letter-spacing: normal; text-transform: none; text-align: left; }
+.as-ref-flag, .as-ref-mark { color: #991B1B; font-weight: 700; }
 .as-src-dl { display: grid; grid-template-columns: 92px 1fr; gap: 4px 10px; margin: 0; font-size: 11px; }
 /* The popover's × sits inside .assess-ctl, whose button rule would otherwise restyle it */
 .assess-ctl .as-src .gates-info-close { min-width: 0; width: 18px; height: 18px; padding: 0; border: 0; background: transparent; font-size: 15px; font-weight: 400; color: var(--lgray); }
@@ -647,7 +648,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
 
 <script src="sandbox-notes-widget.js"></script>
 <script src="org-context.js?v=20260929b"></script>
-<script src="assess-panel.js?v=20260929g"></script>
+<script src="assess-panel.js?v=20260930a"></script>
 <script src="../wip/changelog-data.js"></script>
 <script>
 /* ── Real PCF 7.0 data, extracted from the live dashboard ────────────── */
@@ -1622,6 +1623,24 @@ function fmtAssessDateShort(ms) {
 // Assessments show the role behind them, never a person's name (Tim, Sept 29).
 // Records saved before Source role existed have none; they say so rather
 // than fall back to the signed-in name or the old free-text source.
+// Has the reference changed for this activity since it was assessed?
+// (Sept 30, 2026.) Assessments saved since then carry the reference
+// snapshot they were made against; earlier ones carry none and return null.
+function assessRefChanged(code, r) {
+  if (!r || !r.refSnapshot) return null;
+  const w = WR_DATA[code]; if (!w) return null;
+  const s = r.refSnapshot;
+  const f = a => (a || []).slice().sort().join();
+  return s.ceiling !== w.ceiling || s.cons !== w.cons || f(s.ceilingFactors) !== f(w.ceilingFactors);
+}
+function assessRefChangeText(code, r) {
+  const s = r.refSnapshot, w = WR_DATA[code], parts = [];
+  if (s.ceiling !== w.ceiling) parts.push('ceiling ' + s.ceiling + ' &rarr; ' + w.ceiling);
+  if (s.cons !== w.cons) parts.push('Consequence of Error ' + s.cons + ' &rarr; ' + w.cons);
+  const f = a => (a || []).slice().sort().join();
+  if (f(s.ceilingFactors) !== f(w.ceilingFactors)) parts.push('ceiling factors');
+  return parts.join('; ');
+}
 function assessRole(r) { return r && r.sourceRole ? r.sourceRole : 'role not recorded'; }
 function escHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function orgActive() { return !!(typeof ACTIVE_ORG !== 'undefined' && ACTIVE_ORG && !ACTIVE_ORG.reference); }
@@ -1646,7 +1665,7 @@ function hpctSource(l3s, field) {
       ' been assessed for ' + orgName + ' yet, so ' + (total === 1 ? 'it reads' : 'they all read') + ' as the Human-only baseline. Open an activity and choose Assess to set its Current State.</p>' };
   }
   const items = done.slice(0, HPCT_SRC_LIST_MAX).map(x =>
-    '<li><b>' + x.code + '</b> ' + escHtml(x.rec.current) + ' &mdash; ' + escHtml(assessRole(x.rec)) + ', ' + fmtAssessDate(x.rec.assessedAt) + '</li>').join('');
+    '<li><b>' + x.code + '</b> ' + escHtml(x.rec.current) + ' &mdash; ' + escHtml(assessRole(x.rec)) + ', ' + fmtAssessDate(x.rec.assessedAt) + (assessRefChanged(x.code, x.rec) ? ' &middot; <span class="as-ref-mark">reference changed</span>' : '') + '</li>').join('');
   const more = n > HPCT_SRC_LIST_MAX ? '<li>&hellip; and ' + (n - HPCT_SRC_LIST_MAX) + ' more</li>' : '';
   const html =
     '<div class="gates-info-label">Assessed for ' + orgName + ' &mdash; ' + n + ' of ' + total + '</div>' +
@@ -2649,6 +2668,12 @@ const ASSESS_EVIDENCE_LABEL = { observed: 'Observed practice', system: 'System c
 function assessedChipHtml(code, r) {
   if (!r || !r.current) return '';
   const who = escHtml(assessRole(r));
+  const changed = assessRefChanged(code, r);
+  const refRow = !r.refSnapshot
+    ? '<span style="color:var(--lgray)">not recorded (assessed before Sept 30, 2026)</span>'
+    : (changed
+      ? '<span class="as-ref-flag">Changed since assessed</span> &mdash; ' + assessRefChangeText(code, r) + '. Reassess to confirm this Current State still holds.'
+      : 'Unchanged since assessed' + (r.refVersion ? ' <span style="color:var(--lgray)">(version ' + escHtml(r.refVersion) + ')</span>' : ''));
   const cat = WR_CATS[r.current];
   const catBadge = '<span style="display:inline-block;font-size:10px;font-weight:600;border-radius:3px;padding:1px 6px;color:#fff;background:' + ((cat && cat.color) || '#888') + '">' + escHtml(r.current) + '</span>';
   const rows = [
@@ -2658,11 +2683,12 @@ function assessedChipHtml(code, r) {
     r.evidenceType ? ['Evidence', escHtml(ASSESS_EVIDENCE_LABEL[r.evidenceType] || r.evidenceType)] : null,
     r.confidence ? ['Confidence', escHtml(r.confidence.charAt(0).toUpperCase() + r.confidence.slice(1))] : null,
     r.reference ? ['Reference', escHtml(r.reference)] : null,
-    r.note ? ['Note', escHtml(r.note)] : null
+    r.note ? ['Note', escHtml(r.note)] : null,
+    ['Reference model', refRow]
   ].filter(Boolean).map(x => '<dt>' + x[0] + '</dt><dd>' + x[1] + '</dd>').join('');
   const hist = (r.history && r.history.length) ? '<p class="gates-info-def" style="margin-top:8px">Reassessed ' + r.history.length + ' time' + (r.history.length === 1 ? '' : 's') + ' before; the full history is in the Assess panel.</p>' : '';
   return '<span class="as-src">' +
-    '<span class="wr-prov wr-prov-assessed" role="button" tabindex="0" title="Assessed with ' + who + ', ' + fmtAssessDate(r.assessedAt) + '" onclick="toggleFactorPop(event, this)" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleFactorPop(event, this);}">Assessed ' + fmtAssessDateShort(r.assessedAt) + ' &middot; ' + who + '</span>' +
+    '<span class="wr-prov wr-prov-assessed" role="button" tabindex="0" title="Assessed with ' + who + ', ' + fmtAssessDate(r.assessedAt) + '" onclick="toggleFactorPop(event, this)" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleFactorPop(event, this);}">Assessed ' + fmtAssessDateShort(r.assessedAt) + ' &middot; ' + who + (changed ? ' &middot; <span class="as-ref-mark">reference changed</span>' : '') + '</span>' +
     '<div class="wr-cons-pop as-src-pop" onclick="event.stopPropagation()"><button type="button" class="gates-info-close" onclick="closeFactorPop(event, this)" aria-label="Close">&times;</button>' +
       '<div class="gates-info-title">Assessed for ' + escHtml(ACTIVE_ORG.name) + '</div>' +
       '<dl class="as-src-dl">' + rows + '</dl>' + hist +
@@ -2747,13 +2773,14 @@ function xrUnits() {
   return out;
 }
 function xrItems() {
-  const items = { proposal: [], override: [], past: [] };
+  const items = { proposal: [], override: [], past: [], recheck: [] };
   xrUnits().forEach(u => {
     const w = WR_DATA[u.code] || {};
     const r = ORG_RECORDS[u.code];
     const ov = ORG_OVERRIDES[u.code];
     if (r && r.current && r.proposed && r.current !== r.proposed) items.proposal.push({ u, w, r });
     if (ov && ov.level) items.override.push({ u, w, ov });
+    if (r && r.current && assessRefChanged(u.code, r)) items.recheck.push({ u, w, r });
     if (r && r.current) {
       const lim = Math.max(XR_RAMP.indexOf(w.ceiling), ov && ov.level ? XR_RAMP.indexOf(ov.level) : -1);
       if (XR_RAMP.indexOf(r.current) > lim) items.past.push({ u, w, r });
@@ -2807,16 +2834,16 @@ function renderExceptionsReport() {
   const count = (list, g) => list.filter(it => it.u.g === g).length;
   const n = (v) => v ? String(v) : '<span class="xr-zero">0</span>';
   h += '<div class="xr-h">Summary</div>' +
-    '<table class="xr-t xr-sum"><thead><tr><th>Process group</th><th class="xr-num">Assessed</th><th class="xr-num">Proposal changes</th><th class="xr-num">Ceiling overrides</th><th class="xr-num">Past ceiling, no override</th></tr></thead><tbody>';
+    '<table class="xr-t xr-sum"><thead><tr><th>Process group</th><th class="xr-num">Assessed</th><th class="xr-num">Proposal changes</th><th class="xr-num">Ceiling overrides</th><th class="xr-num">Past ceiling, no override</th><th class="xr-num">Reference changed</th></tr></thead><tbody>';
   cat.groups.forEach(g => {
     const gUnits = units.filter(u => u.g === g);
     const ga = gUnits.filter(u => orgRecord(u.code)).length;
     h += '<tr><td><span class="xr-code">' + g.code + '</span>' + escHtml(g.name) + '</td>' +
       '<td class="xr-num">' + (ga ? ga + ' of ' + gUnits.length : '<span class="xr-zero">0 of ' + gUnits.length + '</span>') + '</td>' +
-      '<td class="xr-num">' + n(count(items.proposal, g)) + '</td><td class="xr-num">' + n(count(items.override, g)) + '</td><td class="xr-num">' + n(count(items.past, g)) + '</td></tr>';
+      '<td class="xr-num">' + n(count(items.proposal, g)) + '</td><td class="xr-num">' + n(count(items.override, g)) + '</td><td class="xr-num">' + n(count(items.past, g)) + '</td><td class="xr-num">' + n(count(items.recheck, g)) + '</td></tr>';
   });
   h += '<tr class="xr-l1"><td><span class="xr-code">' + cat.code + '</span>' + escHtml(cat.name) + ' &mdash; category</td><td class="xr-num">' + assessed + ' of ' + units.length + '</td>' +
-    '<td class="xr-num">' + items.proposal.length + '</td><td class="xr-num">' + items.override.length + '</td><td class="xr-num">' + items.past.length + '</td></tr></tbody></table>';
+    '<td class="xr-num">' + items.proposal.length + '</td><td class="xr-num">' + items.override.length + '</td><td class="xr-num">' + items.past.length + '</td><td class="xr-num">' + items.recheck.length + '</td></tr></tbody></table>';
 
   // 1. Proposal changes
   h += '<div class="xr-h">1. Proposal changes <span class="xr-n">' + items.proposal.length + '</span></div>' +
@@ -2859,6 +2886,19 @@ function renderExceptionsReport() {
         '<td style="white-space:nowrap">' + xrCat(it.w.ceiling) + '<span class="xr-arrow">&rarr;</span>' + xrCat(it.r.current) + '</td>' +
         '<td>' + xrCons(it.w.cons) + '</td>' +
         '<td>' + (XR_OVERRIDE_CONS[it.w.cons] ? 'Override possible, with evidence that a ceiling factor no longer holds' : '<span class="xr-flag">Not overridable</span> &mdash; bring the work back within the ceiling') + '</td>' +
+        '<td class="xr-sub">' + escHtml(assessRole(it.r)) + '<br>' + fmtAssessDate(it.r.assessedAt) + '</td><td></td>') +
+      '</tbody></table>'
+    : '<div class="xr-empty" style="padding:6px 0">None.</div>';
+
+  // 4. Reference changed since assessed
+  h += '<div class="xr-h">4. Reference changed since assessed <span class="xr-n">' + items.recheck.length + '</span></div>' +
+    '<p class="xr-def">The activity&rsquo;s Progression Ceiling, Consequence of Error or ceiling factors changed in the reference after it was assessed. The assessed Current State is unchanged; reassess to confirm it still holds. Assessments saved before September 30, 2026 carry no reference record and cannot be checked.</p>';
+  h += items.recheck.length
+    ? '<table class="xr-t"><thead><tr><th>Activity</th><th>What changed</th><th>Assessed Current State</th><th>Source role &middot; date</th><th class="xr-num">Count</th></tr></thead><tbody>' +
+      xrSectionRows(items.recheck, 5, it =>
+        xrActCell(it) +
+        '<td>' + assessRefChangeText(it.u.code, it.r) + '</td>' +
+        '<td>' + xrCat(it.r.current) + '</td>' +
         '<td class="xr-sub">' + escHtml(assessRole(it.r)) + '<br>' + fmtAssessDate(it.r.assessedAt) + '</td><td></td>') +
       '</tbody></table>'
     : '<div class="xr-empty" style="padding:6px 0">None.</div>';
