@@ -197,5 +197,44 @@ const CHANGE_LOG = [
     "source": "Tim, Sept 29, 2026: write section references out as \u201csection\u201d rather than the \u00a7 sign, across the register, specs and sandbox.",
     "reason": "Readability. The note sits on a working-relationship data line, so the changelog check requires an entry even for a wording change.",
     "verified": "7.2.1.1's Progression Ceiling, Current State, Consequence of Error and ceiling factors are unchanged; only the note's wording differs. reference-wr.json is unaffected."
+  },
+  {
+    "id": "CL-011",
+    "date": "2026-09-30",
+    "requestedBy": "Tim",
+    "kind": "wr-factor",
+    "target": {
+      "domain": "7.0",
+      "activity": "7.4.4"
+    },
+    "summary": "7.4.4's ceiling factors no longer include “Already at Top of Ramp”, and its ceiling note no longer refers to the M1–M5 maturity curve.",
+    "from": "Factors: Standing Legal / Fiduciary Duty, Relational / Emotional Stakes, Human Judgment Floor, Already at Top of Ramp. Note opened: “Already at its human-side ceiling. The Accountable role (HRBP Manager) never changes across the real M1→M5 curve (95%→68%) — the mirror case to an activity already at Automation with no further runway.”",
+    "to": "Factors: Standing Legal / Fiduciary Duty, Relational / Emotional Stakes, Human Judgment Floor. Note opens at “Grievances routinely stem from CBA violations or protected-activity retaliation…”, the rest unchanged.",
+    "files": [
+      "docs/sandbox/pcf7.html",
+      "docs/sandbox/reference-wr.json"
+    ],
+    "source": "Tim, Sept 30, 2026, reviewing 7.4.4's ceiling panel after the grievance pilot pack flagged the factor: remove the M1–M5 maturity references, and remove Already at Top of Ramp if it is incorrect.",
+    "reason": "Already at Top of Ramp describes an activity whose ceiling is Automation, with no further runway; 7.4.4's ceiling is Judgment. It was the only one of the 35 activities carrying that factor without an Automation ceiling. The M1–M5 maturity model was retired (Sept 25, 2026: Current State and Progression Ceiling only), and the sentence restated the old model rather than a reason for the ceiling. The three remaining factors are what hold the ceiling at Judgment.",
+    "verified": "7.4.4's Progression Ceiling (Judgment), Current State and Consequence of Error (Critical) are unchanged. reference-wr.json regenerated with scripts/build-reference-wr.mjs; 7.4.4 remains not overridable (Critical), so no ceiling override is affected."
+  },
+  {
+    "id": "CL-012",
+    "date": "2026-09-30",
+    "requestedBy": "Tim",
+    "kind": "wr-note",
+    "target": {
+      "domain": "7.0",
+      "activity": "7.1.2.1, 7.1.2.5, 7.1.2.11, 7.2.3.2, 7.4.5, 7.5.3.1"
+    },
+    "summary": "Wording only: six ceiling notes now say “not a temporary gap” instead of “not a maturity gap”.",
+    "from": "…the ceiling, not a maturity gap.",
+    "to": "…the ceiling, not a temporary gap.",
+    "files": [
+      "docs/sandbox/pcf7.html"
+    ],
+    "source": "Tim, Sept 30, 2026, after CL-011: remove the retired maturity vocabulary from the ceiling notes.",
+    "reason": "The maturity model (M1–M5) was retired on Sept 25, 2026 in favour of Current State and Progression Ceiling. The phrase meant a real ceiling rather than a temporary shortfall; the new wording says that without the retired term.",
+    "verified": "Ceilings, Current State, Consequence of Error and ceiling factors of all six activities are unchanged; only the note wording differs. reference-wr.json does not carry notes and is unaffected."
   }
 ];
