@@ -648,7 +648,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
 
 <script src="sandbox-notes-widget.js"></script>
 <script src="org-context.js?v=20260929b"></script>
-<script src="assess-panel.js?v=20260930b"></script>
+<script src="assess-panel.js?v=20261001a"></script>
 <script src="../wip/changelog-data.js"></script>
 <script>
 /* ── Real PCF 7.0 data, extracted from the live dashboard ────────────── */
@@ -2703,11 +2703,32 @@ function activityContext(code) {
   }));
   return found;
 }
+// Systems of record for an activity, from the work-product (CRUD) data:
+// the activity's own confirmed links where they exist, otherwise its
+// process's. Writers (create/update) first, then readers. (Oct 1, 2026.)
+function systemsOfRecord(code, l3) {
+  const out = [];
+  const add = s => { if (s && out.indexOf(s) === -1) out.push(s); };
+  const a = ACTIVITY_CRUD[code];
+  if (a) {
+    ['create', 'update', 'delete', 'read'].forEach(op => (a[op] || []).forEach(id => add(WP_BY_ID[id] && WP_BY_ID[id].system)));
+    if (out.length) return { systems: out, scope: 'activity' };
+  }
+  const c = l3 && l3.crud;
+  if (c && typeof c === 'object') {
+    ['create', 'update', 'delete', 'read'].forEach(op => (c[op] || []).forEach(label => {
+      const i = String(label).indexOf(' (');
+      if (i > -1 && label.slice(-1) === ')') add(label.slice(i + 2, -1));
+    }));
+  }
+  return { systems: out, scope: 'process' };
+}
 function openAssess(code) {
   if (!ACTIVE_ORG || ACTIVE_ORG.reference || !window.AssessPanel) return;
   const ctx = activityContext(code);
   const w = WR_DATA[code];
   const cfLabels = {}; CEILING_FACTORS.forEach(f => { cfLabels[f.key] = f.label; });
+  const sor = systemsOfRecord(code, ctx ? ctx.l3 : null);
   AssessPanel.open({
     org: ACTIVE_ORG, code: code, name: ctx ? ctx.name : code,
     process: ctx ? ctx.l3.code + ' ' + ctx.l3.name : '',
@@ -2717,6 +2738,7 @@ function openAssess(code) {
     record: ORG_RECORDS[code] || null,
     override: ORG_OVERRIDES[code] || null,
     defs: STEP_DEFINITIONS, cats: WR_CATS, cfLabels: cfLabels, consLabels: CONS_FACTORS, consColor: CONS_COLOR,
+    systems: sor.systems, systemsScope: sor.scope,
     canEdit: !!OrgContext.reviewer(),
     onSaved: function (rec) {
       ORG_RECORDS[code] = rec;

@@ -21,6 +21,7 @@
 //   org, code, name, process, A, R,        // activity and its roles
 //   ref: { ceiling, cons, consFactors, consNote, ceilingFactors, ceilingNote },
 //   record, override, defs, cats, cfLabels, consLabels, consColor, canEdit,
+//   systems, systemsScope,                  // systems of record for the Reference hint
 //   onSaved(record),                        // after a save or a reset
 //   onOverrideSaved(override)               // after an override is saved or removed
 // })
@@ -84,6 +85,7 @@
       '.ap select,.ap input[type=text],.ap textarea{font:inherit;font-size:13px;width:100%;box-sizing:border-box;padding:7px 9px;border:1px solid #C6D8EE;border-radius:6px;background:#fff;}' +
       '.ap textarea{min-height:60px;resize:vertical;}' +
       '.ap [hidden]{display:none !important;}' +
+      '.ap .ref-hint{font-size:11.5px;color:#6B7A90;margin-top:4px;}' +
       '.ap .radios{display:flex;gap:14px;font-size:13px;}' +
       '.ap .radios label{font-weight:400;margin:0;display:inline;}' +
       '.ap .warn{margin-top:10px;padding:9px 12px;border-radius:6px;background:#FEE2E2;border:1px solid #F5B5B5;color:#7F1D1D;font-size:12.5px;line-height:1.5;}' +
@@ -259,6 +261,18 @@
     // role — plus a Reference for system, document and audit evidence. Roles,
     // not people: no individual's name is recorded. An earlier free-text
     // source opens under Other.
+    // The Reference hint names this activity's systems of record, from the
+    // framework's work-product (CRUD) data: the activity's own where it is
+    // confirmed, otherwise its process's (Tim, Oct 1, 2026). Generic
+    // categories, never vendors.
+    function refPlaceholder(ev) {
+      if (ev === 'system' && o.systems && o.systems.length) return 'Which system and where in it (e.g. ' + o.systems[0] + ')';
+      return REF_EVIDENCE[ev] || '';
+    }
+    function refHint(ev) {
+      if (ev !== 'system' || !o.systems || !o.systems.length) return '';
+      return 'Systems of record for this ' + (o.systemsScope === 'activity' ? 'activity' : 'process') + ': ' + o.systems.join(', ') + '.';
+    }
     function sourceFieldsHtml(dis) {
       var roles = [];
       o.A.forEach(function (r) { if (r && roles.indexOf(r) === -1) roles.push(r); });
@@ -274,7 +288,8 @@
       return '<label for="ap-srole">Source role (who provided or confirmed it)</label><select id="ap-srole"' + dis + '>' + opts + '</select>' +
         '<input type="text" autocomplete="off" id="ap-srole-other" placeholder="Role" value="' + esc(other) + '"' + (isOther ? '' : ' hidden') + dis + ' style="margin-top:6px">' +
         '<div id="ap-ref-wrap"' + (REF_EVIDENCE[ev] ? '' : ' hidden') + '><label for="ap-ref">Reference</label>' +
-        '<input type="text" autocomplete="off" id="ap-ref" placeholder="' + esc(REF_EVIDENCE[ev] || '') + '" value="' + esc(rec && rec.reference || '') + '"' + dis + '></div>';
+        '<input type="text" autocomplete="off" id="ap-ref" placeholder="' + esc(refPlaceholder(ev)) + '" value="' + esc(rec && rec.reference || '') + '"' + dis + '>' +
+        '<div class="ref-hint" id="ap-ref-hint"' + (refHint(ev) ? '' : ' hidden') + '>' + esc(refHint(ev)) + '</div></div>';
     }
 
     function draw() {
@@ -362,7 +377,12 @@
       var srole = el.querySelector('#ap-srole'), sother = el.querySelector('#ap-srole-other');
       srole.onchange = function () { sother.hidden = srole.value !== '__other__'; if (!sother.hidden) sother.focus(); };
       var evSel = el.querySelector('#ap-evidence'), refWrap = el.querySelector('#ap-ref-wrap'), refIn = el.querySelector('#ap-ref');
-      evSel.addEventListener('change', function () { refWrap.hidden = !REF_EVIDENCE[evSel.value]; refIn.placeholder = REF_EVIDENCE[evSel.value] || ''; });
+      var refHintEl = el.querySelector('#ap-ref-hint');
+      evSel.addEventListener('change', function () {
+        refWrap.hidden = !REF_EVIDENCE[evSel.value];
+        refIn.placeholder = refPlaceholder(evSel.value);
+        var h = refHint(evSel.value); refHintEl.textContent = h; refHintEl.hidden = !h;
+      });
       var save = el.querySelector('#ap-save');
       if (save) save.onclick = function () {
         var conf = el.querySelector('input[name="ap-conf"]:checked');
