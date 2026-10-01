@@ -647,7 +647,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
 </div>
 
 <script src="sandbox-notes-widget.js"></script>
-<script src="org-context.js?v=20260929b"></script>
+<script src="org-context.js?v=20261001a"></script>
 <script src="assess-panel.js?v=20261001a"></script>
 <script src="../wip/changelog-data.js"></script>
 <script>
@@ -2527,7 +2527,29 @@ function setL3Expanded(code, expanded) {
 function toggleGroup(code, el) { setGroupExpanded(code, el.classList.contains('collapsed')); }
 function toggleL3(code, el) { setL3Expanded(code, el.classList.contains('collapsed')); }
 
-function setView(v) {
+// Each view gets its own browser-history entry (?view=…), so the Back
+// button steps back through the views visited before it leaves the page
+// (Tim, Oct 1, 2026). Working Relationship is the default and carries no
+// parameter. The organization's ?org= is kept alongside.
+const VIEW_KEYS = ['wr', 'raci', 'data', 'people', 'gates', 'report'];
+function viewFromUrl() {
+  const v = new URLSearchParams(location.search).get('view');
+  return VIEW_KEYS.indexOf(v) !== -1 ? v : 'wr';
+}
+function syncViewToUrl(v, replace) {
+  if (viewFromUrl() === v) return;
+  const u = new URL(location.href);
+  if (v === 'wr') u.searchParams.delete('view'); else u.searchParams.set('view', v);
+  if (replace) history.replaceState(null, '', u.toString());
+  else history.pushState({ view: v }, '', u.toString());
+}
+window.addEventListener('popstate', function () {
+  const v = viewFromUrl();
+  if (v !== currentView) setView(v, { fromHistory: true });
+});
+function setView(v, opts) {
+  if (VIEW_KEYS.indexOf(v) === -1) v = 'wr';
+  if (!(opts && opts.fromHistory)) syncViewToUrl(v, opts && opts.replace);
   currentView = v;
   ['wr', 'raci', 'data', 'people', 'gates', 'report'].forEach(name => {
     const btn = document.getElementById('btn-' + name);
@@ -2583,7 +2605,7 @@ renderRaciTable(cat);
 renderCrudTable(cat);
 renderRoleImpactTable(cat);
 renderGatesTable(cat);
-setView('wr');
+setView(viewFromUrl(), { replace: true });
 
 // ── Organization context (GR-052 / GR-053) ─────────────────────────────────
 // The sandbox always works "as" one organization. The Reference Model is the
@@ -2606,12 +2628,7 @@ function rerenderAllViews() {
 }
 function orgBanner(org, assessed) {
   const el = document.getElementById('org-banner');
-  // Keep the selector's count in step with saves made on this page.
-  if (org && !org.reference) {
-    org.assessedCount = assessed;
-    const opt = document.querySelector('#orgsel-select option[value="' + org.id + '"]');
-    if (opt) opt.textContent = org.name + (org.test ? ' · TEST' : '') + ' · ' + assessed + ' assessed';
-  }
+  if (org && !org.reference) org.assessedCount = assessed;
   el.classList.toggle('org-banner-test', !!(org && org.test));
   if (!org || org.reference) {
     el.innerHTML = OrgContext.chip(OrgContext.REFERENCE) + ' <strong>Reference Model</strong> &mdash; describes the work, not any organization. Every activity starts at the Human-only baseline; its Progression Ceiling is how far AI may take it. Choose or create an organization above to assess where it stands.';

@@ -99,7 +99,9 @@
 
   function orgLabel(o) {
     if (o.reference) return o.name + ' (default)';
-    return o.name + (o.test ? ' · TEST' : '') + ' · ' + (o.assessedCount || 0) + ' assessed';
+    // Name only (Tim, Oct 1, 2026): counts are on the page's own badges, and
+    // test data is marked by the banner's TEST DATA chip.
+    return o.name;
   }
 
   function openNewOrg(onCreated) {
