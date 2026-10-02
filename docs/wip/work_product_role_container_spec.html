@@ -146,7 +146,8 @@ details.fold[open] { padding-bottom: 6px; }
   <ul>
     <li><b>Sept 25:</b> a work product takes its production mode from the activity that produces it; with several producers, the one furthest along the ramp is shown and named. Derived each time it is shown, never stored.</li>
     <li><b>Sept 26:</b> create, read, update and delete are recorded per activity, reasoned from the activity itself, not inherited from the process; a process&rsquo;s CRUD is then derived from its activities.</li>
-    <li><b>Sept 26:</b> the work-product catalog is master data (39 entries), and the HRBP Manager&rsquo;s 23 activities have their own CRUD (CL-007).</li>
+    <li><b>Sept 26:</b> the work-product catalog is master data, and the HRBP Manager&rsquo;s 23 activities have their own CRUD (CL-007).</li>
+    <li><b>Oct 2:</b> every other activity has its own CRUD too (CL-014): all 118 activities, 49 work products.</li>
   </ul>
   <div class="b-label">Awaiting your decision</div>
   <div data-decision-for="GR-046"></div>
@@ -169,15 +170,16 @@ details.fold[open] { padding-bottom: 6px; }
     <tr><td class="k">Pays twice</td><td>A role Accountable both where a work product is produced and where it is used.</td></tr>
     <tr><td class="k">Redefinition threshold</td><td>The share of a role&rsquo;s work products at Agent-delegation or Automation past which the role itself needs redefining.</td></tr>
   </table>
-  <p><strong>Rules.</strong> Production mode is derived from the producing activity each time it is shown, so one classification change, logged once, updates every work product it produces. An unclassified producer or an undecided ceiling shows as a gap, never as human-only. A read is a <em>verification point</em> when the producer is at Augmentation or further, and the reader is at Judgment or Oversight or carries a High or Critical Consequence of Error (proposed).</p>
+  <p><strong>Rules.</strong> Production mode is derived from the producing activity each time it is shown, so one classification change, logged once, updates every work product it produces. An unclassified producer or an undecided ceiling shows as a gap, never as human-only. A read or update is a <em>verification point</em> when another producer is at Augmentation or further, and the reader is at Judgment or Oversight or carries a High or Critical Consequence of Error (proposed).</p>
   <p><strong>Reference and organization.</strong> In the Reference Model every Current State is Human-only, so production mode and verification load are read at the Progression Ceiling: where checks would fall at full progression. With an organization selected they are read from its assessed Current State: where checks fall today (the rule in the <a href="reference_model_assessment_layer_spec.html">reference model</a> spec).</p>
   <p><strong>What a role shows</strong>, in an expandable panel under it in the People View: <em>Produces</em>, <em>Relied on by</em>, <em>Must verify</em>, and its verification load with the pays-twice marker. Every derived count carries the MODELED chip.</p>
 
   <h2>3. What is built</h2>
   <ul class="plain">
-    <li>The <a href="work_product_catalog.html">work-product catalog</a>: 39 entries, generic systems of record, master data in the sandbox.</li>
-    <li>Activity-level CRUD for the HRBP Manager&rsquo;s 11 processes (23 activities), with those processes&rsquo; CRUD derived from them; the Data View shows each activity&rsquo;s own CRUD (<a href="activity_crud_hrbp_manager.html">HRBP Manager CRUD</a>).</li>
-    <li><strong>Not yet:</strong> activity-level CRUD for the other roles; the role panel, work-product chips, trace view and verification-load indicator.</li>
+    <li>The <a href="work_product_catalog.html">work-product catalog</a>: 49 entries, generic systems of record, master data in the sandbox.</li>
+    <li>Activity-level CRUD for all 118 activities, with every process&rsquo;s CRUD derived from its activities; the Data View shows each activity&rsquo;s own CRUD (<a href="activity_crud_hrbp_manager.html">HRBP Manager</a>, <a href="activity_crud_remaining_roles.html">remaining roles</a>).</li>
+    <li><strong>Oct 2:</strong> the role panel and verification-load indicator (B1, B5) in the People View. Each role shows its verification load and pays-twice count under its name; opened, it shows <em>Produces</em>, <em>Relied on by</em> and <em>Must verify</em>, naming the producing activity and where each check falls. It uses the proposed verification-point rule, reads the ceiling in the Reference Model and the assessed Current State for an organization, and lists an unassessed producer as not yet known.</li>
+    <li><strong>Not yet:</strong> work-product chips on activity cards, the trace view, and the role-level redefinition flag.</li>
   </ul>
 
   <h2>4. Open questions</h2>
@@ -191,23 +193,29 @@ details.fold[open] { padding-bottom: 6px; }
     <table>
       <tr><th style="width:30%">Item</th><th>Status</th></tr>
       <tr><td class="k">Work-product catalog</td><td>Built; definitions to confirm (GR-050)</td></tr>
-      <tr><td class="k">Activity-level CRUD</td><td>HRBP Manager done; next HRIS Analyst and HR Generalist</td></tr>
+      <tr><td class="k">Activity-level CRUD</td><td>Done for all 118 activities (CL-007, CL-014)</td></tr>
       <tr><td class="k">Consumer links</td><td>For every read: the reader&rsquo;s Accountable role, working relationship and Consequence of Error</td></tr>
       <tr><td class="k">Master-data governance</td><td>Catalog and CRUD edited in the sandbox first, logged in the changelog, covered by the CI check</td></tr>
-      <tr><td class="k">Role panel and verification-load indicator</td><td>In the People View; buildable on today&rsquo;s data, more precise as activity-level CRUD lands</td></tr>
-      <tr><td class="k">Work-product chip, activity-card list, trace view</td><td>Need activity-level CRUD</td></tr>
+      <tr><td class="k">Role panel and verification-load indicator</td><td>Built Oct 2 in the People View</td></tr>
+      <tr><td class="k">Work-product chip, activity-card list, trace view</td><td>Next; buildable now that activity-level CRUD is complete</td></tr>
       <tr><td class="k">Role-level redefinition flag</td><td>Needs the threshold value</td></tr>
     </table>
   </details>
   <details class="fold">
-    <summary>Reference: first pilot figures (to be recomputed)</summary>
-    <p class="small">Computed Sept 25&ndash;26 against the modeled Current State values that were retired when the reference was reset to Human-only (CL-009). They show the shape of the result, not current figures; they will be recomputed at the ceiling for the reference and from ABC Test Org&rsquo;s assessment.</p>
+    <summary>Reference: verification load at the Progression Ceiling (Oct 2)</summary>
+    <p class="small">Computed by the People View panel from the Reference Model: every activity at its Progression Ceiling, with the proposed verification-point rule. Where checks would fall at full progression, not today. The Sept 25&ndash;26 pilot figures, computed against the retired modeled Current State values, are superseded.</p>
     <table>
-      <tr><th style="width:34%">Accountable role</th><th style="width:22%">AI-touched work products</th><th>Pays twice on</th></tr>
-      <tr><td class="k">HRBP Manager</td><td>6 (9 at activity level)</td><td>Employee Master Record, Performance Review, ER Case Record</td></tr>
-      <tr><td class="k">HRIS Analyst</td><td>5</td><td>Employee Master Record, Time and Attendance Record, HR Analytics Report</td></tr>
-      <tr><td class="k">Director of HR Ops</td><td>2</td><td>Workforce Plan, Regulatory Alert</td></tr>
-      <tr><td class="k">HR Generalist</td><td>2</td><td>&mdash;</td></tr>
+      <tr><th style="width:30%">Accountable role</th><th style="width:16%">Verification load</th><th>Pays twice on</th></tr>
+      <tr><td class="k">HRBP Manager</td><td>10</td><td>Requisition Record, Performance Review, Compensation Record, Benefits Enrollment, Separation Record, Employee Master Record</td></tr>
+      <tr><td class="k">Director of HR Ops</td><td>10</td><td>Workforce Plan, Policy Update Record, Regulatory Alert, HR Strategy, HR Program</td></tr>
+      <tr><td class="k">HRIS Analyst</td><td>7</td><td>Applicant Record, Employee Master Record, HR Metric Definition, Time and Attendance Record, HR Analytics Report</td></tr>
+      <tr><td class="k">Compensation &amp; Benefits Manager</td><td>6</td><td>Compensation Record, Payroll Record, Compensation Plan, Benefits Plan</td></tr>
+      <tr><td class="k">Director of L&amp;D</td><td>5</td><td>Competency Model, Training Record</td></tr>
+      <tr><td class="k">Recruiter</td><td>5</td><td>Requisition Record, Offer Letter, Applicant Record</td></tr>
+      <tr><td class="k">CHRO</td><td>4</td><td>HR Strategy</td></tr>
+      <tr><td class="k">HR Generalist</td><td>3</td><td>HR Program</td></tr>
+      <tr><td class="k">Compensation Analyst</td><td>0</td><td>&mdash;</td></tr>
+      <tr><td class="k">Onboarding Coordinator</td><td>0</td><td>&mdash;</td></tr>
     </table>
     <p class="small">Scope: Sandbox 7.0; production waits for the rebuild. The design is domain-neutral. It does not measure effort, and it does not address what the change means for the person in the role &mdash; that is the human-transition side.</p>
   </details>

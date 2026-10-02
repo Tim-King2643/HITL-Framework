@@ -443,6 +443,25 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
 
 /* People View (Role Impact Table) */
 .role-toggle-icon { display: inline-block; width: 12px; font-weight: 700; color: var(--navy); margin-right: 4px; }
+/* Work product in the role container (GR-046, spec B1/B5) */
+.vl-ind { display:inline-flex; align-items:center; gap:5px; margin-top:4px; font-size:10.5px; color:var(--gray); }
+.vl-ind b { color:var(--navy-d); }
+.wpp { margin:6px 16px 10px 32px; background:#fff; border:1px solid var(--border); border-left:3px solid var(--navy); border-radius:6px; padding:10px 14px 12px; }
+.wpp-head { display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:12px; color:var(--dark); margin-bottom:4px; }
+.wpp-head .wpp-title { font-weight:700; color:var(--navy-d); text-transform:uppercase; letter-spacing:.04em; font-size:10.5px; }
+.wpp-basis { font-size:11px; color:var(--lgray); margin-bottom:8px; line-height:1.5; }
+.wpp-grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px; }
+@media (max-width: 900px) { .wpp-grid { grid-template-columns:1fr; } }
+.wpp-col h5 { font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--navy); margin:0 0 5px; }
+.wpp-col ul { list-style:none; margin:0; padding:0; }
+.wpp-col li { font-size:11.5px; line-height:1.45; padding:4px 0; border-top:1px solid #EEF1F6; }
+.wpp-col li:first-child { border-top:none; }
+.wpp-wp { font-weight:600; color:var(--dark); }
+.wpp-sub { display:block; font-size:10.5px; color:var(--lgray); }
+.wpp-mode { display:inline-block; color:#fff; font-size:9.5px; font-weight:600; border-radius:3px; padding:0 5px; margin-left:3px; vertical-align:1px; }
+.wpp-twice { display:inline-block; font-size:9.5px; font-weight:700; color:#7A5A1E; background:#FEF3C7; border:1px solid #F0C67A; border-radius:3px; padding:0 4px; margin-left:3px; }
+.wpp-gap { color:#7A5A1E; }
+.wpp-none { color:#B0B8C6; font-style:italic; font-size:11px; }
 #people-main-table td:not(:first-child) { text-align: center; font-family: 'DM Mono', monospace; font-size: 12px; }
 </style>
 </head>
@@ -1974,9 +1993,11 @@ function renderRoleImpactTable(cat) {
           '<td style="color:#B8C0CC;font-style:italic;font-size:11px">No R/A touches in current RACI data</td></tr>';
         return;
       }
+      const wp = accL3s.length ? roleWorkProduct(r.name, cat) : null;
       html += '<tr class="row-l3 toggle-role" data-role="' + rowId + '" onclick="toggleRoleRow(\'' + rowId + '\')" style="cursor:pointer">' +
-        '<td class="indent-l3"><span class="role-toggle-icon" id="icon-' + rowId + '">+</span><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + '</td>' +
+        '<td class="indent-l3"><span class="role-toggle-icon" id="icon-' + rowId + '">+</span><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + (wp ? roleVerificationIndicatorHtml(wp) : '') + '</td>' +
         '<td style="padding:0;">' + roleRollupInlineHtml(accL3s) + '</td></tr>';
+      if (wp) html += '<tr class="row-l4 role-leaf" data-role-parent="' + rowId + '" style="display:none"><td colspan="2" style="padding:0;">' + roleWorkProductPanelHtml(r.name, wp) + '</td></tr>';
       roleTouchRows(l3s).forEach(row => {
         const isL3 = row.level === 'l3';
         const indentPx = isL3 ? 32 : 48;
@@ -1986,6 +2007,136 @@ function renderRoleImpactTable(cat) {
     });
   });
   tbody.innerHTML = html;
+}
+/* ── Work product in the role container (GR-046, spec B1 and B5) ─────────
+   For each role: the work products its Accountable activities produce, who
+   relies on them, and what it must verify. Derived each time it is shown
+   from ACTIVITY_CRUD and the working relationship, never stored.
+   - Working relationship: the Progression Ceiling in the Reference Model;
+     the assessed Current State with an organization selected. An activity
+     the organization has not assessed is a gap, never Human-only.
+   - Production mode of a work product: its producer (create or update)
+     furthest along the ramp.
+   - Verification point (proposed rule, open for Tim and GiGi): an activity
+     that reads or updates a work product relies on it; it is a verification
+     point when another producer is at Augmentation or further, and the
+     relying activity is at Judgment or Oversight or carries a High or
+     Critical Consequence of Error.
+   - Verification load: the number of distinct work products a role relies
+     on at verification points. Pays twice: the role is also Accountable
+     where that work product is produced. A count of exposure, not hours. */
+// Own copy of the ramp order: CATS_ORDER is declared further down the script.
+const WPV_RAMP = ['Human-only', 'Judgment', 'Oversight', 'Augmentation', 'Agent-delegation', 'Automation'];
+const WPV_AI_FROM = WPV_RAMP.indexOf('Augmentation');
+function wpvCodes(l3) { return (l3.l4 && l3.l4.length) ? l3.l4.map(x => x.code) : [l3.code]; }
+function wpvIndex(cat) {
+  const idx = {};
+  cat.groups.forEach(g => g.l3.forEach(l3 => {
+    const roles = parseRaciField(l3.raci && l3.raci.A);
+    wpvCodes(l3).forEach(c => { idx[c] = { l3: l3, roles: roles }; });
+  }));
+  return idx;
+}
+function wpvRel(code) {
+  if (orgActive()) { const r = orgRecord(code); return r ? r.current : null; }
+  const w = WR_DATA[code];
+  return w ? w.ceiling : null;
+}
+function wpvRank(rel) { return rel ? WPV_RAMP.indexOf(rel) : -1; }
+function wpvProducers(id) {
+  return Object.keys(ACTIVITY_CRUD).filter(c => ACTIVITY_CRUD[c].create.indexOf(id) >= 0 || ACTIVITY_CRUD[c].update.indexOf(id) >= 0);
+}
+function wpvTop(codes) {
+  let top = null, gaps = 0;
+  codes.forEach(c => {
+    const rel = wpvRel(c);
+    if (!rel) { gaps++; return; }
+    if (!top || wpvRank(rel) > wpvRank(top.rel)) top = { code: c, rel: rel };
+  });
+  return { top: top, gaps: gaps };
+}
+function wpvHumanDecision(code) {
+  const w = WR_DATA[code] || {};
+  if (w.cons === 'High' || w.cons === 'Critical') return true;
+  const rel = wpvRel(code);
+  return rel === 'Judgment' || rel === 'Oversight';
+}
+function roleWorkProduct(role, cat) {
+  const idx = wpvIndex(cat);
+  const mine = Object.keys(idx).filter(c => idx[c].roles.indexOf(role) >= 0);
+  const produces = {}, relies = {};
+  mine.forEach(c => {
+    const a = ACTIVITY_CRUD[c]; if (!a) return;
+    a.create.concat(a.update).forEach(id => { (produces[id] = produces[id] || []).push(c); });
+    a.read.concat(a.update).forEach(id => { (relies[id] = relies[id] || []).push(c); });
+  });
+  const out = { produces: [], reliedOn: [], verify: [], gaps: [] };
+  Object.keys(produces).sort().forEach(id => {
+    const t = wpvTop(produces[id]);
+    const users = {};
+    Object.keys(ACTIVITY_CRUD).forEach(c => {
+      if (mine.indexOf(c) >= 0 || !idx[c]) return;
+      const a = ACTIVITY_CRUD[c];
+      if (a.read.indexOf(id) >= 0 || a.update.indexOf(id) >= 0) idx[c].roles.forEach(r => { (users[r] = users[r] || []).push(c); });
+    });
+    out.produces.push({ id: id, top: t.top, gaps: t.gaps });
+    if (Object.keys(users).length) out.reliedOn.push({ id: id, users: users });
+  });
+  Object.keys(relies).sort().forEach(id => {
+    const points = [];
+    let gap = false;
+    relies[id].forEach(c => {
+      if (!wpvHumanDecision(c)) return;
+      const t = wpvTop(wpvProducers(id).filter(p => p !== c));
+      if (t.top && wpvRank(t.top.rel) >= WPV_AI_FROM) points.push({ code: c, producer: t.top });
+      else if (t.gaps) gap = true;
+    });
+    if (points.length) {
+      let prod = points[0].producer;
+      points.forEach(x => { if (wpvRank(x.producer.rel) > wpvRank(prod.rel)) prod = x.producer; });
+      out.verify.push({ id: id, producer: prod, at: points.map(x => x.code), twice: !!produces[id] });
+    } else if (gap) out.gaps.push(id);
+  });
+  return out;
+}
+function wpvModeChip(rel) { return '<span class="wpp-mode" style="background:' + ((WR_CATS[rel] || {}).color || '#888') + '">' + escHtml(rel) + '</span>'; }
+function wpvName(id) { const w = WP_BY_ID[id]; return w ? w.name : id; }
+function roleVerificationIndicatorHtml(wp) {
+  const n = wp.verify.length, twice = wp.verify.filter(v => v.twice).length;
+  return '<div class="vl-ind" title="Work products this role relies on at verification points (GR-046). A count of exposure, not hours.">' +
+    'Verification load <b>' + n + '</b>' + (twice ? ' &middot; pays twice on <b>' + twice + '</b>' : '') +
+    (wp.gaps.length ? ' &middot; <span class="wpp-gap">' + wp.gaps.length + ' not yet known</span>' : '') +
+    ' <span class="wr-prov wr-prov-classified">Modeled</span></div>';
+}
+function roleWorkProductPanelHtml(role, wp) {
+  const basis = orgActive()
+    ? 'Read from ' + escHtml(ACTIVE_ORG.name) + '&rsquo;s assessed Current State: where checks fall today. An activity not yet assessed is a gap, not Human-only.'
+    : 'Read at the Progression Ceiling: where checks would fall at full progression. Select an organization to read its assessed Current State.';
+  const produces = wp.produces.length ? wp.produces.map(p =>
+    '<li><span class="wpp-wp">' + escHtml(wpvName(p.id)) + '</span>' + (p.top ? wpvModeChip(p.top.rel) : '') +
+    '<span class="wpp-sub">' + (p.top ? 'most automated: ' + p.top.code : '') + (p.gaps ? (p.top ? ' &middot; ' : '') + '<span class="wpp-gap">' + p.gaps + ' producer' + (p.gaps === 1 ? '' : 's') + ' not yet assessed</span>' : '') + '</span></li>').join('')
+    : '<li class="wpp-none">None</li>';
+  const relied = wp.reliedOn.length ? wp.reliedOn.map(r => {
+    const roles = Object.keys(r.users).sort();
+    return '<li><span class="wpp-wp">' + escHtml(wpvName(r.id)) + '</span><span class="wpp-sub">' +
+      roles.map(x => escHtml(x) + ' (' + r.users[x].slice().sort((a, b) => a.localeCompare(b, undefined, { numeric: true })).join(', ') + ')').join('; ') + '</span></li>';
+  }).join('') : '<li class="wpp-none">No other role relies on its work products</li>';
+  let verify = wp.verify.length ? wp.verify.map(v =>
+    '<li><span class="wpp-wp">' + escHtml(wpvName(v.id)) + '</span>' + (v.twice ? '<span class="wpp-twice" title="This role is also Accountable where it is produced">pays twice</span>' : '') +
+    '<span class="wpp-sub">produced at ' + wpvModeChip(v.producer.rel) + ' in ' + v.producer.code + ' &middot; checked in ' + v.at.slice().sort((a, b) => a.localeCompare(b, undefined, { numeric: true })).join(', ') + '</span></li>').join('')
+    : '<li class="wpp-none">Nothing AI-touched reaches a decision of this role</li>';
+  if (wp.gaps.length) verify += '<li><span class="wpp-gap">Not yet known: ' + wp.gaps.map(id => escHtml(wpvName(id))).join(', ') + '</span><span class="wpp-sub">a producer is not yet assessed</span></li>';
+  const twice = wp.verify.filter(v => v.twice).length;
+  return '<div class="wpp">' +
+    '<div class="wpp-head"><span class="wpp-title">Work product</span>' +
+    '<span>Verification load <b>' + wp.verify.length + '</b>' + (twice ? ' &middot; pays twice on <b>' + twice + '</b>' : '') + '</span>' +
+    '<span class="wr-prov wr-prov-classified">Modeled</span></div>' +
+    '<div class="wpp-basis">' + basis + ' Verification point (proposed rule): another producer at Augmentation or further, and this role&rsquo;s activity at Judgment or Oversight or with a High or Critical Consequence of Error.</div>' +
+    '<div class="wpp-grid">' +
+    '<div class="wpp-col"><h5>Produces</h5><ul>' + produces + '</ul></div>' +
+    '<div class="wpp-col"><h5>Relied on by</h5><ul>' + relied + '</ul></div>' +
+    '<div class="wpp-col"><h5>Must verify</h5><ul>' + verify + '</ul></div>' +
+    '</div></div>';
 }
 function toggleRoleRow(rowId) {
   const icon = document.getElementById('icon-' + rowId);
@@ -2672,7 +2823,7 @@ function setView(v, opts) {
     wr: 'Current State and Progression Ceiling on the six-step ramp, with the Per-Transition Evidence Ladder as gates in between. In the Reference Model every activity starts at the Human-only baseline; with an organization selected, Current State is its assessed value, and each activity opens to be assessed.',
     raci: 'Real reasoned-match RACI for PCF 7.0. R falls back to the Accountable role (marked "from Accountable") wherever no separate Responsible was identified.',
     data: 'Work-product CRUD per activity for all 118 activities (HRBP Manager confirmed Sept 26, 2026; every other role Oct 2, 2026). Each process row is derived from its activities.',
-    people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced. Each role’s WR rollup (Current State) is a modeled index — an equal-weighted mean across its Accountable L3s, computed live and shown only once every one of them is fully classified.',
+    people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced. Under each role: its verification load (GR-046) — AI-touched work products it relies on at verification points — and, opened, the work products it produces, who relies on them and what it must verify. Each role’s WR rollup (Current State) is a modeled index — an equal-weighted mean across its Accountable L3s, computed live and shown only once every one of them is fully classified.',
     report: 'Every place the selected organization departs from the reference, by type of exception, rolled up from activity to process, process group and category. Built live from its assessment and override records. Print or save it as a PDF for executive review.',
     gates: 'Per Working_Relationship_Progression_Methodology.docx section 5 — three independent axes (Technical/Process, Role-level, Organizational-level) must all clear before an activity advances, gated here at L3 via its RACI Accountable role. Only the WR Rollup column carries a value (a modeled index, computed live from the classifications); no instrument exists yet for any of the three gate axes, so those cells are honest placeholders, not a status.',
   };
