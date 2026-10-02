@@ -255,5 +255,24 @@ const CHANGE_LOG = [
     "source": "Tim, Sept 30, 2026, reviewing 7.2.1.1 in ABC Test Org's Assess panel: remove references to names and history from assessment cards.",
     "reason": "Reference notes are read by every assessed organization. Who decided a ceiling and what it replaced is maintenance history, already recorded in this changelog (CL-002, CL-004 and the Sept 14 and 16 walkthroughs); on an organization's card it reads as internal record-keeping and names people.",
     "verified": "Ceilings, Current State, Consequence of Error and ceiling factors of all nine activities are unchanged; only note wording differs. reference-wr.json does not carry notes and is unaffected. No ceiling note now names a person, a date or a changelog entry."
+  },
+  {
+    "id": "CL-014",
+    "date": "2026-10-02",
+    "requestedBy": "Tim",
+    "kind": "crud",
+    "target": {
+      "domain": "7.0",
+      "role": "All Accountable roles other than the HRBP Manager"
+    },
+    "summary": "Activity-level CRUD confirmed and stored for the remaining 26 processes (95 activities); every process's CRUD is now derived from its activities. Ten work products added to the catalog, and nine old process links corrected.",
+    "from": "Process-level CRUD stored for 26 processes; 39 work products; Performance Program with no creator; Workforce Plan created in 7.1.1, Policy Update Record in 7.1.3, Offer Letter in 7.2.3, Background Check Record in 7.2.4, Employee Master Record in 7.7.3, Retention Risk Score in 7.5.3; 7.3.3 updating the Performance Review; 7.5.3 reading it",
+    "to": "ACTIVITY_CRUD for all 118 activities and no stored process CRUD; 49 work products (WP-7-40 HR Strategy, WP-7-41 Job Profile, WP-7-42 Succession Plan, WP-7-43 Compensation Plan, WP-7-44 Benefits Plan, WP-7-45 Benefits Claim, WP-7-46 HR Program, WP-7-47 Onboarding Program, WP-7-48 Learning Program, WP-7-49 Vendor Agreement) and a new system category, Document Management System; Performance Program created in 7.1.2.9; Workforce Plan created in 7.1.2.1, Policy Update Record in 7.1.2.10, Offer Letter in 7.2.4.1, Background Check Record in 7.2.5.1, Employee Master Record in 7.2.4.3, Retention Risk Score in 7.7.8.2; 7.3.3 and 7.5.3 no longer touch the Performance Review",
+    "files": [
+      "docs/sandbox/pcf7.html"
+    ],
+    "source": "Tim, Oct 2, 2026: “Accept all” to the six questions in docs/wip/activity_crud_remaining_roles.html.",
+    "reason": "Same method as CL-007: each activity's CRUD is reasoned from the activity, never inherited from its process. Each correction moves a create to the activity that produces the work product, or drops a link no activity supports. Outputs other activities rely on were added to the catalog; five pieces of single-activity working material were left out.",
+    "verified": "All 37 processes derive their CRUD from their activities, with no warning from applyActivityCrud(). Across the 118 activities every work product has exactly one creating process. 209 new activity links match the reviewed draft. Sandbox views and the Work-Product Catalog render with no errors; every Current State and Progression Ceiling unchanged."
   }
 ];

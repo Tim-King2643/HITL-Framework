@@ -268,7 +268,7 @@ font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
       '<div class="stat"><div class="n">' + Object.keys(AC).length + '</div><div class="l">activities with their own CRUD so far</div></div>' +
       '</div>' +
       '<h2>2. The Catalog</h2>' +
-      '<p class="key-line">Four-part codes are activities with their own CRUD; three-part codes are processes whose activities are not done yet. <sup>c</sup> creates it (the others update it); <span class="c-un">dashed</span> = process CRUD not yet confirmed; hover a code for its name.</p>' +
+      '<p class="key-line">Every code is an activity with its own CRUD (a process with no sub-activities is its own activity). <sup>c</sup> creates it (the others update it); hover a code for its name.</p>' +
       '<div class="tscroll"><table class="cat"><tr><th style="width:74px">ID</th><th>Work product</th><th>Definition</th><th style="width:140px">System of record</th><th style="width:130px">Produced by</th><th style="width:160px">Read by</th></tr>' + rows + '</table></div>';
     document.getElementById('cat-root').innerHTML = html;
   }

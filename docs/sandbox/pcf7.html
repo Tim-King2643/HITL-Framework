@@ -559,7 +559,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
     <div class="card lens-section" id="panel-data" style="display:none">
       <div class="card-header">
         <h3>Data View (CRUD Matrix) &mdash; PCF 7.0</h3>
-        <span>Work-product CRUD per process, and per activity where the activities are done &mdash; names and systems from the Work-Product Catalog</span>
+        <span>Work-product CRUD per activity, with each process row derived from its activities &mdash; names and systems from the Work-Product Catalog</span>
       </div>
       <div class="table-wrap">
         <table id="crud-main-table">
@@ -828,7 +828,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
     },
     groups:[
     { code:"7.1", name:"Develop and Manage HR Planning, Policies, and Strategies", mv:[82, 74, 60, 47, 37], l3:[
-      { code:"7.1.1",crud:{"create":["Workforce Plan (Core HR System (HCM))"],"read":[],"update":[],"delete":[]}, name:"Develop human resources strategy", pattern:"Mixed", mv:[82, 74, 60, 47, 37], mixed:true, raci:{R:"HRBP Manager · Director of HR Ops",A:"CHRO",C:"Director of TA",I:"All Managerial-tier"}, l4:[
+      { code:"7.1.1",crud:"derived", name:"Develop human resources strategy", pattern:"Mixed", mv:[82, 74, 60, 47, 37], mixed:true, raci:{R:"HRBP Manager · Director of HR Ops",A:"CHRO",C:"Director of TA",I:"All Managerial-tier"}, l4:[
         { code:"7.1.1.1", name:"Identify strategic HR needs", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.1.1.2", name:"Define HR and business function roles and accountability", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.1.1.3", name:"Determine HR function roles and structure", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -840,7 +840,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         { code:"7.1.1.9", name:"Manage employer branding", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"7.1.1.10", name:"Design the employee experience", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"7.1.2",crud:{"create":[],"read":["Workforce Plan (Core HR System (HCM))"],"update":[],"delete":[]}, name:"Develop and implement workforce planning, policies, and strategies", pattern:"Mixed", mv:[78, 69, 56, 43, 33], mixed:true, raci:{R:"Comp & Benefits Mgr · HRBP Mgr · Dir. of L&D · HR Generalist",A:"Director of HR Ops",C:"VP People & Culture",I:"CHRO · Director of TA"}, l4:[
+      { code:"7.1.2",crud:"derived", name:"Develop and implement workforce planning, policies, and strategies", pattern:"Mixed", mv:[78, 69, 56, 43, 33], mixed:true, raci:{R:"Comp & Benefits Mgr · HRBP Mgr · Dir. of L&D · HR Generalist",A:"Director of HR Ops",C:"VP People & Culture",I:"CHRO · Director of TA"}, l4:[
         { code:"7.1.2.1", name:"Perform strategic workforce planning", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.1.2.2", name:"Develop total compensation and rewards strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.1.2.3", name:"Develop succession plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -858,13 +858,13 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         { code:"7.1.2.15", name:"Manage job families", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.1.2.16", name:"Develop and maintain job descriptions", pattern:"Document", mv:[72, 58, 40, 28, 18] },
       ]},
-      { code:"7.1.3", crud:{"create":["Policy Update Record (HR Case Management System)"],"read":["Workforce Plan (Core HR System (HCM))","Regulatory Alert (Regulatory Research Service)"],"update":["Workforce Plan (Core HR System (HCM))","Policy Update Record (HR Case Management System)"],"delete":[]}, name:"Monitor and update HR strategies, plans, and policies", pattern:"Mixed", mv:[82, 73, 59, 46, 36], mixed:true, raci:{R:"HRBP Manager",A:"Director of HR Ops",C:"VP People & Culture",I:"CHRO · All Managerial-tier"}, l4:[
+      { code:"7.1.3", crud:"derived", name:"Monitor and update HR strategies, plans, and policies", pattern:"Mixed", mv:[82, 73, 59, 46, 36], mixed:true, raci:{R:"HRBP Manager",A:"Director of HR Ops",C:"VP People & Culture",I:"CHRO · All Managerial-tier"}, l4:[
         { code:"7.1.3.1", name:"Measure realization of HR objectives", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.1.3.2", name:"Measure contribution of HR to business strategy", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.1.3.3", name:"Communicate HR plans and provide updates to stakeholders", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"7.1.3.4", name:"Review and revise HR plans", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"7.1.4", crud:{"create":["Competency Model (Skills Management System)"],"read":["Workforce Plan (Core HR System (HCM))"],"update":["Competency Model (Skills Management System)"],"delete":[]}, name:"Develop competency management models", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Comp & Benefits Mgr · HRBP Manager",A:"Director of L&D",C:"VP People & Culture · CHRO",I:"Director of TA"}, l4:[] },
+      { code:"7.1.4", crud:"derived", name:"Develop competency management models", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"Comp & Benefits Mgr · HRBP Manager",A:"Director of L&D",C:"VP People & Culture · CHRO",I:"Director of TA"}, l4:[] },
     ]},
     { code:"7.2", name:"Recruit, Source, and Select Employees", mv:[70, 60, 48, 36, 26], l3:[
       { code:"7.2.1",crud:"derived", name:"Manage employee requisitions", pattern:"Mixed", mv:[68, 58, 46, 33, 24], mixed:true, raci:{R:"HR Generalist · Recruiter",A:"HRBP Manager",C:"Director of TA",I:"Hiring Managers*"}, l4:[
@@ -876,7 +876,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         { code:"7.2.1.6", name:"Notify hiring manager", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.2.1.7", name:"Manage requisition dates", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"7.2.2",crud:{"create":[],"read":["Requisition Record (Applicant Tracking System)"],"update":["Applicant Record (Applicant Tracking System)"],"delete":[]}, name:"Recruit/Source candidates", pattern:"Mixed", mv:[68, 58, 45, 32, 22], mixed:true, raci:{R:"HR Generalist (referrals)",A:"Recruiter",C:"Director of TA",I:"HRBP Manager"}, l4:[
+      { code:"7.2.2",crud:"derived", name:"Recruit/Source candidates", pattern:"Mixed", mv:[68, 58, 45, 32, 22], mixed:true, raci:{R:"HR Generalist (referrals)",A:"Recruiter",C:"Director of TA",I:"HRBP Manager"}, l4:[
         { code:"7.2.2.1", name:"Determine recruitment methods and channels", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.2.2.2", name:"Perform recruiting activities/events", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.2.2.3", name:"Develop and maintain candidate pool", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -884,18 +884,18 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         { code:"7.2.2.5", name:"Manage employee referral programs", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.2.2.6", name:"Manage recruitment channels", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"7.2.3",crud:{"create":["Offer Letter (Applicant Tracking System)"],"read":["Requisition Record (Applicant Tracking System)"],"update":["Applicant Record (Applicant Tracking System)"],"delete":[]}, name:"Screen and select candidates", pattern:"Mixed", mv:[80, 73, 61, 50, 40], mixed:true, raci:{R:"Hiring Managers*",A:"Recruiter",C:"Director of TA",I:"HRBP Manager"}, l4:[
+      { code:"7.2.3",crud:"derived", name:"Screen and select candidates", pattern:"Mixed", mv:[80, 73, 61, 50, 40], mixed:true, raci:{R:"Hiring Managers*",A:"Recruiter",C:"Director of TA",I:"HRBP Manager"}, l4:[
         { code:"7.2.3.1", name:"Identify and deploy candidate selection tools", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.2.3.2", name:"Interview candidates", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.2.3.3", name:"Test candidates", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.2.3.4", name:"Select and reject candidates", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
       ]},
-      { code:"7.2.4",crud:{"create":["Background Check Record (Background Screening Service)"],"read":["Requisition Record (Applicant Tracking System)"],"update":["Applicant Record (Applicant Tracking System)","Offer Letter (Applicant Tracking System)"],"delete":[]}, name:"Manage new hire/re-hire", pattern:"Mixed", mv:[75, 65, 52, 41, 32], mixed:true, raci:{R:"Comp & Benefits Mgr (offer terms)",A:"Recruiter",C:"Director of TA",I:"HRIS Analyst"}, l4:[
+      { code:"7.2.4",crud:"derived", name:"Manage new hire/re-hire", pattern:"Mixed", mv:[75, 65, 52, 41, 32], mixed:true, raci:{R:"Comp & Benefits Mgr (offer terms)",A:"Recruiter",C:"Director of TA",I:"HRIS Analyst"}, l4:[
         { code:"7.2.4.1", name:"Draw up and make offer", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"7.2.4.2", name:"Negotiate offer", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"7.2.4.3", name:"Hire candidate", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"7.2.5",crud:{"create":["Applicant Record (Applicant Tracking System)"],"read":[],"update":["Applicant Record (Applicant Tracking System)"],"delete":[]}, name:"Manage applicant information", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Recruiter (data entry)",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[
+      { code:"7.2.5",crud:"derived", name:"Manage applicant information", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"Recruiter (data entry)",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[
         { code:"7.2.5.1", name:"Obtain candidate background information", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.2.5.2", name:"Create applicant record", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.2.5.3", name:"Manage/Track applicant data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
@@ -903,7 +903,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
       ]},
     ]},
     { code:"7.3", name:"Develop and Counsel Employees", mv:[79, 71, 58, 45, 35], l3:[
-      { code:"7.3.1",crud:{"create":["Onboarding Record (Core HR System (HCM))","System Access Profile (Identity & Access Management)"],"read":["Employee Master Record (Core HR System (HCM))"],"update":[],"delete":[]}, name:"Manage employee onboarding", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, raci:{R:"—",A:"Onboarding Coordinator",C:"Director of HR Ops",I:"HRBP Manager"}, l4:[
+      { code:"7.3.1",crud:"derived", name:"Manage employee onboarding", pattern:"Mixed", mv:[77, 68, 55, 42, 32], mixed:true, raci:{R:"—",A:"Onboarding Coordinator",C:"Director of HR Ops",I:"HRBP Manager"}, l4:[
         { code:"7.3.1.1", name:"Develop employee onboarding program", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.3.1.2", name:"Implement employee onboarding program", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.3.1.3", name:"Monitor and update employee onboarding program", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -914,13 +914,13 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         { code:"7.3.2.3", name:"Document employee performance", pattern:"Document", mv:[72, 58, 40, 28, 18] },
         { code:"7.3.2.4", name:"Monitor and update performance program", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"7.3.3",crud:{"create":["Development Plan (Learning Management System)"],"read":[],"update":["Performance Review (Performance Management System)"],"delete":[]}, name:"Manage employee career development", pattern:"Mixed", mv:[80, 73, 61, 50, 40], mixed:true, raci:{R:"HRBP Manager (guidelines/succession) · L&D Specialist (skill execution)",A:"Director of L&D",C:"VP People & Culture",I:"Director of TA"}, l4:[
+      { code:"7.3.3",crud:"derived", name:"Manage employee career development", pattern:"Mixed", mv:[80, 73, 61, 50, 40], mixed:true, raci:{R:"HRBP Manager (guidelines/succession) · L&D Specialist (skill execution)",A:"Director of L&D",C:"VP People & Culture",I:"Director of TA"}, l4:[
         { code:"7.3.3.1", name:"Define employee development guidelines", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.3.3.2", name:"Develop employee career plans and career paths", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.3.3.3", name:"Manage employee skill and competency development", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.3.3.4", name:"Establish succession plans", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
       ]},
-      { code:"7.3.4",crud:{"create":["Training Record (Learning Management System)"],"read":[],"update":["Development Plan (Learning Management System)"],"delete":[]}, name:"Develop and train employees", pattern:"Mixed", mv:[78, 69, 56, 43, 33], mixed:true, raci:{R:"Director of L&D (strategy) · L&D Specialist (execution)",A:"Director of L&D",C:"HRBP Manager",I:"CHRO"}, l4:[
+      { code:"7.3.4",crud:"derived", name:"Develop and train employees", pattern:"Mixed", mv:[78, 69, 56, 43, 33], mixed:true, raci:{R:"Director of L&D (strategy) · L&D Specialist (execution)",A:"Director of L&D",C:"HRBP Manager",I:"CHRO"}, l4:[
         { code:"7.3.4.1", name:"Align organizational development needs to employees", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.3.4.2", name:"Define employees competencies and skills", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.3.4.3", name:"Align learning programs with competencies and skills", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -935,10 +935,10 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
       { code:"7.4.2", crud:"derived", name:"Manage collective bargaining process", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Legal*",I:"Director of HR Ops"}, l4:[] },
       { code:"7.4.3", crud:"derived", name:"Manage labor management partnerships", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"—",I:"Director of HR Ops"}, l4:[] },
       { code:"7.4.4", crud:"derived", name:"Manage employee grievances", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"—",I:"Legal* · Director of HR Ops"}, l4:[] },
-      { code:"7.4.5", crud:{"create":["Regulatory Alert (Regulatory Research Service)"],"read":[],"update":["Regulatory Alert (Regulatory Research Service)"],"delete":[]}, name:"Monitor legal and regulatory environment", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"Director of HR Ops",C:"Legal*",I:"CHRO"}, l4:[] },
+      { code:"7.4.5", crud:"derived", name:"Monitor legal and regulatory environment", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"Director of HR Ops",C:"Legal*",I:"CHRO"}, l4:[] },
     ]},
     { code:"7.5", name:"Reward and Retain Employees", mv:[71, 61, 47, 34, 24], l3:[
-      { code:"7.5.1",crud:{"create":["Compensation Record (Compensation Management System)"],"read":["Performance Review (Performance Management System)"],"update":["Payroll Record (Payroll System)"],"delete":[]}, name:"Develop and manage reward, recognition, and motivation programs", pattern:"Mixed", mv:[79, 71, 58, 45, 35], mixed:true, raci:{R:"Compensation Analyst (admin-tier activities)",A:"Compensation & Benefits Manager",C:"—",I:"HRBP Manager"}, l4:[
+      { code:"7.5.1",crud:"derived", name:"Develop and manage reward, recognition, and motivation programs", pattern:"Mixed", mv:[79, 71, 58, 45, 35], mixed:true, raci:{R:"Compensation Analyst (admin-tier activities)",A:"Compensation & Benefits Manager",C:"—",I:"HRBP Manager"}, l4:[
         { code:"7.5.1.1", name:"Develop salary/compensation structure and plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.5.1.2", name:"Develop benefits and rewards plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.5.1.3", name:"Perform competitive analysis of benefits and rewards", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
@@ -949,18 +949,18 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
         { code:"7.5.1.8", name:"Review compensation plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.5.1.9", name:"Review benefits and rewards plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"7.5.2",crud:{"create":["Benefits Enrollment (Benefits Administration System)"],"read":[],"update":[],"delete":[]}, name:"Manage and administer benefits", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"Compensation Analyst",C:"Compensation & Benefits Manager",I:"HRIS Analyst"}, l4:[
+      { code:"7.5.2",crud:"derived", name:"Manage and administer benefits", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"Compensation Analyst",C:"Compensation & Benefits Manager",I:"HRIS Analyst"}, l4:[
         { code:"7.5.2.1", name:"Deliver employee benefits program", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.5.2.2", name:"Administer benefit enrollment", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.5.2.3", name:"Process benefits claims", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.5.2.4", name:"Perform benefit reconciliation", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"7.5.3", crud:{"create":["EAP Referral (Employee Assistance Provider)","Retention Risk Score (People Analytics Platform)"],"read":["Performance Review (Performance Management System)","Employee Master Record (Core HR System (HCM))"],"update":["EAP Referral (Employee Assistance Provider)","Retention Risk Score (People Analytics Platform)"],"delete":[]}, name:"Manage employee assistance and retention", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HR Generalist",C:"HRBP Manager",I:"Director of HR Ops"}, l4:[
+      { code:"7.5.3", crud:"derived", name:"Manage employee assistance and retention", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HR Generalist",C:"HRBP Manager",I:"Director of HR Ops"}, l4:[
         { code:"7.5.3.1", name:"Deliver programs to support work/life balance for employees", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.5.3.2", name:"Develop employee and family support systems", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
       ]},
-      { code:"7.5.4",crud:{"create":["Payroll Record (Payroll System)"],"read":["Compensation Record (Compensation Management System)","Benefits Enrollment (Benefits Administration System)"],"update":[],"delete":[]}, name:"Administer Payroll", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst (HR-owned scope)",C:"Compensation Analyst",I:"Finance*"}, l4:[] },
-      { code:"7.5.5", crud:{"create":["Employee Suggestion (Employee Survey Platform)"],"read":["Employee Master Record (Core HR System (HCM))"],"update":["Employee Suggestion (Employee Survey Platform)"],"delete":[]}, name:"Manage/collect employee suggestions and perform employee research", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HRIS Analyst (data/survey tooling)",A:"HR Generalist",C:"—",I:"HRBP Manager"}, l4:[] },
+      { code:"7.5.4",crud:"derived", name:"Administer Payroll", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst (HR-owned scope)",C:"Compensation Analyst",I:"Finance*"}, l4:[] },
+      { code:"7.5.5", crud:"derived", name:"Manage/collect employee suggestions and perform employee research", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HRIS Analyst (data/survey tooling)",A:"HR Generalist",C:"—",I:"HRBP Manager"}, l4:[] },
     ]},
     { code:"7.6", name:"Redeploy and Retire Employees", mv:[73, 64, 52, 41, 32], l3:[
       { code:"7.6.1", crud:"derived", name:"Manage promotion and demotion process", pattern:"Decision", mv:[92, 88, 80, 72, 65], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Compensation & Benefits Manager",I:"—"}, l4:[] },
@@ -975,20 +975,20 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
       ]},
     ]},
     { code:"7.7", name:"Manage Employee Information", mv:[73, 63, 50, 38, 29], l3:[
-      { code:"7.7.1", crud:{"create":[],"read":["Employee Master Record (Core HR System (HCM))","HR Analytics Report (People Analytics Platform)"],"update":["HR Analytics Report (People Analytics Platform)"],"delete":[]}, name:"Manage reporting processes", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[] },
-      { code:"7.7.2", crud:{"create":["HR Inquiry Case (HR Case Management System)"],"read":["Employee Master Record (Core HR System (HCM))"],"update":["HR Inquiry Case (HR Case Management System)"],"delete":[]}, name:"Manage employee inquiry process", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"—",A:"HR Generalist",C:"HRBP Manager",I:"—"}, l4:[] },
-      { code:"7.7.3",crud:{"create":["Employee Master Record (Core HR System (HCM))"],"read":["Time and Attendance Record (Time & Attendance System)"],"update":[],"delete":[]}, name:"Manage and maintain employee data", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"—"}, l4:[] },
-      { code:"7.7.4", crud:{"create":["System Configuration Record (Core HR System (HCM))"],"read":["Employee Master Record (Core HR System (HCM))"],"update":["System Configuration Record (Core HR System (HCM))"],"delete":[]}, name:"Manage human resource information systems", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[] },
-      { code:"7.7.5", crud:{"create":["HR Metric Definition (People Analytics Platform)"],"read":["Employee Master Record (Core HR System (HCM))","HR Analytics Report (People Analytics Platform)"],"update":["HR Metric Definition (People Analytics Platform)"],"delete":[]}, name:"Develop and manage employee measures", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"Director of HR Ops",I:"—"}, l4:[] },
-      { code:"7.7.6",crud:{"create":["Time and Attendance Record (Time & Attendance System)"],"read":["Employee Master Record (Core HR System (HCM))"],"update":[],"delete":[]}, name:"Develop and manage time and attendance systems", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"—"}, l4:[] },
-      { code:"7.7.7",crud:{"create":[],"read":["Employee Master Record (Core HR System (HCM))"],"update":[],"delete":[]}, name:"Develop workforce analytics", pattern:"Mixed", mv:[81, 74, 62, 50, 41], mixed:true, raci:{R:"—",A:"HRIS Analyst",C:"Director of HR Ops",I:"—"}, l4:[
+      { code:"7.7.1", crud:"derived", name:"Manage reporting processes", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.7.2", crud:"derived", name:"Manage employee inquiry process", pattern:"Exception", mv:[95, 92, 82, 75, 68], mixed:false, raci:{R:"—",A:"HR Generalist",C:"HRBP Manager",I:"—"}, l4:[] },
+      { code:"7.7.3",crud:"derived", name:"Manage and maintain employee data", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"—"}, l4:[] },
+      { code:"7.7.4", crud:"derived", name:"Manage human resource information systems", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[] },
+      { code:"7.7.5", crud:"derived", name:"Develop and manage employee measures", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"Director of HR Ops",I:"—"}, l4:[] },
+      { code:"7.7.6",crud:"derived", name:"Develop and manage time and attendance systems", pattern:"Transaction", mv:[60, 48, 35, 22, 12], mixed:false, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"—"}, l4:[] },
+      { code:"7.7.7",crud:"derived", name:"Develop workforce analytics", pattern:"Mixed", mv:[81, 74, 62, 50, 41], mixed:true, raci:{R:"—",A:"HRIS Analyst",C:"Director of HR Ops",I:"—"}, l4:[
         { code:"7.7.7.1", name:"Determine stakeholder requirements", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.7.7.2", name:"Identify research questions", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.7.7.3", name:"Select workforce analysis methodology", pattern:"Decision", mv:[92, 88, 80, 72, 65] },
         { code:"7.7.7.4", name:"Identify workforce data sources", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.7.7.5", name:"Gather workforce data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
       ]},
-      { code:"7.7.8",crud:{"create":["HR Analytics Report (People Analytics Platform)"],"read":["Employee Master Record (Core HR System (HCM))"],"update":[],"delete":[]}, name:"Implement workforce analytics", pattern:"Mixed", mv:[72, 61, 47, 34, 24], mixed:true, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[
+      { code:"7.7.8",crud:"derived", name:"Implement workforce analytics", pattern:"Mixed", mv:[72, 61, 47, 34, 24], mixed:true, raci:{R:"—",A:"HRIS Analyst",C:"—",I:"Director of HR Ops"}, l4:[
         { code:"7.7.8.1", name:"Transform workforce analysis data", pattern:"Transaction", mv:[60, 48, 35, 22, 12] },
         { code:"7.7.8.2", name:"Develop insights into workforce analytics outcomes", pattern:"Knowledge", mv:[85, 78, 65, 52, 42] },
         { code:"7.7.8.3", name:"Communicate workforce analysis outcomes", pattern:"Document", mv:[72, 58, 40, 28, 18] },
@@ -996,7 +996,7 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
     ]},
     { code:"7.8", name:"Manage Employee Communication", mv:[76, 65, 48, 36, 26], l3:[
       { code:"7.8.1", crud:"derived", name:"Develop employee communication plan", pattern:"Knowledge", mv:[85, 78, 65, 52, 42], mixed:false, raci:{R:"—",A:"HRBP Manager",C:"Director of HR Ops",I:"—"}, l4:[] },
-      { code:"7.8.2",crud:{"create":["Survey Response (Employee Survey Platform)"],"read":["Employee Master Record (Core HR System (HCM))"],"update":[],"delete":[]}, name:"Conduct employee engagement surveys", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HRIS Analyst (data/survey tooling)",A:"HR Generalist",C:"—",I:"HRBP Manager"}, l4:[] },
+      { code:"7.8.2",crud:"derived", name:"Conduct employee engagement surveys", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HRIS Analyst (data/survey tooling)",A:"HR Generalist",C:"—",I:"HRBP Manager"}, l4:[] },
       { code:"7.8.3",crud:"derived", name:"Deliver employee communications", pattern:"Document", mv:[72, 58, 40, 28, 18], mixed:false, raci:{R:"HR Generalist (delivery execution)",A:"HRBP Manager",C:"—",I:"—"}, l4:[] },
     ]},
   ]};
@@ -1252,6 +1252,16 @@ const WORK_PRODUCTS = [
   { id:"WP-7-37", name:"Communication Record", system:"Employee Communications Platform", definition:"A communication as sent: content, audience and delivery date.", modelOutput:false, status:"Draft" },
   { id:"WP-7-38", name:"Staffing Plan", system:"Core HR System (HCM)", definition:"A business unit's planned roles and hiring for a period, aligned to the workforce plan.", modelOutput:false, status:"Draft" },
   { id:"WP-7-39", name:"Performance Program", system:"Performance Management System", definition:"The design of performance management: review cycle, forms, rating scale and guidance.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-40", name:"HR Strategy", system:"Document Management System", definition:"The HR function's strategy: strategic HR needs, roles and accountabilities, structure, delivery model, costs and measures.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-41", name:"Job Profile", system:"Core HR System (HCM)", definition:"A job's family, level and description: the duties and requirements every position in it shares.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-42", name:"Succession Plan", system:"Performance Management System", definition:"Named successors for critical roles, with their readiness and development actions.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-43", name:"Compensation Plan", system:"Compensation Management System", definition:"The pay structure and plan: salary bands and ranges, incentive plans and the rules for adjusting pay.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-44", name:"Benefits Plan", system:"Benefits Administration System", definition:"The design of the benefit and reward plans offered: coverage options, eligibility, cost sharing and carriers.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-45", name:"Benefits Claim", system:"Benefits Administration System", definition:"A claim made under a benefit plan, its review and its outcome.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-46", name:"HR Program", system:"Document Management System", definition:"The design of an HR program other than performance management or onboarding: its purpose, eligibility, components and schedule (e.g. leadership, DEI, talent acquisition, talent development, work/life).", modelOutput:false, status:"Draft" },
+  { id:"WP-7-47", name:"Onboarding Program", system:"Core HR System (HCM)", definition:"The design of onboarding: the tasks, forms, sequence and owners every new hire goes through.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-48", name:"Learning Program", system:"Learning Management System", definition:"A training course or curriculum: its content, audience, delivery and the competencies it builds.", modelOutput:false, status:"Draft" },
+  { id:"WP-7-49", name:"Vendor Agreement", system:"Contract Management System", definition:"The contract with an outside HR service provider, such as a recruitment agency, and its terms.", modelOutput:false, status:"Draft" },
 ];
 
 // ── Activity-level CRUD (master data) ──────────────────────────────────────
@@ -1262,12 +1272,44 @@ const WORK_PRODUCTS = [
 // not also listed as reading. "confirmed" is the date Tim confirmed the
 // activity's links. First role done: the HRBP Manager's 11 Accountable
 // processes (CL-007; draft and review in docs/wip/activity_crud_hrbp_manager.html).
+// Every other process followed on Oct 2, 2026 (CL-014; draft and review in
+// docs/wip/activity_crud_remaining_roles.html): all 118 activities are listed.
 //
-// A process whose activities are all listed here stores no CRUD of its own
-// (crud:"derived" in PCF7): applyActivityCrud() derives it as the rollup of
-// its activities, so the two cannot disagree. Every other process keeps its
-// stored process-level CRUD until its activities are done, process by process.
+// No process stores CRUD of its own any more (crud:"derived" in PCF7):
+// applyActivityCrud() derives each process's CRUD as the rollup of its
+// activities, so the two cannot disagree.
 const ACTIVITY_CRUD = {
+  "7.1.1.1": { create:["WP-7-40"], read:["WP-7-34"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.1.2": { create:[], read:[], update:["WP-7-40"], delete:[], confirmed:"2026-10-02" },
+  "7.1.1.3": { create:[], read:[], update:["WP-7-40"], delete:[], confirmed:"2026-10-02" },
+  "7.1.1.4": { create:[], read:[], update:["WP-7-40"], delete:[], confirmed:"2026-10-02" },
+  "7.1.1.5": { create:[], read:["WP-7-23"], update:["WP-7-40"], delete:[], confirmed:"2026-10-02" },
+  "7.1.1.6": { create:[], read:[], update:["WP-7-40"], delete:[], confirmed:"2026-10-02" },
+  "7.1.1.7": { create:[], read:["WP-7-40"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.1.8": { create:[], read:["WP-7-31"], update:["WP-7-40"], delete:[], confirmed:"2026-10-02" },
+  "7.1.1.9": { create:[], read:["WP-7-36"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.1.10": { create:[], read:["WP-7-36"], update:["WP-7-40"], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.1": { create:["WP-7-01"], read:["WP-7-40", "WP-7-30", "WP-7-34"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.2": { create:["WP-7-43"], read:["WP-7-01", "WP-7-19"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.3": { create:["WP-7-42"], read:["WP-7-11", "WP-7-04"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.4": { create:["WP-7-46"], read:["WP-7-42", "WP-7-11"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.5": { create:["WP-7-46"], read:["WP-7-30", "WP-7-34"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.6": { create:[], read:["WP-7-46"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.7": { create:["WP-7-46"], read:["WP-7-01"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.8": { create:["WP-7-46"], read:["WP-7-04"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.9": { create:["WP-7-46", "WP-7-39"], read:[], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.10": { create:["WP-7-03"], read:["WP-7-18"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.11": { create:[], read:["WP-7-03"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.12": { create:["WP-7-44"], read:["WP-7-01"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.13": { create:[], read:["WP-7-34"], update:["WP-7-01"], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.14": { create:[], read:[], update:["WP-7-01"], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.15": { create:["WP-7-41"], read:[], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.2.16": { create:[], read:["WP-7-04"], update:["WP-7-41"], delete:[], confirmed:"2026-10-02" },
+  "7.1.3.1": { create:[], read:["WP-7-40", "WP-7-34"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.3.2": { create:[], read:["WP-7-40", "WP-7-34"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.3.3": { create:[], read:["WP-7-40", "WP-7-01"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.1.3.4": { create:[], read:["WP-7-18", "WP-7-34"], update:["WP-7-40", "WP-7-01", "WP-7-03"], delete:[], confirmed:"2026-10-02" },
+  "7.1.4": { create:["WP-7-04"], read:["WP-7-01", "WP-7-41"], update:["WP-7-04"], delete:[], confirmed:"2026-10-02" },
   "7.2.1.1": { create:["WP-7-38"], read:["WP-7-01"], update:[], delete:[], confirmed:"2026-09-26" },
   "7.2.1.2": { create:["WP-7-02"], read:[], update:[], delete:[], confirmed:"2026-09-26" },
   "7.2.1.3": { create:[], read:["WP-7-01"], update:["WP-7-02"], delete:[], confirmed:"2026-09-26" },
@@ -1275,21 +1317,85 @@ const ACTIVITY_CRUD = {
   "7.2.1.5": { create:[], read:[], update:["WP-7-02"], delete:[], confirmed:"2026-09-26" },
   "7.2.1.6": { create:[], read:["WP-7-02"], update:[], delete:[], confirmed:"2026-09-26" },
   "7.2.1.7": { create:[], read:[], update:["WP-7-02"], delete:[], confirmed:"2026-09-26" },
+  "7.2.2.1": { create:[], read:["WP-7-02", "WP-7-46"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.2.2.2": { create:[], read:["WP-7-02"], update:["WP-7-08"], delete:[], confirmed:"2026-10-02" },
+  "7.2.2.3": { create:[], read:[], update:["WP-7-08"], delete:[], confirmed:"2026-10-02" },
+  "7.2.2.4": { create:["WP-7-49"], read:[], update:["WP-7-49"], delete:[], confirmed:"2026-10-02" },
+  "7.2.2.5": { create:[], read:["WP-7-02"], update:["WP-7-08"], delete:[], confirmed:"2026-10-02" },
+  "7.2.2.6": { create:[], read:[], update:["WP-7-05"], delete:[], confirmed:"2026-10-02" },
+  "7.2.3.1": { create:[], read:["WP-7-02", "WP-7-04"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.2.3.2": { create:[], read:["WP-7-02", "WP-7-04"], update:["WP-7-08"], delete:[], confirmed:"2026-10-02" },
+  "7.2.3.3": { create:[], read:[], update:["WP-7-08"], delete:[], confirmed:"2026-10-02" },
+  "7.2.3.4": { create:[], read:["WP-7-02"], update:["WP-7-08"], delete:[], confirmed:"2026-10-02" },
+  "7.2.4.1": { create:["WP-7-06"], read:["WP-7-08", "WP-7-02", "WP-7-43"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.2.4.2": { create:[], read:["WP-7-43"], update:["WP-7-06"], delete:[], confirmed:"2026-10-02" },
+  "7.2.4.3": { create:["WP-7-30"], read:["WP-7-07"], update:["WP-7-06", "WP-7-08", "WP-7-02"], delete:[], confirmed:"2026-10-02" },
+  "7.2.5.1": { create:["WP-7-07"], read:["WP-7-08"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.2.5.2": { create:["WP-7-08"], read:[], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.2.5.3": { create:[], read:[], update:["WP-7-08"], delete:[], confirmed:"2026-10-02" },
+  "7.2.5.4": { create:[], read:[], update:["WP-7-08"], delete:[], confirmed:"2026-10-02" },
+  "7.3.1.1": { create:["WP-7-47"], read:[], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.3.1.2": { create:["WP-7-09", "WP-7-10"], read:["WP-7-47", "WP-7-30"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.3.1.3": { create:[], read:["WP-7-09"], update:["WP-7-47"], delete:[], confirmed:"2026-10-02" },
   "7.3.2.1": { create:["WP-7-11"], read:["WP-7-04"], update:[], delete:[], confirmed:"2026-09-26" },
   "7.3.2.2": { create:[], read:[], update:["WP-7-11"], delete:[], confirmed:"2026-09-26" },
   "7.3.2.3": { create:[], read:[], update:["WP-7-11"], delete:[], confirmed:"2026-09-26" },
   "7.3.2.4": { create:[], read:["WP-7-11"], update:["WP-7-39"], delete:[], confirmed:"2026-09-26" },
+  "7.3.3.1": { create:[], read:["WP-7-04"], update:["WP-7-46"], delete:[], confirmed:"2026-10-02" },
+  "7.3.3.2": { create:["WP-7-12"], read:["WP-7-04", "WP-7-11", "WP-7-41"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.3.3.3": { create:[], read:["WP-7-13"], update:["WP-7-12"], delete:[], confirmed:"2026-10-02" },
+  "7.3.3.4": { create:[], read:["WP-7-11", "WP-7-04"], update:["WP-7-42"], delete:[], confirmed:"2026-10-02" },
+  "7.3.4.1": { create:[], read:["WP-7-01", "WP-7-04"], update:["WP-7-12"], delete:[], confirmed:"2026-10-02" },
+  "7.3.4.2": { create:[], read:[], update:["WP-7-04"], delete:[], confirmed:"2026-10-02" },
+  "7.3.4.3": { create:[], read:["WP-7-04"], update:["WP-7-48"], delete:[], confirmed:"2026-10-02" },
+  "7.3.4.4": { create:[], read:["WP-7-04", "WP-7-13"], update:["WP-7-12"], delete:[], confirmed:"2026-10-02" },
+  "7.3.4.5": { create:["WP-7-48", "WP-7-13"], read:[], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.3.4.6": { create:[], read:[], update:["WP-7-13"], delete:[], confirmed:"2026-10-02" },
+  "7.3.4.7": { create:[], read:["WP-7-13"], update:["WP-7-48"], delete:[], confirmed:"2026-10-02" },
   "7.4.1": { create:["WP-7-14"], read:["WP-7-11", "WP-7-15"], update:["WP-7-14"], delete:[], confirmed:"2026-09-26" },
   "7.4.2": { create:["WP-7-15"], read:["WP-7-14", "WP-7-19", "WP-7-17"], update:["WP-7-15"], delete:[], confirmed:"2026-09-26" },
   "7.4.3": { create:["WP-7-16"], read:["WP-7-15"], update:["WP-7-16"], delete:[], confirmed:"2026-09-26" },
   "7.4.4": { create:["WP-7-17"], read:["WP-7-15", "WP-7-14"], update:["WP-7-17"], delete:[], confirmed:"2026-09-26" },
+  "7.4.5": { create:["WP-7-18"], read:[], update:["WP-7-18"], delete:[], confirmed:"2026-10-02" },
+  "7.5.1.1": { create:[], read:["WP-7-19", "WP-7-01"], update:["WP-7-43"], delete:[], confirmed:"2026-10-02" },
+  "7.5.1.2": { create:[], read:[], update:["WP-7-44"], delete:[], confirmed:"2026-10-02" },
+  "7.5.1.3": { create:[], read:["WP-7-43", "WP-7-44"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.5.1.4": { create:[], read:["WP-7-03", "WP-7-43", "WP-7-44"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.5.1.5": { create:["WP-7-19"], read:["WP-7-43", "WP-7-11"], update:["WP-7-19", "WP-7-23"], delete:[], confirmed:"2026-10-02" },
+  "7.5.1.6": { create:[], read:["WP-7-11"], update:["WP-7-19"], delete:[], confirmed:"2026-10-02" },
+  "7.5.1.7": { create:[], read:["WP-7-36", "WP-7-22"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.5.1.8": { create:[], read:["WP-7-19"], update:["WP-7-43"], delete:[], confirmed:"2026-10-02" },
+  "7.5.1.9": { create:[], read:["WP-7-20", "WP-7-45"], update:["WP-7-44"], delete:[], confirmed:"2026-10-02" },
+  "7.5.2.1": { create:[], read:["WP-7-44"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.5.2.2": { create:["WP-7-20"], read:["WP-7-44", "WP-7-30"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.5.2.3": { create:["WP-7-45"], read:["WP-7-20"], update:["WP-7-45"], delete:[], confirmed:"2026-10-02" },
+  "7.5.2.4": { create:[], read:["WP-7-23"], update:["WP-7-20"], delete:[], confirmed:"2026-10-02" },
+  "7.5.3.1": { create:["WP-7-21"], read:["WP-7-46", "WP-7-30"], update:["WP-7-21"], delete:[], confirmed:"2026-10-02" },
+  "7.5.3.2": { create:[], read:[], update:["WP-7-46"], delete:[], confirmed:"2026-10-02" },
+  "7.5.4": { create:["WP-7-23"], read:["WP-7-19", "WP-7-20", "WP-7-33", "WP-7-30"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.5.5": { create:["WP-7-24"], read:["WP-7-30"], update:["WP-7-24"], delete:[], confirmed:"2026-10-02" },
   "7.6.1": { create:["WP-7-25"], read:["WP-7-11", "WP-7-04"], update:["WP-7-25", "WP-7-19", "WP-7-30"], delete:[], confirmed:"2026-09-26" },
   "7.6.2.1": { create:[], read:["WP-7-19", "WP-7-23"], update:["WP-7-26", "WP-7-20", "WP-7-30"], delete:[], confirmed:"2026-09-26" },
   "7.6.2.2": { create:[], read:["WP-7-33"], update:["WP-7-20", "WP-7-30"], delete:[], confirmed:"2026-09-26" },
   "7.6.2.3": { create:["WP-7-26"], read:["WP-7-23", "WP-7-33", "WP-7-19", "WP-7-20"], update:["WP-7-26", "WP-7-30"], delete:["WP-7-10"], confirmed:"2026-09-26" },
   "7.6.2.4": { create:[], read:["WP-7-26", "WP-7-30"], update:[], delete:[], confirmed:"2026-09-26" },
   "7.6.3.1": { create:["WP-7-28", "WP-7-27"], read:[], update:["WP-7-28", "WP-7-30", "WP-7-19"], delete:[], confirmed:"2026-09-26" },
+  "7.7.1": { create:[], read:["WP-7-30", "WP-7-32"], update:["WP-7-34"], delete:[], confirmed:"2026-10-02" },
+  "7.7.2": { create:["WP-7-29"], read:["WP-7-30", "WP-7-03"], update:["WP-7-29"], delete:[], confirmed:"2026-10-02" },
+  "7.7.3": { create:[], read:["WP-7-33"], update:["WP-7-30"], delete:[], confirmed:"2026-10-02" },
+  "7.7.4": { create:["WP-7-31"], read:["WP-7-30"], update:["WP-7-31"], delete:[], confirmed:"2026-10-02" },
+  "7.7.5": { create:["WP-7-32"], read:["WP-7-30", "WP-7-34"], update:["WP-7-32"], delete:[], confirmed:"2026-10-02" },
+  "7.7.6": { create:["WP-7-33"], read:["WP-7-30"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.7.7.1": { create:[], read:["WP-7-40"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.7.7.2": { create:[], read:["WP-7-34"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.7.7.3": { create:[], read:["WP-7-32"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.7.7.4": { create:[], read:["WP-7-31"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.7.7.5": { create:[], read:["WP-7-30", "WP-7-11", "WP-7-19", "WP-7-36"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.7.8.1": { create:[], read:["WP-7-30"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.7.8.2": { create:["WP-7-34", "WP-7-22"], read:["WP-7-32"], update:[], delete:[], confirmed:"2026-10-02" },
+  "7.7.8.3": { create:[], read:[], update:["WP-7-34"], delete:[], confirmed:"2026-10-02" },
   "7.8.1": { create:["WP-7-35"], read:["WP-7-30", "WP-7-03", "WP-7-36"], update:["WP-7-35"], delete:[], confirmed:"2026-09-26" },
+  "7.8.2": { create:["WP-7-36"], read:["WP-7-30"], update:[], delete:[], confirmed:"2026-10-02" },
   "7.8.3": { create:["WP-7-37"], read:["WP-7-35", "WP-7-30"], update:[], delete:[], confirmed:"2026-09-26" },
 };
 const WP_BY_ID = {};
@@ -2565,7 +2671,7 @@ function setView(v, opts) {
   const notes = {
     wr: 'Current State and Progression Ceiling on the six-step ramp, with the Per-Transition Evidence Ladder as gates in between. In the Reference Model every activity starts at the Human-only baseline; with an organization selected, Current State is its assessed value, and each activity opens to be assessed.',
     raci: 'Real reasoned-match RACI for PCF 7.0. R falls back to the Accountable role (marked "from Accountable") wherever no separate Responsible was identified.',
-    data: 'Work-product CRUD. The HRBP Manager’s 11 processes have CRUD per activity, confirmed Sept 26, 2026, and their process rows are derived from it. Other processes show process-level CRUD, repeated in grey on each activity until their activities are done.',
+    data: 'Work-product CRUD per activity for all 118 activities (HRBP Manager confirmed Sept 26, 2026; every other role Oct 2, 2026). Each process row is derived from its activities.',
     people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced. Each role’s WR rollup (Current State) is a modeled index — an equal-weighted mean across its Accountable L3s, computed live and shown only once every one of them is fully classified.',
     report: 'Every place the selected organization departs from the reference, by type of exception, rolled up from activity to process, process group and category. Built live from its assessment and override records. Print or save it as a PDF for executive review.',
     gates: 'Per Working_Relationship_Progression_Methodology.docx section 5 — three independent axes (Technical/Process, Role-level, Organizational-level) must all clear before an activity advances, gated here at L3 via its RACI Accountable role. Only the WR Rollup column carries a value (a modeled index, computed live from the classifications); no instrument exists yet for any of the three gate axes, so those cells are honest placeholders, not a status.',
