@@ -178,11 +178,12 @@ details.fold[open] { padding-bottom: 6px; }
   <ul class="plain">
     <li>The <a href="work_product_catalog.html">work-product catalog</a>: 49 entries, generic systems of record, master data in the sandbox.</li>
     <li>Activity-level CRUD for all 118 activities, with every process&rsquo;s CRUD derived from its activities; the Data View shows each activity&rsquo;s own CRUD (<a href="activity_crud_hrbp_manager.html">HRBP Manager</a>, <a href="activity_crud_remaining_roles.html">remaining roles</a>).</li>
-    <li><strong>Oct 2:</strong> the role panel and verification-load indicator (B1, B5) in the People View. Each role shows its verification load and pays-twice count under its name; opened, it shows <em>Produces</em>, <em>Relied on by</em> and <em>Must verify</em>, naming the producing activity and where each check falls. It uses the proposed verification-point rule, reads the ceiling in the Reference Model and the assessed Current State for an organization, and lists an unassessed producer as not yet known.</li>
+    <li><strong>Oct 2, taken out Oct 6:</strong> the role panel and verification-load indicator (B1, B5) in the People View. Tim found it too busy: it took attention away from the working relationship, so it was disconnected from the view while its display is rethought (section 4). The calculation stays in the sandbox, unused. As built, it showed each role&rsquo;s verification load and pays-twice count under its name; opened, it showed <em>Produces</em>, <em>Relied on by</em> and <em>Must verify</em>, naming the producing activity and where each check falls.</li>
     <li><strong>Not yet:</strong> work-product chips on activity cards, the trace view, and the role-level redefinition flag.</li>
   </ul>
 
   <h2>4. Open questions</h2>
+  <div class="open-item"><div class="oi-name">Where and how the work product is shown &mdash; Tim (Oct 6)</div><p>The first panel, under each role in the People View, was too busy and competed with the working relationship. To rethink: what a reader needs to see first, and whether it belongs in the People View at all, in its own view, or with the Data View.</p></div>
   <div class="open-item"><div class="oi-name">Verification-point rule &mdash; Tim and GiGi</div><p>Adopt the proposed rule above, or revise it.</p></div>
   <div class="open-item"><div class="oi-name">Consequence weighting &mdash; Tim and GiGi</div><p>Whether a review feeding a promotion counts more than one feeding a newsletter.</p></div>
   <div class="open-item"><div class="oi-name">Redefinition threshold &mdash; Tim and GiGi</div><p>The rule is defined; the number is not.</p></div>
@@ -196,14 +197,14 @@ details.fold[open] { padding-bottom: 6px; }
       <tr><td class="k">Activity-level CRUD</td><td>Done for all 118 activities (CL-007, CL-014)</td></tr>
       <tr><td class="k">Consumer links</td><td>For every read: the reader&rsquo;s Accountable role, working relationship and Consequence of Error</td></tr>
       <tr><td class="k">Master-data governance</td><td>Catalog and CRUD edited in the sandbox first, logged in the changelog, covered by the CI check</td></tr>
-      <tr><td class="k">Role panel and verification-load indicator</td><td>Built Oct 2 in the People View</td></tr>
+      <tr><td class="k">Role panel and verification-load indicator</td><td>Built Oct 2; taken out of the People View Oct 6 to rethink the display</td></tr>
       <tr><td class="k">Work-product chip, activity-card list, trace view</td><td>Next; buildable now that activity-level CRUD is complete</td></tr>
       <tr><td class="k">Role-level redefinition flag</td><td>Needs the threshold value</td></tr>
     </table>
   </details>
   <details class="fold">
     <summary>Reference: verification load at the Progression Ceiling (Oct 2)</summary>
-    <p class="small">Computed by the People View panel from the Reference Model: every activity at its Progression Ceiling, with the proposed verification-point rule. Where checks would fall at full progression, not today. The Sept 25&ndash;26 pilot figures, computed against the retired modeled Current State values, are superseded.</p>
+    <p class="small">Computed by the first People View panel (taken out Oct 6) from the Reference Model: every activity at its Progression Ceiling, with the proposed verification-point rule. Where checks would fall at full progression, not today. The Sept 25&ndash;26 pilot figures, computed against the retired modeled Current State values, are superseded.</p>
     <table>
       <tr><th style="width:30%">Accountable role</th><th style="width:16%">Verification load</th><th>Pays twice on</th></tr>
       <tr><td class="k">HRBP Manager</td><td>10</td><td>Requisition Record, Performance Review, Compensation Record, Benefits Enrollment, Separation Record, Employee Master Record</td></tr>

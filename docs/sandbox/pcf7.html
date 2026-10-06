@@ -1993,11 +1993,9 @@ function renderRoleImpactTable(cat) {
           '<td style="color:#B8C0CC;font-style:italic;font-size:11px">No R/A touches in current RACI data</td></tr>';
         return;
       }
-      const wp = accL3s.length ? roleWorkProduct(r.name, cat) : null;
       html += '<tr class="row-l3 toggle-role" data-role="' + rowId + '" onclick="toggleRoleRow(\'' + rowId + '\')" style="cursor:pointer">' +
-        '<td class="indent-l3"><span class="role-toggle-icon" id="icon-' + rowId + '">+</span><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + (wp ? roleVerificationIndicatorHtml(wp) : '') + '</td>' +
+        '<td class="indent-l3"><span class="role-toggle-icon" id="icon-' + rowId + '">+</span><span class="row-text">' + r.name + '</span>' + reportingLine(r, taxonomy) + '</td>' +
         '<td style="padding:0;">' + roleRollupInlineHtml(accL3s) + '</td></tr>';
-      if (wp) html += '<tr class="row-l4 role-leaf" data-role-parent="' + rowId + '" style="display:none"><td colspan="2" style="padding:0;">' + roleWorkProductPanelHtml(r.name, wp) + '</td></tr>';
       roleTouchRows(l3s).forEach(row => {
         const isL3 = row.level === 'l3';
         const indentPx = isL3 ? 32 : 48;
@@ -2024,7 +2022,10 @@ function renderRoleImpactTable(cat) {
      Critical Consequence of Error.
    - Verification load: the number of distinct work products a role relies
      on at verification points. Pays twice: the role is also Accountable
-     where that work product is produced. A count of exposure, not hours. */
+     where that work product is produced. A count of exposure, not hours.
+   Oct 6, 2026 (Tim): taken out of the People View, which it crowded; the
+   display is being rethought. The functions are kept, but nothing calls
+   them until the new design is decided. */
 // Own copy of the ramp order: CATS_ORDER is declared further down the script.
 const WPV_RAMP = ['Human-only', 'Judgment', 'Oversight', 'Augmentation', 'Agent-delegation', 'Automation'];
 const WPV_AI_FROM = WPV_RAMP.indexOf('Augmentation');
@@ -2823,7 +2824,7 @@ function setView(v, opts) {
     wr: 'Current State and Progression Ceiling on the six-step ramp, with the Per-Transition Evidence Ladder as gates in between. In the Reference Model every activity starts at the Human-only baseline; with an organization selected, Current State is its assessed value, and each activity opens to be assessed.',
     raci: 'Real reasoned-match RACI for PCF 7.0. R falls back to the Accountable role (marked "from Accountable") wherever no separate Responsible was identified.',
     data: 'Work-product CRUD per activity for all 118 activities (HRBP Manager confirmed Sept 26, 2026; every other role Oct 2, 2026). Each process row is derived from its activities.',
-    people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced. Under each role: its verification load (GR-046) — AI-touched work products it relies on at verification points — and, opened, the work products it produces, who relies on them and what it must verify. Each role’s WR rollup (Current State) is a modeled index — an equal-weighted mean across its Accountable L3s, computed live and shown only once every one of them is fully classified.',
+    people: 'The 14-role PCF 7.0 catalog, with reporting line and span of control from the framework’s Organizational Role Taxonomy — a first-pass reasoned structure, not yet externally sourced. Each role’s WR rollup (Current State) is a modeled index — an equal-weighted mean across its Accountable L3s, computed live and shown only once every one of them is fully classified.',
     report: 'Every place the selected organization departs from the reference, by type of exception, rolled up from activity to process, process group and category. Built live from its assessment and override records. Print or save it as a PDF for executive review.',
     gates: 'Per Working_Relationship_Progression_Methodology.docx section 5 — three independent axes (Technical/Process, Role-level, Organizational-level) must all clear before an activity advances, gated here at L3 via its RACI Accountable role. Only the WR Rollup column carries a value (a modeled index, computed live from the classifications); no instrument exists yet for any of the three gate axes, so those cells are honest placeholders, not a status.',
   };
