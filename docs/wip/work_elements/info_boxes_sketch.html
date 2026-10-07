@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sketch: Work Elements in the Info Boxes</title>
+<style>
+:root{--navy:#1B4F8A;--navy-d:#0D2D4F;--dark:#0D1B2A;--gray:#444;--lgray:#8A94A6;--bg:#F4F6FB;--border:#DDE3EE;--red:#B91C1C;--amber:#9A6A00}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);padding-bottom:60px}
+.sk{background:#FEF3C7;border-bottom:2px solid #B8873F;color:#7A5A1E;font-size:12.5px;text-align:center;padding:9px 16px}
+.wrap{max-width:1100px;margin:0 auto;padding:18px 16px}
+.intro{font-size:13px;color:var(--gray);line-height:1.6;margin-bottom:12px;max-width:860px}
+.mode{display:flex;gap:6px;align-items:center;margin:4px 0 16px;flex-wrap:wrap}
+.mode span{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin-right:4px}
+.mode button{font:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:#fff;color:var(--navy-d);cursor:pointer}
+.mode button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 22px 18px;margin-bottom:18px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.code{font-family:Consolas,monospace;color:var(--gray);margin-right:8px}
+.name{font-size:15px}
+.cons{text-align:right;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray)}
+.cons b{display:block;font-size:15px;letter-spacing:0;text-transform:none;font-weight:600;margin-top:2px}
+.chip{font-family:Consolas,monospace;font-size:10.5px;color:#166534;border:1px solid #9AD9B0;background:#F0FDF4;border-radius:4px;padding:2px 8px;margin-top:6px;display:inline-block}
+.ramp{display:flex;align-items:flex-start;margin-top:16px;flex-wrap:wrap;row-gap:8px}
+.step{display:flex;flex-direction:column;align-items:center;min-width:96px;cursor:pointer}
+.dot{width:18px;height:18px;border-radius:50%;background:#EDEFF3;box-sizing:border-box}
+.lbl{font-size:13px;margin-top:5px;white-space:nowrap}
+.step.dim .lbl{color:#A9B2C2}
+.step.sel .lbl{text-decoration:underline;text-underline-offset:4px}
+.arr{width:44px;text-align:center;color:var(--navy);font-size:18px;cursor:pointer;padding-top:0;line-height:18px}
+.arr.dim{color:#C4CBD7}
+.arr.sel{font-weight:700}
+.lock{width:44px;text-align:center;cursor:pointer;line-height:18px}
+.lock svg{vertical-align:-2px}
+.box{margin-top:14px;border:1px solid var(--border);border-radius:8px;background:#FAFBFD;padding:12px 16px 14px;max-width:820px;position:relative}
+.box h4{font-size:14px;color:var(--navy-d);margin-bottom:2px}
+.box .sub{font-size:11.5px;color:var(--lgray);margin-bottom:8px;line-height:1.5}
+.box .x{position:absolute;right:10px;top:8px;border:none;background:none;font-size:16px;color:var(--lgray);cursor:pointer}
+table{width:100%;border-collapse:collapse}
+td{font-size:12.5px;padding:6px 8px;border-top:1px solid #EEF1F6;vertical-align:top}
+tr:first-child td{border-top:none}
+td.el{width:120px;white-space:nowrap}
+td.obj{color:var(--gray)}
+td.st{width:220px;white-space:nowrap}
+tr.chg td{background:#FFFBEB}
+.ctl{color:var(--navy);font-size:11px;margin-left:3px}
+.note{font-size:11px;color:var(--lgray)}
+.past{color:var(--red);font-weight:600}
+.na{font-size:11.5px;color:var(--lgray);margin-top:8px}
+.ev{margin-top:10px;font-size:12.5px;line-height:1.55;color:var(--dark)}
+.ev b{color:var(--navy-d)}
+.beyond{margin-top:8px;font-size:12px;color:var(--amber)}
+.legend{font-size:11.5px;color:var(--gray);margin:2px 0 14px;display:flex;gap:16px;flex-wrap:wrap}
+@media(max-width:640px){td.st,td.el{white-space:normal;width:auto} td.obj{display:none} .step{min-width:84px}}
+.foot{font-size:12px;color:var(--lgray);max-width:860px;line-height:1.6;margin-top:6px}
+</style></head><body>
+<div class="sk"><b>SKETCH</b> &middot; Work elements in the Working Relationship info boxes &middot; three worked examples &middot; not in the sandbox &middot; worked example for <a href="../work_element_model_spec.html" style="color:#7A5A1E;font-weight:600">GR-058 Work Elements</a></div>
+<div class="wrap">
+<p class="intro">Click any <b>step</b> for who does each work element at that stage, an <b>arrow</b> for what changes in that step and the evidence it needs, or the <b>lock</b> for which elements must stay human. Switch to ABC Test Org to see an element-level assessment (illustrative values).</p>
+<div class="mode"><span>Organization</span><button id="m-ref" class="on" onclick="setMode('ref')">Reference Model</button><button id="m-abc" onclick="setMode('abc')">ABC Test Org (illustrative)</button></div>
+<div id="cards"></div>
+<p class="foot">Lead states: <b>Human</b> the person does it alone · <b>Human-led</b> the person does it, AI assists · <b>AI-led</b> AI does it, the person approves or handles exceptions · <b>AI</b> AI does it alone. The <span style="color:var(--navy)">◆</span> control element is Decide, or Verify where an activity has no Decide; who holds it separates Oversight from Agent-delegation. Highlighted rows changed from the previous stage.</p>
+</div>
+<script>
+const STAGES=['Human-only','Judgment','Augmentation','Oversight','Agent-delegation','Automation'];
+const DOT={"Human-only":"#0D2D4F","Judgment":"#204474","Augmentation":"#2457A3","Oversight":"#3D6FA8","Agent-delegation":"#5A8DC4","Automation":"#7DAEE0"};
+const LEAD=['Human','Human-led','AI-led','AI'];
+// Option 3 (Tim, Oct 7): lead states are plain text; color is kept only for past-ceiling red and changed-row highlights.
+const LC={"Human":"inherit","Human-led":"inherit","AI-led":"inherit","AI":"inherit"};
+const CONS={Low:'#0072B2',Moderate:'#008460',High:'#9A6A00',Critical:'#C15500'};
+const ALL=['Research','Evaluate','Draft','Verify','Decide','Produce / Execute','Communicate'];
+const A=[
+{code:'7.2.1.1',name:'Align staffing plan to work force plan and business unit strategies/resource needs',role:'HRBP Manager',ceiling:'Judgment',cons:'Moderate',control:'Decide',
+ el:{
+  'Research':{obj:'Pull the Workforce Plan, BU strategy, headcount and open requisitions',ceil:'AI',
+    s:[['Human'],['AI','AI pulls the data'],['AI'],['AI'],['AI'],['AI']]},
+  'Evaluate':{obj:'Find gaps between needs, plan and budget',ceil:'Human-led',
+    s:[['Human'],['Human-led','AI rankings and benchmarks as inputs'],['Human-led','AI flags gaps'],['AI'],['AI'],['AI']]},
+  'Draft':{obj:'Set roles, counts and timing',ceil:'Human',
+    s:[['Human'],['Human'],['Human-led','AI suggests counts'],['AI','AI drafts the whole plan'],['AI'],['AI']]},
+  'Verify':{obj:'Check against budget and the approved headcount plan',ceil:'Human-led',
+    s:[['Human'],['Human'],['Human-led','AI flags issues'],['AI'],['AI'],['AI']]},
+  'Decide':{obj:'Agree on the plan with the BU leader',ceil:'Human',
+    s:[['Human'],['Human','makes the call'],['Human'],['Human','approves each AI plan'],['AI-led','handles flagged exceptions'],['AI']]},
+  'Produce / Execute':{obj:'Record the Staffing Plan in the Core HR System',ceil:'AI',
+    s:[['Human'],['Human'],['Human-led','AI fills it in'],['AI'],['AI'],['AI']]},
+  'Communicate':{obj:'Share with hiring managers and Talent Acquisition',ceil:'Human-led',
+    s:[['Human'],['Human'],['Human-led','AI drafts the message'],['AI'],['AI'],['AI']]}
+ },
+ gates:[
+  'AI-pulled plan, headcount and requisition data match the systems of record when spot-checked.',
+  'The HRBP uses AI suggestions for counts, timing and gaps in most plans, and spot checks show they introduce no budget or headcount errors.',
+  'AI-drafted staffing plans agree with what the HRBP would have proposed in most cases, over enough real planning cycles.',
+  'Approved AI plans pass clean in a high share of reviews, and AI reliably flags plans outside budget or strategy bounds.',
+  'Sustained low exception rate over real volume, plus an explicit governance sign-off.'],
+ lock:'Draft and Decide stay <b>Human</b>: the budget-authority duty sits on the strategic-fit call and the sign-off. Evaluate, Verify and Communicate may be <b>Human-led</b>. Research and Produce / Execute may go to <b>AI</b>.',
+ abc:{'Research':['AI','System: scheduled HCM headcount report'],'Evaluate':['Human-led','Observed: the planning tool flags gaps; the HRBP reviews them'],'Draft':['Human-led','Interview: AI suggests requisition counts; the HRBP edits them'],'Verify':['Human','Observed'],'Decide':['Human','Document: BU leader sign-off'],'Produce / Execute':['AI','System: the plan auto-saves to the Core HR System'],'Communicate':['Human-led','Observed']},
+ abcStage:'Augmentation', abcWhy:'the HRBP leads Draft with AI assisting, and Decide stays Human'},
+{code:'7.2.1.4',name:'Post job requisitions',role:'HRBP Manager',ceiling:'Automation',cons:'Low',control:'Verify',
+ el:{
+  'Research':{obj:'Read the approved requisition: role, location, pay band, approval status',ceil:'AI',
+    s:[['Human'],['AI','AI pulls the requisition'],['AI'],['AI'],['AI'],['AI']]},
+  'Draft':{obj:'Write the posting text from the requisition and job profile',ceil:'AI',
+    s:[['Human'],['Human'],['Human-led','AI suggests text'],['AI','AI drafts the posting'],['AI'],['AI']]},
+  'Verify':{obj:'Check the posting matches the requisition and carries required notices (EEO, pay range)',ceil:'AI',
+    s:[['Human'],['Human'],['Human-led','AI flags issues'],['Human','approves every posting'],['AI-led','handles flagged postings only'],['AI']]},
+  'Produce / Execute':{obj:'Publish to the applicant tracking system and job boards (creates the Job Posting)',ceil:'AI',
+    s:[['Human'],['Human'],['Human-led','AI prepares; the Recruiter publishes'],['AI','publishes once approved'],['AI'],['AI']]}
+ },
+ na:{'Evaluate':'7.2.2.1 and 7.2.2.6 choose channels','Decide':'decided upstream at 7.2.1.3','Communicate':'7.2.1.6 notifies the hiring manager'},
+ gates:[
+  'AI pulls requisition details accurately when spot-checked against the requisition record.',
+  'The Recruiter uses AI-suggested posting text most of the time, and spot checks find no errors introduced.',
+  'AI-drafted postings match what the Recruiter would publish in most cases.',
+  'AI-checked postings match the approved requisition and carry the required notices in a high share of sampled instances, and AI reliably flags mismatches.',
+  'Sustained low exception rate, plus a governance sign-off on unattended publishing.'],
+ lock:'Top of the ramp: every element may go to <b>AI</b>. The control on Verify must cover the required notices (EEO, pay range).',
+ abc:{'Research':['AI','System: the ATS pre-fills the posting from the requisition'],'Draft':['AI-led','System: AI drafts the ad from a template'],'Verify':['Human','Observed: the Recruiter reviews every posting before it goes live'],'Produce / Execute':['AI','System: auto-publishes once released']},
+ abcStage:'Oversight', abcWhy:'AI leads the work; the Recruiter approves every posting at Verify'},
+{code:'7.4.4',name:'Manage employee grievances',role:'HRBP Manager',ceiling:'Judgment',cons:'Critical',control:'Decide',
+ el:{
+  'Research':{obj:'Gather the grievance facts, the relevant CBA provisions, prior ER cases and contractual deadlines',ceil:'AI',f:'—',
+    s:[['Human'],['AI','AI pulls clauses, case history, deadlines'],['AI'],['AI'],['AI'],['AI']]},
+  'Evaluate':{obj:'Investigate and assess the merit: contract interpretation, precedent, retaliation risk',ceil:'Human-led',f:'Legal / fiduciary duty',
+    s:[['Human'],['Human-led','AI surfaces clauses and precedent'],['Human-led','AI summarizes the record'],['AI'],['AI'],['AI']]},
+  'Draft':{obj:'Write the step answer or settlement proposal',ceil:'Human',f:'Legal / fiduciary duty',
+    s:[['Human'],['Human'],['Human-led','AI suggests language'],['AI','AI drafts the step answer'],['AI'],['AI']]},
+  'Verify':{obj:'Check the answer against the CBA, timelines and past practice',ceil:'Human-led',f:'Legal / fiduciary duty',
+    s:[['Human'],['Human'],['Human-led','AI checks deadlines and citations'],['AI'],['AI'],['AI']]},
+  'Decide':{obj:'Grant, deny or settle at each grievance step',ceil:'Human',f:'Human judgment floor',
+    s:[['Human'],['Human','makes the call'],['Human'],['Human','approves each AI-proposed resolution'],['AI-led','handles flagged exceptions'],['AI']]},
+  'Produce / Execute':{obj:'Record the Grievance Case, track contractual deadlines, carry out the remedy',ceil:'AI',f:'—',
+    s:[['Human'],['Human'],['Human-led','AI tracks deadlines'],['AI'],['AI'],['AI']]},
+  'Communicate':{obj:'Meet with the grievant and union representative; deliver the decision',ceil:'Human',f:'Relational / emotional stakes',
+    s:[['Human'],['Human'],['Human-led','AI prepares talking points'],['AI','AI sends the decision'],['AI'],['AI']]}
+ },
+ gates:[
+  'AI-gathered clauses, case history and deadlines are complete and accurate when spot-checked against the CBA and case records.',
+  'The ER lead uses AI summaries and suggested language in most cases, and legal review finds no errors or missed precedent introduced by them.',
+  'AI-drafted step answers agree with what the ER lead and counsel would issue in most cases, over enough real grievances.',
+  'Approved AI resolutions pass clean on legal review in a high share of cases, and AI reliably flags retaliation risk and novel contract questions.',
+  'Sustained low exception rate, plus explicit governance and union agreement to unattended resolution.'],
+ lock:'Draft, Decide and Communicate stay <b>Human</b>. Each ceiling factor attaches to specific elements: the <b>legal</b> duty to Evaluate, Draft and Verify; the <b>judgment floor</b> to Decide; the <b>relational</b> stake to Communicate, because the person is part of what makes the outcome legitimate to the grievant. Research and Produce / Execute may go to <b>AI</b>; tracking contractual deadlines is where AI helps most.',
+ abc:{'Research':['AI','System: the case tool pulls CBA clauses and prior cases'],'Evaluate':['Human-led','Observed: AI summarizes the case file; the ER lead assesses it'],'Draft':['Human-led','Document: the ER lead writes the step-2 answer using AI-suggested language'],'Verify':['Human-led','System: AI checks deadlines and citations; the ER lead confirms'],'Decide':['Human','Document: step decision signed by the HRBP Manager'],'Produce / Execute':['AI','System: deadline tracking and case record updates'],'Communicate':['Human','Observed: step meetings held in person']},
+ abcStage:'Augmentation', abcWhy:'the ER lead drafts with AI assisting, and Decide stays Human; record keeping by AI does not change the stage'}
+
+];
+let mode='ref'; const sel={};
+function rank(s){return STAGES.indexOf(s)}
+function lr(s){return LEAD.indexOf(s)}
+function stateTxt(st,note){return '<span style="color:'+LC[st]+'">'+st+'</span>'+(note?' <span class="note">'+note+'</span>':'')}
+function setMode(m){mode=m;document.getElementById('m-ref').classList.toggle('on',m==='ref');document.getElementById('m-abc').classList.toggle('on',m==='abc');A.forEach((a,i)=>{sel[i]=m==='abc'?{t:'abc'}:null});render()}
+function pick(i,t,k){sel[i]=(sel[i]&&sel[i].t===t&&sel[i].k===k)?null:{t,k};render()}
+function elRows(a,si,withPrev){
+  return Object.keys(a.el).map(e=>{const d=a.el[e];const [st,nt]=d.s[si];const prev=si>0?d.s[si-1][0]:st;
+    const chg=withPrev&&si>0&&prev!==st;const beyond=lr(st)>lr(d.ceil);
+    return '<tr'+(chg?' class="chg"':'')+'><td class="el">'+e+(e===a.control?'<span class="ctl">◆</span>':'')+'</td><td class="obj">'+d.obj+'</td><td class="st">'+stateTxt(st,nt)+(beyond?' <span class="note" style="color:var(--amber)">beyond element ceiling</span>':'')+'</td></tr>'}).join('');
+}
+function naLine(a){return a.na?'<div class="na">Not part of this activity: '+Object.keys(a.na).map(k=>k+' ('+a.na[k]+')').join(' · ')+'</div>':''}
+function box(a,i){
+  const s=sel[i]; if(!s) return '';
+  const x='<button class="x" onclick="sel['+i+']=null;render()">×</button>';
+  if(s.t==='stage'){const si=s.k,stg=STAGES[si];
+    return '<div class="box">'+x+'<h4>'+stg+' — who does what</h4><div class="sub">'+a.code+' '+a.name+(rank(stg)>rank(a.ceiling)?' · <span style="color:var(--amber)">beyond this activity\'s Progression Ceiling ('+a.ceiling+'), shown for illustration</span>':'')+'</div><table>'+elRows(a,si,true)+'</table>'+naLine(a)+'</div>';}
+  if(s.t==='gate'){const gi=s.k,from=STAGES[gi],to=STAGES[gi+1];
+    const ch=Object.keys(a.el).filter(e=>a.el[e].s[gi][0]!==a.el[e].s[gi+1][0]||a.el[e].s[gi][1]!==a.el[e].s[gi+1][1]);
+    const rows=ch.map(e=>{const p=a.el[e].s[gi],n=a.el[e].s[gi+1];return '<tr><td class="el">'+e+(e===a.control?'<span class="ctl">◆</span>':'')+'</td><td class="st" style="width:auto">'+stateTxt(p[0],p[1])+' &nbsp;→&nbsp; '+stateTxt(n[0],n[1])+'</td></tr>'}).join('');
+    return '<div class="box">'+x+'<h4>'+from+' → '+to+' — what changes</h4><div class="sub">'+a.code+' '+a.name+' · '+ch.length+' of '+Object.keys(a.el).length+' elements change in this step</div><table>'+rows+'</table><div class="ev"><b>Evidence to take this step:</b> '+a.gates[gi]+'</div>'+(rank(to)>rank(a.ceiling)?'<div class="beyond">This step goes past the Progression Ceiling ('+a.ceiling+').</div>':'')+'</div>';}
+  if(s.t==='lock'){
+    const rows=Object.keys(a.el).map(e=>'<tr><td class="el">'+e+(e===a.control?'<span class="ctl">◆</span>':'')+'</td><td class="obj">'+a.el[e].obj+'</td><td class="st">at most '+stateTxt(a.el[e].ceil)+(a.el[e].f&&a.el[e].f!=='—'?' <span class="note">'+a.el[e].f+'</span>':'')+'</td></tr>').join('');
+    return '<div class="box">'+x+'<h4>Progression Ceiling — '+a.ceiling+'</h4><div class="sub">'+a.lock+'</div><table>'+rows+'</table>'+naLine(a)+'</div>';}
+  if(s.t==='abc'){
+    const rows=Object.keys(a.el).map(e=>{const [st,ev]=a.abc[e];const past=lr(st)>lr(a.el[e].ceil);
+      return '<tr><td class="el">'+e+(e===a.control?'<span class="ctl">◆</span>':'')+'</td><td class="st">'+stateTxt(st)+(past?' <span class="past">past element ceiling ('+a.el[e].ceil+')</span>':'')+'</td><td class="obj">'+ev+'</td></tr>'}).join('');
+    const pastEls=Object.keys(a.el).filter(e=>lr(a.abc[e][0])>lr(a.el[e].ceil));
+    return '<div class="box">'+x+'<h4>ABC Test Org today — '+a.abcStage+'</h4><div class="sub">Derived from the elements: '+a.abcWhy+'. '+(pastEls.length?'<span class="past">'+pastEls.join(', ')+' past its element ceiling.</span>':'Every element is within its element ceiling.')+'</div><table>'+rows+'</table></div>';}
+  return '';
+}
+function render(){
+  document.getElementById('cards').innerHTML=A.map((a,i)=>{
+    const ci=rank(a.ceiling), cur=mode==='abc'?rank(a.abcStage):0, s=sel[i]||{};
+    let r='';
+    STAGES.forEach((st,k)=>{
+      const reached=k<=cur, above=k>ci, past=reached&&above;
+      const bg=reached&&!above?DOT[st]:'#EDEFF3';
+      const bd=past?'border:2.5px solid var(--red)':'';
+      r+='<div class="step'+(above&&!reached?' dim':'')+(s.t==='stage'&&s.k===k?' sel':'')+'" onclick="pick('+i+',\'stage\','+k+')"><div class="dot" style="background:'+bg+';'+bd+'"></div><div class="lbl"'+(past?' style="color:var(--red)"':'')+'>'+st+'</div></div>';
+      if(k<5){ if(k===ci) r+='<div class="lock" onclick="pick('+i+',\'lock\',0)" title="Progression Ceiling — click for why"><svg width="13" height="14" viewBox="0 0 24 26"><rect x="4" y="11" width="16" height="13" rx="2" fill="'+(mode==='abc'&&cur>ci?'#B91C1C':'#475569')+'"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="'+(mode==='abc'&&cur>ci?'#B91C1C':'#475569')+'" stroke-width="2.4" fill="none"/></svg></div>';
+        else r+='<div class="arr'+(k>=ci?' dim':'')+(s.t==='gate'&&s.k===k?' sel':'')+'" onclick="pick('+i+',\'gate\','+k+')">→</div>'; }
+    });
+    const chip=mode==='abc'?'<div class="chip">ASSESSED · ELEMENT LEVEL · ILLUSTRATIVE</div>':'';
+    return '<div class="card"><div class="top"><div><span class="code">'+a.code+'</span><span class="name">'+a.name+'</span><br>'+chip+'</div><div class="cons">Consequence of Error<b style="color:'+CONS[a.cons]+'">'+a.cons+'</b></div></div><div class="ramp">'+r+'</div>'+box(a,i)+'</div>';
+  }).join('');
+}
+render();
+</script></body></html>

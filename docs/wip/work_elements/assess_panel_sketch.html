@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sketch: Element Assessment Panel</title>
+<style>
+:root{--navy:#1B4F8A;--navy-d:#0D2D4F;--dark:#0D1B2A;--gray:#444;--lgray:#6B7A90;--bg:#F4F6FB;--border:#DDE3EE;--red:#991B1B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);padding-bottom:60px}
+.sk{background:#FEF3C7;border-bottom:2px solid #B8873F;color:#7A5A1E;font-size:12.5px;text-align:center;padding:9px 16px}
+.wrap{max-width:1100px;margin:0 auto;padding:18px 16px;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
+.side{flex:1;min-width:240px;max-width:340px}
+.side p{font-size:12.5px;color:var(--gray);line-height:1.6;margin-bottom:10px}
+.pick{display:flex;flex-direction:column;gap:6px;margin:6px 0 14px}
+.pick button{font:inherit;font-size:12.5px;text-align:left;padding:8px 12px;border-radius:6px;border:1px solid var(--border);background:#fff;color:var(--navy-d);cursor:pointer}
+.pick button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.pick button span{font-family:Consolas,monospace;margin-right:6px}
+.side h5{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin:14px 0 6px}
+.side ul{font-size:12px;color:var(--gray);line-height:1.6;padding-left:16px}
+/* panel, styled like assess-panel.js */
+.ap{background:#fff;width:min(640px,100%);padding:20px 22px 28px;box-shadow:-8px 0 30px rgba(0,0,0,.12);border-radius:8px;color:#0D1B2A}
+.ap-top{display:flex;justify-content:space-between;gap:12px}
+.ap h3{font-size:17px;color:#0D2D4F;margin:0 0 2px}
+.ap-org{font-size:12px;color:var(--lgray);margin-bottom:2px}
+.ap-proc{font-size:12.5px;color:var(--lgray);margin-bottom:12px}
+.ap-close{font-size:20px;color:var(--lgray)}
+dl{display:grid;grid-template-columns:150px 1fr;gap:6px 12px;font-size:12.5px;margin:0 0 6px}
+dt{color:var(--lgray);font-weight:600}
+dd{margin:0}
+.chip{display:inline-block;font-size:10px;font-weight:600;border-radius:3px;padding:1px 6px;color:#fff;white-space:nowrap}
+.sec{border-top:1px solid var(--border);padding-top:14px;margin-top:14px}
+h4{font-family:Consolas,monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--navy);margin:0 0 4px}
+.sub{font-size:12px;color:var(--lgray);margin-bottom:10px;line-height:1.5}
+.el{border:1px solid var(--border);border-radius:8px;padding:9px 12px 10px;margin-bottom:8px;background:#F8FAFD}
+.el.past{border-color:#F5B5B5;background:#FFF7F7}
+.eh{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.en{font-size:13px;font-weight:600;color:#0D2D4F}
+.ctl{color:var(--navy);font-size:11px;margin-left:3px}
+.ec{font-size:11px;color:var(--lgray)}
+.eo{font-size:12px;color:var(--gray);margin:2px 0 7px;line-height:1.45}
+.seg{display:inline-flex;border:1px solid #C6D8EE;border-radius:6px;overflow:hidden}
+.seg button{font:inherit;font-size:12px;font-weight:600;padding:5px 11px;border:none;border-right:1px solid #C6D8EE;background:#fff;color:#0D2D4F;cursor:pointer}
+.seg button:last-child{border-right:none}
+.seg button.on{background:#1B4F8A;color:#fff}
+.seg button.over{color:#B4BCC9}
+.seg button.over.on{background:var(--red);color:#fff}
+.evrow{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}
+select,input[type=text],textarea{font:inherit;font-size:12.5px;padding:6px 8px;border:1px solid #C6D8EE;border-radius:6px;background:#fff}
+.evrow select{flex:0 0 165px}
+.evrow input{flex:1;min-width:160px}
+.pastmsg{font-size:11.5px;color:var(--red);margin-top:6px;font-weight:600}
+.na{font-size:11.5px;color:var(--lgray);margin-top:4px;line-height:1.5}
+.proposal{border-left:4px solid #1B4F8A;background:#EEF3FA;padding:10px 12px;border-radius:6px;font-size:13px;line-height:1.5;margin:12px 0 4px}
+.warn{margin-top:8px;padding:9px 12px;border-radius:6px;background:#FEE2E2;border:1px solid #F5B5B5;color:#7F1D1D;font-size:12.5px;line-height:1.5}
+.tog{font:inherit;font-size:12.5px;border:none;background:none;color:var(--navy);text-decoration:underline;cursor:pointer;padding:0}
+label{display:block;font-size:12px;font-weight:600;color:#0D2D4F;margin:10px 0 4px}
+.full{width:100%}
+.radios{display:flex;gap:14px;font-size:13px}
+.radios label{font-weight:400;margin:0;display:inline}
+.actions{display:flex;gap:8px;margin-top:14px}
+.btn{font:inherit;font-size:12.5px;font-weight:600;padding:6px 13px;border-radius:6px;border:1px solid #C6D8EE;background:#fff;color:#0D2D4F}
+.btn.primary{background:#1B4F8A;border-color:#1B4F8A;color:#fff}
+.muted{color:var(--lgray);font-size:12.5px;line-height:1.5}
+@media(max-width:560px){dl{grid-template-columns:1fr} .evrow select{flex:1 1 100%}}
+</style></head><body>
+<div class="sk"><b>SKETCH</b> &middot; Assessment panel as an element grid &middot; ABC Test Org &middot; illustrative values &middot; not in the sandbox &middot; worked example for <a href="../work_element_model_spec.html" style="color:#7A5A1E;font-weight:600">GR-058 Work Elements</a></div>
+<div class="wrap">
+<div class="side">
+<p>The panel that opens from an activity card while ABC Test Org is selected. The assessor sets who leads each work element and records the evidence for it. The working relationship is derived from the grid.</p>
+<div class="pick" id="vw"></div>
+<div class="pick" id="pick"></div>
+<p>An activity nobody has assessed starts with every element at Human and no evidence: the Human-only baseline. Anything above Human is a choice the assessor makes and backs with evidence. Each element&rsquo;s ceiling, its object phrase and the ◆ control element come from the reference model.</p>
+<h5>Derivation</h5>
+<ul>
+<li>All elements Human: <b>Human-only</b>.</li>
+<li>AI only in Research or Evaluate: <b>Judgment</b>.</li>
+<li>AI assists in Draft, Verify or Communicate, the person leads: <b>Augmentation</b>.</li>
+<li>AI leads a core element, a person holds the ◆ control element: <b>Oversight</b>.</li>
+<li>Control element AI-led: <b>Agent-delegation</b>.</li>
+<li>Control element AI: <b>Automation</b>.</li>
+<li>Produce / Execute alone doesn't move the stage.</li>
+</ul>
+</div>
+<div class="ap" id="ap"></div>
+</div>
+<script>
+const STAGES=['Human-only','Judgment','Augmentation','Oversight','Agent-delegation','Automation'];
+const CHIP={"Human-only":"#0D2D4F","Judgment":"#204474","Augmentation":"#2457A3","Oversight":"#3D6FA8","Agent-delegation":"#5A8DC4","Automation":"#7DAEE0"};
+const CONS={Low:'#0072B2',Moderate:'#008460',High:'#9A6A00',Critical:'#C15500'};
+const LEAD=['Human','Human-led','AI-led','AI'];
+const ORDER=['Research','Evaluate','Draft','Verify','Decide','Produce / Execute','Communicate'];
+const EV=[['observed','Observed practice'],['system','System configuration'],['audit','Audit or control test'],['interview','Interview'],['document','Document']];
+const DEFS={"Human-only":"A person does all of the work; AI plays no part.","Judgment":"AI supplies inputs for a person's own reasoning; the person does the work and makes the call.","Augmentation":"The person does the work with AI assisting in real time; no separate approval step.","Oversight":"AI produces the complete work; a person approves every instance at the control element.","Agent-delegation":"AI does the work; a person resolves the instances it flags.","Automation":"AI does the work end to end; no person in the instance."};
+const A=[
+{code:'7.2.1.1',name:'Align staffing plan to work force plan and business unit strategies/resource needs',proc:'7.2.1 Manage employee requisitions',Ar:'HRBP Manager',R:'HR Generalist · Recruiter',ceiling:'Judgment',cons:'Moderate',control:'Decide',factors:'Accountability',
+ el:{'Research':['Pull the Workforce Plan, BU strategy, headcount and open requisitions','AI',''],
+  'Evaluate':['Find gaps between needs, plan and budget','Human-led',''],
+  'Draft':['Set roles, counts and timing','Human','Accountability'],
+  'Verify':['Check against budget and the approved headcount plan','Human-led',''],
+  'Decide':['Agree on the plan with the BU leader','Human','Accountability'],
+  'Produce / Execute':['Record the Staffing Plan in the Core HR System','AI',''],
+  'Communicate':['Share with hiring managers and Talent Acquisition','Human-led','']},
+ abc:{'Research':['AI','system','Scheduled HCM headcount report'],'Evaluate':['Human-led','observed','Planning tool flags gaps; the HRBP reviews them'],'Draft':['Human-led','interview','AI suggests requisition counts; the HRBP edits them'],'Verify':['Human','observed',''],'Decide':['Human','document','BU leader sign-off'],'Produce / Execute':['AI','system','Plan auto-saves to the Core HR System'],'Communicate':['Human-led','observed','']}},
+{code:'7.2.1.4',name:'Post job requisitions',proc:'7.2.1 Manage employee requisitions',Ar:'HRBP Manager',R:'HR Generalist · Recruiter',ceiling:'Automation',cons:'Low',control:'Verify',factors:'None (top of the ramp)',
+ el:{'Research':['Read the approved requisition: role, location, pay band, approval status','AI',''],
+  'Draft':['Write the posting text from the requisition and job profile','AI',''],
+  'Verify':['Check the posting matches the requisition and carries required notices (EEO, pay range)','AI',''],
+  'Produce / Execute':['Publish to the applicant tracking system and job boards (creates the Job Posting)','AI','']},
+ na:{'Evaluate':'7.2.2.1 and 7.2.2.6 choose channels','Decide':'decided upstream at 7.2.1.3','Communicate':'7.2.1.6 notifies the hiring manager'},
+ abc:{'Research':['AI','system','ATS pre-fills the posting from the requisition'],'Draft':['AI-led','system','AI drafts the ad from a template'],'Verify':['Human','observed','The Recruiter reviews every posting before it goes live'],'Produce / Execute':['AI','system','Auto-publishes once released']}},
+{code:'7.4.4',name:'Manage employee grievances',proc:'7.4 Manage employee relations',Ar:'HRBP Manager',R:'—',ceiling:'Judgment',cons:'Critical',control:'Decide',factors:'Legal / fiduciary duty · Human judgment floor · Relational / emotional stakes',
+ el:{'Research':['Gather the grievance facts, the relevant CBA provisions, prior ER cases and contractual deadlines','AI',''],
+  'Evaluate':['Investigate and assess the merit: contract interpretation, precedent, retaliation risk','Human-led','Legal / fiduciary duty'],
+  'Draft':['Write the step answer or settlement proposal','Human','Legal / fiduciary duty'],
+  'Verify':['Check the answer against the CBA, timelines and past practice','Human-led','Legal / fiduciary duty'],
+  'Decide':['Grant, deny or settle at each grievance step','Human','Human judgment floor'],
+  'Produce / Execute':['Record the Grievance Case, track contractual deadlines, carry out the remedy','AI',''],
+  'Communicate':['Meet with the grievant and union representative; deliver the decision','Human','Relational / emotional stakes']},
+ abc:{'Research':['AI','system','Case tool pulls CBA clauses and prior cases'],'Evaluate':['Human-led','observed','AI summarizes the case file; the ER lead assesses it'],'Draft':['Human-led','document','ER lead writes the step-2 answer using AI-suggested language'],'Verify':['Human-led','system','AI checks deadlines and citations; the ER lead confirms'],'Decide':['Human','document','Step decision signed by the HRBP Manager'],'Produce / Execute':['AI','system','Deadline tracking and case record updates'],'Communicate':['Human','observed','Step meetings held in person']}}
+];
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const lr=s=>LEAD.indexOf(s), rank=s=>STAGES.indexOf(s);
+const lst=x=>x.length<2?x.join(''):x.slice(0,-1).join(', ')+' and '+x[x.length-1];
+const chip=c=>'<span class="chip" style="background:'+CHIP[c]+'">'+c+'</span>';
+let cur=0, view='base'; const state={};
+// Unassessed: every element starts at Human with no evidence, the Human-only baseline (Tim, Oct 7).
+const baseline=a=>Object.fromEntries(Object.keys(a.el).map(e=>[e,['Human','','']]));
+function load(v){view=v;A.forEach((a,i)=>{state[i]=v==='base'?baseline(a):JSON.parse(JSON.stringify(a.abc));});draw();}
+
+function derive(a,g){
+  const els=Object.keys(a.el), ai=e=>g[e][0]!=='Human', leads=e=>lr(g[e][0])>=2;
+  const core=['Evaluate','Draft','Verify','Decide','Communicate'].filter(e=>a.el[e]);
+  const c=g[a.control][0];
+  if(!els.some(ai)) return ['Human-only','every element is Human'];
+  if(els.every(e=>g[e][0]==='AI')) return ['Automation','every element is AI'];
+  if(core.some(leads)){
+    if(c==='AI') return ['Automation','AI holds '+a.control+', the control element, with no person in the instance'];
+    if(c==='AI-led') return ['Agent-delegation','AI leads the work and a person handles only the instances flagged at '+a.control];
+    return ['Oversight','AI leads '+lst(core.filter(leads))+'; a person approves every instance at '+a.control];
+  }
+  const assist=['Draft','Verify','Communicate'].filter(e=>a.el[e]&&ai(e));
+  if(assist.length) return ['Augmentation','the person leads '+lst(assist)+' with AI assisting, and '+a.control+' stays with the person'];
+  if(['Research','Evaluate'].some(e=>a.el[e]&&ai(e))) return ['Judgment','AI only supplies inputs (Research, Evaluate); the person does the work and makes the call'];
+  return ['Human-only','AI only touches Produce / Execute, which does not move the stage'];
+}
+function draw(){
+  const a=A[cur], g=state[cur], [stage,why]=derive(a,g);
+  const pastEls=Object.keys(a.el).filter(e=>lr(g[e][0])>lr(a.el[e][1]));
+  let h='<div class="ap-top"><div><div class="ap-org">ABC Test Org · TEST DATA</div><h3>'+a.code+' '+esc(a.name)+'</h3><div class="ap-proc">'+esc(a.proc)+'</div></div><span class="ap-close">&times;</span></div>'+
+   '<dl><dt>Accountable</dt><dd>'+a.Ar+'</dd><dt>Responsible</dt><dd>'+a.R+'</dd>'+
+   '<dt>Consequence of Error</dt><dd><span style="color:'+CONS[a.cons]+';font-weight:600">'+a.cons+'</span></dd>'+
+   '<dt>Progression Ceiling</dt><dd>'+chip(a.ceiling)+' <span class="muted">'+a.factors+'</span></dd>'+
+   '<dt>Current State</dt><dd>'+chip(stage)+' <span class="muted">'+(Object.keys(a.el).every(e=>g[e][0]==='Human'&&!g[e][1])?'not assessed yet; the Human-only baseline':'derived from the elements below')+'</span></dd></dl>';
+  h+='<div class="sec"><h4>Who does each part of this work in ABC Test Org?</h4><div class="sub">For each element, who leads it today and how you know. Each element has its own ceiling from the reference; ◆ marks the control element.</div>';
+  Object.keys(a.el).sort((x,y)=>ORDER.indexOf(x)-ORDER.indexOf(y)).forEach(e=>{
+    const [obj,ceil,f]=a.el[e], [st,ev,ref]=g[e], past=lr(st)>lr(ceil);
+    h+='<div class="el'+(past?' past':'')+'"><div class="eh"><span class="en">'+e+(e===a.control?'<span class="ctl">◆</span>':'')+'</span><span class="ec">at most '+ceil+(f?' · '+f:'')+'</span></div><div class="eo">'+esc(obj)+'</div>'+
+      '<div class="seg">'+LEAD.map(l=>'<button class="'+(l===st?'on ':'')+(lr(l)>lr(ceil)?'over':'')+'" onclick="setLead(\''+e+'\',\''+l+'\')">'+l+'</button>').join('')+'</div>'+
+      '<div class="evrow"><select onchange="setEv(\''+e+'\',this.value)"><option value="">Evidence…</option>'+EV.map(x=>'<option value="'+x[0]+'"'+(x[0]===ev?' selected':'')+'>'+x[1]+'</option>').join('')+'</select>'+
+      '<input type="text" placeholder="Reference or what was seen" value="'+esc(ref)+'" oninput="state[cur][\''+e+'\'][2]=this.value"></div>'+
+      (past?'<div class="pastmsg">Past its element ceiling ('+ceil+')'+(f?': '+f:'')+'.</div>':'')+'</div>';
+  });
+  if(a.na) h+='<div class="na">Not part of this activity: '+Object.keys(a.na).map(k=>k+' ('+a.na[k]+')').join(' · ')+'</div>';
+  h+='<div class="proposal">Derived: '+chip(stage)+'<div style="margin-top:4px">'+why[0].toUpperCase()+why.slice(1)+'.</div></div>';
+  if(rank(stage)>rank(a.ceiling)) h+='<div class="warn"><b>Past the Progression Ceiling.</b> '+stage+' is above this activity’s ceiling of '+a.ceiling+'. Record it: it is a finding about how this organization works, not an error in the assessment.</div>';
+  if(pastEls.length) h+='<div class="warn"><b>'+lst(pastEls)+'</b> '+(pastEls.length>1?'are':'is')+' past '+(pastEls.length>1?'their element ceilings':'its element ceiling')+'. These show in red on the card'+(rank(stage)<=rank(a.ceiling)?', even though the activity as a whole is within its ceiling':'')+'.</div>';
+  h+='</div><div class="sec"><h4>Record</h4>'+
+   '<label>Source role (who provided or confirmed it)</label><select class="full"><option>'+a.Ar+' (Accountable)</option>'+a.R.split(' · ').filter(r=>r!=='—').map(r=>'<option>'+r+' (Responsible)</option>').join('')+'</select>'+
+   '<label>Confidence</label><div class="radios"><label><input type="radio" name="cf" checked> High</label><label><input type="radio" name="cf"> Medium</label><label><input type="radio" name="cf"> Low</label></div>'+
+   '<label>Note</label><textarea class="full" rows="2"></textarea>'+
+   '<div class="actions"><span class="btn primary">Save assessment</span><span class="btn" onclick="state[cur]=baseline(A[cur]);draw()" style="cursor:pointer">Reset to baseline</span></div></div>';
+  h+='<div class="sec"><h4>Ceiling override</h4><p class="muted">'+(a.ceiling==='Automation'?'The ceiling is already Automation, the top of the ramp.':(a.cons==='Low'||a.cons==='Moderate')?'None. Unchanged from today’s panel in this sketch.':'Not available. Consequence of Error is <b>'+a.cons+'</b>; a Progression Ceiling can be overridden only where it is Low or Moderate.')+'</p></div>';
+  document.getElementById('ap').innerHTML=h;
+  document.getElementById('vw').innerHTML=[['base','Not assessed yet (baseline)'],['abc','Assessed (illustrative ABC values)']].map(v=>'<button class="'+(view===v[0]?'on':'')+'" onclick="load(\''+v[0]+'\')">'+v[1]+'</button>').join('');
+  document.getElementById('pick').innerHTML=A.map((x,i)=>'<button class="'+(i===cur?'on':'')+'" onclick="cur='+i+';draw()"><span>'+x.code+'</span>'+esc(x.name.length>48?x.name.slice(0,46)+'…':x.name)+'</button>').join('');
+}
+function setLead(e,l){state[cur][e][0]=l;draw()}
+function setEv(e,v){state[cur][e][1]=v}
+load('base');
+</script></body></html>

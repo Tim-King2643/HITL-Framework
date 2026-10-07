@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Work Elements — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 800px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.approval-box { background: var(--amber-bg); border: 1px solid #F0C67A; border-left: 5px solid var(--amber); border-radius: 8px; padding: 18px 22px; margin-bottom: 28px; }
+.approval-box .ab-head { font-size: 14px; font-weight: 700; color: var(--amber-text); margin-bottom: 6px; }
+.approval-box p { font-size: 13px; color: #5A4315; line-height: 1.65; margin: 0; }
+
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 28px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 19px; margin: 36px 0 10px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 15px; margin: 20px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 14px; }
+p.lede { font-size: 15.5px; color: var(--dark); }
+ul.plain { margin: 0 0 16px 20px; }
+ul.plain li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.feature-box { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 8px 0 20px; }
+.feature-box h3 { margin-top: 0; }
+
+/* Sizing/alignment matched to the "Working Relationship" gates track in
+   docs/sandbox/pcf7.html (.gate-node/.gate-circle/.gate-label/.gate-arrow)
+   so this legend reads as the same visual system, not a bigger lookalike. */
+.ramp-row { display: flex; flex-wrap: wrap; gap: 0; margin: 12px 0 6px; align-items: flex-start; }
+.ramp-step { display: flex; flex-direction: column; align-items: center; min-width: 84px; flex: 0 0 auto; text-align: center; }
+.ramp-step .rs-dot { width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; }
+.ramp-step .rs-name { font-size: 11px; font-weight: 500; color: #000; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
+.ramp-arrow { width: 22px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; color: var(--lgray); font-size: 16px; font-weight: 700; }
+
+.proof-grid { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 20px; }
+.proof-card { flex: 1; min-width: 200px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.proof-card .pc-role { font-weight: 700; color: var(--navy-d); font-size: 13.5px; margin-bottom: 4px; }
+.proof-card .pc-tier { font-size: 10.5px; color: var(--lgray); text-transform: uppercase; letter-spacing: .03em; margin-bottom: 8px; }
+.proof-card p { font-size: 12.5px; margin: 0; }
+
+.open-item { border-left: 3px solid var(--lgray); padding: 4px 0 4px 14px; margin-bottom: 12px; }
+.open-item .oi-name { font-weight: 700; color: var(--dark); font-size: 13.5px; }
+.open-item p { font-size: 13px; margin: 3px 0 0; }
+
+.source-note { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 4px; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 22px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 12px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.5; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.k { font-weight: 700; color: var(--navy-d); }
+td.num { text-align: right; white-space: nowrap; }
+ol.plan { margin: 0 0 16px 22px; }
+ol.plan li { font-size: 14px; color: var(--gray); line-height: 1.65; margin-bottom: 7px; }
+ol.plan li strong { color: var(--dark); }
+.tag { font-family: 'Consolas', monospace; font-size: 10.5px; color: var(--navy); background: var(--navy-l); border: 1px solid #C6D8EE; border-radius: 3px; padding: 0 5px; margin-left: 4px; white-space: nowrap; }
+
+.ramp6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 14px 0 4px; }
+.ramp6 > * { min-width: 0; overflow-wrap: anywhere; }
+.ramp6 .cell { color: #fff; font-size: 11px; font-weight: 600; text-align: center; padding: 8px 2px; border-radius: 4px; }
+.ramp6 .zone { font-size: 11px; text-align: center; padding: 6px 4px; border-radius: 4px; line-height: 1.35; }
+.z-base { background: #EDEFF3; color: #333; }
+.z-space { background: var(--navy-l); color: var(--navy-d); border: 1px solid #C6D8EE; }
+.z-beyond { background: repeating-linear-gradient(45deg,#F6F7F9,#F6F7F9 6px,#ECEEF2 6px,#ECEEF2 12px); color: #666; }
+.ramp-cap { font-size: 12px; color: var(--lgray); font-style: italic; margin: 6px 0 20px; }
+.quote { border-left: 3px solid var(--amber); padding: 6px 0 6px 14px; margin: 0 0 18px; font-family: 'Georgia', serif; font-style: italic; color: var(--dark); font-size: 15px; line-height: 1.6; }
+@media (max-width: 600px) { .ramp6 .cell, .ramp6 .zone { font-size: 9.5px; padding: 6px 1px; } .wrap table { display: block; overflow-x: auto; } }
+
+.brief { background: #fff; border: 1px solid var(--border); border-top: 4px solid var(--navy); border-radius: 8px; padding: 20px 24px 18px; margin-bottom: 30px; }
+.brief .b-label { font-family: 'Consolas', monospace; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--lgray); margin: 14px 0 6px; }
+.brief .b-label:first-child { margin-top: 0; }
+.brief p { font-size: 14.5px; color: var(--dark); margin-bottom: 0; }
+.brief ul { margin: 0 0 0 18px; }
+.brief li { font-size: 14px; color: var(--gray); line-height: 1.6; margin-bottom: 4px; }
+.brief li b { color: var(--dark); }
+.brief .reqline { font-size: 12px; color: var(--lgray); margin-top: 14px; }
+.brief .reqline a { color: var(--navy); font-weight: 600; text-decoration: none; }
+details.fold { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0 18px; margin: 10px 0 20px; }
+details.fold summary { cursor: pointer; font-weight: 700; color: var(--navy); font-size: 14px; padding: 12px 0; }
+details.fold[open] { padding-bottom: 6px; }
+.small { font-size: 13px; }
+</style>
+</head>
+<body>
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft &mdash; Not Yet Part of the Framework</strong>
+  &nbsp;&middot;&nbsp; Reviewing this before it&rsquo;s finalized. Nothing here is official yet.
+  &nbsp;&middot;&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">Back to WIP hub</a>
+</div>
+
+
+<div class="masthead">
+  <div class="eyebrow">DESIGN SPEC &nbsp;&middot;&nbsp; GR-058 &nbsp;&middot;&nbsp; TIM KING &amp; CLAUDE &nbsp;&middot;&nbsp; OCTOBER 2026</div>
+  <h1>Work Elements</h1>
+  <div class="subtitle">Who does each part of the work at each stage: seven work elements, four lead states, and the stage derived from them</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+<div class="brief">
+  <div class="b-label">What this is</div>
+  <p>A more precise way to say what changes between a person and AI at each step of the ramp. Every activity is broken into the same seven work elements, and each element is led by the person, by AI, or shared. The working relationship is no longer classified as a whole: it is derived from who leads each element. Each element also gets its own ceiling, tied to the ceiling factor that holds it. The result shows up in the Working Relationship info boxes and replaces the five assessment questions in the assessment panel.</p>
+  <div class="b-label">Decided</div>
+  <ul>
+    <li><b>Oct 6:</b> breaking 7.2.1.1 into work elements showed the ramp order was wrong; Oversight and Augmentation were swapped (CL-015, under GR-055).</li>
+    <li><b>Oct 7:</b> seven work elements, with Produce / Execute as one element; four lead states; one control element per activity (Tim: &ldquo;much more precise, clean, and actionable&rdquo;).</li>
+    <li><b>Oct 7:</b> shown in the existing stage, gate and lock info boxes; lead states are plain text, with color kept only for past-ceiling red and the highlighted rows that change.</li>
+    <li><b>Oct 7:</b> an activity nobody has assessed starts with every element at Human. The stage is always derived from the elements, never set by hand.</li>
+    <li><b>Oct 7:</b> the five assessment questions are retired. With the stage derived from the elements, they add nothing the grid doesn&rsquo;t already show.</li>
+  </ul>
+  <div class="b-label">Awaiting your decision</div>
+  <div data-decision-for="GR-058"></div>
+  <div class="b-label">If approved</div>
+  <p class="small">The Work Element Reference Data is built first (section 8), starting with the three worked activities, then the info boxes and the assessment panel move to the element model. The derivation rule is checked against ABC Test Org&rsquo;s saved assessments before the panel changes.</p>
+  <div class="reqline">Designs <a href="requirements_register.html#GR-058">GR-058</a>. Builds on <a href="requirements_register.html#GR-055">GR-055</a> <a href="wr_progression_methodology_spec.html">methodology</a> &middot; <a href="requirements_register.html#GR-052">GR-052</a> <a href="reference_model_assessment_layer_spec.html">reference model</a> &middot; <a href="requirements_register.html#GR-053">GR-053</a> <a href="assessment_template_spec.html">assessment template</a> &middot; <a href="requirements_register.html#GR-054">GR-054</a> <a href="ceiling_override_spec.html">ceiling overrides</a>. Feeds <a href="requirements_register.html#GR-056">GR-056</a> <a href="assessment_output_spec.html">assessment output</a>.</div>
+</div>
+
+  <h2>1. The problem</h2>
+  <p>The ramp names six working relationships, and each activity has a Current State and a Progression Ceiling. But a stage name says little about the work itself. &ldquo;Oversight&rdquo; for a staffing plan does not say whether AI drafts the plan, checks it, records it or shares it, or which of those a person still does. The five assessment questions classify the activity as a whole, so an assessor answering them for a mixed activity has to average in their head.</p>
+  <p>Writing out who does each part of 7.2.1.1 at each stage made the gap visible, and it found a real error: AI does more of the work in Oversight than in Augmentation, so the two were in the wrong order on the ramp (corrected Oct 6, CL-015).</p>
+
+  <h2>2. The seven work elements</h2>
+  <p>Every activity is described with the same seven elements. For each one, the activity gives a short phrase saying what that element acts on (&ldquo;Write the posting text from the requisition and job profile&rdquo;). An element that isn&rsquo;t part of the activity is marked as such and points to the activity that owns that work, so nothing is lost between activities.</p>
+  <table>
+    <tr><th style="width:22%">Element</th><th>What it covers</th><th style="width:16%">Sets the stage?</th></tr>
+    <tr><td class="k">Research</td><td>Gathering the facts, records and data the work needs.</td><td>Support</td></tr>
+    <tr><td class="k">Evaluate</td><td>Analyzing them: finding gaps, assessing merit, weighing options.</td><td>Core</td></tr>
+    <tr><td class="k">Draft</td><td>Producing the content of the work: the plan, the answer, the text.</td><td>Core</td></tr>
+    <tr><td class="k">Verify</td><td>Checking the work against its source, rules and required content.</td><td>Core</td></tr>
+    <tr><td class="k">Decide</td><td>Making the call or giving the sign-off.</td><td>Core</td></tr>
+    <tr><td class="k">Produce / Execute</td><td>Recording, publishing or carrying out the result in the system of record.</td><td>Support</td></tr>
+    <tr><td class="k">Communicate</td><td>Telling or meeting with the people the result affects.</td><td>Core</td></tr>
+  </table>
+  <p class="small">Support elements matter for the work but don&rsquo;t move the stage on their own: AI keeping the case record does not make a grievance any less of a person&rsquo;s call.</p>
+
+  <h2>3. Lead states</h2>
+  <table>
+    <tr><th style="width:22%">Lead state</th><th>Meaning</th></tr>
+    <tr><td class="k">Human</td><td>The person does it alone.</td></tr>
+    <tr><td class="k">Human-led</td><td>The person does it; AI assists.</td></tr>
+    <tr><td class="k">AI-led</td><td>AI does it; the person approves each instance or handles the ones it flags.</td></tr>
+    <tr><td class="k">AI</td><td>AI does it alone.</td></tr>
+  </table>
+
+  <h2>4. The control element</h2>
+  <p>Every activity has one control element: Decide where the activity has one, otherwise Verify. Who holds the control element separates Oversight, where a person approves every instance, from Agent-delegation, where a person handles only flagged exceptions. In 7.2.1.4 Post job requisitions the decision was made upstream (7.2.1.3), so Verify is the control element.</p>
+
+  <h2>5. Deriving the stage</h2>
+  <p>The working relationship comes from the elements, top to bottom:</p>
+  <table>
+    <tr><th style="width:22%">Stage</th><th>When</th></tr>
+    <tr><td class="k">Human-only</td><td>Every element is Human, or AI touches only Produce / Execute.</td></tr>
+    <tr><td class="k">Judgment</td><td>AI only supplies inputs (Research, Evaluate); the person does the work and makes the call.</td></tr>
+    <tr><td class="k">Augmentation</td><td>AI assists in Draft, Verify or Communicate, the person leads every core element, and the control element stays with the person.</td></tr>
+    <tr><td class="k">Oversight</td><td>AI leads a core element, and a person approves every instance at the control element.</td></tr>
+    <tr><td class="k">Agent-delegation</td><td>The control element is AI-led: a person handles only the instances AI flags.</td></tr>
+    <tr><td class="k">Automation</td><td>The control element is AI, with no person in the instance.</td></tr>
+  </table>
+  <p>Because the rule is mechanical, two assessors who agree on the elements always get the same stage, and the reason can be written out: &ldquo;AI leads Draft; a person approves every instance at Verify.&rdquo;</p>
+
+  <h2>6. Element ceilings</h2>
+  <p>Each element has its own ceiling: the highest lead state it may reach. Ceiling factors attach to specific elements rather than to the activity as a whole:</p>
+  <table>
+    <tr><th style="width:36%">Ceiling factor</th><th>Holds</th></tr>
+    <tr><td class="k">Legal / fiduciary duty</td><td>Evaluate, Draft, Verify</td></tr>
+    <tr><td class="k">Human judgment floor</td><td>Decide</td></tr>
+    <tr><td class="k">Relational / emotional stakes</td><td>Communicate</td></tr>
+    <tr><td class="k">Accountability</td><td>Draft, Decide</td></tr>
+  </table>
+  <p>So in 7.4.4 Manage employee grievances, Research and Produce / Execute may go to AI, Evaluate and Verify may be Human-led, and Draft, Decide and Communicate stay Human. The activity&rsquo;s Progression Ceiling should be the stage its element ceilings allow; the worked examples show they don&rsquo;t yet agree (section 9). Element ceilings can be proposed automatically from each activity&rsquo;s ceiling factors and then reviewed.</p>
+  <p>An organization that runs an element past its ceiling is shown in red at that element, with the factor it breaks. It is recorded as a finding about how the organization works, not an error in the assessment.</p>
+
+  <h2>7. In the sandbox</h2>
+  <h3>Working Relationship info boxes</h3>
+  <ul class="plain">
+    <li><b>Stage box</b> (click a step): who leads each element at that stage, with the rows that changed from the previous stage highlighted.</li>
+    <li><b>Gate box</b> (click an arrow): only the elements that change in that step, from and to, with the activity&rsquo;s own evidence for taking it.</li>
+    <li><b>Lock box</b> (click the lock): each element&rsquo;s ceiling and the factor holding it.</li>
+    <li><b>With an organization selected:</b> the assessed lead state per element with its evidence, past-ceiling elements in red, and the stage derived from them.</li>
+  </ul>
+  <h3>Assessment panel</h3>
+  <p>The five assessment questions are replaced by an element grid. For each element the assessor picks the lead state and records the evidence type and a reference; choices above the element ceiling are greyed and show in red if chosen. Current State is derived as the assessor works, with its one-line reason. Source role, confidence and note stay at the activity level. An activity nobody has assessed starts with every element at Human and no evidence, the Human-only baseline, so every step above Human is a choice backed by evidence. The ceiling override section is unchanged (but see section 9).</p>
+  <h3>Existing assessments</h3>
+  <p>ABC Test Org&rsquo;s saved assessments were made with the old panel. Each is reassessed by element, and its derived stage compared with the stage already saved: any activity where the two differ either finds a flaw in the derivation rule or sharpens its wording.</p>
+
+  <h2>8. Worked examples and reference data</h2>
+  <table>
+    <tr><th style="width:34%">Worked example</th><th>What it shows</th></tr>
+    <tr><td class="k"><a href="work_elements/info_boxes_sketch.html">Info boxes sketch</a></td><td>The stage, gate and lock boxes for 7.2.1.1, 7.2.1.4 and 7.4.4, with a Reference Model / ABC Test Org toggle. Illustrative ABC values.</td></tr>
+    <tr><td class="k"><a href="work_elements/assess_panel_sketch.html">Assessment panel sketch</a></td><td>The element grid for the same three activities, live: change any element and the derived stage and ceiling checks update. Toggles between not yet assessed and assessed.</td></tr>
+    <tr><td class="k"><a href="work_elements/work_elements_7.2.1.4.xlsx">7.2.1.4 work elements (spreadsheet)</a></td><td>The method applied by hand to Post job requisitions: reference elements and ceilings, an element-level ABC assessment, the derivation rule, and what the example showed.</td></tr>
+  </table>
+  <p><b>Work Element Reference Data.</b> Done for every activity, the spreadsheet&rsquo;s layout becomes the reference data the sandbox reads: the element phrases, which elements are part of each activity, the control element and the element ceilings. Of the 118 activities, the 42 whose ceiling is Automation only need their elements identified; the other 76 also need element ceilings, proposed from their ceiling factors and reviewed. Changes to it are logged in the change log like any other reference change.</p>
+
+  <h2>9. Open questions</h2>
+  <div class="open-item"><div class="oi-name">Element ceilings and the activity ceiling don&rsquo;t yet agree &mdash; Tim and GiGi</div><p>In 7.2.1.1 and 7.4.4 the activity ceiling is Judgment, but the element ceilings let Verify be Human-led in both, and Communicate in 7.2.1.1. AI checking deadlines or drafting a message is AI assisting the work, which the rule derives as Augmentation, a step above the activity ceiling. Either those element ceilings should be Human; or AI help on Verify counts as an input to the person&rsquo;s own check, which keeps it at Judgment; or the activity ceiling is Augmentation. This needs settling before element ceilings are proposed for the other activities, since it decides whether the activity ceiling is derived from the element ceilings or set on its own.</p></div>
+  <div class="open-item"><div class="oi-name">An element past its ceiling inside an activity within its ceiling &mdash; Tim and GiGi</div><p>If the two ceilings can differ, how that reads. The sketch shows the element in red even when the activity as a whole is within its ceiling.</p></div>
+  <div class="open-item"><div class="oi-name">Overrides at element level &mdash; Tim and GiGi</div><p>A ceiling override (GR-054) names the ceiling factor that no longer holds. Since factors now attach to elements, an override might raise only those elements&rsquo; ceilings rather than the whole activity&rsquo;s.</p></div>
+  <div class="open-item"><div class="oi-name">7.2.1.4&rsquo;s Consequence of Error &mdash; Tim and GiGi</div><p>Writing out Verify surfaced the pay-range notice. Several states require pay ranges in job postings, so an error carries legal exposure, and Consequence of Error is arguably Moderate rather than Low. The ceiling would stay Automation; the control on Verify must cover the required notices either way.</p></div>
+  <div class="open-item"><div class="oi-name">Where people&rsquo;s time goes &mdash; GiGi</div><p>The element view shows what is left for the person at each stage. In 7.2.1.4 at Oversight, it is a review of every posting: per-instance checking of mechanical work, the load the human-impact side looks for. Whether element-level change per role should be part of the role hand-off (GR-056).</p></div>
+  <div class="open-item"><div class="oi-name">The relational factor on Communicate &mdash; GiGi</div><p>In 7.4.4 the relational ceiling holds Communicate at Human because the person is part of what makes the outcome legitimate to the grievant. Whether that is how the human-impact side would put it, and whether other activities need the same.</p></div>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;&middot;&nbsp; Design Spec &mdash; For Review<br>
+    &copy; Timothy P. King 2026 &middot; developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a> &nbsp;&middot;&nbsp; <a href="requirements_register.html">Requirements Register</a>
+  </p>
+</footer>
+
+<script src="requirements-data.js"></script>
+<script src="decision-widget.js"></script>
+<script>document.querySelectorAll('[data-decision-for]').forEach(function (el) { DecisionWidget.mount(el, el.getAttribute('data-decision-for')); });</script>
+</body>
+</html>

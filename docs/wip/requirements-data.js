@@ -1500,5 +1500,34 @@ window.REQUIREMENTS = [
   "decisions": [],
   "log": "Sept 29, 2026 (Tim): proposed grouping the register by framework layer — Administration, Reference Model, Organizational Assessment, Assessment Output. Claude added a fifth group for GiGi's human-impact side (11 requirements that fit none of the four) and suggested keeping the current category as a topic tag. Tim agreed to take it as a decision for both, since it files GiGi's requirements under a group that defines her lead. Spec with the full mapping and seven judgment calls: register_grouping_spec.html. This supersedes the same day's interim move of GR-052, GR-053, GR-054 and GR-056 into an 'Assessment Output' category, which was not published.",
   "legacy_status": null
+ },
+ {
+  "id": "GR-058",
+  "title": "Work elements: who does each part of the work at each stage",
+  "progress": "Designed",
+  "category": "Data Model",
+  "priority": "High",
+  "owner": "Tim + GiGi",
+  "raised_by": "Tim King",
+  "source_doc": "Tim King — framework direction (Oct 2026)",
+  "source_section": "Working session, Oct 6–7, 2026",
+  "distilled": "Break every activity into seven work elements (Research, Evaluate, Draft, Verify, Decide, Produce / Execute, Communicate), each led by the person or AI in one of four lead states (Human, Human-led, AI-led, AI), with one control element per activity (Decide, else Verify). The working relationship is derived from the elements, each element has its own ceiling tied to the ceiling factor that holds it, and the result is shown in the Working Relationship info boxes and assessed through an element grid that replaces the five assessment questions.",
+  "acceptance": "Tim and GiGi have approved the model; the Work Element Reference Data covers all 118 activities with element ceilings that agree with each Progression Ceiling; the derivation rule has been checked against ABC Test Org's saved assessments; the info boxes and the assessment panel use the element model, with the stage always derived.",
+  "raw": "“Could a 7 element checkbox approach for both Human and AI show who's doing what per stage?” … “This approach is much more precise, clean, and actionable.” (Tim, Oct 7, 2026)",
+  "converged": "GR-055, GR-052, GR-053, GR-054, GR-056",
+  "spec_doc": "docs/wip/work_element_model_spec.html",
+  "spec_section": "Whole spec; worked examples in docs/wip/work_elements/",
+  "wip_item": null,
+  "next_action": "Tim and GiGi decide the model and settle how element ceilings relate to the activity ceiling (spec section 9); GiGi reviews the two human-impact questions.",
+  "decision": {
+   "id": "design",
+   "type": "design",
+   "question": "Approve the work-element model: seven elements, four lead states, a control element, element ceilings, and the stage derived from them.",
+   "spec": "work_element_model_spec.html",
+   "summary": "The Work Element Reference Data is built for all 118 activities, starting with the three worked examples; the info boxes and the assessment panel move to the element model, and the five assessment questions are retired."
+  },
+  "decisions": [],
+  "log": "Oct 6, 2026 (Tim): asked for a table of the exact work in each stage, without touching the view. Breaking 7.2.1.1 into work elements showed that AI does more of the work in Oversight than in Augmentation, and the ramp order was corrected (CL-015, logged under GR-055).\n\nOct 7, 2026 (Tim): proposed a seven-element approach for both the person and AI. Worked through 7.2.1.4 Post job requisitions (spreadsheet), then 7.2.1.1 and 7.4.4 in an info-box sketch. Settled: seven elements, with Produce / Execute as one; four lead states; one control element; support elements (Research, Produce / Execute) don't set the stage; ceiling factors attach to elements. Shown in the existing stage, gate and lock info boxes; lead states as plain text, with color only for past-ceiling red and changed-row highlights. Assessment panel sketched as an element grid in ABC Test Org: an unassessed activity starts with every element at Human, and the five assessment questions are retired: with the stage derived from the elements, they add nothing the grid doesn't already show. The spreadsheet is a worked example; done for every activity, it becomes the Work Element Reference Data. Writing out 7.2.1.4's Verify raised whether its Consequence of Error should be Moderate rather than Low (pay-range notices). The worked examples also show element ceilings allowing more than the activity ceiling in 7.2.1.1 and 7.4.4, an open question in the spec.",
+  "legacy_status": null
  }
 ];
