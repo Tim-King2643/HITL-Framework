@@ -274,5 +274,45 @@ const CHANGE_LOG = [
     "source": "Tim, Oct 2, 2026: “Accept all” to the six questions in docs/wip/activity_crud_remaining_roles.html.",
     "reason": "Same method as CL-007: each activity's CRUD is reasoned from the activity, never inherited from its process. Each correction moves a create to the activity that produces the work product, or drops a link no activity supports. Outputs other activities rely on were added to the catalog; five pieces of single-activity working material were left out.",
     "verified": "All 37 processes derive their CRUD from their activities, with no warning from applyActivityCrud(). Across the 118 activities every work product has exactly one creating process. 209 new activity links match the reviewed draft. Sandbox views and the Work-Product Catalog render with no errors; every Current State and Progression Ceiling unchanged."
+  },
+  {
+    "id": "CL-015",
+    "date": "2026-10-06",
+    "requestedBy": "Tim",
+    "kind": "wr-order",
+    "target": {
+      "domain": "7.0"
+    },
+    "summary": "Ramp order corrected: Augmentation now comes before Oversight. Human-only → Judgment → Augmentation → Oversight → Agent-delegation → Automation.",
+    "from": "Human-only → Judgment → Oversight → Augmentation → Agent-delegation → Automation; % H anchors Oversight 62, Augmentation 48; gates Judgment → Oversight, Oversight → Augmentation, Augmentation → Agent-delegation",
+    "to": "Human-only → Judgment → Augmentation → Oversight → Agent-delegation → Automation; % H anchors Augmentation 62, Oversight 48 (colors moved with the positions); gates Judgment → Augmentation, Augmentation → Oversight, Oversight → Agent-delegation, with re-sequenced evidence",
+    "files": [
+      "docs/sandbox/pcf7.html",
+      "docs/sandbox/assess-panel.js",
+      "src/index.js"
+    ],
+    "source": "Tim, Oct 6, 2026, reviewing a work-element breakdown of 7.2.1.1 by stage: “It seems like AI does more work in Oversight than it does in Augmentation?” … “This is a real error. There's no question we have to make the changes.”",
+    "reason": "By the locked definitions, Oversight hands AI the complete work product with a person approving each instance, while Augmentation keeps the person doing the work with AI assisting. Broken into work elements, Oversight moves more of the work to AI, so it belongs further along the ramp. The definitions themselves are unchanged. The assessment questions already asked about Augmentation before Oversight. New Judgment → Augmentation evidence is drafted for Tim and GiGi to confirm; the old Judgment → Oversight evidence moved to Augmentation → Oversight, and the old Oversight → Augmentation and Augmentation → Agent-delegation evidence combined into Oversight → Agent-delegation.",
+    "verified": "Every ramp order in the sandbox, the assessment panel and the Worker now matches. Sandbox views render with no errors. Pills now count Judgment, Augmentation and Oversight together as a person deciding, doing or approving every instance. The Worker must be redeployed for its override check to use the new order. Production pages and the methodology .docx still show the old order; they are fixed in the rebuild."
+  },
+  {
+    "id": "CL-016",
+    "date": "2026-10-06",
+    "requestedBy": "Tim",
+    "kind": "wr-ceiling",
+    "target": {
+      "domain": "7.0",
+      "activity": "7.1.2.5, 7.1.2.10, 7.1.2.12, 7.1.2.16, 7.3.2.3, 7.5.1.2, 7.5.1.8, 7.5.1.9, 7.5.3.1, 7.7.2"
+    },
+    "summary": "With the corrected order, ten ceilings move to the category their notes describe: eight from Augmentation to Oversight, two from Oversight to Augmentation.",
+    "from": "Augmentation: 7.1.2.5, 7.1.2.10, 7.1.2.12, 7.1.2.16, 7.3.2.3, 7.5.1.2, 7.5.1.8, 7.5.1.9. Oversight: 7.5.3.1, 7.7.2",
+    "to": "Oversight: 7.1.2.5, 7.1.2.10, 7.1.2.12, 7.1.2.16, 7.3.2.3, 7.5.1.2, 7.5.1.8, 7.5.1.9. Augmentation: 7.5.3.1, 7.7.2",
+    "files": [
+      "docs/sandbox/pcf7.html",
+      "docs/sandbox/reference-wr.json"
+    ],
+    "source": "Tim, Oct 6, 2026, accepting the proposed ceilings with the ramp-order correction (CL-015).",
+    "reason": "Under the old order Augmentation sat above Oversight, so it was the last stop for a duty that needs a person. The eight legal and fiduciary ceilings describe a sign-off on each instance (“the fiduciary sign-off is the ceiling”, “someone has to vouch for the record”), which is Oversight. The two duty-of-care ceilings describe a person staying “meaningfully present… even with strong AI assistance”, which is Augmentation. 7.2.1.3, 7.6.3.1 and 7.7.8.3 stay at Oversight. Ceiling factors, Consequence of Error and notes are unchanged.",
+    "verified": "reference-wr.json regenerated (version 7b9a054b8315); assessments stamped with the earlier version of these ten activities now show 'reference changed'. Ceilings at Oversight or below stay 41; none moved to Agent-delegation or Automation. Verification points recount to 67 and unchecked hand-offs stay 22, on the same nine activities."
   }
 ];

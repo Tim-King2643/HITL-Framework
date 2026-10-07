@@ -603,7 +603,7 @@ async function handleApi(request, env, url) {
 
 const ORG_ID_RE = /^[a-z0-9][a-z0-9-]{1,40}$/;
 const ASSESS_CODE_RE = /^7(\.\d+){2,3}$/;
-const WR_STEPS = ['Human-only', 'Judgment', 'Oversight', 'Augmentation', 'Agent-delegation', 'Automation'];
+const WR_STEPS = ['Human-only', 'Judgment', 'Augmentation', 'Oversight', 'Agent-delegation', 'Automation'];  // order corrected Oct 6, 2026 (CL-015)
 const EVIDENCE_TYPES = new Set(['observed', 'system', 'audit', 'interview', 'document']);
 const CONFIDENCE = new Set(['high', 'medium', 'low']);
 const ORG_MAX = 200, NOTE_MAX = 2000, HISTORY_MAX = 25;

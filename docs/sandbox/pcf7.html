@@ -667,7 +667,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
 
 <script src="sandbox-notes-widget.js"></script>
 <script src="org-context.js?v=20261001a"></script>
-<script src="assess-panel.js?v=20261001a"></script>
+<script src="assess-panel.js?v=20261006a"></script>
 <script src="../wip/changelog-data.js"></script>
 <script>
 /* ── Real PCF 7.0 data, extracted from the live dashboard ────────────── */
@@ -1035,7 +1035,8 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
 //         The retired modeled values are recorded in CL-009.
 // h     = Current State H% — a modeled control index, not effort/time/FTE (GR-014)
 //         (fixed per category: Automation 10, Agent-delegation 28,
-//         Augmentation 48, Oversight 62, Judgment 82, Human-only 95+)
+//         Oversight 48, Augmentation 62, Judgment 82, Human-only 95+;
+//         Oversight and Augmentation swapped with the ramp order Oct 6, 2026, CL-015)
 // cons  = Consequence of Error tag (Low/Moderate/High/Critical) — GiGi's
 //         Human Criticality axis; every tag here is a starting position for
 //         her to own and refine, not a settled call. null = not yet tagged.
@@ -1083,8 +1084,8 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
 const WR_CATS = {
   "Automation":       { color:"#7DAEE0", h:10 },
   "Agent-delegation":  { color:"#5A8DC4", h:28 },
-  "Augmentation":      { color:"#3D6FA8", h:48 },
-  "Oversight":         { color:"#2457A3", h:62 },
+  "Oversight":         { color:"#3D6FA8", h:48 },
+  "Augmentation":      { color:"#2457A3", h:62 },
   "Judgment":          { color:"#204474", h:82 },
   "Human-only":        { color:"#0D2D4F", h:95 },
 };
@@ -1116,18 +1117,18 @@ const WR_DATA = {
   "7.1.2.2": { rel:"Human-only", ceiling:"Judgment", cons:"High", consNote:"Sets the pay structure the whole organization runs on — pay-equity/compensation-discrimination legal exposure plus wide reach keep this High.", consFactors:["legal","reach"], ceilingFactors:["legal"], ceilingNote:"Pay-equity/compensation-discrimination exposure." },
   "7.1.2.3": { rel:"Human-only", ceiling:"Judgment", cons:"High", consNote:"Getting a critical-role succession call wrong is a real continuity risk, and perceived favoritism in who's chosen carries trust exposure — same logic as 7.3.3.4.", consFactors:["ops","trust"], ceilingFactors:["floor"], ceilingNote:"Same continuity/favoritism-exposure logic as 7.3.3.4's succession-plan tag." },
   "7.1.2.4": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Moderate", consNote:"Program design affecting a subset of employees; moderate human/trust impact, no legal exposure, revisable.", consFactors:["human","trust"], ceilingFactors:["technical"], ceilingNote:"Program design for high-potential and leadership tracks can move to agent-delegation once pattern-matching on what actually works is proven." },
-  "7.1.2.5": { rel:"Human-only", ceiling:"Augmentation", cons:"High", consNote:"DEI plan design carries real legal exposure in either direction under the current landscape — legal exposure is the driving factor, and it attaches at design, not just execution.", consFactors:["legal"], ceilingFactors:["legal"], ceilingNote:"DEI plan design carries real legal exposure in either direction under the current landscape — the exposure attaches at this tier, so it's the ceiling, not a temporary gap." },
+  "7.1.2.5": { rel:"Human-only", ceiling:"Oversight", cons:"High", consNote:"DEI plan design carries real legal exposure in either direction under the current landscape — legal exposure is the driving factor, and it attaches at design, not just execution.", consFactors:["legal"], ceilingFactors:["legal"], ceilingNote:"DEI plan design carries real legal exposure in either direction under the current landscape — the exposure attaches at this tier, so it's the ceiling, not a temporary gap." },
   "7.1.2.6": { rel:"Human-only", ceiling:"Agent-delegation", cons:"High", consNote:"Same legal exposure as 7.1.2.5, now at execution — a review checkpoint is the safeguard against a mishandled rollout.", consFactors:["legal","reversibility"], ceilingFactors:["legal","governance"], ceilingNote:"Same DEI exposure as 7.1.2.5, at execution — the review checkpoint is the safeguard, not a temporary trust gap." },
   "7.1.2.7": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Low", consNote:"Program-design work; low direct legal exposure, broad reach but easily revised before it touches an individual candidate.", consFactors:["human","legal","reach"], ceilingFactors:["technical"], ceilingNote:"Program design here is still building the evidence base for agent-delegation, not held back by a standing duty." },
   "7.1.2.8": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Low", consNote:"Same shape as 7.1.2.7 — design-stage work, no individual decision yet, easily revised.", consFactors:["human","reversibility"], ceilingFactors:["technical"], ceilingNote:"Same technical-readiness question as 7.1.2.7 — program design for talent development, not yet proven for delegation." },
   "7.1.2.9": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Low", consNote:"Catch-all program design; low stakes until a specific program with its own exposure is built out.", consFactors:["reach","reversibility"], ceilingFactors:["technical"], ceilingNote:"Catch-all program design; low stakes until a specific program is built out and its own evidence base accumulates." },
-  "7.1.2.10": { rel:"Human-only", ceiling:"Augmentation", cons:"High", consNote:"Policy language is the direct compliance surface employees and courts will read — same regulatory-teeth logic as 7.2.5.1/7.3.4.6.", consFactors:["human","legal"], ceilingFactors:["legal"], ceilingNote:"Policy language is the direct compliance surface — same regulatory-teeth logic as 7.2.5.1/7.3.4.6. The compliance-surface duty attaches here, so it's the ceiling." },
+  "7.1.2.10": { rel:"Human-only", ceiling:"Oversight", cons:"High", consNote:"Policy language is the direct compliance surface employees and courts will read — same regulatory-teeth logic as 7.2.5.1/7.3.4.6.", consFactors:["human","legal"], ceilingFactors:["legal"], ceilingNote:"Policy language is the direct compliance surface — same regulatory-teeth logic as 7.2.5.1/7.3.4.6. The compliance-surface duty attaches here, so it's the ceiling." },
   "7.1.2.11": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Moderate", consNote:"Inconsistent application across employees risks disparate-treatment claims — the review checkpoint at execution caps this below the policy-drafting tier itself.", consFactors:["human"], ceilingFactors:["legal","governance"], ceilingNote:"Inconsistent application risks disparate-treatment claims — the review checkpoint is the safeguard, so it's the ceiling, not a temporary gap." },
-  "7.1.2.12": { rel:"Human-only", ceiling:"Augmentation", cons:"High", consNote:"ERISA fiduciary and compliance exposure attaches to benefits plan design, same as 7.5.1.2 — the fiduciary sign-off is the safeguard.", consFactors:["legal","reversibility"], ceilingFactors:["legal","governance"], ceilingNote:"ERISA fiduciary/compliance exposure — the fiduciary sign-off is the ceiling." },
+  "7.1.2.12": { rel:"Human-only", ceiling:"Oversight", cons:"High", consNote:"ERISA fiduciary and compliance exposure attaches to benefits plan design, same as 7.5.1.2 — the fiduciary sign-off is the safeguard.", consFactors:["legal","reversibility"], ceilingFactors:["legal","governance"], ceilingNote:"ERISA fiduciary/compliance exposure — the fiduciary sign-off is the ceiling." },
   "7.1.2.13": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Low", consNote:"Modeling/tooling work one step removed from any real decision; low legal or human impact on its own.", consFactors:["human","legal"], ceilingFactors:["technical"], ceilingNote:"Workforce-strategy model design is still accumulating the evidence needed to trust agent-delegation, not blocked by a standing duty." },
   "7.1.2.14": { rel:"Human-only", ceiling:"Automation", cons:"Low", consNote:"Deploying an already-approved model; mechanical, reversible, no new exposure introduced.", consFactors:["reversibility"], ceilingFactors:["top"], ceilingNote:"Deploying an already-approved model is mechanical execution with no new exposure — full automation is the natural top of the ramp here." },
   "7.1.2.15": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Moderate", consNote:"FLSA exemption-classification risk sits behind job-family structure — misclassifying exempt/non-exempt status is a real wage-and-hour exposure, capped by review.", consFactors:["legal"], ceilingFactors:["legal","governance"], ceilingNote:"FLSA exemption-classification risk sits behind job-family structure — the review checkpoint is the ceiling." },
-  "7.1.2.16": { rel:"Human-only", ceiling:"Augmentation", cons:"Moderate", consNote:"ADA essential-functions and FLSA-exemption language live in the job description text — a compliance surface, but one corrected on the next revision rather than acted on irreversibly.", consFactors:["legal","reversibility"], ceilingFactors:["legal"], ceilingNote:"ADA essential-functions / FLSA-exemption language risk — the compliance-surface duty is the ceiling." },
+  "7.1.2.16": { rel:"Human-only", ceiling:"Oversight", cons:"Moderate", consNote:"ADA essential-functions and FLSA-exemption language live in the job description text — a compliance surface, but one corrected on the next revision rather than acted on irreversibly.", consFactors:["legal","reversibility"], ceilingFactors:["legal"], ceilingNote:"ADA essential-functions / FLSA-exemption language risk — the compliance-surface duty is the ceiling." },
   "7.1.3.1": { rel:"Human-only", ceiling:"Automation", cons:"Low", consNote:"Retrospective measurement; an error is caught and corrected at the next reporting cycle, no individual or legal exposure.", consFactors:["human","legal","reversibility"], ceilingFactors:["top"], ceilingNote:"Routine measurement of already-set objectives against real results — mechanical enough that full automation is the ceiling." },
   "7.1.3.2": { rel:"Human-only", ceiling:"Automation", cons:"Low", consNote:"Same retrospective-measurement shape as 7.1.3.1 — low stakes, high reversibility.", consFactors:["reversibility"], ceilingFactors:["top"], ceilingNote:"Same mechanical-measurement logic as 7.1.3.1, applied to HR's contribution to business strategy." },
   "7.1.3.3": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Low", consNote:"Distribution of already-decided content; a wording error is easily corrected.", consFactors:["reversibility"], ceilingFactors:["technical"], ceilingNote:"Stakeholder updates can move to agent-delegation once accuracy and tone are proven at scale — a technical readiness question." },
@@ -1162,7 +1163,7 @@ const WR_DATA = {
   "7.3.1.3": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Low", consNote:"Monitoring/update work; corrected at the next review.", consFactors:["reversibility"], ceilingFactors:["technical"], ceilingNote:"Program monitoring can move toward agent-delegation once pattern detection across cohorts is proven." },
   "7.3.2.1": { rel:"Human-only", ceiling:"Judgment", cons:"Moderate", consNote:"Sets the standard an employee will be judged against; moderate human impact, correctable before a real review occurs.", consFactors:["human","reversibility"], ceilingFactors:["floor"], ceilingNote:"Sets the criteria an individual employee will be judged against — a standing human-judgment duty over that person's own evaluation, not a runway gap." },
   "7.3.2.2": { rel:"Human-only", ceiling:"Judgment", cons:"High", consNote:"Feeds pay/promotion/termination decisions directly and carries real discrimination exposure if the review itself is biased or inconsistent.", consFactors:["human","legal"], ceilingFactors:["legal","floor"], ceilingNote:"Feeds pay/promotion/termination decisions and carries real discrimination exposure if done badly." },
-  "7.3.2.3": { rel:"Human-only", ceiling:"Augmentation", cons:"High", consNote:"Documentation quality is a common deciding factor in wrongful-termination litigation — someone has to be able to vouch for the record.", consFactors:["legal"], ceilingFactors:["legal"], ceilingNote:"Documentation quality is a common deciding factor in wrongful-termination litigation. Someone has to be able to vouch for the record, so the ceiling stays here." },
+  "7.3.2.3": { rel:"Human-only", ceiling:"Oversight", cons:"High", consNote:"Documentation quality is a common deciding factor in wrongful-termination litigation — someone has to be able to vouch for the record.", consFactors:["legal"], ceilingFactors:["legal"], ceilingNote:"Documentation quality is a common deciding factor in wrongful-termination litigation. Someone has to be able to vouch for the record, so the ceiling stays here." },
   "7.3.2.4": { rel:"Human-only", ceiling:"Automation", cons:"Low", consNote:"Program-monitoring work; low direct exposure.", consFactors:["ops"], ceilingFactors:["top"], ceilingNote:"Program monitoring against an already-set design — mechanical enough for automation." },
   "7.3.3.1": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Low", consNote:"Guideline-setting one step removed from any individual employee's plan; low exposure.", consFactors:["human"], ceilingFactors:["technical"], ceilingNote:"Development-guideline design can move toward agent-delegation once effectiveness patterns are proven." },
   "7.3.3.2": { rel:"Human-only", ceiling:"Judgment", cons:"Moderate", consNote:"Individual-level guidance with real human impact on someone's trajectory, but advisory rather than decisional — corrected in the next conversation.", consFactors:["human"], ceilingFactors:["floor"], ceilingNote:"Shapes an individual employee's own career trajectory — a standing human-judgment duty over that person's path, not a runway gap." },
@@ -1181,19 +1182,19 @@ const WR_DATA = {
   "7.4.4": { rel:"Human-only", ceiling:"Judgment", cons:"Critical", consNote:"Grievances routinely stem from CBA violations or protected-activity retaliation — the same exposure class as 7.4.1/7.4.2 — and a mishandled one is exactly what escalates into an NLRB charge or litigation.", consFactors:["human","legal"], ceilingFactors:["legal","relational","floor"], ceilingNote:"Grievances routinely stem from CBA violations or protected-activity retaliation, the same exposure class as 7.4.1/7.4.2, and a mishandled one is exactly what escalates into an NLRB charge or litigation. The human role is itself part of what makes the outcome legitimate to the aggrieved employee — a relational/emotional stake, not just a legal one." },
   "7.4.5": { rel:"Human-only", ceiling:"Agent-delegation", cons:"High", consNote:"The monitoring/scanning itself is delegable, but a missed regulatory change creates a real compliance gap across every process downstream of it — reach and legal exposure drive this, capped below Critical because a review-before-acting step catches most misses.", consFactors:["legal","reach"], ceilingFactors:["legal","governance"], ceilingNote:"Same regulatory-teeth logic as 7.2.5.1/7.3.4.6 — the monitoring/scanning is delegable, but a missed change here creates a real compliance gap. The review-before-acting step is the ceiling, not a temporary gap." },
   "7.5.1.1": { rel:"Human-only", ceiling:"Judgment", cons:"High", consNote:"Same pay-equity exposure as 7.1.2.2 — sets the bands the whole comp system runs on, so an error has enterprise-wide reach.", consFactors:["reach"], ceilingFactors:["legal","accountability"], ceilingNote:"Same pay-equity exposure as 7.1.2.2 — sets the bands the whole comp system runs on." },
-  "7.5.1.2": { rel:"Human-only", ceiling:"Augmentation", cons:"High", consNote:"ERISA fiduciary exposure, same logic as 7.1.2.12 — the fiduciary sign-off is the safeguard, not full authorship.", consFactors:["legal","reversibility"], ceilingFactors:["legal","governance"], ceilingNote:"ERISA fiduciary exposure, same logic as 7.1.2.12 — the fiduciary sign-off is the ceiling, not full authorship." },
+  "7.5.1.2": { rel:"Human-only", ceiling:"Oversight", cons:"High", consNote:"ERISA fiduciary exposure, same logic as 7.1.2.12 — the fiduciary sign-off is the safeguard, not full authorship.", consFactors:["legal","reversibility"], ceilingFactors:["legal","governance"], ceilingNote:"ERISA fiduciary exposure, same logic as 7.1.2.12 — the fiduciary sign-off is the ceiling, not full authorship." },
   "7.5.1.3": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Low", consNote:"Market research feeding a decision made elsewhere; low direct exposure.", consFactors:["reach"], ceilingFactors:["technical"], ceilingNote:"Competitive benefits analysis can move toward agent-delegation once market-data synthesis is proven reliable." },
   "7.5.1.4": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Moderate", consNote:"Translates policy into requirements; moderate financial impact if misread, caught at the plan-design step downstream.", consFactors:["ops"], ceilingFactors:["technical"], ceilingNote:"Translating financial and policy inputs into compensation requirements can move toward agent-delegation once the mapping is proven." },
   "7.5.1.5": { rel:"Human-only", ceiling:"Automation", cons:"High", consNote:"Direct pay execution — wage-and-hour exposure if mis-administered, same regulatory-teeth logic as 7.5.4/7.4.5, and errors touch every paycheck (reach).", consFactors:["legal","reach"], ceilingFactors:["legal"], ceilingNote:"Direct pay execution — wage-and-hour exposure if mis-administered, same regulatory-teeth logic as 7.5.4/7.4.5." },
   "7.5.1.6": { rel:"Human-only", ceiling:"Automation", cons:"Low", consNote:"Execution of already-decided recognition/rewards; low stakes, reversible.", consFactors:["reversibility"], ceilingFactors:["top"], ceilingNote:"Rewards/recognition delivery against already-set rules — mechanical enough for full automation." },
   "7.5.1.7": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Low", consNote:"Monitoring/analysis work; corrected at the next review cycle.", consFactors:["reversibility"], ceilingFactors:["technical"], ceilingNote:"Reviewing engagement and retention indicators can move toward agent-delegation once pattern-flagging is proven reliable." },
-  "7.5.1.8": { rel:"Human-only", ceiling:"Augmentation", cons:"Moderate", consNote:"Same pay-equity duty as 7.5.1.1 attaches to reviewing the plan, not just setting it — the review step is the safeguard, keeping this a notch below the design tier.", consFactors:["legal","reversibility"], ceilingFactors:["legal"], ceilingNote:"Same pay-equity duty as 7.5.1.1 attaches to reviewing the plan, not just setting it." },
-  "7.5.1.9": { rel:"Human-only", ceiling:"Augmentation", cons:"Moderate", consNote:"Same ERISA-adjacent duty as 7.5.1.2, at the review stage.", consFactors:["legal","reversibility"], ceilingFactors:["legal"], ceilingNote:"Same ERISA-adjacent duty as 7.5.1.2." },
+  "7.5.1.8": { rel:"Human-only", ceiling:"Oversight", cons:"Moderate", consNote:"Same pay-equity duty as 7.5.1.1 attaches to reviewing the plan, not just setting it — the review step is the safeguard, keeping this a notch below the design tier.", consFactors:["legal","reversibility"], ceilingFactors:["legal"], ceilingNote:"Same pay-equity duty as 7.5.1.1 attaches to reviewing the plan, not just setting it." },
+  "7.5.1.9": { rel:"Human-only", ceiling:"Oversight", cons:"Moderate", consNote:"Same ERISA-adjacent duty as 7.5.1.2, at the review stage.", consFactors:["legal","reversibility"], ceilingFactors:["legal"], ceilingNote:"Same ERISA-adjacent duty as 7.5.1.2." },
   "7.5.2.1": { rel:"Human-only", ceiling:"Automation", cons:"Low", consNote:"Routine benefits-transaction processing; low individual risk if the rules are followed.", consFactors:["human"], ceilingFactors:["top"], ceilingNote:"Delivering an already-designed benefits program to eligible employees — mechanical enough for full automation." },
   "7.5.2.2": { rel:"Human-only", ceiling:"Automation", cons:"Low", consNote:"Enrollment processing; low exposure, reversible.", consFactors:["reversibility"], ceilingFactors:["top"], ceilingNote:"Enrollment administration against defined plan rules — mechanical enough for full automation." },
   "7.5.2.3": { rel:"Human-only", ceiling:"Automation", cons:"Moderate", consNote:"A wrongly processed claim directly affects an individual employee's healthcare/financial access — human impact drives this above the other routine benefits-transaction steps.", consFactors:["human","ops"], ceilingFactors:["top"], ceilingNote:"Rule-based claims adjudication against a defined plan — fully mechanical once the plan terms are set, so automation is the ceiling despite the direct effect on an individual's benefit." },
   "7.5.2.4": { rel:"Human-only", ceiling:"Automation", cons:"Low", consNote:"Reconciliation is a check on other steps, not a new decision; low exposure.", consFactors:["ops"], ceilingFactors:["top"], ceilingNote:"Reconciliation is a check on other steps, not a new decision — mechanical enough for full automation." },
-  "7.5.3.1": { rel:"Human-only", ceiling:"Oversight", cons:"Moderate", consNote:"Confidential, individual-situation support work (EAP referrals, family/wellbeing needs) — a human needs to stay meaningfully present given the sensitivity; trust/duty-of-care is the driving factor, not legal exposure.", consFactors:["human","legal","trust"], ceilingFactors:["floor"], ceilingNote:"Confidential, individual-situation support work (EAP referrals, family/wellbeing needs) — a human needs to stay meaningfully present given the sensitivity, even with strong AI assistance. Duty-of-care floor, not a temporary gap." },
+  "7.5.3.1": { rel:"Human-only", ceiling:"Augmentation", cons:"Moderate", consNote:"Confidential, individual-situation support work (EAP referrals, family/wellbeing needs) — a human needs to stay meaningfully present given the sensitivity; trust/duty-of-care is the driving factor, not legal exposure.", consFactors:["human","legal","trust"], ceilingFactors:["floor"], ceilingNote:"Confidential, individual-situation support work (EAP referrals, family/wellbeing needs) — a human needs to stay meaningfully present given the sensitivity, even with strong AI assistance. Duty-of-care floor, not a temporary gap." },
   "7.5.3.2": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Low", consNote:"Program design one step removed from the individual support conversations themselves.", consFactors:["human"], ceilingFactors:["technical"], ceilingNote:"Support-system design can move toward agent-delegation once effectiveness across employee populations is proven." },
   "7.5.4": { rel:"Human-only", ceiling:"Automation", cons:"High", consNote:"Routine execution, but wage-and-hour/FLSA exposure if it's wrong, and reach is total — every employee's pay runs through this step every cycle.", consFactors:["human","legal","reach"], ceilingFactors:["legal"], ceilingNote:"Same regulatory-teeth logic as 7.2.5.1/7.3.4.6/7.4.5 — routine execution, but wage-and-hour/FLSA exposure if it's wrong." },
   "7.5.5": { rel:"Human-only", ceiling:"Automation", cons:"Low", consNote:"No standing legal or financial duty — survey/suggestion collection is fully delegable once trust in the process is established.", consFactors:["legal","ops","trust"], ceilingFactors:["technical"], ceilingNote:"No standing duty — survey/suggestion collection is fully delegable once trust is established." },
@@ -1204,7 +1205,7 @@ const WR_DATA = {
   "7.6.2.4": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Low", consNote:"Support program design; low direct legal exposure.", consFactors:["legal"], ceilingFactors:["legal"], ceilingNote:"Outplacement terms and severance-related compliance (e.g. WARN Act notice requirements) keep a review step in the loop even as day-to-day case handling delegates further." },
   "7.6.3.1": { rel:"Human-only", ceiling:"Oversight", cons:"High", consNote:"Cross-border immigration/tax/labor-law compliance review — same review-before-acting logic as 7.4.5, compounded by the current role catalog's confirmed specialist-role gap (International HR Management isn't a named role).", consFactors:["legal"], ceilingFactors:["legal","governance"], ceilingNote:"Cross-border immigration/tax/labor-law compliance review — same “review-before-acting is the ceiling” logic as 7.4.5. Also the value stream's confirmed specialist-role gap (International HR Management isn't in the current role catalog)." },
   "7.7.1": { rel:"Human-only", ceiling:"Automation", cons:"Low", consNote:"Internal reporting mechanics; corrected at the next reporting cycle, no individual or legal exposure.", consFactors:["human","legal","reversibility"], ceilingFactors:["top"], ceilingNote:"Reporting execution against already-defined report specs — mechanical enough for full automation." },
-  "7.7.2": { rel:"Human-only", ceiling:"Oversight", cons:"Moderate", consNote:"Non-standard employee inquiries routinely surface sensitive edge cases (harassment concerns, pay disputes, leave confusion) before they're classified as something bigger — trust/duty-of-care drives this, at a lower stakes tier than an active grievance (7.4.4).", consFactors:["trust"], ceilingFactors:["floor"], ceilingNote:"Exception-pattern inquiries routinely surface sensitive edge cases (harassment concerns, pay disputes, leave confusion) before they're classified as something bigger — same confidentiality/duty-of-care logic as 7.4.4, at a lower stakes tier." },
+  "7.7.2": { rel:"Human-only", ceiling:"Augmentation", cons:"Moderate", consNote:"Non-standard employee inquiries routinely surface sensitive edge cases (harassment concerns, pay disputes, leave confusion) before they're classified as something bigger — trust/duty-of-care drives this, at a lower stakes tier than an active grievance (7.4.4).", consFactors:["trust"], ceilingFactors:["floor"], ceilingNote:"Exception-pattern inquiries routinely surface sensitive edge cases (harassment concerns, pay disputes, leave confusion) before they're classified as something bigger — same confidentiality/duty-of-care logic as 7.4.4, at a lower stakes tier." },
   "7.7.3": { rel:"Human-only", ceiling:"Automation", cons:"Moderate", consNote:"Rule-based record maintenance; errors cascade downstream into pay/benefits, but the step itself carries no standing legal duty of its own.", consFactors:["legal"], ceilingFactors:["top"], ceilingNote:"Rule-based record maintenance; errors cascade downstream into pay/benefits but the step itself carries no standing duty." },
   "7.7.4": { rel:"Human-only", ceiling:"Automation", cons:"Moderate", consNote:"System-administration work; an outage or misconfiguration has broad operational reach (every HR process depends on it) but is a technical fix, not a legal exposure.", consFactors:["legal","ops","reach"], ceilingFactors:["legal","top"], ceilingNote:"HRIS data-governance and privacy obligations sit in how the system is configured, not in each instance — day-to-day system management is mechanical enough for full automation." },
   "7.7.5": { rel:"Human-only", ceiling:"Agent-delegation", cons:"Low", consNote:"Metric-design work; corrected at the next measurement cycle.", consFactors:["reversibility"], ceilingFactors:["technical"], ceilingNote:"Measure design can move toward agent-delegation once which measures actually predict outcomes is proven." },
@@ -2027,7 +2028,7 @@ function renderRoleImpactTable(cat) {
    display is being rethought. The functions are kept, but nothing calls
    them until the new design is decided. */
 // Own copy of the ramp order: CATS_ORDER is declared further down the script.
-const WPV_RAMP = ['Human-only', 'Judgment', 'Oversight', 'Augmentation', 'Agent-delegation', 'Automation'];
+const WPV_RAMP = ['Human-only', 'Judgment', 'Augmentation', 'Oversight', 'Agent-delegation', 'Automation'];
 const WPV_AI_FROM = WPV_RAMP.indexOf('Augmentation');
 function wpvCodes(l3) { return (l3.l4 && l3.l4.length) ? l3.l4.map(x => x.code) : [l3.code]; }
 function wpvIndex(cat) {
@@ -2196,9 +2197,10 @@ function renderTopPills() {
   const entries = Object.keys(WR_DATA).map(k => WR_DATA[k]);
   const total = entries.length;
   const atCeiling = entries.filter(d => d.rel === d.ceiling).length;
-  const humanLoop = entries.filter(d => d.rel === 'Judgment' || d.rel === 'Oversight').length;
+  // A person makes, does or approves every instance: Judgment, Augmentation and Oversight.
+  const humanLoop = entries.filter(d => d.rel === 'Judgment' || d.rel === 'Augmentation' || d.rel === 'Oversight').length;
   // Findings: activities assessed past the ceiling with no override covering them.
-  const ramp = ['Human-only', 'Judgment', 'Oversight', 'Augmentation', 'Agent-delegation', 'Automation'];
+  const ramp = ['Human-only', 'Judgment', 'Augmentation', 'Oversight', 'Agent-delegation', 'Automation'];
   const pastNoOverride = Object.keys(WR_DATA).filter(k => {
     const d = WR_DATA[k], o = (typeof ORG_OVERRIDES !== 'undefined') ? ORG_OVERRIDES[k] : null;
     const lim = Math.max(ramp.indexOf(d.ceiling), o && o.level ? ramp.indexOf(o.level) : -1);
@@ -2212,17 +2214,17 @@ function renderTopPills() {
     // Reference Model: every activity sits at the Human-only baseline, so the
     // pills describe the ceilings instead.
     const capped = entries.filter(d => d.ceiling && d.ceiling !== 'Automation').length;
-    const humanCeil = entries.filter(d => d.ceiling === 'Judgment' || d.ceiling === 'Oversight').length;
+    const humanCeil = entries.filter(d => d.ceiling === 'Judgment' || d.ceiling === 'Augmentation' || d.ceiling === 'Oversight').length;
     document.getElementById('topbar-pills').innerHTML =
       '<span class="pill pill-wr1">' + total + ' activities</span>' +
       '<span class="pill pill-wr2">' + capped + ' capped below Automation</span>' +
-      '<span class="pill pill-wr3">' + humanCeil + ' ceiling at Judgment or Oversight</span>';
+      '<span class="pill pill-wr3">' + humanCeil + ' ceiling at Oversight or below</span>';
     return;
   }
   document.getElementById('topbar-pills').innerHTML =
     '<span class="pill pill-wr1">' + assessed + ' of ' + total + ' assessed</span>' +
     '<span class="pill pill-wr2">' + atCeiling + ' at ceiling</span>' +
-    '<span class="pill pill-wr3">' + humanLoop + ' Judgment + Oversight</span>' +
+    '<span class="pill pill-wr3">' + humanLoop + ' Judgment to Oversight</span>' +
     (pastNoOverride ? '<span class="pill pill-past">' + pastNoOverride + ' past ceiling, no override</span>' : '');
 }
 
@@ -2313,7 +2315,9 @@ const CEILING_FACTORS = [
 // six standard category definitions (Table 2 of the methodology doc)
 // applied to each activity's own name and RACI-Accountable role — not
 // hand-authored per activity, given the scale (118 activities × 6 steps).
-const CATS_ORDER = ["Human-only", "Judgment", "Oversight", "Augmentation", "Agent-delegation", "Automation"];
+// Ramp order corrected Oct 6, 2026 (Tim, CL-015): Augmentation (the person does the work, AI assists)
+// comes before Oversight (AI produces the complete work, a person approves each instance).
+const CATS_ORDER = ["Human-only", "Judgment", "Augmentation", "Oversight", "Agent-delegation", "Automation"];
 
 // Locked wording (Working-Relationship Category Definitions — Locked,
 // Sept 20, 2026), which supersedes WRPM's original Table 2 phrasing —
@@ -2322,8 +2326,8 @@ const CATS_ORDER = ["Human-only", "Judgment", "Oversight", "Augmentation", "Agen
 const STEP_DEFINITIONS = {
   "Human-only": "No AI role in this activity, by design — regardless of demonstrated AI capability.",
   "Judgment": "A person forms the reasoning and makes the call. AI may supply raw inputs (data, a ranking, a benchmark) but does not produce the candidate decision.",
-  "Oversight": "AI performs or proposes the complete work product; a person reviews and approves (or rejects) each instance before it takes effect.",
   "Augmentation": "The person remains the primary actor and does the work themselves; AI assists in real time but never acts unilaterally, and there is no separate approval gate.",
+  "Oversight": "AI performs or proposes the complete work product; a person reviews and approves (or rejects) each instance before it takes effect.",
   "Agent-delegation": "An AI agent performs the work autonomously within policy bounds; a person handles only flagged exceptions, not every instance.",
   "Automation": "AI performs and completes the work with no person in the loop for that instance — exceptions included."
 };
@@ -2333,12 +2337,12 @@ const STEP_DEFINITIONS = {
 // same for every activity crossing it.
 const GATE_EVIDENCE = [
   ["AI-supplied input is relevant and useful to the person doing the work", "No autonomous action exists yet, so there's no error rate to measure"],
-  ["AI's proposed action agrees with what the human would decide, most of the time", "Enough real instances have run to trust that agreement rate"],
-  ["A high share of full-review instances pass clean (audit-pass rate)", "That clean rate holds up sustained over real volume"],
-  ["Accuracy/error rate proven within defined policy bounds", "System reliably flags when it's out of bounds (exception-detection recall)"],
+  ["AI's real-time assistance (drafts, suggestions, summaries) is used by the person most of the time", "Spot checks show the assistance doesn't introduce errors the person misses"],
+  ["AI's complete proposed work agrees with what the person would have produced or decided, most of the time", "Enough real instances have run to trust that agreement rate"],
+  ["A high share of full-review instances pass clean (audit-pass rate), sustained over real volume", "Accuracy is proven within defined policy bounds, and the system reliably flags when it's out of bounds (exception-detection recall)"],
   ["Sustained low exception rate over real volume", "An explicit governance sign-off gate layered on top (a policy choice, not just a technical threshold)"]
 ];
-const GATE_TITLES = ["Human-only → Judgment", "Judgment → Oversight", "Oversight → Augmentation", "Augmentation → Agent-delegation", "Agent-delegation → Automation"];
+const GATE_TITLES = ["Human-only → Judgment", "Judgment → Augmentation", "Augmentation → Oversight", "Oversight → Agent-delegation", "Agent-delegation → Automation"];
 
 // code -> { name, role }, built once from the real PCF7 tree.
 const CODE_INFO = {};
@@ -3048,7 +3052,7 @@ function rerenderKeepingOpen() {
 //   3. Past the ceiling, no override — assessed above the ceiling with nothing
 //      approved; CoE says whether an override is even possible.
 // Built from the same ORG_RECORDS / ORG_OVERRIDES the ramp uses; roles only.
-const XR_RAMP = ['Human-only', 'Judgment', 'Oversight', 'Augmentation', 'Agent-delegation', 'Automation'];
+const XR_RAMP = ['Human-only', 'Judgment', 'Augmentation', 'Oversight', 'Agent-delegation', 'Automation'];
 const XR_OVERRIDE_CONS = { Low: 1, Moderate: 1 };
 function xrCat(c) {
   const k = WR_CATS[c];

@@ -26,7 +26,7 @@
 //   onOverrideSaved(override)               // after an override is saved or removed
 // })
 (function () {
-  var STEPS = ['Human-only', 'Judgment', 'Oversight', 'Augmentation', 'Agent-delegation', 'Automation'];
+  var STEPS = ['Human-only', 'Judgment', 'Augmentation', 'Oversight', 'Agent-delegation', 'Automation'];  // order corrected Oct 6, 2026 (CL-015)
   var QUESTIONS = [
     { q: 'Does AI play any part in this activity&rsquo;s work?', yes: 1, no: 'Human-only' },
     { q: 'Does AI only supply inputs &mdash; data, rankings, benchmarks &mdash; for a person&rsquo;s own reasoning, without proposing the decision or producing the work?', yes: 'Judgment', no: 2 },
