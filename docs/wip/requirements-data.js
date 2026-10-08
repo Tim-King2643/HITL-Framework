@@ -739,7 +739,7 @@ window.REQUIREMENTS = [
  {
   "id": "GR-029",
   "title": "Exception Escalation Effect",
-  "progress": "Open",
+  "progress": "Designed",
   "category": "Data Model",
   "priority": "Medium",
   "owner": "Tim + GiGi",
@@ -753,16 +753,21 @@ window.REQUIREMENTS = [
   "spec_doc": "Working_Relationship_Progression_Methodology.docx",
   "spec_section": "Section 9, Known Open Constructs",
   "wip_item": null,
-  "next_action": "Define the effect's first measure from verification load (Work Product spec) and test it on the HRBP Manager.",
-  "decision": null,
+  "next_action": "Tim and GiGi decide the measures for GR-029 and GR-030 (one decision, here).",
+  "decision": {
+   "id": "measures",
+   "type": "design",
+   "question": "Approve the first measures for the Exception Escalation Effect (GR-029) and Accountability Concentration (GR-030), and route High and Critical exceptions to the Accountable role.",
+   "summary": "Each role shows the High or Critical share of the work still left to a person, against today (GR-029), and the activities it is answerable for with no person in the instance, against its Accountable count (GR-030). Both are computed from the reference and, once assessed, from each organization's records. Stress test: docs/wip/stress_tests/exception_load_sketch.html."
+  },
   "decisions": [],
-  "log": "Named as genuinely new in the Sept 11 reconciliation memo; no instrument yet. Thematically adjacent to the Shock Wave Effect's cascade/interference framing (both describe difficulty concentrating somewhere as routine work disappears), but Shock Wave is about simultaneous cross-domain transformation, not single-domain routine-work removal — not a real match, left Open.",
+  "log": "Named as genuinely new in the Sept 11 reconciliation memo; no instrument yet. Thematically adjacent to the Shock Wave Effect's cascade/interference framing (both describe difficulty concentrating somewhere as routine work disappears), but Shock Wave is about simultaneous cross-domain transformation, not single-domain routine-work removal — not a real match, left Open.\n\nOct 8, 2026: stress test built (docs/wip/stress_tests/exception_load_sketch.html), moving all 118 activities up the ramp and showing, role by role, whether a person is in every instance, approves every instance, handles flagged exceptions only, or is answerable with no person in the instance. At every activity's ceiling (GR-058 derived ceilings): a person stays in every instance of 30 activities, approves every instance of 11, handles flagged exceptions in 35, and is in none of 42. For 9 of 11 roles what is left is more often High or Critical than today (Recruiter 33% to 67%). Escalating by reporting line sends hard exceptions to SVP Talent Management and Director of TA, which are Accountable for none of them, so the recommendation is to route them to the Accountable role. Proposed first measure: each role's High or Critical share of the work still left to a person, against today. Counts of activities, not volumes.",
   "legacy_status": "Open"
  },
  {
   "id": "GR-030",
   "title": "Accountability Concentration",
-  "progress": "In progress",
+  "progress": "Designed",
   "category": "Executive View",
   "priority": "Medium",
   "owner": "Tim",
@@ -776,10 +781,10 @@ window.REQUIREMENTS = [
   "spec_doc": "Shock Wave Effect (Accountability ring)",
   "spec_section": "Blast Radius — Accountability ring; section 8, Pilots (HRBP Manager, Recruiter findings)",
   "wip_item": "shock-wave — the_shock_wave_effect.html",
-  "next_action": "Compute each role's Accountable share from the RACI and track it as working relationships progress.",
+  "next_action": "Decided with GR-029: one decision covers both measures.",
   "decision": null,
   "decisions": [],
-  "log": "Qualitatively observed in the 7.4.4 and 7.2.3.4 pilot walkthroughs (both roles hold 100% Accountable share across their activities). The Shock Wave Effect names “accountability held fixed by design” as one of its Five Rings and frames GDPs as the containment mechanism as automation increases — conceptual language for this exists now, but it's still not a computed, tracked metric anywhere.",
+  "log": "Qualitatively observed in the 7.4.4 and 7.2.3.4 pilot walkthroughs (both roles hold 100% Accountable share across their activities). The Shock Wave Effect names “accountability held fixed by design” as one of its Five Rings and frames GDPs as the containment mechanism as automation increases — conceptual language for this exists now, but it's still not a computed, tracked metric anywhere.\n\nOct 8, 2026: measured in the GR-029 stress test (docs/wip/stress_tests/exception_load_sketch.html). The same 10 roles stay Accountable for all 118 activities as the work moves up; at every activity's ceiling, HRIS Analyst is answerable for 11 of its 18 activities with no person in the instance, HRBP Manager for 10 of 23. Proposed measure: each role's activities where it is answerable with no person in the instance, against its Accountable count. Decided with GR-029.",
   "legacy_status": "Partially Addressed"
  },
  {
