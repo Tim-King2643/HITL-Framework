@@ -1534,5 +1534,33 @@ window.REQUIREMENTS = [
   "decisions": [],
   "log": "Oct 6, 2026 (Tim): asked for a table of the exact work in each stage, without touching the view. Breaking 7.2.1.1 into work elements showed that AI does more of the work in Oversight than in Augmentation, and the ramp order was corrected (CL-015, logged under GR-055).\n\nOct 7, 2026 (Tim): proposed a seven-element approach for both the person and AI. Worked through 7.2.1.4 Post job requisitions (spreadsheet), then 7.2.1.1 and 7.4.4 in an info-box sketch. Settled: seven elements, with Produce / Execute as one; four lead states; one control element; support elements (Research, Produce / Execute) don't set the stage; ceiling factors attach to elements. Shown in the existing stage, gate and lock info boxes; lead states as plain text, with color only for past-ceiling red and changed-row highlights. Assessment panel sketched as an element grid in ABC Test Org: an unassessed activity starts with every element at Human, and the five assessment questions are retired: with the stage derived from the elements, they add nothing the grid doesn't already show. The spreadsheet is a worked example; done for every activity, it becomes the Work Element Reference Data. Writing out 7.2.1.4's Verify raised whether its Consequence of Error should be Moderate rather than Low (pay-range notices). The worked examples also show element ceilings allowing more than the activity ceiling in 7.2.1.1 and 7.4.4.\n\nOct 7, 2026 (Tim): rather than open questions, the answers go into the proposal, to keep the review load down. The activity ceiling is derived from the element ceilings (7.2.1.1 and 7.4.4 move from Judgment to Augmentation, with Draft and Decide still Human); an element past its own ceiling shows red even inside the activity ceiling; overrides apply per element; derived ceiling changes and 7.2.1.4's Consequence of Error (proposed Moderate) go into one change-log entry when the reference data is applied. The spec's open questions became one short note for GiGi.\n\nOct 7, 2026: element ceilings stress test (work_elements/element_ceilings_sketch.html), proposing element ceilings for all 118 activities from their factors and deriving each activity ceiling. All 88 at Oversight or above and the 2 at Augmentation come out unchanged; the 28 at Judgment move to Augmentation, with Draft and Decide still Human. It found two corrections, accepted by Tim: Oversight needs AI to lead Draft (without it 27 Judgment activities read as Oversight), and the judgment floor holds Evaluate and Draft as well as Decide (without it the two duty-of-care activities moved down in CL-016 would go back to Oversight).",
   "legacy_status": null
+ },
+ {
+  "id": "GR-059",
+  "title": "Consolidate the sandbox into four views",
+  "progress": "Designed",
+  "category": "Sandbox Environment",
+  "priority": "High",
+  "owner": "Tim + GiGi",
+  "raised_by": "Tim King",
+  "source_doc": "Tim King — framework direction (Oct 2026)",
+  "source_section": "Working session, Oct 8, 2026",
+  "distilled": "Replace the sandbox's six view buttons with four, each answering one question: Work (where each activity sits and what moves next), People (what it means for each role), Data (what moves between activities and who has to check it) and Findings (what departs from the reference and what needs a decision). Every view uses one panel layout: the question, explanation and controls on the left; summary counts and computed findings at the top; the detail underneath. The organization stays a dropdown, for one organization or many.",
+  "acceptance": "Tim and GiGi have approved the four views; pcf7.html shows them in place of the six buttons; every finding is computed from the data and labeled Modeled or Assessed; nothing the six views showed is lost.",
+  "raw": "“These might provide a way to streamline or consolidate our view buttons.” … “This looks much simpler and executive friendly.” (Tim, Oct 8, 2026)",
+  "converged": "GR-044, GR-058, GR-029, GR-030, GR-046, GR-056",
+  "spec_doc": "docs/wip/sketches/four_view_sandbox_sketch.html",
+  "spec_section": "Whole sketch; each view's left panel says which of today's buttons it replaces",
+  "wip_item": null,
+  "next_action": "Tim and GiGi decide the four views.",
+  "decision": {
+   "id": "design",
+   "type": "design",
+   "question": "Approve consolidating the sandbox's six views into four: Work, People, Data and Findings.",
+   "summary": "Built into pcf7.html one view at a time, starting with Work, once GR-058's reference data is applied. Work replaces Working Relationship and Readiness Gate; People replaces People View and RACI Table and carries the exception-load test; Data replaces Data View (CRUD) and carries the verification analysis; Findings replaces Exceptions Report and carries the executive summary and the reference stress tests. Design: docs/wip/sketches/four_view_sandbox_sketch.html."
+  },
+  "decisions": [],
+  "log": "Oct 8, 2026 (Tim): the panel layout of the stress-test sketches (explanation and toggles on the left, findings at the top) suggested a way to consolidate the six view buttons. Sketched as four views, each led by its question, with GR-058 taken as approved: Work (the ramp on one row per activity, with the stage, gate and lock boxes opening on click, and an organization's element assessment on its Current State step), People (RACI, and what is left for a person as the work moves up), Data (by work product or by activity, with verification points recomputed: 29 of 49 work products AI-touched at the ceiling, 80 points, 22 unchecked hand-offs on 9 activities; today's ceilings reproduce the Oct 7 figures exactly) and Findings (the reference at full progression and the latest change; for an organization, the executive summary and exceptions report). Tim's direction during the sketch: the organization stays a dropdown, the activity name runs above its ramp, the stage option at the top reads 'Every activity at its Progression Ceiling'. Found while sketching: verification peaks at Augmentation (209 points with every activity there), and applying GR-058 will flag ABC Test Org's assessments of 7.2.1.1, 7.3.2.1 and 7.3.2.2 as 'reference changed since assessed'.",
+  "legacy_status": null
  }
 ];
