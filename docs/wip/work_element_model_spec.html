@@ -146,6 +146,7 @@ details.fold[open] { padding-bottom: 6px; }
     <li><b>Oct 7:</b> shown in the existing stage, gate and lock info boxes; lead states are plain text, with color kept only for past-ceiling red and the highlighted rows that change.</li>
     <li><b>Oct 7:</b> an activity nobody has assessed starts with every element at Human. The stage is always derived from the elements, never set by hand.</li>
     <li><b>Oct 7:</b> the activity ceiling is derived from the element ceilings, and overrides apply per element (Tim: part of the proposal, not open questions).</li>
+    <li><b>Oct 7:</b> from the stress test across all 118 activities: Oversight needs AI to lead Draft, and the judgment floor holds Evaluate and Draft as well as Decide.</li>
     <li><b>Oct 7:</b> the five assessment questions are retired. With the stage derived from the elements, they add nothing the grid doesn&rsquo;t already show.</li>
   </ul>
   <div class="b-label">Awaiting your decision</div>
@@ -191,8 +192,8 @@ details.fold[open] { padding-bottom: 6px; }
     <tr><th style="width:22%">Stage</th><th>When</th></tr>
     <tr><td class="k">Human-only</td><td>Every element is Human, or AI touches only Produce / Execute.</td></tr>
     <tr><td class="k">Judgment</td><td>AI only supplies inputs (Research, Evaluate); the person does the work and makes the call.</td></tr>
-    <tr><td class="k">Augmentation</td><td>AI assists in Draft, Verify or Communicate, the person leads every core element, and the control element stays with the person.</td></tr>
-    <tr><td class="k">Oversight</td><td>AI leads a core element, and a person approves every instance at the control element.</td></tr>
+    <tr><td class="k">Augmentation</td><td>AI assists in Draft, Verify or Communicate, or leads a core element other than Draft, while the person still writes the work and holds the control element.</td></tr>
+    <tr><td class="k">Oversight</td><td>AI leads Draft, producing the work, and a person approves every instance at the control element. (Where an activity has no Draft, AI leading any core element.)</td></tr>
     <tr><td class="k">Agent-delegation</td><td>The control element is AI-led: a person handles only the instances AI flags.</td></tr>
     <tr><td class="k">Automation</td><td>The control element is AI, with no person in the instance.</td></tr>
   </table>
@@ -203,12 +204,12 @@ details.fold[open] { padding-bottom: 6px; }
   <table>
     <tr><th style="width:36%">Ceiling factor</th><th>Holds</th></tr>
     <tr><td class="k">Legal / fiduciary duty</td><td>Evaluate, Draft, Verify</td></tr>
-    <tr><td class="k">Human judgment floor</td><td>Decide</td></tr>
+    <tr><td class="k">Human judgment floor</td><td>Evaluate, Draft, Decide</td></tr>
     <tr><td class="k">Relational / emotional stakes</td><td>Communicate</td></tr>
     <tr><td class="k">Accountability</td><td>Draft, Decide</td></tr>
   </table>
   <p>So in 7.4.4 Manage employee grievances, Research and Produce / Execute may go to AI, Evaluate and Verify may be Human-led, and Draft, Decide and Communicate stay Human. Element ceilings are proposed from each activity&rsquo;s ceiling factors.</p>
-  <p><b>The activity ceiling is derived from the element ceilings</b>, by the same rule as the stage, so the two cannot disagree. The element ceilings are the control: they say exactly what must stay with the person, and the activity ceiling summarizes them. In 7.2.1.1 and 7.4.4 this moves the ceiling from Judgment to Augmentation. AI may help with checks (flagging a plan over budget, checking grievance deadlines and citations), while Draft and Decide in both, and Communicate in 7.4.4, stay Human. Those element limits protect the work whatever the activity ceiling is called.</p>
+  <p><b>The activity ceiling is derived from the element ceilings</b>, by the same rule as the stage, so the two cannot disagree. The element ceilings are the control: they say exactly what must stay with the person, and the activity ceiling summarizes them. Across the reference, this moves all 28 Judgment ceilings to Augmentation, including 7.2.1.1 and 7.4.4, and changes nothing else (section 8). AI may help with checks (flagging a plan over budget, checking grievance deadlines and citations), while Draft and Decide stay Human in every one, and Communicate in 7.4.4. Those element limits protect the work whatever the activity ceiling is called.</p>
   <p>An organization that runs an element past its ceiling is shown in red at that element, with the factor it breaks, even if the activity as a whole is within its ceiling. It is recorded as a finding about how the organization works, not an error in the assessment.</p>
   <p><b>Overrides work per element.</b> A ceiling override (GR-054) names the ceiling factor that no longer holds. It raises only the elements that factor holds, and the activity ceiling is derived again from them.</p>
 
@@ -230,9 +231,10 @@ details.fold[open] { padding-bottom: 6px; }
     <tr><th style="width:34%">Worked example</th><th>What it shows</th></tr>
     <tr><td class="k"><a href="work_elements/info_boxes_sketch.html">Info boxes sketch</a></td><td>The stage, gate and lock boxes for 7.2.1.1, 7.2.1.4 and 7.4.4, with a Reference Model / ABC Test Org toggle. Illustrative ABC values.</td></tr>
     <tr><td class="k"><a href="work_elements/assess_panel_sketch.html">Assessment panel sketch</a></td><td>The element grid for the same three activities, live: change any element and the derived stage and ceiling checks update. Toggles between not yet assessed and assessed.</td></tr>
+    <tr><td class="k"><a href="work_elements/element_ceilings_sketch.html">Element ceilings stress test</a></td><td>Element ceilings proposed for all 118 activities from their factors, the activity ceilings derived from them, and every one that would change. The rules are adjustable, with the recommended settings and the spec&rsquo;s first draft as presets. It found the two corrections in section 5 and 6.</td></tr>
     <tr><td class="k"><a href="work_elements/work_elements_7.2.1.4.xlsx">7.2.1.4 work elements (spreadsheet)</a></td><td>The method applied by hand to Post job requisitions: reference elements and ceilings, an element-level ABC assessment, the derivation rule, and what the example showed.</td></tr>
   </table>
-  <p><b>Work Element Reference Data.</b> Done for every activity, the spreadsheet&rsquo;s layout becomes the reference data the sandbox reads: the element phrases, which elements are part of each activity, the control element and the element ceilings. Of the 118 activities, the 42 whose ceiling is Automation only need their elements identified; the other 76 also need element ceilings, proposed from their ceiling factors. Every activity whose derived ceiling differs from today&rsquo;s, and 7.2.1.4&rsquo;s Consequence of Error, which the example suggests should be Moderate rather than Low (pay-range notices carry legal exposure), go into one change-log entry when the data is applied. That entry is the review, as with CL-016.</p>
+  <p><b>Work Element Reference Data.</b> Done for every activity, the spreadsheet&rsquo;s layout becomes the reference data the sandbox reads: the element phrases, which elements are part of each activity, the control element and the element ceilings. Of the 118 activities, the 42 whose ceiling is Automation only need their elements identified; the other 76 also need element ceilings, proposed from their ceiling factors. The stress test shows what that entry holds. All 88 activities at Oversight or above and the 2 at Augmentation come out exactly as they are today; the 28 at Judgment move to Augmentation, with Draft and Decide still Human. Those 28, and 7.2.1.4&rsquo;s Consequence of Error, which the example suggests should be Moderate rather than Low (pay-range notices carry legal exposure), go into one change-log entry when the data is applied. That entry is the review, as with CL-016.</p>
 
   <h2>9. For GiGi</h2>
   <p>Two places where the element view reaches the human-impact side, for her to take or leave. It shows what is left for the person at each stage: in 7.2.1.4 at Oversight, a review of every posting, which is per-instance checking of mechanical work. That could travel with the role hand-off (GR-056). And in 7.4.4 the relational ceiling holds Communicate at Human because the person is part of what makes the outcome legitimate to the grievant, which is her ground more than ours.</p>

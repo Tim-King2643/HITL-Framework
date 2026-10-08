@@ -73,7 +73,7 @@ label{display:block;font-size:12px;font-weight:600;color:#0D2D4F;margin:10px 0 4
 <li>All elements Human: <b>Human-only</b>.</li>
 <li>AI only in Research or Evaluate: <b>Judgment</b>.</li>
 <li>AI assists in Draft, Verify or Communicate, the person leads: <b>Augmentation</b>.</li>
-<li>AI leads a core element, a person holds the ◆ control element: <b>Oversight</b>.</li>
+<li>AI leads Draft, a person holds the ◆ control element: <b>Oversight</b>.</li>
 <li>Control element AI-led: <b>Agent-delegation</b>.</li>
 <li>Control element AI: <b>Automation</b>.</li>
 <li>Produce / Execute alone doesn't move the stage.</li>
@@ -131,7 +131,7 @@ function derive(a,g){
   const c=g[a.control][0];
   if(!els.some(ai)) return ['Human-only','every element is Human'];
   if(els.every(e=>g[e][0]==='AI')) return ['Automation','every element is AI'];
-  if(core.some(leads)){
+  if(core.some(leads)&&(!a.el['Draft']||leads('Draft')||a.control==='Draft')){
     if(c==='AI') return ['Automation','AI holds '+a.control+', the control element, with no person in the instance'];
     if(c==='AI-led') return ['Agent-delegation','AI leads the work and a person handles only the instances flagged at '+a.control];
     return ['Oversight','AI leads '+lst(core.filter(leads))+'; a person approves every instance at '+a.control];
