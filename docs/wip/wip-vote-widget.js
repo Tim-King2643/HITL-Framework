@@ -91,6 +91,9 @@
       'border-radius:6px;border:1px solid var(--navy,#1B4F8A);background:var(--navy,#1B4F8A);color:#fff;cursor:pointer;white-space:nowrap;}',
       '.wip-vote-note-row button:hover{background:var(--navy-d,#0D2D4F);}',
       '.wip-vote-saved{font-size:11px;color:#1B7A4C;margin-top:6px;}',
+      '.wip-vote-round{font-size:12px;color:#4E5D78;background:#F4F6FB;border-radius:6px;padding:6px 10px;margin:8px 0 2px;}',
+      '.wip-vote-flash{font-size:12px;font-weight:600;color:#1B7A4C;margin:8px 0 2px;}',
+      '.wip-vote-flash.is-err{color:#A23B3B;}',
       '.wip-vote-unrecognized{font-size:12px;color:var(--lgray,#888);font-style:italic;padding-top:12px;border-top:1px dashed var(--border,#DDE3EE);}',
       '.wip-status-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;',
       'border-radius:3px;padding:3px 7px;white-space:nowrap;}',
@@ -120,11 +123,22 @@
     document.head.appendChild(style);
   }
 
+  var SIGNIN_MSG = 'Your sign-in has expired. Reload the page and vote again.';
   function api(path, opts) {
     return fetch(path, Object.assign({ credentials: 'same-origin' }, opts || {})).then(function (res) {
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      return res.json();
+      if (res.status === 401 || res.status === 403 || res.redirected) throw new Error(SIGNIN_MSG);
+      if (!res.ok) throw new Error('Not saved (server error ' + res.status + '). Try again in a moment.');
+      return res.json().catch(function () { throw new Error(SIGNIN_MSG); });
     });
+  }
+
+  // A short message on the card after a vote (Tim, Oct 9, 2026): "Saved", the
+  // round-1 completion, or why it failed. Cleared after a few seconds.
+  var flash = {};
+  function setFlash(itemId, text, isErr) {
+    flash[itemId] = { text: text, err: !!isErr };
+    renderAll();
+    setTimeout(function () { if (flash[itemId] && flash[itemId].text === text) { delete flash[itemId]; renderAll(); } }, isErr ? 9000 : 5000);
   }
 
   function statusLine(reviewerName, raw) {
@@ -159,6 +173,12 @@
     html += '</div>';
     html += '</div>';
     html += '<div class="wip-vote-status-row">' + statusLine('Tim', itemData.tim) + statusLine('GiGi', itemData.gigi) + '</div>';
+    var concept = (itemData.history || []).filter(function (h) { return h.label === 'concept-agreed'; }).pop();
+    var textOk = (itemData.history || []).some(function (h) { return h.label === 'text-approved'; });
+    if (itemData.round === 2 && concept && !textOk) {
+      html += '<div class="wip-vote-round">Concept agreed ' + fmtDate(concept.resolvedAt) + '. This round is the final text, so both votes started fresh.</div>';
+    }
+    if (flash[itemId]) html += '<div class="wip-vote-flash' + (flash[itemId].err ? ' is-err' : '') + '">' + escapeHtml(flash[itemId].text) + '</div>';
 
     if (identity) {
       var roundLabel = itemData.round === 2 ? 'the final text' : 'the concept/direction';
@@ -312,9 +332,10 @@
       body: JSON.stringify({ itemId: itemId, choice: choice })
     }).then(function (res) {
       latestItems[itemId] = res.item;
-      renderAll();
+      setFlash(itemId, 'Saved.');
     }).catch(function (e) {
       console.error('wip-vote-widget: vote failed', e);
+      setFlash(itemId, e.message, true);
     });
   }
 
@@ -334,6 +355,7 @@
       }
     }).catch(function (e) {
       console.error('wip-vote-widget: note save failed', e);
+      setFlash(itemId, e.message, true);
     });
   }
 

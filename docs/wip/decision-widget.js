@@ -40,6 +40,9 @@
     'wr-progression-methodology': 'wr_progression_methodology_spec.html'
   };
   var state = { loaded: null, reviewer: null, decisions: {}, votes: {} };
+  // "Saved." after a vote, or a plain reason it failed (Tim, Oct 9, 2026).
+  var flash = {};
+  var SIGNIN_MSG = 'Your sign-in has expired. Reload the page and vote again.';
 
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
   function getJson(path) {
@@ -66,7 +69,7 @@
       '.dw-btns button:hover{border-color:#1B4F8A;color:#1B4F8A;}' +
       '.dw-btns button.on{background:#1B4F8A;border-color:#1B4F8A;color:#fff;}' +
       '.dw-btns input{flex:1 1 180px;font:inherit;font-size:12px;padding:5px 8px;border:1px solid #DDE3EE;border-radius:6px;}' +
-      '.dw-msg{font-size:11.5px;color:#991B1B;}' +
+      '.dw-msg{font-size:11.5px;color:#991B1B;font-weight:600;}.dw-msg.ok{color:#166534;}' +
       '.dw-via{font-size:12px;color:#444;}.dw-via a{color:#1B4F8A;font-weight:600;}';
     document.head.appendChild(st);
   }
@@ -149,7 +152,7 @@
           return '<button type="button" data-dw-choice="' + c + '"' + (mine && mine.choice === c ? ' class="on"' : '') + '>' + CHOICE_LABEL[c] + '</button>';
         }).join('') +
         '<input type="text" data-dw-note placeholder="Note (optional)" value="' + esc(mine && mine.note || '') + '">' +
-        '<span class="dw-msg" data-dw-msg></span></div>';
+        '<span class="dw-msg' + (flash[keyOf(req)] && !flash[keyOf(req)].err ? ' ok' : '') + '" data-dw-msg>' + (flash[keyOf(req)] ? esc(flash[keyOf(req)].text) : '') + '</span></div>';
     } else {
       h += '<div class="dw-via">Sign in as Tim or GiGi to record a decision.</div>';
     }
@@ -168,9 +171,16 @@
           fetch('/wip-api/decision', {
             method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ key: key, choice: b.getAttribute('data-dw-choice'), note: note ? note.value : '' })
-          }).then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status); return j; }); })
-            .then(function (j) { state.decisions[key] = j.decision; if (onChange) onChange(key); })
-            .catch(function (err) { b.disabled = false; if (msg) msg.textContent = err.message; });
+          }).then(function (r) {
+              if (r.status === 401 || r.status === 403 || r.redirected) throw new Error(SIGNIN_MSG);
+              return r.json().catch(function () { throw new Error(SIGNIN_MSG); }).then(function (j) { if (!r.ok) throw new Error(j.error || 'Not saved (server error ' + r.status + ')'); return j; });
+            })
+            .then(function (j) {
+              state.decisions[key] = j.decision; flash[key] = { text: 'Saved.' };
+              setTimeout(function () { delete flash[key]; if (onChange) onChange(key); }, 4000);
+              if (onChange) onChange(key);
+            })
+            .catch(function (err) { b.disabled = false; if (msg) { msg.className = 'dw-msg'; msg.textContent = err.message; } });
         };
       });
       Array.prototype.forEach.call(box.querySelectorAll('input'), function (i) { i.onclick = function (e) { e.stopPropagation(); }; });
