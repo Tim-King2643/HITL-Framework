@@ -53,7 +53,7 @@ window.REQUIREMENTS = [
   "spec_doc": "Framework Content Generation Rules — The Complete Catalog",
   "spec_section": "Rule 3 (Extract the Load-Bearing Claim) + Rule 4 (Callout Budget)",
   "wip_item": "rule-catalog — framework_content_generation_rules.html",
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -133,7 +133,7 @@ window.REQUIREMENTS = [
   "spec_doc": "Framework Content Generation Rules — The Complete Catalog",
   "spec_section": "Rule 6 (Protect the Signature Line) + Rule 12 (Protect the Proven Lines)",
   "wip_item": "rule-catalog — framework_content_generation_rules.html",
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -213,7 +213,7 @@ window.REQUIREMENTS = [
   "spec_doc": "Framework Content Generation Rules — The Complete Catalog",
   "spec_section": "Rule 14 (Modeled vs. Observed, Always Labeled) + Rule 16 (H% Carries Its Disclaimer)",
   "wip_item": "rule-catalog — framework_content_generation_rules.html",
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -241,7 +241,7 @@ window.REQUIREMENTS = [
   "spec_doc": "Framework Content Generation Rules — The Complete Catalog",
   "spec_section": "Rule 17 (“Designed,” Not “Optimal,” Unless Earned)",
   "wip_item": "rule-catalog — framework_content_generation_rules.html",
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -269,7 +269,7 @@ window.REQUIREMENTS = [
   "spec_doc": "Framework Content Generation Rules — The Complete Catalog",
   "spec_section": "Rule 15 (No Absolute Claims About Safety or Control)",
   "wip_item": "rule-catalog — framework_content_generation_rules.html",
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -447,7 +447,7 @@ window.REQUIREMENTS = [
   "spec_doc": "Working_Relationship_Progression_Methodology.docx",
   "spec_section": "Section 3 (Consequence of Error field)",
   "wip_item": null,
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -595,7 +595,7 @@ window.REQUIREMENTS = [
   "spec_doc": "Working_Relationship_Progression_Methodology.docx",
   "spec_section": "Section 2, The Working-Relationship Ramp",
   "wip_item": null,
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -674,7 +674,7 @@ window.REQUIREMENTS = [
   "spec_doc": "Working_Relationship_Progression_Methodology.docx",
   "spec_section": "Section 1, Why This Layer Exists",
   "wip_item": null,
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -725,7 +725,7 @@ window.REQUIREMENTS = [
   "spec_doc": "Working_Relationship_Progression_Methodology.docx",
   "spec_section": "Section 3, Current State and Progression Ceiling",
   "wip_item": null,
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -901,7 +901,7 @@ window.REQUIREMENTS = [
   "spec_doc": "Working_Relationship_Progression_Methodology.docx",
   "spec_section": "Section 7, Human Impact Pathway — Manager Absorption finding (7.4.4)",
   "wip_item": "hrbp-narratives — hrbp_manager_pattern_transition_stagefirst.html (worth checking for consistency, not yet verified)",
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -929,7 +929,7 @@ window.REQUIREMENTS = [
   "spec_doc": "Working-Relationship Category Definitions — Locked (Claude Docs artifact); Working_Relationship_Progression_Methodology.docx",
   "spec_section": "Locked doc section 1, The Six Categories, section 2, Boundary Rules, section 3, Resolved Edge Cases; WRPM Table 2",
   "wip_item": null,
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -980,7 +980,7 @@ window.REQUIREMENTS = [
   "spec_doc": "pcf7.html (sandbox data layer)",
   "spec_section": "ACTIVITIES array — `pattern` field",
   "wip_item": null,
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -1031,7 +1031,7 @@ window.REQUIREMENTS = [
   "spec_doc": "Working_Relationship_Progression_Methodology.docx",
   "spec_section": "Section 7, Human Impact Pathway — Manager Absorption finding (7.4.4)",
   "wip_item": "hrbp-narratives — hrbp_manager_pattern_transition_stagefirst.html (worth checking for consistency, not yet verified)",
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -1059,7 +1059,7 @@ window.REQUIREMENTS = [
   "spec_doc": "Working_Relationship_Progression_Methodology.docx; Working-Relationship Category Definitions — Locked (Claude Docs artifact)",
   "spec_section": "WRPM section 3, Current State and Progression Ceiling; Locked doc section 4, When the Progression Ceiling Freezes Below Automation",
   "wip_item": null,
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -1110,7 +1110,7 @@ window.REQUIREMENTS = [
   "spec_doc": "docs/wip/changelog-data.js",
   "spec_section": "Production Changelog",
   "wip_item": null,
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -1138,7 +1138,7 @@ window.REQUIREMENTS = [
   "spec_doc": "docs/sandbox/pcf7.html",
   "spec_section": "Sandbox 7.0",
   "wip_item": null,
-  "next_action": "",
+  "next_action": "Tim and GiGi accept the built work (the decision here).",
   "decision": {
    "id": "accept",
    "type": "accept",
@@ -1335,7 +1335,7 @@ window.REQUIREMENTS = [
    "summary": "The register works as it does now: progress and decisions tracked separately, and this Needs a decision queue as the place decisions are made."
   },
   "decisions": [],
-  "log": "Sept 25, 2026: Owner, Priority, Acceptance criteria and the Pending Review status were added first; Next Action, the status definitions and the proposed status rules followed the same day. The register also now accepts requirements from either of us, pilots, practitioners and eventually clients, as GiGi suggested. The Owner, Priority, Acceptance and Next Action values are a first pass by Claude. Pending Review until Tim and GiGi confirm the definitions and rules.\n\nSept 28, 2026 (Tim): the register was hard to navigate and to tell what needs approval. Reworked: progress (Open, Designed, In progress, Built, Done, Closed) is tracked separately from decisions; each requirement carries at most one pending decision, which Tim and GiGi settle with Approve / Not approve / Defer buttons saved through the Worker; the page opens on Needs a decision; rows are compact, with history folded. Requirements marked Implemented before this were never formally accepted by both, so they are now Built with an Accept decision. Data moved to requirements-data.js so the design specs show the same decisions. The design-spec template was revised: a one-screen decision brief, the current design only, detail folded, history kept here.",
+  "log": "Sept 25, 2026: Owner, Priority, Acceptance criteria and the Pending Review status were added first; Next Action, the status definitions and the proposed status rules followed the same day. The register also now accepts requirements from either of us, pilots, practitioners and eventually clients, as GiGi suggested. The Owner, Priority, Acceptance and Next Action values are a first pass by Claude. Pending Review until Tim and GiGi confirm the definitions and rules.\n\nSept 28, 2026 (Tim): the register was hard to navigate and to tell what needs approval. Reworked: progress (Open, Designed, In progress, Built, Done, Closed) is tracked separately from decisions; each requirement carries at most one pending decision, which Tim and GiGi settle with Approve / Not approve / Defer buttons saved through the Worker; the page opens on Needs a decision; rows are compact, with history folded. Requirements marked Implemented before this were never formally accepted by both, so they are now Built with an Accept decision. Data moved to requirements-data.js so the design specs show the same decisions. The design-spec template was revised: a one-screen decision brief, the current design only, detail folded, history kept here.\n\nOct 9, 2026 (Tim): checked against GiGi's Sept 21 review. The last open points are now written into the register's rules: who can change a requirement (either of us asks, Claude makes and logs the change), where requirements can come from (Tim, GiGi, pilots, practitioners, clients), and how a result enters the framework (the Content Promotion Policy, GR-045). The 16 Built requirements now show their next action, acceptance by both of us. Her worked example (owner, priority, next action, acceptance criteria per requirement) matches the fields every requirement already shows.",
   "legacy_status": "Pending Review"
  },
  {
