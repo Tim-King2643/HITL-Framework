@@ -71,6 +71,7 @@ tr.detail-row.open .detail-box { display: block; }
 
 footer { max-width: 1100px; margin: 0 auto; padding: 20px 24px 40px; text-align: center; font-size: 12px; color: var(--lgray); line-height: 1.7; }
 footer strong { color: var(--navy); }
+.cl-type{font-size:11px;color:var(--lgray,#888);margin-top:3px;}
 </style>
 </head>
 <body>
@@ -180,6 +181,14 @@ function populateKinds() {
   });
 }
 
+// Why the value changed (GiGi, Oct 9, 2026): a correction, a governed decision, or wording only.
+const CHANGE_TYPE = {
+  correction: "Correction: evidence showed the original value was wrong.",
+  decision: "Decision: a governed decision changed it on purpose.",
+  wording: "Wording only: the text changed, not the value."
+};
+const CHANGE_TYPE_SHORT = { correction: "Correction", decision: "Decision", wording: "Wording only" };
+
 function detailField(label, value) {
   if (!value) return "";
   return `<div class="field"><div class="flabel">${esc(label)}</div><div class="fval">${value}</div></div>`;
@@ -197,7 +206,7 @@ function renderTable() {
     if (q) {
       const t = r.target || {};
       const hay = [
-        r.id, r.summary, r.reason, r.source, r.verified, r.kind, r.requestedBy,
+        r.id, r.summary, r.reason, r.source, r.verified, r.kind, r.requestedBy, r.changeType,
         r.from, r.to, t.domain, t.activity, t.role, ...r.files
       ].filter(Boolean).join(" ").toLowerCase();
       if (!hay.includes(q)) return;
@@ -209,18 +218,19 @@ function renderTable() {
     rowTr.innerHTML = `
       <td class="cl-date">${esc(r.date)}</td>
       <td class="cl-change">${esc(r.summary)}</td>
-      <td><span class="cl-kind">${esc(kindLabel(r.kind))}</span></td>
+      <td><span class="cl-kind">${esc(kindLabel(r.kind))}</span>${r.changeType ? `<div class="cl-type">${esc(CHANGE_TYPE_SHORT[r.changeType] || r.changeType)}</div>` : ""}</td>
       <td class="cl-files">${r.files.map(esc).join("<br>")}</td>
     `;
     const detailTr = document.createElement("tr");
     detailTr.className = "detail-row";
     detailTr.innerHTML = `<td colspan="4"><div class="detail-box">
       ${detailField("Target", targetLine(r.target))}
-      ${detailField("Requested by", r.requestedBy ? esc(r.requestedBy) : "")}
+      ${detailField("Type of change", CHANGE_TYPE[r.changeType] || "")}
+      ${detailField("Decision owner", r.requestedBy ? esc(r.requestedBy) : "")}
       ${detailField("Changed from", r.from ? esc(r.from) : "")}
       ${detailField("Changed to", r.to ? esc(r.to) : "")}
-      ${detailField("Source", r.source)}
       ${detailField("Reason", r.reason)}
+      ${detailField("Evidence / source", r.source)}
       ${detailField("Verified", r.verified)}
     </div></td>`;
     rowTr.addEventListener("click", () => {

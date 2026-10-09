@@ -17,7 +17,19 @@
 // not yet built — flagged separately, since it would need a real "why"
 // for each change, which isn't something a diff alone can produce.
 //
-// Fields: id, date, requestedBy ("Tim" | "GiGi"), kind (a short slug for
+// changeType (GiGi, Oct 9, 2026) says why the value changed:
+//   "correction" - evidence showed the original value was wrong;
+//   "decision"   - a governed decision changed it on purpose (a model change,
+//                  a resolved open question, a method set by Tim and GiGi);
+//   "wording"    - the text changed, the value did not.
+// An organization's ceiling override is not logged here: overrides belong to
+// that organization and carry their own record and review history (GR-054).
+//
+// Every entry keeps the old value (from), the new value (to), the reason, the
+// evidence or source, the date and the decision owner (requestedBy), and CI
+// fails if any of them is missing (scripts/check-changelog-audit.mjs).
+//
+// Fields: id, date, requestedBy (the decision owner: "Tim" | "GiGi" | "Tim + GiGi"), changeType, kind (a short slug for
 // the modeled-value type — "reportsTo", "wr-ceiling", "wr-current",
 // "wr-consequence", "wr-model", "crud", etc.), target (whichever keys locate the
 // value: domain + activity for WR fields, domain + role for org-taxonomy
@@ -30,6 +42,7 @@ const CHANGE_LOG = [
     "date": "2026-09-23",
     "requestedBy": "GiGi",
     "kind": "reportsTo",
+    "changeType": "correction",
     "target": { "domain": "7.0", "role": "HRBP Manager" },
     "summary": "HRBP Manager reportsTo corrected from VP People & Culture to Director of HR Ops.",
     "from": "VP People & Culture",
@@ -44,6 +57,7 @@ const CHANGE_LOG = [
     "date": "2026-09-20",
     "requestedBy": "Tim",
     "kind": "wr-ceiling",
+    "changeType": "decision",
     "target": { "domain": "7.0", "activity": "7.2.1.1" },
     "summary": "7.2.1.1's Progression Ceiling resolved from Open/undecided to Judgment, permanently.",
     "from": "Open / undecided",
@@ -58,6 +72,7 @@ const CHANGE_LOG = [
     "date": "2026-09-25",
     "requestedBy": "Tim",
     "kind": "wr-model",
+    "changeType": "decision",
     "target": {
       "domain": "7.0"
     },
@@ -77,6 +92,7 @@ const CHANGE_LOG = [
     "date": "2026-09-25",
     "requestedBy": "Tim",
     "kind": "wr-ceiling",
+    "changeType": "decision",
     "target": {
       "domain": "7.0",
       "activity": "7.2.1.3"
@@ -96,6 +112,7 @@ const CHANGE_LOG = [
     "date": "2026-09-25",
     "requestedBy": "Tim",
     "kind": "crud",
+    "changeType": "correction",
     "target": {
       "domain": "7.0"
     },
@@ -114,6 +131,7 @@ const CHANGE_LOG = [
     "date": "2026-09-26",
     "requestedBy": "Tim",
     "kind": "crud",
+    "changeType": "correction",
     "target": {
       "domain": "7.0",
       "activity": "7.2.1.2"
@@ -133,6 +151,7 @@ const CHANGE_LOG = [
     "date": "2026-09-26",
     "requestedBy": "Tim",
     "kind": "crud",
+    "changeType": "decision",
     "target": {
       "domain": "7.0",
       "role": "HRBP Manager"
@@ -153,6 +172,7 @@ const CHANGE_LOG = [
     "date": "2026-09-26",
     "requestedBy": "Tim",
     "kind": "crud",
+    "changeType": "decision",
     "target": {
       "domain": "7.0"
     },
@@ -171,6 +191,7 @@ const CHANGE_LOG = [
     "date": "2026-09-26",
     "requestedBy": "Tim",
     "kind": "wr-current",
+    "changeType": "decision",
     "target": {
       "domain": "7.0"
     },
@@ -189,6 +210,7 @@ const CHANGE_LOG = [
     "date": "2026-09-29",
     "requestedBy": "Tim",
     "kind": "wr-note",
+    "changeType": "wording",
     "target": { "domain": "7.0", "activity": "7.2.1.1" },
     "summary": "Wording only: 7.2.1.1's ceiling note now says \u201cWRPM section 3\u201d instead of \u201cWRPM \u00a73\u201d.",
     "from": "superseding WRPM \u00a73's earlier open/undecided flag",
@@ -203,6 +225,7 @@ const CHANGE_LOG = [
     "date": "2026-09-30",
     "requestedBy": "Tim",
     "kind": "wr-factor",
+    "changeType": "correction",
     "target": {
       "domain": "7.0",
       "activity": "7.4.4"
@@ -223,6 +246,7 @@ const CHANGE_LOG = [
     "date": "2026-09-30",
     "requestedBy": "Tim",
     "kind": "wr-note",
+    "changeType": "wording",
     "target": {
       "domain": "7.0",
       "activity": "7.1.2.1, 7.1.2.5, 7.1.2.11, 7.2.3.2, 7.4.5, 7.5.3.1"
@@ -242,6 +266,7 @@ const CHANGE_LOG = [
     "date": "2026-09-30",
     "requestedBy": "Tim",
     "kind": "wr-note",
+    "changeType": "wording",
     "target": {
       "domain": "7.0",
       "activity": "7.2.1.1, 7.2.1.3, 7.2.3.3, 7.2.5.1, 7.3.2.3, 7.3.4.5, 7.3.4.6, 7.4.1, 7.4.2"
@@ -261,6 +286,7 @@ const CHANGE_LOG = [
     "date": "2026-10-02",
     "requestedBy": "Tim",
     "kind": "crud",
+    "changeType": "decision",
     "target": {
       "domain": "7.0",
       "role": "All Accountable roles other than the HRBP Manager"
@@ -280,6 +306,7 @@ const CHANGE_LOG = [
     "date": "2026-10-06",
     "requestedBy": "Tim",
     "kind": "wr-order",
+    "changeType": "correction",
     "target": {
       "domain": "7.0"
     },
@@ -300,6 +327,7 @@ const CHANGE_LOG = [
     "date": "2026-10-06",
     "requestedBy": "Tim",
     "kind": "wr-ceiling",
+    "changeType": "correction",
     "target": {
       "domain": "7.0",
       "activity": "7.1.2.5, 7.1.2.10, 7.1.2.12, 7.1.2.16, 7.3.2.3, 7.5.1.2, 7.5.1.8, 7.5.1.9, 7.5.3.1, 7.7.2"

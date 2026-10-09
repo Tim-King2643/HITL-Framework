@@ -111,7 +111,35 @@ function changelogGainedEntry(base, head) {
   return diff.split("\n").some((line) => line.startsWith("+") && !line.startsWith("+++") && /"id"\s*:\s*"CL-/.test(line));
 }
 
+// Every entry must keep the old value, the new value, the reason, the
+// evidence/source, the date, the decision owner and whether it was a
+// correction, a decision or wording only (GiGi, Oct 9, 2026).
+import { readFileSync } from "node:fs";
+const REQUIRED = ["id", "date", "requestedBy", "changeType", "summary", "from", "to", "reason", "source"];
+const CHANGE_TYPES = new Set(["correction", "decision", "wording"]);
+function checkEntries() {
+  let log;
+  try {
+    log = new Function(readFileSync(CHANGELOG_FILE, "utf8") + "; return CHANGE_LOG;")();
+  } catch (e) {
+    console.error(`changelog-audit: could not read ${CHANGELOG_FILE} (${e.message})`);
+    return false;
+  }
+  const problems = [];
+  log.forEach((e) => {
+    REQUIRED.forEach((k) => { if (e[k] == null || String(e[k]).trim() === "") problems.push(`${e.id || "an entry"} has no ${k}`); });
+    if (e.changeType && !CHANGE_TYPES.has(e.changeType)) problems.push(`${e.id} has changeType "${e.changeType}" (use correction, decision or wording)`);
+  });
+  if (problems.length) {
+    console.error("changelog-audit: FAILED — incomplete change-log entries:");
+    problems.forEach((p) => console.error("  - " + p));
+    return false;
+  }
+  return true;
+}
+
 function main() {
+  if (!checkEntries()) { process.exitCode = 1; return; }
   const [argBase, argHead] = process.argv.slice(2);
   const base = argBase || "HEAD~1";
   const head = argHead || "HEAD";
