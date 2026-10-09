@@ -1044,7 +1044,7 @@ window.REQUIREMENTS = [
  },
  {
   "id": "GR-041",
-  "title": "Freeze a ceiling below Automation",
+  "title": "Hold a ceiling below Automation",
   "progress": "Built",
   "category": "Readiness Gate",
   "priority": "High",
@@ -1052,8 +1052,8 @@ window.REQUIREMENTS = [
   "raised_by": "GiGi Garcia",
   "source_doc": "HITL Working Thoughts & Next Steps (Sept 2026)",
   "source_section": "Where Tim Can Keep Driving the Architecture",
-  "distilled": "Give the framework a real mechanism for freezing an activity's Progression Ceiling below Automation for governance/legal/accountability reasons, independent of technical capability.",
-  "acceptance": "Any activity's Progression Ceiling can be frozen below Automation, with its reason recorded from the defined factor list.",
+  "distilled": "Give the framework a real mechanism for holding an activity's Progression Ceiling below Automation for governance, legal or accountability reasons, independent of technical capability. Held means fixed against ordinary progression, not immutable: a reference ceiling moves only through a logged change (GR-043), and for one organization only through an approved ceiling override with evidence (GR-054). Readiness decides whether an organization can move toward the ceiling, never past it.",
+  "acceptance": "Any activity's Progression Ceiling can be held below Automation, with its reason recorded from the defined factor list; it moves only through a logged reference change or an approved organization override, and readiness never moves an activity past it.",
   "raw": "Building governance logic that can cap automation even when the technology could go further.",
   "converged": null,
   "spec_doc": "Working_Relationship_Progression_Methodology.docx; Working-Relationship Category Definitions — Locked (Claude Docs artifact)",
@@ -1064,10 +1064,10 @@ window.REQUIREMENTS = [
    "id": "accept",
    "type": "accept",
    "question": "Accept as done: it meets its acceptance criteria.",
-   "summary": "Any activity's ceiling can sit below Automation, with its reason tagged from the ceiling factors and a note; real examples are locked (7.1.1.2, 7.2.1.1, 7.2.1.3, 7.4.4)."
+   "summary": "Any activity's ceiling can sit below Automation, with its reason tagged from the ceiling factors and a note; real examples are locked (7.1.1.2, 7.2.1.1, 7.2.1.3, 7.4.4). The ceiling moves only through a logged reference change (GR-043) or, for one organization, an approved override with evidence (GR-054); readiness never moves an activity past it."
   },
   "decisions": [],
-  "log": "The Current State and Progression Ceiling model already caps progression independent of technical readiness, and the locked doc names 6 explicit freeze reasons (legal/regulatory, relational/emotional, executive/structural, technical infeasibility, explicit governance choice, open/undecided). The sandbox's CEILING_FACTORS checklist operationalizes 5 of the 6 as taggable checkboxes per activity (technical, governance, legal, relational, floor, accountability, top — relational added Sept 20, 2026 to close the last gap), each with a supporting note. Real examples locked: 7.4.4 (already at ceiling), 7.1.1.2 (executive/structural), 7.2.1.3 (explicit governance policy), 7.2.1.1 (accountability, locked Sept 20, 2026). Sept 25, 2026: 7.2.1.3's ceiling lowered from Agent-delegation to Oversight on its High Consequence of Error, a governance choice to keep human sign-off on the budget-commitment gate (CL-004).",
+  "log": "The Current State and Progression Ceiling model already caps progression independent of technical readiness, and the locked doc names 6 explicit freeze reasons (legal/regulatory, relational/emotional, executive/structural, technical infeasibility, explicit governance choice, open/undecided). The sandbox's CEILING_FACTORS checklist operationalizes 5 of the 6 as taggable checkboxes per activity (technical, governance, legal, relational, floor, accountability, top — relational added Sept 20, 2026 to close the last gap), each with a supporting note. Real examples locked: 7.4.4 (already at ceiling), 7.1.1.2 (executive/structural), 7.2.1.3 (explicit governance policy), 7.2.1.1 (accountability, locked Sept 20, 2026). Sept 25, 2026: 7.2.1.3's ceiling lowered from Agent-delegation to Oversight on its High Consequence of Error, a governance choice to keep human sign-off on the budget-commitment gate (CL-004).\n\nOct 9, 2026 (GiGi, with her approval): \u201cfreeze\u201d read as permanent. She reads it as frozen against ordinary progression, moving only when the underlying factor changes and through a documented, governed override with evidence; and readiness can decide whether an organization is ready to move toward the ceiling, never move an activity beyond it. Both are how it works, so the wording now says so: renamed \u201cHold a ceiling below Automation\u201d, with the two ways a ceiling can move (a logged reference change, GR-043; an organization override, GR-054) and the readiness rule written into the requirement and its acceptance criteria. The locked category definitions still title section 4 \u201cWhen the Progression Ceiling Freezes Below Automation\u201d; that heading changes to \u201cHolds\u201d in the GR-048 documentation rewrite.",
   "legacy_status": "Implemented"
  },
  {
@@ -1471,10 +1471,10 @@ window.REQUIREMENTS = [
    "type": "question",
    "question": "Approve the work-side assessment output set and the hand-off to the human-impact side.",
    "spec": "assessment_output_spec.html",
-   "summary": "The executive summary is built next, then the role hand-off and the dashboard; GiGi confirms what the hand-off must carry, and the infographic waits until both sides have output. The work side stops at Role Impact; Human Impact onward is GiGi's."
+   "summary": "The executive summary is built next, then the role hand-off and the dashboard; the infographic waits until both sides have output. The hand-off keeps what has moved (Assessed Current State) apart from what could move (Modeled, up to the ceiling), and carries for each role the human judgment and review that remains with its Working Relationship category, the role and accountability relationships, Consequence of Error, ceiling factors, overrides and exceptions, the manager and escalation relationship, provenance and coverage. The work side stops at Role Impact; Human Impact onward is GiGi's."
   },
   "decisions": [],
-  "log": "Sept 29, 2026 (Tim, after completing the 7.2.1 pressure test): asked what the organizational assessment output should include — report, graphs, readiness, dashboard, infographic. Scoped the same day: the work side produces the assessment output for the work, built to enable and feed GiGi's human-impact side; readiness is hers. Spec drafted (assessment_output_spec.html), using GiGi's Human Impact Pathway as the seam (the work side covers Work Change and Role Impact) and her executive view's Story 1 / Story 2 split. The Exceptions Report, built the same day, is the first output (logged under GR-053).",
+  "log": "Sept 29, 2026 (Tim, after completing the 7.2.1 pressure test): asked what the organizational assessment output should include — report, graphs, readiness, dashboard, infographic. Scoped the same day: the work side produces the assessment output for the work, built to enable and feed GiGi's human-impact side; readiness is hers. Spec drafted (assessment_output_spec.html), using GiGi's Human Impact Pathway as the seam (the work side covers Work Change and Role Impact) and her executive view's Story 1 / Story 2 split. The Exceptions Report, built the same day, is the first output (logged under GR-053).\n\nOct 9, 2026 (GiGi, deferred for a hand-off revision): asked that the role hand-off separate work that has moved (assessed Current State) from work that could move (Progression Ceiling), so modeled potential is never read as an observed role change; rename \u201cJudgment that stays\u201d to human judgment/review that remains, carrying the Working Relationship category; and carry role/accountability relationships, Consequence of Error, ceiling factors, overrides/exceptions, provenance, coverage and the validated manager/escalation relationship. All made in section 4 of the spec: two labeled layers (Has moved, Assessed; Could move, Modeled), the renamed item shown for Current State and at the ceiling, and new items for each field she named, with first-pass reporting lines marked as such. Back to GiGi to confirm.",
   "legacy_status": null
  },
  {

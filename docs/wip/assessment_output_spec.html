@@ -173,17 +173,23 @@ details.fold[open] { padding-bottom: 6px; }
   <p>All six read the same assessment and override records, so no two can disagree.</p>
 
   <h2>4. The role hand-off</h2>
-  <p>For each role, the work-side facts the human-impact side starts from. Every item is computed from assessment records and the reference; none is a judgment about people.</p>
+  <p>For each role, the work-side facts the human-impact side starts from. Every item is computed from assessment records and the reference; none is a judgment about people. The hand-off keeps two layers apart, so modeled potential is never read as an observed role change (GiGi, Oct 9, 2026):</p>
+  <ul class="plain">
+    <li><b>Has moved (Assessed).</b> What the organization&rsquo;s assessed Current State shows today. Only assessed activities count here; an activity not yet assessed is reported as not assessed, never as unchanged.</li>
+    <li><b>Could move (Modeled).</b> How far each activity may go, up to its Progression Ceiling or an approved override. This is potential, labeled Modeled everywhere it appears.</li>
+  </ul>
   <table>
     <tr><th style="width:30%">Item</th><th>What it carries</th></tr>
-    <tr><td class="k">Work that changes</td><td>The activities where the role is Accountable or Responsible, each with Current State, Progression Ceiling (or approved override), and how many steps apart they are.</td></tr>
-    <tr><td class="k">Work leaving the role&rsquo;s hands</td><td>Activities whose Current State or ceiling is Agent-delegation or Automation, where the role&rsquo;s hands-on work thins to exceptions or none &mdash; the existing &ldquo;redefinition recommended&rdquo; flag.</td></tr>
-    <tr><td class="k">Judgment that stays</td><td>Activities held at Judgment or Oversight, with their Consequence of Error. As other work leaves, this is what remains concentrated in the role &mdash; the work-side evidence for GiGi&rsquo;s Judgment Density.</td></tr>
-    <tr><td class="k">Accountability held</td><td>Activities where the role stays Accountable while the work moves to AI &mdash; the work-side evidence for Accountability Concentration.</td></tr>
-    <tr><td class="k">Exceptions on the role</td><td>Any proposal change, override or past-the-ceiling finding on the role&rsquo;s activities.</td></tr>
-    <tr><td class="k">Basis</td><td>Coverage (how many of the role&rsquo;s activities are assessed), evidence type and confidence, Assessed or Modeled.</td></tr>
+    <tr><td class="k">Work that has moved</td><td>The role&rsquo;s assessed activities whose Current State is above Human-only, each with its Working Relationship category, evidence type and confidence. Assessed only.</td></tr>
+    <tr><td class="k">Work that could move</td><td>Each activity&rsquo;s Progression Ceiling (or approved override) and how many steps it sits from the Current State, with the activities where the role&rsquo;s hands-on work would thin to exceptions or none (Agent-delegation, Automation). Modeled only.</td></tr>
+    <tr><td class="k">Human judgment and review that remains</td><td>Activities where a person still does, decides or reviews every instance (Human-only, Judgment, Augmentation, Oversight), each with its Working Relationship category and Consequence of Error, shown for Current State and, separately, at the ceiling. With the work elements (GR-058), it also names which parts stay with the person. The work-side evidence for Judgment Density.</td></tr>
+    <tr><td class="k">Role and accountability relationships</td><td>For each activity, whether the role is Accountable or Responsible, and the activities where it stays Accountable while the work moves to AI: the evidence for Accountability Concentration.</td></tr>
+    <tr><td class="k">Consequence of Error and ceiling factors</td><td>Each activity&rsquo;s Consequence of Error and the ceiling factors that hold its ceiling where it is.</td></tr>
+    <tr><td class="k">Overrides and exceptions</td><td>Ceiling overrides, proposal changes, past-the-ceiling findings and elements past their own ceiling on the role&rsquo;s activities.</td></tr>
+    <tr><td class="k">Manager and escalation</td><td>The role&rsquo;s reporting line and where its High and Critical exceptions escalate (the Accountable role, GR-029), each marked validated or first-pass where the reporting line has not yet been confirmed.</td></tr>
+    <tr><td class="k">Basis</td><td>Provenance (Assessed or Modeled) on every figure, coverage (how many of the role&rsquo;s activities are assessed), evidence type and confidence, and the reference version the hand-off was built from.</td></tr>
   </table>
-  <p>Delivered two ways: a role section in the executive summary and dashboard, and a downloadable data file (one row per role and activity) the human-impact side can use directly.</p>
+  <p>Delivered two ways: a role section in the executive summary and dashboard, and a downloadable data file (one row per role and activity, with the two layers in separate columns) the human-impact side can use directly.</p>
 
   <h2>5. Rules for every output</h2>
   <ul class="plain">
