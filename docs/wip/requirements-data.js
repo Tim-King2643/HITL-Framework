@@ -1562,5 +1562,33 @@ window.REQUIREMENTS = [
   "decisions": [],
   "log": "Oct 8, 2026 (Tim): the panel layout of the stress-test sketches (explanation and toggles on the left, findings at the top) suggested a way to consolidate the six view buttons. Sketched as four views, each led by its question, with GR-058 taken as approved: Work (the ramp on one row per activity, with the stage, gate and lock boxes opening on click, and an organization's element assessment on its Current State step), People (RACI, and what is left for a person as the work moves up), Data (by work product or by activity, with verification points recomputed: 29 of 49 work products AI-touched at the ceiling, 80 points, 22 unchecked hand-offs on 9 activities; today's ceilings reproduce the Oct 7 figures exactly) and Findings (the reference at full progression and the latest change; for an organization, the executive summary and exceptions report). Tim's direction during the sketch: the organization stays a dropdown, the activity name runs above its ramp, the stage option at the top reads 'Every activity at its Progression Ceiling'. Found while sketching: verification peaks at Augmentation (209 points with every activity there), and applying GR-058 will flag ABC Test Org's assessments of 7.2.1.1, 7.3.2.1 and 7.3.2.2 as 'reference changed since assessed'. Oct 10, 2026: the Consequence of Error rating opens a box with its reason, the six-factor checklist and who takes the exceptions. A check of the sketch against all six current views found eight things missing, now added: the Readiness Gate's role and organizational readiness checks (GR-012) in the gate box; % H on each process heading and role row, with the calculation (matches pcf7.html for all 37 processes with today's ceilings); Consulted and Informed, with the from-Accountable mark; span of control; each work product's system of record in the activity CRUD; the redefinition-recommended role impact at Agent-delegation and Automation; and the lock box's change-history link. The two deliberate removals are recorded in the acceptance line.",
   "legacy_status": null
+ },
+ {
+  "id": "GR-060",
+  "title": "Move RACI to the activity level",
+  "progress": "Designed",
+  "category": "Data Model",
+  "priority": "High",
+  "owner": "Tim + GiGi",
+  "raised_by": "Tim King",
+  "source_doc": "Tim King — framework direction (Oct 2026)",
+  "source_section": "Working session, Oct 10, 2026",
+  "distilled": "Set Responsible, Accountable, Consulted and Informed for each of the 118 PCF 7.0 activities instead of inheriting them from the process, as CRUD (CL-014) and the work elements (GR-058) already are. One Accountable role per activity; Responsible always named; Executive Accountable where an activity sets direction for the function or a major part of it; Consulted and Informed only where the activity gives a reason. Process RACI is then derived from the activities.",
+  "acceptance": "Tim and GiGi have approved the draft; ACTIVITY_RACI holds all 118 activities in pcf7.html, each with exactly one Accountable role and at least one Responsible; process RACI is derived, not stored; role rollups come from the activities; a change-log entry records it and the CI audit tracks ACTIVITY_RACI.",
+  "raw": "“I think the raci is the last major component that has not been moved to activity level. This is another example of lack of precision. I think it should move to activity level as the other components. Better precision and consistency.” (Tim, Oct 10, 2026)",
+  "converged": "GR-059, GR-050, GR-058, GR-046",
+  "spec_doc": "docs/wip/activity_raci_draft.html",
+  "spec_section": "Section 1 for the rules, section 3 for the draft, section 4 for what applying it changes",
+  "wip_item": null,
+  "next_action": "Tim and GiGi decide the draft.",
+  "decision": {
+   "id": "design",
+   "type": "design",
+   "question": "Apply the activity-level RACI as drafted.",
+   "summary": "28 of 118 activities change Accountable role. SVP Talent Management, VP People & Culture and Director of TA each gain Accountable activities (4, 4 and 7); the three largest holders' share of accountability falls from 53% to 44%. The rule reserving Executive Accountable for 7.1.1 is widened to direction-setting activities. Applying it stores ACTIVITY_RACI, derives process RACI and role rollups from it, and flags three ABC Test Org assessments to re-confirm their role. Draft: docs/wip/activity_raci_draft.html."
+  },
+  "decisions": [],
+  "log": "Oct 10, 2026 (Tim): the GR-059 check showed SVP Talent Management with no letter on any activity, and Recruiter Accountable for 13 activities its director was only Consulted on. Tim directed that RACI move to the activity level like CRUD. Drafted from each activity's own work, starting from its process's RACI: 94 of 118 activities depart in at least one letter, 28 change Accountable role, 23 change only Consulted or Informed, and 31 lose the from-Accountable fallback. Single-activity processes keep their process RACI.",
+  "legacy_status": null
  }
 ];
