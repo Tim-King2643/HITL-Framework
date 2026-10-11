@@ -264,11 +264,11 @@ const EL=['Research','Evaluate','Draft','Verify','Decide','Produce / Execute','C
 const LEAD=['Human','Human-led','AI-led','AI'], lr=x=>LEAD.indexOf(x);
 const DOT={"Human-only":"#0D2D4F","Judgment":"#204474","Augmentation":"#2457A3","Oversight":"#3D6FA8","Agent-delegation":"#5A8DC4","Automation":"#7DAEE0"};
 const CF=[['human','Human impact'],['legal','Legal / regulatory exposure'],['ops','Operational / financial impact'],['trust','Trust / reputation'],['reach','Reach'],['reversibility','Reversibility']];
-function coeBox(a,ppl){
+function coeBox(a,ppl,close){
   const hc=HC[a.cons], worker=a.R&&a.R.length?a.R.join(', '):a.Aroles.join(', ');
   if(ppl) return coeHead(a,ppl.close)+'<div class="ev">'+coeCount(a)+' '+pplRoute(a,ppl.s)+'</div></div>';
   const on=CF.filter(([k])=>(a.cf||[]).includes(k)).length;
-  return coeHead(a,X(a))+'<div class="ev">'+coeCount(a)+' '+(hc
+  return coeHead(a,close||X(a))+'<div class="ev">'+coeCount(a)+' '+(hc
      ?'High or Critical: exceptions go to the Accountable role ('+esc(a.Aroles.join(', '))+').'+hoNote(a)
      :'Low or Moderate: exceptions go to the role doing the work ('+esc(worker)+').')+'</div></div>';
 }
@@ -509,8 +509,10 @@ function dataMain(){
       const o=opened['w'+x.w.id], rc={};x.pts.forEach(p=>ACT[p.c].Aroles.forEach(r=>rc[r]=(rc[r]||0)+1));
       const quiet=!(x.pts.length||x.ho.length);
       h+='<tr class="r" onclick="opened[\'w'+x.w.id+'\']=!opened[\'w'+x.w.id+'\'];render()"'+(quiet?' style="color:#8A94A6"':'')+'><td><span class="tg">'+(o?'−':'+')+'</span>'+esc(x.w.name)+'<div class="small" style="margin-left:12px">'+esc(x.w.system)+'</div></td><td style="text-align:left">'+(x.top?stageNow(ACT[x.top])+' <span class="small">'+x.top+'</span>':'—')+'</td><td class="hide-s" style="text-align:left">'+(Object.keys(rc).length?Object.entries(rc).sort((p,q)=>q[1]-p[1]).map(([r,n])=>esc(r)+(n>1?' ×'+n:'')).join(' · '):'<span class="z">—</span>')+'</td><td>'+(x.pts.length||'<span class="z">0</span>')+(x.ho.length?'<div class="small" style="color:#9A6A00">+'+x.ho.length+' unchecked hand-off'+(x.ho.length>1?'s':'')+'</div>':'')+'</td></tr>';
-      if(o){const li=(p)=>'<tr><td class="code">'+p.c+'</td><td>'+esc(ACT[p.c].name)+'</td><td>'+esc(ACT[p.c].Aroles.join(', '))+'</td><td>'+stageNow(ACT[p.c])+'</td><td class="'+(HC[ACT[p.c].cons]?'hc':'')+'">'+ACT[p.c].cons+'</td><td class="small">relies on '+p.p+' at '+stageNow(ACT[p.p])+'</td></tr>';
-        h+='<tr class="det"><td colspan="4">'+(x.pts.length?'<div class="small" style="margin:4px 0">Verification points</div><table class="al">'+x.pts.sort((p,q)=>nat(p.c,q.c)).map(li).join('')+'</table>':'')+(x.ho.length?'<div class="small" style="margin:8px 0 4px;color:#9A6A00">Unchecked hand-offs</div><table class="al">'+x.ho.sort((p,q)=>nat(p.c,q.c)).map(li).join('')+'</table>':'')+(quiet?'<div class="small">Produced in '+(x.prods.join(', ')||'no activity')+'. Nothing AI-touched reaches an activity that relies on it.</div>':'')+'</td></tr>';}
+      if(o){const li=(p,t)=>{const K='d'+x.w.id+t+p.c+p.p, on=opened[K], tg='opened[\''+K+'\']=!opened[\''+K+'\'];render()';
+          return '<tr><td class="code">'+p.c+'</td><td>'+esc(ACT[p.c].name)+'</td><td>'+esc(ACT[p.c].Aroles.join(', '))+'</td><td>'+stageNow(ACT[p.c])+'</td><td class="'+(HC[ACT[p.c].cons]?'hc':'')+'"><span class="acons'+(on?' sel':'')+'" onclick="event.stopPropagation();'+tg+'" title="Consequence of Error">'+ACT[p.c].cons+'</span></td><td class="small">relies on '+p.p+' at '+stageNow(ACT[p.p])+'</td></tr>'+
+            (on?'<tr><td colspan="6">'+coeBox(ACT[p.c],null,'<button class="ix" onclick="event.stopPropagation();'+tg+'">\u00d7</button>')+'</td></tr>':'')};
+        h+='<tr class="det"><td colspan="4">'+(x.pts.length?'<div class="small" style="margin:4px 0">Verification points</div><table class="al">'+x.pts.sort((p,q)=>nat(p.c,q.c)).map(p=>li(p,'v')).join('')+'</table>':'')+(x.ho.length?'<div class="small" style="margin:8px 0 4px;color:#9A6A00">Unchecked hand-offs</div><table class="al">'+x.ho.sort((p,q)=>nat(p.c,q.c)).map(p=>li(p,'h')).join('')+'</table>':'')+(quiet?'<div class="small">Produced in '+(x.prods.join(', ')||'no activity')+'. Nothing AI-touched reaches an activity that relies on it.</div>':'')+'</td></tr>';}
     });
     return h+'</tbody></table></div>';
   }
