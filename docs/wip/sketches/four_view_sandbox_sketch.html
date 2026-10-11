@@ -251,7 +251,8 @@ function peopleMain(){
     const x=R[n],b=B[n],c=(v,bv)=>'<td class="'+(v!==bv?'chg':'')+'">'+(v?v:'<span class="z">0</span>')+'</td>';
     const sh=pct(x.leftHC,x.left), bs=pct(b.leftHC,b.left);
     h+='<tr class="r" onclick="opened[\''+n+'\']=!opened[\''+n+'\'];render()"><td><span class="tg">'+(opened[n]?'−':'+')+'</span>'+esc(n)+'</td><td>'+x.acc+'</td>'+c(x.work,b.work)+c(x.approve,b.approve)+c(x.exc+x.escIn,b.exc+b.escIn)+'<td class="hide-s '+(x.answer!==b.answer?'chg':'')+'">'+(x.answer||'<span class="z">0</span>')+'</td><td class="'+(sh!==bs?'chg':'')+'">'+sh+(sh!==bs?' <span class="small">today '+bs+'</span>':'')+'</td></tr>';
-    if(opened[n]) h+='<tr class="det"><td colspan="7"><table class="al">'+x.acts.sort((p,q)=>p.code.localeCompare(q.code,undefined,{numeric:true})).map(a=>'<tr><td class="code">'+a.code+'</td><td>'+esc(a.name)+'</td><td>'+a.s+'</td><td>'+(a.k==='answer'?(a.s==='Automation'?'Accountable; no person in the instance':'Accountable; another role does the work'):LBL[a.k]+(a.acc?' (and Accountable)':''))+'</td><td class="'+(HC[a.cons]?'hc':'')+'">'+a.cons+'</td></tr>').join('')+'</table></td></tr>';
+    if(opened[n]) h+='<tr class="det"><td colspan="7"><table class="al">'+x.acts.sort((p,q)=>p.code.localeCompare(q.code,undefined,{numeric:true})).map(a=>'<tr><td class="code">'+a.code+'</td><td>'+esc(a.name)+'</td><td>'+a.s+'</td><td>'+(a.k==='answer'?(a.s==='Automation'?'Accountable; no person in the instance':'Accountable; another role does the work'):LBL[a.k]+(a.acc?' (and Accountable)':''))+'</td><td class="'+(HC[a.cons]?'hc':'')+'"><span class="acons'+(opened['c'+n+a.code]?' sel':'')+'" onclick="opened[\'c'+n+a.code+'\']=!opened[\'c'+n+a.code+'\'];render()" title="Consequence of Error">'+a.cons+'</span></td></tr>'+
+      (opened['c'+n+a.code]?'<tr><td colspan="5">'+coeBox(ACT[a.code],{s:a.s,close:'<button class="ix" onclick="opened[\'c'+n+a.code+'\']=false;render()">\u00d7</button>'})+'</td></tr>':'')).join('')+'</table></td></tr>';
   });
   return h+'</tbody></table></div>';
 }
@@ -261,14 +262,31 @@ const EL=['Research','Evaluate','Draft','Verify','Decide','Produce / Execute','C
 const LEAD=['Human','Human-led','AI-led','AI'], lr=x=>LEAD.indexOf(x);
 const DOT={"Human-only":"#0D2D4F","Judgment":"#204474","Augmentation":"#2457A3","Oversight":"#3D6FA8","Agent-delegation":"#5A8DC4","Automation":"#7DAEE0"};
 const CF=[['human','Human impact'],['legal','Legal / regulatory exposure'],['ops','Operational / financial impact'],['trust','Trust / reputation'],['reach','Reach'],['reversibility','Reversibility']];
-function coeBox(a){
+function coeBox(a,ppl){
   const hc=HC[a.cons], worker=a.R&&a.R.length?a.R.join(', '):a.Aroles.join(', ');
+  if(ppl) return coeHead(a,ppl.close)+'<div class="ev">'+coeCount(a)+' '+pplRoute(a,ppl.s)+'</div></div>';
   const on=CF.filter(([k])=>(a.cf||[]).includes(k)).length;
-  return '<div class="ibox">'+X(a)+'<h4>Consequence of Error — '+a.cons+'</h4><div class="isub">'+esc(a.cn||'')+'</div>'+
-   '<table class="it">'+CF.map(([k,l])=>{const y=(a.cf||[]).includes(k);return '<tr'+(y?'':' class="off"')+'><td class="ck">'+(y?'✓':'')+'</td><td>'+l+'</td></tr>'}).join('')+'</table>'+
-   '<div class="ev">'+on+' of 6 factors decided this rating. '+(hc
+  return coeHead(a,X(a))+'<div class="ev">'+coeCount(a)+' '+(hc
      ?'High or Critical: exceptions go to the Accountable role ('+esc(a.Aroles.join(', '))+').'+hoNote(a)
      :'Low or Moderate: exceptions go to the role doing the work ('+esc(worker)+').')+'</div></div>';
+}
+function coeCount(a){return CF.filter(([k])=>(a.cf||[]).includes(k)).length+' of 6 factors decided this rating.'}
+function coeHead(a,close){
+  return '<div class="ibox">'+close+'<h4>Consequence of Error — '+a.cons+'</h4><div class="isub">'+esc(a.cn||'')+'</div>'+
+   '<table class="it">'+CF.map(([k,l])=>{const y=(a.cf||[]).includes(k);return '<tr'+(y?'':' class="off"')+'><td class="ck">'+(y?'✓':'')+'</td><td>'+l+'</td></tr>'}).join('')+'</table>';
+}
+// People view: who takes this activity's exceptions follows the left panel's escalation setting and the selected stage.
+function pplRoute(a,st){
+  const w=workers(a), hc=HC[a.cons];
+  const to=!hc?w:S.esc==='A'?a.Aroles:S.esc==='mgr'?[...new Set(w.map(mgr))]:w;
+  const how=!hc?'Low or Moderate: exceptions go to the role doing the work':S.esc==='A'?'High or Critical: exceptions go to the Accountable role':S.esc==='mgr'?'High or Critical: exceptions go to the manager of the role doing the work':'High or Critical: exceptions stay with the role doing the work';
+  const c=derivedCeil(a);
+  const now=st==='Agent-delegation'?'At the selected stage it runs on flagged exceptions, so this applies now.'
+    :st==='Automation'?'At the selected stage it is at Automation: no person sees an instance, and the Accountable role ('+esc(a.Aroles.join(', '))+') stays answerable.'
+    :rank(c)<4?'Its ceiling ('+c+') keeps a person doing or approving every instance, so it never runs on flagged exceptions.'
+    :'At the selected stage it is at '+st+', so it has no flagged exceptions yet; this applies once it reaches Agent-delegation.';
+  const live=st==='Agent-delegation';
+  return (live?how:how.replace('exceptions go to','flagged exceptions would go to').replace('exceptions stay with','flagged exceptions would stay with'))+' ('+esc(to.join(', '))+'). '+now;
 }
 // At its ceiling, does this activity take AI-touched work with no person in between (GR-046)?
 function hoNote(a){
