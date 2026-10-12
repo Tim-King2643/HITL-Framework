@@ -125,8 +125,7 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
   <div class="bar" style="align-items:flex-start">
     <div><h1>PCF 7.0 &mdash; Human Capital Management</h1>
     <div class="meta">118 activities &middot; 37 processes &middot; 8 process groups &middot; 14 roles</div></div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px"><div class="org"><label for="orgsel">Organization</label><select id="orgsel" onchange="pickOrg(this.value)"></select></div>
-    <div class="org"><label for="racisel">RACI</label><select id="racisel" onchange="S.raci=this.value;applyRaci();render()"><option value="act">Activity level (GR-060 draft)</option><option value="proc">Process level (today)</option></select></div></div>
+    <div class="org"><label for="orgsel">Organization</label><select id="orgsel" onchange="pickOrg(this.value)"></select></div>
   </div>
   <div class="views" id="views"></div>
 </div></div>
@@ -160,6 +159,7 @@ const ST=['Human-only','Judgment','Augmentation','Oversight','Agent-delegation',
 const HC={High:1,Critical:1};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const pct=(n,d)=>d?Math.round(100*n/d)+'%':'—';
+// RACI is activity level (GR-060, Tim's decision Oct 10, 2026); S.raci stays 'act'. Process-level data is kept only to compare against.
 let S={raci:'act',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'load',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
 const VIEWS=[
  {id:'work',name:'Work',q:'Where does each activity sit, and what moves next?'},

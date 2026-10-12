@@ -1580,15 +1580,15 @@ window.REQUIREMENTS = [
   "spec_doc": "docs/wip/activity_raci_draft.html",
   "spec_section": "Section 1 for the rules, section 3 for the draft, section 4 for what applying it changes",
   "wip_item": null,
-  "next_action": "Tim and GiGi decide the draft.",
+  "next_action": "GiGi confirms the role assignments: the 28 activities whose Accountable role changes (the draft opens on them).",
   "decision": {
    "id": "design",
    "type": "design",
-   "question": "Apply the activity-level RACI as drafted.",
-   "summary": "28 of 118 activities change Accountable role. SVP Talent Management, VP People & Culture and Director of TA each gain Accountable activities (4, 4 and 7); the three largest holders' share of accountability falls from 53% to 44%. The rule reserving Executive Accountable for 7.1.1 is widened to direction-setting activities. Applying it stores ACTIVITY_RACI, derives process RACI and role rollups from it, and flags three ABC Test Org assessments to re-confirm their role. Draft: docs/wip/activity_raci_draft.html."
+   "question": "Confirm the role assignments in the activity-level RACI draft, starting with the 28 activities whose Accountable role changes.",
+   "summary": "Moving RACI to the activity level is Tim's decision (Oct 10, 2026): it is more accurate for accountability. What remains is GiGi's read on the roles. 28 of 118 activities change Accountable role. SVP Talent Management, VP People & Culture and Director of TA each gain Accountable activities (4, 4 and 7); the three largest holders' share of accountability falls from 53% to 44%. The rule reserving Executive Accountable for 7.1.1 is widened to direction-setting activities. Applying it stores ACTIVITY_RACI, derives process RACI and role rollups from it, and flags three ABC Test Org assessments to re-confirm their role. Draft: docs/wip/activity_raci_draft.html."
   },
   "decisions": [],
-  "log": "Oct 10, 2026 (Tim): the GR-059 check showed SVP Talent Management with no letter on any activity, and Recruiter Accountable for 13 activities its director was only Consulted on. Tim directed that RACI move to the activity level like CRUD. Drafted from each activity's own work, starting from its process's RACI: 94 of 118 activities depart in at least one letter, 28 change Accountable role, 23 change only Consulted or Informed, and 31 lose the from-Accountable fallback. Single-activity processes keep their process RACI. Same day: the four-view sketch (GR-059) reads the draft, with a RACI selector to switch back to process level. With activity RACI, all 14 roles hold an R or A, the three largest holders' share of accountability falls from 53% to 44%, and verification points spread across 10 roles instead of 8; process level reproduces the published sketch exactly.",
+  "log": "Oct 10, 2026 (Tim): the GR-059 check showed SVP Talent Management with no letter on any activity, and Recruiter Accountable for 13 activities its director was only Consulted on. Tim directed that RACI move to the activity level like CRUD. Drafted from each activity's own work, starting from its process's RACI: 94 of 118 activities depart in at least one letter, 28 change Accountable role, 23 change only Consulted or Informed, and 31 lose the from-Accountable fallback. Single-activity processes keep their process RACI. Same day: the four-view sketch (GR-059) reads the draft, with a RACI selector to switch back to process level. With activity RACI, all 14 roles hold an R or A, the three largest holders' share of accountability falls from 53% to 44%, and verification points spread across 10 roles instead of 8; process level reproduces the published sketch exactly. Oct 12, 2026 (Tim): moving to the activity level is not an open decision, since it is more accurate for accountability; the decision is narrowed to GiGi confirming the role assignments, and the sketch's RACI selector is removed, so it shows activity-level RACI only.",
   "legacy_status": null
  }
 ];
