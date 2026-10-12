@@ -9,6 +9,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .top{background:var(--navy-d);color:#fff;padding:14px 16px 0}
 .top-in{max-width:1240px;margin:0 auto}
 .top h1{font-family:Georgia,serif;font-size:19px;font-weight:700}
+.site{display:flex;gap:18px;align-items:baseline;flex-wrap:wrap;font-size:12px;padding-bottom:10px;margin-bottom:12px;border-bottom:1px solid rgba(159,194,238,.25)}
+.site .fw{color:#9FC2EE;margin-right:auto;letter-spacing:.02em}
+.site a{color:#CFE0F5;text-decoration:none;font-weight:600;padding-bottom:2px;border-bottom:2px solid transparent}
+.site a:hover{color:#fff;border-bottom-color:#7B9FD1}
+.site a.on{color:#fff;border-bottom-color:#7B9FD1;cursor:default}
+.pl{font-size:12.5px;line-height:1.7;margin-top:14px}.pl a{color:var(--navy);font-weight:600;text-decoration:none}.pl a:hover{text-decoration:underline}
 .top .meta{font-size:12px;color:#9FC2EE;margin:3px 0 10px}
 .bar{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
 .views{display:flex;gap:2px;flex-wrap:wrap}
@@ -102,8 +108,9 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 @media(max-width:640px){.it td.obj{display:none}.it td.el,.it td.stt{width:auto;white-space:normal}.step{min-width:78px}.lbl{font-size:11px}}
 @media(max-width:640px){.side,.main{flex:1 1 100%;min-width:0}.hide-s{display:none}.t th,.t td{padding:7px 4px}.views button{padding:8px 11px;font-size:12.5px}.views button small{display:none}}
 </style></head><body>
-<div class="sk"><b>SKETCH</b> &middot; Four views instead of six &middot; all four views working &middot; reference data &middot; not in the sandbox &middot; design for <a href="../requirements_register.html#GR-059" style="color:#7A5A1E;font-weight:600">GR-059</a> &middot; RACI from the <a href="../activity_raci_draft.html" style="color:#7A5A1E;font-weight:600">GR-060 draft</a></div>
+<div class="sk"><b>SKETCH</b> &middot; Four views instead of six &middot; all four views working &middot; reference data &middot; not in the sandbox &middot; design for <a href="../requirements_register.html#GR-059" style="color:#7A5A1E;font-weight:600">GR-059</a> &middot; RACI from the <a href="../activity_raci_draft.html" style="color:#7A5A1E;font-weight:600">GR-060 draft</a> &middot; <a href="../index.html" style="color:#7A5A1E;font-weight:600">Back to WIP hub</a></div>
 <div class="top"><div class="top-in">
+  <nav class="site"><span class="fw">Human-AI Partnership Framework</span><a href="../../index.html">Documentation</a><a class="on">Dashboard</a><a href="../index.html">Work in Progress</a></nav>
   <div class="bar" style="align-items:flex-start">
     <div><h1>PCF 7.0 &mdash; Human Capital Management</h1>
     <div class="meta">118 activities &middot; 37 processes &middot; 8 process groups &middot; 14 roles</div></div>
@@ -484,6 +491,7 @@ function dataSide(){
    '<h5>Show</h5>'+btns([['wp','By work product: who has to check it'],['act','By activity: what it creates, reads, updates and deletes']],'dmode')+
    '<h5>Where the work is</h5>'+btns([['Human-only','Today: every activity at the Human-only baseline']].concat(ST.slice(1,5).map(s=>[s,'Up to '+s+', or each activity’s ceiling if lower'])).concat([['Automation','Every activity at its Progression Ceiling']]),'stage')+
    '<h5>Terms</h5><p><b>AI-touched:</b> the most automated activity that produces it is at Augmentation or further.<br><b>Verification point:</b> an activity at Judgment, Augmentation or Oversight relies on an AI-touched work product, so a person checks it before acting.<br><b>Unchecked hand-off:</b> the activity relying on it is at Agent-delegation or Automation with a High or Critical Consequence of Error, so no person is in between.</p>'+
+   '<div class="pl"><a href="../work_product_catalog.html">Work-Product Catalog</a>: every work product\u2019s definition, system of record and the activities that use it.</div>'+
    '<div class="replaces">Replaces <b>Data View (CRUD)</b> and brings in the work-product verification analysis (GR-046).</div>';
 }
 const nat=(a,b)=>a.localeCompare(b,undefined,{numeric:true});
@@ -531,6 +539,7 @@ function findSide(){
   const org=isOrg();
   return '<div class="q">'+VIEWS[3].q+'</div><p>'+(org?'Where '+esc(ORGNAME())+' departs from the reference, and the few items that need a decision. Every number is read from its assessment and override records.':'The reference at a glance, drawn from the other three views, and the latest change made to it. Select an organization for its executive summary and exceptions.')+'</p>'+
    (org?'<h5>Show</h5>'+btns([['exec','Executive summary'],['exc','Exceptions report']],'fmode'):'')+
+   '<div class="pl"><a href="../requirements_register.html">Requirements Register</a>: what Tim and GiGi have decided and what still needs a decision.<br><a href="../production_changelog.html">Change log</a>: every change made to the reference, and why.</div>'+
    '<div class="replaces">Replaces <b>Exceptions Report</b>, and is where the executive summary (GR-056) and the reference stress tests live.</div>';
 }
 function refFindings(){
