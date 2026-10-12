@@ -57,6 +57,16 @@ table.t{width:100%;border-collapse:collapse}
 .chg{background:var(--hl)}
 .small{font-size:11px;color:var(--lgray)}
 .tg{display:inline-block;width:12px;color:var(--navy);font-weight:700}
+.t tr.tier.proc td{font-weight:400;color:var(--dark);font-size:13px;padding-top:9px;padding-bottom:9px}
+.prow{display:flex;align-items:flex-start;gap:16px}
+.prow .pn{flex:1;min-width:0}
+.ph{display:flex;align-items:baseline;gap:5px;white-space:nowrap;font-size:12.5px}
+.lab{font-family:Consolas,'DM Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--lgray)}
+.prov{font-size:10.5px;color:var(--lgray);min-width:64px}
+.hv{display:inline-block;min-width:46px;text-align:right;color:var(--navy);font-variant-numeric:tabular-nums}
+.ph .sep{color:var(--lgray);margin:0 6px}
+.pc{flex:0 0 210px;width:210px;display:flex;flex-direction:column;gap:1px;font-size:13px}
+.lab2{font-size:9.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--lgray);line-height:14px}
 .hfig{cursor:pointer;border-bottom:1px dotted currentColor}.hfig:hover,.hfig.sel{border-bottom-style:solid}
 tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .al{border-collapse:collapse;width:100%}
@@ -368,11 +378,12 @@ function hCalc(L,f){
 }
 // A % H figure that opens its own calculation; it doesn't expand or collapse the row it sits in.
 function hFig(txt,key){return '<span class="hfig'+(opened[key]?' sel':'')+'" title="Show the calculation" onclick="event.stopPropagation();opened[\''+key+'\']=!opened[\''+key+'\'];render()">'+txt+'</span>'}
-function hPair(L,c){return 'Current '+hFig(hRoll(L,'cur')+'% H','hc'+c)+' <span class="small">'+hLabel(L,'cur')+'</span> → Ceiling '+hFig(hRoll(L,'ceil')+'% H','hk'+c)+' <span class="small">Modeled</span>'}
+// Laid out like the current dashboard's process row: fixed columns, so every process lines up.
+function hPair(L,c){return '<span class="ph"><span class="lab">Current</span><span class="prov">'+hLabel(L,'cur')+'</span><span class="hv">'+hFig(hRoll(L,'cur')+'% H','hc'+c)+'</span><span class="sep">→</span><span class="lab">Ceiling</span><span class="prov">Modeled</span><span class="hv">'+hFig(hRoll(L,'ceil')+'% H','hk'+c)+'</span></span>'}
 function hCalcRow(lines,cols){return lines.length?'<tr class="det"><td'+(cols?' colspan="'+cols+'"':'')+'><div class="small" style="line-height:1.6">'+lines.join('<br>')+'<br>% H is modeled from each step\u2019s value, not measured.</div></td></tr>':''}
 function procRow(proc){
   const c=proc.split(' ')[0], L=DATA.acts.filter(a=>a.proc===proc), k='p'+c, o=opened[k], w=worstCons(L);
-  let h='<tr class="tier r" onclick="opened[\''+k+'\']=!opened[\''+k+'\'];render()"><td><div class="ahead" style="margin:0"><span><span class="tg">'+(o?'−':'+')+'</span>'+esc(proc)+'</span><span class="roll">'+hPair(L,c)+' · worst Consequence of Error <span style="color:'+CONSC[w]+'">'+w+'</span></span></div></td></tr>';
+  let h='<tr class="tier proc r" onclick="opened[\''+k+'\']=!opened[\''+k+'\'];render()"><td><div class="prow"><span class="pn"><span class="tg">'+(o?'−':'+')+'</span><span class="code">'+c+'</span> '+esc(proc.slice(c.length+1))+'</span>'+hPair(L,c)+'<span class="pc"><span class="lab2">Consequence of Error - Worst Case</span><span style="color:'+CONSC[w]+'">'+w+'</span></span></div></td></tr>';
   return h+hCalcRow([opened['hc'+c]?'Current: '+hCalc(L,'cur')+'.':'',opened['hk'+c]?'Ceiling: '+hCalc(L,'ceil')+'.':''].filter(Boolean));
 }
 function pastEls(a){const w=WORKED[a.code];if(!isOrg()||!w||!w.abc)return[];const cp=caps(a);return Object.keys(w.abc).filter(e=>cp[e]&&lr(w.abc[e][0])>lr(cp[e][0]))}
