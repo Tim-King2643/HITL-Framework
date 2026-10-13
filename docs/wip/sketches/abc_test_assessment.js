@@ -1,6 +1,7 @@
 /* ABC Test Org: generated test assessment (GR-052, built on GR-058 work elements).
-   Used by abc_test_assessment_sketch.html (to choose and download a set) and by
-   four_view_sandbox_sketch.html (to run the four views on all 118 activities).
+   Used by abc_test_assessment_sketch.html (to choose and download a set), by
+   four_view_sandbox_sketch.html (to run the four views on all 118 activities) and by
+   the element assessment panel sketch (to assess by hand; see working() below).
 
    The set is generated for coverage, not realism: it makes sure every case the
    assessment, override and exceptions flows have to handle occurs at least a few
@@ -145,5 +146,43 @@
     return rows;
   }
 
-  g.ABC_TEST = { generate: generate, classify: classify, derive: derive, PROFILES: PROFILES, EVIDENCE: EVIDENCE, CONF: CONF };
+  /* The working assessment: what ABC Test Org shows in the sketches.
+     It starts from one of two sources, then carries the assessments saved by hand in the
+     element assessment panel on top:
+       reference  the Reference Model's Human-only baseline: nothing assessed, no overrides
+       generated  the generated test assessment for the chosen profile and seed
+     Hand-saved assessments are kept per source (and per profile and seed), so switching the
+     source never loses them; switching back brings them back. They live in this browser only;
+     the real build saves through the Worker. */
+  var KEY_SET = 'hitl.abcTestSet', KEY_ED = 'hitl.abcEdits';
+  function store() { try { return g.localStorage; } catch (e) { return null; } }
+  function readJSON(k, d) { try { var s = store(); var v = s && JSON.parse(s.getItem(k) || 'null'); return v == null ? d : v; } catch (e) { return d; } }
+  function writeJSON(k, v) { try { var s = store(); if (!s) return false; s.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+  function settings() {
+    var o = { profile: 'mixed', seed: 1, source: 'generated' }, v = readJSON(KEY_SET, null);
+    if (v) { if (PROFILES[v.profile] && v.seed > 0) { o.profile = v.profile; o.seed = v.seed; } if (v.source === 'reference') o.source = 'reference'; }
+    return o;
+  }
+  function saveSettings(o) { var c = settings(); ['profile', 'seed', 'source'].forEach(function (k) { if (o[k] != null) c[k] = o[k]; }); writeJSON(KEY_SET, c); return c; }
+  function baseKey(o) { return o.source === 'reference' ? 'reference' : o.profile + '-' + o.seed; }
+  function edits(o) { var all = readJSON(KEY_ED, {}); return all[baseKey(o || settings())] || {}; }
+  // rec: an assessment record, or null to mark the activity not assessed.
+  function saveEdit(code, rec, o) { var all = readJSON(KEY_ED, {}), k = baseKey(o || settings()); all[k] = all[k] || {}; all[k][code] = rec; return writeJSON(KEY_ED, all); }
+  // Drop the hand-saved record for one activity, so it goes back to what the start has.
+  function dropEdit(code, o) { var all = readJSON(KEY_ED, {}), k = baseKey(o || settings()); if (all[k]) delete all[k][code]; return writeJSON(KEY_ED, all); }
+  function clearEdits(o) { var all = readJSON(KEY_ED, {}); delete all[baseKey(o || settings())]; return writeJSON(KEY_ED, all); }
+  function working(model, o) {
+    o = o || settings();
+    var P = PROFILES[o.profile] || PROFILES.mixed;
+    var base = o.source === 'reference' ? { assessments: {}, overrides: {} } : generate(model, o);
+    var ed = edits(o), as = {}, ov = {};
+    Object.keys(base.assessments).forEach(function (c) { as[c] = base.assessments[c]; });
+    Object.keys(base.overrides).forEach(function (c) { ov[c] = base.overrides[c]; });
+    Object.keys(ed).forEach(function (c) { if (ed[c]) as[c] = ed[c]; else delete as[c]; });
+    return { source: o.source, profile: o.profile, profileLabel: P.label, seed: o.seed, assessments: as, overrides: ov, edits: ed, edited: Object.keys(ed).length };
+  }
+  function describe(set) { return set.source === 'reference' ? 'the Reference Model (Human-only baseline)' : 'the generated test assessment (' + set.profileLabel + ' profile, seed ' + set.seed + ')'; }
+
+  g.ABC_TEST = { generate: generate, classify: classify, derive: derive, PROFILES: PROFILES, EVIDENCE: EVIDENCE, CONF: CONF,
+    settings: settings, saveSettings: saveSettings, working: working, edits: edits, saveEdit: saveEdit, dropEdit: dropEdit, clearEdits: clearEdits, describe: describe };
 })(window);

@@ -61,12 +61,13 @@ label{display:block;font-size:12px;font-weight:600;color:#0D2D4F;margin:10px 0 4
 .btn.primary{background:#1B4F8A;border-color:#1B4F8A;color:#fff}
 .muted{color:var(--lgray);font-size:12.5px;line-height:1.5}
 @media(max-width:560px){dl{grid-template-columns:1fr} .evrow select{flex:1 1 100%}}
+.sec a{color:#1B4F8A;font-weight:600;text-decoration:none}.sec a:hover{text-decoration:underline}
 </style></head><body>
-<div class="sk"><b>SKETCH</b> &middot; Assessment panel as an element grid &middot; ABC Test Org &middot; generated test assessment &middot; all 118 activities &middot; not in the sandbox &middot; for <a href="../work_element_model_spec.html" style="color:#7A5A1E;font-weight:600">GR-058</a></div>
+<div class="sk"><b>SKETCH</b> &middot; Assessment panel as an element grid &middot; ABC Test Org &middot; working assessment &middot; all 118 activities &middot; not in the sandbox &middot; for <a href="../work_element_model_spec.html" style="color:#7A5A1E;font-weight:600">GR-058</a></div>
 <div class="wrap">
 <div class="side">
 <p>The panel that opens from an activity card while ABC Test Org is selected. The assessor sets who leads each work element and records the evidence for it. The working relationship is derived from the grid.</p>
-<p>It opens on the activity clicked in the four-view sketch, with ABC Test Org&rsquo;s generated test assessment and the element ceilings from the same reference. Changes here are not saved.</p>
+<p>It opens on the activity clicked in the four-view sketch, with the same element ceilings. ABC Test Org starts from either the Reference Model (nothing assessed) or the generated test assessment. Save assessment keeps your assessment in this browser on top of that start, and the four-view sketch shows it; the real build saves through the Worker.</p>
 <div class="pick" id="vw"></div>
 <div class="pick" id="pick"></div>
 <p>An activity nobody has assessed starts with every element at Human and no evidence: the Human-only baseline. Anything above Human is a choice the assessor makes and backs with evidence. Each element&rsquo;s ceiling, its object phrase and the ◆ control element come from the reference model.</p>
@@ -144,16 +145,26 @@ const A=DATA.acts.map(a=>{const cp=caps(a),w=WORKED[a.code]||{};
   return {code:a.code,name:a.name,proc:a.proc,Ar:a.Aroles[0],R:a.R.length?a.R.join(' · '):'—',ceiling:derivedCeil(a),cons:a.cons,control:ctlOf(a),
     factors:(a.f||[]).filter(f=>f!=='top').map(f=>FL[f]).join(' · ')||'None (top of the ramp)',
     el:Object.fromEntries(elsOf(a).map(e=>[e,[(w.obj&&w.obj[e])||'',cp[e][0],cp[e][1]||'']])),na:w.na||null,src:a};});
-let SETO={profile:'mixed',seed:1};try{const v=JSON.parse(localStorage.getItem('hitl.abcTestSet')||'null');if(v&&ABC_TEST.PROFILES[v.profile]&&v.seed>0)SETO=v;}catch(e){}
-const SET=ABC_TEST.generate({acts:DATA.acts,ceil:derivedCeil,refCeiling:a=>a.ceiling,cons:a=>a.cons,refCons:a=>a.code==='7.2.1.4'?'Low':a.cons,
-  els:elsOf,ctl:ctlOf,cap:(a,e)=>caps(a)[e][0],stageEls:(a,s)=>stageEls(a,s),roles:a=>({A:a.Aroles[0],R:a.R})},SETO);
-let cur=0, view='abc', state={};
+const MODEL={acts:DATA.acts,ceil:derivedCeil,refCeiling:a=>a.ceiling,cons:a=>a.cons,refCons:a=>a.code==='7.2.1.4'?'Low':a.cons,
+  els:elsOf,ctl:ctlOf,cap:(a,e)=>caps(a)[e][0],stageEls:(a,s)=>stageEls(a,s),roles:a=>({A:a.Aroles[0],R:a.R})};
+// The working assessment: the chosen start (Reference Model or generated set) with the hand-saved assessments on top.
+let SET=ABC_TEST.working(MODEL);
+let cur=0, state={}, meta={}, saved='';
 // Unassessed: every element starts at Human with no evidence, the Human-only baseline (Tim, Oct 7).
 const baseline=a=>Object.fromEntries(Object.keys(a.el).map(e=>[e,['Human','','']]));
 const rec=a=>SET.assessments[a.code];
-function fill(){const a=A[cur];state=view==='abc'&&rec(a)?JSON.parse(JSON.stringify(rec(a).el)):baseline(a);}
-function load(v){view=v;fill();draw();}
-function pick(i){cur=i;fill();try{history.replaceState(null,'','#'+A[i].code)}catch(e){}draw();}
+function fill(){const a=A[cur],r=rec(a);state=r?JSON.parse(JSON.stringify(r.el)):baseline(a);meta={role:r?r.sourceRole:a.Ar,conf:r?r.confidence:'high',note:r?r.note||'':''};}
+function load(){SET=ABC_TEST.working(MODEL);fill();draw();}
+function setSource(v){ABC_TEST.saveSettings({source:v});saved='';load();}
+function pick(i){cur=i;saved='';fill();try{history.replaceState(null,'','#'+A[i].code)}catch(e){}draw();}
+// Save: kept in this browser on top of the chosen start, and read by the four-view sketch. The real build saves through the Worker.
+function saveAssessment(){const a=A[cur];
+  const r={el:JSON.parse(JSON.stringify(state)),current:derive(a,state)[0],confidence:meta.conf,sourceRole:meta.role,note:meta.note,
+    refSnapshot:{ceiling:a.ceiling,cons:a.cons,ceilingFactors:a.src.f||[]},refVersion:'GR-058',savedAt:new Date().toISOString(),hand:true};
+  saved=ABC_TEST.saveEdit(a.code,r)?'Saved. '+a.code+' is now '+r.current+' in ABC Test Org.':'Could not save: this browser is not keeping data for the page.';
+  SET=ABC_TEST.working(MODEL);draw();}
+function unassess(){const a=A[cur];saved=ABC_TEST.saveEdit(a.code,null)?a.code+' is marked not assessed.':'Could not save: this browser is not keeping data for the page.';load();}
+function undoHand(){const a=A[cur];ABC_TEST.dropEdit(a.code);SET=ABC_TEST.working(MODEL);saved='Back to what '+ABC_TEST.describe(SET)+' has for '+a.code+'.';fill();draw();}
 
 function derive(a,g){
   const els=Object.keys(a.el), ai=e=>g[e][0]!=='Human', leads=e=>lr(g[e][0])>=2;
@@ -172,7 +183,7 @@ function derive(a,g){
   return ['Human-only','AI only touches Produce / Execute, which does not move the stage'];
 }
 function draw(){
-  const a=A[cur], g=state, [stage,why]=derive(a,g), r=view==='abc'?rec(a):null, ov=view==='abc'?SET.overrides[a.code]:null;
+  const a=A[cur], g=state, [stage,why]=derive(a,g), r=rec(a), ov=SET.overrides[a.code], hand=a.code in SET.edits;
   const pastEls=Object.keys(a.el).filter(e=>lr(g[e][0])>lr(a.el[e][1]));
   const blank=Object.keys(a.el).every(e=>g[e][0]==='Human'&&!g[e][1]);
   let h='<div class="ap-top"><div><div class="ap-org">ABC Test Org · TEST DATA</div><h3>'+a.code+' '+esc(a.name)+'</h3><div class="ap-proc">'+esc(a.proc)+'</div></div><button type="button" class="ap-close" title="Close and return to the Work view" onclick="closePanel()">&times;</button></div>'+
@@ -196,18 +207,21 @@ function draw(){
   if(rank(stage)>rank(a.ceiling)) h+=rank(stage)<=lim?'<div class="proposal" style="border-left-color:#3D6FA8"><b>Past the reference ceiling, covered by an approved override</b> to '+ov.level+'.</div>':'<div class="warn"><b>Past the Progression Ceiling.</b> '+stage+' is above this activity’s ceiling of '+a.ceiling+'. Record it: it is a finding about how this organization works, not an error in the assessment.</div>';
   if(pastEls.length) h+='<div class="warn"><b>'+lst(pastEls)+'</b> '+(pastEls.length>1?'are':'is')+' past '+(pastEls.length>1?'their element ceilings':'its element ceiling')+'. These show in red on the card'+(rank(stage)<=rank(a.ceiling)?', even though the activity as a whole is within its ceiling':'')+'.</div>';
   if(r&&(r.refSnapshot.ceiling!==a.ceiling||r.refSnapshot.cons!==a.cons)) h+='<div class="warn" style="background:#FEF3C7;border-color:#F0C67A;color:#7A5A1E"><b>Reference changed since assessed.</b> Assessed against a ceiling of '+r.refSnapshot.ceiling+' and a Consequence of Error of '+r.refSnapshot.cons+'; confirm it against today&rsquo;s reference.</div>';
-  const conf=r?r.confidence:'high', roles=[a.Ar+' (Accountable)'].concat(a.R==='—'?[]:a.R.split(' · ').map(x=>x+' (Responsible)'));
+  const roles=[[a.Ar,'Accountable']].concat(a.R==='—'?[]:a.R.split(' · ').filter(x=>x!==a.Ar).map(x=>[x,'Responsible']));
   h+='</div><div class="sec"><h4>Record</h4>'+
-   '<label>Source role (who provided or confirmed it)</label><select class="full">'+roles.map(x=>'<option'+(r&&x.startsWith(r.sourceRole+' (')?' selected':'')+'>'+esc(x)+'</option>').join('')+'</select>'+
-   '<label>Confidence</label><div class="radios">'+['high','medium','low'].map(c=>'<label><input type="radio" name="cf"'+(c===conf?' checked':'')+'> '+c[0].toUpperCase()+c.slice(1)+'</label>').join('')+'</div>'+
-   '<label>Note</label><textarea class="full" rows="2">'+esc(r?r.note:'')+'</textarea>'+
-   '<div class="actions"><span class="btn primary">Save assessment</span><span class="btn" onclick="state=baseline(A[cur]);draw()" style="cursor:pointer">Reset to baseline</span></div></div>';
+   '<p class="muted">'+(!r?'Not assessed in ABC Test Org yet.':hand?'Assessed by hand'+(r.savedAt?' on '+new Date(r.savedAt).toLocaleDateString(undefined,{month:'short',day:'numeric'}):'')+'.':'From '+ABC_TEST.describe(SET)+'.')+'</p>'+
+   '<label>Source role (who provided or confirmed it)</label><select class="full" onchange="meta.role=this.value">'+roles.map(x=>'<option value="'+esc(x[0])+'"'+(x[0]===meta.role?' selected':'')+'>'+esc(x[0])+' ('+x[1]+')</option>').join('')+'</select>'+
+   '<label>Confidence</label><div class="radios">'+['high','medium','low'].map(c=>'<label><input type="radio" name="cf"'+(c===meta.conf?' checked':'')+' onchange="meta.conf=\''+c+'\'"> '+c[0].toUpperCase()+c.slice(1)+'</label>').join('')+'</div>'+
+   '<label>Note</label><textarea class="full" rows="2" oninput="meta.note=this.value">'+esc(meta.note)+'</textarea>'+
+   '<div class="actions"><button type="button" class="btn primary" style="cursor:pointer" onclick="saveAssessment()">Save assessment</button><button type="button" class="btn" onclick="state=baseline(A[cur]);saved=\'\';draw()" style="cursor:pointer">Reset to baseline</button></div>'+
+   (saved?'<p class="muted" style="margin-top:8px;color:#1E6B3A">'+esc(saved)+'</p>':'')+
+   ((r||hand)?'<p class="muted" style="margin-top:8px">'+(hand?'<a href="javascript:void 0" onclick="undoHand()">Undo the hand assessment</a> (back to '+(SET.source==='reference'?'the baseline':'the generated one')+')':'')+(hand&&r?' · ':'')+(r?'<a href="javascript:void 0" onclick="unassess()">Mark not assessed</a>':'')+'</p>':'')+'</div>';
   h+='<div class="sec"><h4>Ceiling override</h4><p class="muted">'+(ov?'Approved: the ceiling is raised to <b>'+ov.level+'</b> because '+(FL[ov.factor]||ov.factor).toLowerCase()+' no longer holds. Approved by '+esc(ov.approverRole)+'. '+esc(ov.evidence)+'.':a.ceiling==='Automation'?'The ceiling is already Automation, the top of the ramp.':(a.cons==='Low'||a.cons==='Moderate')?'None recorded.':'Not available. Consequence of Error is <b>'+a.cons+'</b>; a Progression Ceiling can be overridden only where it is Low or Moderate.')+'</p></div>';
   document.getElementById('ap').innerHTML=h;
-  document.getElementById('vw').innerHTML=[['base','Not assessed yet (baseline)'],['abc','ABC Test Org (generated test assessment)']].map(v=>'<button class="'+(view===v[0]?'on':'')+'" onclick="load(\''+v[0]+'\')">'+v[1]+'</button>').join('');
+  document.getElementById('vw').innerHTML='<h5 style="margin:0 0 6px">ABC Test Org starts from</h5>'+[['reference','The Reference Model (Human-only baseline)'],['generated','The generated test assessment']].map(v=>'<button class="'+(SET.source===v[0]?'on':'')+'" onclick="setSource(\''+v[0]+'\')">'+v[1]+'</button>').join('');
   let opts='',proc='';A.forEach((x,i)=>{if(x.proc!==proc){if(proc)opts+='</optgroup>';proc=x.proc;opts+='<optgroup label="'+esc(proc)+'">';}opts+='<option value="'+i+'"'+(i===cur?' selected':'')+'>'+x.code+' '+esc(x.name.length>60?x.name.slice(0,58)+'…':x.name)+(rec(x.src)?'':' (not assessed)')+'</option>';});
   document.getElementById('pick').innerHTML='<select style="width:100%;font:inherit;font-size:12.5px;padding:6px 8px" onchange="pick(+this.value)">'+opts+'</optgroup></select>'+
-   '<p class="muted" style="margin-top:6px">'+ABC_TEST.PROFILES[SET.profile].label+' profile, seed '+SET.seed+', from the <a href="../sketches/abc_test_assessment_sketch.html">test assessment sketch</a>.</p>';
+   '<p class="muted" style="margin-top:6px">'+(SET.source==='generated'?SET.profileLabel+' profile, seed '+SET.seed+', from the <a href="../sketches/abc_test_assessment_sketch.html">test assessment sketch</a>. ':'Every activity starts not assessed. ')+(SET.edited?SET.edited+' assessed by hand on top.':'None assessed by hand yet.')+'</p>';
 }
 // Close returns to the four-view sketch's Work view, on ABC Test Org, at this activity with its element box open.
 function closePanel(){location.href='../sketches/four_view_sandbox_sketch.html#abc-'+A[cur].code;}
@@ -216,5 +230,5 @@ function setEv(e,v){state[e][1]=v}
 function fromHash(){const h=decodeURIComponent((location.hash||'').slice(1)),i=A.findIndex(a=>a.code===h);return i>=0?i:-1}
 {const i=fromHash();cur=i>=0?i:A.findIndex(a=>a.code==='7.2.1.1');}
 window.addEventListener('hashchange',()=>{const i=fromHash();if(i>=0&&i!==cur){cur=i;fill();draw();}});
-load('abc');
+load();
 </script></body></html>

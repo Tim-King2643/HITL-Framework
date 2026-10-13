@@ -119,6 +119,8 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 @media(max-width:640px){.it td.obj{display:none}.it td.el,.it td.stt{width:auto;white-space:normal}.step{min-width:78px}.lbl{font-size:11px}}
 @media(max-width:640px){.side,.main{flex:1 1 100%;min-width:0}.hide-s{display:none}.t th,.t td{padding:7px 4px}.views button{padding:8px 11px;font-size:12.5px}.views button small{display:none}}
 .abcset{font-size:12px;color:var(--gray);padding:0 0 10px;margin:0 0 12px;border-bottom:1px solid var(--border)}
+.aright{display:flex;gap:14px;align-items:baseline;white-space:nowrap}.assess{font-size:12px;color:var(--navy);text-decoration:none}.assess:hover{text-decoration:underline}
+.abcset a{color:var(--navy);font-weight:600;text-decoration:none}.abcset a:hover{text-decoration:underline}
 </style></head><body>
 <div class="sk"><b>SKETCH</b> &middot; Four views instead of six &middot; all four views working &middot; reference data &middot; not in the sandbox &middot; design for <a href="../requirements_register.html#GR-059" style="color:#7A5A1E;font-weight:600">GR-059</a> &middot; RACI from the <a href="../activity_raci_draft.html" style="color:#7A5A1E;font-weight:600">GR-060 draft</a> &middot; <a href="../index.html" style="color:#7A5A1E;font-weight:600">Back to WIP hub</a></div>
 <div class="top"><div class="top-in">
@@ -356,13 +358,19 @@ function stageEls(a,s){
 // element-level (GR-058). The profile and seed chosen there carry over; otherwise Mixed, seed 1.
 let ABCSTAGE={}, ABC_EL={}, ABC_OV={}, ABC_REF={}, ABC_SET=null;
 function loadABC(){
-  let o={profile:'mixed',seed:1};try{const v=JSON.parse(localStorage.getItem('hitl.abcTestSet')||'null');if(v&&ABC_TEST.PROFILES[v.profile]&&v.seed>0)o=v;}catch(e){}
-  ABC_SET=ABC_TEST.generate({acts:DATA.acts,ceil:derivedCeil,refCeiling:a=>a.ceiling,cons:a=>a.cons,refCons:a=>a.code==='7.2.1.4'?'Low':a.cons,
-    els:elsOf,ctl:ctlOf,cap:(a,e)=>caps(a)[e][0],stageEls:(a,s)=>stageEls(a,s),roles:a=>({A:a.Aroles[0],R:a.R})},o);
+  ABC_SET=ABC_TEST.working({acts:DATA.acts,ceil:derivedCeil,refCeiling:a=>a.ceiling,cons:a=>a.cons,refCons:a=>a.code==='7.2.1.4'?'Low':a.cons,
+    els:elsOf,ctl:ctlOf,cap:(a,e)=>caps(a)[e][0],stageEls:(a,s)=>stageEls(a,s),roles:a=>({A:a.Aroles[0],R:a.R})});
   ABCSTAGE={};ABC_EL={};ABC_REF={};ABC_OV=ABC_SET.overrides;
   Object.entries(ABC_SET.assessments).forEach(([k,r])=>{ABCSTAGE[k]=r.current;ABC_EL[k]=r.el;ABC_REF[k]=r.refSnapshot;});
 }
-const abcNote=()=>'In this sketch, ABC Test Org uses the generated <a href="abc_test_assessment_sketch.html">test assessment</a> ('+ABC_SET.profileLabel+' profile, seed '+ABC_SET.seed+'); the real build reads its saved assessments and overrides.';
+const abcNote=()=>'In this sketch, ABC Test Org starts from '+ABC_TEST.describe(ABC_SET)+(ABC_SET.edited?', with '+ABC_SET.edited+' activit'+(ABC_SET.edited>1?'ies':'y')+' assessed by hand':'')+'; the real build reads its saved assessments and overrides.';
+// Where ABC Test Org's assessment starts from, and the hand-saved assessments on top (left panel, every view).
+function abcSource(v){ABC_TEST.saveSettings({source:v});loadABC();render()}
+function abcClear(){ABC_TEST.clearEdits();loadABC();render()}
+function abcSide(){const g=ABC_SET.source==='generated',n=ABC_SET.edited;
+  return '<div class="abcset"><h5 style="margin-top:0">ABC Test Org starts from</h5><div class="stack">'+[['reference','The Reference Model (Human-only baseline)'],['generated','The generated test assessment']].map(o=>'<button class="'+(ABC_SET.source===o[0]?'on':'')+'" onclick="abcSource(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>'+
+    '<p class="small" style="margin:8px 0 0">'+(g?ABC_SET.profileLabel+' profile, seed '+ABC_SET.seed+' · <a href="abc_test_assessment_sketch.html">Change the test assessment</a>':'Every activity starts not assessed, at Human-only. Assess one from its Assess link in Work.')+'</p>'+
+    '<p class="small" style="margin:4px 0 0">'+(n?n+' activit'+(n>1?'ies':'y')+' assessed by hand on top of this start · <a href="javascript:void 0" onclick="abcClear()">Clear them</a>':'None assessed by hand yet.')+'</p></div>';}
 const abcLim=a=>{const ci=rank(derivedCeil(a)),o=isOrg()&&ABC_OV[a.code];return o?Math.max(ci,rank(o.level)):ci};
 const EVL=Object.fromEntries(ABC_TEST.EVIDENCE);
 const isOrg=()=>S.org!=='ref';
@@ -483,7 +491,7 @@ function workMain(){
     if(a.proc!==proc&&head){proc=a.proc;h+=procRow(proc);}
     if(head&&!opened['p'+l3Of(a)]) return;
     const pe=pastEls(a), box=infoBox(a);
-    h+='<tr class="wr"><td><div class="ahead"><span><span class="code">'+a.code+'</span> '+esc(a.name)+(pe.length?' <span class="red" title="An element is past its own ceiling">\u25CF</span>':'')+' &middot; '+esc(a.Aroles.join(', '))+'</span><span class="acons'+((S.wsel[a.code]||{}).t==='coe'?' sel':'')+'" style="color:'+CONSC[a.cons]+'" onclick="wpick(\''+a.code+'\',\'coe\',0)" title="Consequence of Error">'+a.cons+'</span></div>'+ramp(a,true)+'</td></tr>';
+    h+='<tr class="wr"><td><div class="ahead"><span><span class="code">'+a.code+'</span> '+esc(a.name)+(pe.length?' <span class="red" title="An element is past its own ceiling">\u25CF</span>':'')+' &middot; '+esc(a.Aroles.join(', '))+'</span><span class="aright">'+(isOrg()?'<a class="assess" href="../work_elements/assess_panel_sketch.html#'+a.code+'" title="Open the element assessment panel">'+(ABC_EL[a.code]?'Reassess':'Assess')+'</a>':'')+'<span class="acons'+((S.wsel[a.code]||{}).t==='coe'?' sel':'')+'" style="color:'+CONSC[a.cons]+'" onclick="wpick(\''+a.code+'\',\'coe\',0)" title="Consequence of Error">'+a.cons+'</span></span></div>'+ramp(a,true)+'</td></tr>';
     if(box) h+='<tr class="det"><td colspan="1">'+box+'</td></tr>';
   });
   return h+'</tbody></table></div>';
@@ -621,10 +629,12 @@ function render(){
   // Same list as today's sandbox selector: the Reference Model, every organization on file, and New organization (Tim, Oct 8: one to many organizations).
   document.getElementById('orgsel').innerHTML=ORGS.map(o=>'<option value="'+o[0]+'"'+(S.org===o[0]?' selected':'')+'>'+o[1]+'</option>').join('')+'<option value="__new__">New organization\u2026</option>';
   const M={work:[workSide,workMain],people:[peopleSide,peopleMain],data:[dataSide,dataMain],findings:[findSide,findMain]}[S.view];
-  document.getElementById('side').innerHTML=(S.org==='abc'&&ABC_SET?'<div class="abcset">ABC Test Org: '+ABC_SET.profileLabel+' profile, seed '+ABC_SET.seed+' · <a href="abc_test_assessment_sketch.html">Change the test assessment</a></div>':'')+M[0]()+(S.org==='abc'&&S.view!=='findings'&&S.view!=='work'?'<p class="small" style="margin-top:12px">ABC Test Org&rsquo;s assessed values are read live in the real build; this sketch shows the reference.</p>':'');
+  document.getElementById('side').innerHTML=(S.org==='abc'&&ABC_SET?abcSide():'')+M[0]()+(S.org==='abc'&&S.view!=='findings'&&S.view!=='work'?'<p class="small" style="margin-top:12px">ABC Test Org&rsquo;s assessed values are read live in the real build; this sketch shows the reference.</p>':'');
   document.getElementById('main').innerHTML=(alertNew?'<div class="outline"><span class="tagline">Sketch</span><h3>New organization</h3><p>Opens the same New organization form as today&rsquo;s sandbox. Every organization on file appears in this list, so the four views work the same for one organization or many.</p></div>':'')+M[1]();
 }
 applyRaci();loadABC();render();
+// Coming back from the assessment panel with the browser's Back button: reread the saved assessments.
+window.addEventListener('pageshow',e=>{if(e.persisted){loadABC();render()}});
 // Arriving from the assessment panel (#abc-<activity>): Work view, ABC Test Org, the activity's process open and its element box showing.
 (function(){const m=/^#abc-([\d.]+)$/.exec(location.hash||'');if(!m)return;const a=DATA.acts.find(x=>x.code===m[1]);if(!a)return;
   Object.assign(S,{view:'work',org:'abc',ws:'all',wg:a.code.split('.').slice(0,2).join('.')});opened['p'+a.proc.split(' ')[0]]=true;

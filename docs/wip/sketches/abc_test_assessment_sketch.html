@@ -189,11 +189,11 @@ const MODEL={acts:DATA.acts,ceil:derivedCeil,refCeiling:a=>a.ceiling,cons:a=>a.c
   refCons:a=>a.code==='7.2.1.4'?'Low':a.cons, // GR-058 raised 7.2.1.4 from Low to Moderate
   els:elsOf,ctl:ctlOf,cap:(a,e)=>caps(a)[e][0],stageEls:(a,s)=>stageEls(a,s),roles:a=>({A:a.Aroles[0],R:a.R})};
 const EVL=Object.fromEntries(ABC_TEST.EVIDENCE);
-let G={profile:'mixed',seed:1}, opened={}, SET=null, C=null;
-try{const v=JSON.parse(localStorage.getItem('hitl.abcTestSet')||'null');if(v&&ABC_TEST.PROFILES[v.profile]&&v.seed>0)G=v;}catch(e){}
-function regen(){SET=ABC_TEST.generate(MODEL,G);C=ABC_TEST.classify(MODEL,SET);try{localStorage.setItem('hitl.abcTestSet',JSON.stringify(G))}catch(e){}}
+let G=ABC_TEST.settings(), opened={}, SET=null, C=null;
+// Choosing a profile or seed here makes ABC Test Org start from this set; opening the page changes nothing.
+function regen(chosen){SET=ABC_TEST.generate(MODEL,G);C=ABC_TEST.classify(MODEL,SET);if(chosen){G.source='generated';ABC_TEST.saveSettings(G);}}
 const tile=(n,l)=>'<div class="tile"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>';
-const btns=(list,key)=>'<div class="stack">'+list.map(o=>'<button class="'+(G[key]===o[0]?'on':'')+'" onclick="G.'+key+'=\''+o[0]+'\';regen();render()">'+o[1]+'</button>').join('')+'</div>';
+const btns=(list,key)=>'<div class="stack">'+list.map(o=>'<button class="'+(G[key]===o[0]?'on':'')+'" onclick="G.'+key+'=\''+o[0]+'\';regen(1);render()">'+o[1]+'</button>').join('')+'</div>';
 
 function side(){
   const P=ABC_TEST.PROFILES;
@@ -201,12 +201,12 @@ function side(){
    '<p>A full test assessment for all 118 activities, generated so that every case the assessment, override and exceptions flows have to handle occurs at least a few times. It is built for coverage, not realism.</p>'+
    '<p>Each activity is assessed the GR-058 way: who leads each part of the work, with evidence, and the Current State derived from the parts. On import it replaces the hand-entered assessments; the Worker keeps their history.</p>'+
    '<h5>Profile</h5>'+btns(Object.keys(P).map(k=>[k,P[k].label+' &middot; '+Math.round(P[k].unassessed*100)+'% left unassessed']),'profile')+
-   '<h5>Seed</h5><div style="display:flex;gap:6px;align-items:center"><input id="seed" type="number" min="1" value="'+G.seed+'" style="width:90px;font:inherit;font-size:12.5px;padding:5px 8px;border:1px solid var(--border);border-radius:6px" onchange="const v=parseInt(this.value,10);if(v>0){G.seed=v;regen();render()}">'+
-   '<div class="stack" style="flex:1"><button onclick="G.seed=1+Math.floor(Math.random()*99999);regen();render()">New seed</button></div></div>'+
+   '<h5>Seed</h5><div style="display:flex;gap:6px;align-items:center"><input id="seed" type="number" min="1" value="'+G.seed+'" style="width:90px;font:inherit;font-size:12.5px;padding:5px 8px;border:1px solid var(--border);border-radius:6px" onchange="const v=parseInt(this.value,10);if(v>0){G.seed=v;regen(1);render()}">'+
+   '<div class="stack" style="flex:1"><button onclick="G.seed=1+Math.floor(Math.random()*99999);regen(1);render()">New seed</button></div></div>'+
    '<p class="small" style="margin-top:6px">The same profile and seed always give the same set, so test results stay comparable.</p>'+
    '<h5>Load it</h5><div class="stack"><button onclick="download()">Download the seed file</button></div>'+
    '<p class="small" style="margin-top:6px">The Worker loads it into ABC Test Org in one step through an import route, built with GR-058&rsquo;s element-level assessments.</p>'+
-   '<div class="pl"><a href="four_view_sandbox_sketch.html">Open the four views with this set</a>: ABC Test Org in the four-view sketch uses the profile and seed chosen here.</div>';
+   '<div class="pl"><a href="four_view_sandbox_sketch.html">Open the four views with this set</a>: '+(G.source==='reference'?'ABC Test Org is set to start from the Reference Model right now; choosing a profile or seed here switches it to this set.':'ABC Test Org in the four-view sketch starts from the profile and seed chosen here.')+' Assessments saved by hand in the assessment panel sit on top, kept separately for each profile and seed.</div>';
 }
 const CASES=[
  ['Assessed within the ceiling',r=>r.assessed&&r.within],
