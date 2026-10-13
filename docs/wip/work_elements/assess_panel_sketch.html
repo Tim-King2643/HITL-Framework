@@ -21,7 +21,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .ap h3{font-size:17px;color:#0D2D4F;margin:0 0 2px}
 .ap-org{font-size:12px;color:var(--lgray);margin-bottom:2px}
 .ap-proc{font-size:12.5px;color:var(--lgray);margin-bottom:12px}
-.ap-close{font-size:20px;color:var(--lgray)}
+.ap-close{font:inherit;font-size:22px;line-height:1;color:var(--lgray);background:none;border:none;cursor:pointer;padding:0 2px;align-self:flex-start}
+.ap-close:hover{color:var(--navy-d)}
 dl{display:grid;grid-template-columns:150px 1fr;gap:6px 12px;font-size:12.5px;margin:0 0 6px}
 dt{color:var(--lgray);font-weight:600}
 dd{margin:0}
@@ -174,7 +175,7 @@ function draw(){
   const a=A[cur], g=state, [stage,why]=derive(a,g), r=view==='abc'?rec(a):null, ov=view==='abc'?SET.overrides[a.code]:null;
   const pastEls=Object.keys(a.el).filter(e=>lr(g[e][0])>lr(a.el[e][1]));
   const blank=Object.keys(a.el).every(e=>g[e][0]==='Human'&&!g[e][1]);
-  let h='<div class="ap-top"><div><div class="ap-org">ABC Test Org · TEST DATA</div><h3>'+a.code+' '+esc(a.name)+'</h3><div class="ap-proc">'+esc(a.proc)+'</div></div><span class="ap-close">&times;</span></div>'+
+  let h='<div class="ap-top"><div><div class="ap-org">ABC Test Org · TEST DATA</div><h3>'+a.code+' '+esc(a.name)+'</h3><div class="ap-proc">'+esc(a.proc)+'</div></div><button type="button" class="ap-close" title="Close and return to the Work view" onclick="closePanel()">&times;</button></div>'+
    '<dl><dt>Accountable</dt><dd>'+esc(a.Ar)+'</dd><dt>Responsible</dt><dd>'+esc(a.R)+'</dd>'+
    '<dt>Consequence of Error</dt><dd><span style="color:'+CONS[a.cons]+';font-weight:600">'+a.cons+'</span></dd>'+
    '<dt>Progression Ceiling</dt><dd>'+chip(a.ceiling)+' <span class="muted">'+esc(a.factors)+'</span></dd>'+
@@ -208,6 +209,8 @@ function draw(){
   document.getElementById('pick').innerHTML='<select style="width:100%;font:inherit;font-size:12.5px;padding:6px 8px" onchange="pick(+this.value)">'+opts+'</optgroup></select>'+
    '<p class="muted" style="margin-top:6px">'+ABC_TEST.PROFILES[SET.profile].label+' profile, seed '+SET.seed+', from the <a href="../sketches/abc_test_assessment_sketch.html">test assessment sketch</a>.</p>';
 }
+// Close returns to the four-view sketch's Work view, on ABC Test Org, at this activity with its element box open.
+function closePanel(){location.href='../sketches/four_view_sandbox_sketch.html#abc-'+A[cur].code;}
 function setLead(e,l){state[e][0]=l;draw()}
 function setEv(e,v){state[e][1]=v}
 function fromHash(){const h=decodeURIComponent((location.hash||'').slice(1)),i=A.findIndex(a=>a.code===h);return i>=0?i:-1}

@@ -624,4 +624,10 @@ function render(){
   document.getElementById('main').innerHTML=(alertNew?'<div class="outline"><span class="tagline">Sketch</span><h3>New organization</h3><p>Opens the same New organization form as today&rsquo;s sandbox. Every organization on file appears in this list, so the four views work the same for one organization or many.</p></div>':'')+M[1]();
 }
 applyRaci();loadABC();render();
+// Arriving from the assessment panel (#abc-<activity>): Work view, ABC Test Org, the activity's process open and its element box showing.
+(function(){const m=/^#abc-([\d.]+)$/.exec(location.hash||'');if(!m)return;const a=DATA.acts.find(x=>x.code===m[1]);if(!a)return;
+  Object.assign(S,{view:'work',org:'abc',ws:'all',wg:a.code.split('.').slice(0,2).join('.')});opened['p'+a.proc.split(' ')[0]]=true;
+  S.wsel={};S.wsel[a.code]=ABC_EL[a.code]?{t:'stage',k:rank(curOf(a))}:{t:'none'};render();
+  const row=[...document.querySelectorAll('tr.wr')].find(t=>t.querySelector('.code')&&t.querySelector('.code').textContent===a.code);if(row)row.scrollIntoView({block:'start'});
+  try{history.replaceState(null,'',location.pathname)}catch(e){}})();
 </script></body></html>
