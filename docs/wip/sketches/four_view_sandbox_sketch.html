@@ -118,6 +118,7 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .wt tr.det td{padding:0 12px 12px 12px;background:#fff}
 @media(max-width:640px){.it td.obj{display:none}.it td.el,.it td.stt{width:auto;white-space:normal}.step{min-width:78px}.lbl{font-size:11px}}
 @media(max-width:640px){.side,.main{flex:1 1 100%;min-width:0}.hide-s{display:none}.t th,.t td{padding:7px 4px}.views button{padding:8px 11px;font-size:12.5px}.views button small{display:none}}
+.abcset{font-size:12px;color:var(--gray);padding:0 0 10px;margin:0 0 12px;border-bottom:1px solid var(--border)}
 </style></head><body>
 <div class="sk"><b>SKETCH</b> &middot; Four views instead of six &middot; all four views working &middot; reference data &middot; not in the sandbox &middot; design for <a href="../requirements_register.html#GR-059" style="color:#7A5A1E;font-weight:600">GR-059</a> &middot; RACI from the <a href="../activity_raci_draft.html" style="color:#7A5A1E;font-weight:600">GR-060 draft</a> &middot; <a href="../index.html" style="color:#7A5A1E;font-weight:600">Back to WIP hub</a></div>
 <div class="top"><div class="top-in">
@@ -620,7 +621,7 @@ function render(){
   // Same list as today's sandbox selector: the Reference Model, every organization on file, and New organization (Tim, Oct 8: one to many organizations).
   document.getElementById('orgsel').innerHTML=ORGS.map(o=>'<option value="'+o[0]+'"'+(S.org===o[0]?' selected':'')+'>'+o[1]+'</option>').join('')+'<option value="__new__">New organization\u2026</option>';
   const M={work:[workSide,workMain],people:[peopleSide,peopleMain],data:[dataSide,dataMain],findings:[findSide,findMain]}[S.view];
-  document.getElementById('side').innerHTML=M[0]()+(S.org==='abc'&&S.view!=='findings'&&S.view!=='work'?'<p class="small" style="margin-top:12px">ABC Test Org&rsquo;s assessed values are read live in the real build; this sketch shows the reference.</p>':'');
+  document.getElementById('side').innerHTML=(S.org==='abc'&&ABC_SET?'<div class="abcset">ABC Test Org: '+ABC_SET.profileLabel+' profile, seed '+ABC_SET.seed+' · <a href="abc_test_assessment_sketch.html">Change the test assessment</a></div>':'')+M[0]()+(S.org==='abc'&&S.view!=='findings'&&S.view!=='work'?'<p class="small" style="margin-top:12px">ABC Test Org&rsquo;s assessed values are read live in the real build; this sketch shows the reference.</p>':'');
   document.getElementById('main').innerHTML=(alertNew?'<div class="outline"><span class="tagline">Sketch</span><h3>New organization</h3><p>Opens the same New organization form as today&rsquo;s sandbox. Every organization on file appears in this list, so the four views work the same for one organization or many.</p></div>':'')+M[1]();
 }
 applyRaci();loadABC();render();
