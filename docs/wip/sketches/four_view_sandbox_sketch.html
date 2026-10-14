@@ -554,12 +554,12 @@ function dpAnalysis(){
   DPC={org:S.org,m};return m;
 }
 function dpTag(a){const r=dpAnalysis()[a.code],on=(S.wsel[a.code]||{}).t==='dp'?' sel':'';
-  if(r.dp) return ' &middot; <span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="A person holds '+r.el+': this activity is a decision point">Decision point</span>';
-  if(r.feeds.length) return ' &middot; <span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person holds '+r.el+' here; its work product reaches a downstream decision point">Feeds '+r.feeds[0]+(r.feeds.length>1?' +'+(r.feeds.length-1):'')+'</span>';
-  return ' &middot; <span class="dpm red'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person decides or verifies, and no downstream decision point">No decision point</span>';}
+  if(r.dp) return ' &middot; <span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="A person holds '+r.el+': this activity is a decision point">Decision Point</span>';
+  if(r.feeds.length) return ' &middot; <span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person holds '+r.el+' here; it is answered for at the downstream decision point'+(r.feeds.length>1?'s '+r.feeds.join(', '):' '+r.feeds[0])+', which its work product reaches">Decision Point '+r.feeds[0]+'</span>';
+  return ' &middot; <span class="dpm red'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person decides or verifies, and no downstream decision point">No Decision Point</span>';}
 function dpBox(a){const m=dpAnalysis(),r=m[a.code],at=isOrg()?'at '+esc(ORGNAME())+'’s Current State ('+dpStage(a)+')':'at its ceiling ('+dpStage(a)+')';
   const li=c=>'<tr><td class="code">'+c+'</td><td>'+esc(ACT[c].name)+'</td><td>'+esc(ACT[c].Aroles[0])+'</td><td style="color:'+CONSC[ACT[c].cons]+'">'+ACT[c].cons+'</td></tr>';
-  let h='<div class="ibox">'+X(a)+'<h4>'+(r.dp?'Decision point — '+r.el+' held by a person':r.feeds.length?'Feeds a downstream decision point':'No decision point')+'</h4><div class="isub">';
+  let h='<div class="ibox">'+X(a)+'<h4>'+(r.dp?'Decision point — '+r.el+' held by a person':r.feeds.length?'Decision Point '+r.feeds.join(', ')+' — downstream':'No Decision Point')+'</h4><div class="isub">';
   if(r.dp) h+='Human Accountability Anchor: <b>'+esc(a.Aroles[0])+'</b>. '+r.el+' is '+r.lead+' '+at+(r.el==='Verify'?'; the activity has no Decide element, so the verification is the decision point':'')+'. Its Governed Decision Point record carries, for a '+a.cons+' Consequence of Error: '+DPGOV[a.cons]+'.';
   else if(r.feeds.length) h+='No person holds '+(r.el||'Decide or Verify')+' '+at+(r.lead?' ('+r.lead+')':'')+', so its accountability lands where its work product is decided. Its own Accountable role, '+esc(a.Aroles[0])+', stays answerable for the activity.';
   else h+='<span class="red">No person holds '+(r.el||'Decide or Verify')+' '+at+', and none of its work products reaches a decision point downstream.</span> It needs a decision point of its own or a named control. Its Accountable role, '+esc(a.Aroles[0])+', stays answerable.';
