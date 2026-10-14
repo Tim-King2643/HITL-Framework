@@ -69,6 +69,9 @@ tr.det td{background:#FAFBFD;padding:6px 10px 12px 28px}
 <div class="seg" id="o-jv"></div>
 <h5>Oversight needs AI to lead Draft</h5>
 <div class="seg" id="o-nd"></div>
+<h5>Consequence of Error gates</h5>
+<div class="seg" id="o-coe"></div>
+<p class="small" style="margin-top:6px">Close Agent-delegation &rarr; Automation for High or Critical activities and wherever a factor holds an element with a person, and Oversight &rarr; Agent-delegation for Critical. Below Oversight a person is in every instance, so the rating changes nothing there.</p>
 <h5>How the proposal works</h5>
 <p>The control element (Decide, or Verify where there is no Decide) is held by today&rsquo;s ceiling: Human up to Oversight, AI-led at Agent-delegation. An element a factor holds is capped by the ceiling: at Judgment, Evaluate is Human-led and the rest Human; at Augmentation, Human-led; at Oversight and above, AI-led. Every other element may go to AI.</p>
 <p>Every activity is assumed to have all seven elements, except 7.2.1.4, whose control element is Verify. The Work Element Reference Data will mark the elements that aren&rsquo;t part of each activity.</p>
@@ -88,15 +91,21 @@ const EL=['Research','Evaluate','Draft','Verify','Decide','Produce / Execute','C
 const CORE=['Evaluate','Draft','Verify','Decide','Communicate'];
 const FL={legal:'Legal / fiduciary duty',floor:'Human judgment floor',relational:'Relational / emotional stakes',accountability:'Accountability',governance:'Governance / sign-off',technical:'Technical readiness gap',top:'Top of the ramp'};
 const FK=['legal','floor','relational','accountability'];
-const SPEC={map:{legal:['Evaluate','Draft','Verify'],floor:['Decide'],relational:['Communicate'],accountability:['Draft','Decide']},free:'AI',jv:'Human-led',nd:false};
+const SPEC={map:{legal:['Evaluate','Draft','Verify'],floor:['Decide'],relational:['Communicate'],accountability:['Draft','Decide']},free:'AI',jv:'Human-led',nd:false,coe:false};
 // Recommended (Claude, Oct 7): the judgment floor also holds Evaluate and Draft, since the person forms the judgment; Oversight needs AI to lead Draft.
-const REC={map:{legal:['Evaluate','Draft','Verify'],floor:['Evaluate','Draft','Decide'],relational:['Communicate'],accountability:['Draft','Decide']},free:'AI',jv:'Human-led',nd:true};
+const REC={map:{legal:['Evaluate','Draft','Verify'],floor:['Evaluate','Draft','Decide'],relational:['Communicate'],accountability:['Draft','Decide']},free:'AI',jv:'Human-led',nd:true,coe:true};
+// Consequence of Error gates (proposed Oct 14): Agent-delegation -> Automation is closed for High or Critical, or when a
+// factor holds an element; Oversight -> Agent-delegation is closed for Critical.
+function gated(a){let c=a.ceiling;if(!cfg.coe)return c;const held=a.f.some(f=>(cfg.map[f]||[]).length);
+  if(c==='Automation'&&(a.cons==='High'||a.cons==='Critical'||held)) c='Agent-delegation';
+  if(a.cons==='Critical'&&ST.indexOf(c)>ST.indexOf('Oversight')) c='Oversight';
+  return c;}
 let cfg=JSON.parse(JSON.stringify(REC)), preset='rec', opened={}, showAll=false;
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const lst=x=>x.length<2?x.join(''):x.slice(0,-1).join(', ')+' and '+x[x.length-1];
 function ctlOf(a){return a.code==='7.2.1.4'?'Verify':'Decide'}
 function caps(a){
-  const S=a.ceiling, ctl=ctlOf(a), g={};
+  const S=gated(a), ctl=ctlOf(a), g={};
   if(S==='Automation'){EL.forEach(e=>g[e]=['AI','top of the ramp']);return g;}
   const held={}; a.f.forEach(f=>(cfg.map[f]||[]).forEach(e=>{(held[e]=held[e]||[]).push(FL[f])}));
   EL.forEach(e=>{
@@ -133,6 +142,7 @@ function render(){
   seg('o-free',[['AI','AI'],['AI-led','AI-led'],['Human-led','Human-led']],'free');
   seg('o-jv',[['Human-led','Human-led (AI checks, the person confirms)'],['Human','Human']],'jv');
   seg('o-nd',[[true,'Yes'],[false,'No']],'nd');
+  seg('o-coe',[[true,'Yes (proposed)'],[false,'No']],'coe');
   const R=compute(), ch=R.filter(a=>a.d!==a.ceiling);
   const t=ST.map(s=>R.filter(a=>a.ceiling===s).length), d=ST.map(s=>R.filter(a=>a.d===s).length);
   document.getElementById('dsub').innerHTML='<span class="big">'+ch.length+'</span> of 118 would change. '+(118-ch.length)+' come out exactly as they are today.';
@@ -148,7 +158,9 @@ function render(){
   f.push(hiSame+' of the '+hi.length+' activities at Oversight or above come out unchanged: the element model reproduces them from their factors.');
   if(R.some(a=>a.ceiling==='Judgment')) f.push(keepJ.length?keepJ.length+' activit'+(keepJ.length>1?'ies keep':'y keeps')+' a Judgment ceiling: '+keepJ.map(a=>a.code).join(', ')+'.':'No activity keeps a Judgment ceiling. Judgment means AI may not assist in the work at all; the factors hold specific elements, and AI may still help with the rest.');
   if(!cfg.nd&&R.some(a=>a.ceiling==='Judgment'&&a.d==='Oversight')) f.push('Without the Draft condition, activities where a person must still write the work read as Oversight, which describes AI producing it. The condition belongs in the derivation rule.');
-  if(preset==='rec') f.push('Recommended reading: the 28 Judgment ceilings become Augmentation, with Draft and Decide (and the elements each factor names) still Human. Nothing at Augmentation or above moves. That is one change-log entry for 28 activities.');
+  const gm=R.filter(a=>a.ceiling==='Automation'&&a.d!=='Automation');
+  if(cfg.coe&&gm.length) f.push('The Consequence of Error gates move '+gm.length+' from Automation to '+lst([...new Set(gm.map(a=>a.d))])+': '+gm.map(a=>a.code+' ('+a.cons+')').join(', ')+'. Each has a factor that holds an element with a person, so at Automation its own element ceilings were being ignored; at Agent-delegation a person decides each flagged instance.');
+  if(preset==='rec') f.push('Recommended reading: the 28 Judgment ceilings become Augmentation, with Draft and Decide (and the elements each factor names) still Human'+(gm.length?'; and the '+gm.length+' Automation ceilings above move to Agent-delegation (proposed Oct 14)':'')+'. Nothing else at Augmentation or above moves.');
   document.getElementById('find').innerHTML=f.map(x=>'<li>'+x+'</li>').join('');
   // table
   const rows=(showAll?R:ch).slice().sort((a,b)=>(a.ceiling+a.d).localeCompare(b.ceiling+b.d)||a.code.localeCompare(b.code,undefined,{numeric:true}));

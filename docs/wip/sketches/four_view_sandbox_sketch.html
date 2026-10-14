@@ -165,7 +165,7 @@ const HC={High:1,Critical:1};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const pct=(n,d)=>d?Math.round(100*n/d)+'%':'—';
 // RACI is activity level (GR-060, Tim's decision Oct 10, 2026); S.raci stays 'act'. Process-level data is kept only to compare against.
-let S={raci:'act',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'load',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
+let S={coe:true,raci:'act',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'load',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
 const VIEWS=[
  {id:'work',name:'Work',q:'Where does each activity sit, and what moves next?'},
  {id:'people',name:'People',q:'What does this mean for each role?'},
@@ -173,7 +173,15 @@ const VIEWS=[
  {id:'findings',name:'Findings',q:'What departs from the reference, and what needs a decision?'}];
 function btns(list,key){return '<div class="stack">'+list.map(o=>'<button class="'+(S[key]===o[0]?'on':'')+'" onclick="S.'+key+'=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>'}
 function tile(n,l,w){return '<div class="tile"><div class="n">'+n+'</div><div class="l">'+l+'</div>'+(w!=null?'<div class="was">'+w+'</div>':'')+'</div>'}
-const derivedCeil=a=>a.ceiling==='Judgment'?'Augmentation':a.ceiling;
+// Consequence of Error gates (proposed Oct 14, 2026): the rating matters only at the two steps where a person stops
+// seeing every instance. Agent-delegation -> Automation is closed for High or Critical, or when a ceiling factor holds
+// an element with a person; Oversight -> Agent-delegation is closed for Critical. Toggle in the left panel.
+function coeCap(a,c){const held=a.f.some(f=>FMAP[f]);
+  if(c==='Automation'&&(HC[a.cons]||held)) c='Agent-delegation';
+  if(a.cons==='Critical'&&rank(c)>rank('Oversight')) c='Oversight';
+  return c;}
+const baseCeil=a=>S.coe?coeCap(a,a.ceiling):a.ceiling;
+const derivedCeil=a=>{const c=baseCeil(a);return c==='Judgment'?'Augmentation':c};
 
 /* ---------- People: load (from the GR-029/030 stress test) ---------- */
 // GR-058 taken as approved (Tim, Oct 8): ceilings are always the derived ones.
@@ -329,7 +337,7 @@ const FMAP={legal:['Evaluate','Draft','Verify'],floor:['Evaluate','Draft','Decid
 const ctlOf=a=>(WORKED[a.code]&&WORKED[a.code].control)||'Decide';
 const elsOf=a=>EL.filter(e=>!(WORKED[a.code]&&WORKED[a.code].na&&WORKED[a.code].na[e]));
 function caps(a){
-  const S0=a.ceiling, ctl=ctlOf(a), g={};
+  const S0=baseCeil(a), ctl=ctlOf(a), g={};
   if(S0==='Automation'){elsOf(a).forEach(e=>g[e]=['AI','']);return g;}
   const held={}; a.f.forEach(f=>(FMAP[f]||[]).forEach(e=>{(held[e]=held[e]||[]).push(FL[f])}));
   elsOf(a).forEach(e=>{
@@ -484,7 +492,7 @@ function workMain(){
     if(top.length) f.push('What keeps a person in the work: '+top.map(([k,n])=>FL[k].toLowerCase()+' ('+n+')').join(', ')+'.');
     if(hcHigh.length) f.push(hcHigh.length+' High or Critical activit'+(hcHigh.length>1?'ies have':'y has')+' a ceiling at Agent-delegation or Automation, where no person sees every instance: '+hcHigh.slice(0,5).map(a=>a.code).join(', ')+(hcHigh.length>5?' and '+(hcHigh.length-5)+' more':'')+'.');
     {const m=dpAnalysis(),dp=L.filter(a=>m[a.code].dp).length,fd=L.filter(a=>!m[a.code].dp&&m[a.code].feeds.length).length,no=L.filter(a=>!m[a.code].dp&&!m[a.code].feeds.length);
-      f.push(dp+' decision point'+(dp===1?'':'s')+(org?' at the Current State':' at the ceilings')+(fd?'; '+fd+' map'+(fd===1?'s':'')+' to a downstream decision point':'')+(no.length?'; <span class="red">'+no.length+' with none</span> ('+no.slice(0,5).map(a=>a.code).join(', ')+(no.length>5?' and '+(no.length-5)+' more':'')+')':'')+'. Click a decision point to see its anchor and the activities it covers.');}
+      f.push(dp+' decision point'+(dp===1?'':'s')+(org?' at the Current State':' at the ceilings')+(fd?'; '+fd+' map'+(fd===1?'s':'')+' to a downstream decision point':'')+(no.length?'; <span class="red">'+no.length+' need'+(no.length===1?'s':'')+' a named control</span> ('+no.slice(0,5).map(a=>a.code).join(', ')+(no.length>5?' and '+(no.length-5)+' more':'')+')':'')+'. Click a decision point to see its anchor and the activities it covers.');}
     if(org){const as=L.filter(a=>ABCSTAGE[a.code]), past=as.filter(a=>rank(curOf(a))>rank(derivedCeil(a))), cov=past.filter(a=>ABC_OV[a.code]), pe=as.filter(a=>pastEls(a).length&&rank(curOf(a))<=rank(derivedCeil(a)));
       f.push(as.length+' of '+L.length+' assessed. '+(past.length?past.length+' past the ceiling'+(cov.length?', '+cov.length+' of them covered by an approved override':'')+'. ':'None past its ceiling. ')+(pe.length?pe.map(a=>a.code+' '+pastEls(a).join(', ')).join('; ')+' past '+(pe.length>1?'their':'its')+' element ceiling, even though the activit'+(pe.length>1?'ies are':'y is')+' within its ceiling.':''));}
   }
@@ -527,14 +535,15 @@ function wpAnalysis(){
 }
 /* ---------- Decision points (GR-021, GR-042) ---------- */
 // The Human Accountability Anchor is each activity's Accountable role. An activity is a decision point when a person
-// holds its Decide element, or its Verify element when it has no Decide. Consequence of Error sets how much governance
+// holds its Decide element, or its Verify element when it has no Decide, on every instance or on each flagged instance. Consequence of Error sets how much governance
 // the decision point's record carries, not whether it is one. An activity that is neither maps to the downstream
-// decision points its work product reaches; one that reaches none is an exception.
+// decision points its work product reaches; one that reaches none needs a named control (GR-054).
 // Where the work is: the Reference Model at each activity's ceiling; an organization at its Current State.
 const dpEl=a=>{const e=elsOf(a);return e.includes('Decide')?'Decide':e.includes('Verify')?'Verify':null};
 const dpStage=a=>isOrg()?curOf(a):derivedCeil(a);
 function dpLeads(a){if(isOrg()&&ABC_EL[a.code]){const g=ABC_EL[a.code];return Object.fromEntries(Object.keys(g).map(e=>[e,g[e][0]]));}return stageEls(a,dpStage(a));}
-const holds=v=>v==='Human'||v==='Human-led';
+// A person holds it on every instance (Human, Human-led) or decides each flagged instance (AI-led, as at Agent-delegation).
+const holds=v=>v==='Human'||v==='Human-led'||v==='AI-led';
 const DPGOV={Low:'owner and override; reviewed when an exception comes up',Moderate:'owner, escalation path and override; reviewed periodically',
   High:'every field; each decision documented; reviewed on a set cadence',Critical:'every field; each decision documented with its evidence; reviewed on a set cadence and after every override'};
 let DPC=null;
@@ -556,24 +565,24 @@ function dpAnalysis(){
 function dpTag(a){const r=dpAnalysis()[a.code],on=(S.wsel[a.code]||{}).t==='dp'?' sel':'';
   if(r.dp) return ' &middot; <span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="A person holds '+r.el+': this activity is a decision point">Decision Point</span>';
   if(r.feeds.length) return ' &middot; <span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person holds '+r.el+' here; it is answered for at the downstream decision point'+(r.feeds.length>1?'s '+r.feeds.join(', '):' '+r.feeds[0])+', which its work product reaches">Decision Point '+r.feeds[0]+'</span>';
-  return ' &middot; <span class="dpm red'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person decides or verifies, and no downstream decision point">No Decision Point</span>';}
+  return ' &middot; <span class="dpm red'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person decides or verifies, and its work product reaches no decision point: it needs a named control">Named control needed</span>';}
 function dpBox(a){const m=dpAnalysis(),r=m[a.code],at=isOrg()?'at '+esc(ORGNAME())+'’s Current State ('+dpStage(a)+')':'at its ceiling ('+dpStage(a)+')';
   const li=c=>'<tr><td class="code">'+c+'</td><td>'+esc(ACT[c].name)+'</td><td>'+esc(ACT[c].Aroles[0])+'</td><td style="color:'+CONSC[ACT[c].cons]+'">'+ACT[c].cons+'</td></tr>';
-  let h='<div class="ibox">'+X(a)+'<h4>'+(r.dp?'Decision point — '+r.el+' held by a person':r.feeds.length?'Decision Point '+r.feeds.join(', ')+' — downstream':'No Decision Point')+'</h4><div class="isub">';
-  if(r.dp) h+='Human Accountability Anchor: <b>'+esc(a.Aroles[0])+'</b>. '+r.el+' is '+r.lead+' '+at+(r.el==='Verify'?'; the activity has no Decide element, so the verification is the decision point':'')+'. Its Governed Decision Point record carries, for a '+a.cons+' Consequence of Error: '+DPGOV[a.cons]+'.';
+  let h='<div class="ibox">'+X(a)+'<h4>'+(r.dp?'Decision point — '+r.el+' held by a person':r.feeds.length?'Decision Point '+r.feeds.join(', ')+' — downstream':'Named control needed')+'</h4><div class="isub">';
+  if(r.dp) h+='Human Accountability Anchor: <b>'+esc(a.Aroles[0])+'</b>. '+r.el+' is '+r.lead+' '+at+(r.lead==='AI-led'?': AI leads it, and a person decides each flagged instance, so the record also names the trigger condition':'')+(r.el==='Verify'?'; the activity has no Decide element, so the verification is the decision point':'')+'. Its Governed Decision Point record carries, for a '+a.cons+' Consequence of Error: '+DPGOV[a.cons]+'.';
   else if(r.feeds.length) h+='No person holds '+(r.el||'Decide or Verify')+' '+at+(r.lead?' ('+r.lead+')':'')+', so its accountability lands where its work product is decided. Its own Accountable role, '+esc(a.Aroles[0])+', stays answerable for the activity.';
-  else h+='<span class="red">No person holds '+(r.el||'Decide or Verify')+' '+at+', and none of its work products reaches a decision point downstream.</span> It needs a decision point of its own or a named control. Its Accountable role, '+esc(a.Aroles[0])+', stays answerable.';
+  else h+='<span class="red">No person holds '+(r.el||'Decide or Verify')+' '+at+', and none of its work products reaches a decision point downstream.</span> With no person in the instance, it needs a named control, such as sampled review or outcome monitoring (GR-054). Its Accountable role, '+esc(a.Aroles[0])+', stays answerable and owns the control.';
   h+='</div>';
   if(r.feeds.length) h+='<h5 style="margin:6px 0 4px">Answered for downstream by</h5><table class="al">'+r.feeds.map(li).join('')+'</table>';
   if(r.covers.length) h+='<h5 style="margin:10px 0 4px">Activities it covers</h5><div class="isub" style="margin-bottom:4px">Upstream activities with no person deciding or verifying, whose work products reach this decision.</div><table class="al">'+r.covers.sort(nat).map(li).join('')+'</table>';
   return h+'<div class="prov">Proposed governance depth by Consequence of Error; GR-042 defines the record&rsquo;s fields. Modeled.</div></div>';}
-function dpSummary(){const m=dpAnalysis(),L=DATA.acts,dp=L.filter(a=>m[a.code].dp),ai=L.filter(a=>m[a.code].ai),
+function dpSummary(){const m=dpAnalysis(),L=DATA.acts,dp=L.filter(a=>m[a.code].dp),exc=dp.filter(a=>m[a.code].lead==='AI-led'),ai=L.filter(a=>m[a.code].ai),
   fd=L.filter(a=>!m[a.code].dp&&m[a.code].feeds.length),no=L.filter(a=>!m[a.code].dp&&!m[a.code].feeds.length);
-  return {dp,ai,fd,no,ver:dp.filter(a=>m[a.code].el==='Verify')};}
+  return {dp,exc,ai,fd,no,ver:dp.filter(a=>m[a.code].el==='Verify')};}
 function dpFinding(){const x=dpSummary();
-  return '<b>Accountability.</b> '+x.dp.length+' decision points, where a person holds Decide'+(x.ver.length?' (or Verify, in '+x.ver.length+')':'')+'. '+
+  return '<b>Accountability.</b> '+x.dp.length+' decision points, where a person holds Decide'+(x.ver.length?' (or Verify, in '+x.ver.length+')':'')+(x.exc.length?': '+(x.dp.length-x.exc.length)+' on every instance, '+x.exc.length+' on flagged exceptions':'')+'. '+
     (x.fd.length?x.fd.length+' activit'+(x.fd.length>1?'ies have':'y has')+' no person deciding or verifying and map'+(x.fd.length>1?'':'s')+' to a downstream decision point. ':'')+
-    (x.no.length?'<span class="red">'+x.no.length+' reach'+(x.no.length>1?'':'es')+' none and need'+(x.no.length>1?'':'s')+' one:</span> '+x.no.map(a=>a.code).join(', ')+'.':'Every activity has a decision point, its own or downstream.');}
+    (x.no.length?'<span class="red">'+x.no.length+' reach'+(x.no.length>1?'':'es')+' none and need'+(x.no.length>1?'':'s')+' a named control:</span> '+x.no.map(a=>a.code).join(', ')+'.':'Every activity has a decision point, its own or downstream.');}
 function dataSide(){
   return '<div class="q">'+VIEWS[2].q+'</div><p>Each work product, the activities that produce it and every activity that relies on it. Once AI touches a work product, the person who relies on it next has to check it.</p>'+
    '<h5>Show</h5>'+btns([['wp','By work product: who has to check it'],['act','By activity: what it creates, reads, updates and deletes']],'dmode')+
@@ -644,7 +653,7 @@ function refFindings(){
     '<li><b>People.</b> '+accTop.map(([n,r])=>n+' ('+r.acc+')').join(', ')+' hold '+pct(accTop.reduce((s,[n,r])=>s+r.acc,0),118)+' of all accountability, and it stays with them as the work moves.</li>'+
     '<li><b>Data.</b> '+nvp+' verification points: places a person checks AI-touched work before acting on it. '+hoActs.length+' activities receive AI-touched work with no person in between and must name a control.</li>'+
     '<li>'+dpFinding()+'</li></ul></div>';
-  h+='<div class="card" style="padding:0;overflow-x:auto"><div style="padding:14px 18px 6px"><h3>Latest change to the reference</h3><div class="sub">GR-058, applied in one change-log entry: '+changed.length+' ceilings derived from their element ceilings, and 7.2.1.4&rsquo;s Consequence of Error from Low to Moderate.</div></div><table class="t"><thead><tr><th>Activity</th><th style="text-align:left">Ceiling</th><th class="hide-s" style="text-align:left">Ceiling factors</th></tr></thead><tbody>';
+  h+='<div class="card" style="padding:0;overflow-x:auto"><div style="padding:14px 18px 6px"><h3>Latest change to the reference</h3><div class="sub">GR-058, applied in one change-log entry: '+changed.length+' ceilings derived from their element ceilings'+(S.coe?', '+DATA.acts.filter(a=>coeCap(a,a.ceiling)!==a.ceiling).length+' of them by the proposed Consequence of Error gates,':'')+' and 7.2.1.4&rsquo;s Consequence of Error from Low to Moderate.</div></div><table class="t"><thead><tr><th>Activity</th><th style="text-align:left">Ceiling</th><th class="hide-s" style="text-align:left">Ceiling factors</th></tr></thead><tbody>';
   changed.forEach(a=>{h+='<tr><td><span class="code">'+a.code+'</span> '+esc(a.name)+'</td><td style="text-align:left;white-space:nowrap">'+a.ceiling+' → '+derivedCeil(a)+'</td><td class="hide-s" style="text-align:left">'+a.f.map(x=>FL[x]).join(', ')+'</td></tr>';});
   h+='</tbody></table></div>';
   h+='<div class="outline"><h3>Test the next change</h3><p>The <a href="../work_elements/element_ceilings_sketch.html">element-ceilings stress test</a> sits here, so a proposed change to the reference can be tried across all 118 activities before it is applied.</p></div>';
@@ -657,7 +666,7 @@ function orgFindings(){
   const refChg=as.filter(a=>ABC_REF[a.code]&&(ABC_REF[a.code].ceiling!==derivedCeil(a)||ABC_REF[a.code].cons!==a.cons));
   const note='<div class="prov">'+abcNote()+'</div>';
   if(S.fmode==='exc'){
-    const rows=[['Past the Progression Ceiling, no override',pastNo.map(a=>a.code+(HC[a.cons]?' ('+a.cons+', cannot be overridden)':''))],['An element past its own ceiling, activity within its ceiling',pe.map(a=>a.code+' '+pastEls(a).join(', '))],['Ceiling overrides',ovs.map(a=>a.code+' to '+ABC_OV[a.code].level)],['Reference changed since assessed (GR-058)',refChg.map(a=>a.code)],['No decision point, its own or downstream (GR-021)',dpSummary().no.map(a=>a.code)]];
+    const rows=[['Past the Progression Ceiling, no override',pastNo.map(a=>a.code+(HC[a.cons]?' ('+a.cons+', cannot be overridden)':''))],['An element past its own ceiling, activity within its ceiling',pe.map(a=>a.code+' '+pastEls(a).join(', '))],['Ceiling overrides',ovs.map(a=>a.code+' to '+ABC_OV[a.code].level)],['Reference changed since assessed (GR-058)',refChg.map(a=>a.code)],['Named control needed: no decision point, its own or downstream (GR-021)',dpSummary().no.map(a=>a.code)]];
     return '<div class="card"><h3>Exceptions report</h3><div class="sub">Every place '+esc(ORGNAME())+' departs from the reference, by type. Rolled up from activity to process, process group and category in the real build, and printable for executive review.</div>'+note+'</div>'+
       '<div class="card" style="padding:0;overflow-x:auto"><table class="t"><thead><tr><th>Type of exception</th><th>Count</th><th style="text-align:left">Activities</th></tr></thead><tbody>'+
       rows.map(([k,v])=>'<tr><td>'+k+'</td><td>'+(v.length||'<span class="z">0</span>')+'</td><td style="text-align:left">'+(v.join(' · ')||'<span class="z">none</span>')+'</td></tr>').join('')+'</tbody></table></div>';
@@ -680,12 +689,16 @@ function findMain(){return isOrg()?orgFindings():refFindings();}
 const ORGS=[['ref','Reference Model'],['abc','ABC Test Org (test data)']];
 function pickOrg(v){if(v==='__new__'){alertNew=true;}else{S.org=v;alertNew=false;if(v==='ref'&&S.ws==='assessed')S.ws='all';}render()}
 let alertNew=false;
+function coeToggle(v){S.coe=v;loadABC();render()}
+function coeSide(){const n=DATA.acts.filter(a=>coeCap(a,a.ceiling)!==a.ceiling).length;
+  return '<h5>Ceilings</h5><div class="stack">'+[[true,'GR-058, with the Consequence of Error gates (proposed)'],[false,'GR-058 only']].map(o=>'<button class="'+(S.coe===o[0]?'on':'')+'" onclick="coeToggle('+o[0]+')">'+o[1]+'</button>').join('')+'</div>'+
+  '<p class="small" style="margin-top:6px">The gates close Agent-delegation &rarr; Automation for High or Critical activities and wherever a ceiling factor holds an element with a person, and Oversight &rarr; Agent-delegation for Critical. They move '+n+' ceilings.</p>';}
 function render(){DPC=null;
   document.getElementById('views').innerHTML=VIEWS.map(v=>'<button class="'+(S.view===v.id?'on':'')+'" onclick="S.view=\''+v.id+'\';render()">'+v.name+'<small>'+v.q+'</small></button>').join('');
   // Same list as today's sandbox selector: the Reference Model, every organization on file, and New organization (Tim, Oct 8: one to many organizations).
   document.getElementById('orgsel').innerHTML=ORGS.map(o=>'<option value="'+o[0]+'"'+(S.org===o[0]?' selected':'')+'>'+o[1]+'</option>').join('')+'<option value="__new__">New organization\u2026</option>';
   const M={work:[workSide,workMain],people:[peopleSide,peopleMain],data:[dataSide,dataMain],findings:[findSide,findMain]}[S.view];
-  document.getElementById('side').innerHTML=(S.org==='abc'&&ABC_SET?abcSide():'')+M[0]()+(S.org==='abc'&&S.view!=='findings'&&S.view!=='work'?'<p class="small" style="margin-top:12px">ABC Test Org&rsquo;s assessed values are read live in the real build; this sketch shows the reference.</p>':'');
+  document.getElementById('side').innerHTML=(S.org==='abc'&&ABC_SET?abcSide():'')+M[0]()+coeSide()+(S.org==='abc'&&S.view!=='findings'&&S.view!=='work'?'<p class="small" style="margin-top:12px">ABC Test Org&rsquo;s assessed values are read live in the real build; this sketch shows the reference.</p>':'');
   document.getElementById('main').innerHTML=(alertNew?'<div class="outline"><span class="tagline">Sketch</span><h3>New organization</h3><p>Opens the same New organization form as today&rsquo;s sandbox. Every organization on file appears in this list, so the four views work the same for one organization or many.</p></div>':'')+M[1]();
 }
 applyRaci();loadABC();render();
