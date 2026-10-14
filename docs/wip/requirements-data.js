@@ -538,21 +538,21 @@ window.REQUIREMENTS = [
   "source_doc": "Website Framework Review (Sept 2026)",
   "source_section": "Section 8, Accountability May Become More Important Than Responsibility",
   "distilled": "Add a visible “Human Accountability Anchor” marker as Responsible increasingly shifts to the system.",
-  "acceptance": "Every AI-supported workflow displays a named Human Accountability Anchor role.",
+  "acceptance": "Every AI-supported activity shows its Human Accountability Anchor: the human role answerable for its outcome. An activity that is a Governed Decision Point shows the anchor its GDP record names; one that only feeds a downstream decision shows the downstream GDP it maps to and that GDP's anchor. An AI-supported activity with neither is listed as an exception in Findings.",
   "raw": "Every AI-enabled workflow may ultimately need a visible Human Accountability Anchor — the role that remains answerable for the outcome, escalation, exception, override and ethical judgment.",
   "converged": "RACI Accountable field / Gates “Accountable Role” column",
   "spec_doc": "Shock Wave Effect (GDP definition)",
   "spec_section": "Blast Radius — Accountability ring / Governed Decision Point definition",
   "wip_item": "shock-wave — the_shock_wave_effect.html",
-  "next_action": "Decide whether the Governed Decision Point record (GR-042) serves as the Human Accountability Anchor, then show it in the sandbox.",
+  "next_action": "Define the GDP record's fields, including the activities it covers (GR-042), then show each AI-supported activity's anchor and, where the decision sits downstream, the GDP it maps to, in the four-view build (GR-059).",
   "decision": {
    "id": "gdp-anchor",
    "type": "question",
-   "question": "Should the Governed Decision Point record (GR-042) serve as the Human Accountability Anchor?",
-   "summary": "The Governed Decision Point record is the Human Accountability Anchor: GR-042 defines its fields, then every AI-supported activity shows its anchor role in the sandbox."
+   "question": "Should the Governed Decision Point record (GR-042) be the governance record that names and operationalizes the Human Accountability Anchor?",
+   "summary": "The Human Accountability Anchor is the human role answerable for the outcome; the Governed Decision Point record is the governance record that names that role and operationalizes it. Every activity's anchor is its Accountable role (GR-060). An activity is a GDP when a person holds its Decide element (GR-058) on a High or Critical Consequence of Error. An AI-supported activity that is not itself a GDP maps to the downstream GDP that receives its work product; the GDP record lists the activities it covers. An AI-supported activity with neither is an exception in Findings."
   },
   "decisions": [],
-  "log": "RACI's Accountable field and the Gates view's Accountable-role column already surface who's accountable, but not framed as an explicit “anchor” concept. The Shock Wave Effect's GDP (Governed Decision Point — who decides, who it escalates to, the trigger condition) is the closest existing language to this ask, and is named as the framework's containment mechanism — but it's still a WIP concept doc, not a built UI marker.",
+  "log": "RACI's Accountable field and the Gates view's Accountable-role column already surface who's accountable, but not framed as an explicit “anchor” concept. The Shock Wave Effect's GDP (Governed Decision Point — who decides, who it escalates to, the trigger condition) is the closest existing language to this ask, and is named as the framework's containment mechanism — but it's still a WIP concept doc, not a built UI marker.\n\nOct 14, 2026 (GiGi's approval note, adopted by Tim): the anchor is the human role, and the Governed Decision Point is the governance record that identifies and operationalizes it, so the question and summary now say that. Her second point, how an AI-supported activity that is not itself a GDP maps to its anchor when the accountable decision sits downstream, is now part of the design: every activity's anchor is its Accountable role (activity-level RACI, GR-060); an activity is a GDP when a person holds its Decide element (GR-058) on a High or Critical Consequence of Error; an activity that only researches, drafts or produces for a later decision maps to the downstream GDP that receives its work product, and the GDP record gains an \u201cActivities it covers\u201d field (GR-042) so the chain reads both ways; an AI-supported activity with no person holding a Decide element and no downstream GDP is an exception in Findings.",
   "legacy_status": "Partially Addressed"
  },
  {
@@ -1080,17 +1080,17 @@ window.REQUIREMENTS = [
   "raised_by": "GiGi Garcia",
   "source_doc": "HITL Working Thoughts & Next Steps (Sept 2026)",
   "source_section": "Where Tim Can Keep Driving the Architecture",
-  "distilled": "Formally define the required field set for a Governed Decision Point (owner, escalation path, override mechanism, documentation requirement, review cadence), not just the informal concept.",
-  "acceptance": "A Governed Decision Point record type exists with owner, escalation path, override, documentation, and review cadence.",
+  "distilled": "Formally define the required field set for a Governed Decision Point (owner, escalation path, override mechanism, documentation requirement, review cadence, activities it covers), not just the informal concept.",
+  "acceptance": "A Governed Decision Point record type exists with owner (the Human Accountability Anchor role, GR-021), escalation path, override, documentation, review cadence, and the activities it covers, including upstream activities whose work products feed the decision.",
   "raw": "Defining what every Governed Decision Point needs to include: owner, escalation, override, documentation, and review.",
   "converged": "GR-021",
   "spec_doc": "Shock Wave Effect (docs/wip/the_shock_wave_effect.html)",
   "spec_section": "Blast Radius — Accountability ring / Governed Decision Point definition",
   "wip_item": "shock-wave — the_shock_wave_effect.html",
-  "next_action": "Define the Governed Decision Point field set and rewrite the two existing entries (7.6.1, 7.4.4) against it.",
+  "next_action": "Define the Governed Decision Point field set, including the activities it covers, rewrite the two existing entries (7.6.1, 7.4.4) against it, and link the upstream activities that feed each one.",
   "decision": null,
   "decisions": [],
-  "log": "The Shock Wave Effect names GDPs (who decides, who it escalates to, the trigger condition) as the framework's containment mechanism and is the closest existing language to GiGi's ask (converges with GR-021's Human Accountability Anchor) — but it defines GDPs conceptually, not as a formal 5-field schema (owner/escalation/override/documentation/review). No structured GDP record type exists in the data model; the two real GDP entries built so far (HRBP Manager's 7.6.1 and 7.4.4) were written as prose, not against a defined field set.",
+  "log": "The Shock Wave Effect names GDPs (who decides, who it escalates to, the trigger condition) as the framework's containment mechanism and is the closest existing language to GiGi's ask (converges with GR-021's Human Accountability Anchor) — but it defines GDPs conceptually, not as a formal 5-field schema (owner/escalation/override/documentation/review). No structured GDP record type exists in the data model; the two real GDP entries built so far (HRBP Manager's 7.6.1 and 7.4.4) were written as prose, not against a defined field set.\n\nOct 14, 2026 (Tim, from GiGi's GR-021 approval note): the owner field is the Human Accountability Anchor, the human role, and the record is what identifies and operationalizes it. A sixth field, the activities it covers, is added so an AI-supported activity that is not itself a GDP can map to the downstream decision that answers for it.",
   "legacy_status": "Open"
  },
  {
