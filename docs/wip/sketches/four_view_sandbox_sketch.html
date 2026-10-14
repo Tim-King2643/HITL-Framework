@@ -121,6 +121,7 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .abcset{font-size:12px;color:var(--gray);padding:0 0 10px;margin:0 0 12px;border-bottom:1px solid var(--border)}
 .aright{display:flex;gap:14px;align-items:baseline;white-space:nowrap}.assess{font-size:12px;color:var(--navy);text-decoration:none}.assess:hover{text-decoration:underline}
 .abcset a{color:var(--navy);font-weight:600;text-decoration:none}.abcset a:hover{text-decoration:underline}
+.dpm{font-size:12px;color:var(--navy);cursor:pointer;border-bottom:1px dotted currentColor;white-space:nowrap}.dpm.red{color:var(--red)}.dpm.sel{font-weight:600}
 </style></head><body>
 <div class="sk"><b>SKETCH</b> &middot; Four views instead of six &middot; all four views working &middot; reference data &middot; not in the sandbox &middot; design for <a href="../requirements_register.html#GR-059" style="color:#7A5A1E;font-weight:600">GR-059</a> &middot; RACI from the <a href="../activity_raci_draft.html" style="color:#7A5A1E;font-weight:600">GR-060 draft</a> &middot; <a href="../index.html" style="color:#7A5A1E;font-weight:600">Back to WIP hub</a></div>
 <div class="top"><div class="top-in">
@@ -237,16 +238,17 @@ function peopleMain(){
     const top=names.slice().sort((x,y)=>B[y].acc-B[x].acc);
     h+='<div class="card"><h3>What this shows</h3><ul class="find"><li>'+top.slice(0,3).map(n=>n+' is Accountable for '+B[n].acc).join(', ')+' of the 118 activities: '+pct(top.slice(0,3).reduce((s,n)=>s+B[n].acc,0),118)+' of all accountability sits with three roles.</li>'+
       (none.length?'<li>'+none.map(r=>r.name+(RC[r.name].C||RC[r.name].I?' is '+[RC[r.name].C?'Consulted on '+RC[r.name].C:'',RC[r.name].I?'Informed on '+RC[r.name].I:''].filter(Boolean).join(' and '):' has no RACI role')).join('; ')+'. None holds a Responsible or Accountable activity in PCF 7.0.</li>':'<li>Every catalog role holds a Responsible or Accountable activity.</li>')+'</ul></div>';
-    h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t"><thead><tr><th>Role</th><th>Accountable</th><th>Responsible</th><th>Consulted</th><th>Informed</th><th class="hide-s">% H, current → ceiling</th><th class="hide-s" style="text-align:left">Reporting line</th></tr></thead><tbody>';
-    let tier='';DATA.roles.forEach(r=>{const n=r.name;if(r.tier!==tier){tier=r.tier;h+='<tr class="tier"><td colspan="7">'+tier+'</td></tr>';}
+    h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t"><thead><tr><th>Role</th><th>Accountable</th><th>Responsible</th><th>Consulted</th><th>Informed</th><th title="Decision points where this role is the Human Accountability Anchor (GR-021)">Decision points anchored</th><th class="hide-s">% H, current → ceiling</th><th class="hide-s" style="text-align:left">Reporting line</th></tr></thead><tbody>';
+    const DPM=dpAnalysis(),dpn=n=>DATA.acts.filter(a=>DPM[a.code].dp&&a.Aroles[0]===n).length;
+    let tier='';DATA.roles.forEach(r=>{const n=r.name;if(r.tier!==tier){tier=r.tier;h+='<tr class="tier"><td colspan="8">'+tier+'</td></tr>';}
       const x=B[n],c=RC[n],z=v=>v||'<span class="z">0</span>',hc=rH(n,'cur'),dr=direct(n).length,sp=span(n);
       const L=DATA.acts.filter(a=>a.Aroles.includes(n));
-      h+='<tr class="r" onclick="opened[\'r'+n+'\']=!opened[\'r'+n+'\'];render()"><td><span class="tg">'+(opened['r'+n]?'−':'+')+'</span>'+esc(n)+'</td><td>'+z(x.acc)+'</td><td>'+z(x.resp)+'</td><td>'+z(c.C)+'</td><td>'+z(c.I)+'</td>'+
+      h+='<tr class="r" onclick="opened[\'r'+n+'\']=!opened[\'r'+n+'\'];render()"><td><span class="tg">'+(opened['r'+n]?'−':'+')+'</span>'+esc(n)+'</td><td>'+z(x.acc)+'</td><td>'+z(x.resp)+'</td><td>'+z(c.C)+'</td><td>'+z(c.I)+'</td><td>'+z(dpn(n))+'</td>'+
         '<td class="hide-s">'+(hc==null?'<span class="z">—</span>':hFig(String(hc),'hc'+n)+' → '+hFig(String(rH(n,'ceil')),'hk'+n)+'<div class="small">'+hLabel(L,'cur')+'</div>')+'</td>'+
         '<td class="hide-s" style="text-align:left">'+(r.reportsTo?'Reports to '+esc(r.reportsTo):'Top of the role catalog')+(dr?'<div class="small">'+dr+' direct report'+(dr>1?'s':'')+', '+sp+' in span</div>':'')+'</td></tr>';
-      if(hc!=null) h+=hCalcRow([opened['hc'+n]?'Current: '+rCalc(n,'cur')+'.':'',opened['hk'+n]?'Ceiling: '+rCalc(n,'ceil')+'.':''].filter(Boolean),7);
+      if(hc!=null) h+=hCalcRow([opened['hc'+n]?'Current: '+rCalc(n,'cur')+'.':'',opened['hk'+n]?'Ceiling: '+rCalc(n,'ceil')+'.':''].filter(Boolean),8);
       if(opened['r'+n]){const codes=Object.keys(c.acts).sort(nat);
-        h+='<tr class="det"><td colspan="7">'+
+        h+='<tr class="det"><td colspan="8">'+
           (codes.length?'<table class="al">'+codes.map(k=>'<tr><td class="code">'+k+'</td><td>'+esc(ACT[k].name)+'</td><td>'+c.acts[k].join(' · ')+'</td></tr>').join('')+'</table>':'<div class="small">No RACI role in PCF 7.0.</div>')+'</td></tr>';}});
     return h+'</tbody></table></div>';
   }
@@ -459,6 +461,7 @@ function infoBox(a){
   const ci=rank(derivedCeil(a)), cp=caps(a), w=WORKED[a.code], phr=w?'':'<div class="na">The phrase for what each element acts on comes with the Work Element Reference Data.</div>';
   const na=w&&w.na?'<div class="na">Not part of this activity: '+Object.entries(w.na).map(([k,v])=>k+' ('+esc(v)+')').join(' · ')+'</div>':'';
   if(sel.t==='coe') return coeBox(a);
+  if(sel.t==='dp') return dpBox(a);
   if(sel.t==='stage'&&isOrg()&&ABC_EL[a.code]&&ST[sel.k]===curOf(a)) sel={t:'abc'};
   if(sel.t==='stage'){const s=ST[sel.k],g=stageEls(a,s),p=sel.k>0?stageEls(a,ST[sel.k-1]):g;
     return '<div class="ibox">'+X(a)+'<h4>'+s+' — who does what</h4><div class="isub">'+s+' keeps '+HPCT[s]+'% H. '+esc(STEPDEF[s])+(sel.k>ci?' <span class="amber">Past this activity’s ceiling ('+derivedCeil(a)+'); shown for illustration.</span>':'')+'</div><table class="it">'+elsOf(a).map(e=>elRow(a,e,g[e]+(e===ctlOf(a)&&CTLNOTE[s]?'<span class="small">'+CTLNOTE[s]+'</span>':''),'',sel.k>0&&p[e]!==g[e])).join('')+'</table>'+roleImpact(a,s)+na+phr+'</div>';}
@@ -480,18 +483,20 @@ function workMain(){
     const fc={};person.forEach(a=>a.f.forEach(x=>fc[x]=(fc[x]||0)+1));const top=Object.entries(fc).sort((x,y)=>y[1]-x[1]);
     if(top.length) f.push('What keeps a person in the work: '+top.map(([k,n])=>FL[k].toLowerCase()+' ('+n+')').join(', ')+'.');
     if(hcHigh.length) f.push(hcHigh.length+' High or Critical activit'+(hcHigh.length>1?'ies have':'y has')+' a ceiling at Agent-delegation or Automation, where no person sees every instance: '+hcHigh.slice(0,5).map(a=>a.code).join(', ')+(hcHigh.length>5?' and '+(hcHigh.length-5)+' more':'')+'.');
+    {const m=dpAnalysis(),dp=L.filter(a=>m[a.code].dp).length,fd=L.filter(a=>!m[a.code].dp&&m[a.code].feeds.length).length,no=L.filter(a=>!m[a.code].dp&&!m[a.code].feeds.length);
+      f.push(dp+' decision point'+(dp===1?'':'s')+(org?' at the Current State':' at the ceilings')+(fd?'; '+fd+' map'+(fd===1?'s':'')+' to a downstream decision point':'')+(no.length?'; <span class="red">'+no.length+' with none</span> ('+no.slice(0,5).map(a=>a.code).join(', ')+(no.length>5?' and '+(no.length-5)+' more':'')+')':'')+'. Click a decision point to see its anchor and the activities it covers.');}
     if(org){const as=L.filter(a=>ABCSTAGE[a.code]), past=as.filter(a=>rank(curOf(a))>rank(derivedCeil(a))), cov=past.filter(a=>ABC_OV[a.code]), pe=as.filter(a=>pastEls(a).length&&rank(curOf(a))<=rank(derivedCeil(a)));
       f.push(as.length+' of '+L.length+' assessed. '+(past.length?past.length+' past the ceiling'+(cov.length?', '+cov.length+' of them covered by an approved override':'')+'. ':'None past its ceiling. ')+(pe.length?pe.map(a=>a.code+' '+pastEls(a).join(', ')).join('; ')+' past '+(pe.length>1?'their':'its')+' element ceiling, even though the activit'+(pe.length>1?'ies are':'y is')+' within its ceiling.':''));}
   }
   h+='<div class="card"><h3>What this shows</h3><ul class="find">'+f.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
-  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t wt"><thead><tr><th>Activity &middot; Accountable role &middot; Consequence of Error <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; click a step, an arrow, the lock or the Consequence of Error</span></th></tr></thead><tbody>';
+  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t wt"><thead><tr><th>Activity &middot; Accountable role (the Human Accountability Anchor) &middot; decision point &middot; Consequence of Error <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; click a step, an arrow, the lock, the decision point or the Consequence of Error</span></th></tr></thead><tbody>';
   let proc='';
   L.forEach(a=>{
     const head=!a.proc.startsWith(a.code+' ');
     if(a.proc!==proc&&head){proc=a.proc;h+=procRow(proc);}
     if(head&&!opened['p'+l3Of(a)]) return;
     const pe=pastEls(a), box=infoBox(a);
-    h+='<tr class="wr"><td><div class="ahead"><span><span class="code">'+a.code+'</span> '+esc(a.name)+(pe.length?' <span class="red" title="An element is past its own ceiling">\u25CF</span>':'')+' &middot; '+esc(a.Aroles.join(', '))+'</span><span class="aright">'+(isOrg()?'<a class="assess" href="../work_elements/assess_panel_sketch.html#'+a.code+'" title="Open the element assessment panel">'+(ABC_EL[a.code]?'Reassess':'Assess')+'</a>':'')+'<span class="acons'+((S.wsel[a.code]||{}).t==='coe'?' sel':'')+'" style="color:'+CONSC[a.cons]+'" onclick="wpick(\''+a.code+'\',\'coe\',0)" title="Consequence of Error">'+a.cons+'</span></span></div>'+ramp(a,true)+'</td></tr>';
+    h+='<tr class="wr"><td><div class="ahead"><span><span class="code">'+a.code+'</span> '+esc(a.name)+(pe.length?' <span class="red" title="An element is past its own ceiling">\u25CF</span>':'')+' &middot; '+esc(a.Aroles.join(', '))+dpTag(a)+'</span><span class="aright">'+(isOrg()?'<a class="assess" href="../work_elements/assess_panel_sketch.html#'+a.code+'" title="Open the element assessment panel">'+(ABC_EL[a.code]?'Reassess':'Assess')+'</a>':'')+'<span class="acons'+((S.wsel[a.code]||{}).t==='coe'?' sel':'')+'" style="color:'+CONSC[a.cons]+'" onclick="wpick(\''+a.code+'\',\'coe\',0)" title="Consequence of Error">'+a.cons+'</span></span></div>'+ramp(a,true)+'</td></tr>';
     if(box) h+='<tr class="det"><td colspan="1">'+box+'</td></tr>';
   });
   return h+'</tbody></table></div>';
@@ -520,6 +525,55 @@ function wpAnalysis(){
     return {w,prods,top,pts,ho};
   });
 }
+/* ---------- Decision points (GR-021, GR-042) ---------- */
+// The Human Accountability Anchor is each activity's Accountable role. An activity is a decision point when a person
+// holds its Decide element, or its Verify element when it has no Decide. Consequence of Error sets how much governance
+// the decision point's record carries, not whether it is one. An activity that is neither maps to the downstream
+// decision points its work product reaches; one that reaches none is an exception.
+// Where the work is: the Reference Model at each activity's ceiling; an organization at its Current State.
+const dpEl=a=>{const e=elsOf(a);return e.includes('Decide')?'Decide':e.includes('Verify')?'Verify':null};
+const dpStage=a=>isOrg()?curOf(a):derivedCeil(a);
+function dpLeads(a){if(isOrg()&&ABC_EL[a.code]){const g=ABC_EL[a.code];return Object.fromEntries(Object.keys(g).map(e=>[e,g[e][0]]));}return stageEls(a,dpStage(a));}
+const holds=v=>v==='Human'||v==='Human-led';
+const DPGOV={Low:'owner and override; reviewed when an exception comes up',Moderate:'owner, escalation path and override; reviewed periodically',
+  High:'every field; each decision documented; reviewed on a set cadence',Critical:'every field; each decision documented with its evidence; reviewed on a set cadence and after every override'};
+let DPC=null;
+function dpAnalysis(){
+  // recomputed on every render (render() clears it), so it follows the organization, its assessments and RACI
+  if(DPC&&DPC.org===S.org) return DPC.m;
+  const m={};
+  DATA.acts.forEach(a=>{const e=dpEl(a),v=e&&dpLeads(a)[e];m[a.code]={el:e,lead:v,dp:!!(e&&holds(v)),ai:rank(dpStage(a))>=1,feeds:[],covers:[]};});
+  const outs=c=>{const x=CRUD.crud[c];return x?x.C.concat(x.U):[]};
+  const users=w=>Object.keys(CRUD.crud).filter(c=>{const x=CRUD.crud[c];return x.R.concat(x.U).includes(w)});
+  DATA.acts.forEach(a=>{const r=m[a.code];if(r.dp)return;
+    // follow the work products forward, one hand-off at a time, and stop at the nearest decision points
+    const seen=new Set([a.code]),found=new Set();let q=[a.code];
+    for(let d=0;d<8&&q.length&&!found.size;d++){const nx=[];
+      q.forEach(c=>outs(c).forEach(w=>users(w).forEach(u=>{if(seen.has(u))return;seen.add(u);if(m[u].dp)found.add(u);else nx.push(u);})));q=nx;}
+    r.feeds=[...found].sort(nat);r.feeds.forEach(c=>m[c].covers.push(a.code));});
+  DPC={org:S.org,m};return m;
+}
+function dpTag(a){const r=dpAnalysis()[a.code],on=(S.wsel[a.code]||{}).t==='dp'?' sel':'';
+  if(r.dp) return ' &middot; <span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="A person holds '+r.el+': this activity is a decision point">Decision point</span>';
+  if(r.feeds.length) return ' &middot; <span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person holds '+r.el+' here; its work product reaches a downstream decision point">Feeds '+r.feeds[0]+(r.feeds.length>1?' +'+(r.feeds.length-1):'')+'</span>';
+  return ' &middot; <span class="dpm red'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person decides or verifies, and no downstream decision point">No decision point</span>';}
+function dpBox(a){const m=dpAnalysis(),r=m[a.code],at=isOrg()?'at '+esc(ORGNAME())+'’s Current State ('+dpStage(a)+')':'at its ceiling ('+dpStage(a)+')';
+  const li=c=>'<tr><td class="code">'+c+'</td><td>'+esc(ACT[c].name)+'</td><td>'+esc(ACT[c].Aroles[0])+'</td><td style="color:'+CONSC[ACT[c].cons]+'">'+ACT[c].cons+'</td></tr>';
+  let h='<div class="ibox">'+X(a)+'<h4>'+(r.dp?'Decision point — '+r.el+' held by a person':r.feeds.length?'Feeds a downstream decision point':'No decision point')+'</h4><div class="isub">';
+  if(r.dp) h+='Human Accountability Anchor: <b>'+esc(a.Aroles[0])+'</b>. '+r.el+' is '+r.lead+' '+at+(r.el==='Verify'?'; the activity has no Decide element, so the verification is the decision point':'')+'. Its Governed Decision Point record carries, for a '+a.cons+' Consequence of Error: '+DPGOV[a.cons]+'.';
+  else if(r.feeds.length) h+='No person holds '+(r.el||'Decide or Verify')+' '+at+(r.lead?' ('+r.lead+')':'')+', so its accountability lands where its work product is decided. Its own Accountable role, '+esc(a.Aroles[0])+', stays answerable for the activity.';
+  else h+='<span class="red">No person holds '+(r.el||'Decide or Verify')+' '+at+', and none of its work products reaches a decision point downstream.</span> It needs a decision point of its own or a named control. Its Accountable role, '+esc(a.Aroles[0])+', stays answerable.';
+  h+='</div>';
+  if(r.feeds.length) h+='<h5 style="margin:6px 0 4px">Answered for downstream by</h5><table class="al">'+r.feeds.map(li).join('')+'</table>';
+  if(r.covers.length) h+='<h5 style="margin:10px 0 4px">Activities it covers</h5><div class="isub" style="margin-bottom:4px">Upstream activities with no person deciding or verifying, whose work products reach this decision.</div><table class="al">'+r.covers.sort(nat).map(li).join('')+'</table>';
+  return h+'<div class="prov">Proposed governance depth by Consequence of Error; GR-042 defines the record&rsquo;s fields. Modeled.</div></div>';}
+function dpSummary(){const m=dpAnalysis(),L=DATA.acts,dp=L.filter(a=>m[a.code].dp),ai=L.filter(a=>m[a.code].ai),
+  fd=L.filter(a=>!m[a.code].dp&&m[a.code].feeds.length),no=L.filter(a=>!m[a.code].dp&&!m[a.code].feeds.length);
+  return {dp,ai,fd,no,ver:dp.filter(a=>m[a.code].el==='Verify')};}
+function dpFinding(){const x=dpSummary();
+  return '<b>Accountability.</b> '+x.dp.length+' decision points, where a person holds Decide'+(x.ver.length?' (or Verify, in '+x.ver.length+')':'')+'. '+
+    (x.fd.length?x.fd.length+' activit'+(x.fd.length>1?'ies have':'y has')+' no person deciding or verifying and map'+(x.fd.length>1?'':'s')+' to a downstream decision point. ':'')+
+    (x.no.length?'<span class="red">'+x.no.length+' reach'+(x.no.length>1?'':'es')+' none and need'+(x.no.length>1?'':'s')+' one:</span> '+x.no.map(a=>a.code).join(', ')+'.':'Every activity has a decision point, its own or downstream.');}
 function dataSide(){
   return '<div class="q">'+VIEWS[2].q+'</div><p>Each work product, the activities that produce it and every activity that relies on it. Once AI touches a work product, the person who relies on it next has to check it.</p>'+
    '<h5>Show</h5>'+btns([['wp','By work product: who has to check it'],['act','By activity: what it creates, reads, updates and deletes']],'dmode')+
@@ -588,7 +642,8 @@ function refFindings(){
   h+='<div class="card"><h3>What this shows</h3><ul class="find">'+
     '<li><b>Work.</b> '+cnt[5]+' activities may go to Automation and '+cnt[4]+' to Agent-delegation; '+(cnt[2]+cnt[3])+' keep a person doing or approving every instance.</li>'+
     '<li><b>People.</b> '+accTop.map(([n,r])=>n+' ('+r.acc+')').join(', ')+' hold '+pct(accTop.reduce((s,[n,r])=>s+r.acc,0),118)+' of all accountability, and it stays with them as the work moves.</li>'+
-    '<li><b>Data.</b> '+nvp+' verification points: places a person checks AI-touched work before acting on it. '+hoActs.length+' activities receive AI-touched work with no person in between and must name a control.</li></ul></div>';
+    '<li><b>Data.</b> '+nvp+' verification points: places a person checks AI-touched work before acting on it. '+hoActs.length+' activities receive AI-touched work with no person in between and must name a control.</li>'+
+    '<li>'+dpFinding()+'</li></ul></div>';
   h+='<div class="card" style="padding:0;overflow-x:auto"><div style="padding:14px 18px 6px"><h3>Latest change to the reference</h3><div class="sub">GR-058, applied in one change-log entry: '+changed.length+' ceilings derived from their element ceilings, and 7.2.1.4&rsquo;s Consequence of Error from Low to Moderate.</div></div><table class="t"><thead><tr><th>Activity</th><th style="text-align:left">Ceiling</th><th class="hide-s" style="text-align:left">Ceiling factors</th></tr></thead><tbody>';
   changed.forEach(a=>{h+='<tr><td><span class="code">'+a.code+'</span> '+esc(a.name)+'</td><td style="text-align:left;white-space:nowrap">'+a.ceiling+' → '+derivedCeil(a)+'</td><td class="hide-s" style="text-align:left">'+a.f.map(x=>FL[x]).join(', ')+'</td></tr>';});
   h+='</tbody></table></div>';
@@ -602,7 +657,7 @@ function orgFindings(){
   const refChg=as.filter(a=>ABC_REF[a.code]&&(ABC_REF[a.code].ceiling!==derivedCeil(a)||ABC_REF[a.code].cons!==a.cons));
   const note='<div class="prov">'+abcNote()+'</div>';
   if(S.fmode==='exc'){
-    const rows=[['Past the Progression Ceiling, no override',pastNo.map(a=>a.code+(HC[a.cons]?' ('+a.cons+', cannot be overridden)':''))],['An element past its own ceiling, activity within its ceiling',pe.map(a=>a.code+' '+pastEls(a).join(', '))],['Ceiling overrides',ovs.map(a=>a.code+' to '+ABC_OV[a.code].level)],['Reference changed since assessed (GR-058)',refChg.map(a=>a.code)]];
+    const rows=[['Past the Progression Ceiling, no override',pastNo.map(a=>a.code+(HC[a.cons]?' ('+a.cons+', cannot be overridden)':''))],['An element past its own ceiling, activity within its ceiling',pe.map(a=>a.code+' '+pastEls(a).join(', '))],['Ceiling overrides',ovs.map(a=>a.code+' to '+ABC_OV[a.code].level)],['Reference changed since assessed (GR-058)',refChg.map(a=>a.code)],['No decision point, its own or downstream (GR-021)',dpSummary().no.map(a=>a.code)]];
     return '<div class="card"><h3>Exceptions report</h3><div class="sub">Every place '+esc(ORGNAME())+' departs from the reference, by type. Rolled up from activity to process, process group and category in the real build, and printable for executive review.</div>'+note+'</div>'+
       '<div class="card" style="padding:0;overflow-x:auto"><table class="t"><thead><tr><th>Type of exception</th><th>Count</th><th style="text-align:left">Activities</th></tr></thead><tbody>'+
       rows.map(([k,v])=>'<tr><td>'+k+'</td><td>'+(v.length||'<span class="z">0</span>')+'</td><td style="text-align:left">'+(v.join(' · ')||'<span class="z">none</span>')+'</td></tr>').join('')+'</tbody></table></div>';
@@ -614,6 +669,7 @@ function orgFindings(){
   f.push(as.length+' of 118 activities assessed: '+ST.filter(s=>st[s]).map(s=>st[s]+' at '+s).join(', ')+'. '+(118-as.length)+' not yet assessed stay at the Human-only baseline.');
   f.push(past.length?past.length+' past the Progression Ceiling: '+ovs.length+' covered by an approved override, '+blocked.length+' at High or Critical that cannot be overridden ('+blocked.map(a=>a.code).join(', ')+'), and '+(pastNo.length-blocked.length)+' at Low or Moderate with no override yet.':'None is past its Progression Ceiling.');
   if(pe.length) f.push('<b>Needs a decision:</b> '+pe.map(a=>a.code+' '+pastEls(a).join(', ')).join('; ')+'. Each activity is within its ceiling, but the element its ceiling factor protects is not.');
+  f.push(dpFinding());
   if(refChg.length) f.push('<b>To reassess:</b> '+refChg.map(a=>a.code).join(', ')+' '+(refChg.length>1?'were':'was')+' assessed against the reference before GR-058, so '+(refChg.length>1?'they show':'it shows')+' &ldquo;reference changed since assessed&rdquo; until confirmed.');
   h+='<div class="card"><h3>What this shows</h3><ul class="find">'+f.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
   h+='<div class="outline"><h3>Handed to the human-impact side</h3><p>The role hand-off (GR-056) carries, for each role, the work change that lands on it: the People view&rsquo;s load numbers read from this organization&rsquo;s Current State instead of the ceiling.</p></div>';
@@ -624,7 +680,7 @@ function findMain(){return isOrg()?orgFindings():refFindings();}
 const ORGS=[['ref','Reference Model'],['abc','ABC Test Org (test data)']];
 function pickOrg(v){if(v==='__new__'){alertNew=true;}else{S.org=v;alertNew=false;if(v==='ref'&&S.ws==='assessed')S.ws='all';}render()}
 let alertNew=false;
-function render(){
+function render(){DPC=null;
   document.getElementById('views').innerHTML=VIEWS.map(v=>'<button class="'+(S.view===v.id?'on':'')+'" onclick="S.view=\''+v.id+'\';render()">'+v.name+'<small>'+v.q+'</small></button>').join('');
   // Same list as today's sandbox selector: the Reference Model, every organization on file, and New organization (Tim, Oct 8: one to many organizations).
   document.getElementById('orgsel').innerHTML=ORGS.map(o=>'<option value="'+o[0]+'"'+(S.org===o[0]?' selected':'')+'>'+o[1]+'</option>').join('')+'<option value="__new__">New organization\u2026</option>';
