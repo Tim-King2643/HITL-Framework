@@ -515,7 +515,7 @@ function workMain(){
     if(top.length) f.push('What keeps a person in the work: '+top.map(([k,n])=>FL[k].toLowerCase()+' ('+n+')').join(', ')+'.');
     if(hcHigh.length) f.push(hcHigh.length+' High or Critical activit'+(hcHigh.length>1?'ies have':'y has')+' a ceiling at Agent-delegation or Automation, where no person sees every instance: '+hcHigh.slice(0,5).map(a=>a.code).join(', ')+(hcHigh.length>5?' and '+(hcHigh.length-5)+' more':'')+'.');
     {const m=dpAnalysis(),dp=L.filter(a=>m[a.code].dp).length,fd=L.filter(a=>!m[a.code].dp&&m[a.code].feeds.length).length,no=L.filter(a=>!m[a.code].dp&&!m[a.code].feeds.length);
-      f.push(dp+' decision point'+(dp===1?'':'s')+(org?' at the Current State':' at the ceilings')+(fd?'; '+fd+' map'+(fd===1?'s':'')+' to a downstream decision point':'')+(no.length?'; <span class="red">'+no.length+' need'+(no.length===1?'s':'')+' a named control</span> ('+no.slice(0,5).map(a=>a.code).join(', ')+(no.length>5?' and '+(no.length-5)+' more':'')+')':'')+'. Click a decision point to see its anchor and the activities it covers.');}
+      f.push(dp+' decision point'+(dp===1?'':'s')+(org?' at the Current State':' at the ceilings')+(fd?'; '+fd+' decided or verified at another activity\u2019s decision point':'')+(no.length?'; <span class="red">'+no.length+' need'+(no.length===1?'s':'')+' a named control</span> ('+no.slice(0,5).map(a=>a.code).join(', ')+(no.length>5?' and '+(no.length-5)+' more':'')+')':'')+'. Click a decision point to see its anchor and the decision points on each of its work products.');}
     if(org){const as=L.filter(a=>ABCSTAGE[a.code]), past=as.filter(a=>rank(curOf(a))>rank(derivedCeil(a))), cov=past.filter(a=>ABC_OV[a.code]), pe=as.filter(a=>pastEls(a).length&&rank(curOf(a))<=rank(derivedCeil(a)));
       f.push(as.length+' of '+L.length+' assessed. '+(past.length?past.length+' past the ceiling'+(cov.length?', '+cov.length+' of them covered by an approved override':'')+'. ':'None past its ceiling. ')+(pe.length?pe.map(a=>a.code+' '+pastEls(a).join(', ')).join('; ')+' past '+(pe.length>1?'their':'its')+' element ceiling, even though the activit'+(pe.length>1?'ies are':'y is')+' within its ceiling.':''));}
   }
@@ -574,46 +574,47 @@ function dpAnalysis(){
   // recomputed on every render (render() clears it), so it follows the organization, its assessments and RACI
   if(DPC&&DPC.org===S.org) return DPC.m;
   const m={};
-  DATA.acts.forEach(a=>{const e=dpEl(a),v=e&&dpLeads(a)[e];m[a.code]={el:e,lead:v,dp:!!(e&&holds(v)),ai:rank(dpStage(a))>=1,feeds:[],covers:[]};});
-  const outs=c=>{const x=CRUD.crud[c];return x?x.C.concat(x.U):[]};
-  // An activity answers downstream to the decision point whose Decide or Verify acts on its work product. Until the Work
-  // Element Reference Data names what each element acts on, acting on it is read as updating it (approving, rejecting,
-  // changing): an activity that only reads it decides something else. The nearest such decision point, the earliest by
-  // number where several act on it (activity numbers are not flow order, so a later edit loops back to the approval);
-  // through updaters that are not decision points if needed. None: it needs a named control.
-  const updaters=w=>Object.keys(CRUD.crud).filter(c=>CRUD.crud[c].U.includes(w));
-  DATA.acts.forEach(a=>{const r=m[a.code];if(r.dp)return;
-    const seen=new Set([a.code]);let q=[a.code],hit=null,via=null;
-    for(let d=0;d<8&&q.length&&!hit;d++){const nx=[];
-      q.forEach(c=>outs(c).forEach(w=>updaters(w).forEach(u=>{if(seen.has(u))return;seen.add(u);if(m[u].dp){if(!hit||nat(u,hit)<0){hit=u;via=w;}}else nx.push(u);})));q=nx;}
-    r.feeds=hit?[hit]:[];r.via=hit?via:null;if(hit)m[hit].covers.push(a.code);});
+  DATA.acts.forEach(a=>{const e=dpEl(a),v=e&&dpLeads(a)[e];m[a.code]={el:e,lead:v,dp:!!(e&&holds(v)),ai:rank(dpStage(a))>=1,groups:[],feeds:[]};});
+  // Read from each work product's CRUD (Tim, Oct 15): its decision points are the activities that create, update or delete
+  // it where a person holds Decide or Verify. An activity's own work products are those it creates, updates or deletes;
+  // an activity that only reads a work product decides something else. An activity that is not a decision point is decided
+  // or verified at the decision points on its work products; none on any of them: it needs a named control.
+  DATA.acts.forEach(a=>{const r=m[a.code],x=CRUD.crud[a.code];if(!x)return;
+    const own=[...new Set(x.C.concat(x.U,x.D))].filter(w=>WPN[w]).sort(nat);
+    r.groups=own.map(w=>({w,mine:x.C.includes(w)?'C':x.U.includes(w)?'U':'D',
+      dps:Object.keys(CRUD.crud).filter(c=>m[c]&&m[c].dp&&wpOps(c,w)).sort(nat).map(c=>({c,op:wpOps(c,w)}))}));
+    r.feeds=[...new Set(r.groups.flatMap(g=>g.dps.map(d=>d.c)))].filter(c=>c!==a.code).sort(nat);});
   DPC={org:S.org,m};return m;
 }
+// Which of create, update and delete an activity does to a work product ('C', 'U', 'D', joined), or '' if none.
+function wpOps(c,w){const x=CRUD.crud[c];return x?['C','U','D'].filter(k=>x[k].includes(w)).join(''):''}
 function dpTag(a){const r=dpAnalysis()[a.code],on=(S.wsel[a.code]||{}).t==='dp'?' sel':'';
   if(r.dp) return '<span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="A person holds '+r.el+': this activity is a decision point">Decision Point</span>';
-  if(r.feeds.length) return '<span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person holds '+r.el+' here; it is answered for at '+r.feeds[0]+', whose Decide or Verify acts on its work product">Decision Point '+r.feeds[0]+'</span>';
-  return '<span class="dpm red'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person decides or verifies, and no decision point acts on its work product: it needs a named control">Named control needed</span>';}
-// The work products a decision point decides or verifies: those it updates, or, where it updates none, those it creates.
-function dpWps(c){const x=CRUD.crud[c];if(!x)return[];return (x.U.length?x.U:x.C).filter(w=>WPN[w]);}
+  if(r.feeds.length) return '<span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person holds '+r.el+' here; its work products are decided or verified at '+r.feeds.join(', ')+'">Decision Point '+r.feeds[0]+'</span>';
+  return '<span class="dpm red'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person decides or verifies, and no decision point creates, updates or deletes its work products: it needs a named control">Named control needed</span>';}
 const wpName=w=>'<b>'+esc(WPN[w].name)+'</b> <span class="code">'+w+'</span>';
+const OPN={C:'creates',U:'updates',D:'deletes'};
 function dpBox(a){const m=dpAnalysis(),r=m[a.code],at=isOrg()?'at '+esc(ORGNAME())+'’s Current State ('+dpStage(a)+')':'at its ceiling ('+dpStage(a)+')';
-  const li=(c,w)=>'<tr><td class="code">'+c+'</td><td>'+esc(ACT[c].name)+'</td><td>'+(w&&WPN[w]?esc(WPN[w].name):'')+'</td><td>'+esc(ACT[c].Aroles[0])+'</td><td style="color:'+CONSC[ACT[c].cons]+'">'+ACT[c].cons+'</td></tr>';
-  const own=dpWps(a.code);
+  const ops=o=>o.split('').map(k=>OPN[k]).join(', ');
   let h='<div class="ibox">'+X(a)+'<h4>'+(r.dp||r.feeds.length?'Decision Point':'Named control needed')+'</h4><div class="isub">Human Accountability Anchor: <b>'+esc(a.Aroles[0])+'</b>. ';
-  if(r.dp) h+=r.el+' is '+r.lead+' '+at+(r.lead==='AI-led'?': AI leads it, and a person decides each flagged instance, so the record also names the trigger condition':'')+(r.el==='Verify'?'; the activity has no Decide element, so the verification is the decision point':'')+'.'+(own.length?' '+r.el+' acts on '+own.map(wpName).join(', ')+'.':'')+' Its Governed Decision Point record carries, for a '+a.cons+' Consequence of Error: '+DPGOV[a.cons]+'.';
-  else if(r.feeds.length) h+='No person holds '+(r.el||'Decide or Verify')+' '+at+', so its accountability lands at '+r.feeds[0]+', whose '+m[r.feeds[0]].el+' acts on its '+(r.via&&WPN[r.via]?wpName(r.via):'work product')+'. The anchor stays answerable for the activity itself.';
-  else h+='<span class="red">No person holds '+(r.el||'Decide or Verify')+' '+at+', and no decision point decides or verifies '+(own.length?'its '+own.map(wpName).join(', '):'its work product (none is in the catalog yet)')+'.</span> With no person in the instance, it needs a named control, such as sampled review or outcome monitoring (GR-054). The anchor stays answerable and owns the control.';
+  if(r.dp) h+=r.el+' is '+r.lead+' '+at+(r.lead==='AI-led'?': AI leads it, and a person decides each flagged instance, so the record also names the trigger condition':'')+(r.el==='Verify'?'; the activity has no Decide element, so the verification is the decision point':'')+'. Its Governed Decision Point record carries, for a '+a.cons+' Consequence of Error: '+DPGOV[a.cons]+'.';
+  else if(r.feeds.length) h+='No person holds '+(r.el||'Decide or Verify')+' '+at+', so its work is decided or verified at the decision points on its work products, below. The anchor stays answerable for the activity itself.';
+  else h+='<span class="red">No person holds '+(r.el||'Decide or Verify')+' '+at+', and '+(r.groups.length?'no activity that creates, updates or deletes its work products is a decision point':'it creates, updates or deletes no work product in the catalog yet')+'.</span> With no person in the instance, it needs a named control, such as sampled review or outcome monitoring (GR-054). The anchor stays answerable and owns the control.';
   h+='</div>';
-  if(r.feeds.length) h+='<h5 style="margin:6px 0 4px">Answered for downstream by</h5><table class="al">'+r.feeds.map(c=>li(c,r.via)).join('')+'</table>';
-  if(r.covers.length) h+='<h5 style="margin:10px 0 4px">Activities it covers</h5><div class="isub" style="margin-bottom:4px">Activities with no person deciding or verifying, whose work products this activity&rsquo;s '+r.el+' acts on.</div><table class="al">'+r.covers.sort(nat).map(c=>li(c,m[c].via)).join('')+'</table>';
+  if(r.groups.length){
+    h+='<h5 style="margin:8px 0 4px">Decision points on its work products</h5><div class="isub" style="margin-bottom:4px">From each work product&rsquo;s CRUD: the activities that create, update or delete it where a person holds Decide or Verify.</div><table class="al">';
+    r.groups.forEach(g=>{h+='<tr><td colspan="5" style="padding-top:8px">'+wpName(g.w)+' <span class="small">&middot; this activity '+ops(g.mine)+' it</span></td></tr>';
+      h+=g.dps.length?g.dps.map(d=>'<tr'+(d.c===a.code?' style="font-weight:600"':'')+'><td class="code">'+d.c+'</td><td>'+esc(ACT[d.c].name)+(d.c===a.code?' (this activity)':'')+'</td><td>'+ops(d.op)+'</td><td>'+esc(ACT[d.c].Aroles[0])+'</td><td style="color:'+CONSC[ACT[d.c].cons]+'">'+ACT[d.c].cons+'</td></tr>').join('')
+        :'<tr><td colspan="5" class="red">No decision point creates, updates or deletes it.</td></tr>';});
+    h+='</table>';}
   return h+'<div class="prov">Proposed governance depth by Consequence of Error; GR-042 defines the record&rsquo;s fields. Modeled.</div></div>';}
 function dpSummary(){const m=dpAnalysis(),L=DATA.acts,dp=L.filter(a=>m[a.code].dp),exc=dp.filter(a=>m[a.code].lead==='AI-led'),ai=L.filter(a=>m[a.code].ai),
   fd=L.filter(a=>!m[a.code].dp&&m[a.code].feeds.length),no=L.filter(a=>!m[a.code].dp&&!m[a.code].feeds.length);
   return {dp,exc,ai,fd,no,ver:dp.filter(a=>m[a.code].el==='Verify')};}
 function dpFinding(){const x=dpSummary();
   return '<b>Accountability.</b> '+x.dp.length+' decision points, where a person holds Decide'+(x.ver.length?' (or Verify, in '+x.ver.length+')':'')+(x.exc.length?': '+(x.dp.length-x.exc.length)+' on every instance, '+x.exc.length+' on flagged exceptions':'')+'. '+
-    (x.fd.length?x.fd.length+' activit'+(x.fd.length>1?'ies have':'y has')+' no person deciding or verifying and map'+(x.fd.length>1?'':'s')+' to a downstream decision point. ':'')+
-    (x.no.length?'<span class="red">'+x.no.length+' reach'+(x.no.length>1?'':'es')+' none and need'+(x.no.length>1?'':'s')+' a named control:</span> '+x.no.map(a=>a.code).join(', ')+'.':'Every activity has a decision point, its own or downstream.');}
+    (x.fd.length?x.fd.length+' activit'+(x.fd.length>1?'ies have':'y has')+' no person deciding or verifying, and '+(x.fd.length>1?'are':'is')+' decided or verified at another activity\u2019s decision point. ':'')+
+    (x.no.length?'<span class="red">'+x.no.length+' reach'+(x.no.length>1?'':'es')+' none and need'+(x.no.length>1?'':'s')+' a named control:</span> '+x.no.map(a=>a.code).join(', ')+'.':'Every activity has a decision point, its own or another activity\u2019s.');}
 function dataSide(){
   return '<div class="q">'+VIEWS[2].q+'</div><p>Each work product, the activities that produce it and every activity that relies on it. Once AI touches a work product, the person who relies on it next has to check it.</p>'+
    '<h5>Show</h5>'+btns([['wp','By work product: who has to check it'],['act','By activity: what it creates, reads, updates and deletes']],'dmode')+
@@ -697,7 +698,7 @@ function orgFindings(){
   const refChg=as.filter(a=>ABC_REF[a.code]&&(ABC_REF[a.code].ceiling!==derivedCeil(a)||ABC_REF[a.code].cons!==a.cons));
   const note='<div class="prov">'+abcNote()+'</div>';
   if(S.fmode==='exc'){
-    const rows=[['Past the Progression Ceiling, no override',pastNo.map(a=>a.code+(HC[a.cons]?' ('+a.cons+', cannot be overridden)':''))],['An element past its own ceiling, activity within its ceiling',pe.map(a=>a.code+' '+pastEls(a).join(', '))],['Ceiling overrides',ovs.map(a=>a.code+' to '+ABC_OV[a.code].level)],['Reference changed since assessed (GR-058)',refChg.map(a=>a.code)],['Named control needed: no decision point, its own or downstream (GR-021)',dpSummary().no.map(a=>a.code)]];
+    const rows=[['Past the Progression Ceiling, no override',pastNo.map(a=>a.code+(HC[a.cons]?' ('+a.cons+', cannot be overridden)':''))],['An element past its own ceiling, activity within its ceiling',pe.map(a=>a.code+' '+pastEls(a).join(', '))],['Ceiling overrides',ovs.map(a=>a.code+' to '+ABC_OV[a.code].level)],['Reference changed since assessed (GR-058)',refChg.map(a=>a.code)],['Named control needed: no decision point, its own or another activity\u2019s (GR-021)',dpSummary().no.map(a=>a.code)]];
     return '<div class="card"><h3>Exceptions report</h3><div class="sub">Every place '+esc(ORGNAME())+' departs from the reference, by type. Rolled up from activity to process, process group and category in the real build, and printable for executive review.</div>'+note+'</div>'+
       '<div class="card" style="padding:0;overflow-x:auto"><table class="t"><thead><tr><th>Type of exception</th><th>Count</th><th style="text-align:left">Activities</th></tr></thead><tbody>'+
       rows.map(([k,v])=>'<tr><td>'+k+'</td><td>'+(v.length||'<span class="z">0</span>')+'</td><td style="text-align:left">'+(v.join(' · ')||'<span class="z">none</span>')+'</td></tr>').join('')+'</tbody></table></div>';
