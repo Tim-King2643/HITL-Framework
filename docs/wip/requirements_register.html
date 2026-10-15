@@ -106,6 +106,10 @@ table.spec td:first-child { font-weight: 700; color: var(--navy-d); white-space:
 
 footer { max-width: 1100px; margin: 0 auto; padding: 20px 24px 40px; text-align: center; font-size: 12px; color: var(--lgray); line-height: 1.7; }
 footer strong { color: var(--navy); }
+.gr-tags { display: block; margin-top: 2px; font-size: 11px; font-weight: 400; color: var(--lgray); }
+.gr-feeds { display: inline-block; margin-left: 4px; font-size: 10.5px; color: var(--navy); border: 1px solid var(--border); border-radius: 4px; padding: 0 5px; white-space: nowrap; }
+tr.feeds-head td { background: #EEF2F8; font-size: 12px; font-weight: 600; color: var(--navy); padding: 8px 10px; }
+tr.feeds-head td span { font-weight: 400; color: var(--gray); }
 </style>
 </head>
 <body>
@@ -137,7 +141,8 @@ footer strong { color: var(--navy); }
   </div>
   <div class="controls">
     <input type="text" id="searchBox" placeholder="Search requirements and their history&hellip;">
-    <select class="cat-select" id="catSelect"><option value="all">All categories</option></select>
+    <select class="cat-select" id="grpSelect"><option value="all">All groups</option></select>
+    <select class="cat-select" id="catSelect"><option value="all">All topics</option></select>
     <span class="result-count" id="resultCount"></span>
   </div>
   <div id="view"></div>
@@ -166,7 +171,16 @@ footer strong { color: var(--navy); }
       <li><b>Carried over (Sept 28, 2026).</b> Requirements marked Implemented before this change were built but never formally accepted by both of us; they are now Built, each with an Accept decision.</li>
     </ul>
     <table class="sr">
-      <tr><th style="width:180px">Category</th><th>Covers</th></tr>
+      <tr><th style="width:180px">Group</th><th>Covers (GR-057)</th></tr>
+      <tr><td>Administration</td><td>Running, publishing and communicating the framework: website, language, documentation, the register and the sandbox.</td></tr>
+      <tr><td>Reference Model</td><td>The work-side model every organization is compared against: categories, ceilings, Consequence of Error, RACI, work elements, the change log.</td></tr>
+      <tr><td>Organizational Assessment</td><td>Assessing one organization against the reference: the template, ceiling overrides, evidence rules.</td></tr>
+      <tr><td>Assessment Output</td><td>What the organization gets back, and the role hand-off to the human-impact side.</td></tr>
+      <tr><td>Human Impact &amp; Readiness</td><td>GiGi&rsquo;s lead: readiness, meaningful human control, judgment development, transition distance, the Human Impact Pathway.</td></tr>
+      <tr><td><span class="gr-feeds">Feeds &hellip;</span></td><td>A seam requirement keeps its home group and says which layer it feeds; filtered to that layer, it is listed under Connected from other layers.</td></tr>
+    </table>
+    <table class="sr">
+      <tr><th style="width:180px">Topic</th><th>Covers</th></tr>
       <tr><td>Readiness Gate</td><td>The gate deciding when an activity may advance.</td></tr>
       <tr><td>Data Model</td><td>Fields and structures attached to an activity, role or transition.</td></tr>
       <tr><td>People/Org Taxonomy</td><td>The role catalog, reporting structure and how roles are represented.</td></tr>
@@ -356,6 +370,7 @@ function detailHtml(r) {
     field("Requirement", esc(r.distilled)) +
     field("Acceptance criteria", esc(r.acceptance)) +
     field("Next action", esc(r.next_action)) +
+    field("Group", esc(r.group) + ((r.feeds || []).length ? " &middot; feeds " + esc(r.feeds.join(", ")) : "") + (r.category ? " &middot; topic: " + esc(r.category) : "")) +
     field("Design", r.spec_doc ? linkify(r.spec_doc) + (r.spec_section ? " &mdash; " + esc(r.spec_section) : "") : "") +
     field("WIP item", r.wip_item ? linkify(r.wip_item) : "") +
     field("Source", linkify(r.source_doc) + (r.source_section ? " &mdash; " + esc(r.source_section) : "") + (r.raised_by ? " &middot; raised by " + esc(r.raised_by) : "")) +
@@ -364,7 +379,17 @@ function detailHtml(r) {
     (r.raw ? '<details><summary>Original words</summary><div class="fval">' + esc(r.raw) + '</div></details>' : '') +
     (r.log ? '<details><summary>History</summary><div class="fval">' + esc(r.log) + '</div></details>' : '');
 }
-function matches(r, q, cat) {
+// Framework layers (GR-057), in the framework's order. A seam requirement keeps its home group and lists the
+// layers it feeds; filtered to a group, those show after its own as "Connected from other layers".
+const GROUPS = ["Administration", "Reference Model", "Organizational Assessment", "Assessment Output", "Human Impact & Readiness"];
+const feedsInto = (r, g) => g !== "all" && r.group !== g && (r.feeds || []).indexOf(g) !== -1;
+function inGroup(r, g) { return g === "all" || r.group === g || feedsInto(r, g); }
+function tagLine(r, g) {
+  return '<span class="gr-tags">' + esc(r.group || "") + (r.category ? ' &middot; ' + esc(r.category) : '') +
+    (r.feeds || []).map(f => ' <span class="gr-feeds">Feeds ' + esc(f) + '</span>').join("") + '</span>';
+}
+function matches(r, q, cat, grp) {
+  if (!inGroup(r, grp)) return false;
   if (cat !== "all" && r.category !== cat) return false;
   if (!q) return true;
   return [r.id, r.title, r.distilled, r.next_action, r.log, r.acceptance, r.raw, r.decision && r.decision.question].filter(Boolean).join(" ").toLowerCase().indexOf(q) !== -1;
@@ -372,10 +397,13 @@ function matches(r, q, cat) {
 function render() {
   const q = document.getElementById("searchBox").value.trim().toLowerCase();
   const cat = document.getElementById("catSelect").value;
+  const grp = document.getElementById("grpSelect").value;
   const counts = { decide:0, progress:0, done:0, closed:0, all:RECORDS.length };
   RECORDS.forEach(r => counts[tabOf(r)]++);
   Object.keys(counts).forEach(k => { document.getElementById("n-" + k).textContent = counts[k]; });
-  const rows = RECORDS.filter(r => (activeTab === "all" || tabOf(r) === activeTab) && matches(r, q, cat));
+  let rows = RECORDS.filter(r => (activeTab === "all" || tabOf(r) === activeTab) && matches(r, q, cat, grp));
+  // Filtered to a group: its own requirements first, then the ones connected from other layers.
+  rows = rows.filter(r => !feedsInto(r, grp)).concat(rows.filter(r => feedsInto(r, grp)));
   const view = document.getElementById("view");
   if (activeTab === "decide") {
     const groups = [
@@ -389,7 +417,7 @@ function render() {
       return '<div class="group"><h2>' + g[1] + ' (' + list.length + ')</h2><p class="gsub">' + g[2] + '</p><div class="qcards">' +
         list.map(r => {
           const link = designLinks(r)[0];
-          return '<div class="qcard"><div class="qtitle"><a href="#' + r.id + '" data-open="' + r.id + '">' + esc(r.id) + ' &middot; ' + esc(r.title) + '</a></div>' +
+          return '<div class="qcard"><div class="qtitle"><a href="#' + r.id + '" data-open="' + r.id + '">' + esc(r.id) + ' &middot; ' + esc(r.title) + '</a>' + tagLine(r, grp) + '</div>' +
             DecisionWidget.html(r) +
             '<div class="qlinks"><a href="#' + r.id + '" data-open="' + r.id + '">Details</a>' + (link ? '<a href="' + esc(link) + '">' + LINK_LABEL(link) + ' &rarr;</a>' : '') + '</div></div>';
         }).join("") + '</div></div>';
@@ -398,9 +426,11 @@ function render() {
     view.querySelectorAll("[data-open]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); openRow(a.getAttribute("data-open")); }));
   } else {
     let h = '<div class="table-scroll"><table class="reg"><thead><tr><th>ID</th><th>Requirement &middot; next action</th><th>Progress</th><th>Decision</th><th>Owner</th><th>Priority</th></tr></thead><tbody>';
+    let joined = false;
     rows.forEach(r => {
+      if (feedsInto(r, grp) && !joined) { joined = true; h += '<tr class="feeds-head"><td colspan="6">Connected from other layers <span>&middot; seam requirements that feed ' + esc(grp) + ', listed under their home group</span></td></tr>'; }
       h += '<tr class="row" id="' + r.id + '" data-id="' + r.id + '"><td class="gr-id">' + esc(r.id) + '</td>' +
-        '<td><span class="gr-title">' + esc(r.title) + '</span>' + (r.next_action && progressNow(r) !== "Done" ? '<span class="gr-next"><b>Next:</b> ' + esc(r.next_action) + '</span>' : '') + '</td>' +
+        '<td><span class="gr-title">' + esc(r.title) + '</span>' + tagLine(r, grp) + (r.next_action && progressNow(r) !== "Done" ? '<span class="gr-next"><b>Next:</b> ' + esc(r.next_action) + '</span>' : '') + '</td>' +
         '<td>' + progChip(progressNow(r)) + '</td><td>' + DecisionWidget.chip(r) + '</td>' +
         '<td class="gr-owner">' + esc(r.owner) + '</td><td class="gr-pri">' + esc(r.priority) + '</td></tr>' +
         '<tr class="detail-row" data-for="' + r.id + '"><td colspan="6"><div class="detail-box"></div></td></tr>';
@@ -432,6 +462,10 @@ function setTab(t) {
 document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => setTab(b.getAttribute("data-tab"))));
 document.getElementById("searchBox").addEventListener("input", render);
 document.getElementById("catSelect").addEventListener("change", render);
+document.getElementById("grpSelect").addEventListener("change", render);
+GROUPS.forEach(g => {
+  const o = document.createElement("option"); o.value = g; o.textContent = g + " (" + RECORDS.filter(r => r.group === g).length + ")"; document.getElementById("grpSelect").appendChild(o);
+});
 Array.from(new Set(RECORDS.map(r => r.category).filter(Boolean))).sort().forEach(c => {
   const o = document.createElement("option"); o.value = c; o.textContent = c; document.getElementById("catSelect").appendChild(o);
 });
