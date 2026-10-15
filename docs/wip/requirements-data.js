@@ -1488,22 +1488,22 @@ window.REQUIREMENTS = [
   "source_doc": "Tim King — framework direction (Sept 2026)",
   "source_section": "Working session, Sept 29, 2026",
   "distilled": "Add a first-level grouping to the requirements register that files every requirement by where it sits in the framework — Administration, Reference Model, Organizational Assessment, Assessment Output, and Human Impact & Readiness (GiGi's lead) — keeping the current category as a second-level topic tag.",
-  "acceptance": "Tim and GiGi have approved the groups and the mapping; every requirement carries a group; the register filters by group and still shows each requirement's topic.",
+  "acceptance": "Tim and GiGi have approved the groups and the mapping; every requirement carries one home group; seam requirements also carry a Feeds link to the layer they feed, shown on their row and listed under that group as Connected from other layers when the register is filtered to it; the register filters by group and still shows each requirement's topic.",
   "raw": "“Should we consider the similar groupings for the requirements register something like: Administration - Reference model - Organizational Assessment - Assessment Output?” (Tim, Sept 29, 2026)",
   "converged": "GR-051, GR-056",
   "spec_doc": "docs/wip/register_grouping_spec.html",
   "spec_section": "Whole spec",
   "wip_item": null,
-  "next_action": "Tim and GiGi decide the grouping; GiGi reviews the Human Impact & Readiness group and any judgment calls she would place differently.",
+  "next_action": "Tim decides the grouping (GiGi approved Oct 15); then add the group and Feeds fields to every requirement and the group filter to the register.",
   "decision": {
    "id": "grouping",
    "type": "question",
    "question": "Approve grouping the register by framework layer, with the mapping as proposed.",
    "spec": "register_grouping_spec.html",
-   "summary": "Each requirement gets one of five groups and the register a group filter; the current category stays as the topic tag. Any requirement either of you would place differently goes in your decision note and is applied with the rest."
+   "summary": "Each requirement gets one of five groups and the register a group filter; the current category stays as the topic tag. Requirements on the seam keep their home group and carry a Feeds link to the layer they feed (GR-037, GR-024, GR-030 and GR-056 feed Human Impact & Readiness), so filtering to that group also lists them as connected from other layers. Any requirement either of you would place differently goes in your decision note and is applied with the rest."
   },
   "decisions": [],
-  "log": "Sept 29, 2026 (Tim): proposed grouping the register by framework layer — Administration, Reference Model, Organizational Assessment, Assessment Output. Claude added a fifth group for GiGi's human-impact side (11 requirements that fit none of the four) and suggested keeping the current category as a topic tag. Tim agreed to take it as a decision for both, since it files GiGi's requirements under a group that defines her lead. Spec with the full mapping and seven judgment calls: register_grouping_spec.html. This supersedes the same day's interim move of GR-052, GR-053, GR-054 and GR-056 into an 'Assessment Output' category, which was not published.",
+  "log": "Sept 29, 2026 (Tim): proposed grouping the register by framework layer — Administration, Reference Model, Organizational Assessment, Assessment Output. Claude added a fifth group for GiGi's human-impact side (11 requirements that fit none of the four) and suggested keeping the current category as a topic tag. Tim agreed to take it as a decision for both, since it files GiGi's requirements under a group that defines her lead. Spec with the full mapping and seven judgment calls: register_grouping_spec.html. This supersedes the same day's interim move of GR-052, GR-053, GR-054 and GR-056 into an 'Assessment Output' category, which was not published.\n\nOct 15, 2026 (GiGi, approving): the five-layer grouping makes the framework easier to follow; she supports Human Impact & Readiness as its own layer and her lead, and the eleven requirements there are the right core set. Seam requirements should stay visibly connected across layers rather than move for ownership: GR-037 stays in Organizational Assessment but is a dependency for her readiness work; GR-024 and GR-030 stay in Assessment Output as long as their role in feeding Human Impact & Readiness is explicit. Built in as a Feeds link (spec section 2a), with GR-056, the role hand-off, added as the seam by definition. Her open question in the spec is closed.",
   "legacy_status": null
  },
  {
