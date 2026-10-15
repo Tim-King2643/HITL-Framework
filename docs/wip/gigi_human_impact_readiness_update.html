@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Human Impact &amp; Readiness — Workstream Progress, Decisions &amp; Next Phase — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9FC2EE; margin-bottom: 10px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 8px; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.3; }
+.masthead .tagline2 { font-size: 14px; color: #9FC2EE; font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center; font-size: 12.5px; color: #7A5A1E;
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: #7A5A1E; font-weight: 600; }
+
+.wrap { max-width: 780px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.callout {
+  background: var(--amber-bg); border-left: 4px solid var(--amber); border-radius: 6px;
+  padding: 16px 20px; margin: 0 0 32px; font-size: 13.5px; color: #7A5A1E; font-style: italic; line-height: 1.6;
+}
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 40px 0 12px; }
+h3 { font-family: 'Segoe UI', sans-serif; font-weight: 600; color: var(--navy); font-size: 14.5px; margin: 26px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+ul { margin: 0 0 18px 22px; }
+li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.pull-quote {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 16px; line-height: 1.5;
+}
+.sequence {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 15px; line-height: 1.6;
+}
+
+.closing-quote {
+  background: var(--navy-d); color: #fff; border-radius: 8px; padding: 24px 28px; margin: 8px 0 8px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-size: 17px; line-height: 1.6;
+}
+.closing-line {
+  text-align: center; font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d);
+  font-size: 16px; line-height: 1.6; margin: 22px 0 6px;
+}
+
+.section-num {
+  display: inline-block; font-family: 'Consolas', monospace; font-size: 11px; color: var(--navy);
+  background: var(--navy-l); border-radius: 4px; padding: 2px 8px; margin-right: 8px; vertical-align: middle;
+}
+
+.pdf-download {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px;
+  padding: 8px 14px; text-decoration: none; margin: 0 0 28px;
+}
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+table.gt { width: 100%; border-collapse: collapse; margin: 10px 0 24px; font-size: 13px; }
+.gt th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 10px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+.gt td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.55; }
+.gt tr:nth-child(even) td { background: #FAFBFD; }
+.gt td.k { font-weight: 700; color: var(--navy-d); }
+.dim { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin: 0 0 14px; }
+.dim h3 { margin: 0 0 6px; }
+.dim p { margin-bottom: 8px; }
+.dim p:last-child { margin-bottom: 0; }
+.dim .lbl { font-weight: 600; color: var(--navy-d); }
+.qbox { background: var(--navy-l); border-radius: 6px; padding: 14px 20px; margin: 14px 0 20px; }
+.qbox p { margin: 0 0 8px; color: var(--navy-d); }
+.qbox ul { margin-bottom: 0; }
+.qbox li { color: var(--dark); }
+.find { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; border-radius: 4px; padding: 2px 8px; white-space: nowrap; }
+.f-green { background: #DCFCE7; color: #166534; border: 1px solid #86EFAC; }
+.f-yellow { background: #FEF9C3; color: #854D0E; border: 1px solid #FDE047; }
+.f-red { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+.f-gray { background: #F1F3F6; color: #475569; border: 1px solid #CBD5E1; }
+.cover-line { text-align: center; font-size: 13px; color: var(--lgray); font-style: italic; margin: -4px 0 26px; }
+
+.guard { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 6px 18px 4px; margin: 6px 0 22px; }
+.guard ul { margin: 10px 0 10px 18px; }
+.basis { font-size: 12.5px; color: var(--lgray); font-style: italic; line-height: 1.6; border-top: 1px solid var(--border); padding-top: 14px; margin-top: 28px; }
+</style>
+</head>
+
+<body>
+
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; External review notes from GiGi Garcia, for joint discussion with Tim. Nothing on this page is official yet.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">Workstream Update · GiGi Garcia · GR-012 · GR-056 · GR-057 · October 2026</div>
+  <h1>Human Impact &amp; Readiness: Workstream Progress, Decisions &amp; Next Phase</h1>
+  <div class="tagline2">GR-012 &bull; GR-056 &bull; GR-057 &bull; Three-Role Validation</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-download-mount data-item="gigi-human-impact-readiness-update"></div>
+
+<div class="wrap">
+
+  <div class="callout">
+    GiGi's consolidated update on the Human Impact &amp; Readiness workstream, prepared for Tim on October 15, 2026, transcribed here in the site's visual language. The words and recommendations below are hers, not Tim's or Claude's &mdash; this page is a faithful transcription of her update, not a response to it. Her original is the <a href="gigi_human_impact_readiness_update.pdf" style="color:#7A5A1E;font-weight:600;">PDF</a>.
+  </div>
+
+  <p><strong>Purpose.</strong> Document the Human Impact &amp; Readiness work completed to date, the design decisions now reflected in the framework, what the pressure testing taught us, and the specific issues that should drive the next version of GR-012.</p>
+
+  <div class="pull-quote">&ldquo;The project has moved from asking what readiness should mean to testing whether readiness can be defended with evidence across very different roles.&rdquo;</div>
+
+  <h2><span class="section-num">1</span>Executive Summary</h2>
+  <p>My workstream has moved from conceptual review into a more defined Human Impact &amp; Readiness layer with a clear boundary from the work-side architecture. The key shift has been to make sure the framework does not stop at what AI can technically do. It also has to show what changes for the human being held accountable, whether that person can actually exercise the judgment that remains, and whether the organization is ready to support that new operating model.</p>
+  <p>The current methodology now reflects three role tiers &mdash; HRBP Manager, Recruiter and CHRO &mdash; and uses those cases to test whether the same progression and human-impact logic can hold across managerial, operational and executive work. The methodology held across all three tiers without needing to be redefined, but it did not produce the same type of finding for every role. That is important: consistency of method should not mean sameness of outcome.</p>
+  <p>My contribution has been to keep the human side from becoming a score, a sentiment measure, or a generic &ldquo;change readiness&rdquo; layer. I have pushed for evidence-backed findings, clear provenance, visible gaps, and a direct line from work change to role impact, human impact, manager absorption, team effect, accountability and organizational outcome.</p>
+
+  <h3>What has materially changed</h3>
+  <table class="gt">
+    <thead><tr><th>Area</th><th>What I worked through</th><th>Where it stands now</th></tr></thead>
+    <tbody>
+      <tr><td class="k">GR-057</td><td>Approved the five-layer grouping while protecting cross-layer dependencies.</td><td>Human Impact &amp; Readiness is explicitly its own layer and my lead.</td></tr>
+      <tr><td class="k">GR-056</td><td>Deferred until the hand-off clearly separated Assessed Current State from Modeled future potential and carried the evidence/context my side needs.</td><td>The revisions now address those concerns and create a clean work-side &rarr; human-impact boundary.</td></tr>
+      <tr><td class="k">GR-012</td><td>Rejected a composite readiness score in favor of a finding, evidence, gap and required action for each dimension.</td><td>Wording should reflect evidence-backed findings, not &ldquo;scores all 10 dimensions.&rdquo;</td></tr>
+      <tr><td class="k">HRBP grievance pilot</td><td>Pressure-tested the instrument without forcing conclusions where evidence was missing.</td><td>First-pass outcome: Insufficient Evidence; Gray means evidence is missing, not that the role failed.</td></tr>
+      <tr><td class="k">Three-role validation</td><td>Pushed the methodology beyond one managerial role and into Recruiter and CHRO examples.</td><td>The current methodology now spans Operational, Managerial and Executive tiers.</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="section-num">2</span>Decisions and Design Work Completed</h2>
+  <h3>GR-057 &mdash; Framework-layer grouping</h3>
+  <p>I approved the five-layer structure because it makes the framework easier to follow and gives Human Impact &amp; Readiness a clear home. I intentionally did not pull every dependency into my layer. GR-037 can remain under Organizational Assessment because it governs the evidence required to progress. GR-024 and GR-030 can remain under Assessment Output because they are output mechanisms. What matters is that the dependencies feeding Human Impact &amp; Readiness remain explicit.</p>
+  <h3>GR-056 &mdash; Work-side assessment output and hand-off</h3>
+  <p>I originally deferred GR-056 because the first version risked treating modeled future potential as though it were observed role change. I asked for the hand-off to distinguish what has actually moved from what could move, and to carry the Working Relationship, human judgment/review that remains, role/accountability relationships, Consequence of Error, ceiling factors, overrides/exceptions, manager and escalation relationships, provenance, coverage and evidence context. The revised version now does that and makes the seam between the two sides much stronger.</p>
+  <h3>GR-012 &mdash; Human Operating Readiness wording</h3>
+  <p>I support changing the wording from &ldquo;scores all 10 readiness dimensions&rdquo; to &ldquo;produces a finding, with its evidence, for each of the ten dimensions.&rdquo; I do not want readiness reduced to one number. A defensible readiness finding should show what we know, what evidence supports it, what remains unknown, what would move it, and who owns the action.</p>
+  <h3>Design guardrails I have been protecting</h3>
+  <div class="guard"><ul>
+    <li>Assessed and Modeled must remain visibly separate. &ldquo;Could move&rdquo; cannot be read as &ldquo;has moved.&rdquo;</li>
+    <li>Gray means insufficient evidence, not failure and not &ldquo;not ready.&rdquo;</li>
+    <li>Readiness should not collapse into an unexplained percentage or composite score.</li>
+    <li>Evidence provenance has to travel with a finding: Assessed/Modeled status, evidence type, source, confidence, coverage and reference.</li>
+    <li>Multiple roles should not be blended into one finding when their evidence differs.</li>
+    <li>The work side should establish what changed and what can change; Human Impact &amp; Readiness should determine what that means for people, managers, teams, accountability and the organization.</li>
+  </ul></div>
+
+  <h2><span class="section-num">3</span>Pressure Testing: What the HRBP Grievance Pilot Taught Me</h2>
+  <p>The HRBP Manager grievance pilot was useful because it forced the instrument to deal with a real problem: conceptually clear role design is not the same thing as evidence that the organization can operate that design. Where organization-specific proof was missing, the instrument stayed Gray instead of manufacturing certainty.</p>
+  <div class="sequence">First-pass conclusion: Insufficient Evidence &mdash; not Ready and not Not Ready.</div>
+  <table class="gt">
+    <thead><tr><th>Dimension area</th><th>What the pilot needs to prove</th><th>If proof is missing</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Role clarity / authority</td><td>Actual workflow boundaries; proof the HRBP Manager can reject, pause, override or escalate AI-supported recommendations.</td><td>Keep Gray and identify the missing role/authority evidence.</td></tr>
+      <tr><td class="k">Capability / fluency</td><td>Scenario or case evidence that the role can recognize bad precedent, missing context or confident-looking weak reasoning.</td><td>Keep Gray; define the validation exercise needed.</td></tr>
+      <tr><td class="k">Psychological safety</td><td>Operating proof that the role can challenge, stop or escalate without penalty.</td><td>Keep Gray; do not infer from culture language alone.</td></tr>
+      <tr><td class="k">Workload / capacity</td><td>Evidence that the remaining human judgment can realistically be performed at expected volume.</td><td>Keep Gray if capacity and volume are unknown.</td></tr>
+      <tr><td class="k">Manager / governance</td><td>Evidence managers support retained accountability and escalation rules are operational.</td><td>Keep Gray if governance is only implied.</td></tr>
+      <tr><td class="k">Trust / evidence quality</td><td>Traceable technical evidence rather than re-testing the technical lane.</td><td>Keep Gray when evidence type/source/reference/confidence/date are missing or weak.</td></tr>
+    </tbody>
+  </table>
+  <p>A second lesson was just as important: I need to keep three different types of findings separate &mdash; organization-readiness findings, instrument-design findings, and reference-model findings. If those are mixed together, we will either blame the organization for a weak instrument or redesign the instrument every time an organization lacks evidence.</p>
+
+  <h2><span class="section-num">4</span>What the Three-Role Validation Is Showing</h2>
+  <p>The current Working-Relationship Progression document now carries the methodology across HRBP Manager, Recruiter and CHRO. That matters because these roles sit at different levels of the organization and create very different shapes of human impact.</p>
+  <table class="gt">
+    <thead><tr><th>Role</th><th>Tier</th><th>What repeats</th><th>What changes</th></tr></thead>
+    <tbody>
+      <tr><td class="k">HRBP Manager</td><td>Managerial</td><td>Accountability stays concentrated; AI can remove administrative work while judgment remains human.</td><td>Agency, psychological safety, capacity and escalation become central; grievance work highlights relational and emotional intensity.</td></tr>
+      <tr><td class="k">Recruiter</td><td>Operational</td><td>Concentrated accountability and unmeasured Agency reappear; AI can absorb sourcing/screening while select/reject remains human.</td><td>Manager path is already well supported; risk comes from high-volume candidate decisions and legal exposure.</td></tr>
+      <tr><td class="k">CHRO</td><td>Executive</td><td>Accountability remains concentrated and strategy work remains judgment-heavy.</td><td>No traditional Manager Absorption ring exists; Team Effect becomes domain-wide; the Agency question shifts from override power to trustworthy decision input.</td></tr>
+    </tbody>
+  </table>
+  <div class="pull-quote">The success condition is not that every pilot reproduces the grievance finding. The success condition is that the same methodology can surface different, credible human-impact findings without changing its logic for each tier.</div>
+
+  <h2><span class="section-num">5</span>The Human Constructs I Want to Take Deeper</h2>
+  <p>The part of the framework I want to keep developing is not simply &ldquo;how much human work remains.&rdquo; I want to understand the quality, consequence and operating reality of the human work that remains after AI takes on more of the surrounding activity.</p>
+  <div class="dim"><h3>Human Agency</h3><p>Can the person actually exercise the judgment they are being held accountable for? This includes authority, information, confidence, skill, capacity and psychological safety &mdash; not merely whether a human is technically present.</p></div>
+  <div class="dim"><h3>Human Criticality</h3><p>What happens if the remaining human decision is wrong, who is affected, and how reversible is the damage? This overlaps with the existing Consequence of Error structure, so the question is whether it needs a new instrument or a stronger human-impact interpretation of an existing measure.</p></div>
+  <div class="dim"><h3>Human Intensity</h3><p>Does AI truly reduce work, or does it remove the easier work and concentrate the hardest cognitive, emotional, relational or operational work in the human? Less human volume does not automatically mean less human burden.</p></div>
+  <div class="dim"><h3>Role Transition</h3><p>What changes in skill, judgment, authority, identity, relationships and accountability as the role changes? This is the role-side view of what the Human Impact Pathway is already trying to trace from the activity side.</p></div>
+
+  <h2><span class="section-num">6</span>Issues That Should Drive the Next Version of GR-012</h2>
+  <p>I do not think GR-012 v0.2 should simply be a cleaner version of the first draft. It should be the version that reflects what the pilots actually exposed.</p>
+  <ul>
+    <li><strong>Hard gates:</strong> identify which readiness dimensions truly stop progression when they fail, rather than labeling dimensions as gates in advance.</li>
+    <li><strong>Weakest-link behavior:</strong> determine when multiple touching roles should roll up to the weakest required role-level condition, especially for High or Critical consequence work.</li>
+    <li><strong>Executive-tier exception:</strong> decide how the weakest-link rule works when the CHRO is effectively a single decision-maker and there is no second touching role to be the weak link.</li>
+    <li><strong>Human Agency:</strong> determine whether GR-013 remains a distinct construct or whether it is sufficiently captured by Decision Authority, Psychological Safety and related readiness dimensions.</li>
+    <li><strong>Manager Absorption:</strong> create an explicit top-of-catalog variant so CHRO-level roles are not silently read as &ldquo;no data.&rdquo;</li>
+    <li><strong>Human Intensity:</strong> decide whether this becomes a tracked field or remains a qualitative finding alongside Current State and Progression Ceiling.</li>
+    <li><strong>Evidence schema:</strong> make clear what evidence can move a finding from Gray and preserve Assessed/Modeled status, evidence type, source role, reference, confidence, date and coverage.</li>
+    <li><strong>Narrative conclusion:</strong> keep the end result evidence-backed and explainable rather than collapsing the ten dimensions into a single readiness percentage.</li>
+  </ul>
+
+  <h2><span class="section-num">7</span>Where I See the Workstream Now</h2>
+  <p>The workstream now has a much clearer seam. The work side can classify the work, show Current State, define a Progression Ceiling, record Consequence of Error, accountability, ceiling factors, overrides and evidence, and identify where the work lands on a role. Human Impact &amp; Readiness then takes that hand-off and asks a different question: can the people and organization actually succeed under that design, and what human consequence is created when work moves?</p>
+  <table class="gt">
+    <thead><tr><th>Work side establishes</th><th>Human Impact &amp; Readiness interprets</th></tr></thead>
+    <tbody>
+      <tr><td>What changed in the work</td><td>What the change means for the person</td></tr>
+      <tr><td>Current State vs. Progression Ceiling</td><td>Whether human judgment can actually be exercised</td></tr>
+      <tr><td>Working Relationship classification</td><td>How manager/team capacity absorbs the change</td></tr>
+      <tr><td>Consequence of Error and ceiling factors</td><td>Where accountability becomes concentrated</td></tr>
+      <tr><td>Accountability and role relationships</td><td>Whether human work becomes more intense or critical</td></tr>
+      <tr><td>Evidence, coverage, exceptions and overrides</td><td>Whether the organization can operate the redesigned model safely and credibly</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="section-num">8</span>Note to Timothy</h2>
+  <div class="qbox">
+    <p>Hi Tim,</p>
+    <p>I wanted to send you one consolidated update because I have worked through quite a bit on my side and wanted you to see where I landed, what I changed my mind on, and what I think the Human Impact &amp; Readiness work should focus on next.</p>
+    <p>I approved GR-057 and support the five-layer grouping. I think giving Human Impact &amp; Readiness its own layer makes the framework easier to follow and gives my work a clear home without pulling every dependency into my lane simply because I use the output.</p>
+    <p>I also went back through the revised GR-056 hand-off after my defer. The revisions address what I was concerned about. The separation between Assessed Current State and Modeled future potential is now clear, and the hand-off carries the Working Relationship, human judgment/review that remains, accountability relationships, Consequence of Error, ceiling factors, exceptions/overrides, manager/escalation relationships, provenance, coverage and evidence context. That is the clean seam I was looking for between the work side and the human-impact side.</p>
+    <p>For GR-012, I support changing &ldquo;scores all 10 readiness dimensions&rdquo; to &ldquo;produces a finding, with its evidence, for each of the ten dimensions.&rdquo; I do not want readiness reduced to a score that hides the reason behind it. I want the finding, evidence, gap, what would move it and the owner of the action to stay visible.</p>
+    <p>I also completed the first full pass of the HRBP Manager grievance pressure test across all ten dimensions. The result was Insufficient Evidence, not Ready or Not Ready. I think that was an important outcome because the instrument did not turn modeled assumptions into readiness conclusions where organization-specific evidence was missing. I documented what evidence would be required to move the Gray findings and kept organization-readiness issues separate from instrument-design issues.</p>
+    <p>The broader role testing has also sharpened where I think my side of the framework adds the most value. HRBP Manager, Recruiter and CHRO do not produce identical human-impact findings, and I do not think they should. The methodology should be stable while the human consequence changes with the role, the level of authority and the type of work.</p>
+    <p>The areas I want to keep going deeper on are Human Agency, Human Criticality, Human Intensity and Role Transition. The question for me is no longer simply how much human work remains. It is whether the person can actually exercise the judgment they retain, how consequential that judgment is, whether AI removes burden or concentrates the hardest parts of the work, and how the role itself changes in skill, authority, identity, relationships and accountability.</p>
+    <p>The next design decisions I think we should settle from the pilot evidence are which dimensions really behave as hard gates, how the weakest-link rule should work, whether Human Agency remains distinct, how the CHRO/top-of-catalog case should work when there is no traditional manager-above relationship, and whether Human Intensity becomes a formal tracked field or remains qualitative.</p>
+    <p>I think we have moved materially from &ldquo;what should readiness mean?&rdquo; to &ldquo;can this instrument produce a defensible, evidence-backed answer across different roles?&rdquo; That feels like the right progression for this workstream.</p>
+    <p style="margin:0">GiGi</p>
+  </div>
+
+  <p class="basis"><strong>Working basis.</strong> This update is grounded in the Human Impact &amp; Readiness Next Steps Action Plan (Oct. 15, 2026) and the current Working-Relationship Progression methodology (Sept. 2026 working document), including the three-role pilot synthesis and known open constructs. It is intended as a workstream update, not a claim that every open construct is already implemented.</p>
+
+  <div class="closing-line">Workstream update &mdash; draft for Timothy King</div>
+
+</div>
+
+<footer>
+  <p>
+    Workstream update &mdash; <strong style="color:var(--navy)">GiGi Garcia</strong> &middot; Human Impact &amp; Readiness<br>
+    Prepared for <strong style="color:var(--navy)">Tim King</strong>, October 15, 2026 · HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a> &nbsp;&middot;&nbsp; <a href="requirements_register.html#GR-012">GR-012</a> &nbsp;&middot;&nbsp; <a href="requirements_register.html#GR-056">GR-056</a> &nbsp;&middot;&nbsp; <a href="requirements_register.html#GR-057">GR-057</a> in the Requirements Register
+  </p>
+</footer>
+
+<script src="wip-download-widget.js"></script>
+</body>
+</html>
