@@ -140,6 +140,7 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .wt tr.wr > td{padding-bottom:26px}
 /* Names that wrap line up under their first word, not under the number */
 .anm{display:flex;gap:.45em;align-items:baseline}.anm>.code,.anm>.tg{flex:0 0 auto}
+.ibox .al td{vertical-align:top}
 </style></head><body>
 <div class="sk"><b>SKETCH</b> &middot; Four views instead of six &middot; all four views working &middot; reference data &middot; not in the sandbox &middot; design for <a href="../requirements_register.html#GR-059" style="color:#7A5A1E;font-weight:600">GR-059</a> &middot; RACI from the <a href="../activity_raci_draft.html" style="color:#7A5A1E;font-weight:600">GR-060 draft</a> &middot; <a href="../index.html" style="color:#7A5A1E;font-weight:600">Back to WIP hub</a></div>
 <div class="top"><div class="top-in">
@@ -603,9 +604,14 @@ function dpBox(a){const m=dpAnalysis(),r=m[a.code],at=isOrg()?'at '+esc(ORGNAME(
   h+='</div>';
   if(r.groups.length){
     h+='<h5 style="margin:8px 0 4px">Decision points on its work products</h5><div class="isub" style="margin-bottom:4px">From each work product&rsquo;s CRUD: the activities that create, update or delete it where a person holds Decide or Verify.</div><table class="al">';
-    r.groups.forEach(g=>{h+='<tr><td colspan="5" style="padding-top:8px">'+wpName(g.w)+' <span class="small">&middot; this activity '+ops(g.mine)+' it</span></td></tr>';
-      h+=g.dps.length?g.dps.map(d=>'<tr'+(d.c===a.code?' style="font-weight:600"':'')+'><td class="code">'+d.c+'</td><td>'+esc(ACT[d.c].name)+(d.c===a.code?' (this activity)':'')+'</td><td>'+ops(d.op)+'</td><td>'+esc(ACT[d.c].Aroles[0])+'</td><td style="color:'+CONSC[ACT[d.c].cons]+'">'+ACT[d.c].cons+'</td></tr>').join('')
-        :'<tr><td colspan="5" class="red">No decision point creates, updates or deletes it.</td></tr>';});
+    // One line per work product says what this activity and the others do to it, e.g. "this activity (C)reates the work
+    // product, the following activities (U)pdate it"; the rows list the other decision points on it.
+    const V1={C:'(C)reates',U:'(U)pdates',D:'(D)eletes'},VN={C:'(C)reate',U:'(U)pdate',D:'(D)elete'};
+    const vlist=(o,V)=>{const k=['C','U','D'].filter(x=>o.includes(x)).map(x=>V[x]);return k.length<2?k.join(''):k.slice(0,-1).join(', ')+' or '+k[k.length-1]};
+    r.groups.forEach(g=>{const others=g.dps.filter(d=>d.c!==a.code),oo=others.map(d=>d.op).join(''),mine=wpOps(a.code,g.w);
+      const line='this activity '+vlist(mine,V1)+' the work product'+(others.length?', the following activit'+(others.length>1?'ies '+vlist(oo,VN):'y '+vlist(oo,V1))+' it':r.dp?' and is its only decision point':'');
+      h+='<tr><td colspan="4" style="padding-top:8px">'+wpName(g.w)+' &middot; '+line+(others.length||r.dp?'.':'; <span class="red">no decision point creates, updates or deletes it.</span>')+'</td></tr>';
+      h+=others.map(d=>'<tr><td class="code">'+d.c+'</td><td>'+esc(ACT[d.c].name)+'</td><td>'+esc(ACT[d.c].Aroles[0])+'</td><td style="color:'+CONSC[ACT[d.c].cons]+'">'+ACT[d.c].cons+'</td></tr>').join('');});
     h+='</table>';}
   return h+'<div class="prov">Proposed governance depth by Consequence of Error; GR-042 defines the record&rsquo;s fields. Modeled.</div></div>';}
 function dpSummary(){const m=dpAnalysis(),L=DATA.acts,dp=L.filter(a=>m[a.code].dp),exc=dp.filter(a=>m[a.code].lead==='AI-led'),ai=L.filter(a=>m[a.code].ai),
