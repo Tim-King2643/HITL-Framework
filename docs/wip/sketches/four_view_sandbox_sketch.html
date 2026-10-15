@@ -125,6 +125,17 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .col{display:inline-block;text-align:right;white-space:nowrap}.crole{width:220px;font-size:12.5px}.cdp{width:145px}.ccoe{width:84px}
 .ahead.hd{margin:0;font-size:inherit;align-items:flex-end}.ahead.hd .col{white-space:normal;line-height:1.25;font-size:inherit}
 .ahead > span:first-child{min-width:0}
+/* Stage names shown once, in the header row; each activity's ramp keeps the names' width (hidden) so the dots stay under them */
+.t tr.sthead th{background:#EEF2F8;color:var(--text,#0D1B2A);text-transform:none;letter-spacing:0;font-weight:600;text-align:left;padding-top:7px;padding-bottom:7px;border-bottom:1px solid var(--border)}
+.sthead .step{cursor:default}.sthead .lbl{margin-top:0;font-size:12.5px;font-weight:400}
+.wt tr.wr .ramp .lbl{visibility:hidden;height:0;margin-top:0}
+.wt tr.wr .ramp .step.sel .dot{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--navy)}
+.wt tr.wr .ramp .step{min-height:18px}
+/* Ramp as stage names: reached in bold, the rest grey, past the ceiling faint */
+.step.sn{display:block;width:112px;min-width:112px;text-align:center;font-size:12.5px;color:#6B7A90;line-height:18px;padding:2px 0}
+.step.sn.on{color:var(--dark);font-weight:600}.step.sn.dim{color:#C4CBD7}.step.sn.past{color:var(--red)}
+.step.sn.sel{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
+.step.sn:hover{text-decoration:underline;text-underline-offset:4px}
 </style></head><body>
 <div class="sk"><b>SKETCH</b> &middot; Four views instead of six &middot; all four views working &middot; reference data &middot; not in the sandbox &middot; design for <a href="../requirements_register.html#GR-059" style="color:#7A5A1E;font-weight:600">GR-059</a> &middot; RACI from the <a href="../activity_raci_draft.html" style="color:#7A5A1E;font-weight:600">GR-060 draft</a> &middot; <a href="../index.html" style="color:#7A5A1E;font-weight:600">Back to WIP hub</a></div>
 <div class="top"><div class="top-in">
@@ -168,7 +179,7 @@ const HC={High:1,Critical:1};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const pct=(n,d)=>d?Math.round(100*n/d)+'%':'—';
 // RACI is activity level (GR-060, Tim's decision Oct 10, 2026); S.raci stays 'act'. Process-level data is kept only to compare against.
-let S={coe:true,raci:'act',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'load',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
+let S={rmode:'names',coe:true,raci:'act',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'load',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
 const VIEWS=[
  {id:'work',name:'Work',q:'Where does each activity sit, and what moves next?'},
  {id:'people',name:'People',q:'What does this mean for each role?'},
@@ -432,16 +443,20 @@ function workSide(){
   return '<div class="q">'+VIEWS[0].q+'</div><p>Every activity on the six-step ramp, from today&rsquo;s Current State up to its Progression Ceiling. Click a step for who does each part of the work at that stage, an arrow for what changes in that step, the lock for what must stay with a person, or the Consequence of Error for what drives it.</p>'+
    '<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()">'+gopts.replace('value="'+S.wg+'"','value="'+S.wg+'" selected')+'</select>'+
    '<h5>Show</h5>'+btns([['all','All activities'],['person','Must keep a person doing the work'],['auto','May go to Automation'],['hc','High or Critical consequence']].concat(isOrg()?[['assessed','Assessed']]:[]),'ws')+
-   '<h5>Reading a ramp</h5><p>Each step carries a share of the work kept with a person (% H): '+ST.map(s=>s+' '+HPCT[s]).join(', ')+'. A process heading averages its activities; click a % H figure for its calculation, or the + to open the process.</p><p>Filled steps are reached, up to the Current State. The lock sits at the Progression Ceiling; steps past it are greyed. '+(isOrg()?'A red ring marks a stage past the ceiling, and a red dot an activity with an element past its own ceiling. Click the Current State step for its element assessment.':'In the Reference Model every activity starts at the Human-only baseline.')+'</p>'+
+   '<h5>Ramp shows</h5>'+btns([['names','Stage names (reached in bold)'],['dots','Dots under one row of stage names']],'rmode')+
+   '<h5>Reading a ramp</h5><p>Each step carries a share of the work kept with a person (% H): '+ST.map(s=>s+' '+HPCT[s]).join(', ')+'. A process heading averages its activities; click a % H figure for its calculation, or the + to open the process.</p><p>'+(S.rmode==='names'?'Stages in bold are reached, up to the Current State; the rest are in grey. The lock sits at the Progression Ceiling; stages past it are faint. ':'Filled steps are reached, up to the Current State. The lock sits at the Progression Ceiling; steps past it are greyed. ')+(isOrg()?(S.rmode==='names'?'A stage in red is reached past the ceiling,':'A red ring marks a stage past the ceiling,')+' and a red dot an activity with an element past its own ceiling. Click the Current State step for its element assessment.':'In the Reference Model every activity starts at the Human-only baseline.')+'</p>'+
    '<div class="replaces">Replaces <b>Working Relationship</b> and <b>Readiness Gate</b>. The Readiness Gate&rsquo;s three checks (technical evidence, role readiness and organizational readiness) move into the gate box.</div>';
 }
+// The stage names, once, in the table header: the same steps and gaps as a ramp, so each name sits over its dot.
+function stageHead(){return '<div class="ramp">'+ST.map((st,k)=>'<div class="step"><div class="lbl">'+st+'</div></div>'+(k<5?'<div class="arr"></div>':'')).join('')+'</div>';}
 function ramp(a,big){
   const ci=rank(derivedCeil(a)), cur=rank(curOf(a)), sel=S.wsel[a.code]||{}, lim=abcLim(a);
   let r='';
   ST.forEach((st,k)=>{
     const reached=k<=cur, above=k>ci, past=reached&&k>lim, bg=reached&&!above?DOT[st]:'#EDEFF3';
     const dot='<div class="dot'+(big?'':' sm')+'" style="background:'+bg+';'+(past?'border:2.5px solid var(--red)':'')+'"></div>';
-    if(big) r+='<div class="step'+(above&&!reached?' dim':'')+(sel.t==='stage'&&sel.k===k?' sel':'')+'" onclick="wpick(\''+a.code+'\',\'stage\','+k+')">'+dot+'<div class="lbl">'+st+'</div></div>';
+    if(big&&S.rmode==='names') r+='<div class="step sn'+(reached?' on':above?' dim':'')+(past?' past':'')+(sel.t==='stage'&&sel.k===k?' sel':'')+'" onclick="wpick(\''+a.code+'\',\'stage\','+k+')" title="'+(past?'Reached, past the ceiling':reached?'Reached':above?'Past the Progression Ceiling':'Within the ceiling, not reached')+'">'+st+'</div>';
+    else if(big) r+='<div class="step'+(above&&!reached?' dim':'')+(sel.t==='stage'&&sel.k===k?' sel':'')+'" onclick="wpick(\''+a.code+'\',\'stage\','+k+')">'+dot+'<div class="lbl">'+st+'</div></div>';
     else r+=dot;
     if(k<5){
       if(k===ci) r+=big?'<div class="lock" onclick="wpick(\''+a.code+'\',\'lock\',0)" title="Progression Ceiling">'+LOCK+'</div>':'<span class="mlock">'+LOCK+'</span>';
@@ -500,7 +515,7 @@ function workMain(){
       f.push(as.length+' of '+L.length+' assessed. '+(past.length?past.length+' past the ceiling'+(cov.length?', '+cov.length+' of them covered by an approved override':'')+'. ':'None past its ceiling. ')+(pe.length?pe.map(a=>a.code+' '+pastEls(a).join(', ')).join('; ')+' past '+(pe.length>1?'their':'its')+' element ceiling, even though the activit'+(pe.length>1?'ies are':'y is')+' within its ceiling.':''));}
   }
   h+='<div class="card"><h3>What this shows</h3><ul class="find">'+f.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
-  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t wt"><thead><tr><th><div class="ahead hd"><span>Activity <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; click a step, an arrow, the lock, the decision point or the rating</span></span><span class="aright">'+(isOrg()?'<span class="assess" style="visibility:hidden">Reassess</span>':'')+'<span class="col crole" title="The Human Accountability Anchor">Accountable role</span><span class="col cdp">Decision point</span><span class="col ccoe">Consequence of Error</span></span></div></th></tr></thead><tbody>';
+  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t wt"><thead><tr><th><div class="ahead hd"><span>Activity <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; click a step, an arrow, the lock, the decision point or the rating</span></span><span class="aright">'+(isOrg()?'<span class="assess" style="visibility:hidden">Reassess</span>':'')+'<span class="col crole" title="The Human Accountability Anchor">Accountable role</span><span class="col cdp">Decision point</span><span class="col ccoe">Consequence of Error</span></span></div></th></tr>'+(S.rmode==='dots'?'<tr class="sthead"><th>'+stageHead()+'</th></tr>':'')+'</thead><tbody>';
   let proc='';
   L.forEach(a=>{
     const head=!a.proc.startsWith(a.code+' ');
