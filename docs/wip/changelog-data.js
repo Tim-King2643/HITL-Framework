@@ -342,5 +342,26 @@ const CHANGE_LOG = [
     "source": "Tim, Oct 6, 2026, accepting the proposed ceilings with the ramp-order correction (CL-015).",
     "reason": "Under the old order Augmentation sat above Oversight, so it was the last stop for a duty that needs a person. The eight legal and fiduciary ceilings describe a sign-off on each instance (“the fiduciary sign-off is the ceiling”, “someone has to vouch for the record”), which is Oversight. The two duty-of-care ceilings describe a person staying “meaningfully present… even with strong AI assistance”, which is Augmentation. 7.2.1.3, 7.6.3.1 and 7.7.8.3 stay at Oversight. Ceiling factors, Consequence of Error and notes are unchanged.",
     "verified": "reference-wr.json regenerated (version 7b9a054b8315); assessments stamped with the earlier version of these ten activities now show 'reference changed'. Ceilings at Oversight or below stay 41; none moved to Agent-delegation or Automation. Verification points recount to 67 and unchecked hand-offs stay 22, on the same nine activities."
+  },
+  {
+    "id": "CL-017",
+    "date": "2026-10-15",
+    "requestedBy": "Tim + GiGi",
+    "kind": "wr-ceiling",
+    "changeType": "decision",
+    "target": {
+      "domain": "7.0",
+      "activity": "7.1.1.1, 7.1.1.2, 7.1.1.3, 7.1.1.4, 7.1.1.6, 7.1.1.8, 7.1.1.10, 7.1.2.1, 7.1.2.2, 7.1.2.3, 7.1.3.4, 7.1.4, 7.2.1.1, 7.2.3.1, 7.2.3.2, 7.2.3.4, 7.2.4.2, 7.3.2.1, 7.3.2.2, 7.3.3.2, 7.3.3.4, 7.4.1, 7.4.2, 7.4.3, 7.4.4, 7.5.1.1, 7.6.1, 7.7.7.3, 7.2.5.1, 7.2.5.4, 7.3.4.6, 7.5.1.5, 7.5.4, 7.6.2.2, 7.6.2.3, 7.7.4, 7.7.6, 7.2.1.4"
+    },
+    "summary": "GR-058 applied: 37 Progression Ceilings derived from their element ceilings (28 Judgment to Augmentation; 9 Automation to Agent-delegation by the Consequence of Error gates) and 7.2.1.4's Consequence of Error raised from Low to Moderate.",
+    "from": "Judgment: 7.1.1.1, 7.1.1.2, 7.1.1.3, 7.1.1.4, 7.1.1.6, 7.1.1.8, 7.1.1.10, 7.1.2.1, 7.1.2.2, 7.1.2.3, 7.1.3.4, 7.1.4, 7.2.1.1, 7.2.3.1, 7.2.3.2, 7.2.3.4, 7.2.4.2, 7.3.2.1, 7.3.2.2, 7.3.3.2, 7.3.3.4, 7.4.1, 7.4.2, 7.4.3, 7.4.4, 7.5.1.1, 7.6.1, 7.7.7.3. Automation: 7.2.5.1, 7.2.5.4, 7.3.4.6, 7.5.1.5, 7.5.4, 7.6.2.2, 7.6.2.3, 7.7.4, 7.7.6. 7.2.1.4 Consequence of Error: Low (reversibility).",
+    "to": "Augmentation: 7.1.1.1, 7.1.1.2, 7.1.1.3, 7.1.1.4, 7.1.1.6, 7.1.1.8, 7.1.1.10, 7.1.2.1, 7.1.2.2, 7.1.2.3, 7.1.3.4, 7.1.4, 7.2.1.1, 7.2.3.1, 7.2.3.2, 7.2.3.4, 7.2.4.2, 7.3.2.1, 7.3.2.2, 7.3.3.2, 7.3.3.4, 7.4.1, 7.4.2, 7.4.3, 7.4.4, 7.5.1.1, 7.6.1, 7.7.7.3. Agent-delegation: 7.2.5.1, 7.2.5.4, 7.3.4.6, 7.5.1.5, 7.5.4, 7.6.2.2, 7.6.2.3, 7.7.4, 7.7.6. 7.2.1.4 Consequence of Error: Moderate (legal, reversibility).",
+    "files": [
+      "docs/sandbox/pcf7.html",
+      "docs/sandbox/reference-wr.json"
+    ],
+    "source": "GR-058, approved by Tim and GiGi on Oct 15, 2026: the work-element model, with each activity ceiling derived from its element ceilings and the Consequence of Error checked at the two steps where a person stops seeing every instance. Both said every resulting change goes into one change-log entry.",
+    "reason": "Broken into its seven work elements, a Judgment ceiling forbade AI from assisting at all, though the ceiling factors hold only specific elements (Draft and Decide, plus those each factor names); AI may assist with the rest, which is Augmentation, with the person still writing the work and making the call. The nine Automation ceilings each carry a legal factor that holds an element with a person, which the old derivation skipped at Automation; the gate closes Agent-delegation to Automation for them, so a person decides each flagged instance. 7.2.1.4's posting carries required notices (EEO, pay range), so an error has legal exposure.",
+    "verified": "The 37 moves are exactly those the approved element-ceilings stress test and four-view sketch compute with the gates on. No Current State is past its new ceiling. Ceilings now: Augmentation 30, Oversight 11, Agent-delegation 44, Automation 33. reference-wr.json regenerated (version 424acc01cb7b); organization assessments stamped with the earlier version of these activities now show 'reference changed' until reassessed. Sandbox views render with no errors."
   }
 ];
