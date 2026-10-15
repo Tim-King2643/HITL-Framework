@@ -576,28 +576,36 @@ function dpAnalysis(){
   const m={};
   DATA.acts.forEach(a=>{const e=dpEl(a),v=e&&dpLeads(a)[e];m[a.code]={el:e,lead:v,dp:!!(e&&holds(v)),ai:rank(dpStage(a))>=1,feeds:[],covers:[]};});
   const outs=c=>{const x=CRUD.crud[c];return x?x.C.concat(x.U):[]};
-  const users=w=>Object.keys(CRUD.crud).filter(c=>{const x=CRUD.crud[c];return x.R.concat(x.U).includes(w)});
+  // An activity answers downstream to the decision point whose Decide or Verify acts on its work product. Until the Work
+  // Element Reference Data names what each element acts on, acting on it is read as updating it (approving, rejecting,
+  // changing): an activity that only reads it decides something else. The nearest such decision point, the earliest by
+  // number where several act on it (activity numbers are not flow order, so a later edit loops back to the approval);
+  // through updaters that are not decision points if needed. None: it needs a named control.
+  const updaters=w=>Object.keys(CRUD.crud).filter(c=>CRUD.crud[c].U.includes(w));
   DATA.acts.forEach(a=>{const r=m[a.code];if(r.dp)return;
-    // follow the work products forward, one hand-off at a time, and stop at the nearest decision points
-    const seen=new Set([a.code]),found=new Set();let q=[a.code];
-    for(let d=0;d<8&&q.length&&!found.size;d++){const nx=[];
-      q.forEach(c=>outs(c).forEach(w=>users(w).forEach(u=>{if(seen.has(u))return;seen.add(u);if(m[u].dp)found.add(u);else nx.push(u);})));q=nx;}
-    r.feeds=[...found].sort(nat);r.feeds.forEach(c=>m[c].covers.push(a.code));});
+    const seen=new Set([a.code]);let q=[a.code],hit=null,via=null;
+    for(let d=0;d<8&&q.length&&!hit;d++){const nx=[];
+      q.forEach(c=>outs(c).forEach(w=>updaters(w).forEach(u=>{if(seen.has(u))return;seen.add(u);if(m[u].dp){if(!hit||nat(u,hit)<0){hit=u;via=w;}}else nx.push(u);})));q=nx;}
+    r.feeds=hit?[hit]:[];r.via=hit?via:null;if(hit)m[hit].covers.push(a.code);});
   DPC={org:S.org,m};return m;
 }
 function dpTag(a){const r=dpAnalysis()[a.code],on=(S.wsel[a.code]||{}).t==='dp'?' sel':'';
   if(r.dp) return '<span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="A person holds '+r.el+': this activity is a decision point">Decision Point</span>';
-  if(r.feeds.length) return '<span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person holds '+r.el+' here; it is answered for at the downstream decision point'+(r.feeds.length>1?'s '+r.feeds.join(', '):' '+r.feeds[0])+', which its work product reaches">Decision Point '+r.feeds[0]+'</span>';
-  return '<span class="dpm red'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person decides or verifies, and its work product reaches no decision point: it needs a named control">Named control needed</span>';}
+  if(r.feeds.length) return '<span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person holds '+r.el+' here; it is answered for at '+r.feeds[0]+', whose Decide or Verify acts on its work product">Decision Point '+r.feeds[0]+'</span>';
+  return '<span class="dpm red'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person decides or verifies, and no decision point acts on its work product: it needs a named control">Named control needed</span>';}
+// The work products a decision point decides or verifies: those it updates, or, where it updates none, those it creates.
+function dpWps(c){const x=CRUD.crud[c];if(!x)return[];return (x.U.length?x.U:x.C).filter(w=>WPN[w]);}
+const wpName=w=>'<b>'+esc(WPN[w].name)+'</b> <span class="code">'+w+'</span>';
 function dpBox(a){const m=dpAnalysis(),r=m[a.code],at=isOrg()?'at '+esc(ORGNAME())+'’s Current State ('+dpStage(a)+')':'at its ceiling ('+dpStage(a)+')';
-  const li=c=>'<tr><td class="code">'+c+'</td><td>'+esc(ACT[c].name)+'</td><td>'+esc(ACT[c].Aroles[0])+'</td><td style="color:'+CONSC[ACT[c].cons]+'">'+ACT[c].cons+'</td></tr>';
+  const li=(c,w)=>'<tr><td class="code">'+c+'</td><td>'+esc(ACT[c].name)+'</td><td>'+(w&&WPN[w]?esc(WPN[w].name):'')+'</td><td>'+esc(ACT[c].Aroles[0])+'</td><td style="color:'+CONSC[ACT[c].cons]+'">'+ACT[c].cons+'</td></tr>';
+  const own=dpWps(a.code);
   let h='<div class="ibox">'+X(a)+'<h4>'+(r.dp||r.feeds.length?'Decision Point':'Named control needed')+'</h4><div class="isub">';
-  if(r.dp) h+='Human Accountability Anchor: <b>'+esc(a.Aroles[0])+'</b>. '+r.el+' is '+r.lead+' '+at+(r.lead==='AI-led'?': AI leads it, and a person decides each flagged instance, so the record also names the trigger condition':'')+(r.el==='Verify'?'; the activity has no Decide element, so the verification is the decision point':'')+'. Its Governed Decision Point record carries, for a '+a.cons+' Consequence of Error: '+DPGOV[a.cons]+'.';
-  else if(r.feeds.length) h+='No person holds '+(r.el||'Decide or Verify')+' '+at+(r.lead?' ('+r.lead+')':'')+', so its accountability lands where its work product is decided. Its own Accountable role, '+esc(a.Aroles[0])+', stays answerable for the activity.';
-  else h+='<span class="red">No person holds '+(r.el||'Decide or Verify')+' '+at+', and none of its work products reaches a decision point downstream.</span> With no person in the instance, it needs a named control, such as sampled review or outcome monitoring (GR-054). Its Accountable role, '+esc(a.Aroles[0])+', stays answerable and owns the control.';
+  if(r.dp) h+='Human Accountability Anchor: <b>'+esc(a.Aroles[0])+'</b>. '+r.el+' is '+r.lead+' '+at+(r.lead==='AI-led'?': AI leads it, and a person decides each flagged instance, so the record also names the trigger condition':'')+(r.el==='Verify'?'; the activity has no Decide element, so the verification is the decision point':'')+'.'+(own.length?' '+r.el+' acts on '+own.map(wpName).join(', ')+'.':'')+' Its Governed Decision Point record carries, for a '+a.cons+' Consequence of Error: '+DPGOV[a.cons]+'.';
+  else if(r.feeds.length) h+='No person holds '+(r.el||'Decide or Verify')+' '+at+', so its accountability lands at '+r.feeds[0]+', whose '+m[r.feeds[0]].el+' acts on its '+(r.via&&WPN[r.via]?wpName(r.via):'work product')+'. Its own Accountable role, '+esc(a.Aroles[0])+', stays answerable for the activity.';
+  else h+='<span class="red">No person holds '+(r.el||'Decide or Verify')+' '+at+', and no decision point decides or verifies '+(own.length?'its '+own.map(wpName).join(', '):'its work product (none is in the catalog yet)')+'.</span> With no person in the instance, it needs a named control, such as sampled review or outcome monitoring (GR-054). Its Accountable role, '+esc(a.Aroles[0])+', stays answerable and owns the control.';
   h+='</div>';
-  if(r.feeds.length) h+='<h5 style="margin:6px 0 4px">Answered for downstream by</h5><table class="al">'+r.feeds.map(li).join('')+'</table>';
-  if(r.covers.length) h+='<h5 style="margin:10px 0 4px">Activities it covers</h5><div class="isub" style="margin-bottom:4px">Upstream activities with no person deciding or verifying, whose work products reach this decision.</div><table class="al">'+r.covers.sort(nat).map(li).join('')+'</table>';
+  if(r.feeds.length) h+='<h5 style="margin:6px 0 4px">Answered for downstream by</h5><table class="al">'+r.feeds.map(c=>li(c,r.via)).join('')+'</table>';
+  if(r.covers.length) h+='<h5 style="margin:10px 0 4px">Activities it covers</h5><div class="isub" style="margin-bottom:4px">Activities with no person deciding or verifying, whose work products this activity&rsquo;s '+r.el+' acts on.</div><table class="al">'+r.covers.sort(nat).map(c=>li(c,m[c].via)).join('')+'</table>';
   return h+'<div class="prov">Proposed governance depth by Consequence of Error; GR-042 defines the record&rsquo;s fields. Modeled.</div></div>';}
 function dpSummary(){const m=dpAnalysis(),L=DATA.acts,dp=L.filter(a=>m[a.code].dp),exc=dp.filter(a=>m[a.code].lead==='AI-led'),ai=L.filter(a=>m[a.code].ai),
   fd=L.filter(a=>!m[a.code].dp&&m[a.code].feeds.length),no=L.filter(a=>!m[a.code].dp&&!m[a.code].feeds.length);
