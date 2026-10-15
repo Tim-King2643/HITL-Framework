@@ -123,7 +123,7 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .abcset a{color:var(--navy);font-weight:600;text-decoration:none}.abcset a:hover{text-decoration:underline}
 .dpm{font-size:12px;color:var(--navy);cursor:pointer;border-bottom:1px dotted currentColor;white-space:nowrap}.dpm.red{color:var(--red)}.dpm.sel{font-weight:600}
 .col{display:inline-block;text-align:right;white-space:nowrap}.crole{width:220px;font-size:12.5px}.cdp{width:145px}.ccoe{width:84px}
-.ahead.hd{margin:0;font-size:inherit;align-items:flex-end}.ahead.hd .col{white-space:normal;line-height:1.25;font-size:inherit}
+.ahead.hd{margin:0;font-size:inherit;align-items:flex-end}.ahead.hd .aright{align-items:flex-end}.ahead.hd .col{white-space:normal;line-height:1.25;font-size:inherit}
 .ahead > span:first-child{min-width:0}
 /* Stage names shown once, in the header row; each activity's ramp keeps the names' width (hidden) so the dots stay under them */
 .t tr.sthead th{background:#EEF2F8;color:var(--text,#0D1B2A);text-transform:none;letter-spacing:0;font-weight:600;text-align:left;padding-top:7px;padding-bottom:7px;border-bottom:1px solid var(--border)}
@@ -138,6 +138,8 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .step.sn:hover{text-decoration:underline;text-underline-offset:4px}
 /* A blank line's worth of space under each activity, to separate one from the next */
 .wt tr.wr > td{padding-bottom:26px}
+/* Names that wrap line up under their first word, not under the number */
+.anm{display:flex;gap:.45em;align-items:baseline}.anm>.code,.anm>.tg{flex:0 0 auto}
 </style></head><body>
 <div class="sk"><b>SKETCH</b> &middot; Four views instead of six &middot; all four views working &middot; reference data &middot; not in the sandbox &middot; design for <a href="../requirements_register.html#GR-059" style="color:#7A5A1E;font-weight:600">GR-059</a> &middot; RACI from the <a href="../activity_raci_draft.html" style="color:#7A5A1E;font-weight:600">GR-060 draft</a> &middot; <a href="../index.html" style="color:#7A5A1E;font-weight:600">Back to WIP hub</a></div>
 <div class="top"><div class="top-in">
@@ -433,7 +435,7 @@ function hPair(L,c){return '<span class="ph"><span class="lab">Current</span><sp
 function hCalcRow(lines,cols){return lines.length?'<tr class="det"><td'+(cols?' colspan="'+cols+'"':'')+'><div class="small" style="line-height:1.6">'+lines.join('<br>')+'<br>% H is modeled from each step\u2019s value, not measured.</div></td></tr>':''}
 function procRow(proc){
   const c=proc.split(' ')[0], L=DATA.acts.filter(a=>a.proc===proc), k='p'+c, o=opened[k], w=worstCons(L);
-  let h='<tr class="tier proc r" onclick="opened[\''+k+'\']=!opened[\''+k+'\'];render()"><td><div class="prow"><span class="pn"><span class="tg">'+(o?'−':'+')+'</span><span class="code">'+c+'</span> '+esc(proc.slice(c.length+1))+'</span>'+hPair(L,c)+'<span class="pc"><span class="lab2">Consequence of Error - Worst Case</span><span style="color:'+CONSC[w]+'">'+w+'</span></span></div></td></tr>';
+  let h='<tr class="tier proc r" onclick="opened[\''+k+'\']=!opened[\''+k+'\'];render()"><td><div class="prow"><span class="pn anm"><span class="tg">'+(o?'−':'+')+'</span><span class="code">'+c+'</span><span>'+esc(proc.slice(c.length+1))+'</span></span>'+hPair(L,c)+'<span class="pc"><span class="lab2">Consequence of Error - Worst Case</span><span style="color:'+CONSC[w]+'">'+w+'</span></span></div></td></tr>';
   return h+hCalcRow([opened['hc'+c]?'Current: '+hCalc(L,'cur')+'.':'',opened['hk'+c]?'Ceiling: '+hCalc(L,'ceil')+'.':''].filter(Boolean));
 }
 function pastEls(a){const g=ABC_EL[a.code];if(!isOrg()||!g)return[];const cp=caps(a);return elsOf(a).filter(e=>g[e]&&cp[e]&&lr(g[e][0])>lr(cp[e][0]))}
@@ -525,7 +527,7 @@ function workMain(){
     if(a.proc!==proc&&head){proc=a.proc;h+=procRow(proc);}
     if(head&&!opened['p'+l3Of(a)]) return;
     const pe=pastEls(a), box=infoBox(a);
-    h+='<tr class="wr"><td><div class="ahead"><span><span class="code">'+a.code+'</span> '+esc(a.name)+(pe.length?' <span class="red" title="An element is past its own ceiling">\u25CF</span>':'')+'</span><span class="aright">'+(isOrg()?'<a class="assess" href="../work_elements/assess_panel_sketch.html#'+a.code+'" title="Open the element assessment panel">'+(ABC_EL[a.code]?'Reassess':'Assess')+'</a>':'')+'<span class="col crole">'+esc(a.Aroles.join(', '))+'</span><span class="col cdp">'+dpTag(a)+'</span><span class="col ccoe"><span class="acons'+((S.wsel[a.code]||{}).t==='coe'?' sel':'')+'" style="color:'+CONSC[a.cons]+'" onclick="wpick(\''+a.code+'\',\'coe\',0)" title="Consequence of Error">'+a.cons+'</span></span></span></div>'+ramp(a,true)+'</td></tr>';
+    h+='<tr class="wr"><td><div class="ahead"><span class="anm"><span class="code">'+a.code+'</span><span>'+esc(a.name)+(pe.length?' <span class="red" title="An element is past its own ceiling">\u25CF</span>':'')+'</span></span><span class="aright">'+(isOrg()?'<a class="assess" href="../work_elements/assess_panel_sketch.html#'+a.code+'" title="Open the element assessment panel">'+(ABC_EL[a.code]?'Reassess':'Assess')+'</a>':'')+'<span class="col crole">'+esc(a.Aroles.join(', '))+'</span><span class="col cdp">'+dpTag(a)+'</span><span class="col ccoe"><span class="acons'+((S.wsel[a.code]||{}).t==='coe'?' sel':'')+'" style="color:'+CONSC[a.cons]+'" onclick="wpick(\''+a.code+'\',\'coe\',0)" title="Consequence of Error">'+a.cons+'</span></span></span></div>'+ramp(a,true)+'</td></tr>';
     if(box) h+='<tr class="det"><td colspan="1">'+box+'</td></tr>';
   });
   return h+'</tbody></table></div>';
