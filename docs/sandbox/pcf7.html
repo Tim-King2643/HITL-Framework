@@ -486,7 +486,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
 <div class="sandbox-banner">
   <span class="tag">Sandbox</span>
   <strong>PCF 7.0 — Develop and Manage Human Resources.</strong>
-  This is a live working copy of the full PCF 7.0 content, moving to four views (GR-059): <strong>Work</strong>, <strong>People</strong> and <strong>Data</strong> are in place, and Findings follows. It is the framework&rsquo;s <strong>Reference Model</strong>: for each of the 118 activities, Work shows
+  This is a live working copy of the full PCF 7.0 content, moving to four views (GR-059): All four views are in place: <strong>Work</strong>, <strong>People</strong>, <strong>Data</strong> and <strong>Findings</strong>. It is the framework&rsquo;s <strong>Reference Model</strong>: for each of the 118 activities, Work shows
   the Human-only baseline and the <strong>Progression Ceiling</strong>, which is how far AI may take the activity, on the full
   six-step ramp, with what changes at each step, the activity&rsquo;s decision point and its Consequence of Error. Choose an organization at the top
   to see its assessed <strong>Current State</strong> instead, and open any activity to assess it. The process structure, RACI, and CRUD data are
@@ -499,7 +499,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
   <div class="topbar">
     <div>
       <h2>7.0 &mdash; Develop and Manage Human Resources</h2>
-      <p>Sandbox &middot; Work, People and Data, plus the Exceptions Report until Findings moves in</p>
+      <p>Sandbox &middot; Work, People, Data and Findings</p>
       <div id="org-mount"></div>
     </div>
     <div class="topbar-pills" id="topbar-pills"></div>
@@ -517,14 +517,15 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
     <button class="view-toggle-btn" id="btn-data" onclick="setView('data')" style="display:none">Data View (CRUD)</button>
     <button class="view-toggle-btn" id="btn-people" onclick="setView('people')" style="display:none">People View</button>
     <button class="view-toggle-btn" id="btn-gates" onclick="setView('gates')" style="display:none">Readiness Gate</button>
-    <button class="view-toggle-btn" id="btn-report" onclick="setView('report')">Exceptions Report</button>
+    <button class="view-toggle-btn" id="btn-ffind" onclick="setView('ffind')" title="The reference at a glance, or an organization's executive summary and exceptions report (GR-059)">Findings</button>
+    <button class="view-toggle-btn" id="btn-report" onclick="setView('report')" style="display:none">Exceptions Report</button>
   </div>
   <div class="view-note" id="view-note"></div>
 
   <div class="content">
     <!-- Work and People (GR-059): the four-view page, reading this page's data. They replace Working Relationship,
-         Readiness Gate, RACI Table, People View and Data View, which stay reachable by URL (?view=wr, gates, raci,
-         people, data) while Findings moves over. -->
+         Readiness Gate, RACI Table, People View, Data View and Exceptions Report, which stay reachable by URL
+         (?view=wr, gates, raci, people, data, report) until they are retired. -->
     <div class="card lens-section" id="panel-work" style="display:none;padding:0 18px">
       <iframe id="fv-frame" title="Four views" style="width:100%;border:0;display:block;min-height:600px"></iframe>
     </div>
@@ -2925,7 +2926,7 @@ function toggleL3(code, el) { setL3Expanded(code, el.classList.contains('collaps
 // button steps back through the views visited before it leaves the page
 // (Tim, Oct 1, 2026). Working Relationship is the default and carries no
 // parameter. The organization's ?org= is kept alongside.
-const VIEW_KEYS = ['work', 'fpeople', 'fdata', 'wr', 'raci', 'data', 'people', 'gates', 'report'];
+const VIEW_KEYS = ['work', 'fpeople', 'fdata', 'ffind', 'wr', 'raci', 'data', 'people', 'gates', 'report'];
 function viewFromUrl() {
   const v = new URLSearchParams(location.search).get('view');
   return VIEW_KEYS.indexOf(v) !== -1 ? v : 'work';
@@ -2945,12 +2946,12 @@ function setView(v, opts) {
   if (VIEW_KEYS.indexOf(v) === -1) v = 'work';
   if (!(opts && opts.fromHistory)) syncViewToUrl(v, opts && opts.replace);
   currentView = v;
-  ['work', 'fpeople', 'fdata', 'wr', 'raci', 'data', 'people', 'gates', 'report'].forEach(name => {
+  ['work', 'fpeople', 'fdata', 'ffind', 'wr', 'raci', 'data', 'people', 'gates', 'report'].forEach(name => {
     const btn = document.getElementById('btn-' + name);
     if (btn) btn.classList.toggle('active', v === name);
   });
-  // Work, People and Data (GR-059) share the four-view frame.
-  document.getElementById('panel-work').style.display = (v === 'work' || v === 'fpeople' || v === 'fdata') ? '' : 'none';
+  // The four views (GR-059) share one frame.
+  document.getElementById('panel-work').style.display = (v === 'work' || v === 'fpeople' || v === 'fdata' || v === 'ffind') ? '' : 'none';
   document.getElementById('panel-maturity').style.display = v === 'wr' ? '' : 'none';
   document.getElementById('panel-raci').style.display = v === 'raci' ? '' : 'none';
   document.getElementById('panel-data').style.display = v === 'data' ? '' : 'none';
@@ -2959,6 +2960,7 @@ function setView(v, opts) {
   document.getElementById('panel-report').style.display = v === 'report' ? '' : 'none';
 
   const notes = {
+    ffind: 'On the Reference Model, the reference at a glance and the latest change made to it. For an organization, its executive summary (GR-056) and its exceptions report, printable for executive review, including elements past their own ceilings (GR-058) and activities that need a named control (GR-054). Replaces Exceptions Report.',
     fdata: 'Each work product, the activities that create and update it, and every activity that relies on it. Once AI touches a work product, the person who relies on it next has to check it (GR-046). By activity shows the activity CRUD. Replaces Data View (CRUD).',
     fpeople: 'Every role in the catalog: the activities it is Accountable and Responsible for (activity-level RACI, GR-060), and what is left for a person in each as the work moves up the ramp. The role-level hand-off into Human Impact (GR-056), not the Human Impact assessment. Replaces RACI Table and People View.',
     work: 'Every activity on the six-step ramp, from Current State to Progression Ceiling, with its Accountable role, decision point and Consequence of Error. Replaces Working Relationship and Readiness Gate as a consolidation of the screens; the readiness checks stay with the Human Impact & Readiness layer (GR-012, GR-013).',
@@ -2976,6 +2978,7 @@ function setView(v, opts) {
   if (v === 'work') showFourViews('work');
   if (v === 'fpeople') showFourViews('people');
   if (v === 'fdata') showFourViews('data');
+  if (v === 'ffind') showFourViews('findings');
 }
 
 function buildLegendInto(elId) {
@@ -3261,9 +3264,14 @@ function xrActCell(it) {
 function renderExceptionsReport() {
   const el = document.getElementById('xr-body');
   if (!el) return;
+  el.innerHTML = exceptionsReportHTML([]);
+}
+// The report's HTML. Findings (GR-059) passes extra sections, each {label, title, def, head:[...], rows:[{code, cells:[html...]}]};
+// they are numbered after the four standing sections and counted in the summary.
+function exceptionsReportHTML(extra) {
+  extra = extra || [];
   if (!orgActive()) {
-    el.innerHTML = '<div class="xr-empty">The Reference Model has no exceptions: it is the baseline every organization is compared against. Choose an organization above to see its report.</div>';
-    return;
+    return '<div class="xr-empty">The Reference Model has no exceptions: it is the baseline every organization is compared against. Choose an organization above to see its report.</div>';
   }
   const items = xrItems();
   const units = xrUnits();
@@ -3276,18 +3284,20 @@ function renderExceptionsReport() {
 
   // Summary: each process group and the category total, by type.
   const count = (list, g) => list.filter(it => it.u.g === g).length;
+  const uByCode = {}; units.forEach(u => uByCode[u.code] = u);
+  const ex = extra.map(x => Object.assign({}, x, { list: x.rows.filter(r => uByCode[r.code]).map(r => ({ u: uByCode[r.code], cells: r.cells })) }));
   const n = (v) => v ? String(v) : '<span class="xr-zero">0</span>';
   h += '<div class="xr-h">Summary</div>' +
-    '<table class="xr-t xr-sum"><thead><tr><th>Process group</th><th class="xr-num">Assessed</th><th class="xr-num">Proposal changes</th><th class="xr-num">Ceiling overrides</th><th class="xr-num">Past ceiling, no override</th><th class="xr-num">Reference changed</th></tr></thead><tbody>';
+    '<table class="xr-t xr-sum"><thead><tr><th>Process group</th><th class="xr-num">Assessed</th><th class="xr-num">Proposal changes</th><th class="xr-num">Ceiling overrides</th><th class="xr-num">Past ceiling, no override</th><th class="xr-num">Reference changed</th>' + ex.map(x => '<th class="xr-num">' + escHtml(x.label) + '</th>').join('') + '</tr></thead><tbody>';
   cat.groups.forEach(g => {
     const gUnits = units.filter(u => u.g === g);
     const ga = gUnits.filter(u => orgRecord(u.code)).length;
     h += '<tr><td><span class="xr-code">' + g.code + '</span>' + escHtml(g.name) + '</td>' +
       '<td class="xr-num">' + (ga ? ga + ' of ' + gUnits.length : '<span class="xr-zero">0 of ' + gUnits.length + '</span>') + '</td>' +
-      '<td class="xr-num">' + n(count(items.proposal, g)) + '</td><td class="xr-num">' + n(count(items.override, g)) + '</td><td class="xr-num">' + n(count(items.past, g)) + '</td><td class="xr-num">' + n(count(items.recheck, g)) + '</td></tr>';
+      '<td class="xr-num">' + n(count(items.proposal, g)) + '</td><td class="xr-num">' + n(count(items.override, g)) + '</td><td class="xr-num">' + n(count(items.past, g)) + '</td><td class="xr-num">' + n(count(items.recheck, g)) + '</td>' + ex.map(x => '<td class="xr-num">' + n(count(x.list, g)) + '</td>').join('') + '</tr>';
   });
   h += '<tr class="xr-l1"><td><span class="xr-code">' + cat.code + '</span>' + escHtml(cat.name) + ' &mdash; category</td><td class="xr-num">' + assessed + ' of ' + units.length + '</td>' +
-    '<td class="xr-num">' + items.proposal.length + '</td><td class="xr-num">' + items.override.length + '</td><td class="xr-num">' + items.past.length + '</td><td class="xr-num">' + items.recheck.length + '</td></tr></tbody></table>';
+    '<td class="xr-num">' + items.proposal.length + '</td><td class="xr-num">' + items.override.length + '</td><td class="xr-num">' + items.past.length + '</td><td class="xr-num">' + items.recheck.length + '</td>' + ex.map(x => '<td class="xr-num">' + x.list.length + '</td>').join('') + '</tr></tbody></table>';
 
   // 1. Proposal changes
   h += '<div class="xr-h">1. Proposal changes <span class="xr-n">' + items.proposal.length + '</span></div>' +
@@ -3347,7 +3357,22 @@ function renderExceptionsReport() {
       '</tbody></table>'
     : '<div class="xr-empty" style="padding:6px 0">None.</div>';
 
-  el.innerHTML = h;
+  // 5 onward: sections passed in by Findings (GR-059).
+  ex.forEach((x, i) => {
+    h += '<div class="xr-h">' + (5 + i) + '. ' + escHtml(x.title) + ' <span class="xr-n">' + x.list.length + '</span></div>' +
+      '<p class="xr-def">' + x.def + '</p>';
+    h += x.list.length
+      ? '<table class="xr-t"><thead><tr>' + x.head.map(t => '<th>' + t + '</th>').join('') + '<th class="xr-num">Count</th></tr></thead><tbody>' +
+        xrSectionRows(x.list, x.head.length + 1, it => xrActCell(it) + it.cells.map(c => '<td>' + c + '</td>').join('') + '<td></td>') +
+        '</tbody></table>'
+      : '<div class="xr-empty" style="padding:6px 0">None.</div>';
+  });
+  return h;
+}
+// Findings prints the report it shows: it is placed in the report panel, which printing lifts out on its own.
+function fvPrintReport(html) {
+  document.getElementById('xr-body').innerHTML = html;
+  printExceptionsReport();
 }
 // Print only the report: lift its panel to the top of <body> (so none of the
 // page's wide layout clips it), print, then put it back where it was.

@@ -774,7 +774,7 @@ function findSide(){
   return '<div class="q">'+VIEWS[3].q+'</div><p>'+(org?'Where '+esc(ORGNAME())+' departs from the reference, and the few items that need a decision. Every number is read from its assessment and override records.':'The reference at a glance, drawn from the other three views, and the latest change made to it. Select an organization for its executive summary and exceptions.')+'</p>'+
    (org?'<h5>Show</h5>'+btns([['exec','Executive summary'],['exc','Exceptions report']],'fmode'):'')+
    '<div class="pl"><a href="../wip/requirements_register.html">Requirements Register</a>: what Tim and GiGi have decided and what still needs a decision.<br><a href="../wip/production_changelog.html">Change log</a>: every change made to the reference, and why.</div>'+
-   '<div class="replaces">Replaces <b>Exceptions Report</b>, and is where the executive summary (GR-056) and the reference stress tests live.</div>';
+   '<div class="replaces">Replaces <b>Exceptions Report</b>: the same report, printable, with two more sections (elements past their own ceilings, GR-058, and named controls needed, GR-054). It is also where the executive summary (GR-056) and the reference stress tests live.</div>';
 }
 function refFindings(){
   // everything at its ceiling, GR-058 ceilings
@@ -803,12 +803,7 @@ function orgFindings(){
   const pe=as.filter(a=>pastEls(a).length&&rank(curOf(a))<=rank(derivedCeil(a))), ovs=as.filter(a=>ABC_OV[a.code]);
   const refChg=as.filter(a=>ABC_REF[a.code]&&(ABC_REF[a.code].ceiling!==derivedCeil(a)||ABC_REF[a.code].cons!==a.cons));
   const note='<div class="prov">'+abcNote()+'</div>';
-  if(S.fmode==='exc'){
-    const rows=[['Past the Progression Ceiling, no override',pastNo.map(a=>a.code+(HC[a.cons]?' ('+a.cons+', cannot be overridden)':''))],['An element past its own ceiling, activity within its ceiling',pe.map(a=>a.code+' '+pastEls(a).join(', '))],['Ceiling overrides',ovs.map(a=>a.code+' to '+ABC_OV[a.code].level)],['Reference changed since assessed (GR-058)',refChg.map(a=>a.code)],['Named control needed: no decision point, its own or another activity\u2019s (GR-021)',dpSummary().no.map(a=>a.code)]];
-    return '<div class="card"><h3>Exceptions report</h3><div class="sub">Every place '+esc(ORGNAME())+' departs from the reference, by type. Rolled up from activity to process, process group and category in the real build, and printable for executive review.</div>'+note+'</div>'+
-      '<div class="card" style="padding:0;overflow-x:auto"><table class="t"><thead><tr><th>Type of exception</th><th>Count</th><th style="text-align:left">Activities</th></tr></thead><tbody>'+
-      rows.map(([k,v])=>'<tr><td>'+k+'</td><td>'+(v.length||'<span class="z">0</span>')+'</td><td style="text-align:left">'+(v.join(' · ')||'<span class="z">none</span>')+'</td></tr>').join('')+'</tbody></table></div>';
-  }
+  if(S.fmode==='exc') return xrCard();
   let h='<div class="card"><h3>'+esc(ORGNAME())+' — executive summary</h3><div class="sub">GR-056. Assessed values against the reference.</div><div class="tiles">'+
     tile(as.length+' of 118','activities assessed')+tile(pastNo.length,'past the Progression Ceiling with no override')+tile(pe.length,'within the ceiling, with an element past its own')+tile(refChg.length,'to reassess: reference changed since assessed')+'</div>'+note+'</div>';
   const st={};as.forEach(a=>st[curOf(a)]=(st[curOf(a)]||0)+1);
@@ -823,6 +818,35 @@ function orgFindings(){
   return h;
 }
 function findMain(){return isOrg()?orgFindings():refFindings();}
+
+/* ---------- Exceptions report (GR-059: replaces the Exceptions Report button) ----------
+   The sandbox's own report, built by pcf7.html (exceptionsReportHTML), with two sections the four views add:
+   elements past their own ceilings (GR-058) and activities that need a named control (GR-054). */
+let XR_HTML='';
+function xrExtra(){
+  const as=DATA.acts.filter(a=>ABCSTAGE[a.code]);
+  const pe=as.filter(a=>pastEls(a).length&&rank(curOf(a))<=rank(derivedCeil(a)));
+  const fac=(cp,e)=>cp[e][1]&&cp[e][1]!=='control element'?cp[e][1].replace(/^control element · /,''):'';
+  const cons=a=>'<span style="color:'+CONSC[a.cons]+';font-weight:600">'+a.cons+'</span>';
+  const peRows=pe.map(a=>{const cp=caps(a),g=ABC_EL[a.code];
+    return {code:a.code,cells:[pastEls(a).map(e=>'<b>'+e+'</b>: '+g[e][0]+' <span class="xr-arrow">&rarr;</span> at most '+cp[e][0]).join('<br>'),
+      pastEls(a).map(e=>esc(fac(cp,e))||'<span class="xr-sub">control element</span>').join('<br>'),cons(a)]};});
+  const no=dpSummary().no;
+  const noRows=no.map(a=>({code:a.code,cells:[esc(a.Aroles[0]),(()=>{const x=CRUD.crud[a.code]||{C:[],U:[],D:[]},ids=[...new Set(x.C.concat(x.U,x.D||[]))];return ids.map(i=>esc(WPN[i]?WPN[i].name:i)+' <span class="xr-code">'+i+'</span>').join('<br>')})()||'<span class="xr-sub">creates, updates or deletes no work product</span>',cons(a)]}));
+  return [
+    {label:'Element past its ceiling',title:'Element past its own ceiling',def:'The activity is within its Progression Ceiling, but an element is led further toward AI than its own ceiling allows (GR-058). The element is what its ceiling factor protects, so this needs a decision even though the activity passes.',head:['Activity','Element: assessed &rarr; element ceiling','Ceiling factor','CoE'],rows:peRows},
+    {label:'Named control needed',title:'Named control needed',def:'No person decides or verifies the activity, and no decision point creates, updates or deletes the work products it touches (GR-021). Its Human Accountability Anchor names the control that stands in for a decision point (GR-054).',head:['Activity','Human Accountability Anchor','Work products it creates, updates or deletes','CoE'],rows:noRows}];
+}
+function xrCard(){
+  if(!document.getElementById('xr-css')){let css='';
+    for(const sh of P.document.styleSheets){let rules;try{rules=sh.cssRules}catch(e){continue}
+      for(const r of rules) if(r.selectorText&&/xr-|org-chip/.test(r.selectorText)) css+=r.cssText+'\n';}
+    const cs=P.getComputedStyle(P.document.documentElement),vars=['--navy','--navy-d','--gray','--border','--dark'].map(v=>v+':'+cs.getPropertyValue(v)).join(';');
+    const st=document.createElement('style');st.id='xr-css';st.textContent=':root{'+vars+'}\n'+css+'.xr-host .xr-wrap{padding:16px 18px 20px}';document.head.appendChild(st);}
+  XR_HTML=P.exceptionsReportHTML(xrExtra());
+  return '<div class="card xr-host" style="padding:0">'+'<div class="xr-wrap">'+XR_HTML+'</div></div>';
+}
+function printExceptionsReport(){P.fvPrintReport(XR_HTML)}
 
 const ORGS=[['ref','Reference Model'],['abc','ABC Test Org (test data)']];
 function pickOrg(v){if(v==='__new__'){alertNew=true;}else{S.org=v;alertNew=false;if(v==='ref'&&S.ws==='assessed')S.ws='all';}render()}
