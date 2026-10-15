@@ -122,6 +122,9 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .aright{display:flex;gap:14px;align-items:baseline;white-space:nowrap}.assess{font-size:12px;color:var(--navy);text-decoration:none}.assess:hover{text-decoration:underline}
 .abcset a{color:var(--navy);font-weight:600;text-decoration:none}.abcset a:hover{text-decoration:underline}
 .dpm{font-size:12px;color:var(--navy);cursor:pointer;border-bottom:1px dotted currentColor;white-space:nowrap}.dpm.red{color:var(--red)}.dpm.sel{font-weight:600}
+.col{display:inline-block;text-align:right;white-space:nowrap}.crole{width:220px}.cdp{width:145px}.ccoe{width:84px}
+.ahead.hd{margin:0;font-size:inherit;align-items:flex-end}.ahead.hd .col{white-space:normal;line-height:1.25}
+.ahead > span:first-child{min-width:0}
 </style></head><body>
 <div class="sk"><b>SKETCH</b> &middot; Four views instead of six &middot; all four views working &middot; reference data &middot; not in the sandbox &middot; design for <a href="../requirements_register.html#GR-059" style="color:#7A5A1E;font-weight:600">GR-059</a> &middot; RACI from the <a href="../activity_raci_draft.html" style="color:#7A5A1E;font-weight:600">GR-060 draft</a> &middot; <a href="../index.html" style="color:#7A5A1E;font-weight:600">Back to WIP hub</a></div>
 <div class="top"><div class="top-in">
@@ -497,14 +500,14 @@ function workMain(){
       f.push(as.length+' of '+L.length+' assessed. '+(past.length?past.length+' past the ceiling'+(cov.length?', '+cov.length+' of them covered by an approved override':'')+'. ':'None past its ceiling. ')+(pe.length?pe.map(a=>a.code+' '+pastEls(a).join(', ')).join('; ')+' past '+(pe.length>1?'their':'its')+' element ceiling, even though the activit'+(pe.length>1?'ies are':'y is')+' within its ceiling.':''));}
   }
   h+='<div class="card"><h3>What this shows</h3><ul class="find">'+f.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
-  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t wt"><thead><tr><th>Activity &middot; Accountable role (the Human Accountability Anchor) &middot; decision point &middot; Consequence of Error <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; click a step, an arrow, the lock, the decision point or the Consequence of Error</span></th></tr></thead><tbody>';
+  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t wt"><thead><tr><th><div class="ahead hd"><span>Activity <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; click a step, an arrow, the lock, the decision point or the rating</span></span><span class="aright">'+(isOrg()?'<span class="assess" style="visibility:hidden">Reassess</span>':'')+'<span class="col crole" title="The Human Accountability Anchor">Accountable role</span><span class="col cdp">Decision point</span><span class="col ccoe">Consequence of Error</span></span></div></th></tr></thead><tbody>';
   let proc='';
   L.forEach(a=>{
     const head=!a.proc.startsWith(a.code+' ');
     if(a.proc!==proc&&head){proc=a.proc;h+=procRow(proc);}
     if(head&&!opened['p'+l3Of(a)]) return;
     const pe=pastEls(a), box=infoBox(a);
-    h+='<tr class="wr"><td><div class="ahead"><span><span class="code">'+a.code+'</span> '+esc(a.name)+(pe.length?' <span class="red" title="An element is past its own ceiling">\u25CF</span>':'')+' &middot; '+esc(a.Aroles.join(', '))+dpTag(a)+'</span><span class="aright">'+(isOrg()?'<a class="assess" href="../work_elements/assess_panel_sketch.html#'+a.code+'" title="Open the element assessment panel">'+(ABC_EL[a.code]?'Reassess':'Assess')+'</a>':'')+'<span class="acons'+((S.wsel[a.code]||{}).t==='coe'?' sel':'')+'" style="color:'+CONSC[a.cons]+'" onclick="wpick(\''+a.code+'\',\'coe\',0)" title="Consequence of Error">'+a.cons+'</span></span></div>'+ramp(a,true)+'</td></tr>';
+    h+='<tr class="wr"><td><div class="ahead"><span><span class="code">'+a.code+'</span> '+esc(a.name)+(pe.length?' <span class="red" title="An element is past its own ceiling">\u25CF</span>':'')+'</span><span class="aright">'+(isOrg()?'<a class="assess" href="../work_elements/assess_panel_sketch.html#'+a.code+'" title="Open the element assessment panel">'+(ABC_EL[a.code]?'Reassess':'Assess')+'</a>':'')+'<span class="col crole">'+esc(a.Aroles.join(', '))+'</span><span class="col cdp">'+dpTag(a)+'</span><span class="col ccoe"><span class="acons'+((S.wsel[a.code]||{}).t==='coe'?' sel':'')+'" style="color:'+CONSC[a.cons]+'" onclick="wpick(\''+a.code+'\',\'coe\',0)" title="Consequence of Error">'+a.cons+'</span></span></span></div>'+ramp(a,true)+'</td></tr>';
     if(box) h+='<tr class="det"><td colspan="1">'+box+'</td></tr>';
   });
   return h+'</tbody></table></div>';
@@ -563,9 +566,9 @@ function dpAnalysis(){
   DPC={org:S.org,m};return m;
 }
 function dpTag(a){const r=dpAnalysis()[a.code],on=(S.wsel[a.code]||{}).t==='dp'?' sel':'';
-  if(r.dp) return ' &middot; <span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="A person holds '+r.el+': this activity is a decision point">Decision Point</span>';
-  if(r.feeds.length) return ' &middot; <span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person holds '+r.el+' here; it is answered for at the downstream decision point'+(r.feeds.length>1?'s '+r.feeds.join(', '):' '+r.feeds[0])+', which its work product reaches">Decision Point '+r.feeds[0]+'</span>';
-  return ' &middot; <span class="dpm red'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person decides or verifies, and its work product reaches no decision point: it needs a named control">Named control needed</span>';}
+  if(r.dp) return '<span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="A person holds '+r.el+': this activity is a decision point">Decision Point</span>';
+  if(r.feeds.length) return '<span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person holds '+r.el+' here; it is answered for at the downstream decision point'+(r.feeds.length>1?'s '+r.feeds.join(', '):' '+r.feeds[0])+', which its work product reaches">Decision Point '+r.feeds[0]+'</span>';
+  return '<span class="dpm red'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person decides or verifies, and its work product reaches no decision point: it needs a named control">Named control needed</span>';}
 function dpBox(a){const m=dpAnalysis(),r=m[a.code],at=isOrg()?'at '+esc(ORGNAME())+'’s Current State ('+dpStage(a)+')':'at its ceiling ('+dpStage(a)+')';
   const li=c=>'<tr><td class="code">'+c+'</td><td>'+esc(ACT[c].name)+'</td><td>'+esc(ACT[c].Aroles[0])+'</td><td style="color:'+CONSC[ACT[c].cons]+'">'+ACT[c].cons+'</td></tr>';
   let h='<div class="ibox">'+X(a)+'<h4>'+(r.dp?'Decision point — '+r.el+' held by a person':r.feeds.length?'Decision Point '+r.feeds.join(', ')+' — downstream':'Named control needed')+'</h4><div class="isub">';
