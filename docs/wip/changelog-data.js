@@ -363,5 +363,25 @@ const CHANGE_LOG = [
     "source": "GR-058, approved by Tim and GiGi on Oct 15, 2026: the work-element model, with each activity ceiling derived from its element ceilings and the Consequence of Error checked at the two steps where a person stops seeing every instance. Both said every resulting change goes into one change-log entry.",
     "reason": "Broken into its seven work elements, a Judgment ceiling forbade AI from assisting at all, though the ceiling factors hold only specific elements (Draft and Decide, plus those each factor names); AI may assist with the rest, which is Augmentation, with the person still writing the work and making the call. The nine Automation ceilings each carry a legal factor that holds an element with a person, which the old derivation skipped at Automation; the gate closes Agent-delegation to Automation for them, so a person decides each flagged instance. 7.2.1.4's posting carries required notices (EEO, pay range), so an error has legal exposure.",
     "verified": "The 37 moves are exactly those the approved element-ceilings stress test and four-view sketch compute with the gates on. No Current State is past its new ceiling. Ceilings now: Augmentation 30, Oversight 11, Agent-delegation 44, Automation 33. reference-wr.json regenerated (version 424acc01cb7b); organization assessments stamped with the earlier version of these activities now show 'reference changed' until reassessed. Sandbox views render with no errors."
+  },
+  {
+    "id": "CL-018",
+    "date": "2026-10-15",
+    "requestedBy": "Tim + GiGi",
+    "kind": "raci",
+    "changeType": "decision",
+    "target": {
+      "domain": "7.0",
+      "activity": "all 118 activities"
+    },
+    "summary": "RACI moved from the process level to the activity level (GR-060): each of the 118 activities has its own Accountable, Responsible, Consulted and Informed roles, held in ACTIVITY_RACI.",
+    "from": "RACI per process (37 L3 processes); every activity inherited its process's four letters.",
+    "to": "RACI per activity (118 activities), from the confirmed activity-level draft (docs/wip/activity_raci_draft.html). 28 activities change Accountable role. Participants outside the role catalog (Hiring Managers*, Legal*, Finance*, Managers*, Marketing*, All Managerial-tier) are kept separately from the catalog roles.",
+    "files": [
+      "docs/sandbox/pcf7.html"
+    ],
+    "source": "Tim, Oct 10, 2026: move RACI to the activity level, more accurate for accountability. GiGi confirmed the role assignments, Oct 15, 2026.",
+    "reason": "Accountability is decided activity by activity: a process's Accountable role is not the role that answers for each of its activities, and the decision points (GR-021) and the Human Accountability Anchor are read per activity.",
+    "verified": "118 activities, each with an Accountable role in the role catalog; every R, C and I role is in the catalog, with outside participants listed separately (six tokens split from 'Hiring Managers*' in the draft corrected). The Work view and the assessment panel read it; the RACI Table and People views still show the process-level RACI until the People view moves into the four views (GR-059)."
   }
 ];

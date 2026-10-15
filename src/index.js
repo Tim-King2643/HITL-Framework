@@ -606,6 +606,21 @@ const ASSESS_CODE_RE = /^7(\.\d+){2,3}$/;
 const WR_STEPS = ['Human-only', 'Judgment', 'Augmentation', 'Oversight', 'Agent-delegation', 'Automation'];  // order corrected Oct 6, 2026 (CL-015)
 const EVIDENCE_TYPES = new Set(['observed', 'system', 'audit', 'interview', 'document']);
 const CONFIDENCE = new Set(['high', 'medium', 'low']);
+// Element-level assessment (GR-058, approved Oct 15, 2026): who leads each work element, with its evidence.
+const WORK_ELEMENTS = new Set(['Research', 'Evaluate', 'Draft', 'Verify', 'Decide', 'Produce / Execute', 'Communicate']);
+const ELEMENT_LEADS = new Set(['Human', 'Human-led', 'AI-led', 'AI']);
+const ELEMENT_REF_MAX = 300;
+// { element: [lead, evidenceType or '', reference] } for the elements that are part of the activity; null if absent or invalid.
+function cleanElements(el) {
+  if (!el || typeof el !== 'object' || Array.isArray(el)) return null;
+  const out = {};
+  for (const k of Object.keys(el)) {
+    const v = el[k];
+    if (!WORK_ELEMENTS.has(k) || !Array.isArray(v) || !ELEMENT_LEADS.has(v[0])) return null;
+    out[k] = [v[0], EVIDENCE_TYPES.has(v[1]) ? v[1] : '', clip(v[2], ELEMENT_REF_MAX)];
+  }
+  return Object.keys(out).length ? out : null;
+}
 const ORG_MAX = 200, NOTE_MAX = 2000, HISTORY_MAX = 25;
 const OVERRIDE_CONS = new Set(['Low', 'Moderate']);
 const CEILING_FACTOR_KEYS = new Set(['technical', 'governance', 'legal', 'relational', 'floor', 'accountability']);
@@ -738,9 +753,16 @@ async function handleOrgApi(request, env, url) {
     if (proposed && proposed !== current && !overrideReason) {
       return json({ error: 'overriding the proposed working relationship needs a reason' }, { status: 400 });
     }
-    const evidenceType = EVIDENCE_TYPES.has(body.evidenceType) ? body.evidenceType : null;
+    const el = body.el === undefined ? null : cleanElements(body.el);
+    if (body.el !== undefined && !el) return json({ error: 'the element grid is not valid' }, { status: 400 });
+    // An element-level assessment records evidence per element; its overall evidence type is the most used one.
+    let evidenceType = EVIDENCE_TYPES.has(body.evidenceType) ? body.evidenceType : null;
+    if (el && !evidenceType) {
+      const n = {}; Object.values(el).forEach(v => { if (v[1]) n[v[1]] = (n[v[1]] || 0) + 1; });
+      evidenceType = Object.keys(n).sort((a, b) => n[b] - n[a])[0] || null;
+    }
     const confidence = CONFIDENCE.has(body.confidence) ? body.confidence : null;
-    if (!evidenceType || !confidence) return json({ error: 'an assessment needs an evidence type and a confidence level' }, { status: 400 });
+    if (!confidence || (!evidenceType && !el)) return json({ error: 'an assessment needs an evidence type and a confidence level' }, { status: 400 });
     const answers = Array.isArray(body.answers) ? body.answers.slice(0, 5).map(a => a === true || a === false ? a : null) : [];
     // Stamp the reference the assessment was made against (Sept 30, 2026), so
     // a later change to this activity's ceiling, Consequence of Error or
@@ -754,7 +776,7 @@ async function handleOrgApi(request, env, url) {
       if (refAct) refStamp = { refVersion: ref.version, refSnapshot: { ceiling: refAct.ceiling, cons: refAct.cons, ceilingFactors: refAct.ceilingFactors || [] } };
     } catch (e) { /* saved without a reference stamp */ }
     const rec = {
-      current, proposed, answers, overrideReason, evidenceType, confidence, ...refStamp,
+      current, proposed, answers, overrideReason, evidenceType, confidence, ...(el ? { el } : {}), ...refStamp,
       source: clip(body.source, ORG_MAX),
       sourceRole: clip(body.sourceRole, ORG_MAX),
       reference: clip(body.reference, ORG_MAX),

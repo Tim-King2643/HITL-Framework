@@ -486,10 +486,9 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
 <div class="sandbox-banner">
   <span class="tag">Sandbox</span>
   <strong>PCF 7.0 — Develop and Manage Human Resources.</strong>
-  This is a live working copy of the full PCF 7.0 content — Working-Relationship Table, RACI Table, Data View (CRUD Matrix), and
-  People View. It is the framework&rsquo;s <strong>Reference Model</strong>: for each of the 118 activities, the Working-Relationship Table shows
+  This is a live working copy of the full PCF 7.0 content, moving to four views (GR-059): <strong>Work</strong> is in place, and the RACI, Data, People and Exceptions views follow. It is the framework&rsquo;s <strong>Reference Model</strong>: for each of the 118 activities, Work shows
   the Human-only baseline and the <strong>Progression Ceiling</strong>, which is how far AI may take the activity, on the full
-  six-step ramp, with the Per-Transition Evidence Ladder as clickable gates in between, plus Consequence of Error. Choose an organization at the top
+  six-step ramp, with what changes at each step, the activity&rsquo;s decision point and its Consequence of Error. Choose an organization at the top
   to see its assessed <strong>Current State</strong> instead, and open any activity to assess it. The process structure, RACI, and CRUD data are
   the framework&rsquo;s real PCF 7.0 data. Ceilings, Consequence-of-Error ratings, and every % H figure are
   <strong>modeled</strong> &mdash; reasoned judgments for Tim and GiGi to pressure-test, not measured observations. Leave a reaction or a note on any row using the <strong>Notes</strong> button; GiGi and Tim can both see
@@ -500,7 +499,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
   <div class="topbar">
     <div>
       <h2>7.0 &mdash; Develop and Manage Human Resources</h2>
-      <p>Sandbox &middot; Working-Relationship classification, plus RACI, Data, People, and Readiness Gate views</p>
+      <p>Sandbox &middot; Work, plus the RACI, Data, People and Exceptions views until they move into the four views</p>
       <div id="org-mount"></div>
     </div>
     <div class="topbar-pills" id="topbar-pills"></div>
@@ -510,16 +509,22 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
 
   <div class="view-toggle">
     <span class="view-toggle-label">View</span>
-    <button class="view-toggle-btn active" id="btn-wr" onclick="setView('wr')">Working Relationship</button>
+    <button class="view-toggle-btn active" id="btn-work" onclick="setView('work')" title="Working relationship, Readiness Gate checks, decision points and Consequence of Error (GR-059)">Work</button>
+    <button class="view-toggle-btn" id="btn-wr" onclick="setView('wr')" style="display:none">Working Relationship</button>
     <button class="view-toggle-btn" id="btn-raci" onclick="setView('raci')">RACI Table</button>
     <button class="view-toggle-btn" id="btn-data" onclick="setView('data')">Data View (CRUD)</button>
     <button class="view-toggle-btn" id="btn-people" onclick="setView('people')">People View</button>
-    <button class="view-toggle-btn" id="btn-gates" onclick="setView('gates')">Readiness Gate</button>
+    <button class="view-toggle-btn" id="btn-gates" onclick="setView('gates')" style="display:none">Readiness Gate</button>
     <button class="view-toggle-btn" id="btn-report" onclick="setView('report')">Exceptions Report</button>
   </div>
   <div class="view-note" id="view-note"></div>
 
   <div class="content">
+    <!-- Work (GR-059): the four-view page, reading this page's data. Replaces Working Relationship and Readiness Gate;
+         those two stay reachable by URL (?view=wr, ?view=gates) while the other views move over. -->
+    <div class="card lens-section" id="panel-work" style="display:none;padding:0 18px">
+      <iframe id="fv-frame" title="Work view" style="width:100%;border:0;display:block;min-height:600px"></iframe>
+    </div>
     <div class="card lens-section" id="panel-maturity">
       <div class="card-header">
         <h3>Working-Relationship Table &mdash; PCF 7.0</h3>
@@ -1417,6 +1422,130 @@ const ACTIVITY_CRUD = {
   "7.8.1": { create:["WP-7-35"], read:["WP-7-30", "WP-7-03", "WP-7-36"], update:["WP-7-35"], delete:[], confirmed:"2026-09-26" },
   "7.8.2": { create:["WP-7-36"], read:["WP-7-30"], update:[], delete:[], confirmed:"2026-10-02" },
   "7.8.3": { create:["WP-7-37"], read:["WP-7-35", "WP-7-30"], update:[], delete:[], confirmed:"2026-09-26" },
+};
+// Activity-level RACI (GR-060). Moved from the process level to the activity level on Tim's decision (Oct 10, 2026),
+// with the role assignments confirmed by GiGi (Oct 15, 2026); CL-018. A, R, C and I name roles in ROLE_TAXONOMY;
+// x lists participants outside the catalog (marked *); why records the reasoning for each activity's assignment.
+// Change it here and log the change in ../wip/changelog-data.js.
+const ACTIVITY_RACI = {
+  "7.1.1.1": {"A": "CHRO", "R": ["Director of HR Ops", "HRBP Manager"], "C": ["SVP Talent Management", "VP People & Culture"], "I": [], "why": "The executives who lead parts of HR shape its strategic needs; the process's Director of TA is represented by SVP Talent Management. Informing all managers belongs to 7.1.1.7, where the strategy is communicated."},
+  "7.1.1.2": {"A": "CHRO", "R": ["Director of HR Ops"], "C": ["SVP Talent Management", "VP People & Culture", "HRBP Manager"], "I": [], "x": {"I": ["All Managerial-tier"]}, "why": "Defining roles and accountability across HR and the business needs the HR executives and the business partners' view; Director of HR Ops drafts it."},
+  "7.1.1.3": {"A": "CHRO", "R": ["Director of HR Ops"], "C": ["SVP Talent Management", "VP People & Culture"], "I": [], "x": {"I": ["All Managerial-tier"]}, "why": "The structure of the HR function is drafted by Director of HR Ops and agreed with the executives whose teams it shapes."},
+  "7.1.1.4": {"A": "CHRO", "R": ["Director of HR Ops"], "C": ["SVP Talent Management", "VP People & Culture", "HRBP Manager"], "I": [], "why": "The delivery model decides how HRBPs and shared services serve the business, so the HRBP Manager is consulted."},
+  "7.1.1.5": {"A": "CHRO", "R": ["Director of HR Ops"], "C": ["Compensation & Benefits Manager"], "I": [], "x": {"C": ["Finance*"]}, "why": "Pay and benefits are most of HR's cost, so Compensation & Benefits is consulted, with Finance outside HR."},
+  "7.1.1.6": {"A": "CHRO", "R": ["Director of HR Ops", "HRIS Analyst"], "C": ["SVP Talent Management", "VP People & Culture"], "I": [], "why": "HRIS Analyst builds the measures into the analytics platform; the executives agree what HR is measured against."},
+  "7.1.1.7": {"A": "CHRO", "R": ["VP People & Culture", "HRBP Manager"], "C": [], "I": [], "x": {"I": ["All Managerial-tier"]}, "why": "VP People & Culture leads internal communication and the HRBPs cascade the strategy to the business."},
+  "7.1.1.8": {"A": "CHRO", "R": ["Director of HR Ops", "HRIS Analyst"], "C": [], "I": [], "why": "Director of HR Ops and HRIS Analyst own the HR systems the strategy covers."},
+  "7.1.1.9": {"A": "Director of TA", "R": ["Director of TA"], "C": ["VP People & Culture"], "I": [], "x": {"C": ["Marketing*"]}, "why": "Employer branding serves candidate attraction, so the Director of TA owns it, with People & Culture and Marketing consulted. The CHRO does not run it day to day."},
+  "7.1.1.10": {"A": "VP People & Culture", "R": ["HRBP Manager"], "C": ["Director of HR Ops"], "I": ["CHRO"], "why": "The employee experience is the VP People & Culture's remit; the CHRO is informed of the design rather than accountable for it."},
+  "7.1.2.1": {"A": "Director of HR Ops", "R": ["HRBP Manager"], "C": ["SVP Talent Management", "Director of TA"], "I": ["CHRO"], "why": "Workforce planning draws on the business partners; talent leadership is consulted on supply."},
+  "7.1.2.2": {"A": "CHRO", "R": ["Compensation & Benefits Manager", "Compensation Analyst"], "C": ["Director of HR Ops"], "I": [], "x": {"C": ["Finance*"]}, "why": "Total rewards strategy sets direction for a major part of HR, so the CHRO answers for it; Compensation & Benefits drafts it."},
+  "7.1.2.3": {"A": "SVP Talent Management", "R": ["Director of L&D", "HRBP Manager"], "C": ["CHRO"], "I": ["Director of HR Ops"], "why": "Succession planning is talent strategy, the SVP Talent Management's remit. Director of L&D and the HRBPs do the work."},
+  "7.1.2.4": {"A": "SVP Talent Management", "R": ["Director of L&D"], "C": ["HRBP Manager"], "I": [], "why": "Leadership and high-performer programs are talent strategy; Director of L&D builds them."},
+  "7.1.2.5": {"A": "VP People & Culture", "R": ["HRBP Manager"], "C": ["CHRO", "Director of TA"], "I": [], "x": {"C": ["Legal*"]}, "why": "DEI direction sits with People & Culture; hiring representation brings in the Director of TA, and Legal is consulted."},
+  "7.1.2.6": {"A": "VP People & Culture", "R": ["HRBP Manager", "HR Generalist"], "C": ["Director of TA"], "I": ["CHRO"], "why": "The plan's owner answers for implementing it; HRBPs and HR Generalists carry it out."},
+  "7.1.2.7": {"A": "SVP Talent Management", "R": ["Director of TA"], "C": ["HRBP Manager"], "I": ["Recruiter"], "why": "Designing the talent acquisition program is talent strategy; the Director of TA designs it."},
+  "7.1.2.8": {"A": "SVP Talent Management", "R": ["Director of L&D"], "C": ["HRBP Manager"], "I": ["L&D Specialist"], "why": "Designing the talent development program is talent strategy; the Director of L&D designs it."},
+  "7.1.2.9": {"A": "Director of HR Ops", "R": ["HRBP Manager", "HR Generalist"], "C": ["VP People & Culture"], "I": [], "why": null},
+  "7.1.2.10": {"A": "Director of HR Ops", "R": ["HR Generalist"], "C": ["HRBP Manager", "VP People & Culture"], "I": ["CHRO"], "x": {"C": ["Legal*"]}, "why": "HR Generalists draft policy under HR Ops; Legal reviews it."},
+  "7.1.2.11": {"A": "Director of HR Ops", "R": ["HR Generalist"], "C": ["HRBP Manager"], "I": [], "why": null},
+  "7.1.2.12": {"A": "Compensation & Benefits Manager", "R": ["Compensation Analyst"], "C": ["Director of HR Ops"], "I": ["CHRO"], "x": {"C": ["Finance*"]}, "why": "Benefits planning belongs to Compensation & Benefits, not HR Ops, which is consulted."},
+  "7.1.2.13": {"A": "Director of HR Ops", "R": ["HRIS Analyst"], "C": ["HRBP Manager"], "I": [], "why": "HRIS Analyst builds the models."},
+  "7.1.2.14": {"A": "Director of HR Ops", "R": ["HRIS Analyst", "HRBP Manager"], "C": [], "I": [], "why": null},
+  "7.1.2.15": {"A": "Compensation & Benefits Manager", "R": ["Compensation Analyst"], "C": ["HRBP Manager"], "I": [], "why": "Job families are the job architecture pay grades rest on, so Compensation & Benefits owns them."},
+  "7.1.2.16": {"A": "HRBP Manager", "R": ["HR Generalist"], "C": ["Compensation & Benefits Manager"], "I": ["Recruiter"], "x": {"R": ["Managers*"]}, "why": "Job descriptions are written with hiring managers in each business area, which the HRBP Manager owns; grading is checked with Compensation & Benefits and postings rely on them."},
+  "7.1.3.1": {"A": "Director of HR Ops", "R": ["HRIS Analyst"], "C": [], "I": ["CHRO"], "why": "Measuring is done in the analytics platform by the HRIS Analyst."},
+  "7.1.3.2": {"A": "Director of HR Ops", "R": ["HRIS Analyst"], "C": ["HRBP Manager"], "I": ["CHRO"], "why": "HRIS Analyst measures; the business partners interpret HR's contribution."},
+  "7.1.3.3": {"A": "Director of HR Ops", "R": ["HRBP Manager"], "C": ["VP People & Culture"], "I": ["CHRO"], "x": {"I": ["All Managerial-tier"]}, "why": null},
+  "7.1.3.4": {"A": "Director of HR Ops", "R": ["HRBP Manager"], "C": ["SVP Talent Management", "VP People & Culture"], "I": ["CHRO"], "why": "Revising plans needs the executives whose parts of HR they cover."},
+  "7.1.4": {"A": "Director of L&D", "R": ["L&D Specialist", "HRBP Manager"], "C": ["Compensation & Benefits Manager", "SVP Talent Management", "VP People & Culture"], "I": ["Director of TA"], "why": "L&D Specialists build competency models; Compensation & Benefits is consulted on how they link to pay, and the SVP Talent Management replaces the CHRO as the consulted executive."},
+  "7.2.1.1": {"A": "HRBP Manager", "R": ["HRBP Manager"], "C": ["Director of TA"], "I": ["Recruiter"], "x": {"C": ["Hiring Managers*"]}, "why": "The staffing plan is agreed with the business-unit leader, so hiring managers are consulted, not just informed."},
+  "7.2.1.2": {"A": "HRBP Manager", "R": ["HR Generalist"], "C": [], "I": ["Recruiter"], "x": {"I": ["Hiring Managers*"]}, "why": null},
+  "7.2.1.3": {"A": "HRBP Manager", "R": ["HRBP Manager"], "C": ["Director of TA"], "I": ["Recruiter"], "x": {"I": ["Hiring Managers*"]}, "why": null},
+  "7.2.1.4": {"A": "Recruiter", "R": ["Recruiter"], "C": [], "I": ["HRBP Manager"], "x": {"I": ["Hiring Managers*"]}, "why": "Posting is the Recruiter's own transactional work."},
+  "7.2.1.5": {"A": "HRBP Manager", "R": ["HR Generalist"], "C": [], "I": ["Recruiter"], "x": {"I": ["Hiring Managers*"]}, "why": null},
+  "7.2.1.6": {"A": "HRBP Manager", "R": ["Recruiter"], "C": [], "I": [], "x": {"I": ["Hiring Managers*"]}, "why": "The Recruiter is the hiring manager's contact."},
+  "7.2.1.7": {"A": "Recruiter", "R": ["Recruiter"], "C": [], "I": ["HRBP Manager"], "why": "Requisition dates are part of the Recruiter's time-to-fill work."},
+  "7.2.2.1": {"A": "Director of TA", "R": ["Recruiter"], "C": ["HRBP Manager"], "I": [], "why": "Choosing recruitment methods and channels is sourcing strategy, the Director of TA's call."},
+  "7.2.2.2": {"A": "Recruiter", "R": ["Recruiter"], "C": [], "I": ["HRBP Manager"], "why": null},
+  "7.2.2.3": {"A": "Recruiter", "R": ["Recruiter"], "C": [], "I": ["HRBP Manager"], "why": null},
+  "7.2.2.4": {"A": "Director of TA", "R": ["Recruiter"], "C": [], "I": ["HRBP Manager"], "why": "Vendor contracts and spend sit with the Director of TA."},
+  "7.2.2.5": {"A": "Recruiter", "R": ["HR Generalist"], "C": [], "I": ["HRBP Manager"], "why": null},
+  "7.2.2.6": {"A": "Recruiter", "R": ["Recruiter"], "C": ["Director of TA"], "I": [], "why": null},
+  "7.2.3.1": {"A": "Director of TA", "R": ["Recruiter"], "C": [], "I": ["HRBP Manager"], "x": {"C": ["Legal*"]}, "why": "Selection tools carry adverse-impact risk, so the Director of TA answers for them, with Legal consulted."},
+  "7.2.3.2": {"A": "Recruiter", "R": ["Recruiter"], "C": [], "I": ["HRBP Manager"], "x": {"R": ["Hiring Managers*"]}, "why": null},
+  "7.2.3.3": {"A": "Recruiter", "R": ["Recruiter"], "C": [], "I": ["HRBP Manager"], "why": null},
+  "7.2.3.4": {"A": "Director of TA", "R": ["Recruiter"], "C": ["HRBP Manager"], "I": [], "x": {"R": ["Hiring Managers*"]}, "why": "Critical Consequence of Error: the selection decision's fairness and compliance sit with the Director of TA; the hiring manager decides with the Recruiter."},
+  "7.2.4.1": {"A": "Recruiter", "R": ["Recruiter"], "C": ["Compensation & Benefits Manager"], "I": [], "x": {"I": ["Hiring Managers*"]}, "why": "The Recruiter draws up the offer; Compensation & Benefits is consulted on terms rather than doing the work."},
+  "7.2.4.2": {"A": "Director of TA", "R": ["Recruiter"], "C": ["Compensation & Benefits Manager"], "I": ["HRBP Manager"], "x": {"C": ["Hiring Managers*"]}, "why": "Negotiation can commit pay outside standard terms, so the Director of TA answers for it."},
+  "7.2.4.3": {"A": "Recruiter", "R": ["Recruiter"], "C": [], "I": ["HRIS Analyst", "Onboarding Coordinator", "HRBP Manager"], "why": "Hiring starts the employee record and onboarding, so HRIS Analyst and the Onboarding Coordinator are informed."},
+  "7.2.5.1": {"A": "Director of TA", "R": ["Recruiter"], "C": [], "I": ["HRIS Analyst"], "x": {"C": ["Legal*"]}, "why": "Background checks are a regulated TA step with High Consequence of Error; the Director of TA answers for them, with Legal consulted."},
+  "7.2.5.2": {"A": "HRIS Analyst", "R": ["Recruiter"], "C": [], "I": ["Director of HR Ops"], "why": null},
+  "7.2.5.3": {"A": "HRIS Analyst", "R": ["Recruiter"], "C": [], "I": ["Director of HR Ops"], "why": null},
+  "7.2.5.4": {"A": "HRIS Analyst", "R": ["HRIS Analyst"], "C": [], "I": ["Director of HR Ops"], "x": {"C": ["Legal*"]}, "why": "Retention periods for non-hire records are a legal question."},
+  "7.3.1.1": {"A": "Director of HR Ops", "R": ["Onboarding Coordinator"], "C": ["HRBP Manager", "Director of L&D"], "I": [], "why": "Designing the program is a director's call; the Onboarding Coordinator builds it, with L&D consulted on its learning content."},
+  "7.3.1.2": {"A": "Onboarding Coordinator", "R": ["Onboarding Coordinator"], "C": [], "I": ["HRBP Manager"], "x": {"I": ["Managers*"]}, "why": null},
+  "7.3.1.3": {"A": "Onboarding Coordinator", "R": ["Onboarding Coordinator"], "C": ["Director of HR Ops"], "I": ["HRBP Manager"], "why": null},
+  "7.3.2.1": {"A": "HRBP Manager", "R": ["HRBP Manager"], "C": [], "I": [], "x": {"R": ["Managers*"]}, "why": "Managers set objectives with their people; HR Generalists, HR Ops and the CHRO play no part in setting them."},
+  "7.3.2.2": {"A": "HRBP Manager", "R": [], "C": ["Director of HR Ops"], "I": [], "x": {"R": ["Managers*"]}, "why": "Managers review performance; HR Ops is consulted on calibration."},
+  "7.3.2.3": {"A": "HRBP Manager", "R": ["HR Generalist"], "C": [], "I": [], "x": {"R": ["Managers*"]}, "why": null},
+  "7.3.2.4": {"A": "Director of HR Ops", "R": ["HRBP Manager"], "C": ["Director of L&D"], "I": ["CHRO"], "why": "The performance program is created in 7.1.2.9 under Director of HR Ops, so its owner answers for updating it."},
+  "7.3.3.1": {"A": "Director of L&D", "R": ["L&D Specialist"], "C": ["HRBP Manager"], "I": [], "why": "L&D Specialists write the guidelines."},
+  "7.3.3.2": {"A": "Director of L&D", "R": ["HRBP Manager"], "C": ["L&D Specialist"], "I": [], "x": {"R": ["Managers*"]}, "why": "Career paths are built with managers."},
+  "7.3.3.3": {"A": "Director of L&D", "R": ["L&D Specialist"], "C": [], "I": ["HRBP Manager"], "why": null},
+  "7.3.3.4": {"A": "Director of L&D", "R": ["HRBP Manager"], "C": ["SVP Talent Management"], "I": ["CHRO"], "x": {"R": ["Managers*"]}, "why": "Succession plans for specific roles carry out the succession strategy (7.1.2.3), so the SVP Talent Management is consulted in place of People & Culture."},
+  "7.3.4.1": {"A": "Director of L&D", "R": ["L&D Specialist"], "C": ["HRBP Manager"], "I": [], "why": null},
+  "7.3.4.2": {"A": "Director of L&D", "R": ["L&D Specialist"], "C": ["HRBP Manager"], "I": [], "why": null},
+  "7.3.4.3": {"A": "Director of L&D", "R": ["L&D Specialist"], "C": [], "I": [], "why": null},
+  "7.3.4.4": {"A": "Director of L&D", "R": ["L&D Specialist"], "C": ["HRBP Manager"], "I": [], "x": {"C": ["Managers*"]}, "why": "Training needs come from managers as well as HRBPs."},
+  "7.3.4.5": {"A": "Director of L&D", "R": ["L&D Specialist"], "C": ["HRBP Manager"], "I": [], "why": null},
+  "7.3.4.6": {"A": "Director of L&D", "R": ["L&D Specialist"], "C": [], "I": ["HRIS Analyst"], "why": "Certifications are recorded in the employee record."},
+  "7.3.4.7": {"A": "Director of L&D", "R": ["L&D Specialist"], "C": [], "I": ["SVP Talent Management"], "why": "Program results go to the SVP Talent Management, L&D's executive, rather than the CHRO."},
+  "7.4.1": {"A": "HRBP Manager", "R": ["HRBP Manager"], "C": [], "I": ["Director of HR Ops"], "x": {"C": ["Legal*"]}, "why": null},
+  "7.4.2": {"A": "HRBP Manager", "R": ["HRBP Manager"], "C": [], "I": ["Director of HR Ops"], "x": {"C": ["Legal*"]}, "why": null},
+  "7.4.3": {"A": "HRBP Manager", "R": ["HRBP Manager"], "C": [], "I": ["Director of HR Ops"], "why": null},
+  "7.4.4": {"A": "HRBP Manager", "R": ["HRBP Manager"], "C": [], "I": ["Director of HR Ops"], "x": {"I": ["Legal*"]}, "why": null},
+  "7.4.5": {"A": "Director of HR Ops", "R": ["Director of HR Ops"], "C": [], "I": ["CHRO"], "x": {"C": ["Legal*"]}, "why": null},
+  "7.5.1.1": {"A": "Compensation & Benefits Manager", "R": ["Compensation Analyst"], "C": ["Director of HR Ops"], "I": ["HRBP Manager", "CHRO"], "x": {"C": ["Finance*"]}, "why": "Salary structure is set within the total rewards strategy (7.1.2.2), so the CHRO is informed; Finance is consulted on cost."},
+  "7.5.1.2": {"A": "Compensation & Benefits Manager", "R": ["Compensation Analyst"], "C": [], "I": ["HRBP Manager"], "x": {"C": ["Finance*"]}, "why": "Finance is consulted on plan cost."},
+  "7.5.1.3": {"A": "Compensation & Benefits Manager", "R": ["Compensation Analyst"], "C": [], "I": [], "why": null},
+  "7.5.1.4": {"A": "Compensation & Benefits Manager", "R": ["Compensation Analyst"], "C": [], "I": [], "x": {"C": ["Finance*"]}, "why": "The activity's own text names financial requirements."},
+  "7.5.1.5": {"A": "Compensation & Benefits Manager", "R": ["Compensation Analyst"], "C": [], "I": ["HRIS Analyst"], "x": {"I": ["Managers*"]}, "why": "Pay changes feed payroll through the employee record."},
+  "7.5.1.6": {"A": "Compensation & Benefits Manager", "R": ["Compensation Analyst"], "C": ["VP People & Culture"], "I": [], "x": {"R": ["Managers*"]}, "why": "Managers give recognition; People & Culture is consulted on how it supports the culture."},
+  "7.5.1.7": {"A": "VP People & Culture", "R": ["HRIS Analyst"], "C": ["Compensation & Benefits Manager", "HRBP Manager"], "I": [], "why": "Engagement and retention indicators are the People & Culture leader's measures; pay is one input."},
+  "7.5.1.8": {"A": "Compensation & Benefits Manager", "R": ["Compensation Analyst"], "C": [], "I": ["CHRO"], "x": {"C": ["Finance*"]}, "why": "Plan reviews go to the CHRO, with Finance consulted."},
+  "7.5.1.9": {"A": "Compensation & Benefits Manager", "R": ["Compensation Analyst"], "C": [], "I": ["CHRO"], "why": "Plan reviews go to the CHRO."},
+  "7.5.2.1": {"A": "Compensation & Benefits Manager", "R": ["Compensation Analyst"], "C": [], "I": ["HRIS Analyst"], "why": "Delivering the benefits program is program ownership, which sits with the manager; the analyst runs it."},
+  "7.5.2.2": {"A": "Compensation Analyst", "R": ["Compensation Analyst"], "C": [], "I": ["HRIS Analyst"], "why": null},
+  "7.5.2.3": {"A": "Compensation Analyst", "R": ["Compensation Analyst"], "C": ["Compensation & Benefits Manager"], "I": [], "why": null},
+  "7.5.2.4": {"A": "Compensation Analyst", "R": ["Compensation Analyst"], "C": [], "I": ["HRIS Analyst"], "x": {"C": ["Finance*"]}, "why": "Reconciliation is against carrier and finance records."},
+  "7.5.3.1": {"A": "HRBP Manager", "R": ["HR Generalist"], "C": ["VP People & Culture"], "I": ["Director of HR Ops"], "why": "Program delivery is owned by a manager, not an individual contributor; wellbeing is consulted with People & Culture."},
+  "7.5.3.2": {"A": "Compensation & Benefits Manager", "R": ["HR Generalist"], "C": ["VP People & Culture", "HRBP Manager"], "I": [], "why": "Employee and family support (the EAP) is a benefit, so Compensation & Benefits owns it."},
+  "7.5.4": {"A": "HRIS Analyst", "R": ["HRIS Analyst"], "C": ["Compensation Analyst"], "I": [], "x": {"I": ["Finance*"]}, "why": null},
+  "7.5.5": {"A": "HR Generalist", "R": ["HRIS Analyst"], "C": [], "I": ["HRBP Manager"], "why": null},
+  "7.6.1": {"A": "HRBP Manager", "R": ["HRBP Manager"], "C": ["Compensation & Benefits Manager"], "I": [], "why": null},
+  "7.6.2.1": {"A": "HRBP Manager", "R": ["HR Generalist"], "C": ["Compensation & Benefits Manager"], "I": [], "why": null},
+  "7.6.2.2": {"A": "HRBP Manager", "R": ["HR Generalist"], "C": ["Compensation & Benefits Manager"], "I": [], "x": {"C": ["Legal*"], "I": ["Managers*"]}, "why": "Leave law makes Legal a consultation, not just informed; the employee's manager is informed."},
+  "7.6.2.3": {"A": "HRBP Manager", "R": ["HR Generalist"], "C": [], "I": ["HRIS Analyst"], "x": {"I": ["Managers*"]}, "why": "Offboarding ends system access and the employee record, so HRIS Analyst is informed; there is no pay decision for Compensation & Benefits."},
+  "7.6.2.4": {"A": "HRBP Manager", "R": ["HR Generalist"], "C": ["Compensation & Benefits Manager"], "I": [], "x": {"I": ["Legal*"]}, "why": null},
+  "7.6.3.1": {"A": "HRBP Manager", "R": ["HR Generalist"], "C": [], "I": [], "why": null},
+  "7.7.1": {"A": "HRIS Analyst", "R": ["HRIS Analyst"], "C": [], "I": ["Director of HR Ops"], "why": null},
+  "7.7.2": {"A": "HR Generalist", "R": ["HR Generalist"], "C": ["HRBP Manager"], "I": [], "why": null},
+  "7.7.3": {"A": "HRIS Analyst", "R": ["HRIS Analyst"], "C": [], "I": [], "why": null},
+  "7.7.4": {"A": "HRIS Analyst", "R": ["HRIS Analyst"], "C": [], "I": ["Director of HR Ops"], "why": null},
+  "7.7.5": {"A": "HRIS Analyst", "R": ["HRIS Analyst"], "C": ["Director of HR Ops"], "I": [], "why": null},
+  "7.7.6": {"A": "HRIS Analyst", "R": ["HRIS Analyst"], "C": [], "I": [], "why": null},
+  "7.7.7.1": {"A": "HRIS Analyst", "R": ["HRIS Analyst"], "C": ["Director of HR Ops", "HRBP Manager"], "I": [], "why": "The business partners are the main stakeholders."},
+  "7.7.7.2": {"A": "HRIS Analyst", "R": ["HRIS Analyst"], "C": ["Director of HR Ops"], "I": [], "why": null},
+  "7.7.7.3": {"A": "Director of HR Ops", "R": ["HRIS Analyst"], "C": [], "I": [], "why": "The methodology decides what every later conclusion rests on (High Consequence of Error), so the director answers for it."},
+  "7.7.7.4": {"A": "HRIS Analyst", "R": ["HRIS Analyst"], "C": [], "I": [], "why": null},
+  "7.7.7.5": {"A": "HRIS Analyst", "R": ["HRIS Analyst"], "C": [], "I": [], "why": null},
+  "7.7.8.1": {"A": "HRIS Analyst", "R": ["HRIS Analyst"], "C": [], "I": [], "why": "Transforming data is internal to the analysis; nobody else needs informing."},
+  "7.7.8.2": {"A": "HRIS Analyst", "R": ["HRIS Analyst"], "C": ["HRBP Manager"], "I": ["Director of HR Ops"], "why": "The business partners help interpret the insights."},
+  "7.7.8.3": {"A": "Director of HR Ops", "R": ["HRIS Analyst"], "C": [], "I": ["CHRO"], "why": "Outcomes go to leadership with High Consequence of Error, so the director answers for what is communicated."},
+  "7.8.1": {"A": "HRBP Manager", "R": ["HRBP Manager"], "C": ["Director of HR Ops"], "I": [], "why": null},
+  "7.8.2": {"A": "HR Generalist", "R": ["HRIS Analyst"], "C": [], "I": ["HRBP Manager"], "why": null},
+  "7.8.3": {"A": "HRBP Manager", "R": ["HR Generalist"], "C": [], "I": [], "why": null},
 };
 const WP_BY_ID = {};
 WORK_PRODUCTS.forEach(w => { WP_BY_ID[w.id] = w; });
@@ -2793,15 +2922,15 @@ function toggleL3(code, el) { setL3Expanded(code, el.classList.contains('collaps
 // button steps back through the views visited before it leaves the page
 // (Tim, Oct 1, 2026). Working Relationship is the default and carries no
 // parameter. The organization's ?org= is kept alongside.
-const VIEW_KEYS = ['wr', 'raci', 'data', 'people', 'gates', 'report'];
+const VIEW_KEYS = ['work', 'wr', 'raci', 'data', 'people', 'gates', 'report'];
 function viewFromUrl() {
   const v = new URLSearchParams(location.search).get('view');
-  return VIEW_KEYS.indexOf(v) !== -1 ? v : 'wr';
+  return VIEW_KEYS.indexOf(v) !== -1 ? v : 'work';
 }
 function syncViewToUrl(v, replace) {
   if (viewFromUrl() === v) return;
   const u = new URL(location.href);
-  if (v === 'wr') u.searchParams.delete('view'); else u.searchParams.set('view', v);
+  if (v === 'work') u.searchParams.delete('view'); else u.searchParams.set('view', v);
   if (replace) history.replaceState(null, '', u.toString());
   else history.pushState({ view: v }, '', u.toString());
 }
@@ -2810,13 +2939,14 @@ window.addEventListener('popstate', function () {
   if (v !== currentView) setView(v, { fromHistory: true });
 });
 function setView(v, opts) {
-  if (VIEW_KEYS.indexOf(v) === -1) v = 'wr';
+  if (VIEW_KEYS.indexOf(v) === -1) v = 'work';
   if (!(opts && opts.fromHistory)) syncViewToUrl(v, opts && opts.replace);
   currentView = v;
-  ['wr', 'raci', 'data', 'people', 'gates', 'report'].forEach(name => {
+  ['work', 'wr', 'raci', 'data', 'people', 'gates', 'report'].forEach(name => {
     const btn = document.getElementById('btn-' + name);
     if (btn) btn.classList.toggle('active', v === name);
   });
+  document.getElementById('panel-work').style.display = v === 'work' ? '' : 'none';
   document.getElementById('panel-maturity').style.display = v === 'wr' ? '' : 'none';
   document.getElementById('panel-raci').style.display = v === 'raci' ? '' : 'none';
   document.getElementById('panel-data').style.display = v === 'data' ? '' : 'none';
@@ -2825,6 +2955,7 @@ function setView(v, opts) {
   document.getElementById('panel-report').style.display = v === 'report' ? '' : 'none';
 
   const notes = {
+    work: 'Every activity on the six-step ramp, from Current State to Progression Ceiling, with its Accountable role, decision point and Consequence of Error. Replaces Working Relationship and Readiness Gate as a consolidation of the screens; the readiness checks stay with the Human Impact & Readiness layer (GR-012, GR-013).',
     wr: 'Current State and Progression Ceiling on the six-step ramp, with the Per-Transition Evidence Ladder as gates in between. In the Reference Model every activity starts at the Human-only baseline; with an organization selected, Current State is its assessed value, and each activity opens to be assessed.',
     raci: 'Real reasoned-match RACI for PCF 7.0. R falls back to the Accountable role (marked "from Accountable") wherever no separate Responsible was identified.',
     data: 'Work-product CRUD per activity for all 118 activities (HRBP Manager confirmed Sept 26, 2026; every other role Oct 2, 2026). Each process row is derived from its activities.',
@@ -2836,6 +2967,7 @@ function setView(v, opts) {
 
   if (v === 'wr') render();
   if (v === 'report') renderExceptionsReport();
+  if (v === 'work') showFourViews('work');
 }
 
 function buildLegendInto(elId) {
@@ -2882,6 +3014,7 @@ var ACTIVE_ORG = null;  // var, not let: renderTopPills() reads it before this l
 var ORG_RECORDS = {};
 var ORG_OVERRIDES = {};  // ceiling overrides (GR-054) for the selected organization
 function rerenderAllViews() {
+  refreshFourViews();
   renderTopPills();
   render();
   renderRoleImpactTable(cat);
@@ -3011,8 +3144,9 @@ function openAssess(code) {
   AssessPanel.open({
     org: ACTIVE_ORG, code: code, name: ctx ? ctx.name : code,
     process: ctx ? ctx.l3.code + ' ' + ctx.l3.name : '',
-    A: ctx && ctx.l3.raci ? parseRaciField(ctx.l3.raci.A) : [],
-    R: ctx && ctx.l3.raci ? parseRaciField(ctx.l3.raci.R) : [],
+    // Activity-level RACI (GR-060, CL-018).
+    A: ACTIVITY_RACI[code] ? [ACTIVITY_RACI[code].A] : (ctx && ctx.l3.raci ? parseRaciField(ctx.l3.raci.A) : []),
+    R: ACTIVITY_RACI[code] ? ACTIVITY_RACI[code].R.slice() : (ctx && ctx.l3.raci ? parseRaciField(ctx.l3.raci.R) : []),
     ref: { ceiling: w.ceiling, cons: w.cons, consFactors: w.consFactors, consNote: w.consNote, ceilingFactors: w.ceilingFactors, ceilingNote: w.ceilingNote },
     record: ORG_RECORDS[code] || null,
     override: ORG_OVERRIDES[code] || null,
@@ -3226,6 +3360,30 @@ function printExceptionsReport() {
 if (window.OrgContext) {
   orgBanner(null, 0);
   OrgContext.mountSelector(document.getElementById('org-mount'), { includeReference: true, onChange: applyOrg });
+}
+
+// ── Four views (GR-059) ──────────────────────────────────────────────────
+// four_views.html runs in #fv-frame and reads this page's data through FV_SOURCE
+// (const declarations are not window properties, so they are handed over here).
+window.FV_SOURCE = { PCF7, WR_DATA, ROLE_TAXONOMY, ACTIVITY_CRUD, ACTIVITY_RACI, WORK_PRODUCTS, ASSESS_EVIDENCE_LABEL,
+  CHANGE_LOG: (typeof CHANGE_LOG !== 'undefined') ? CHANGE_LOG : [] };
+function showFourViews(v) {
+  const f = document.getElementById('fv-frame');
+  if (!f) return;
+  if (!f.getAttribute('src')) { f.setAttribute('src', 'four_views.html?view=' + v); return; }
+  try { if (f.contentWindow && f.contentWindow.fvShow) f.contentWindow.fvShow(v); } catch (e) {}
+}
+// After the Work view saves or resets an element-level assessment: the same update the assessment panel makes.
+function fvAssessmentSaved(code, rec) {
+  ORG_RECORDS[code] = rec;
+  WR_DATA[code].rel = rec && rec.current ? rec.current : 'Human-only';
+  const assessed = Object.keys(ORG_RECORDS).filter(k => ORG_RECORDS[k] && ORG_RECORDS[k].current).length;
+  orgBanner(ACTIVE_ORG, assessed);
+  rerenderKeepingOpen();
+}
+function refreshFourViews() {
+  const f = document.getElementById('fv-frame');
+  try { if (f && f.contentWindow && f.contentWindow.fvRefresh) f.contentWindow.fvRefresh(); } catch (e) {}
 }
 </script>
 </body>
