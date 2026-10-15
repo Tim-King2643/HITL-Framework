@@ -240,7 +240,7 @@ function peopleSide(){
      '<h5>At Oversight, every instance is approved by</h5>'+btns([['R','The role that did the work'],['A','The Accountable role']],'appr')+
      '<h5>High and Critical exceptions go to</h5>'+btns([['A','The Accountable role (recommended)'],['mgr','The manager of the role that did the work'],['same','Stay with the role that did the work']],'esc');
   }
-  return h+'<div class="replaces">Replaces <b>People View</b> and <b>RACI Table</b>, and brings in the exception-load stress test (GR-029, GR-030).</div>';
+  return h+'<div class="replaces">Replaces <b>People View</b> and <b>RACI Table</b>, and brings in the exception-load stress test (GR-029, GR-030). People is the role-level hand-off into Human Impact (GR-056), not the Human Impact assessment itself; accountability stays visible here in the RACI table and on every activity in Work.</div>';
 }
 function peopleMain(){
   const base=tally('Human-only'), now=tally(S.stage), R=now.roles, B=base.roles;
@@ -451,7 +451,7 @@ function workSide(){
    '<h5>Show</h5>'+btns([['all','All activities'],['person','Must keep a person doing the work'],['auto','May go to Automation'],['hc','High or Critical consequence']].concat(isOrg()?[['assessed','Assessed']]:[]),'ws')+
    '<h5>Ramp shows</h5>'+btns([['names','Stage names (reached in bold)'],['dots','Dots under one row of stage names']],'rmode')+
    '<h5>Reading a ramp</h5><p>Each step carries a share of the work kept with a person (% H): '+ST.map(s=>s+' '+HPCT[s]).join(', ')+'. A process heading averages its activities; click a % H figure for its calculation, or the + to open the process.</p><p>'+(S.rmode==='names'?'Stages in bold are reached, up to the Current State; the rest are in grey. The lock sits at the Progression Ceiling; stages past it are faint. ':'Filled steps are reached, up to the Current State. The lock sits at the Progression Ceiling; steps past it are greyed. ')+(isOrg()?(S.rmode==='names'?'A stage in red is reached past the ceiling,':'A red ring marks a stage past the ceiling,')+' and a red dot an activity with an element past its own ceiling. Click the Current State step for its element assessment.':'In the Reference Model every activity starts at the Human-only baseline.')+'</p>'+
-   '<div class="replaces">Replaces <b>Working Relationship</b> and <b>Readiness Gate</b>. The Readiness Gate&rsquo;s three checks (technical evidence, role readiness and organizational readiness) move into the gate box.</div>';
+   '<div class="replaces">Replaces <b>Working Relationship</b> and <b>Readiness Gate</b>, as a consolidation of the screens only. Work says how far an activity can move. Whether the organization and its people can operate there stays with Human Operating Readiness (GR-012) and Meaningful Human Control (GR-013) in the Human Impact &amp; Readiness layer; the work-side evidence and gates feed that layer rather than replace it, and the gate box shows its checks beside the technical evidence.</div>';
 }
 // The stage names, once, in the table header: the same steps and gaps as a ramp, so each name sits over its dot.
 function stageHead(){return '<div class="ramp">'+ST.map((st,k)=>'<div class="step"><div class="lbl">'+st+'</div></div>'+(k<5?'<div class="arr"></div>':'')).join('')+'</div>';}
