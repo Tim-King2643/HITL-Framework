@@ -260,7 +260,7 @@ function tally(target){
   const roles={}; DATA.roles.forEach(r=>roles[r.name]={acc:0,resp:0,work:0,approve:0,exc:0,escIn:0,answer:0,left:0,leftHC:0,acts:[],racts:[]});
   const org={every:0,approve:0,exc:0,none:0,escHC:0,escMoved:0};
   DATA.acts.forEach(a=>{
-    const c=ceilOf(a), s=target==='Human-only'?'Human-only':(rank(target)<rank(c)?target:c);
+    const c=ceilOf(a), s=target==='Today'?curOf(a):target==='Human-only'?'Human-only':(rank(target)<rank(c)?target:c);
     if(rank(s)<=2) org.every++; else if(s==='Oversight') org.approve++; else if(s==='Agent-delegation'){org.exc++; if(HC[a.cons]){org.escHC++; const tg=S.esc==='A'?a.Aroles:S.esc==='mgr'?workers(a).map(mgr):workers(a); if(tg.some(x=>!workers(a).includes(x))) org.escMoved++;}} else org.none++;
     a.Aroles.forEach(r=>{if(roles[r]){roles[r].acc++;roles[r].racts.push({a,k:'A'})}});
     a.R.forEach(r=>{if(roles[r]){roles[r].resp++;roles[r].racts.push({a,k:'R'})}});
@@ -273,10 +273,11 @@ function tally(target){
 }
 const LBL={work:'in every instance',approve:'approves every instance',exc:'handles flagged exceptions',escIn:'receives High or Critical exceptions'};
 function peopleSide(){
+  if(S.stage==='Today'&&!isOrg()) S.stage='Human-only';
   let h='<div class="q">'+VIEWS[1].q+'</div><p>Every role in the catalog, the activities it is Responsible and Accountable for, and what is left for a person in each as the work moves up the ramp. Accountability doesn&rsquo;t move with the work.</p>'+
    '<h5>Show</h5>'+btns([['raci','Who is Responsible and Accountable'],['load','What is left for a person as the work moves up']],'pmode');
   if(S.pmode==='load'){
-    h+='<h5>Where the work is</h5>'+btns([['Human-only','Every activity at the Human-only baseline']].concat(ST.slice(1,5).map(s=>[s,'Up to '+s+', or each activity\u2019s ceiling if lower'])).concat([['Automation','Every activity at its Progression Ceiling']]),'stage')+
+    h+='<h5>Where the work is</h5>'+btns((isOrg()?[['Today','Today in '+esc(ORGNAME())+': each activity at its assessed Current State']]:[]).concat([['Human-only','Every activity at the Human-only baseline']]).concat(ST.slice(1,5).map(s=>[s,'Up to '+s+', or each activity\u2019s ceiling if lower'])).concat([['Automation','Every activity at its Progression Ceiling']]),'stage')+
      '<h5>At Oversight, every instance is approved by</h5>'+btns([['R','The role that did the work'],['A','The Accountable role']],'appr')+
      '<h5>High and Critical exceptions go to</h5>'+btns([['A','The Accountable role (recommended)'],['mgr','The manager of the role that did the work'],['same','Stay with the role that did the work']],'esc');
   }
@@ -300,7 +301,7 @@ function peopleMain(){
     const rH=(n,f)=>{const P=rprocs(n);return P.length?Math.round(mean(P.map(p=>pH(p,f,n)))):null};
     const rCalc=(n,f)=>{const P=rprocs(n),v=P.map(p=>pH(p,f,n));return 'Average across the '+P.length+' process'+(P.length>1?'es':'')+' where it is Accountable, counting only its own activities in each: '+P.map((p,i)=>p.split(' ')[0]+' ('+(Math.round(v[i]*10)/10)+')').join(' + ')+' = '+(Math.round(v.reduce((x,y)=>x+y,0)*10)/10)+' ÷ '+P.length+' → '+Math.round(mean(v))+'% H'};
     const none=DATA.roles.filter(r=>!names.includes(r.name));
-    let h='<div class="card"><h3>Responsibility and accountability</h3><div class="sub">'+(S.raci==='act'?'Activity-level RACI from the GR-060 draft: each activity has its own four letters.':'From the reasoned-match RACI. Activities inherit their process&rsquo;s RACI.')+'</div><div class="tiles">'+
+    let h='<div class="card"><h3>Responsibility and accountability</h3><div class="sub">'+(S.raci==='act'?'Activity-level RACI (GR-060, confirmed by GiGi, CL-018): each activity has its own four letters.':'From the reasoned-match RACI. Activities inherit their process&rsquo;s RACI.')+'</div><div class="tiles">'+
       tile(names.length,'roles hold an R or A')+tile(none.filter(r=>RC[r.name].C||RC[r.name].I).length,'roles are Consulted or Informed only')+tile(noR,S.raci==='act'?'activities where the Accountable role also does the work':'activities with no separate Responsible role; the Accountable role does the work')+'</div></div>';
     const top=names.slice().sort((x,y)=>B[y].acc-B[x].acc);
     h+='<div class="card"><h3>What this shows</h3><ul class="find"><li>'+top.slice(0,3).map(n=>n+' is Accountable for '+B[n].acc).join(', ')+' of the 118 activities: '+pct(top.slice(0,3).reduce((s,n)=>s+B[n].acc,0),118)+' of all accountability sits with three roles.</li>'+
@@ -320,7 +321,7 @@ function peopleMain(){
     return h+'</tbody></table></div>';
   }
   const o=now.org;
-  let h='<div class="card"><h3>Across all 118 activities</h3><div class="sub">'+(S.stage==='Human-only'?'Today\u2019s baseline: a person in every instance of every activity.':S.stage==='Automation'?'Every activity at its Progression Ceiling.':'Every activity moved up to '+S.stage+', or its ceiling if lower.')+'</div><div class="tiles">'+
+  let h='<div class="card"><h3>Across all 118 activities</h3><div class="sub">'+(S.stage==='Today'?'Today in '+esc(ORGNAME())+': each activity at its assessed Current State; activities not yet assessed count as Human-only.':S.stage==='Human-only'?'Today\u2019s baseline: a person in every instance of every activity.':S.stage==='Automation'?'Every activity at its Progression Ceiling.':'Every activity moved up to '+S.stage+', or its ceiling if lower.')+'</div><div class="tiles">'+
     tile(o.every,'a person in every instance','Human-only 118')+tile(o.approve,'a person approves every instance','Human-only 0')+tile(o.exc,'a person handles flagged exceptions only'+(o.exc?' ('+o.escHC+' High or Critical)':''),'Human-only 0')+tile(o.none,'no person in the instance; the Accountable role stays answerable','Human-only 0')+'</div><div class="prov">Modeled from the reference. Counts of activities, not hours or volumes.</div></div>';
   const f=[];
   if(S.stage==='Human-only') f.push('Today every activity has a person in every instance. Choose a stage to move the work up the ramp.');
