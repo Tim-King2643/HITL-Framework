@@ -171,7 +171,8 @@ function stageEls(a,s){
   const ctl=ctlOf(a), cp=caps(a), within=rank(s)<=rank(derivedCeil(a)), g={};
   elsOf(a).forEach(e=>{
     let v=typeof TPL[s]==='string'?'AI':(TPL[s][e]||'Human');
-    if(e===ctl) v=s==='Oversight'?'Human':s==='Agent-delegation'?'AI-led':s==='Automation'?'AI':(v==='AI'?'Human':v);
+    // The control element stays with a person, unassisted, up to Oversight (GR-058 section 4): Human through Oversight, AI-led at Agent-delegation, AI at Automation.
+    if(e===ctl) v=s==='Agent-delegation'?'AI-led':s==='Automation'?'AI':'Human';
     if(within&&lr(v)>lr(cp[e][0])) v=cp[e][0];
     g[e]=v;
   });
