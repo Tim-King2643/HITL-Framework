@@ -82,15 +82,8 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .outline a{color:var(--navy);font-weight:600}
 .tagline{display:inline-block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#7A5A1E;background:#FEF3C7;border:1px solid #F0C67A;border-radius:3px;padding:0 6px;margin-bottom:8px}
 .gsel{font:inherit;font-size:12.5px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;background:#fff;width:100%}
-.mramp{display:flex;align-items:center;gap:0}
-.dot{width:18px;height:18px;border-radius:50%;background:#EDEFF3;box-sizing:border-box;flex:0 0 auto}
-.dot.sm{width:11px;height:11px}
-.mgap{width:7px}.mlock{width:16px;text-align:center;line-height:0}.mlock svg{width:9px;height:10px}
 .ramp{display:flex;align-items:flex-start;flex-wrap:nowrap}
 .step{display:flex;flex-direction:column;align-items:center;min-width:92px;cursor:pointer}
-.lbl{font-size:12.5px;margin-top:5px;white-space:nowrap}
-.step.dim .lbl{color:#A9B2C2}
-.step.sel .lbl{text-decoration:underline;text-underline-offset:4px}
 .arr{width:34px;text-align:center;color:var(--navy);font-size:18px;cursor:pointer;line-height:18px}
 .arr.dim{color:#C4CBD7}.arr.sel{font-weight:700}
 .lock{width:34px;text-align:center;cursor:pointer;line-height:18px}
@@ -116,7 +109,7 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .it tr.off td{color:#9AA3B2}
 .wt .ramp{padding-left:4px}
 .wt tr.det td{padding:0 12px 12px 12px;background:#fff}
-@media(max-width:640px){.it td.obj{display:none}.it td.el,.it td.stt{width:auto;white-space:normal}.step{min-width:78px}.lbl{font-size:11px}}
+@media(max-width:640px){.it td.obj{display:none}.it td.el,.it td.stt{width:auto;white-space:normal}.step{min-width:78px}}
 @media(max-width:640px){.side,.main{flex:1 1 100%;min-width:0}.hide-s{display:none}.t th,.t td{padding:7px 4px}.views button{padding:8px 11px;font-size:12.5px}.views button small{display:none}}
 .abcset{font-size:12px;color:var(--gray);padding:0 0 10px;margin:0 0 12px;border-bottom:1px solid var(--border)}
 .aright{display:flex;gap:14px;align-items:baseline;white-space:nowrap}.assess{font-size:12px;color:var(--navy);text-decoration:none}.assess:hover{text-decoration:underline}
@@ -125,11 +118,7 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .col{display:inline-block;text-align:right;white-space:nowrap}.crole{width:220px;font-size:12.5px}.cdp{width:145px}.ccoe{width:84px}
 .ahead.hd{margin:0;font-size:inherit;align-items:flex-end}.ahead.hd .aright{align-items:flex-end}.ahead.hd .col{white-space:normal;line-height:1.25;font-size:inherit}
 .ahead > span:first-child{min-width:0}
-/* Stage names shown once, in the header row; each activity's ramp keeps the names' width (hidden) so the dots stay under them */
-.t tr.sthead th{background:#EEF2F8;color:var(--text,#0D1B2A);text-transform:none;letter-spacing:0;font-weight:600;text-align:left;padding-top:7px;padding-bottom:7px;border-bottom:1px solid var(--border)}
-.sthead .step{cursor:default}.sthead .lbl{margin-top:0;font-size:12.5px;font-weight:400}
-.wt tr.wr .ramp .lbl{visibility:hidden;height:0;margin-top:0}
-.wt tr.wr .ramp .step.sel .dot{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--navy)}
+/* Each activity's ramp: the six stage names */
 .wt tr.wr .ramp .step{min-height:18px}
 /* Ramp as stage names: reached in bold, the rest grey, past the ceiling faint */
 .step.sn{display:block;width:112px;min-width:112px;text-align:center;font-size:12.5px;color:#6B7A90;line-height:18px;padding:2px 0}
@@ -224,7 +213,7 @@ const HC={High:1,Critical:1};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const pct=(n,d)=>d?Math.round(100*n/d)+'%':'—';
 // RACI is activity level (GR-060, Tim's decision Oct 10, 2026); S.raci stays 'act'. Process-level data is kept only to compare against.
-let S={rmode:'names',coe:true,raci:'act',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'load',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
+let S={coe:true,raci:'act',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'load',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
 const VIEWS=[
  {id:'work',name:'Work',q:'Where does each activity sit, and what moves next?'},
  {id:'people',name:'People',q:'What does this mean for each role?'},
@@ -272,12 +261,16 @@ function tally(target){
   return {roles,org};
 }
 const LBL={work:'in every instance',approve:'approves every instance',exc:'handles flagged exceptions',escIn:'receives High or Critical exceptions'};
-function peopleSide(){
+// Where the work is, shared by People and Data. In an organization, Today puts each activity at its assessed Current State.
+function stageBtns(){
   if(S.stage==='Today'&&!isOrg()) S.stage='Human-only';
+  return '<h5>Where the work is</h5>'+btns((isOrg()?[['Today','Today in '+esc(ORGNAME())+': each activity at its assessed Current State']]:[]).concat([['Human-only','Every activity at the Human-only baseline']]).concat(ST.slice(1,5).map(s=>[s,'Up to '+s+', or each activity\u2019s ceiling if lower'])).concat([['Automation','Every activity at its Progression Ceiling']]),'stage');
+}
+function peopleSide(){
   let h='<div class="q">'+VIEWS[1].q+'</div><p>Every role in the catalog, the activities it is Responsible and Accountable for, and what is left for a person in each as the work moves up the ramp. Accountability doesn&rsquo;t move with the work.</p>'+
    '<h5>Show</h5>'+btns([['raci','Who is Responsible and Accountable'],['load','What is left for a person as the work moves up']],'pmode');
   if(S.pmode==='load'){
-    h+='<h5>Where the work is</h5>'+btns((isOrg()?[['Today','Today in '+esc(ORGNAME())+': each activity at its assessed Current State']]:[]).concat([['Human-only','Every activity at the Human-only baseline']]).concat(ST.slice(1,5).map(s=>[s,'Up to '+s+', or each activity\u2019s ceiling if lower'])).concat([['Automation','Every activity at its Progression Ceiling']]),'stage')+
+    h+=stageBtns()+
      '<h5>At Oversight, every instance is approved by</h5>'+btns([['R','The role that did the work'],['A','The Accountable role']],'appr')+
      '<h5>High and Critical exceptions go to</h5>'+btns([['A','The Accountable role (recommended)'],['mgr','The manager of the role that did the work'],['same','Stay with the role that did the work']],'esc');
   }
@@ -490,27 +483,21 @@ function workSide(){
   return '<div class="q">'+VIEWS[0].q+'</div><p>Every activity on the six-step ramp, from today&rsquo;s Current State up to its Progression Ceiling. Click a step for who does each part of the work at that stage, an arrow for what changes in that step, the lock for what must stay with a person, or the Consequence of Error for what drives it.</p>'+
    '<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()">'+gopts.replace('value="'+S.wg+'"','value="'+S.wg+'" selected')+'</select>'+
    '<h5>Show</h5>'+btns([['all','All activities'],['person','Must keep a person doing the work'],['auto','May go to Automation'],['hc','High or Critical consequence']].concat(isOrg()?[['assessed','Assessed']]:[]),'ws')+
-   '<h5>Ramp shows</h5>'+btns([['names','Stage names (reached in bold)'],['dots','Dots under one row of stage names']],'rmode')+
    '<h5>Reading a ramp</h5><p>Each step carries a share of the work kept with a person (% H): '+ST.map(s=>s+' '+HPCT[s]).join(', ')+'. A process heading averages its activities; click a % H figure for its calculation, or the + to open the process.</p><p>'+(S.rmode==='names'?'Stages in bold are reached, up to the Current State; the rest are in grey. The lock sits at the Progression Ceiling; stages past it are faint. ':'Filled steps are reached, up to the Current State. The lock sits at the Progression Ceiling; steps past it are greyed. ')+(isOrg()?(S.rmode==='names'?'A stage in red is reached past the ceiling,':'A red ring marks a stage past the ceiling,')+' and a red dot an activity with an element past its own ceiling. Click the Current State step for its element assessment.':'In the Reference Model every activity starts at the Human-only baseline.')+'</p>'+
    '<div class="replaces">Replaces <b>Working Relationship</b> and <b>Readiness Gate</b>, as a consolidation of the screens only. Work says how far an activity can move. Whether the organization and its people can operate there stays with Human Operating Readiness (GR-012) and Meaningful Human Control (GR-013) in the Human Impact &amp; Readiness layer; the work-side evidence and gates feed that layer rather than replace it, and the gate box shows its checks beside the technical evidence.</div>';
 }
-// The stage names, once, in the table header: the same steps and gaps as a ramp, so each name sits over its dot.
-function stageHead(){return '<div class="ramp">'+ST.map((st,k)=>'<div class="step"><div class="lbl">'+st+'</div></div>'+(k<5?'<div class="arr"></div>':'')).join('')+'</div>';}
 function ramp(a,big){
   const ci=rank(derivedCeil(a)), cur=rank(curOf(a)), sel=S.wsel[a.code]||{}, lim=abcLim(a);
   let r='';
   ST.forEach((st,k)=>{
-    const reached=k<=cur, above=k>ci, past=reached&&k>lim, bg=reached&&!above?DOT[st]:'#EDEFF3';
-    const dot='<div class="dot'+(big?'':' sm')+'" style="background:'+bg+';'+(past?'border:2.5px solid var(--red)':'')+'"></div>';
-    if(big&&S.rmode==='names') r+='<div class="step sn'+(reached?' on':above?' dim':'')+(past?' past':'')+(sel.t==='stage'&&sel.k===k?' sel':'')+'" onclick="wpick(\''+a.code+'\',\'stage\','+k+')" title="'+(past?'Reached, past the ceiling':reached?'Reached':above?'Past the Progression Ceiling':'Within the ceiling, not reached')+'">'+st+'</div>';
-    else if(big) r+='<div class="step'+(above&&!reached?' dim':'')+(sel.t==='stage'&&sel.k===k?' sel':'')+'" onclick="wpick(\''+a.code+'\',\'stage\','+k+')">'+dot+'<div class="lbl">'+st+'</div></div>';
-    else r+=dot;
+    const reached=k<=cur, above=k>ci, past=reached&&k>lim;
+    r+='<div class="step sn'+(reached?' on':above?' dim':'')+(past?' past':'')+(sel.t==='stage'&&sel.k===k?' sel':'')+'" onclick="wpick(\''+a.code+'\',\'stage\','+k+')" title="'+(past?'Reached, past the ceiling':reached?'Reached':above?'Past the Progression Ceiling':'Within the ceiling, not reached')+'">'+st+'</div>';
     if(k<5){
-      if(k===ci) r+=big?'<div class="lock" onclick="wpick(\''+a.code+'\',\'lock\',0)" title="Progression Ceiling">'+LOCK+'</div>':'<span class="mlock">'+LOCK+'</span>';
-      else r+=big?'<div class="arr'+(k>=ci?' dim':'')+(sel.t==='gate'&&sel.k===k?' sel':'')+'" onclick="wpick(\''+a.code+'\',\'gate\','+k+')">→</div>':'<span class="mgap"></span>';
+      if(k===ci) r+='<div class="lock" onclick="wpick(\''+a.code+'\',\'lock\',0)" title="Progression Ceiling">'+LOCK+'</div>';
+      else r+='<div class="arr'+(k>=ci?' dim':'')+(sel.t==='gate'&&sel.k===k?' sel':'')+'" onclick="wpick(\''+a.code+'\',\'gate\','+k+')">→</div>';
     }
   });
-  return '<div class="'+(big?'ramp':'mramp')+'">'+r+'</div>';
+  return '<div class="ramp">'+r+'</div>';
 }
 const LOCK='<svg width="12" height="13" viewBox="0 0 24 26"><rect x="4" y="11" width="16" height="13" rx="2" fill="#475569"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="#475569" stroke-width="2.4" fill="none"/></svg>';
 function wpick(code,t,k){const s=S.wsel[code];S.wsel[code]=(s&&s.t===t&&s.k===k)?{t:'none'}:{t,k};render()}
@@ -634,7 +621,7 @@ function workMain(){
       f.push(as.length+' of '+L.length+' assessed. '+(past.length?past.length+' past the ceiling'+(cov.length?', '+cov.length+' of them covered by an approved override':'')+'. ':'None past its ceiling. ')+(pe.length?pe.map(a=>a.code+' '+pastEls(a).join(', ')).join('; ')+' past '+(pe.length>1?'their':'its')+' element ceiling, even though the activit'+(pe.length>1?'ies are':'y is')+' within its ceiling.':''));}
   }
   h+='<div class="card"><h3>What this shows</h3><ul class="find">'+f.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
-  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t wt"><thead><tr><th><div class="ahead hd"><span>Activity <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; click a step, an arrow, the lock, the decision point or the rating</span></span><span class="aright">'+(isOrg()?'<span class="assess" style="visibility:hidden">Reassess</span>':'')+'<span class="col crole" title="The Human Accountability Anchor">Accountable role</span><span class="col cdp">Decision point</span><span class="col ccoe">Consequence of Error</span></span></div></th></tr>'+(S.rmode==='dots'?'<tr class="sthead"><th>'+stageHead()+'</th></tr>':'')+'</thead><tbody>';
+  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t wt"><thead><tr><th><div class="ahead hd"><span>Activity <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; click a step, an arrow, the lock, the decision point or the rating</span></span><span class="aright">'+(isOrg()?'<span class="assess" style="visibility:hidden">Reassess</span>':'')+'<span class="col crole" title="The Human Accountability Anchor">Accountable role</span><span class="col cdp">Decision point</span><span class="col ccoe">Consequence of Error</span></span></div></th></tr>'+'</thead><tbody>';
   let proc='';
   L.forEach(a=>{
     const head=!a.proc.startsWith(a.code+' ');
@@ -654,7 +641,7 @@ function workMain(){
 // Critical Consequence of Error it is an unchecked hand-off.
 const ACT=Object.fromEntries(DATA.acts.map(a=>[a.code,a]));
 const WPN=Object.fromEntries(CRUD.wps.map(w=>[w.id,w]));
-function stageNow(a){const c=derivedCeil(a);return S.stage==='Human-only'?'Human-only':(rank(S.stage)<rank(c)?S.stage:c)}
+function stageNow(a){const c=derivedCeil(a);return S.stage==='Today'?curOf(a):S.stage==='Human-only'?'Human-only':(rank(S.stage)<rank(c)?S.stage:c)}
 function wpAnalysis(){
   return CRUD.wps.map(w=>{
     const prods=Object.keys(CRUD.crud).filter(c=>CRUD.crud[c].C.concat(CRUD.crud[c].U).includes(w.id));
@@ -737,7 +724,7 @@ function dpFinding(){const x=dpSummary();
 function dataSide(){
   return '<div class="q">'+VIEWS[2].q+'</div><p>Each work product, the activities that produce it and every activity that relies on it. Once AI touches a work product, the person who relies on it next has to check it.</p>'+
    '<h5>Show</h5>'+btns([['wp','By work product: who has to check it'],['act','By activity: what it creates, reads, updates and deletes']],'dmode')+
-   '<h5>Where the work is</h5>'+btns([['Human-only','Every activity at the Human-only baseline']].concat(ST.slice(1,5).map(s=>[s,'Up to '+s+', or each activity’s ceiling if lower'])).concat([['Automation','Every activity at its Progression Ceiling']]),'stage')+
+   stageBtns()+
    '<h5>Terms</h5><p><b>AI-touched:</b> the most automated activity that produces it is at Augmentation or further.<br><b>Verification point:</b> an activity at Judgment, Augmentation or Oversight relies on an AI-touched work product, so a person checks it before acting.<br><b>Unchecked hand-off:</b> the activity relying on it is at Agent-delegation or Automation with a High or Critical Consequence of Error, so no person is in between.</p>'+
    '<div class="pl"><a href="../wip/work_product_catalog.html">Work-Product Catalog</a>: every work product\u2019s definition, system of record and the activities that use it.</div>'+
    '<div class="replaces">Replaces <b>Data View (CRUD)</b> and brings in the work-product verification analysis (GR-046).</div>';
@@ -747,9 +734,9 @@ function dataMain(){
   const A=wpAnalysis(), touched=A.filter(x=>x.pts.length||x.ho.length), nvp=A.reduce((s,x)=>s+x.pts.length,0), nho=A.reduce((s,x)=>s+x.ho.length,0);
   const roleCnt={};A.forEach(x=>x.pts.forEach(p=>ACT[p.c].Aroles.forEach(r=>roleCnt[r]=(roleCnt[r]||0)+1)));
   const hoActs=[...new Set(A.flatMap(x=>x.ho.map(h=>h.c)))].sort(nat);
-  const where=S.stage==='Human-only'?'Today’s baseline':S.stage==='Automation'?'Every activity at its Progression Ceiling':'Every activity up to '+S.stage+', or its ceiling if lower';
+  const where=S.stage==='Today'?'Today in '+esc(ORGNAME())+': each activity at its assessed Current State; activities not yet assessed count as Human-only':S.stage==='Human-only'?'Today’s baseline':S.stage==='Automation'?'Every activity at its Progression Ceiling':'Every activity up to '+S.stage+', or its ceiling if lower';
   let h='<div class="card"><h3>Work products</h3><div class="sub">'+where+'.</div><div class="tiles">'+
-    tile(CRUD.wps.length,'work products in the catalog')+tile(touched.length,'AI-touched where someone relies on them')+tile(nvp,'verification points, across '+Object.keys(roleCnt).length+' roles')+tile(nho,'unchecked hand-offs into High or Critical steps')+'</div><div class="prov">Modeled from the reference and the activity CRUD (all 118 activities confirmed).</div></div>';
+    tile(CRUD.wps.length,'work products in the catalog')+tile(touched.length,'AI-touched where someone relies on them')+tile(nvp,'verification points, across '+Object.keys(roleCnt).length+' roles')+tile(nho,'unchecked hand-offs into High or Critical steps')+'</div><div class="prov">'+(S.stage==='Today'?'Assessed: each activity&rsquo;s Current State from '+esc(ORGNAME())+'&rsquo;s records, with the activity CRUD.':'Modeled from the reference and the activity CRUD (all 118 activities confirmed).')+'</div></div>';
   const f=[];
   if(!touched.length) f.push(S.stage==='Human-only'?'Today no work product is AI-touched, so nothing needs checking. Choose a stage to move the work up the ramp.':'Up to '+S.stage+', AI only supplies inputs, so no work product reaches the next activity AI-touched. Checking starts once a producer reaches Augmentation.');
   else{

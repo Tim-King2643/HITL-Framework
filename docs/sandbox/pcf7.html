@@ -486,7 +486,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
 <div class="sandbox-banner">
   <span class="tag">Sandbox</span>
   <strong>PCF 7.0 — Develop and Manage Human Resources.</strong>
-  This is a live working copy of the full PCF 7.0 content, moving to four views (GR-059): <strong>Work</strong> and <strong>People</strong> are in place, and the Data and Exceptions views follow. It is the framework&rsquo;s <strong>Reference Model</strong>: for each of the 118 activities, Work shows
+  This is a live working copy of the full PCF 7.0 content, moving to four views (GR-059): <strong>Work</strong>, <strong>People</strong> and <strong>Data</strong> are in place, and Findings follows. It is the framework&rsquo;s <strong>Reference Model</strong>: for each of the 118 activities, Work shows
   the Human-only baseline and the <strong>Progression Ceiling</strong>, which is how far AI may take the activity, on the full
   six-step ramp, with what changes at each step, the activity&rsquo;s decision point and its Consequence of Error. Choose an organization at the top
   to see its assessed <strong>Current State</strong> instead, and open any activity to assess it. The process structure, RACI, and CRUD data are
@@ -499,7 +499,7 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
   <div class="topbar">
     <div>
       <h2>7.0 &mdash; Develop and Manage Human Resources</h2>
-      <p>Sandbox &middot; Work and People, plus the Data and Exceptions views until they move into the four views</p>
+      <p>Sandbox &middot; Work, People and Data, plus the Exceptions Report until Findings moves in</p>
       <div id="org-mount"></div>
     </div>
     <div class="topbar-pills" id="topbar-pills"></div>
@@ -513,7 +513,8 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
     <button class="view-toggle-btn" id="btn-wr" onclick="setView('wr')" style="display:none">Working Relationship</button>
     <button class="view-toggle-btn" id="btn-fpeople" onclick="setView('fpeople')" title="Every role: what it is Accountable and Responsible for, and what is left for a person as the work moves up (GR-059)">People</button>
     <button class="view-toggle-btn" id="btn-raci" onclick="setView('raci')" style="display:none">RACI Table</button>
-    <button class="view-toggle-btn" id="btn-data" onclick="setView('data')">Data View (CRUD)</button>
+    <button class="view-toggle-btn" id="btn-fdata" onclick="setView('fdata')" title="Each work product: who produces it, who relies on it, and who has to check it once AI touches it (GR-059)">Data</button>
+    <button class="view-toggle-btn" id="btn-data" onclick="setView('data')" style="display:none">Data View (CRUD)</button>
     <button class="view-toggle-btn" id="btn-people" onclick="setView('people')" style="display:none">People View</button>
     <button class="view-toggle-btn" id="btn-gates" onclick="setView('gates')" style="display:none">Readiness Gate</button>
     <button class="view-toggle-btn" id="btn-report" onclick="setView('report')">Exceptions Report</button>
@@ -522,8 +523,8 @@ td.crud.crud-inherited .crud-entity, td.crud.crud-inherited .crud-sys { color: #
 
   <div class="content">
     <!-- Work and People (GR-059): the four-view page, reading this page's data. They replace Working Relationship,
-         Readiness Gate, RACI Table and People View, which stay reachable by URL (?view=wr, gates, raci, people)
-         while Data and Findings move over. -->
+         Readiness Gate, RACI Table, People View and Data View, which stay reachable by URL (?view=wr, gates, raci,
+         people, data) while Findings moves over. -->
     <div class="card lens-section" id="panel-work" style="display:none;padding:0 18px">
       <iframe id="fv-frame" title="Four views" style="width:100%;border:0;display:block;min-height:600px"></iframe>
     </div>
@@ -2924,7 +2925,7 @@ function toggleL3(code, el) { setL3Expanded(code, el.classList.contains('collaps
 // button steps back through the views visited before it leaves the page
 // (Tim, Oct 1, 2026). Working Relationship is the default and carries no
 // parameter. The organization's ?org= is kept alongside.
-const VIEW_KEYS = ['work', 'fpeople', 'wr', 'raci', 'data', 'people', 'gates', 'report'];
+const VIEW_KEYS = ['work', 'fpeople', 'fdata', 'wr', 'raci', 'data', 'people', 'gates', 'report'];
 function viewFromUrl() {
   const v = new URLSearchParams(location.search).get('view');
   return VIEW_KEYS.indexOf(v) !== -1 ? v : 'work';
@@ -2944,12 +2945,12 @@ function setView(v, opts) {
   if (VIEW_KEYS.indexOf(v) === -1) v = 'work';
   if (!(opts && opts.fromHistory)) syncViewToUrl(v, opts && opts.replace);
   currentView = v;
-  ['work', 'fpeople', 'wr', 'raci', 'data', 'people', 'gates', 'report'].forEach(name => {
+  ['work', 'fpeople', 'fdata', 'wr', 'raci', 'data', 'people', 'gates', 'report'].forEach(name => {
     const btn = document.getElementById('btn-' + name);
     if (btn) btn.classList.toggle('active', v === name);
   });
-  // Work and People (GR-059) share the four-view frame.
-  document.getElementById('panel-work').style.display = (v === 'work' || v === 'fpeople') ? '' : 'none';
+  // Work, People and Data (GR-059) share the four-view frame.
+  document.getElementById('panel-work').style.display = (v === 'work' || v === 'fpeople' || v === 'fdata') ? '' : 'none';
   document.getElementById('panel-maturity').style.display = v === 'wr' ? '' : 'none';
   document.getElementById('panel-raci').style.display = v === 'raci' ? '' : 'none';
   document.getElementById('panel-data').style.display = v === 'data' ? '' : 'none';
@@ -2958,6 +2959,7 @@ function setView(v, opts) {
   document.getElementById('panel-report').style.display = v === 'report' ? '' : 'none';
 
   const notes = {
+    fdata: 'Each work product, the activities that create and update it, and every activity that relies on it. Once AI touches a work product, the person who relies on it next has to check it (GR-046). By activity shows the activity CRUD. Replaces Data View (CRUD).',
     fpeople: 'Every role in the catalog: the activities it is Accountable and Responsible for (activity-level RACI, GR-060), and what is left for a person in each as the work moves up the ramp. The role-level hand-off into Human Impact (GR-056), not the Human Impact assessment. Replaces RACI Table and People View.',
     work: 'Every activity on the six-step ramp, from Current State to Progression Ceiling, with its Accountable role, decision point and Consequence of Error. Replaces Working Relationship and Readiness Gate as a consolidation of the screens; the readiness checks stay with the Human Impact & Readiness layer (GR-012, GR-013).',
     wr: 'Current State and Progression Ceiling on the six-step ramp, with the Per-Transition Evidence Ladder as gates in between. In the Reference Model every activity starts at the Human-only baseline; with an organization selected, Current State is its assessed value, and each activity opens to be assessed.',
@@ -2973,6 +2975,7 @@ function setView(v, opts) {
   if (v === 'report') renderExceptionsReport();
   if (v === 'work') showFourViews('work');
   if (v === 'fpeople') showFourViews('people');
+  if (v === 'fdata') showFourViews('data');
 }
 
 function buildLegendInto(elId) {
