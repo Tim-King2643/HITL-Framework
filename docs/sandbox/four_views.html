@@ -115,7 +115,7 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .abcset{font-size:12px;color:var(--gray);padding:0 0 10px;margin:0 0 12px;border-bottom:1px solid var(--border)}
 .aright{display:flex;gap:14px;align-items:baseline;white-space:nowrap}.assess{font-size:12px;color:var(--navy);text-decoration:none}.assess:hover{text-decoration:underline}
 .abcset a{color:var(--navy);font-weight:600;text-decoration:none}.abcset a:hover{text-decoration:underline}
-.dpm{font-size:12px;color:var(--navy);cursor:pointer;border-bottom:1px dotted currentColor;white-space:nowrap}.dpm.red{color:var(--red)}.dpm.sel{font-weight:600}
+.dpm{font-size:12px;color:var(--dark);cursor:pointer;border-bottom:1px dotted currentColor;white-space:nowrap}.dpm.red{color:var(--red)}.dpm.sel{font-weight:600}
 .col{display:inline-block;text-align:right;white-space:nowrap}.crole{width:220px;font-size:12.5px}.cdp{width:145px}.ccoe{width:84px}
 /* Notes as a small link after the name (GR-044), not a column */
 .nlink{margin-left:8px;white-space:nowrap}.nlink .notes-toggle{border:none;background:none;padding:0;font:inherit;font-size:11.5px;font-weight:400;color:#6B7A90;cursor:pointer;text-decoration:underline;text-decoration-color:#C6D0DE;text-underline-offset:3px}
@@ -124,10 +124,10 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .ahead > span:first-child{min-width:0}
 /* Each activity's ramp: the six stage names */
 .wt tr.wr .ramp .step{min-height:18px}
-/* Ramp as stage names: reached in dark text (not bold), the rest grey, past the ceiling faint */
+/* Ramp as stage names: reached in navy (not bold), the rest grey, past the ceiling faint */
 /* The six steps share the row's width equally, so they line up from row to row and shrink with the window (never below their names). */
 .step.sn{display:block;flex:1 1 0;width:auto;min-width:max-content;text-align:center;font-size:12.5px;color:#6B7A90;line-height:18px;padding:2px 0}
-.step.sn.on{color:var(--dark)}.step.sn.dim{color:#C4CBD7}.step.sn.past{color:var(--red)}
+.step.sn.on{color:var(--navy)}.step.sn.dim{color:#C4CBD7}.step.sn.past{color:var(--red)}
 .step.sn.sel{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
 .step.sn:hover{text-decoration:underline;text-underline-offset:4px}
 /* A blank line's worth of space under each activity, to separate one from the next */
@@ -493,7 +493,7 @@ function workSide(){
   return '<div class="q">'+VIEWS[0].q+'</div><p>Every activity on the six-step ramp, from today&rsquo;s Current State up to its Progression Ceiling. Click a step for who does each part of the work at that stage, an arrow for what changes in that step, the lock for what must stay with a person, or the Consequence of Error for what drives it.</p>'+
    '<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()">'+gopts.replace('value="'+S.wg+'"','value="'+S.wg+'" selected')+'</select>'+
    '<h5>Show</h5>'+btns([['all','All activities'],['person','Must keep a person doing the work'],['auto','May go to Automation'],['hc','High or Critical consequence']].concat(isOrg()?[['assessed','Assessed']]:[]),'ws')+
-   '<h5>Reading a ramp</h5><p>Each step carries a share of the work kept with a person (% H): '+ST.map(s=>s+' '+HPCT[s]).join(', ')+'. A process heading averages its activities; click a % H figure for its calculation, or the + to open the process.</p><p>'+'Stages in dark text are reached, up to the Current State; the rest are grey. The lock sits at the Progression Ceiling; stages past it are faint. '+(isOrg()?'A stage in red is reached past the ceiling,'+' and a red dot an activity with an element past its own ceiling. Click the Current State step for its element assessment.':'In the Reference Model every activity starts at the Human-only baseline.')+'</p>'+
+   '<h5>Reading a ramp</h5><p>Each step carries a share of the work kept with a person (% H): '+ST.map(s=>s+' '+HPCT[s]).join(', ')+'. A process heading averages its activities; click a % H figure for its calculation, or the + to open the process.</p><p>'+'Stages in navy are reached, up to the Current State; the rest are grey. The lock sits at the Progression Ceiling; stages past it are faint. '+(isOrg()?'A stage in red is reached past the ceiling,'+' and a red dot an activity with an element past its own ceiling. Click the Current State step for its element assessment.':'In the Reference Model every activity starts at the Human-only baseline.')+'</p>'+
    '<div class="replaces">Replaces <b>Working Relationship</b> and <b>Readiness Gate</b>, as a consolidation of the screens only. Work says how far an activity can move. Whether the organization and its people can operate there stays with Human Operating Readiness (GR-012) and Meaningful Human Control (GR-013) in the Human Impact &amp; Readiness layer; the work-side evidence and gates feed that layer rather than replace it, and the gate box shows its checks beside the technical evidence.</div>';
 }
 function ramp(a,big){
