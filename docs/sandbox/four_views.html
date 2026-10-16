@@ -115,8 +115,10 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .aright{display:flex;gap:14px;align-items:baseline;white-space:nowrap}.assess{font-size:12px;color:var(--navy);text-decoration:none}.assess:hover{text-decoration:underline}
 .abcset a{color:var(--navy);font-weight:600;text-decoration:none}.abcset a:hover{text-decoration:underline}
 .dpm{font-size:12px;color:var(--navy);cursor:pointer;border-bottom:1px dotted currentColor;white-space:nowrap}.dpm.red{color:var(--red)}.dpm.sel{font-weight:600}
-.col{display:inline-block;text-align:right;white-space:nowrap}.crole{width:220px;font-size:12.5px}.cdp{width:145px}.ccoe{width:84px}.cnote{width:74px}
-.pnote{flex:0 0 74px;width:74px;text-align:right;margin-left:2px}
+.col{display:inline-block;text-align:right;white-space:nowrap}.crole{width:220px;font-size:12.5px}.cdp{width:145px}.ccoe{width:84px}
+/* Notes as a small link after the name (GR-044), not a column */
+.nlink{margin-left:8px;white-space:nowrap}.nlink .notes-toggle{border:none;background:none;padding:0;font:inherit;font-size:11.5px;font-weight:400;color:#6B7A90;cursor:pointer;text-decoration:underline;text-decoration-color:#C6D0DE;text-underline-offset:3px}
+.nlink .notes-toggle:hover{color:var(--navy)}.nlink .notes-toggle.has-notes{color:var(--navy);background:none}.nlink .notes-count{font-family:inherit;font-size:11.5px;margin-left:2px;color:inherit}
 .ahead.hd{margin:0;font-size:inherit;align-items:flex-end}.ahead.hd .aright{align-items:flex-end}.ahead.hd .col{white-space:normal;line-height:1.25;font-size:inherit}
 .ahead > span:first-child{min-width:0}
 /* Each activity's ramp: the six stage names */
@@ -476,7 +478,7 @@ function hPair(L,c){return '<span class="ph"><span class="lab">Current</span><sp
 function hCalcRow(lines,cols){return lines.length?'<tr class="det"><td'+(cols?' colspan="'+cols+'"':'')+'><div class="small" style="line-height:1.6">'+lines.join('<br>')+'<br>% H is modeled from each step\u2019s value, not measured.</div></td></tr>':''}
 function procRow(proc){
   const c=proc.split(' ')[0], L=DATA.acts.filter(a=>a.proc===proc), k='p'+c, o=opened[k], w=worstCons(L);
-  let h='<tr class="tier proc r" onclick="opened[\''+k+'\']=!opened[\''+k+'\'];render()"><td><div class="prow"><span class="pn anm"><span class="tg">'+(o?'−':'+')+'</span><span class="code">'+c+'</span><span>'+esc(proc.slice(c.length+1))+'</span></span>'+hPair(L,c)+'<span class="pc"><span class="lab2">Consequence of Error - Worst Case</span><span style="color:'+CONSC[w]+'">'+w+'</span></span><span class="pnote" onclick="event.stopPropagation()">'+nBtn(c,true)+'</span></div>'+nPanel(c)+'</td></tr>';
+  let h='<tr class="tier proc r" onclick="opened[\''+k+'\']=!opened[\''+k+'\'];render()"><td><div class="prow"><span class="pn anm"><span class="tg">'+(o?'−':'+')+'</span><span class="code">'+c+'</span><span>'+esc(proc.slice(c.length+1))+nBtn(c)+'</span></span>'+hPair(L,c)+'<span class="pc"><span class="lab2">Consequence of Error - Worst Case</span><span style="color:'+CONSC[w]+'">'+w+'</span></span></div>'+nPanel(c)+'</td></tr>';
   return h+hCalcRow([opened['hc'+c]?'Current: '+hCalc(L,'cur')+'.':'',opened['hk'+c]?'Ceiling: '+hCalc(L,'ceil')+'.':''].filter(Boolean));
 }
 function pastEls(a){const g=ABC_EL[a.code];if(!isOrg()||!g)return[];const cp=caps(a);return elsOf(a).filter(e=>g[e]&&cp[e]&&lr(g[e][0])>lr(cp[e][0]))}
@@ -677,14 +679,14 @@ function workMain(){
       f.push(as.length+' of '+L.length+' assessed. '+(past.length?past.length+' past the ceiling'+(cov.length?', '+cov.length+' of them covered by an approved override':'')+'. ':'None past its ceiling. ')+(pe.length?pe.map(a=>a.code+' '+pastEls(a).join(', ')).join('; ')+' past '+(pe.length>1?'their':'its')+' element ceiling, even though the activit'+(pe.length>1?'ies are':'y is')+' within its ceiling.':''));}
   }
   h+='<div class="card"><h3>What this shows</h3><ul class="find">'+f.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
-  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t wt"><thead><tr><th><div class="ahead hd"><span>Activity <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; click a step, an arrow, the lock, the decision point or the rating</span></span><span class="aright">'+(isOrg()?'<span class="assess" style="visibility:hidden">Reassess</span>':'')+'<span class="col crole" title="The Human Accountability Anchor">Accountable role</span><span class="col cdp">Decision point</span><span class="col ccoe">Consequence of Error</span><span class="col cnote">Notes</span></span></div></th></tr>'+'</thead><tbody>';
+  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t wt"><thead><tr><th><div class="ahead hd"><span>Activity <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; click a step, an arrow, the lock, the decision point or the rating</span></span><span class="aright">'+(isOrg()?'<span class="assess" style="visibility:hidden">Reassess</span>':'')+'<span class="col crole" title="The Human Accountability Anchor">Accountable role</span><span class="col cdp">Decision point</span><span class="col ccoe">Consequence of Error</span></span></div></th></tr>'+'</thead><tbody>';
   let proc='';
   L.forEach(a=>{
     const head=!a.proc.startsWith(a.code+' ');
     if(a.proc!==proc&&head){proc=a.proc;h+=procRow(proc);}
     if(head&&!opened['p'+l3Of(a)]) return;
     const pe=pastEls(a), box=infoBox(a);
-    h+='<tr class="wr"><td><div class="ahead"><span class="anm"><span class="code">'+a.code+'</span><span>'+esc(a.name)+(pe.length?' <span class="red" title="An element is past its own ceiling">\u25CF</span>':'')+'</span></span><span class="aright">'+(isOrg()?'<a class="assess'+((S.wsel[a.code]||{}).t==='assess'?' sel':'')+'" href="javascript:void 0" onclick="openGrid(\''+a.code+'\')" title="Who leads each work element in this organization">'+(canEdit()?(ABCSTAGE[a.code]?'Reassess':'Assess'):'View')+'</a>':'')+'<span class="col crole">'+esc(a.Aroles.join(', '))+'</span><span class="col cdp">'+dpTag(a)+'</span><span class="col ccoe"><span class="acons'+((S.wsel[a.code]||{}).t==='coe'?' sel':'')+'" style="color:'+CONSC[a.cons]+'" onclick="wpick(\''+a.code+'\',\'coe\',0)" title="Consequence of Error">'+a.cons+'</span></span>'+nBtn(a.code)+'</span></div>'+ramp(a,true)+nPanel(a.code)+'</td></tr>';
+    h+='<tr class="wr"><td><div class="ahead"><span class="anm"><span class="code">'+a.code+'</span><span>'+esc(a.name)+(pe.length?' <span class="red" title="An element is past its own ceiling">\u25CF</span>':'')+nBtn(a.code)+'</span></span><span class="aright">'+(isOrg()?'<a class="assess'+((S.wsel[a.code]||{}).t==='assess'?' sel':'')+'" href="javascript:void 0" onclick="openGrid(\''+a.code+'\')" title="Who leads each work element in this organization">'+(canEdit()?(ABCSTAGE[a.code]?'Reassess':'Assess'):'View')+'</a>':'')+'<span class="col crole">'+esc(a.Aroles.join(', '))+'</span><span class="col cdp">'+dpTag(a)+'</span><span class="col ccoe"><span class="acons'+((S.wsel[a.code]||{}).t==='coe'?' sel':'')+'" style="color:'+CONSC[a.cons]+'" onclick="wpick(\''+a.code+'\',\'coe\',0)" title="Consequence of Error">'+a.cons+'</span></span></span></div>'+ramp(a,true)+nPanel(a.code)+'</td></tr>';
     if(box) h+='<tr class="det"><td colspan="1">'+box+'</td></tr>';
   });
   return h+'</tbody></table></div>';
@@ -907,11 +909,11 @@ function coeSide(){const n=DATA.acts.filter(a=>coeCap(a,a.ceiling)!==a.ceiling).
   return '<h5>Ceilings</h5><div class="stack">'+[[true,'GR-058, with the Consequence of Error gates (proposed)'],[false,'GR-058 only']].map(o=>'<button class="'+(S.coe===o[0]?'on':'')+'" onclick="coeToggle('+o[0]+')">'+o[1]+'</button>').join('')+'</div>'+
   '<p class="small" style="margin-top:6px">The gates close Agent-delegation &rarr; Automation for High or Critical activities and wherever a ceiling factor holds an element with a person, and Oversight &rarr; Agent-delegation for Critical. They move '+n+' ceilings.</p>';}
 /* ---------- Notes (the sandbox's reactions and notes, sandbox-notes-widget.js) ----------
-   One Notes button per activity and per process, as on the views these replaced; notes are stored by code,
+   A small Notes link after each activity and process name (GR-044: notes on any row); notes are stored by code,
    so every earlier note shows up here. */
-function nBtn(code,bare){if(typeof notesWidget!=='function')return '';
+function nBtn(code){if(typeof notesWidget!=='function')return '';
   const b=notesWidget(code).split('<div class="notes-panel"')[0];
-  return bare?b:'<span class="col cnote" onclick="event.stopPropagation()">'+b+'</span>';}
+  return '<span class="nlink" onclick="event.stopPropagation()">'+b+'</span>';}
 function nPanel(code){return typeof safeId==='function'?'<div onclick="event.stopPropagation()"><div class="notes-panel" id="notes-panel-'+safeId(code)+'"></div></div>':'';}
 // The notes and exceptions-report styles live in pcf7.html; copy them in once.
 (function copyParentCss(){let css='';
