@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Test Script: Element Grid and Derivation Rule</title>
+<style>
+:root{--navy:#1B4F8A;--navy-d:#0D2D4F;--dark:#0D1B2A;--gray:#444;--lgray:#6B7A90;--bg:#F4F6FB;--border:#DDE3EE}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);padding-bottom:60px}
+.sk{background:#FEF3C7;border-bottom:2px solid #B8873F;color:#7A5A1E;font-size:12.5px;text-align:center;padding:9px 16px}
+.sk a{color:#7A5A1E;font-weight:600}
+.wrap{max-width:1240px;margin:0 auto;padding:18px 16px;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
+.side{flex:0 1 340px;min-width:260px;position:sticky;top:12px}
+.side h1{font-family:Georgia,serif;font-size:21px;color:var(--navy-d);line-height:1.3;margin-bottom:8px}
+.side p,.side li{font-size:12.5px;color:var(--gray);line-height:1.6}
+.side p{margin-bottom:10px}
+.side ol{margin:0 0 10px 18px}.side li{margin-bottom:4px}
+.side h5{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin:16px 0 6px}
+.prog{font-size:13px;color:var(--navy-d);font-weight:600}
+.btn{font:inherit;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:6px;border:1px solid #C6D8EE;background:#fff;color:var(--navy-d);cursor:pointer;margin:6px 6px 0 0}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.main{flex:1;min-width:300px}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.card h2{font-size:15px;color:var(--navy-d);margin-bottom:4px}
+.card h3{font-size:14.5px;color:var(--navy-d);margin-bottom:3px;font-weight:600}
+.sub{font-size:12px;color:var(--lgray);line-height:1.5}
+.th{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.tid{flex:0 0 auto;font-family:Consolas,monospace;font-size:12px;font-weight:700;color:#fff;background:var(--navy);border-radius:5px;padding:3px 8px}
+.code{font-family:Consolas,monospace;font-size:12.5px;color:var(--lgray);font-weight:400}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px}
+@media(max-width:820px){.cols{grid-template-columns:1fr}.side{position:static}}
+.lbl{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin-bottom:5px;font-weight:600}
+table.g{width:100%;border-collapse:collapse;font-size:12.5px}
+.g th{text-align:left;font-size:10.5px;color:var(--lgray);font-weight:600;padding:3px 6px;border-bottom:1px solid var(--border)}
+.g td{padding:4px 6px;border-bottom:1px solid #EEF1F6}
+.g td.el{white-space:nowrap}.g td.set{font-weight:700;color:var(--navy-d)}.g td.hum{color:var(--lgray)}.g td.cap{color:var(--lgray)}
+.ctl{color:var(--navy);margin-left:4px}
+.small{font-size:11.5px;color:var(--lgray);margin-top:6px}
+.exp{border-left:4px solid var(--navy);background:#EEF3FA;padding:8px 12px;border-radius:6px;font-size:12.5px;line-height:1.5;margin-bottom:8px}
+ul.flags,ul.steps{margin:0 0 6px 18px;font-size:12.5px;line-height:1.55;color:var(--dark)}
+ul.flags li{color:#7F1D1D} ul.flags li:only-child{color:var(--gray)}
+ul.steps li.q{color:#7A5A1E}
+.res{display:flex;gap:14px;align-items:center;flex-wrap:wrap;border-top:1px solid #EEF1F6;margin-top:10px;padding-top:10px;font-size:12.5px}
+.res .note{flex:1;min-width:200px;font:inherit;font-size:12.5px;padding:5px 8px;border:1px solid #C6D8EE;border-radius:6px}
+.tc.pass{border-left:4px solid #1E6B3A}.tc.fail{border-left:4px solid #B91C1C}
+table.b{width:100%;border-collapse:collapse;font-size:12.5px}
+.b th{background:var(--navy-d);color:#fff;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;text-align:left;padding:7px 8px}
+.b td{border-bottom:1px solid #EEF1F6;padding:4px}
+.b input{width:100%;font:inherit;font-size:12.5px;padding:4px 6px;border:1px solid #DDE3EE;border-radius:5px}
+.find{font-size:12.5px;line-height:1.6;margin:0 0 0 18px}
+textarea.out{width:100%;height:150px;font:12px Consolas,monospace;margin-top:8px;padding:8px;border:1px solid #C6D8EE;border-radius:6px;display:none}
+@media print{.side{position:static}.btn,textarea.out{display:none}}
+</style></head><body>
+<div class="sk"><strong>Test script</strong> · GR-058 acceptance: check the derivation rule in the sandbox&rsquo;s element grid · <a href="../requirements_register.html#GR-058">GR-058</a> · <a href="../../sandbox/pcf7.html">Open the sandbox</a></div>
+<div class="wrap">
+<div class="side">
+  <h1>Element grid and derivation rule</h1>
+  <p>Each case sets the work elements of one activity and checks the Current State the grid derives, its warnings and the ceiling override. The expected results come from the rule as approved in GR-058; a Fail means the grid, the rule or the expectation is wrong, so note what you saw.</p>
+  <h5>Set up once</h5>
+  <ol>
+    <li>Open the <a href="../../sandbox/pcf7.html">sandbox</a> signed in (Tim or GiGi; others can only view).</li>
+    <li>In <b>Organization</b>, choose <b>New organization…</b>: name <b>Element Grid Test</b>, tick <b>Test data</b>. A separate test organization keeps ABC Test Org&rsquo;s assessments as they are.</li>
+    <li>In <b>Work</b>, choose process group <b>7.2</b> and open processes 7.2.1, 7.2.2 and 7.2.3 with their <b>+</b>.</li>
+  </ol>
+  <h5>For each case</h5>
+  <ol>
+    <li>Click <b>Assess</b> on the activity&rsquo;s row. If its grid is still open from the case before, change the leads in place.</li>
+    <li>Set every element as listed; elements listed as Human stay Human.</li>
+    <li>Check the <b>Derived Current State</b> line and the warnings before saving, then save.</li>
+    <li>Mark Pass or Fail.</li>
+  </ol>
+  <h5>Progress</h5>
+  <div class="prog" id="prog"></div>
+  <button type="button" class="btn primary" onclick="copyOut()">Copy results</button><button type="button" class="btn" onclick="clearAll()">Clear</button>
+  <textarea class="out" id="out" readonly></textarea>
+  <p class="small" style="margin-top:8px">Results stay in this browser only. Copy them into an email or a note on GR-058 when you finish.</p>
+</div>
+<div class="main">
+<div class="card tc" id="T1">
+  <div class="th"><span class="tid">T1</span><div><h3><span class="code">7.2.1.1</span> Align staffing plan to work force plan and business unit strategies/resource needs</h3>
+  <div class="sub">Baseline: no AI anywhere. Ceiling <b>Augmentation</b> · Consequence of Error <b>Moderate</b> · Accountable HRBP Manager · Process 7.2.1 Manage employee requisitions</div></div></div>
+  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="hum">Human</td><td class="cap">Human-led</td></tr><tr><td class="el">Verify</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="hum">Human</td><td class="cap">Human</td></tr><tr><td class="el">Produce / Execute</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="hum">Human</td><td class="cap">AI</td></tr></table></div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Human-only</b> · every element is Human.</div>
+  <ul class="flags"><li>No warnings</li></ul>
+  <ul class="steps"><li>Save assessment: the message reads <b>Saved. 7.2.1.1 is Human-only in Element Grid Test.</b></li></ul></div></div>
+  <div class="res" data-case="T1"><label><input type="radio" name="r-T1" value="pass"> Pass</label><label><input type="radio" name="r-T1" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div><div class="card tc" id="T2">
+  <div class="th"><span class="tid">T2</span><div><h3><span class="code">7.2.1.1</span> Align staffing plan to work force plan and business unit strategies/resource needs</h3>
+  <div class="sub">AI only supplies inputs. Ceiling <b>Augmentation</b> · Consequence of Error <b>Moderate</b> · Accountable HRBP Manager · Process 7.2.1 Manage employee requisitions</div></div></div>
+  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="hum">Human</td><td class="cap">Human-led</td></tr><tr><td class="el">Verify</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="hum">Human</td><td class="cap">Human</td></tr><tr><td class="el">Produce / Execute</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="hum">Human</td><td class="cap">AI</td></tr></table></div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Judgment</b> · AI only supplies inputs (Research, Evaluate); the person does the work and makes the call.</div>
+  <ul class="flags"><li>No warnings</li></ul>
+  <ul class="steps"><li>Save assessment: the message reads <b>Saved. 7.2.1.1 is Judgment in Element Grid Test.</b></li></ul></div></div>
+  <div class="res" data-case="T2"><label><input type="radio" name="r-T2" value="pass"> Pass</label><label><input type="radio" name="r-T2" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div><div class="card tc" id="T3">
+  <div class="th"><span class="tid">T3</span><div><h3><span class="code">7.2.1.1</span> Align staffing plan to work force plan and business unit strategies/resource needs</h3>
+  <div class="sub">The person does the work with AI assisting. Ceiling <b>Augmentation</b> · Consequence of Error <b>Moderate</b> · Accountable HRBP Manager · Process 7.2.1 Manage employee requisitions</div></div></div>
+  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="set">Human-led</td><td class="cap">Human-led</td></tr><tr><td class="el">Verify</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="hum">Human</td><td class="cap">Human</td></tr><tr><td class="el">Produce / Execute</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="set">Human-led</td><td class="cap">AI</td></tr></table></div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Augmentation</b> · the person leads Draft and Communicate with AI assisting, and Decide stays with the person.</div>
+  <ul class="flags"><li>No warnings</li></ul>
+  <ul class="steps"><li>Save assessment: the message reads <b>Saved. 7.2.1.1 is Augmentation in Element Grid Test.</b></li></ul></div></div>
+  <div class="res" data-case="T3"><label><input type="radio" name="r-T3" value="pass"> Pass</label><label><input type="radio" name="r-T3" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div><div class="card tc" id="T4">
+  <div class="th"><span class="tid">T4</span><div><h3><span class="code">7.2.1.1</span> Align staffing plan to work force plan and business unit strategies/resource needs</h3>
+  <div class="sub">AI leads the work past the Progression Ceiling, then an override covers it. Ceiling <b>Augmentation</b> · Consequence of Error <b>Moderate</b> · Accountable HRBP Manager · Process 7.2.1 Manage employee requisitions</div></div></div>
+  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="set">AI-led</td><td class="cap">Human-led</td></tr><tr><td class="el">Verify</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="hum">Human</td><td class="cap">Human</td></tr><tr><td class="el">Produce / Execute</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="hum">Human</td><td class="cap">AI</td></tr></table></div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Oversight</b> · AI leads Evaluate and Draft; a person approves every instance at Decide.</div>
+  <ul class="flags"><li>Past the Progression Ceiling (Augmentation)</li><li>Element past its own ceiling: Draft (AI-led, at most Human-led)</li></ul>
+  <ul class="steps"><li>Save. The grid warns <b>Past the Progression Ceiling</b> and that <b>Draft is past its element ceiling</b>.</li><li>Under <b>Ceiling override</b>, choose <b>Override the ceiling…</b>: raise to <b>Oversight</b>, factor <b>Accountability</b>, any evidence text; save.</li><li>The grid now reads <b>Past the reference ceiling (Augmentation), covered by an approved override to Oversight</b>, and the override shows Approved by HRBP Manager with today&rsquo;s date.</li><li>Save assessment: the message reads <b>Saved. 7.2.1.1 is Oversight in Element Grid Test.</b></li></ul></div></div>
+  <div class="res" data-case="T4"><label><input type="radio" name="r-T4" value="pass"> Pass</label><label><input type="radio" name="r-T4" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div><div class="card tc" id="T5">
+  <div class="th"><span class="tid">T5</span><div><h3><span class="code">7.2.1.3</span> Approve job requisition</h3>
+  <div class="sub">High Consequence of Error at its Oversight ceiling. Ceiling <b>Oversight</b> · Consequence of Error <b>High</b> · Accountable HRBP Manager · Process 7.2.1 Manage employee requisitions</div></div></div>
+  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="set">AI-led</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="set">AI-led</td><td class="cap">AI</td></tr><tr><td class="el">Verify</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="hum">Human</td><td class="cap">Human</td></tr><tr><td class="el">Produce / Execute</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="hum">Human</td><td class="cap">AI</td></tr></table></div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Oversight</b> · AI leads Evaluate, Draft and Verify; a person approves every instance at Decide.</div>
+  <ul class="flags"><li>No warnings</li></ul>
+  <ul class="steps"><li>Under <b>Ceiling override</b>: <b>Not available: Consequence of Error is High.</b></li><li>Save assessment: the message reads <b>Saved. 7.2.1.3 is Oversight in Element Grid Test.</b></li></ul></div></div>
+  <div class="res" data-case="T5"><label><input type="radio" name="r-T5" value="pass"> Pass</label><label><input type="radio" name="r-T5" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div><div class="card tc" id="T6">
+  <div class="th"><span class="tid">T6</span><div><h3><span class="code">7.2.1.3</span> Approve job requisition</h3>
+  <div class="sub">Past a High ceiling: cannot be overridden. Ceiling <b>Oversight</b> · Consequence of Error <b>High</b> · Accountable HRBP Manager · Process 7.2.1 Manage employee requisitions</div></div></div>
+  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Verify</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="set">AI-led</td><td class="cap">Human</td></tr><tr><td class="el">Produce / Execute</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="set">AI</td><td class="cap">AI</td></tr></table></div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Agent-delegation</b> · AI leads the work and a person handles only the instances flagged at Decide.</div>
+  <ul class="flags"><li>Past the Progression Ceiling (Oversight)</li><li>Element past its own ceiling: Decide (AI-led, at most Human)</li></ul>
+  <ul class="steps"><li>Save. The grid warns <b>Past the Progression Ceiling</b> (Agent-delegation above Oversight) and <b>Decide is past its element ceiling</b>; no override is offered.</li><li>Save assessment: the message reads <b>Saved. 7.2.1.3 is Agent-delegation in Element Grid Test.</b></li></ul></div></div>
+  <div class="res" data-case="T6"><label><input type="radio" name="r-T6" value="pass"> Pass</label><label><input type="radio" name="r-T6" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div><div class="card tc" id="T7">
+  <div class="th"><span class="tid">T7</span><div><h3><span class="code">7.2.2.1</span> Determine recruitment methods and channels</h3>
+  <div class="sub">Flagged exceptions only, within the ceiling. Ceiling <b>Agent-delegation</b> · Consequence of Error <b>Low</b> · Accountable Director of TA · Process 7.2.2 Recruit/Source candidates</div></div></div>
+  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Verify</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="set">AI-led</td><td class="cap">AI-led</td></tr><tr><td class="el">Produce / Execute</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="set">AI</td><td class="cap">AI</td></tr></table></div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Agent-delegation</b> · AI leads the work and a person handles only the instances flagged at Decide.</div>
+  <ul class="flags"><li>No warnings</li></ul>
+  <ul class="steps"><li>Save assessment: the message reads <b>Saved. 7.2.2.1 is Agent-delegation in Element Grid Test.</b></li></ul></div></div>
+  <div class="res" data-case="T7"><label><input type="radio" name="r-T7" value="pass"> Pass</label><label><input type="radio" name="r-T7" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div><div class="card tc" id="T8">
+  <div class="th"><span class="tid">T8</span><div><h3><span class="code">7.2.1.5</span> Modify job requisitions</h3>
+  <div class="sub">Every element AI. Ceiling <b>Automation</b> · Consequence of Error <b>Low</b> · Accountable HRBP Manager · Process 7.2.1 Manage employee requisitions</div></div></div>
+  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Verify</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Produce / Execute</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="set">AI</td><td class="cap">AI</td></tr></table></div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Automation</b> · every element is AI.</div>
+  <ul class="flags"><li>No warnings</li></ul>
+  <ul class="steps"><li>Under <b>Ceiling override</b>: <b>The ceiling is already Automation, the top of the ramp.</b></li><li>Save assessment: the message reads <b>Saved. 7.2.1.5 is Automation in Element Grid Test.</b></li></ul></div></div>
+  <div class="res" data-case="T8"><label><input type="radio" name="r-T8" value="pass"> Pass</label><label><input type="radio" name="r-T8" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div><div class="card tc" id="T9">
+  <div class="th"><span class="tid">T9</span><div><h3><span class="code">7.2.1.4</span> Post job requisitions</h3>
+  <div class="sub">Control element is Verify (worked example 7.2.1.4). Ceiling <b>Automation</b> · Consequence of Error <b>Moderate</b> · Accountable Recruiter · Process 7.2.1 Manage employee requisitions</div></div></div>
+  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="set">AI-led</td><td class="cap">AI</td></tr><tr><td class="el">Verify<span class="ctl">◆</span></td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Produce / Execute</td><td class="set">AI</td><td class="cap">AI</td></tr></table><div class="small">Not part of this activity: Evaluate, Decide, Communicate</div></div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Oversight</b> · AI leads Draft; a person approves every instance at Verify.</div>
+  <ul class="flags"><li>No warnings</li></ul>
+  <ul class="steps"><li>Only four elements are listed; the grid&rsquo;s ◆ is on <b>Verify</b>.</li><li>Save assessment: the message reads <b>Saved. 7.2.1.4 is Oversight in Element Grid Test.</b></li></ul></div></div>
+  <div class="res" data-case="T9"><label><input type="radio" name="r-T9" value="pass"> Pass</label><label><input type="radio" name="r-T9" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div><div class="card tc" id="T10">
+  <div class="th"><span class="tid">T10</span><div><h3><span class="code">7.2.1.2</span> Open job requisitions</h3>
+  <div class="sub">Control element is Verify; Evaluate and Decide are not part of the activity. Ceiling <b>Automation</b> · Consequence of Error <b>Low</b> · Accountable HRBP Manager · Process 7.2.1 Manage employee requisitions</div></div></div>
+  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Verify<span class="ctl">◆</span></td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Produce / Execute</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="set">AI</td><td class="cap">AI</td></tr></table><div class="small">Not part of this activity: Evaluate, Decide</div></div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Automation</b> · every element is AI.</div>
+  <ul class="flags"><li>No warnings</li></ul>
+  <ul class="steps"><li>Five elements are listed (no Evaluate, no Decide); ◆ is on <b>Verify</b>.</li><li>Save assessment: the message reads <b>Saved. 7.2.1.2 is Automation in Element Grid Test.</b></li></ul></div></div>
+  <div class="res" data-case="T10"><label><input type="radio" name="r-T10" value="pass"> Pass</label><label><input type="radio" name="r-T10" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div><div class="card tc" id="T11">
+  <div class="th"><span class="tid">T11</span><div><h3><span class="code">7.2.1.7</span> Manage requisition dates</h3>
+  <div class="sub">AI only in Produce / Execute does not move the stage. Ceiling <b>Automation</b> · Consequence of Error <b>Low</b> · Accountable Recruiter · Process 7.2.1 Manage employee requisitions</div></div></div>
+  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Verify</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Produce / Execute</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="hum">Human</td><td class="cap">AI</td></tr></table></div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Human-only</b> · AI only touches Produce / Execute, which does not move the stage.</div>
+  <ul class="flags"><li>No warnings</li></ul>
+  <ul class="steps"><li>Save assessment: the message reads <b>Saved. 7.2.1.7 is Human-only in Element Grid Test.</b></li></ul></div></div>
+  <div class="res" data-case="T11"><label><input type="radio" name="r-T11" value="pass"> Pass</label><label><input type="radio" name="r-T11" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div><div class="card tc" id="T12">
+  <div class="th"><span class="tid">T12</span><div><h3><span class="code">7.2.3.4</span> Select and reject candidates</h3>
+  <div class="sub">An element past its own ceiling while the activity is within its ceiling. Ceiling <b>Augmentation</b> · Consequence of Error <b>Critical</b> · Accountable Director of TA · Process 7.2.3 Screen and select candidates</div></div></div>
+  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="set">AI-led</td><td class="cap">Human-led</td></tr><tr><td class="el">Draft</td><td class="hum">Human</td><td class="cap">Human-led</td></tr><tr><td class="el">Verify</td><td class="hum">Human</td><td class="cap">Human-led</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="hum">Human</td><td class="cap">Human</td></tr><tr><td class="el">Produce / Execute</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="hum">Human</td><td class="cap">AI</td></tr></table></div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Judgment</b> · AI only supplies inputs (Research, Evaluate); the person does the work and makes the call.</div>
+  <ul class="flags"><li>Element past its own ceiling: Evaluate (AI-led, at most Human-led)</li></ul>
+  <ul class="steps"><li>The grid warns <b>Evaluate is past its element ceiling, even though the activity as a whole is within its ceiling.</b> Its ceiling is Augmentation, so no Progression Ceiling warning.</li><li class="q"><b>Check this one:</b> the rule gives Judgment because the person still drafts and decides; the AI-led Evaluate shows up as the element flag, not as a higher stage. Mark Fail if you think the stage itself should be higher.</li><li>Save assessment: the message reads <b>Saved. 7.2.3.4 is Judgment in Element Grid Test.</b></li></ul></div></div>
+  <div class="res" data-case="T12"><label><input type="radio" name="r-T12" value="pass"> Pass</label><label><input type="radio" name="r-T12" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div>
+<div class="card tc" id="F1">
+  <div class="th"><span class="tid">F1</span><div><h3>Findings after all twelve cases</h3><div class="sub">Each activity keeps its last saved case: 7.2.1.1 from T4, 7.2.1.3 from T6. Eight activities are assessed.</div></div></div>
+  <div class="lbl">Findings &rarr; Executive summary</div>
+  <ul class="find"><li><b>8 of 118</b> activities assessed: 1 Human-only, 1 Judgment, 2 Oversight, 2 Agent-delegation, 2 Automation.</li>
+  <li><b>2 past the Progression Ceiling</b>: 1 covered by an approved override (7.2.1.1), 1 at High or Critical that cannot be overridden (7.2.1.3).</li>
+  <li><b>Needs a decision: 7.2.3.4 Evaluate</b> (an element past its own ceiling).</li>
+  <li>To reassess: 0 (reference changed since assessed).</li></ul>
+  <div class="lbl" style="margin-top:10px">Findings &rarr; Exceptions report</div>
+  <ul class="find"><li>Summary row 7.2: 8 of 24 assessed; proposal changes 0, overrides 1, past ceiling no override 1, reference changed 0, element past its ceiling 1, named control 0.</li>
+  <li>Section 2: 7.2.1.1, Augmentation &rarr; Oversight, Accountability.</li>
+  <li>Section 3: 7.2.1.3, Oversight &rarr; Agent-delegation, High, <b>Not overridable</b>.</li>
+  <li>Section 5: 7.2.3.4, Evaluate: AI-led &rarr; at most Human-led.</li>
+  <li><b>Print / save as PDF</b> prints the report only.</li></ul>
+  <div class="res" data-case="F1"><label><input type="radio" name="r-F1" value="pass"> Pass</label><label><input type="radio" name="r-F1" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div>
+<div class="card tc" id="F2">
+  <div class="th"><span class="tid">F2</span><div><h3>Reset and remove</h3><div class="sub">The two ways back.</div></div></div>
+  <ul class="steps"><li>On 7.2.1.1, <b>Remove override</b>: the grid reads <b>Override removed; the reference ceiling applies</b> and warns <b>Past the Progression Ceiling</b> again.</li>
+  <li>On 7.2.1.7, <b>Mark not assessed</b>: the message reads <b>7.2.1.7 is marked not assessed</b> and Findings shows 7 of 118 assessed.</li></ul>
+  <div class="res" data-case="F2"><label><input type="radio" name="r-F2" value="pass"> Pass</label><label><input type="radio" name="r-F2" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div>
+<div class="card" id="B">
+  <h2>Part B: ABC Test Org&rsquo;s saved assessments</h2>
+  <p class="sub" style="margin-bottom:10px">This is the check GR-058&rsquo;s acceptance names. Choose <b>ABC Test Org</b>, then in Work set <b>Show</b> to <b>Assessed</b>. Each activity assessed before Oct 15 opens with its grid at Human. Set the elements the way ABC works today and, <b>before saving</b>, compare the derived Current State with the one saved. A difference means either the saved value or the rule is off; say which you think it is. Save only if the derived value is the one you want kept.</p>
+  <table class="b"><tr><th style="width:90px">Activity</th><th style="width:140px">Saved</th><th style="width:140px">Derived</th><th style="width:70px">Match</th><th>Note</th></tr>
+  <tr class="brow"><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr><tr class="brow"><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr><tr class="brow"><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr><tr class="brow"><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr><tr class="brow"><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr><tr class="brow"><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr><tr class="brow"><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr><tr class="brow"><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr><tr class="brow"><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr><tr class="brow"><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  </table>
+</div>
+</div></div>
+<script>
+const KEY='hitl-element-grid-test-v1';
+let st={};try{st=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){st={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+const res=[...document.querySelectorAll('.res')];
+function paint(){let p=0,f=0;res.forEach(r=>{const c=r.dataset.case,v=(st[c]||{}).r;const card=document.getElementById(c);card.classList.toggle('pass',v==='pass');card.classList.toggle('fail',v==='fail');if(v==='pass')p++;if(v==='fail')f++;});
+  document.getElementById('prog').textContent=p+' passed, '+f+' failed, '+(res.length-p-f)+' to do (of '+res.length+')';}
+res.forEach(r=>{const c=r.dataset.case,s=st[c]||{};r.querySelectorAll('input[type=radio]').forEach(i=>{i.checked=i.value===s.r;i.onchange=()=>{st[c]=Object.assign(st[c]||{},{r:i.value});save();paint();};});
+  const n=r.querySelector('.note');n.value=s.n||'';n.oninput=()=>{st[c]=Object.assign(st[c]||{},{n:n.value});save();};});
+document.querySelectorAll('.brow').forEach((tr,i)=>tr.querySelectorAll('input').forEach((inp,j)=>{const k='B'+i+'_'+j;inp.value=(st.B||{})[k]||'';inp.oninput=()=>{st.B=st.B||{};st.B[k]=inp.value;save();};}));
+function copyOut(){const L=['Element grid test (GR-058), '+new Date().toLocaleDateString()];
+  res.forEach(r=>{const c=r.dataset.case,s=st[c]||{};L.push(c+': '+(s.r?s.r.toUpperCase():'not run')+(s.n?' - '+s.n:''));});
+  const rows=[...document.querySelectorAll('.brow')].map(tr=>[...tr.querySelectorAll('input')].map(i=>i.value.trim())).filter(x=>x.some(Boolean));
+  if(rows.length){L.push('ABC Test Org (activity | saved | derived | match | note):');rows.forEach(x=>L.push('  '+x.join(' | ')));}
+  const t=L.join('\n'),o=document.getElementById('out');o.style.display='block';o.value=t;o.select();try{navigator.clipboard.writeText(t).catch(()=>{})}catch(e){}}
+function clearAll(){st={};save();location.reload();}
+paint();
+</script>
+</body></html>
