@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Work-Side Proposals for GR-012 v0.2 — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+  --lightblue: #9FC2EE;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--lightblue); margin-bottom: 12px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+.masthead .subtitle { font-size: 14px; color: var(--lightblue); font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.wrap { max-width: 800px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.approval-box { background: var(--amber-bg); border: 1px solid #F0C67A; border-left: 5px solid var(--amber); border-radius: 8px; padding: 18px 22px; margin-bottom: 28px; }
+.approval-box .ab-head { font-size: 14px; font-weight: 700; color: var(--amber-text); margin-bottom: 6px; }
+.approval-box p { font-size: 13px; color: #5A4315; line-height: 1.65; margin: 0; }
+
+.related-reqs { background: var(--navy-l); border: 1px solid #C6D8EE; border-left: 3px solid var(--navy); border-radius: 4px; padding: 14px 18px; margin: 0 0 28px; font-size: 12.5px; color: var(--gray); line-height: 1.65; }
+.related-reqs .rr-label { display: block; font-weight: 700; color: var(--navy-d); font-size: 11px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 7px; }
+.related-reqs ul { margin: 0 0 0 18px; padding: 0; }
+.related-reqs li { margin-bottom: 4px; }
+.related-reqs code { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy); }
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 19px; margin: 36px 0 10px; }
+h3 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy); font-size: 15px; margin: 20px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 14px; }
+p.lede { font-size: 15.5px; color: var(--dark); }
+ul.plain { margin: 0 0 16px 20px; }
+ul.plain li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.feature-box { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 8px 0 20px; }
+.feature-box h3 { margin-top: 0; }
+
+/* Sizing/alignment matched to the "Working Relationship" gates track in
+   docs/sandbox/pcf7.html (.gate-node/.gate-circle/.gate-label/.gate-arrow)
+   so this legend reads as the same visual system, not a bigger lookalike. */
+.ramp-row { display: flex; flex-wrap: wrap; gap: 0; margin: 12px 0 6px; align-items: flex-start; }
+.ramp-step { display: flex; flex-direction: column; align-items: center; min-width: 84px; flex: 0 0 auto; text-align: center; }
+.ramp-step .rs-dot { width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; }
+.ramp-step .rs-name { font-size: 11px; font-weight: 500; color: #000; margin-top: 2px; line-height: 1.2; white-space: nowrap; }
+.ramp-arrow { width: 22px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; color: var(--lgray); font-size: 16px; font-weight: 700; }
+
+.proof-grid { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 20px; }
+.proof-card { flex: 1; min-width: 200px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.proof-card .pc-role { font-weight: 700; color: var(--navy-d); font-size: 13.5px; margin-bottom: 4px; }
+.proof-card .pc-tier { font-size: 10.5px; color: var(--lgray); text-transform: uppercase; letter-spacing: .03em; margin-bottom: 8px; }
+.proof-card p { font-size: 12.5px; margin: 0; }
+
+.open-item { border-left: 3px solid var(--lgray); padding: 4px 0 4px 14px; margin-bottom: 12px; }
+.open-item .oi-name { font-weight: 700; color: var(--dark); font-size: 13.5px; }
+.open-item p { font-size: 13px; margin: 3px 0 0; }
+
+.source-note { font-size: 12px; color: var(--lgray); font-style: italic; margin-top: 4px; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0 22px; font-size: 13px; }
+th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 12px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.5; }
+tr:nth-child(even) td { background: #FAFBFD; }
+td.k { font-weight: 700; color: var(--navy-d); }
+td.num { text-align: right; white-space: nowrap; }
+ol.plan { margin: 0 0 16px 22px; }
+ol.plan li { font-size: 14px; color: var(--gray); line-height: 1.65; margin-bottom: 7px; }
+ol.plan li strong { color: var(--dark); }
+.tag { font-family: 'Consolas', monospace; font-size: 10.5px; color: var(--navy); background: var(--navy-l); border: 1px solid #C6D8EE; border-radius: 3px; padding: 0 5px; margin-left: 4px; white-space: nowrap; }
+
+.ramp6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 14px 0 4px; }
+.ramp6 > * { min-width: 0; overflow-wrap: anywhere; }
+.ramp6 .cell { color: #fff; font-size: 11px; font-weight: 600; text-align: center; padding: 8px 2px; border-radius: 4px; }
+.ramp6 .zone { font-size: 11px; text-align: center; padding: 6px 4px; border-radius: 4px; line-height: 1.35; }
+.z-base { background: #EDEFF3; color: #333; }
+.z-space { background: var(--navy-l); color: var(--navy-d); border: 1px solid #C6D8EE; }
+.z-beyond { background: repeating-linear-gradient(45deg,#F6F7F9,#F6F7F9 6px,#ECEEF2 6px,#ECEEF2 12px); color: #666; }
+.ramp-cap { font-size: 12px; color: var(--lgray); font-style: italic; margin: 6px 0 20px; }
+.quote { border-left: 3px solid var(--amber); padding: 6px 0 6px 14px; margin: 0 0 18px; font-family: 'Georgia', serif; font-style: italic; color: var(--dark); font-size: 15px; line-height: 1.6; }
+@media (max-width: 600px) { .ramp6 .cell, .ramp6 .zone { font-size: 9.5px; padding: 6px 1px; } .wrap table { display: block; overflow-x: auto; } }
+
+.brief { background: #fff; border: 1px solid var(--border); border-top: 4px solid var(--navy); border-radius: 8px; padding: 20px 24px 18px; margin-bottom: 30px; }
+.brief .b-label { font-family: 'Consolas', monospace; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--lgray); margin: 14px 0 6px; }
+.brief .b-label:first-child { margin-top: 0; }
+.brief p { font-size: 14.5px; color: var(--dark); margin-bottom: 0; }
+.brief ul { margin: 0 0 0 18px; }
+.brief li { font-size: 14px; color: var(--gray); line-height: 1.6; margin-bottom: 4px; }
+.brief li b { color: var(--dark); }
+.brief .reqline { font-size: 12px; color: var(--lgray); margin-top: 14px; }
+.brief .reqline a { color: var(--navy); font-weight: 600; text-decoration: none; }
+details.fold { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0 18px; margin: 10px 0 20px; }
+details.fold summary { cursor: pointer; font-weight: 700; color: var(--navy); font-size: 14px; padding: 12px 0; }
+details.fold[open] { padding-bottom: 6px; }
+.small { font-size: 13px; }
+.ws th { font-size: 10.5px; }
+.ws td { font-size: 12.5px; }
+.ws td.fill { background: #FFFDF5 !important; min-width: 90px; }
+.grp td { background: var(--navy-l) !important; font-weight: 700; color: var(--navy-d); }
+.find { display: inline-block; font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 1px 7px; white-space: nowrap; background: #F1F3F6; color: #475569; border: 1px solid #CBD5E1; }
+.past { color: #991B1B; font-weight: 700; font-size: 12px; }
+.within { color: #166534; font-weight: 700; font-size: 12px; }
+.cat { display: inline-block; font-size: 10.5px; font-weight: 600; border-radius: 3px; padding: 1px 6px; color: #fff; white-space: nowrap; }
+.voice { background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--navy); border-radius: 6px; padding: 12px 18px; margin: 0 0 14px; }
+.voice .q { font-weight: 700; color: var(--navy-d); font-size: 13.5px; margin-bottom: 6px; }
+.voice p { margin: 0; font-size: 14px; }
+.voice .st { font-family: 'Consolas', monospace; font-size: 10.5px; color: var(--lgray); text-transform: uppercase; letter-spacing: .05em; }
+</style>
+</head>
+<body>
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft &mdash; Not Yet Part of the Framework</strong>
+  &nbsp;&middot;&nbsp; Reviewing this before it&rsquo;s finalized. Nothing here is official yet.
+  &nbsp;&middot;&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">Back to WIP hub</a>
+</div>
+
+
+<div class="masthead">
+  <div class="eyebrow">PROPOSALS &nbsp;&middot;&nbsp; GR-012 v0.2 &nbsp;&middot;&nbsp; TIM KING &amp; CLAUDE &nbsp;&middot;&nbsp; OCTOBER 2026</div>
+  <h1>Work-Side Proposals for GR-012 v0.2</h1>
+  <div class="subtitle">Four answers from the work side to the questions in GiGi&rsquo;s Human Impact &amp; Readiness update, each with what the reference model already shows</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-download-mount data-item="gr012-v02-work-side-proposals"></div>
+
+<div class="wrap">
+
+<div class="brief">
+  <div class="b-label">What this is</div>
+  <p>GiGi&rsquo;s <a href="gigi_human_impact_readiness_update.html">workstream update</a> (Oct 15, 2026) lists the issues that should drive GR-012 v0.2. Four of them touch the work side. For each, this page proposes an answer and shows what the reference model already holds, so the working session can start from a position rather than a blank page. They are proposals: the Human Impact &amp; Readiness layer is GiGi&rsquo;s lead, and nothing here changes it until she agrees.</p>
+  <div class="b-label">The four proposals</div>
+  <ul>
+    <li><b>Human Intensity</b> starts as a qualitative finding, pointing to a work-side measure that already exists.</li>
+    <li><b>Weakest link</b> applies to the roles that touch High or Critical work; a single decision-maker is compared with the body that oversees the decision.</li>
+    <li><b>Manager Absorption</b> gets one named top-of-catalog variant, Oversight body, used by both sides.</li>
+    <li><b>Human Criticality</b> is a human-impact reading of three Consequence of Error factors already recorded, not a new instrument.</li>
+  </ul>
+  <div class="b-label">Not covered here</div>
+  <p class="small">Hard gates, Human Agency (GR-013), the evidence schema and the narrative conclusion are human-side questions; the pilots and GiGi&rsquo;s v0.2 answer them. Figures below are Modeled, from the Reference Model as of Oct 16, 2026; counts are activities, not volumes.</p>
+  <div class="reqline">Supports <a href="requirements_register.html#GR-012">GR-012</a>. Related: <a href="requirements_register.html#GR-013">GR-013</a> &middot; <a href="requirements_register.html#GR-016">GR-016</a> &middot; <a href="requirements_register.html#GR-018">GR-018</a> &middot; <a href="requirements_register.html#GR-029">GR-029</a> &middot; <a href="requirements_register.html#GR-033">GR-033</a> &middot; <a href="requirements_register.html#GR-056">GR-056</a></div>
+</div>
+
+<h2>1. Human Intensity: a finding, anchored to a measure</h2>
+<div class="quote">Does AI truly reduce work, or does it remove the easier work and concentrate the hardest cognitive, emotional, relational or operational work in the human?</div>
+<p><b>Proposal.</b> Human Intensity stays a qualitative finding in GR-012 v0.2, beside the Current State and the Progression Ceiling, and is not a tracked field yet. Each finding points to one work-side number: the share of the work still left to a person in a role that is High or Critical Consequence of Error. GR-029 already computes it, and the sandbox&rsquo;s People view shows it per role. The finding says what that shift means for the person; the number shows that it is happening.</p>
+<p><b>Why not a field yet.</b> The number tracks consequence, not the cognitive, emotional or relational load GiGi describes. A field built only on it would claim more than it measures. After the three pilots, if her findings consistently follow the number, it can become a field with her definition.</p>
+<h3>What the reference model shows</h3>
+<p>High or Critical share of the work left to a person, at the Human-only baseline and with every activity at its Progression Ceiling. High and Critical exceptions go to the Accountable role.</p>
+<table>
+  <tr><th style="width:44%">Role</th><th style="text-align:right">Human-only baseline</th><th style="text-align:right">Every activity at its ceiling</th></tr>
+  <tr><td class="k">Recruiter</td><td class="num">28% <span class="small">(5 of 18)</span></td><td class="num">50% <span class="small">(5 of 10)</span></td></tr><tr><td class="k">HR Generalist</td><td class="num">33% <span class="small">(6 of 18)</span></td><td class="num">46% <span class="small">(6 of 13)</span></td></tr><tr><td class="k">Compensation Analyst</td><td class="num">33% <span class="small">(5 of 15)</span></td><td class="num">50% <span class="small">(5 of 10)</span></td></tr><tr><td class="k">HRIS Analyst</td><td class="num">21% <span class="small">(5 of 24)</span></td><td class="num">33% <span class="small">(5 of 15)</span></td></tr><tr><td class="k">L&D Specialist</td><td class="num">20% <span class="small">(2 of 10)</span></td><td class="num">33% <span class="small">(2 of 6)</span></td></tr><tr><td class="k">HRBP Manager</td><td class="num">40% <span class="small">(10 of 25)</span></td><td class="num">48% <span class="small">(12 of 25)</span></td></tr><tr><td class="k">Director of L&D</td><td class="num">33% <span class="small">(1 of 3)</span></td><td class="num">60% <span class="small">(3 of 5)</span></td></tr><tr><td class="k">Director of HR Ops</td><td class="num">38% <span class="small">(3 of 8)</span></td><td class="num">38% <span class="small">(3 of 8)</span></td></tr><tr><td class="k">Director of TA</td><td class="num">0% <span class="small">(0 of 2)</span></td><td class="num">33% <span class="small">(1 of 3)</span></td></tr><tr><td class="k">VP People & Culture</td><td class="num">0% <span class="small">(0 of 1)</span></td><td class="num">50% <span class="small">(1 of 2)</span></td></tr><tr><td class="k">Compensation & Benefits Manager</td><td class="num">100% <span class="small">(1 of 1)</span></td><td class="num">100% <span class="small">(2 of 2)</span></td></tr><tr><td class="k">Onboarding Coordinator</td><td class="num">0% <span class="small">(0 of 3)</span></td><td class="num">0% <span class="small">(0 of 2)</span></td></tr>
+</table>
+<p class="source-note">As the routine work moves to AI, the work left with the Recruiter, Compensation Analyst and Director of L&amp;D becomes half or more High or Critical. That is the shape of the Exception Escalation Effect (GR-029), and the measure Human Intensity would interpret.</p>
+
+<h2>2. Weakest link: the roles that touch the work</h2>
+<div class="quote">Determine when multiple touching roles should roll up to the weakest required role-level condition, especially for High or Critical consequence work &hellip; and how the rule works when the CHRO is effectively a single decision-maker.</div>
+<p><b>Proposal.</b> For High or Critical activities, a role-level readiness finding rolls up to the weakest finding among the roles that touch the activity: its Accountable role and its Responsible roles in the activity-level RACI (GR-060). The Accountable role&rsquo;s own finding is always required, because it holds the decision point (GR-021). Low and Moderate activities report each role&rsquo;s finding without a roll-up.</p>
+<p><b>A single decision-maker.</b> Where one role both does and decides the work, there is no second role to be the weak link. The comparison is then with the body that oversees that role&rsquo;s decisions: for the CHRO, the executive committee or board; for other roles, their manager. That is the governance relationship GiGi named for Manager / Oversight Readiness, applied here.</p>
+<h3>What the reference model shows</h3>
+<ul class="plain">
+  <li>34 activities are High or Critical. Every one is a decision point at its ceiling, so a person always holds Decide or Verify on it.</li>
+  <li>23 of them have two or more touching roles, so the weakest-link roll-up applies.</li>
+  <li>11 have a single touching role: the Accountable role does the work itself. The single-decision-maker case is not only an executive one; it also covers Managerial work such as labor relations.</li>
+  <li>The CHRO is Accountable for 9 activities, 3 of them High (7.1.1.2, 7.1.1.8, 7.1.2.2). In each, another role does the work, so for those activities the CHRO&rsquo;s weak link is the Responsible role, and the oversight comparison applies to the CHRO&rsquo;s own decision.</li>
+</ul>
+
+<h2>3. Manager Absorption: a named top-of-catalog variant</h2>
+<div class="quote">Create an explicit top-of-catalog variant so CHRO-level roles are not silently read as &ldquo;no data.&rdquo;</div>
+<p><b>Proposal.</b> Add one named variant, <b>Oversight body</b>, for any role with no manager above it in the role catalog. Today that is only the CHRO. Where the Human Impact Pathway (GR-033) asks who absorbs the change at the Manager Absorption stage, a top-of-catalog role reads &ldquo;Oversight body (executive committee or board)&rdquo;, with its own evidence, not a blank.</p>
+<p><b>The work side has the same gap.</b> The People view can send High or Critical exceptions to the manager of the role that did the work. For the CHRO, the role catalog has no manager, so the exception quietly goes back to the CHRO. It is the same silent &ldquo;no data&rdquo; GiGi flagged. One named variant used on both sides closes it in one place. The sandbox change is small and waits for GiGi&rsquo;s agreement on the name.</p>
+
+<h2>4. Human Criticality: a reading of Consequence of Error</h2>
+<div class="quote">What happens if the remaining human decision is wrong, who is affected, and how reversible is the damage? &hellip; whether it needs a new instrument or a stronger human-impact interpretation of an existing measure.</div>
+<p><b>Proposal.</b> No new instrument. Consequence of Error already records, for every activity, which of six factors put it at its rating, and three of them are GiGi&rsquo;s questions:</p>
+<table>
+  <tr><th style="width:36%">Her question</th><th style="width:30%">Consequence of Error factor</th><th style="text-align:right">Activities with it</th></tr>
+  <tr><td>Who is affected?</td><td class="k">Human impact</td><td class="num">31</td></tr>
+  <tr><td>How far does it spread?</td><td class="k">Reach</td><td class="num">29</td></tr>
+  <tr><td>How reversible is the damage?</td><td class="k">Reversibility</td><td class="num">38</td></tr>
+</table>
+<p>Human Criticality becomes the human-impact reading of those three factors for the decision the person keeps: the activity&rsquo;s control element (Decide, or Verify where there is no Decide). The rating stays one number, so the work side and the human side cannot disagree about how consequential an activity is. What GiGi adds is what that consequence means for the person who carries it: the weight of being the one who decides, and what happens to them if it goes wrong.</p>
+<p class="source-note">Of the 34 High or Critical activities, 8 carry Human impact, 12 Reach and 9 Reversibility. The rest are rated mainly for legal, operational or trust reasons, which is itself useful to GiGi: those are activities where the consequence is real but not mainly human.</p>
+
+<h2>What would change, if agreed</h2>
+<ol class="plan">
+  <li><strong>GR-012 v0.2</strong> (GiGi): Human Intensity as a finding pointing to the GR-029 measure; the weakest-link rule and its single-decision-maker case as above.</li>
+  <li><strong>GR-018</strong>: next action becomes &ldquo;revisit as a field after the three pilots&rdquo;.</li>
+  <li><strong>GR-033</strong> and the People view: the Oversight body variant, one name on both sides.</li>
+  <li><strong>GR-016</strong>: Human Criticality recorded as the human-impact reading of Human impact, Reach and Reversibility on the control element; no new rating.</li>
+</ol>
+
+</div>
+
+<footer>
+  <p>
+    <strong style="color:var(--navy)">Tim King</strong> &amp; <strong style="color:var(--navy)">Claude</strong> &nbsp;&middot;&nbsp; Proposals &mdash; For Review<br>
+    &copy; Timothy P. King 2026 &middot; developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a> &nbsp;&middot;&nbsp; <a href="gigi_human_impact_readiness_update.html">GiGi&rsquo;s update</a> &nbsp;&middot;&nbsp; <a href="requirements_register.html#GR-012">GR-012 in the Requirements Register</a>
+  </p>
+</footer>
+
+<script src="wip-download-widget.js"></script>
+</body>
+</html>
