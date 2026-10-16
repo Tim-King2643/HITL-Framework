@@ -63,8 +63,9 @@ table.t{width:100%;border-collapse:collapse}
 .prow .pn .tg,.prow .pn .code{font-weight:400}
 .ph{display:flex;align-items:baseline;gap:4px;white-space:nowrap;font-size:9.5px;line-height:14px;align-self:flex-start;letter-spacing:.04em}
 .lab{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--lgray)}
-.hprov{font-size:12px;letter-spacing:0;color:var(--lgray);min-width:70px}
-.hv{display:inline-block;min-width:38px;font-size:11px;letter-spacing:0;text-align:right;color:var(--navy);font-variant-numeric:tabular-nums}
+.hprov{font-size:12px;letter-spacing:0;color:var(--lgray)}
+.hv{display:inline-block;font-size:11px;letter-spacing:0;color:var(--navy);font-variant-numeric:tabular-nums}
+.hgrp{display:inline-flex;align-items:baseline;gap:4px}
 .ph .sep{color:var(--lgray);margin:0 2px}
 .pc{flex:0 0 210px;width:210px;display:flex;flex-direction:column;align-items:flex-end;text-align:right;gap:1px;font-size:12px}
 .lab2{font-size:9.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--lgray);line-height:14px}
@@ -474,7 +475,8 @@ function hCalc(L,f){
 // A % H figure that opens its own calculation; it doesn't expand or collapse the row it sits in.
 function hFig(txt,key){return '<span class="hfig'+(opened[key]?' sel':'')+'" title="Show the calculation" onclick="event.stopPropagation();opened[\''+key+'\']=!opened[\''+key+'\'];render()">'+txt+'</span>'}
 // Laid out like the current dashboard's process row: fixed columns, so every process lines up.
-function hPair(L,c){return '<span class="ph"><span class="lab">Current</span><span class="hprov">'+hLabel(L,'cur')+'</span><span class="hv">'+hFig(hRoll(L,'cur')+'% H','hc'+c)+'</span><span class="sep">→</span><span class="lab">Ceiling</span><span class="hprov">Modeled</span><span class="hv">'+hFig(hRoll(L,'ceil')+'% H','hk'+c)+'</span></span>'}
+// Each label sits right next to its % H. The pair is right-aligned, so the % H figures, the arrow and Ceiling line up row to row.
+function hPair(L,c){return '<span class="ph"><span class="hgrp"><span class="lab">Current</span><span class="hprov">'+hLabel(L,'cur')+'</span><span class="hv">'+hFig(hRoll(L,'cur')+'% H','hc'+c)+'</span></span><span class="sep">→</span><span class="hgrp"><span class="lab">Ceiling</span><span class="hprov">Modeled</span><span class="hv">'+hFig(hRoll(L,'ceil')+'% H','hk'+c)+'</span></span></span>'}
 function hCalcRow(lines,cols){return lines.length?'<tr class="det"><td'+(cols?' colspan="'+cols+'"':'')+'><div class="small" style="line-height:1.6">'+lines.join('<br>')+'<br>% H is modeled from each step\u2019s value, not measured.</div></td></tr>':''}
 function procRow(proc){
   const c=proc.split(' ')[0], L=DATA.acts.filter(a=>a.proc===proc), k='p'+c, o=opened[k], w=worstCons(L);
