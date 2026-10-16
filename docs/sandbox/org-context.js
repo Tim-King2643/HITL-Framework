@@ -6,8 +6,8 @@
 // organization assessed against it, stored behind the Worker's /org-api/
 // routes (see src/index.js). A new organization starts as a copy of the
 // reference: every activity at the Human-only baseline, every ceiling the
-// reference ceiling. Its values change only through the assessment panel
-// (assess-panel.js), opened from an activity in the Working Relationship view.
+// reference ceiling. Its values change only through the element grid (GR-058),
+// opened with Assess on an activity in the four views' Work view (four_views.html).
 //
 // Launching the sandbox always opens the Reference Model (Tim, Sept 29).
 // An organization opens only when the URL names it (?org=), which the
