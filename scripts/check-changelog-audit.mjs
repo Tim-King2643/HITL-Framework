@@ -6,7 +6,7 @@
 // but *forgetting* to write one is exactly the kind of thing CI should
 // catch. This script fails the build when a commit range changes a
 // tracked modeled-data value (a reportsTo edge, a WR rel/ceiling
-// classification, a work-product catalog entry, or activity/process CRUD) without also adding a new entry to changelog-data.js.
+// classification, a work-product catalog entry, activity/process CRUD, or an activity's work elements) without also adding a new entry to changelog-data.js.
 //
 // Usage:
 //   node scripts/check-changelog-audit.mjs <baseRef> <headRef>
@@ -73,6 +73,13 @@ const TRACKED = [
     //   { code:"7.5.4",crud:{"create":[...],...}, name:"Administer Payroll", ... }
     pattern: /code:"\d+(?:\.\d+)+",\s?crud:/,
     label: "a process's CRUD in PCF7",
+  },
+  {
+    file: "docs/sandbox/pcf7.html",
+    // Work Element Reference Data (GR-058), one activity per line, e.g.
+    //   "7.2.1.4": { control:"Verify", obj:{ ... }, na:{ ... } },
+    pattern: /"\d+(?:\.\d+)+"\s*:\s*\{\s*control\s*:/,
+    label: "an activity's work elements in WORK_ELEMENTS",
   },
 ];
 

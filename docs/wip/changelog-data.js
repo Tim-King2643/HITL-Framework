@@ -383,5 +383,26 @@ const CHANGE_LOG = [
     "source": "Tim, Oct 10, 2026: move RACI to the activity level, more accurate for accountability. GiGi confirmed the role assignments, Oct 15, 2026.",
     "reason": "Accountability is decided activity by activity: a process's Accountable role is not the role that answers for each of its activities, and the decision points (GR-021) and the Human Accountability Anchor are read per activity.",
     "verified": "118 activities, each with an Accountable role in the role catalog; every R, C and I role is in the catalog, with outside participants listed separately (six tokens split from 'Hiring Managers*' in the draft corrected). The Work view and the assessment panel read it; the RACI Table and People views still show the process-level RACI until the People view moves into the four views (GR-059)."
+  },
+  {
+    "id": "CL-019",
+    "date": "2026-10-15",
+    "requestedBy": "Tim",
+    "kind": "work-elements",
+    "changeType": "decision",
+    "target": {
+      "domain": "7.0",
+      "activity": "all 118 activities"
+    },
+    "summary": "Work Element Reference Data added for all 118 activities (GR-058), held in WORK_ELEMENTS: each activity's control element, what each of its work elements acts on, and the elements that do not apply.",
+    "from": "Element phrases for three worked examples (7.2.1.1, 7.2.1.4, 7.4.4); every other activity had all seven elements, Decide as its control element, and no phrases.",
+    "to": "Phrases for every element of all 118 activities, grounded in each activity's work products (CRUD) and roles. Of the 115 new entries, 13 mark 26 elements as not part of the activity, each with where that work happens instead. The three worked examples are unchanged. 10 activities whose decision is made at another activity have Verify as their control element: 7.1.1.7, 7.1.3.3, 7.2.1.2, 7.2.1.6, 7.2.5.2, 7.3.2.3, 7.5.2.1, 7.7.7.5, 7.7.8.1, 7.8.3.",
+    "files": [
+      "docs/sandbox/pcf7.html",
+      "docs/sandbox/four_views.html"
+    ],
+    "source": "Tim, Oct 15, 2026: write the element phrases for the remaining activities (GR-058, approved by Tim and GiGi Oct 15).",
+    "reason": "The work-element model (GR-058) needs each activity's elements to show what moves to AI at each step and to assess an organization element by element; the stage, the element ceilings and the decision points are all read from them.",
+    "verified": "Run through the model before and after: no Progression Ceiling changes (Augmentation 30, Oversight 11, Agent-delegation 44, Automation 33), still 85 decision points and the same 12 activities needing a named control. The only change is the decision-point element of the 10 activities above, from Decide to Verify. Three stay decision points, now on Verify (7.1.1.7 and 7.1.3.3 on flagged exceptions, 7.3.2.3 on every instance); the seven at Automation are decided or verified elsewhere or need a named control, as before."
   }
 ];
