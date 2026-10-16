@@ -107,7 +107,7 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .acons:hover,.acons.sel{border-bottom-style:solid}
 .it td.ck{width:22px;color:var(--navy-d)}
 .it tr.off td{color:#9AA3B2}
-.wt .ramp{padding-left:4px}
+.wt .ramp{padding-left:4px;width:100%}
 .wt tr.det td{padding:0 12px 12px 12px;background:#fff}
 @media(max-width:640px){.it td.obj{display:none}.it td.el,.it td.stt{width:auto;white-space:normal}.step{min-width:78px}}
 @media(max-width:640px){.side,.main{flex:1 1 100%;min-width:0}.hide-s{display:none}.t th,.t td{padding:7px 4px}.views button{padding:8px 11px;font-size:12.5px}.views button small{display:none}}
@@ -122,7 +122,8 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 /* Each activity's ramp: the six stage names */
 .wt tr.wr .ramp .step{min-height:18px}
 /* Ramp as stage names: reached in bold, the rest grey, past the ceiling faint */
-.step.sn{display:block;width:112px;min-width:112px;text-align:center;font-size:12.5px;color:#6B7A90;line-height:18px;padding:2px 0}
+/* The six steps share the row's width equally, so they line up from row to row and shrink with the window (never below their names). */
+.step.sn{display:block;flex:1 1 0;width:auto;min-width:max-content;text-align:center;font-size:12.5px;color:#6B7A90;line-height:18px;padding:2px 0}
 .step.sn.on{color:var(--dark);font-weight:600}.step.sn.dim{color:#C4CBD7}.step.sn.past{color:var(--red)}
 .step.sn.sel{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
 .step.sn:hover{text-decoration:underline;text-underline-offset:4px}
