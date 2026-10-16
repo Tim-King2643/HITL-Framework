@@ -139,6 +139,8 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 body{background:transparent;padding-bottom:0}
 .wrap{max-width:none;padding:6px 0 10px}
 .assess.sel{font-weight:700}
+/* Assess / Reassess sits on the name line, its right edge under the end of the Augmentation step name (placeAssess) */
+.wt tr.wr > td{position:relative}.assess.abs{position:absolute;white-space:nowrap;visibility:hidden}
 .ibox.grid{max-width:900px}
 .gt td{vertical-align:top;padding-top:8px;padding-bottom:8px}
 .gt tr.gpast td{background:#FFF7F7}
@@ -681,14 +683,14 @@ function workMain(){
       f.push(as.length+' of '+L.length+' assessed. '+(past.length?past.length+' past the ceiling'+(cov.length?', '+cov.length+' of them covered by an approved override':'')+'. ':'None past its ceiling. ')+(pe.length?pe.map(a=>a.code+' '+pastEls(a).join(', ')).join('; ')+' past '+(pe.length>1?'their':'its')+' element ceiling, even though the activit'+(pe.length>1?'ies are':'y is')+' within its ceiling.':''));}
   }
   h+='<div class="card"><h3>What this shows</h3><ul class="find">'+f.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
-  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t wt"><thead><tr><th><div class="ahead hd"><span>Activity <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; click a step, an arrow, the lock, the decision point or the rating</span></span><span class="aright">'+(isOrg()?'<span class="assess" style="visibility:hidden">Reassess</span>':'')+'<span class="col crole" title="The Human Accountability Anchor">Accountable role</span><span class="col cdp">Decision point</span><span class="col ccoe">Consequence of Error</span></span></div></th></tr>'+'</thead><tbody>';
+  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t wt"><thead><tr><th><div class="ahead hd"><span>Activity <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; click a step, an arrow, the lock, the decision point or the rating</span></span><span class="aright">'+''+'<span class="col crole" title="The Human Accountability Anchor">Accountable role</span><span class="col cdp">Decision point</span><span class="col ccoe">Consequence of Error</span></span></div></th></tr>'+'</thead><tbody>';
   let proc='';
   L.forEach(a=>{
     const head=!a.proc.startsWith(a.code+' ');
     if(a.proc!==proc&&head){proc=a.proc;h+=procRow(proc);}
     if(head&&!opened['p'+l3Of(a)]) return;
     const pe=pastEls(a), box=infoBox(a);
-    h+='<tr class="wr"><td><div class="ahead"><span class="anm"><span class="code">'+a.code+'</span><span>'+esc(a.name)+(pe.length?' <span class="red" title="An element is past its own ceiling">\u25CF</span>':'')+nBtn(a.code)+'</span></span><span class="aright">'+(isOrg()?'<a class="assess'+((S.wsel[a.code]||{}).t==='assess'?' sel':'')+'" href="javascript:void 0" onclick="openGrid(\''+a.code+'\')" title="Who leads each work element in this organization">'+(canEdit()?(ABCSTAGE[a.code]?'Reassess':'Assess'):'View')+'</a>':'')+'<span class="col crole">'+esc(a.Aroles.join(', '))+'</span><span class="col cdp">'+dpTag(a)+'</span><span class="col ccoe"><span class="acons'+((S.wsel[a.code]||{}).t==='coe'?' sel':'')+'" style="color:'+CONSC[a.cons]+'" onclick="wpick(\''+a.code+'\',\'coe\',0)" title="Consequence of Error">'+a.cons+'</span></span></span></div>'+ramp(a,true)+nPanel(a.code)+'</td></tr>';
+    h+='<tr class="wr"><td><div class="ahead"><span class="anm"><span class="code">'+a.code+'</span><span>'+esc(a.name)+(pe.length?' <span class="red" title="An element is past its own ceiling">\u25CF</span>':'')+nBtn(a.code)+'</span></span><span class="aright">'+'<span class="col crole">'+esc(a.Aroles.join(', '))+'</span><span class="col cdp">'+dpTag(a)+'</span><span class="col ccoe"><span class="acons'+((S.wsel[a.code]||{}).t==='coe'?' sel':'')+'" style="color:'+CONSC[a.cons]+'" onclick="wpick(\''+a.code+'\',\'coe\',0)" title="Consequence of Error">'+a.cons+'</span></span></span></div>'+ramp(a,true)+(isOrg()?'<a class="assess abs'+((S.wsel[a.code]||{}).t==='assess'?' sel':'')+'" href="javascript:void 0" onclick="openGrid(\''+a.code+'\')" title="Who leads each work element in this organization">'+(canEdit()?(ABCSTAGE[a.code]?'Reassess':'Assess'):'View')+'</a>':'')+nPanel(a.code)+'</td></tr>';
     if(box) h+='<tr class="det"><td colspan="1">'+box+'</td></tr>';
   });
   return h+'</tbody></table></div>';
@@ -928,10 +930,23 @@ function render(){DPC=null;
   const M={work:[workSide,workMain],people:[peopleSide,peopleMain],data:[dataSide,dataMain],findings:[findSide,findMain]}[S.view]||[workSide,workMain];
   document.getElementById('side').innerHTML=M[0]();
   document.getElementById('main').innerHTML=M[1]();
+  placeAssess();
   // An open notes panel (and any note being typed) survives the re-render.
   if(keep){const n=document.getElementById(keep.id);if(n)n.replaceWith(keep);}
   fit();
 }
+// Assess / Reassess: right edge lined up with the end of the Augmentation step's name, on the activity name's first
+// line; the name stops short of it so the two never overlap.
+function placeAssess(){
+  document.querySelectorAll('tr.wr').forEach(tr=>{const a=tr.querySelector('.assess.abs');if(!a)return;
+    const td=tr.firstElementChild,st=tr.querySelectorAll('.ramp .step')[2],code=tr.querySelector('.anm .code'),anm=tr.querySelector('.anm');
+    if(!st||!code)return;const R=document.createRange();R.selectNodeContents(st);
+    const tr0=td.getBoundingClientRect(),txt=R.getBoundingClientRect(),c=code.getBoundingClientRect();
+    const left=txt.right-tr0.left-a.offsetWidth;
+    a.style.left=left+'px';a.style.top=(c.bottom-tr0.top-a.offsetHeight+1)+'px';a.style.visibility='visible';
+    anm.style.maxWidth=Math.max(160,(tr0.left+left)-anm.getBoundingClientRect().left-14)+'px';});
+}
+window.addEventListener('resize',()=>{if(S.view==='work')placeAssess();});
 // The page sits inside pcf7.html; keep its frame as tall as its content.
 function fit(){try{const f=window.frameElement;if(f)f.style.height=Math.max(600,document.documentElement.scrollHeight)+'px';}catch(e){}}
 try{new ResizeObserver(fit).observe(document.body)}catch(e){}
