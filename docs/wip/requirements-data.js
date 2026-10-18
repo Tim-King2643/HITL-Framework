@@ -1587,7 +1587,7 @@ window.REQUIREMENTS = [
   "converged": "GR-055, GR-052, GR-053, GR-054, GR-056",
   "spec_doc": "docs/wip/work_element_model_spec.html",
   "spec_section": "Whole spec; worked examples in docs/wip/work_elements/",
-  "wip_item": null,
+  "wip_item": "docs/wip/work_elements/element_grid_test_script.html",
   "next_action": "Run the element grid test script (docs/wip/work_elements/element_grid_test_script.html): thirteen cases that cover each branch of the derivation rule in a separate test organization, then Part B, which reassesses ABC Test Org's saved assessments in the grid. Tim and GiGi read the element phrases in Work as they use it; corrections go through the change log.",
   "decision": null,
   "decisions": [

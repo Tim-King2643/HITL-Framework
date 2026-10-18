@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Requirements Register — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+  --amber-text: #7A5A1E;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 22px; margin-bottom: 4px; }
+.masthead .tagline1 { font-size: 13px; color: #9FC2EE; font-weight: 500; letter-spacing: .02em; margin-bottom: 4px; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.draft-ribbon { position: sticky; top: 0; z-index: 1000; background: var(--amber-bg); border-bottom: 2px solid var(--amber); padding: 10px 20px; text-align: center; font-size: 12.5px; color: var(--amber-text); }
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: var(--amber-text); font-weight: 600; }
+
+.intro { max-width: 900px; margin: 0 auto; padding: 24px 24px 8px; text-align: center; }
+.intro p.lead { font-size: 16px; color: var(--navy); font-style: italic; margin-bottom: 10px; line-height: 1.6; }
+.intro p { font-size: 13.5px; color: var(--gray); line-height: 1.7; }
+
+
+.page { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 20px 0 0; border-bottom: 2px solid var(--border); }
+.tab { font: inherit; font-size: 13px; font-weight: 600; padding: 9px 14px; border: 1px solid transparent; border-bottom: none; border-radius: 8px 8px 0 0; background: none; color: var(--gray); cursor: pointer; margin-bottom: -2px; }
+.tab .n { display: inline-block; min-width: 20px; margin-left: 6px; font-size: 11px; padding: 1px 6px; border-radius: 10px; background: #EDEFF3; color: var(--gray); }
+.tab.active { background: #fff; border-color: var(--border); border-bottom: 2px solid #fff; color: var(--navy-d); }
+.tab.active .n { background: var(--navy-d); color: #fff; }
+.tab[data-tab="decide"] .n { background: #D6E8FF; color: #0D2D4F; }
+.tab[data-tab="decide"].active .n { background: #1B4F8A; color: #fff; }
+.controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 14px 0; }
+.controls input[type=text] { flex: 1 1 220px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; font-family: inherit; }
+select.cat-select { padding: 7px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 12.5px; font-family: inherit; color: var(--gray); background: #fff; }
+.result-count { font-size: 11.5px; color: var(--lgray); margin-left: auto; white-space: nowrap; }
+.group { margin: 18px 0 8px; }
+.group h2 { font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--navy-d); margin: 0 0 4px; }
+.group p.gsub { font-size: 12.5px; color: var(--gray); margin: 0 0 10px; line-height: 1.5; }
+.qcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 10px; }
+.qcard { background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.qcard .dw { border: none; border-left: 4px solid #1B4F8A; border-radius: 0; }
+.qcard .qtitle { padding: 10px 14px 0; font-size: 13.5px; font-weight: 700; color: var(--dark); }
+.qcard .qtitle a { color: inherit; text-decoration: none; }
+.qcard .qtitle a:hover { color: var(--navy); text-decoration: underline; }
+.qcard .qlinks { padding: 0 14px 10px; font-size: 11.5px; color: var(--lgray); }
+.qcard .qlinks a { color: var(--navy); font-weight: 600; text-decoration: none; margin-right: 12px; }
+.table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
+table.reg { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 760px; }
+table.reg thead th { background: var(--navy-d); color: #fff; text-align: left; padding: 10px 12px 8px; font-family: 'Consolas', monospace; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+table.reg tbody tr.row { border-top: 1px solid var(--border); cursor: pointer; }
+table.reg tbody tr.row:hover td { background: #FAFBFD; }
+table.reg tbody td { padding: 10px 12px; vertical-align: top; }
+.gr-id { font-family: 'Consolas', monospace; font-weight: 700; color: var(--navy-d); font-size: 12px; white-space: nowrap; }
+.gr-title { font-weight: 600; color: var(--dark); }
+.gr-next { display: block; margin-top: 3px; font-size: 11.5px; color: var(--gray); line-height: 1.45; }
+.gr-next b { color: var(--navy); }
+.gr-owner { font-size: 11.5px; white-space: nowrap; }
+.gr-pri { font-size: 10px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--gray); white-space: nowrap; }
+.prog { display: inline-block; font-size: 9.5px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; border-radius: 3px; padding: 3px 8px; white-space: nowrap; }
+.p-open { background: #FEE2E2; color: #991B1B; } .p-designed { background: #EEF3FA; color: #1B4F8A; } .p-progress { background: #FEF3C7; color: #7A5A1E; }
+.p-built { background: #E0F2FE; color: #075985; } .p-done { background: #DCFCE7; color: #166534; } .p-closed { background: #EDEFF3; color: #444; }
+tr.detail-row { display: none; }
+tr.detail-row.open { display: table-row; }
+tr.detail-row td { padding: 0 12px 16px; background: #FAFBFD; }
+tr.detail-row .detail-box { display: none; font-size: 12.5px; color: var(--gray); line-height: 1.6; background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
+tr.detail-row.open .detail-box { display: block; }
+.detail-box .dw { margin-bottom: 12px; }
+.detail-box .field { margin-bottom: 8px; }
+.detail-box .flabel { font-size: 10px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--lgray); margin-bottom: 2px; }
+.detail-box .fval { font-size: 12.5px; color: var(--dark); }
+.detail-box a { color: var(--navy); font-weight: 600; text-decoration: none; }
+.detail-box details summary { cursor: pointer; font-size: 10px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--navy); margin-top: 6px; }
+.detail-box details .fval { margin-top: 6px; white-space: pre-line; }
+.no-results { text-align: center; padding: 30px; color: var(--lgray); font-size: 13px; }
+.how { margin: 22px 0 0; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 0 18px; }
+.how summary { cursor: pointer; font-size: 13.5px; font-weight: 700; color: var(--navy); padding: 12px 0; }
+table.sr { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 10px; }
+table.sr th { text-align: left; font-family: 'Consolas', monospace; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: var(--lgray); padding: 6px 10px; border-bottom: 1px solid var(--border); }
+table.sr td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; color: var(--gray); }
+.how-list { margin: 0 0 14px 18px; font-size: 12.5px; color: var(--gray); line-height: 1.6; }
+.how-list b { color: var(--dark); }
+@media (max-width: 600px) { .qcards { grid-template-columns: 1fr; } .tab { padding: 8px 10px; font-size: 12.5px; } }
+.spec-wrap { max-width: 1100px; margin: 8px auto 28px; padding: 0 24px; }
+.spec-wrap summary { cursor: pointer; font-size: 13.5px; font-weight: 700; color: var(--navy); padding: 12px 0; }
+table.spec { width: 100%; border-collapse: collapse; font-size: 12px; background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+table.spec th { background: var(--navy-d); color: #fff; text-align: left; padding: 10px 12px; font-family: 'Consolas', monospace; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; }
+table.spec td { padding: 10px 12px; border-top: 1px solid var(--border); vertical-align: top; line-height: 1.55; }
+table.spec td:first-child { font-weight: 700; color: var(--navy-d); white-space: nowrap; }
+
+footer { max-width: 1100px; margin: 0 auto; padding: 20px 24px 40px; text-align: center; font-size: 12px; color: var(--lgray); line-height: 1.7; }
+footer strong { color: var(--navy); }
+.gr-tags { display: block; margin-top: 2px; font-size: 11px; font-weight: 400; color: var(--lgray); }
+.gr-feeds { display: inline-block; margin-left: 4px; font-size: 10.5px; color: var(--navy); border: 1px solid var(--border); border-radius: 4px; padding: 0 5px; white-space: nowrap; }
+tr.feeds-head td { background: #EEF2F8; font-size: 12px; font-weight: 600; color: var(--navy); padding: 8px 10px; }
+tr.feeds-head td span { font-weight: 400; color: var(--gray); }
+</style>
+</head>
+<body>
+
+<div style="position:sticky;top:0;z-index:1000;background:#FEF3C7;border-bottom:2px solid #B8873F;padding:10px 20px;text-align:center;font-family:'Segoe UI',sans-serif;font-size:12.5px;color:#7A5A1E;">
+  <strong style="letter-spacing:.04em;text-transform:uppercase;">Draft &mdash; Not Yet Part of the Framework</strong>
+  &nbsp;&middot;&nbsp; Living tracker for Tim and GiGi.
+  &nbsp;&middot;&nbsp; <a href="index.html" style="color:#7A5A1E;font-weight:600;">Back to WIP hub</a>
+</div>
+
+<header class="masthead">
+  <h1>Requirements Register</h1>
+  <div class="tagline1">HUMAN-AI PARTNERSHIP FRAMEWORK</div>
+  <nav><a href="index.html">WIP Hub</a></nav>
+</header>
+
+<div class="intro">
+  <p class="lead">Every requirement for the framework: how far along it is, and what Tim and GiGi need to decide.</p>
+  <p>Start with <b>Needs a decision</b>. Each card is one decision; approve, not approve or defer it right there. Open any row in the other tabs for its detail and history.</p>
+</div>
+
+<div class="page">
+  <div class="tabs" id="tabs">
+    <button type="button" class="tab active" data-tab="decide">Needs a decision<span class="n" id="n-decide"></span></button>
+    <button type="button" class="tab" data-tab="progress">In progress<span class="n" id="n-progress"></span></button>
+    <button type="button" class="tab" data-tab="done">Done<span class="n" id="n-done"></span></button>
+    <button type="button" class="tab" data-tab="closed">Not approved, deferred or closed<span class="n" id="n-closed"></span></button>
+    <button type="button" class="tab" data-tab="all">All<span class="n" id="n-all"></span></button>
+  </div>
+  <div class="controls">
+    <input type="text" id="searchBox" placeholder="Search requirements and their history&hellip;">
+    <select class="cat-select" id="grpSelect"><option value="all">All groups</option></select>
+    <select class="cat-select" id="catSelect"><option value="all">All topics</option></select>
+    <span class="result-count" id="resultCount"></span>
+  </div>
+  <div id="view"></div>
+  <p class="no-results" id="noResults" style="display:none;">Nothing here matches.</p>
+
+  <details class="how">
+    <summary>How this register works</summary>
+    <table class="sr">
+      <tr><th style="width:130px">Progress</th><th>Means</th></tr>
+      <tr><td><span class="prog p-open">Open</span></td><td>Raised and recorded. No design yet.</td></tr>
+      <tr><td><span class="prog p-designed">Designed</span></td><td>A design is drafted in a spec or WIP item.</td></tr>
+      <tr><td><span class="prog p-progress">In progress</span></td><td>Part of it is built; the next action names what is missing.</td></tr>
+      <tr><td><span class="prog p-built">Built</span></td><td>Built and meeting its acceptance criteria, waiting for both of us to accept it.</td></tr>
+      <tr><td><span class="prog p-done">Done</span></td><td>Built and accepted by both Tim and GiGi.</td></tr>
+      <tr><td><span class="prog p-closed">Closed</span></td><td>No further work: superseded or resolved another way.</td></tr>
+    </table>
+    <ul class="how-list">
+      <li><b>Progress and decisions are separate.</b> Progress says how far the work has got. A decision is something Tim and GiGi are asked to settle: accept built work, approve a design, or answer a question. Each requirement has at most one pending decision.</li>
+      <li><b>How a decision is made.</b> Each of us chooses Approve, Not approve or Defer, with an optional note. It is decided when both choose the same; if we differ it shows as Split until we talk it through. Either of us can change a choice.</li>
+      <li><b>One place per decision.</b> Where a decision is taken through a WIP item&rsquo;s vote, the card links there instead of showing its own buttons.</li>
+      <li><b>Recording.</b> Choices save immediately. Claude folds settled decisions into the register&rsquo;s file, moves the progress on (Built to Done once accepted), and sets the next decision.</li>
+      <li><b>Evidence.</b> Progress moves on only when the acceptance criteria are met, with the evidence in the requirement&rsquo;s history.</li>
+      <li><b>Changes.</b> Either of us can raise a requirement or ask for one to be changed. Claude makes the change and logs it in the requirement&rsquo;s history with who asked and why.</li>
+      <li><b>Sources.</b> &ldquo;Raised by&rdquo; records where a requirement came from: Tim, GiGi, a pilot, a practitioner or a client.</li>
+      <li><b>Into the framework.</b> A requirement&rsquo;s result moves from the sandbox and WIP into the published framework through the Content Promotion Policy (<a href="#GR-045">GR-045</a>).</li>
+      <li><b>Carried over (Sept 28, 2026).</b> Requirements marked Implemented before this change were built but never formally accepted by both of us; they are now Built, each with an Accept decision.</li>
+    </ul>
+    <table class="sr">
+      <tr><th style="width:180px">Group</th><th>Covers (GR-057)</th></tr>
+      <tr><td>Administration</td><td>Running, publishing and communicating the framework: website, language, documentation, the register and the sandbox.</td></tr>
+      <tr><td>Reference Model</td><td>The work-side model every organization is compared against: categories, ceilings, Consequence of Error, RACI, work elements, the change log.</td></tr>
+      <tr><td>Organizational Assessment</td><td>Assessing one organization against the reference: the template, ceiling overrides, evidence rules.</td></tr>
+      <tr><td>Assessment Output</td><td>What the organization gets back, and the role hand-off to the human-impact side.</td></tr>
+      <tr><td>Human Impact &amp; Readiness</td><td>GiGi&rsquo;s lead: readiness, meaningful human control, judgment development, transition distance, the Human Impact Pathway.</td></tr>
+      <tr><td><span class="gr-feeds">Feeds &hellip;</span></td><td>A seam requirement keeps its home group and says which layer it feeds; filtered to that layer, it is listed under Connected from other layers.</td></tr>
+    </table>
+    <table class="sr">
+      <tr><th style="width:180px">Topic</th><th>Covers</th></tr>
+      <tr><td>Readiness Gate</td><td>The gate deciding when an activity may advance.</td></tr>
+      <tr><td>Data Model</td><td>Fields and structures attached to an activity, role or transition.</td></tr>
+      <tr><td>People/Org Taxonomy</td><td>The role catalog, reporting structure and how roles are represented.</td></tr>
+      <tr><td>Executive View</td><td>Composite or rollup output for an executive audience.</td></tr>
+      <tr><td>Website/UX</td><td>Site design, navigation and visual treatment.</td></tr>
+      <tr><td>Language/Precision</td><td>Wording and precision of claims.</td></tr>
+      <tr><td>Core Principle</td><td>The framework&rsquo;s own thesis and principles.</td></tr>
+      <tr><td>Documentation</td><td>Methodology, definitions and reference pages.</td></tr>
+    </table>
+  </details>
+</div>
+
+<div class="spec-wrap">
+  <details>
+    <summary>Standard Design Spec Template &mdash; the shape every design spec follows (revised Sept 28, 2026)</summary>
+    <table class="spec">
+      <thead><tr><th>Section</th><th>Purpose</th><th>Content contract</th></tr></thead>
+      <tbody>
+        <tr><td>Title block</td><td>Identify the document.</td><td>Title, one-line subtitle, the requirement(s) it designs, authors and date.</td></tr>
+        <tr><td>Decision brief</td><td>Let a reader stop after one screen.</td><td>About 250 words. <b>What this is</b> (two sentences). <b>Decided</b> (bullets, each dated). <b>Awaiting your decision</b> (the decision block, read from this register, with its buttons). <b>If approved</b> (what changes). Nothing else.</td></tr>
+        <tr><td>1. The problem</td><td>Why the work is needed.</td><td>A short paragraph with the real evidence. No history of how the idea developed.</td></tr>
+        <tr><td>2. The design</td><td>The current design only.</td><td>The model, data and rules as they stand now, precise enough to apply. Superseded versions are not described.</td></tr>
+        <tr><td>3. What is built</td><td>Where it can be seen.</td><td>What exists, with links, and what does not yet.</td></tr>
+        <tr><td>4. Open questions</td><td>Keep honesty structural.</td><td>One line each: the question and who decides it. A question with a proposal to decide becomes the requirement&rsquo;s pending decision instead.</td></tr>
+        <tr><td>Reference (folded)</td><td>Detail on demand.</td><td>Long tables, worked examples, sourcing and scope &mdash; closed by default.</td></tr>
+      </tbody>
+    </table>
+    <ul class="how-list" style="margin-top:12px;">
+      <li><b>Length:</b> about 250 words for the brief and 1,500 for the body. When a spec grows past that, split it, one spec per requirement.</li>
+      <li><b>History lives in the register:</b> dated notes, quotes and build records go in the requirement&rsquo;s log here, not in the spec.</li>
+      <li><b>Decisions live in the register:</b> the spec shows the same decision block, so a choice made on either page shows on both.</li>
+    </ul>
+  </details>
+</div>
+
+<footer>
+  <p>
+    <strong>Timothy P. King</strong> &nbsp;&middot;&nbsp; Human Enterprise Architect<br>
+    Private review area &mdash; not part of the published framework<br>
+    hitldrivenarchitecture.com
+  </p>
+</footer>
+
+<script src="requirements-data.js"></script>
+<script src="decision-widget.js"></script>
+<script>
+const RECORDS = window.REQUIREMENTS;
+function esc(s) {
+  if (s === null || s === undefined) return "";
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function fmtSourceSpan(text) {
+  return `<span class="gr-source">${esc(text)}</span>`;
+}
+
+// Known docs/wip/ (and one docs/sandbox/) items this register can actually link to.
+// Keys are matched as substrings against spec_doc / wip_item text, longest key first.
+const KNOWN_LINKS = {
+  "pattern-color — work_pattern_color_standard.html": "work_pattern_color_standard.html",
+  "hpct-badge — h_pct_provenance_badge_standard.html": "h_pct_provenance_badge_standard.html",
+  "rule-catalog — framework_content_generation_rules.html": "framework_content_generation_rules.html",
+  "shock-wave — the_shock_wave_effect.html": "the_shock_wave_effect.html",
+  "concept-to-principle — from_concept_to_principle.html": "from_concept_to_principle.html",
+  "hrbp-narratives — hrbp_manager_pattern_transition_stagefirst.html": "hrbp_manager_pattern_transition_stagefirst.html",
+  "wr-progression-methodology — wr_progression_methodology_spec.html": "wr_progression_methodology_spec.html",
+  "wr-display-migration — working_relationship_display_migration.html": "working_relationship_display_migration.html",
+  "docs/wip/working_relationship_display_migration.html": "working_relationship_display_migration.html",
+  "work-product-spec — work_product_role_container_spec.html": "work_product_role_container_spec.html",
+  "Work Product in the Role Container — Design Spec": "work_product_role_container_spec.html",
+  "work-product-catalog — work_product_catalog.html": "work_product_catalog.html",
+  "Work-Product Catalog — Sandbox 7.0": "work_product_catalog.html",
+  "organizational_role_taxonomy.html": "organizational_role_taxonomy.html",
+  "Organizational Role Taxonomy — Sandbox 7.0": "organizational_role_taxonomy.html",
+  "activity_crud_hrbp_manager.html": "activity_crud_hrbp_manager.html",
+  "activity_crud_remaining_roles.html": "activity_crud_remaining_roles.html",
+  "reference-model-spec — reference_model_assessment_layer_spec.html": "reference_model_assessment_layer_spec.html",
+  "docs/wip/reference_model_assessment_layer_spec.html": "reference_model_assessment_layer_spec.html",
+  "docs/wip/assessment_template_spec.html": "assessment_template_spec.html",
+  "docs/wip/ceiling_override_spec.html": "ceiling_override_spec.html",
+  "docs/wip/assessment_output_spec.html": "assessment_output_spec.html",
+  "docs/wip/register_grouping_spec.html": "register_grouping_spec.html",
+  "docs/wip/work_element_model_spec.html": "work_element_model_spec.html",
+  "chro-narratives": "chro_pattern_transition_stagefirst.html",
+  "hrbp-narratives": "hrbp_manager_pattern_transition_stagefirst.html",
+  "recruiter-narratives": "recruiter_pattern_transition_stagefirst.html",
+  "docs/wip/the_shock_wave_effect.html": "the_shock_wave_effect.html",
+  "Shock Wave Effect (Accountability ring)": "the_shock_wave_effect.html",
+  "Shock Wave Effect (Five Rings model)": "the_shock_wave_effect.html",
+  "Shock Wave Effect (GDP definition)": "the_shock_wave_effect.html",
+  "Work Pattern Color Standard": "work_pattern_color_standard.html",
+  "H% Provenance Badge — Naming & Placement Standard": "h_pct_provenance_badge_standard.html",
+  "Framework Content Generation Rules — The Complete Catalog": "framework_content_generation_rules.html",
+  "CHRO / HRBP Manager / Recruiter Pattern Transition Narratives": "chro_pattern_transition_stagefirst.html",
+  "pcf7.html (sandbox data layer)": "../sandbox/pcf7.html",
+  "Initial Thoughts on the Requirements Register": "gigi_requirements_register_initial_thoughts.html",
+  "Working_Relationship_Progression_Methodology.docx": "../working_relationship_progression_methodology.html",
+  "HITL Methodology — The Core Assertion": "../hitl_methodology.html",
+  "docs/wip/wr_progression_methodology_spec.html": "wr_progression_methodology_spec.html",
+  "wr-progression-methodology — wr_progression_methodology_spec.html": "wr_progression_methodology_spec.html",
+  "Content Promotion Policy — Sandbox / WIP / Production": "content_promotion_policy.html",
+  "docs/wip/work_product_role_container_spec.html": "work_product_role_container_spec.html",
+  "docs/wip/content_promotion_policy.html": "content_promotion_policy.html",
+  "docs/wip/changelog-data.js": "production_changelog.html",
+  "docs/wip/requirements_register.html": "requirements_register.html",
+  "docs/sandbox/pcf7.html": "../sandbox/pcf7.html",
+  "docs/wip/work_elements/element_grid_test_script.html": "work_elements/element_grid_test_script.html",
+  "Website Framework Review": "gigi_website_framework_review.html",
+  "Maturity Reflections UPDATED": "gigi_reflections_updated.html",
+  "HITL Working Thoughts & Next Steps": "gigi_working_thoughts_next_steps.html",
+  "Human Impact & Readiness Workstream Update": "gigi_human_impact_readiness_update.html"
+};
+const KNOWN_KEYS = Object.keys(KNOWN_LINKS).sort((a, b) => b.length - a.length);
+
+// Turns any recognized substring in `text` into a link to the real live file;
+// text outside a match, and text that names something not hosted on the site
+// (a .docx, a Claude Docs artifact), stays as plain escaped text.
+
+function linkify(text) {
+  if (!text) return "";
+  let remaining = esc(text);
+  // Work against the *unescaped* text for matching (keys have no special chars needing escape),
+  // then rebuild the escaped string with anchors spliced in.
+  let result = "";
+  let cursor = 0;
+  const raw = text;
+  while (cursor < raw.length) {
+    let matched = null;
+    for (const key of KNOWN_KEYS) {
+      if (raw.startsWith(key, cursor)) { matched = key; break; }
+    }
+    if (matched) {
+      result += `<a href="${esc(KNOWN_LINKS[matched])}">${esc(matched)}</a>`;
+      cursor += matched.length;
+    } else {
+      result += esc(raw[cursor]);
+      cursor += 1;
+    }
+  }
+  return result;
+}
+
+const PROG_CLASS = { "Open":"p-open", "Designed":"p-designed", "In progress":"p-progress", "Built":"p-built", "Done":"p-done", "Closed":"p-closed" };
+function progChip(p) { return '<span class="prog ' + (PROG_CLASS[p] || '') + '">' + esc(p) + '</span>'; }
+// Progress as it reads now: an accepted Built requirement shows as Done
+// before Claude folds the decision into the file.
+function progressNow(r) {
+  const o = DecisionStore.outcome(r).code;
+  if (r.progress === "Built" && r.decision && r.decision.type === "accept" && o === "approve") return "Done";
+  return r.progress;
+}
+function tabOf(r) {
+  if (DecisionStore.needsDecision(r)) return "decide";
+  const o = DecisionStore.outcome(r).code;
+  if (r.progress === "Closed" || o === "not-approve" || o === "defer") return "closed";
+  if (progressNow(r) === "Done") return "done";
+  return "progress";
+}
+let activeTab = "decide";
+const docLink = r => {
+  const t = r.spec_doc || r.wip_item || "";
+  for (const k of KNOWN_KEYS) if (t.indexOf(k) !== -1) return KNOWN_LINKS[k];
+  return null;
+};
+function field(label, value) { return value ? '<div class="field"><div class="flabel">' + esc(label) + '</div><div class="fval">' + value + '</div></div>' : ''; }
+// Every design document a requirement names that is on the site, in order.
+function designLinks(r) {
+  const out = [];
+  [r.spec_doc, r.wip_item].forEach(t => {
+    if (!t) return;
+    let cursor = 0;
+    while (cursor < t.length) {
+      let m = null;
+      for (const k of KNOWN_KEYS) if (t.startsWith(k, cursor)) { m = k; break; }
+      if (m) { if (out.indexOf(KNOWN_LINKS[m]) === -1) out.push(KNOWN_LINKS[m]); cursor += m.length; } else cursor++;
+    }
+  });
+  if (r.decision && r.decision.spec && out.indexOf(r.decision.spec) === -1) out.unshift(r.decision.spec);
+  return out;
+}
+const LINK_LABEL = href => {
+  const f = href.replace(/^.*\//, "");
+  if (/\.pdf$/.test(f)) return "Open the design (PDF)";
+  if (f === "pcf7.html") return "Open the sandbox";
+  return "Open the design spec";
+};
+function detailHtml(r) {
+  return (r.decision ? DecisionWidget.html(r) : '') +
+    field("Requirement", esc(r.distilled)) +
+    field("Acceptance criteria", esc(r.acceptance)) +
+    field("Next action", esc(r.next_action)) +
+    field("Group", esc(r.group) + ((r.feeds || []).length ? " &middot; feeds " + esc(r.feeds.join(", ")) : "") + (r.category ? " &middot; topic: " + esc(r.category) : "")) +
+    field("Design", r.spec_doc ? linkify(r.spec_doc) + (r.spec_section ? " &mdash; " + esc(r.spec_section) : "") : "") +
+    field("WIP item", r.wip_item ? linkify(r.wip_item) : "") +
+    field("Source", linkify(r.source_doc) + (r.source_section ? " &mdash; " + esc(r.source_section) : "") + (r.raised_by ? " &middot; raised by " + esc(r.raised_by) : "")) +
+    field("Related", esc(r.converged)) +
+    ((r.decisions || []).length ? field("Decisions", r.decisions.map(d => esc(d.date) + ": " + esc(d.question) + " &mdash; " + esc(d.outcome)).join("<br>")) : "") +
+    (r.raw ? '<details><summary>Original words</summary><div class="fval">' + esc(r.raw) + '</div></details>' : '') +
+    (r.log ? '<details><summary>History</summary><div class="fval">' + esc(r.log) + '</div></details>' : '');
+}
+// Framework layers (GR-057), in the framework's order. A seam requirement keeps its home group and lists the
+// layers it feeds; filtered to a group, those show after its own as "Connected from other layers".
+const GROUPS = ["Administration", "Reference Model", "Organizational Assessment", "Assessment Output", "Human Impact & Readiness"];
+const feedsInto = (r, g) => g !== "all" && r.group !== g && (r.feeds || []).indexOf(g) !== -1;
+function inGroup(r, g) { return g === "all" || r.group === g || feedsInto(r, g); }
+function tagLine(r, g) {
+  return '<span class="gr-tags">' + esc(r.group || "") + (r.category ? ' &middot; ' + esc(r.category) : '') +
+    (r.feeds || []).map(f => ' <span class="gr-feeds">Feeds ' + esc(f) + '</span>').join("") + '</span>';
+}
+function matches(r, q, cat, grp) {
+  if (!inGroup(r, grp)) return false;
+  if (cat !== "all" && r.category !== cat) return false;
+  if (!q) return true;
+  return [r.id, r.title, r.distilled, r.next_action, r.log, r.acceptance, r.raw, r.decision && r.decision.question].filter(Boolean).join(" ").toLowerCase().indexOf(q) !== -1;
+}
+function render() {
+  const q = document.getElementById("searchBox").value.trim().toLowerCase();
+  const cat = document.getElementById("catSelect").value;
+  const grp = document.getElementById("grpSelect").value;
+  const counts = { decide:0, progress:0, done:0, closed:0, all:RECORDS.length };
+  RECORDS.forEach(r => counts[tabOf(r)]++);
+  Object.keys(counts).forEach(k => { document.getElementById("n-" + k).textContent = counts[k]; });
+  let rows = RECORDS.filter(r => (activeTab === "all" || tabOf(r) === activeTab) && matches(r, q, cat, grp));
+  // Filtered to a group: its own requirements first, then the ones connected from other layers.
+  rows = rows.filter(r => !feedsInto(r, grp)).concat(rows.filter(r => feedsInto(r, grp)));
+  const view = document.getElementById("view");
+  if (activeTab === "decide") {
+    const groups = [
+      ["question", "Decide a question", "A concrete question with a proposal to settle."],
+      ["design", "Approve a design", "A design is drafted; approving it lets the build go ahead."],
+      ["accept", "Accept built work", "Built and meeting its acceptance criteria. Accepting moves it to Done. Open the requirement to check its evidence."]
+    ];
+    view.innerHTML = groups.map(g => {
+      const list = rows.filter(r => r.decision.type === g[0]);
+      if (!list.length) return "";
+      return '<div class="group"><h2>' + g[1] + ' (' + list.length + ')</h2><p class="gsub">' + g[2] + '</p><div class="qcards">' +
+        list.map(r => {
+          const link = designLinks(r)[0];
+          return '<div class="qcard"><div class="qtitle"><a href="#' + r.id + '" data-open="' + r.id + '">' + esc(r.id) + ' &middot; ' + esc(r.title) + '</a>' + tagLine(r, grp) + '</div>' +
+            DecisionWidget.html(r) +
+            '<div class="qlinks"><a href="#' + r.id + '" data-open="' + r.id + '">Details</a>' + (link ? '<a href="' + esc(link) + '">' + LINK_LABEL(link) + ' &rarr;</a>' : '') + '</div></div>';
+        }).join("") + '</div></div>';
+    }).join("");
+    DecisionWidget.wire(view, render);
+    view.querySelectorAll("[data-open]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); openRow(a.getAttribute("data-open")); }));
+  } else {
+    let h = '<div class="table-scroll"><table class="reg"><thead><tr><th>ID</th><th>Requirement &middot; next action</th><th>Progress</th><th>Decision</th><th>Owner</th><th>Priority</th></tr></thead><tbody>';
+    let joined = false;
+    rows.forEach(r => {
+      if (feedsInto(r, grp) && !joined) { joined = true; h += '<tr class="feeds-head"><td colspan="6">Connected from other layers <span>&middot; seam requirements that feed ' + esc(grp) + ', listed under their home group</span></td></tr>'; }
+      h += '<tr class="row" id="' + r.id + '" data-id="' + r.id + '"><td class="gr-id">' + esc(r.id) + '</td>' +
+        '<td><span class="gr-title">' + esc(r.title) + '</span>' + tagLine(r, grp) + (r.next_action && progressNow(r) !== "Done" ? '<span class="gr-next"><b>Next:</b> ' + esc(r.next_action) + '</span>' : '') + '</td>' +
+        '<td>' + progChip(progressNow(r)) + '</td><td>' + DecisionWidget.chip(r) + '</td>' +
+        '<td class="gr-owner">' + esc(r.owner) + '</td><td class="gr-pri">' + esc(r.priority) + '</td></tr>' +
+        '<tr class="detail-row" data-for="' + r.id + '"><td colspan="6"><div class="detail-box"></div></td></tr>';
+    });
+    view.innerHTML = h + '</tbody></table></div>';
+    view.querySelectorAll("tr.row").forEach(tr => tr.addEventListener("click", () => toggleRow(tr.getAttribute("data-id"))));
+  }
+  document.getElementById("resultCount").textContent = rows.length + " of " + RECORDS.length + " requirements";
+  document.getElementById("noResults").style.display = rows.length ? "none" : "block";
+}
+function toggleRow(id, forceOpen) {
+  const d = document.querySelector('tr.detail-row[data-for="' + id + '"]');
+  if (!d) return;
+  const r = RECORDS.find(x => x.id === id);
+  const open = forceOpen || !d.classList.contains("open");
+  if (open) { d.querySelector(".detail-box").innerHTML = detailHtml(r); DecisionWidget.wire(d, () => { render(); toggleRow(id, true); }); }
+  d.classList.toggle("open", open);
+}
+function openRow(id) {
+  setTab("all");
+  toggleRow(id, true);
+  const tr = document.getElementById(id); if (tr) tr.scrollIntoView({ block: "start" });
+}
+function setTab(t) {
+  activeTab = t;
+  document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.getAttribute("data-tab") === t));
+  render();
+}
+document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => setTab(b.getAttribute("data-tab"))));
+document.getElementById("searchBox").addEventListener("input", render);
+document.getElementById("catSelect").addEventListener("change", render);
+document.getElementById("grpSelect").addEventListener("change", render);
+GROUPS.forEach(g => {
+  const o = document.createElement("option"); o.value = g; o.textContent = g + " (" + RECORDS.filter(r => r.group === g).length + ")"; document.getElementById("grpSelect").appendChild(o);
+});
+Array.from(new Set(RECORDS.map(r => r.category).filter(Boolean))).sort().forEach(c => {
+  const o = document.createElement("option"); o.value = c; o.textContent = c; document.getElementById("catSelect").appendChild(o);
+});
+render();
+DecisionStore.load().then(() => {
+  render();
+  const h = location.hash.slice(1);
+  if (/^GR-\d{3}$/.test(h)) openRow(h);
+});
+</script>
+</body>
+</html>
