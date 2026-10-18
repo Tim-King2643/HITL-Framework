@@ -123,7 +123,7 @@ function derive(g,ctl){
   if(v(ctl)==='AI-led') return 'Agent-delegation';
   const lead=CORE.filter(e=>e!==ctl&&lr(v(e))>=2);
   if(lead.length&&(!cfg.nd||lead.includes('Draft'))) return 'Oversight';
-  if(['Draft','Verify','Communicate'].some(e=>e!==ctl&&lr(v(e))>=1)||lr(v('Evaluate'))>=2) return 'Augmentation';
+  if(['Draft','Verify','Produce / Execute','Communicate'].some(e=>e!==ctl&&lr(v(e))>=1)||lr(v('Evaluate'))>=2) return 'Augmentation'; // AI anywhere in the work is at least Augmentation (GR-058 rule, Oct 18, 2026)
   if(lr(v('Research'))>=1||lr(v('Evaluate'))>=1) return 'Judgment';
   return 'Human-only';
 }
