@@ -187,17 +187,18 @@ details.fold[open] { padding-bottom: 6px; }
   <p>Every activity has one control element: Decide where the activity has one, otherwise Verify. Who holds the control element separates Oversight, where a person approves every instance, from Agent-delegation, where a person handles only flagged exceptions. In 7.2.1.4 Post job requisitions the decision was made upstream (7.2.1.3), so Verify is the control element.</p>
 
   <h2>5. Deriving the stage</h2>
-  <p>The working relationship comes from the elements, top to bottom:</p>
+  <p>The working relationship comes from the elements, checked top to bottom. The control element is checked first, so AI deciding never reads as a person deciding.</p>
   <table>
     <tr><th style="width:22%">Stage</th><th>When</th></tr>
-    <tr><td class="k">Human-only</td><td>Every element is Human, or AI touches only Produce / Execute.</td></tr>
-    <tr><td class="k">Judgment</td><td>AI only supplies inputs (Research, Evaluate); the person does the work and makes the call.</td></tr>
-    <tr><td class="k">Augmentation</td><td>AI assists in Draft, Verify or Communicate, or leads a core element other than Draft, while the person still writes the work and holds the control element.</td></tr>
-    <tr><td class="k">Oversight</td><td>AI leads Draft, producing the work, and a person approves every instance at the control element. (Where an activity has no Draft, AI leading any core element.)</td></tr>
-    <tr><td class="k">Agent-delegation</td><td>The control element is AI-led: a person handles only the instances AI flags.</td></tr>
     <tr><td class="k">Automation</td><td>The control element is AI, with no person in the instance.</td></tr>
+    <tr><td class="k">Agent-delegation</td><td>The control element is AI-led: a person handles only the instances AI flags.</td></tr>
+    <tr><td class="k">Oversight</td><td>AI leads Draft, producing the work, and a person approves every instance at the control element. (Where an activity has no Draft, AI leading any core element.)</td></tr>
+    <tr><td class="k">Augmentation</td><td>AI leads Evaluate, or assists in Draft, Verify, Produce / Execute or Communicate, while the person writes the work and holds the control element.</td></tr>
+    <tr><td class="k">Judgment</td><td>AI only supplies inputs: it touches Research, or assists (Human-led) in Evaluate. The person does the work and makes the call.</td></tr>
+    <tr><td class="k">Human-only</td><td>Every element is Human.</td></tr>
   </table>
   <p>Because the rule is mechanical, two assessors who agree on the elements always get the same stage, and the reason can be written out: &ldquo;AI leads Draft; a person approves every instance at Verify.&rdquo;</p>
+  <p style="font-size:13px;color:#6B7A90;font-style:italic">Revised Oct 18, 2026 (Tim): the control element is now checked first (before, an AI-led Decide with the drafting still Human derived Human-only); Human-only now means every element is Human, matching the locked definition (before, AI in Produce / Execute alone stayed Human-only); and an AI-led Evaluate is Augmentation, as this table already said (the sandbox had derived Judgment). Element ceilings and every Progression Ceiling are unchanged.</p>
 
   <h2>6. Element ceilings</h2>
   <p>Each element has its own ceiling: the highest lead state it may reach. Ceiling factors attach to specific elements rather than to the activity as a whole:</p>

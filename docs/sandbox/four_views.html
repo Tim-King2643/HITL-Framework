@@ -562,21 +562,21 @@ function openGrid(code){
   // One grid open at a time: it holds unsaved answers.
   Object.keys(S.wsel).forEach(c=>{if(S.wsel[c].t==='assess')S.wsel[c]={t:'none'}});
   GRID=gridFor(ACT[code]);S.wsel[code]={t:'assess'};render();}
-// The derivation rule from the work-element model (GR-058, section 4).
+// The derivation rule from the work-element model (GR-058, section 5), checked top to bottom. Revised Oct 18, 2026 (Tim):
+// the control element is checked first, so AI deciding never reads as a person deciding; Human-only means every element
+// is Human (the locked definition); AI leading Evaluate, or assisting anywhere in the work, is Augmentation.
 function deriveGrid(a,g){
-  const els=Object.keys(g),ctl=ctlOf(a),ai=e=>g[e][0]!=='Human',leads=e=>lr(g[e][0])>=2,has=e=>e in g;
-  const core=['Evaluate','Draft','Verify','Decide','Communicate'].filter(has), c=g[ctl]?g[ctl][0]:'Human';
-  if(!els.some(ai)) return ['Human-only','every element is Human'];
-  if(els.every(e=>g[e][0]==='AI')) return ['Automation','every element is AI'];
-  if(core.some(leads)&&(!has('Draft')||leads('Draft')||ctl==='Draft')){
-    if(c==='AI') return ['Automation','AI holds '+ctl+', the control element, with no person in the instance'];
-    if(c==='AI-led') return ['Agent-delegation','AI leads the work and a person handles only the instances flagged at '+ctl];
+  const els=Object.keys(g),ctl=ctlOf(a),has=e=>e in g,ai=e=>has(e)&&g[e][0]!=='Human',leads=e=>has(e)&&lr(g[e][0])>=2;
+  const c=g[ctl]?g[ctl][0]:'Human';
+  if(c==='AI') return ['Automation',els.every(e=>g[e][0]==='AI')?'every element is AI':'AI holds '+ctl+', the control element, with no person in the instance'];
+  if(c==='AI-led') return ['Agent-delegation','AI leads '+ctl+', the control element: a person handles only the instances it flags'];
+  const core=['Evaluate','Draft','Verify','Decide','Communicate'].filter(e=>has(e)&&e!==ctl);
+  if(has('Draft')&&ctl!=='Draft'?leads('Draft'):core.some(leads))
     return ['Oversight','AI leads '+lstw(core.filter(leads))+'; a person approves every instance at '+ctl];
-  }
-  const assist=['Draft','Verify','Communicate'].filter(e=>has(e)&&ai(e));
-  if(assist.length) return ['Augmentation','the person leads '+lstw(assist)+' with AI assisting, and '+ctl+' stays with the person'];
-  if(['Research','Evaluate'].some(e=>has(e)&&ai(e))) return ['Judgment','AI only supplies inputs (Research, Evaluate); the person does the work and makes the call'];
-  return ['Human-only','AI only touches Produce / Execute, which does not move the stage'];
+  const assist=['Draft','Verify','Produce / Execute','Communicate'].filter(e=>e!==ctl&&ai(e)), evl=leads('Evaluate');
+  if(evl||assist.length) return ['Augmentation','the person writes the work and holds '+ctl+', with AI '+lstw((evl?['leading Evaluate']:[]).concat(assist.length?['assisting in '+lstw(assist)]:[]))];
+  if(ai('Research')||ai('Evaluate')) return ['Judgment','AI only supplies inputs (Research, or assisting in Evaluate); the person does the work and makes the call'];
+  return ['Human-only','every element is Human'];
 }
 function gSet(e,i,v){if(!GRID)return;GRID.g[e][i]=v;GRID.msg='';if(i===0)render();}
 function gMeta(k,v){if(GRID)GRID[k]=v}

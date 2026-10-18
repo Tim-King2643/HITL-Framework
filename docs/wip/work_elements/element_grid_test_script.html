@@ -84,9 +84,9 @@ textarea.out{width:100%;height:150px;font:12px Consolas,monospace;margin-top:8px
   <div class="res" data-case="T1"><label><input type="radio" name="r-T1" value="pass"> Pass</label><label><input type="radio" name="r-T1" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
 </div><div class="card tc" id="T2">
   <div class="th"><span class="tid">T2</span><div><h3><span class="code">7.2.1.1</span> Align staffing plan to work force plan and business unit strategies/resource needs</h3>
-  <div class="sub">AI only supplies inputs. Ceiling <b>Augmentation</b> · Consequence of Error <b>Moderate</b> · Accountable HRBP Manager · Process 7.2.1 Manage employee requisitions</div></div></div>
-  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="hum">Human</td><td class="cap">Human-led</td></tr><tr><td class="el">Verify</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="hum">Human</td><td class="cap">Human</td></tr><tr><td class="el">Produce / Execute</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="hum">Human</td><td class="cap">AI</td></tr></table></div>
-  <div><div class="lbl">Expected</div><div class="exp"><b>Judgment</b> · AI only supplies inputs (Research, Evaluate); the person does the work and makes the call.</div>
+  <div class="sub">AI only supplies inputs: Research, and assisting in Evaluate. Ceiling <b>Augmentation</b> · Consequence of Error <b>Moderate</b> · Accountable HRBP Manager · Process 7.2.1 Manage employee requisitions</div></div></div>
+  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="set">Human-led</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="hum">Human</td><td class="cap">Human-led</td></tr><tr><td class="el">Verify</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="hum">Human</td><td class="cap">Human</td></tr><tr><td class="el">Produce / Execute</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="hum">Human</td><td class="cap">AI</td></tr></table></div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Judgment</b> · AI only supplies inputs (Research, or assisting in Evaluate); the person does the work and makes the call.</div>
   <ul class="flags"><li>No warnings</li></ul>
   <ul class="steps"><li>Save assessment: the message reads <b>Saved. 7.2.1.1 is Judgment in Element Grid Test.</b></li></ul></div></div>
   <div class="res" data-case="T2"><label><input type="radio" name="r-T2" value="pass"> Pass</label><label><input type="radio" name="r-T2" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
@@ -94,7 +94,7 @@ textarea.out{width:100%;height:150px;font:12px Consolas,monospace;margin-top:8px
   <div class="th"><span class="tid">T3</span><div><h3><span class="code">7.2.1.1</span> Align staffing plan to work force plan and business unit strategies/resource needs</h3>
   <div class="sub">The person does the work with AI assisting. Ceiling <b>Augmentation</b> · Consequence of Error <b>Moderate</b> · Accountable HRBP Manager · Process 7.2.1 Manage employee requisitions</div></div></div>
   <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="set">Human-led</td><td class="cap">Human-led</td></tr><tr><td class="el">Verify</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="hum">Human</td><td class="cap">Human</td></tr><tr><td class="el">Produce / Execute</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="set">Human-led</td><td class="cap">AI</td></tr></table></div>
-  <div><div class="lbl">Expected</div><div class="exp"><b>Augmentation</b> · the person leads Draft and Communicate with AI assisting, and Decide stays with the person.</div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Augmentation</b> · the person writes the work and holds Decide, with AI assisting in Draft and Communicate.</div>
   <ul class="flags"><li>No warnings</li></ul>
   <ul class="steps"><li>Save assessment: the message reads <b>Saved. 7.2.1.1 is Augmentation in Element Grid Test.</b></li></ul></div></div>
   <div class="res" data-case="T3"><label><input type="radio" name="r-T3" value="pass"> Pass</label><label><input type="radio" name="r-T3" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
@@ -118,7 +118,7 @@ textarea.out{width:100%;height:150px;font:12px Consolas,monospace;margin-top:8px
   <div class="th"><span class="tid">T6</span><div><h3><span class="code">7.2.1.3</span> Approve job requisition</h3>
   <div class="sub">Past a High ceiling: cannot be overridden. Ceiling <b>Oversight</b> · Consequence of Error <b>High</b> · Accountable HRBP Manager · Process 7.2.1 Manage employee requisitions</div></div></div>
   <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Verify</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="set">AI-led</td><td class="cap">Human</td></tr><tr><td class="el">Produce / Execute</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="set">AI</td><td class="cap">AI</td></tr></table></div>
-  <div><div class="lbl">Expected</div><div class="exp"><b>Agent-delegation</b> · AI leads the work and a person handles only the instances flagged at Decide.</div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Agent-delegation</b> · AI leads Decide, the control element: a person handles only the instances it flags.</div>
   <ul class="flags"><li>Past the Progression Ceiling (Oversight)</li><li>Element past its own ceiling: Decide (AI-led, at most Human)</li></ul>
   <ul class="steps"><li>Save. The grid warns <b>Past the Progression Ceiling</b> (Agent-delegation above Oversight) and <b>Decide is past its element ceiling</b>; no override is offered.</li><li>Save assessment: the message reads <b>Saved. 7.2.1.3 is Agent-delegation in Element Grid Test.</b></li></ul></div></div>
   <div class="res" data-case="T6"><label><input type="radio" name="r-T6" value="pass"> Pass</label><label><input type="radio" name="r-T6" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
@@ -126,7 +126,7 @@ textarea.out{width:100%;height:150px;font:12px Consolas,monospace;margin-top:8px
   <div class="th"><span class="tid">T7</span><div><h3><span class="code">7.2.2.1</span> Determine recruitment methods and channels</h3>
   <div class="sub">Flagged exceptions only, within the ceiling. Ceiling <b>Agent-delegation</b> · Consequence of Error <b>Low</b> · Accountable Director of TA · Process 7.2.2 Recruit/Source candidates</div></div></div>
   <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Verify</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="set">AI-led</td><td class="cap">AI-led</td></tr><tr><td class="el">Produce / Execute</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="set">AI</td><td class="cap">AI</td></tr></table></div>
-  <div><div class="lbl">Expected</div><div class="exp"><b>Agent-delegation</b> · AI leads the work and a person handles only the instances flagged at Decide.</div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Agent-delegation</b> · AI leads Decide, the control element: a person handles only the instances it flags.</div>
   <ul class="flags"><li>No warnings</li></ul>
   <ul class="steps"><li>Save assessment: the message reads <b>Saved. 7.2.2.1 is Agent-delegation in Element Grid Test.</b></li></ul></div></div>
   <div class="res" data-case="T7"><label><input type="radio" name="r-T7" value="pass"> Pass</label><label><input type="radio" name="r-T7" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
@@ -156,30 +156,38 @@ textarea.out{width:100%;height:150px;font:12px Consolas,monospace;margin-top:8px
   <div class="res" data-case="T10"><label><input type="radio" name="r-T10" value="pass"> Pass</label><label><input type="radio" name="r-T10" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
 </div><div class="card tc" id="T11">
   <div class="th"><span class="tid">T11</span><div><h3><span class="code">7.2.1.7</span> Manage requisition dates</h3>
-  <div class="sub">AI only in Produce / Execute does not move the stage. Ceiling <b>Automation</b> · Consequence of Error <b>Low</b> · Accountable Recruiter · Process 7.2.1 Manage employee requisitions</div></div></div>
+  <div class="sub">AI only in Produce / Execute is still AI in the work. Ceiling <b>Automation</b> · Consequence of Error <b>Low</b> · Accountable Recruiter · Process 7.2.1 Manage employee requisitions</div></div></div>
   <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Draft</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Verify</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Produce / Execute</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="hum">Human</td><td class="cap">AI</td></tr></table></div>
-  <div><div class="lbl">Expected</div><div class="exp"><b>Human-only</b> · AI only touches Produce / Execute, which does not move the stage.</div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Augmentation</b> · the person writes the work and holds Decide, with AI assisting in Produce / Execute.</div>
   <ul class="flags"><li>No warnings</li></ul>
-  <ul class="steps"><li>Save assessment: the message reads <b>Saved. 7.2.1.7 is Human-only in Element Grid Test.</b></li></ul></div></div>
+  <ul class="steps"><li>Before Oct 18 this derived Human-only. Human-only now means every element is Human, the locked definition.</li><li>Save assessment: the message reads <b>Saved. 7.2.1.7 is Augmentation in Element Grid Test.</b></li></ul></div></div>
   <div class="res" data-case="T11"><label><input type="radio" name="r-T11" value="pass"> Pass</label><label><input type="radio" name="r-T11" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
 </div><div class="card tc" id="T12">
   <div class="th"><span class="tid">T12</span><div><h3><span class="code">7.2.3.4</span> Select and reject candidates</h3>
-  <div class="sub">An element past its own ceiling while the activity is within its ceiling. Ceiling <b>Augmentation</b> · Consequence of Error <b>Critical</b> · Accountable Director of TA · Process 7.2.3 Screen and select candidates</div></div></div>
+  <div class="sub">AI leads Evaluate: an element past its own ceiling while the activity is within its ceiling. Ceiling <b>Augmentation</b> · Consequence of Error <b>Critical</b> · Accountable Director of TA · Process 7.2.3 Screen and select candidates</div></div></div>
   <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="set">AI</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="set">AI-led</td><td class="cap">Human-led</td></tr><tr><td class="el">Draft</td><td class="hum">Human</td><td class="cap">Human-led</td></tr><tr><td class="el">Verify</td><td class="hum">Human</td><td class="cap">Human-led</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="hum">Human</td><td class="cap">Human</td></tr><tr><td class="el">Produce / Execute</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="hum">Human</td><td class="cap">AI</td></tr></table></div>
-  <div><div class="lbl">Expected</div><div class="exp"><b>Judgment</b> · AI only supplies inputs (Research, Evaluate); the person does the work and makes the call.</div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Augmentation</b> · the person writes the work and holds Decide, with AI leading Evaluate.</div>
   <ul class="flags"><li>Element past its own ceiling: Evaluate (AI-led, at most Human-led)</li></ul>
-  <ul class="steps"><li>The grid warns <b>Evaluate is past its element ceiling, even though the activity as a whole is within its ceiling.</b> Its ceiling is Augmentation, so no Progression Ceiling warning.</li><li class="q"><b>Check this one:</b> the rule gives Judgment because the person still drafts and decides; the AI-led Evaluate shows up as the element flag, not as a higher stage. Mark Fail if you think the stage itself should be higher.</li><li>Save assessment: the message reads <b>Saved. 7.2.3.4 is Judgment in Element Grid Test.</b></li></ul></div></div>
+  <ul class="steps"><li>The grid warns <b>Evaluate is past its element ceiling, even though the activity as a whole is within its ceiling.</b> Its ceiling is Augmentation, so no Progression Ceiling warning.</li><li>Save assessment: the message reads <b>Saved. 7.2.3.4 is Augmentation in Element Grid Test.</b></li></ul></div></div>
   <div class="res" data-case="T12"><label><input type="radio" name="r-T12" value="pass"> Pass</label><label><input type="radio" name="r-T12" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
+</div><div class="card tc" id="T13">
+  <div class="th"><span class="tid">T13</span><div><h3><span class="code">7.2.2.4</span> Manage recruitment vendors</h3>
+  <div class="sub">AI holds the control element while the person still drafts: the control element is checked first. Ceiling <b>Agent-delegation</b> · Consequence of Error <b>Moderate</b> · Accountable Director of TA · Process 7.2.2 Recruit/Source candidates</div></div></div>
+  <div class="cols"><div><div class="lbl">Set each element to</div><table class="g"><tr><th>Element</th><th>Lead</th><th>Element ceiling</th></tr><tr><td class="el">Research</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Evaluate</td><td class="hum">Human</td><td class="cap">AI-led</td></tr><tr><td class="el">Draft</td><td class="hum">Human</td><td class="cap">AI-led</td></tr><tr><td class="el">Verify</td><td class="hum">Human</td><td class="cap">AI-led</td></tr><tr><td class="el">Decide<span class="ctl">◆</span></td><td class="set">AI-led</td><td class="cap">AI-led</td></tr><tr><td class="el">Produce / Execute</td><td class="hum">Human</td><td class="cap">AI</td></tr><tr><td class="el">Communicate</td><td class="hum">Human</td><td class="cap">AI</td></tr></table></div>
+  <div><div class="lbl">Expected</div><div class="exp"><b>Agent-delegation</b> · AI leads Decide, the control element: a person handles only the instances it flags.</div>
+  <ul class="flags"><li>No warnings</li></ul>
+  <ul class="steps"><li>Before Oct 18 this derived Human-only. The control element is now checked first, so AI leading Decide is Agent-delegation however the rest is led.</li><li>Save assessment: the message reads <b>Saved. 7.2.2.4 is Agent-delegation in Element Grid Test.</b></li></ul></div></div>
+  <div class="res" data-case="T13"><label><input type="radio" name="r-T13" value="pass"> Pass</label><label><input type="radio" name="r-T13" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
 </div>
 <div class="card tc" id="F1">
-  <div class="th"><span class="tid">F1</span><div><h3>Findings after all twelve cases</h3><div class="sub">Each activity keeps its last saved case: 7.2.1.1 from T4, 7.2.1.3 from T6. Eight activities are assessed.</div></div></div>
+  <div class="th"><span class="tid">F1</span><div><h3>Findings after all thirteen cases</h3><div class="sub">Each activity keeps its last saved case: 7.2.1.1 from T4, 7.2.1.3 from T6. Nine activities are assessed.</div></div></div>
   <div class="lbl">Findings &rarr; Executive summary</div>
-  <ul class="find"><li><b>8 of 118</b> activities assessed: 1 Human-only, 1 Judgment, 2 Oversight, 2 Agent-delegation, 2 Automation.</li>
+  <ul class="find"><li><b>9 of 118</b> activities assessed: 2 Augmentation, 2 Oversight, 3 Agent-delegation, 2 Automation.</li>
   <li><b>2 past the Progression Ceiling</b>: 1 covered by an approved override (7.2.1.1), 1 at High or Critical that cannot be overridden (7.2.1.3).</li>
   <li><b>Needs a decision: 7.2.3.4 Evaluate</b> (an element past its own ceiling).</li>
   <li>To reassess: 0 (reference changed since assessed).</li></ul>
   <div class="lbl" style="margin-top:10px">Findings &rarr; Exceptions report</div>
-  <ul class="find"><li>Summary row 7.2: 8 of 24 assessed; proposal changes 0, overrides 1, past ceiling no override 1, reference changed 0, element past its ceiling 1, named control 0.</li>
+  <ul class="find"><li>Summary row 7.2: 9 of 24 assessed; proposal changes 0, overrides 1, past ceiling no override 1, reference changed 0, element past its ceiling 1, named control 0.</li>
   <li>Section 2: 7.2.1.1, Augmentation &rarr; Oversight, Accountability.</li>
   <li>Section 3: 7.2.1.3, Oversight &rarr; Agent-delegation, High, <b>Not overridable</b>.</li>
   <li>Section 5: 7.2.3.4, Evaluate: AI-led &rarr; at most Human-led.</li>
@@ -189,7 +197,7 @@ textarea.out{width:100%;height:150px;font:12px Consolas,monospace;margin-top:8px
 <div class="card tc" id="F2">
   <div class="th"><span class="tid">F2</span><div><h3>Reset and remove</h3><div class="sub">The two ways back.</div></div></div>
   <ul class="steps"><li>On 7.2.1.1, <b>Remove override</b>: the grid reads <b>Override removed; the reference ceiling applies</b> and warns <b>Past the Progression Ceiling</b> again.</li>
-  <li>On 7.2.1.7, <b>Mark not assessed</b>: the message reads <b>7.2.1.7 is marked not assessed</b> and Findings shows 7 of 118 assessed.</li></ul>
+  <li>On 7.2.1.7, <b>Mark not assessed</b>: the message reads <b>7.2.1.7 is marked not assessed</b> and Findings shows 8 of 118 assessed.</li></ul>
   <div class="res" data-case="F2"><label><input type="radio" name="r-F2" value="pass"> Pass</label><label><input type="radio" name="r-F2" value="fail"> Fail</label><input type="text" class="note" placeholder="What you saw, if it differs"></div>
 </div>
 <div class="card" id="B">
@@ -201,7 +209,7 @@ textarea.out{width:100%;height:150px;font:12px Consolas,monospace;margin-top:8px
 </div>
 </div></div>
 <script>
-const KEY='hitl-element-grid-test-v1';
+const KEY='hitl-element-grid-test-v2';
 let st={};try{st=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){st={}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
 const res=[...document.querySelectorAll('.res')];
