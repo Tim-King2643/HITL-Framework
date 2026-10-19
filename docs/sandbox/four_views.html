@@ -596,17 +596,22 @@ function ovRefChanged(a,v){const s=v.refSnapshot,f=x=>(x||[]).slice().sort().joi
   if(!s) return (v.refCeiling&&v.refCeiling!==derivedCeil(a))||(v.cons&&v.cons!==a.cons);
   return s.ceiling!==derivedCeil(a)||s.cons!==a.cons||f(s.ceilingFactors)!==f(a.f);}
 const ovDate=t=>t?new Date(t).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'';
-function ovSet(k,v){if(!GRID)return;GRID.ov=Object.assign(GRID.ov||{},{[k]:v,msg:''});render();}
+function ovSet(k,v){if(!GRID)return;GRID.ov=Object.assign(GRID.ov||{},{[k]:v,msg:''});if(v===true)GRID.ov.f={};render();}
+// The form's values live in GRID.ov.f, so a re-render (a validation message, a refresh) never wipes what was entered.
+function ovF(k,v){if(GRID&&GRID.ov){GRID.ov.f=GRID.ov.f||{};GRID.ov.f[k]=v;}}
+function ovVal(a,k){const f=(GRID.ov||{}).f||{},ov=ABC_OV[a.code]||{},ci=derivedCeil(a);
+  if(k in f) return f[k];
+  return {level:ov.level||ST[rank(ci)+1],factor:ov.factor||'',evidence:ov.evidence||'',role:ov.approverRole||a.Aroles[0],confirmed:a.Aroles[0],rnote:''}[k];}
 function ovDone(code,ov,msg){GRID.ov={msg};if(ov&&ov.level)ABC_OV[code]=ov;else delete ABC_OV[code];P.fvOverrideSaved(code,ov);}
 function ovErr(e){GRID.ov.busy=false;GRID.ov.msg='Could not save: '+e.message;render();}
-function ovSave(code){const a=ACT[code],v=id=>(document.getElementById(id)||{}).value||'';
-  const body={org:P.ACTIVE_ORG.id,code,level:v('ov-level'),factor:v('ov-factor'),evidence:v('ov-evidence'),approverRole:v('ov-role')};
+function ovSave(code){const a=ACT[code];
+  const body={org:P.ACTIVE_ORG.id,code,level:ovVal(a,'level'),factor:ovVal(a,'factor'),evidence:ovVal(a,'evidence'),approverRole:ovVal(a,'role')};
   if(!body.factor){GRID.ov.msg='Name the ceiling factor that no longer holds.';return render();}
   if(!body.evidence.trim()){GRID.ov.msg='Give the evidence that it no longer holds.';return render();}
   GRID.ov.busy=true;render();
   P.OrgContext.saveOverride(body).then(j=>ovDone(code,j.override,'Override saved: the ceiling is '+j.override.level+' in '+ORGNAME()+'.')).catch(ovErr);}
-function ovReview(code){const v=id=>(document.getElementById(id)||{}).value||'';GRID.ov.busy=true;render();
-  P.OrgContext.reviewOverride(P.ACTIVE_ORG.id,code,v('ov-confirmed'),v('ov-rnote')).then(j=>ovDone(code,j.override,'Review recorded.')).catch(ovErr);}
+function ovReview(code){const a=ACT[code],who=ovVal(a,'confirmed'),note=ovVal(a,'rnote');GRID.ov.busy=true;render();
+  P.OrgContext.reviewOverride(P.ACTIVE_ORG.id,code,who,note).then(j=>ovDone(code,j.override,'Review recorded.')).catch(ovErr);}
 function ovRemove(code){GRID.ov=Object.assign(GRID.ov||{},{busy:true});render();
   P.OrgContext.removeOverride(P.ACTIVE_ORG.id,code).then(()=>ovDone(code,null,'Override removed; the reference ceiling applies.')).catch(ovErr);}
 function ovSection(a){
@@ -622,14 +627,14 @@ function ovSection(a){
     if(ovRefChanged(a,ov)) h+='<div class="gwarn"><b>Re-review needed.</b> This activity&rsquo;s ceiling, Consequence of Error or ceiling factors have changed in the reference since the override was approved or last reviewed.</div>';}
   else if(!st.open) h+='<div class="isub">None. The reference ceiling of '+ci+' applies. An override raises it for '+esc(ORGNAME())+' only, where the organization can show that a ceiling factor no longer holds.</div>';
   if(ed&&ov&&st.review){
-    h+='<div class="gform"><label>Confirmed by (Accountable role, after the process owner&rsquo;s audit)<select id="ov-confirmed">'+roles.map(r=>'<option>'+esc(r)+'</option>').join('')+'</select></label>'+
-      '<label class="wide">Note (optional)<input type="text" id="ov-rnote"></label></div>'+
+    h+='<div class="gform"><label>Confirmed by (Accountable role, after the process owner&rsquo;s audit)<select id="ov-confirmed" onchange="ovF(\'confirmed\',this.value)">'+roles.map(r=>'<option'+(r===ovVal(a,'confirmed')?' selected':'')+'>'+esc(r)+'</option>').join('')+'</select></label>'+
+      '<label class="wide">Note (optional)<input type="text" id="ov-rnote" value="'+esc(ovVal(a,'rnote'))+'" oninput="ovF(\'rnote\',this.value)"></label></div>'+
       '<div class="gact"><button type="button" class="gbtn primary"'+(st.busy?' disabled':'')+' onclick="ovReview(\''+a.code+'\')">Save review</button><button type="button" class="gbtn" onclick="ovSet(\'review\',false)">Cancel</button></div>';}
   else if(ed&&st.open){const keys=a.f.filter(k=>k!=='top');
-    h+='<div class="gform"><label>Raise the ceiling to<select id="ov-level">'+ST.slice(rank(ci)+1).map(s=>'<option'+(ov&&ov.level===s?' selected':'')+'>'+s+'</option>').join('')+'</select></label>'+
-      '<label>Which ceiling factor no longer holds here?<select id="ov-factor"><option value="">Choose&hellip;</option>'+keys.map(k=>'<option value="'+k+'"'+(ov&&ov.factor===k?' selected':'')+'>'+esc(FL[k]||k)+'</option>').join('')+'</select></label>'+
-      '<label>Approved by (Accountable role)<select id="ov-role">'+roles.map(r=>'<option>'+esc(r)+'</option>').join('')+'</select></label>'+
-      '<label class="wide">Evidence that it no longer holds<input type="text" id="ov-evidence" value="'+esc(ov&&ov.evidence||'')+'"></label></div>'+
+    h+='<div class="gform"><label>Raise the ceiling to<select id="ov-level" onchange="ovF(\'level\',this.value)">'+ST.slice(rank(ci)+1).map(s=>'<option'+(ovVal(a,'level')===s?' selected':'')+'>'+s+'</option>').join('')+'</select></label>'+
+      '<label>Which ceiling factor no longer holds here?<select id="ov-factor" onchange="ovF(\'factor\',this.value)"><option value="">Choose&hellip;</option>'+keys.map(k=>'<option value="'+k+'"'+(ovVal(a,'factor')===k?' selected':'')+'>'+esc(FL[k]||k)+'</option>').join('')+'</select></label>'+
+      '<label>Approved by (Accountable role)<select id="ov-role" onchange="ovF(\'role\',this.value)">'+roles.map(r=>'<option'+(r===ovVal(a,'role')?' selected':'')+'>'+esc(r)+'</option>').join('')+'</select></label>'+
+      '<label class="wide">Evidence that it no longer holds<input type="text" id="ov-evidence" value="'+esc(ovVal(a,'evidence'))+'" oninput="ovF(\'evidence\',this.value)"></label></div>'+
       '<div class="gact"><button type="button" class="gbtn primary"'+(st.busy?' disabled':'')+' onclick="ovSave(\''+a.code+'\')">Save override</button><button type="button" class="gbtn" onclick="ovSet(\'open\',false)">Cancel</button></div>';}
   else if(ed) h+='<div class="gact">'+(ov?'<button type="button" class="gbtn" onclick="ovSet(\'review\',true)">Record a review</button>':'')+
       '<button type="button" class="gbtn" onclick="ovSet(\'open\',true)">'+(ov?'Change override':'Override the ceiling&hellip;')+'</button>'+
