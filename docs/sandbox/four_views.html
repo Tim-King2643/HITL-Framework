@@ -44,6 +44,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .tile .was{font-size:11px;color:var(--lgray)}
 .prov{font-size:10.5px;color:var(--lgray);margin-top:8px}
 .find{font-size:13px;line-height:1.6}
+.pown{border-left:4px solid var(--navy);background:#EEF3FA;padding:8px 12px;border-radius:6px;font-size:12.5px;line-height:1.5;margin:4px 0 10px}
+.pcols{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:20px}
+@media(max-width:860px){.pcols{grid-template-columns:1fr}}
+.plbl{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin-bottom:5px;font-weight:600}
+table.pr{width:100%;border-collapse:collapse;font-size:12.5px}
+.pr th{text-align:left;font-size:10.5px;color:var(--lgray);font-weight:600;padding:3px 6px;border-bottom:1px solid var(--border)}
+.pr td{padding:4px 6px;border-bottom:1px solid #EEF1F6;vertical-align:top}
+.pr td.nw{white-space:nowrap}.pr tr.own td{font-weight:600;color:var(--navy-d)}
 .find li{margin:0 0 7px 18px}
 table.t{width:100%;border-collapse:collapse}
 .t th{background:var(--navy-d);color:#fff;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;text-align:right;padding:8px 8px;vertical-align:bottom;line-height:1.3}
@@ -186,14 +194,15 @@ const SRC=P.FV_SOURCE;
 const DATA=(function(){
   const acts=[],groups=[];
   SRC.PCF7.groups.forEach(g=>{groups.push([g.code,g.name]);
-    g.l3.forEach(l3=>{const proc=l3.code+' '+l3.name, raci=l3.raci||{}, A=P.parseRaciField(raci.A), R=P.parseRaciField(raci.R);
-      (l3.l4&&l3.l4.length?l3.l4:[l3]).forEach(x=>{const w=SRC.WR_DATA[x.code];if(!w)return;
-        acts.push({code:x.code,name:x.name,A:A[0]||'',Aroles:A,R:R.filter(r=>A.indexOf(r)<0).length?R:R,ceiling:w.ceiling,cons:w.cons,
+    g.l3.forEach(l3=>{const proc=l3.code+' '+l3.name;
+      (l3.l4&&l3.l4.length?l3.l4:[l3]).forEach(x=>{const w=SRC.WR_DATA[x.code],ar=SRC.ACTIVITY_RACI[x.code];if(!w||!ar)return;
+        acts.push({code:x.code,name:x.name,A:ar.A,Aroles:[ar.A],R:ar.R.slice(),ceiling:w.ceiling,cons:w.cons,
           f:(w.ceilingFactors||[]).slice(),note:w.ceilingNote||'',cn:w.consNote||'',cf:(w.consFactors||[]).slice(),proc});});});});
   return {acts,groups,roles:SRC.ROLE_TAXONOMY.map(r=>({name:r.name,tier:r.tier,reportsTo:r.reportsTo}))};
 })();
 const CRUD={crud:Object.fromEntries(Object.entries(SRC.ACTIVITY_CRUD).map(([k,x])=>[k,{C:x.create||[],R:x.read||[],U:x.update||[],D:x.delete||[]}])),wps:SRC.WORK_PRODUCTS};
-const RACI_CI=Object.fromEntries(SRC.PCF7.groups.flatMap(g=>g.l3.map(l3=>[l3.code,{C:P.parseRaciField((l3.raci||{}).C),I:P.parseRaciField((l3.raci||{}).I)}])));
+// Processes, for the process RACI (GR-060): its code, name, group and activities, in catalog order.
+const PROCS=SRC.PCF7.groups.flatMap(g=>g.l3.map(l3=>({code:l3.code,name:l3.name,g:g.code,acts:(l3.l4&&l3.l4.length?l3.l4:[l3]).map(x=>x.code).filter(c=>SRC.ACTIVITY_RACI[c])})));
 // Activities with a logged ceiling change, for the Change history link.
 const CHIST=[...new Set((SRC.CHANGE_LOG||[]).filter(e=>/^wr-/.test(e.kind||'')&&e.target&&e.target.activity).flatMap(e=>String(e.target.activity).split(/,\s*/)))];
 // Activity-level RACI (GR-060, CL-018): each activity's own Accountable, Responsible, Consulted and Informed roles.
@@ -224,8 +233,8 @@ const ST=['Human-only','Judgment','Augmentation','Oversight','Agent-delegation',
 const HC={High:1,Critical:1};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const pct=(n,d)=>d?Math.round(100*n/d)+'%':'—';
-// RACI is activity level (GR-060, Tim's decision Oct 10, 2026); S.raci stays 'act'. Process-level data is kept only to compare against.
-let S={coe:true,raci:'act',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'load',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
+// RACI is activity level (GR-060, Tim's decision Oct 10, 2026); a process's RACI is computed from its activities (procRaci).
+let S={coe:true,fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'load',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
 const VIEWS=[
  {id:'work',name:'Work',q:'Where does each activity sit, and what moves next?'},
  {id:'people',name:'People',q:'What does this mean for each role?'},
@@ -280,7 +289,10 @@ function stageBtns(){
 }
 function peopleSide(){
   let h='<div class="q">'+VIEWS[1].q+'</div><p>Every role in the catalog, the activities it is Responsible and Accountable for, and what is left for a person in each as the work moves up the ramp. Accountability doesn&rsquo;t move with the work.</p>'+
-   '<h5>Show</h5>'+btns([['raci','Who is Responsible and Accountable'],['load','What is left for a person as the work moves up']],'pmode');
+   '<h5>Show</h5>'+btns([['raci','Who is Responsible and Accountable'],['praci','RACI by process'],['load','What is left for a person as the work moves up']],'pmode');
+  if(S.pmode==='praci'){const gopts='<option value="all">All process groups</option>'+DATA.groups.map(g=>'<option value="'+g[0]+'"'+(S.wg===g[0]?' selected':'')+'>'+g[0]+' '+esc(g[1])+'</option>').join('');
+    h+='<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()">'+gopts+'</select>'+
+     '<h5>Reading a process RACI</h5><p>Computed from its activities&rsquo; RACI, not stored. The owner is the role Accountable for most of its activities; on a tie, the one Accountable for the highest Consequence of Error, then the more senior role. Any other role Accountable for some of them is Also Accountable. Every other role takes the strongest letter it holds on any activity. The counts show where each letter comes from.</p>';}
   if(S.pmode==='load'){
     h+=stageBtns()+
      '<h5>At Oversight, every instance is approved by</h5>'+btns([['R','The role that did the work'],['A','The Accountable role']],'appr')+
@@ -288,11 +300,29 @@ function peopleSide(){
   }
   return h+'<div class="replaces">Replaces <b>People View</b> and <b>RACI Table</b>, and brings in the exception-load stress test (GR-029, GR-030). People is the role-level hand-off into Human Impact (GR-056), not the Human Impact assessment itself; accountability stays visible here in the RACI table and on every activity in Work.</div>';
 }
+function procRaciMain(){
+  const L=PROCS.filter(p=>p.acts.length&&(S.wg==='all'||p.g===S.wg)),R=L.map(p=>Object.assign({p},procRaci(p)));
+  const gname=S.wg==='all'?'All process groups':S.wg+' '+esc(DATA.groups.find(g=>g[0]===S.wg)[1]);
+  const owners=[...new Set(R.map(x=>x.owner))];
+  let h='<div class="card"><h3>RACI by process &middot; '+gname+'</h3><div class="sub">Each process&rsquo;s RACI, computed from its activities&rsquo; (GR-060, CL-020). Nothing here is stored at process level.</div><div class="tiles">'+
+    tile(R.length,'process'+(R.length===1?'':'es'))+tile(owners.length,'role'+(owners.length===1?'':'s')+' own them')+tile(R.filter(x=>x.rows.some(r=>r.letter==='A+')).length,'with a role Also Accountable')+tile(R.filter(x=>x.why).length,'owner decided by a tie-break')+'</div></div>';
+  const cnts=c=>['A','R','C','I'].filter(k=>c[k]).map(k=>k+' '+c[k]).join(' · ');
+  R.forEach(x=>{const p=x.p,xs=Object.keys(x.X);
+    h+='<div class="card"><h3><span class="code">'+p.code+'</span> '+esc(p.name)+' '+nBtn(p.code)+'</h3><div class="sub">'+x.n+' activit'+(x.n>1?'ies':'y')+'</div>'+
+      '<div class="pown">Owner <b>'+esc(x.owner)+'</b>, Accountable for '+x.top+' of '+x.n+' activit'+(x.n>1?'ies':'y')+'.'+(x.why?' '+esc(x.why):'')+'</div>'+
+      '<div class="pcols"><div><div class="plbl">Process RACI</div><table class="pr"><tr><th>Role</th><th>Process RACI</th><th>On its activities</th></tr>'+
+      x.rows.map(r=>'<tr'+(r.letter==='A'?' class="own"':'')+'><td>'+esc(r.r)+'</td><td class="nw">'+RACI_WORD[r.letter]+'</td><td class="nw small">'+cnts(r.c)+'</td></tr>').join('')+'</table>'+
+      (xs.length?'<div class="small" style="margin-top:6px">Outside the catalog: '+xs.map(t=>esc(t)+' ('+x.X[t].join(', ')+')').join(' · ')+'</div>':'')+'</div>'+
+      '<div><div class="plbl">Its activities</div><table class="pr"><tr><th>Activity</th><th>Accountable</th><th>Consequence of Error</th></tr>'+
+      p.acts.map(c=>'<tr><td><span class="code">'+c+'</span> '+esc(ACT[c].name)+'</td><td>'+esc(RACI_ACT[c].A)+'</td><td class="nw" style="color:'+CONSC[ACT[c].cons]+'">'+ACT[c].cons+'</td></tr>').join('')+'</table></div></div>'+nPanel(p.code)+'</div>';});
+  return h;
+}
 function peopleMain(){
   const base=tally('Human-only'), now=tally(S.stage), R=now.roles, B=base.roles;
   const names=DATA.roles.map(r=>r.name).filter(n=>B[n].acc||B[n].resp||R[n].left);
+  if(S.pmode==='praci') return procRaciMain();
   if(S.pmode==='raci'){
-    const noR=S.raci==='act'?DATA.acts.filter(a=>a.R.includes(a.A)).length:DATA.acts.filter(a=>!a.R.length).length;
+    const noR=DATA.acts.filter(a=>a.R.includes(a.A)).length;
     const RC={};DATA.roles.forEach(r=>RC[r.name]={C:0,I:0,acts:{}});
     const add=(r,code,l)=>{(RC[r].acts[code]=RC[r].acts[code]||[]).push(l)};
     DATA.acts.forEach(a=>{const x=ciOf(a);x.C.forEach(r=>{if(RC[r]){RC[r].C++;add(r,a.code,'Consulted')}});x.I.forEach(r=>{if(RC[r]){RC[r].I++;add(r,a.code,'Informed')}});});
@@ -306,8 +336,8 @@ function peopleMain(){
     const rH=(n,f)=>{const P=rprocs(n);return P.length?Math.round(mean(P.map(p=>pH(p,f,n)))):null};
     const rCalc=(n,f)=>{const P=rprocs(n),v=P.map(p=>pH(p,f,n));return 'Average across the '+P.length+' process'+(P.length>1?'es':'')+' where it is Accountable, counting only its own activities in each: '+P.map((p,i)=>p.split(' ')[0]+' ('+(Math.round(v[i]*10)/10)+')').join(' + ')+' = '+(Math.round(v.reduce((x,y)=>x+y,0)*10)/10)+' ÷ '+P.length+' → '+Math.round(mean(v))+'% H'};
     const none=DATA.roles.filter(r=>!names.includes(r.name));
-    let h='<div class="card"><h3>Responsibility and accountability</h3><div class="sub">'+(S.raci==='act'?'Activity-level RACI (GR-060, confirmed by GiGi, CL-018): each activity has its own four letters.':'From the reasoned-match RACI. Activities inherit their process&rsquo;s RACI.')+'</div><div class="tiles">'+
-      tile(names.length,'roles hold an R or A')+tile(none.filter(r=>RC[r.name].C||RC[r.name].I).length,'roles are Consulted or Informed only')+tile(noR,S.raci==='act'?'activities where the Accountable role also does the work':'activities with no separate Responsible role; the Accountable role does the work')+'</div></div>';
+    let h='<div class="card"><h3>Responsibility and accountability</h3><div class="sub">Activity-level RACI (GR-060, confirmed by GiGi, CL-018): each activity has its own four letters. RACI by process shows each process&rsquo;s, computed from them.</div><div class="tiles">'+
+      tile(names.length,'roles hold an R or A')+tile(none.filter(r=>RC[r.name].C||RC[r.name].I).length,'roles are Consulted or Informed only')+tile(noR,'activities where the Accountable role also does the work')+'</div></div>';
     const top=names.slice().sort((x,y)=>B[y].acc-B[x].acc);
     h+='<div class="card"><h3>What this shows</h3><ul class="find"><li>'+top.slice(0,3).map(n=>n+' is Accountable for '+B[n].acc).join(', ')+' of the 118 activities: '+pct(top.slice(0,3).reduce((s,n)=>s+B[n].acc,0),118)+' of all accountability sits with three roles.</li>'+
       (none.length?'<li>'+none.map(r=>r.name+(RC[r.name].C||RC[r.name].I?' is '+[RC[r.name].C?'Consulted on '+RC[r.name].C:'',RC[r.name].I?'Informed on '+RC[r.name].I:''].filter(Boolean).join(' and '):' has no RACI role')).join('; ')+'. None holds a Responsible or Accountable activity in PCF 7.0.</li>':'<li>Every catalog role holds a Responsible or Accountable activity.</li>')+'</ul></div>';
@@ -452,11 +482,26 @@ const EVL=SRC.ASSESS_EVIDENCE_LABEL||{};
 const isOrg=()=>!!(P.ACTIVE_ORG&&!P.ACTIVE_ORG.reference);
 function curOf(a){return isOrg()&&ABCSTAGE[a.code]?ABCSTAGE[a.code]:'Human-only'}
 const l3Of=a=>a.proc.split(' ')[0];
-// Activity-level RACI from the GR-060 draft (docs/wip/activity_raci_draft.html), catalog roles only; Process level is today's inherited RACI.
-
-const RACI_PROC=Object.fromEntries(DATA.acts.map(a=>[a.code,{A:a.A,Aroles:a.Aroles.slice(),R:a.R.slice()}]));
-function applyRaci(){DATA.acts.forEach(a=>{const x=S.raci==='act'?{A:RACI_ACT[a.code].A,Aroles:[RACI_ACT[a.code].A],R:RACI_ACT[a.code].R}:RACI_PROC[a.code];a.A=x.A;a.Aroles=x.Aroles.slice();a.R=x.R.slice();});}
-const ciOf=a=>S.raci==='act'?{C:RACI_ACT[a.code].C,I:RACI_ACT[a.code].I}:(RACI_CI[l3Of(a)]||{C:[],I:[]});
+const ciOf=a=>({C:RACI_ACT[a.code].C,I:RACI_ACT[a.code].I});
+// A process's RACI, computed from its activities (GR-060, CL-020). The owner is the role Accountable for most of its
+// activities; on a tie, the one Accountable for the highest Consequence of Error, then the more senior role. Any other
+// role Accountable for some activities is Also Accountable; every other role takes the strongest letter it holds.
+const RACI_WORD={A:'Accountable','A+':'Also Accountable',R:'Responsible',C:'Consulted',I:'Informed'};
+function procRaci(p){
+  const CO=['Low','Moderate','High','Critical'],cnt={},hc={},ROLES=DATA.roles.map(r=>r.name);
+  const depth=r=>{let n=0,x=DATA.roles.find(y=>y.name===r);while(x&&x.reportsTo){n++;x=DATA.roles.find(y=>y.name===x.reportsTo)}return n};
+  p.acts.forEach(c=>{const r=RACI_ACT[c].A,k=CO.indexOf(SRC.WR_DATA[c].cons);cnt[r]=(cnt[r]||0)+1;hc[r]=Math.max(hc[r]==null?-1:hc[r],k);});
+  const order=Object.keys(cnt).sort((x,y)=>cnt[y]-cnt[x]||hc[y]-hc[x]||depth(x)-depth(y)),owner=order[0],tied=order.filter(r=>cnt[r]===cnt[owner]&&r!==owner);
+  let why='';
+  if(tied.length) why=tied.some(r=>hc[r]===hc[owner])?'Tied with '+tied.join(', ')+' on count and Consequence of Error; the more senior role.'
+    :'Tied with '+tied.join(', ')+'; '+owner+' is Accountable for '+p.acts.filter(c=>RACI_ACT[c].A===owner&&CO.indexOf(SRC.WR_DATA[c].cons)===hc[owner]).join(', ')+' ('+CO[hc[owner]]+').';
+  const L={},X={};
+  p.acts.forEach(c=>{const x=RACI_ACT[c];[[x.A,'A']].concat(x.R.map(r=>[r,'R']),x.C.map(r=>[r,'C']),x.I.map(r=>[r,'I'])).forEach(([r,l])=>{(L[r]=L[r]||{A:0,R:0,C:0,I:0})[l]++;});
+    const o=x.x||{};Object.keys(o).forEach(k=>o[k].forEach(t=>{(X[t]=X[t]||[]).includes(k)||X[t].push(k)}));});
+  const rk={A:0,'A+':1,R:2,C:3,I:4};
+  const rows=Object.keys(L).map(r=>{const c=L[r];return {r,c,letter:r===owner?'A':c.A?'A+':c.R?'R':c.C?'C':'I'}}).sort((a,b)=>rk[a.letter]-rk[b.letter]||ROLES.indexOf(a.r)-ROLES.indexOf(b.r));
+  return {owner,top:cnt[owner],n:p.acts.length,why,rows,X};
+}
 const CONSO=['Low','Moderate','High','Critical'];
 const worstCons=L=>CONSO[Math.max(...L.map(a=>CONSO.indexOf(a.cons)))];
 const stOf=(a,f)=>f==='cur'?curOf(a):derivedCeil(a);
@@ -960,6 +1005,6 @@ try{new ResizeObserver(fit).observe(document.body)}catch(e){}
 window.fvRefresh=function(){loadABC();render();};
 window.fvShow=function(v){if(v)S.view=v;window.fvRefresh();};
 {const v=new URLSearchParams(location.search).get('view');if(v)S.view=v;}
-applyRaci();loadABC();render();
+loadABC();render();
 
 </script></body></html>

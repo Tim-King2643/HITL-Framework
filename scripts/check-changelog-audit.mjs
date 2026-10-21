@@ -6,7 +6,7 @@
 // but *forgetting* to write one is exactly the kind of thing CI should
 // catch. This script fails the build when a commit range changes a
 // tracked modeled-data value (a reportsTo edge, a WR rel/ceiling
-// classification, a work-product catalog entry, activity/process CRUD, or an activity's work elements) without also adding a new entry to changelog-data.js.
+// classification, a work-product catalog entry, activity/process CRUD, an activity's work elements, or an activity's RACI) without also adding a new entry to changelog-data.js.
 //
 // Usage:
 //   node scripts/check-changelog-audit.mjs <baseRef> <headRef>
@@ -80,6 +80,14 @@ const TRACKED = [
     //   "7.2.1.4": { control:"Verify", obj:{ ... }, na:{ ... } },
     pattern: /"\d+(?:\.\d+)+"\s*:\s*\{\s*control\s*:/,
     label: "an activity's work elements in WORK_ELEMENTS",
+  },
+  {
+    file: "docs/sandbox/pcf7.html",
+    // Activity-level RACI (GR-060), one activity per line, e.g.
+    //   "7.2.1.1": {"A": "HRBP Manager", "R": [...], "C": [...], "I": [...], "why": "..."},
+    // Process RACI is computed from these (CL-020), so this is the only RACI to track.
+    pattern: /"\d+(?:\.\d+)+"\s*:\s*\{\s*"A"\s*:/,
+    label: "an activity's RACI in ACTIVITY_RACI",
   },
 ];
 

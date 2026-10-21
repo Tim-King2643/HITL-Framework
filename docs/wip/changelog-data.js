@@ -404,5 +404,26 @@ const CHANGE_LOG = [
     "source": "Tim, Oct 15, 2026: write the element phrases for the remaining activities (GR-058, approved by Tim and GiGi Oct 15).",
     "reason": "The work-element model (GR-058) needs each activity's elements to show what moves to AI at each step and to assess an organization element by element; the stage, the element ceilings and the decision points are all read from them.",
     "verified": "Run through the model before and after: no Progression Ceiling changes (Augmentation 30, Oversight 11, Agent-delegation 44, Automation 33), still 85 decision points and the same 12 activities needing a named control. The only change is the decision-point element of the 10 activities above, from Decide to Verify. Three stay decision points, now on Verify (7.1.1.7 and 7.1.3.3 on flagged exceptions, 7.3.2.3 on every instance); the seven at Automation are decided or verified elsewhere or need a named control, as before."
+  },
+  {
+    "id": "CL-020",
+    "date": "2026-10-21",
+    "requestedBy": "Tim",
+    "kind": "raci",
+    "changeType": "decision",
+    "target": {
+      "domain": "7.0"
+    },
+    "summary": "Process RACI is no longer stored (GR-060): each of the 37 processes' RACI is computed from its activities' RACI (ACTIVITY_RACI) and shown in the People view's RACI by process.",
+    "from": "A stored RACI on each of the 37 L3 processes in PCF7, kept for comparison after CL-018 and read by the four views only to start each activity's roles.",
+    "to": "No stored process RACI. A process's owner is the role Accountable for most of its activities; on a tie, the one Accountable for the highest Consequence of Error, then the more senior role. Other roles Accountable for some activities are Also Accountable; every other role takes the strongest letter it holds on any activity. Against the stored values, two owners change: 7.2.3 Screen and select candidates, Recruiter to Director of TA (two activities each; Director of TA holds 7.2.3.4, Critical), and 7.5.3 Manage employee assistance and retention, HR Generalist (Accountable for neither activity) to HRBP Manager. 18 of 37 processes differ in at least one role (docs/wip/process_raci_sketch.html). No activity's RACI changes.",
+    "files": [
+      "docs/sandbox/pcf7.html",
+      "docs/sandbox/four_views.html",
+      "scripts/check-changelog-audit.mjs"
+    ],
+    "source": "Tim, Oct 21, 2026: build the process RACI from the activities into the People view (GR-060), after reviewing the sketch.",
+    "reason": "A stored process RACI can drift from the activities it summarizes; computed, it always agrees with them, as process CRUD already does.",
+    "verified": "The People view's RACI by process matches the sketch for all 37 processes (owner and every role's letter). The four views read each activity's roles from ACTIVITY_RACI; the unused RACI parsing helpers are removed from pcf7.html. The change-log audit now tracks ACTIVITY_RACI."
   }
 ];
