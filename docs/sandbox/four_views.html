@@ -289,10 +289,10 @@ function stageBtns(){
 }
 function peopleSide(){
   let h='<div class="q">'+VIEWS[1].q+'</div><p>Every role in the catalog, the activities it is Responsible and Accountable for, and what is left for a person in each as the work moves up the ramp. Accountability doesn&rsquo;t move with the work.</p>'+
+   (S.pmode==='praci'?'<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()"><option value="all">All process groups</option>'+DATA.groups.map(g=>'<option value="'+g[0]+'"'+(S.wg===g[0]?' selected':'')+'>'+g[0]+' '+esc(g[1])+'</option>').join('')+'</select>':'')+
    '<h5>Show</h5>'+btns([['raci','Who is Responsible and Accountable'],['praci','RACI by process'],['load','What is left for a person as the work moves up']],'pmode');
-  if(S.pmode==='praci'){const gopts='<option value="all">All process groups</option>'+DATA.groups.map(g=>'<option value="'+g[0]+'"'+(S.wg===g[0]?' selected':'')+'>'+g[0]+' '+esc(g[1])+'</option>').join('');
-    h+='<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()">'+gopts+'</select>'+
-     '<h5>Reading a process RACI</h5><p>Computed from its activities&rsquo; RACI, not stored. The owner is the role Accountable for most of its activities; on a tie, the one Accountable for the highest Consequence of Error, then the more senior role. Any other role Accountable for some of them is Also Accountable. Every other role takes the strongest letter it holds on any activity. The counts show where each letter comes from.</p>';}
+  if(S.pmode==='praci'){
+    h+='<h5>Reading a process RACI</h5><p>Computed from its activities&rsquo; RACI, not stored. The owner is the role Accountable for most of its activities; on a tie, the one Accountable for the highest Consequence of Error, then the more senior role. Any other role Accountable for some of them is Also Accountable. Every other role takes the strongest letter it holds on any activity. The counts show where each letter comes from.</p>';}
   if(S.pmode==='load'){
     h+=stageBtns()+
      '<h5>At Oversight, every instance is approved by</h5>'+btns([['R','The role that did the work'],['A','The Accountable role']],'appr')+
