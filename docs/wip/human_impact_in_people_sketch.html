@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate"><head><meta charset="UTF-8"><meta name="google" content="notranslate"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Human Impact in People</title>
+<style>
+:root{--navy:#1B4F8A;--navy-d:#0D2D4F;--dark:#0D1B2A;--gray:#444;--lgray:#6B7A90;--bg:#F4F6FB;--border:#DDE3EE;--amber:#8A5A00;--teal:#0E5E57;--tealbg:#E7F3F1}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);padding-bottom:60px}
+.sk{background:#FEF3C7;border-bottom:2px solid #B8873F;color:#7A5A1E;font-size:12.5px;text-align:center;padding:9px 16px}
+.sk a{color:#7A5A1E;font-weight:600}
+.wrap{max-width:1400px;margin:0 auto;padding:18px 16px;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
+.side{flex:0 1 330px;min-width:260px;position:sticky;top:12px}
+.side h1{font-family:Georgia,serif;font-size:21px;color:var(--navy-d);line-height:1.3;margin-bottom:8px}
+.side p,.side li{font-size:12.5px;color:var(--gray);line-height:1.6}
+.side p{margin-bottom:10px}
+.side ul{margin:0 0 10px 18px}.side li{margin-bottom:5px}
+.side h5{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin:16px 0 6px}
+.stack button{display:block;width:100%;text-align:left;font:inherit;font-size:12.5px;padding:7px 10px;margin-bottom:5px;border-radius:6px;border:1px solid #C6D8EE;background:#fff;color:var(--navy-d);cursor:pointer}
+.stack button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.stack button .t{font-size:11px;opacity:.75;margin-left:4px}
+.main{flex:1;min-width:300px}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.card h3{font-size:15px;color:var(--navy-d);margin-bottom:4px}
+.sub{font-size:12px;color:var(--lgray);line-height:1.5;margin-bottom:10px}
+.lbl{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin-bottom:6px;font-weight:600}
+.cols{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);gap:18px}
+@media(max-width:900px){.cols,.seam,.cons4,.three{grid-template-columns:1fr!important}.side{position:static}}
+.half{border-radius:8px;padding:12px 14px}
+.half.w{background:#F7F9FC;border:1px solid var(--border)}
+.half.h{background:var(--tealbg);border:1px solid #BFDDD8}
+.half h4{font-size:13px;margin-bottom:2px}.half.w h4{color:var(--navy-d)}.half.h h4{color:var(--teal)}
+.half .who{font-size:11.5px;color:var(--lgray);margin-bottom:8px}
+table.k{width:100%;border-collapse:collapse;font-size:12.5px}
+.k td{padding:5px 4px;border-bottom:1px solid #E6EBF3;vertical-align:top}
+.k td.l{color:var(--lgray);width:42%}
+.k .am{font-size:10.5px;font-weight:700;letter-spacing:.04em;border-radius:4px;padding:1px 5px;margin-right:4px}
+.am.a{background:#DCEBFA;color:var(--navy-d)}.am.m{background:#EEF0F4;color:#555}
+.anchor{display:inline-block;font-size:10.5px;color:var(--teal);border:1px solid #9CCBC4;border-radius:4px;padding:0 5px;margin-left:4px;white-space:nowrap}
+table.d{width:100%;border-collapse:collapse;font-size:12px;background:#fff;border-radius:6px}
+.d th{text-align:left;font-size:10.5px;color:var(--lgray);font-weight:600;padding:5px 6px;border-bottom:1px solid #D5E5E2}
+.d td{padding:5px 6px;border-bottom:1px solid #EEF3F2;vertical-align:top;line-height:1.45}
+.d tr.grp td{background:#F3F8F7;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);font-weight:600}
+.chip{font-size:10.5px;font-weight:700;border-radius:4px;padding:1px 6px;white-space:nowrap}
+.chip.gray{background:#E5E7EB;color:#374151}.chip.na{background:#fff;color:#9CA3AF;border:1px dashed #C9CED6}
+.d .mv{margin-top:4px;color:var(--teal)}.d .mv b{font-weight:600}
+.d td:first-child{width:24%}.d td:nth-child(2){width:1%}
+.overall{font-size:12.5px;margin:0 0 8px;line-height:1.5}
+.ph{color:#9CA3AF;font-style:italic}
+.seam{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;font-size:12.5px}
+.seam div{padding:6px 10px;border-bottom:1px solid #EEF1F6}.seam .hw{background:var(--navy-d);color:#fff;font-weight:600}.seam .hh{background:var(--teal);color:#fff;font-weight:600}
+.seam .r:nth-child(odd){background:#F7F9FC}.seam .r:nth-child(even){background:#F3F8F7}
+.mock{border:1px solid var(--border);border-radius:8px;padding:10px 12px;background:#FBFCFE;max-width:330px}
+.mock .stack button{cursor:default}.mock .new{outline:2px dashed var(--teal);outline-offset:2px}
+.cons4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.c4{border:1px solid #BFDDD8;border-radius:8px;padding:10px 12px;background:#fff}
+.c4 b{color:var(--teal);font-size:13px}.c4 p{font-size:12px;color:var(--gray);line-height:1.5;margin-top:4px}
+.c4 .num{font-size:12px;color:var(--navy-d);margin-top:6px;padding-top:6px;border-top:1px solid #E6EBF3}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.three div{border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--gray);line-height:1.5}
+.three b{display:block;color:var(--navy-d);font-size:12.5px;margin-bottom:3px}
+ul.f{font-size:12.5px;line-height:1.6;margin-left:18px;color:var(--gray)}
+.small{font-size:11.5px;color:var(--lgray)}
+</style></head><body>
+<div class="sk"><strong>Sketch</strong> · Where GiGi&rsquo;s Human Impact &amp; Readiness work plugs into the sandbox&rsquo;s People view · <a href="requirements_register.html#GR-056">GR-056</a> · <a href="requirements_register.html#GR-012">GR-012</a> · <a href="gigi_human_impact_readiness_update.html">GiGi&rsquo;s update</a> · <a href="index.html">WIP hub</a></div>
+<div class="wrap">
+<div class="side">
+  <h1>Human Impact &amp; Readiness in People</h1>
+  <p>A fourth Show option in the People view, <b>Role hand-off</b>, puts each role&rsquo;s work-side evidence (GR-056) beside GiGi&rsquo;s readiness findings (GR-012). The work side says what changed; her layer says what it means for the person. Her layer records and owns the findings; People only displays them.</p>
+  <h5>Role</h5><div class="stack" id="roles"></div>
+  <h5>Organization</h5><div class="stack" id="orgs"></div>
+  <h5>Built in from her guardrails</h5>
+  <ul>
+    <li>Assessed and Modeled carry their own label; &ldquo;could move&rdquo; never reads as &ldquo;has moved&rdquo;.</li>
+    <li>Gray means insufficient evidence, never failure, and never converts by default.</li>
+    <li>No composite score: one finding per dimension, with its evidence, gap, what would move it and an owner role.</li>
+    <li>Each role keeps its own findings; none are blended.</li>
+  </ul>
+  <h5>To settle with GiGi</h5>
+  <p>Whether People is the right place to display her findings, given her GR-059 note that People is the hand-off, not the assessment. The alternative is a fifth view of her own.</p>
+</div>
+<div class="main" id="main"></div>
+</div>
+<script>
+const R={"HRBP Manager":{"tier":"Managerial","reportsTo":"Director of HR Ops","acc":22,"resp":15,"dp":17,"base":[10,25],"ceil":[12,25],"work":[16,2,5,5,2],"fc":{"legal":16,"reversibility":13,"ops":10,"human":11,"reach":9,"trust":3},"st":{"Oversight":5,"Augmentation":17,"Automation":7,"Agent-delegation":8},"hcA":["7.2.1.3 Approve job requisition (High)","7.3.2.2 Review employee performance (High)","7.3.2.3 Document employee performance (High)","7.4.1 Manage labor relations (Critical)","7.4.2 Manage collective bargaining process (Critical)","7.4.4 Manage employee grievances (Critical)","7.6.1 Manage promotion and demotion process (High)","7.6.2.2 Manage leave of absence (High)","7.6.2.3 Manage offboarding (High)","7.6.3.1 Manage expatriates (High)"],"cons":{"Moderate":12,"Low":11,"High":11,"Critical":3}},"Recruiter":{"tier":"Operational","reportsTo":"Director of TA","acc":10,"resp":9,"dp":4,"base":[5,18],"ceil":[5,10],"work":[4,0,6,6,0],"fc":{"legal":6,"reversibility":8,"ops":9,"human":2,"reach":3},"st":{"Automation":9,"Agent-delegation":6,"Augmentation":4},"hcA":["7.2.3.2 Interview candidates (High)","7.2.3.3 Test candidates (High)"],"cons":{"Moderate":5,"Low":9,"High":4,"Critical":1}},"CHRO":{"tier":"Executive","reportsTo":null,"acc":9,"resp":0,"dp":9,"base":[0,0],"ceil":[0,0],"work":[0,0,0,0,0],"fc":{"human":2,"ops":4,"reach":5,"reversibility":5,"trust":1,"legal":2},"st":{"Augmentation":7,"Agent-delegation":2},"hcA":["7.1.1.2 Define HR and business function roles and accountability (High)","7.1.1.8 Develop strategy for HR systems/technologies/tools (High)","7.1.2.2 Develop total compensation and rewards strategy (High)"],"cons":{"Moderate":5,"High":3,"Low":1}}}, DIMS=[["#", "Role / human operating conditions"], ["Role clarity", "GRAY", "The design distinction is conceptually clear: AI supports the administrative work; the HRBP Manager retains the judgment.", "Org-specific workflow and role language showing the boundary in practice."], ["Decision authority", "GRAY", "The HRBP Manager is the accountable human in the reference model, but actual override power is not measured.", "Proof that the role can reject, pause, override, and escalate AI-supported recommendations."], ["Capability / skill", "GRAY", "The role is judgment-heavy, but accountability does not prove the person has the skill to evaluate AI-prepared material.", "Case-based evidence or scenario testing showing the person can recognize a bad precedent, weak reasoning, or missing context."], ["Confidence / decision fluency", "GRAY", "No evidence yet on whether the person will challenge a confident-looking AI output.", "Scenario exercise or observed behavior under disagreement."], ["Psychological safety", "GRAY", "No evidence yet on whether slowing or challenging an AI-supported process is actually supported.", "Employee and manager evidence that challenge and escalation are safe in practice."], ["Capacity / workload", "GRAY", "The design suggests a verification tax: less administrative production may create more review, exception, and escalation work.", "Caseload, review time, exception rate, and whether freed capacity is real or simply reallocated."], ["#", "Organizational operating conditions"], ["Manager / Oversight readiness", "GRAY", "The escalation path identifies Director of HR Ops, but that does not tell us whether the manager is prepared to coach and intervene in the new model.", "Manager expectations, escalation criteria, monitoring, and coaching readiness."], ["Leadership support / governance", "GRAY", "There is a governance concept and a named accountable role, but the organization-specific operating rules are still unknown.", "Named stop conditions, escalation rights, and clarity on who can pause or reverse the transition."], ["Change capacity", "GRAY", "No organization-specific information is available.", "Competing changes, staffing pressure, implementation timing, and leadership capacity."], ["#", "Shared evidence condition (boundary with the technical/process lane)"], ["Trust / evidence quality", "GRAY", "No real-volume evidence has been supplied for AI-supported precedent research or grievance preparation.", "Validation results, known failure modes, error data, and examples at real operating volume — consumed from the technical/process lane (section 3), not re-tested."]];
+const META={
+ 'HRBP Manager':{pilot:'run',note:'Grievance pilot, 7.4.4 Manage employee grievances: first full pass, Oct 15.',repeats:'Accountability stays concentrated; AI can remove administrative work while judgment remains human.',changes:'Agency, psychological safety, capacity and escalation become central; grievance work highlights relational and emotional intensity.'},
+ 'Recruiter':{pilot:'next',note:'Pilot not yet run.',repeats:'Concentrated accountability and unmeasured Agency reappear; AI can absorb sourcing and screening while select/reject remains human.',changes:'Manager path is already well supported; risk comes from high-volume candidate decisions and legal exposure.'},
+ 'CHRO':{pilot:'next',note:'Pilot not yet run.',repeats:'Accountability remains concentrated and strategy work remains judgment-heavy.',changes:'No traditional Manager Absorption ring exists; Team Effect becomes domain-wide; the Agency question shifts from override power to trustworthy decision input.'}};
+let ROLE='HRBP Manager', ORG='pilot';
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const pct=(a,b)=>b?Math.round(100*a/b)+'%':'—';
+function side(){
+  document.getElementById('roles').innerHTML=Object.keys(R).map(n=>'<button class="'+(ROLE===n?'on':'')+'" onclick="ROLE=\''+n+'\';draw()">'+n+'<span class="t">'+R[n].tier+'</span></button>').join('');
+  document.getElementById('orgs').innerHTML=[['ref','Reference Model'],['pilot','Pilot organization (worked example, run by hand)']].map(([k,l])=>'<button class="'+(ORG===k?'on':'')+'" onclick="ORG=\''+k+'\';draw()">'+l+'</button>').join('');
+}
+function workHalf(n){const x=R[n],w=x.work,top=!x.reportsTo,F=x.fc;
+  const st=['Augmentation','Oversight','Agent-delegation','Automation'].filter(s=>x.st[s]).map(s=>x.st[s]+' '+s).join(', ');
+  const cur=ORG==='ref'?'<span class="am m">Modeled</span>Human-only baseline for all its activities; no organization assessed.'
+    :'<span class="am a">Assessed</span>'+(n==='HRBP Manager'?'7.4.4 settled per part at the start of the pilot (Human-only or Judgment). Its other activities read from the organization&rsquo;s element-grid assessments.':'From the organization&rsquo;s element-grid assessments of its activities.');
+  const left=x.ceil[1]?w[0]+' in every instance, '+w[1]+' approves every instance, '+w[2]+' flagged exceptions only, '+w[3]+' answerable with no person in the instance':'Does none of the work itself; '+x.dp+' decision points are its own';
+  const esc2=top?'Itself, as the Accountable role. Routed by reporting line, they would go to the <b>Oversight body</b> (executive committee or board) <span class="small">proposed; today there is no manager above, so they fall back to the CHRO unseen</span>':'The Accountable role'+(w[4]?'; '+w[4]+' arrive from other roles':'')+' <span class="small">(manager: '+esc(x.reportsTo)+')</span>';
+  return '<div class="half w"><h4>What changed in the work</h4><div class="who">Work side · GR-056 hand-off · computed from the sandbox</div><table class="k">'+
+   '<tr><td class="l">Tier · reports to</td><td>'+x.tier+' · '+(x.reportsTo?esc(x.reportsTo):'top of the role catalog')+'</td></tr>'+
+   '<tr><td class="l">Accountable · Responsible</td><td>'+x.acc+' activities · '+x.resp+' more where it does the work</td></tr>'+
+   '<tr><td class="l">Decision points anchored</td><td>'+x.dp+'</td></tr>'+
+   '<tr><td class="l">Current State</td><td>'+cur+'</td></tr>'+
+   '<tr><td class="l">Progression Ceilings</td><td><span class="am m">Modeled</span>'+st+'</td></tr>'+
+   '<tr><td class="l">Left for a person at the ceilings</td><td><span class="am m">Modeled</span>'+left+'</td></tr>'+
+   '<tr><td class="l">High or Critical share of what is left</td><td><span class="am m">Modeled</span>'+(x.ceil[1]?pct(x.base[0],x.base[1])+' ('+x.base[0]+' of '+x.base[1]+') at the baseline → '+pct(x.ceil[0],x.ceil[1])+' ('+x.ceil[0]+' of '+x.ceil[1]+') at the ceilings':'Not applicable: it does none of the work')+'<span class="anchor">Human Intensity</span></td></tr>'+
+   '<tr><td class="l">High and Critical exceptions go to</td><td>'+esc2+'<span class="anchor">Manager Absorption</span></td></tr>'+
+   '<tr><td class="l">Consequence of Error factors on its activities</td><td>Human impact '+(F.human||0)+' · Reach '+(F.reach||0)+' · Reversibility '+(F.reversibility||0)+' <span class="small">of '+(x.acc+x.resp)+'</span><span class="anchor">Human Criticality</span></td></tr>'+
+   '<tr><td class="l">High or Critical activities it is Accountable for</td><td>'+(x.hcA.length?x.hcA.length+': '+x.hcA.map(t=>'<span title="'+esc(t)+'" style="border-bottom:1px dotted #9AA6B8;cursor:help">'+t.split(' ')[0]+'</span>').join(', '):'None')+'</td></tr>'+
+   '</table></div>';}
+function humanHalf(n){const m=META[n];
+  let h='<div class="half h"><h4>What it means for the person</h4><div class="who">Human Impact &amp; Readiness · GR-012 · GiGi&rsquo;s lead · recorded and owned by her layer</div>';
+  if(ORG==='ref') return h+'<p class="overall ph">Not assessed: readiness is specific to an organization. The Reference Model carries the work side only.</p>'+dimTable(null)+'</div>';
+  if(m.pilot!=='run') return h+'<p class="overall"><b>'+m.note+'</b> From GiGi&rsquo;s three-role validation, what to expect:</p><table class="k"><tr><td class="l">What repeats</td><td>'+m.repeats+'</td></tr><tr><td class="l">What changes</td><td>'+m.changes+'</td></tr></table><div style="margin-top:8px">'+dimTable(null,'Pilot not yet run')+'</div></div>';
+  return h+'<p class="overall"><b>Insufficient Evidence</b> &middot; not Ready and not Not Ready. '+m.note+' Every finding is Gray until organization-specific evidence is recorded; the modeled concern is kept separately.</p>'+dimTable(true)+'</div>';}
+function dimTable(full,na){
+  let h='<table class="d"><tr><th>Dimension</th><th>Finding</th>'+(full?'<th>Modeled concern (GiGi) &middot; what would move it</th>':'')+'<th>Owner (role)</th></tr>';
+  DIMS.forEach(d=>{if(d[0]==='#'){h+='<tr class="grp"><td colspan="'+(full?4:3)+'">'+esc(d[1])+'</td></tr>';return;}
+    h+='<tr><td>'+esc(d[0])+'</td><td>'+(full?'<span class="chip gray">GRAY</span>':'<span class="chip na">'+(na||'Not assessed')+'</span>')+'</td>'+(full?'<td>'+esc(d[2])+'<div class="mv"><b>Would move it:</b> '+esc(d[3])+'</div></td>':'')+'<td class="ph">'+(full?'to name':'&mdash;')+'</td></tr>';});
+  return h+'</table>';}
+function constructs(n){const x=R[n],F=x.fc;
+  const C=[['Human Agency','Can the person actually exercise the judgment they are accountable for?','Decision authority and Psychological safety findings feed it (GR-013).','Decision points anchored: '+x.dp],
+   ['Human Criticality','What happens if the remaining decision is wrong, who is affected, how reversible?','A human-impact reading of Consequence of Error, not a new instrument.','Human impact '+(F.human||0)+' · Reach '+(F.reach||0)+' · Reversibility '+(F.reversibility||0)],
+   ['Human Intensity','Does AI remove the easier work and concentrate the hardest in the person?','A qualitative finding, anchored to a work-side number.',x.ceil[1]?'High or Critical share: '+pct(x.base[0],x.base[1])+' → '+pct(x.ceil[0],x.ceil[1]):'Does none of the work itself'],
+   ['Role Transition','What changes in skill, judgment, authority, identity, relationships and accountability?','The role-side view of what moves activity by activity.','Activities it touches whose ceiling is above Human-only: '+Object.entries(x.st).filter(e=>e[0]!=='Human-only').reduce((s,e)=>s+e[1],0)+' of '+(x.acc+x.resp)]];
+  return '<div class="card"><h3>Her four human constructs, and the work-side number each one reads</h3><div class="sub">Proposals 1 and 4 of the work-side proposals for GR-012 v0.2. The number shows a shift is happening; her finding says what it means. Modeled, '+esc(n)+'.</div><div class="cons4">'+
+   C.map(c=>'<div class="c4"><b>'+c[0]+'</b><p>'+c[1]+'</p><p class="small">'+c[2]+'</p><div class="num">'+esc(c[3])+'</div></div>').join('')+'</div></div>';}
+function draw(){side();const n=ROLE;
+  let h='<div class="card"><h3>Where it plugs in</h3><div class="sub">The People view gains one Show option. The seam is the one GiGi drew in her update: the work side establishes, Human Impact &amp; Readiness interprets.</div><div style="display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start">'+
+   '<div class="mock"><div class="lbl">People &middot; Show</div><div class="stack"><button>Who is Responsible and Accountable</button><button>RACI by process</button><button>What is left for a person as the work moves up</button><button class="on new">Role hand-off</button></div></div>'+
+   '<div class="seam" style="flex:1;min-width:300px"><div class="hw">Work side establishes</div><div class="hh">Human Impact &amp; Readiness interprets</div>'+
+   [['What changed in the work','What the change means for the person'],['Current State vs. Progression Ceiling','Whether human judgment can actually be exercised'],['Working Relationship classification','How manager and team capacity absorbs the change'],['Consequence of Error and ceiling factors','Where accountability becomes concentrated'],['Accountability and role relationships','Whether human work becomes more intense or critical'],['Evidence, coverage, exceptions and overrides','Whether the organization can operate the redesigned model safely and credibly']].map(r=>'<div class="r">'+r[0]+'</div><div class="r">'+r[1]+'</div>').join('')+'</div></div></div>';
+  h+='<div class="card"><h3>Role hand-off &middot; '+esc(n)+'</h3><div class="sub">'+(ORG==='ref'?'Reference Model: the work side only.':'Pilot organization, as a worked example: the grievance pilot&rsquo;s findings were recorded by hand, not in the sandbox.')+' One card per role.</div><div class="cols">'+workHalf(n)+humanHalf(n)+'</div></div>';
+  h+=constructs(n);
+  h+='<div class="card"><h3>Her three kinds of finding, kept apart</h3><div class="sub">From the grievance pilot&rsquo;s second lesson: mixing them blames the organization for a weak instrument, or redesigns the instrument whenever evidence is missing.</div><div class="three">'+
+   '<div><b>Organization readiness</b>Shown here, per role, in the Role hand-off. Counted in Findings for the organization: dimensions Red, Yellow and Gray, with their owners.</div>'+
+   '<div><b>Instrument design</b>Recorded on GR-012 in the register, not on any organization. Example: whether a dimension really behaves as a hard gate.</div>'+
+   '<div><b>Reference model</b>Raised on the work side and logged in the change log when applied. Example: whether 7.4.4 needs activities of its own.</div></div></div>';
+  h+='<div class="card"><h3>What building it would take</h3><ul class="f"><li><b>Work-side half:</b> computed from data the sandbox already holds; no new data.</li><li><b>Her half:</b> a readiness record per organization, role and transition, with the evidence fields the element grid already uses (type, source role, reference, confidence, date), saved through the Worker like assessments. Nothing goes in until the three pilots have tested the instrument (her sequence).</li><li><b>Findings view:</b> a readiness line per organization, kept apart from the work-side exceptions.</li><li><b>Top-of-catalog:</b> the Oversight body variant, once GiGi agrees the name (work-side proposal 3).</li></ul></div>';
+  document.getElementById('main').innerHTML=h;}
+draw();
+</script>
+</body></html>
