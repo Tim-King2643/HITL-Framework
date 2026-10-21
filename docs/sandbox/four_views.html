@@ -314,7 +314,9 @@ function procRaciMain(){
       x.rows.map(r=>'<tr'+(r.letter==='A'?' class="own"':'')+'><td>'+esc(r.r)+'</td><td class="nw">'+RACI_WORD[r.letter]+'</td><td class="nw small">'+cnts(r.c)+'</td></tr>').join('')+'</table>'+
       (xs.length?'<div class="small" style="margin-top:6px">Outside the catalog: '+xs.map(t=>esc(t)+' ('+x.X[t].join(', ')+')').join(' · ')+'</div>':'')+'</div>'+
       '<div><div class="plbl">Its activities</div><table class="pr"><tr><th>Activity</th><th>Accountable</th><th>Consequence of Error</th></tr>'+
-      p.acts.map(c=>'<tr><td><span class="code">'+c+'</span> '+esc(ACT[c].name)+'</td><td>'+esc(RACI_ACT[c].A)+'</td><td class="nw" style="color:'+CONSC[ACT[c].cons]+'">'+ACT[c].cons+'</td></tr>').join('')+'</table></div></div>'+nPanel(p.code)+'</div>';});
+      p.acts.map(c=>{const K='pc'+c,on=opened[K],tg='opened[\''+K+'\']=!opened[\''+K+'\'];render()';
+        return '<tr><td><span class="code">'+c+'</span> '+esc(ACT[c].name)+'</td><td>'+esc(RACI_ACT[c].A)+'</td><td class="nw"><span class="acons'+(on?' sel':'')+'" style="color:'+CONSC[ACT[c].cons]+'" onclick="'+tg+'" title="Consequence of Error">'+ACT[c].cons+'</span></td></tr>'+
+          (on?'<tr><td colspan="3">'+coeBox(ACT[c],null,'<button class="ix" onclick="'+tg+'">\u00d7</button>')+'</td></tr>':'');}).join('')+'</table></div></div>'+nPanel(p.code)+'</div>';});
   return h;
 }
 // People counts only the activities in the chosen process group, the same selector as Work.
@@ -828,7 +830,9 @@ function dpBox(a){const m=dpAnalysis(),r=m[a.code],at=isOrg()?'at '+esc(ORGNAME(
     r.groups.forEach(g=>{const others=g.dps.filter(d=>d.c!==a.code),oo=others.map(d=>d.op).join(''),mine=wpOps(a.code,g.w);
       const line='this activity '+vlist(mine,V1)+' the work product'+(others.length?', the following activit'+(others.length>1?'ies '+vlist(oo,VN):'y '+vlist(oo,V1))+' it':r.dp?' and is its only decision point':'');
       h+='<tr><td colspan="3" style="padding-top:8px">'+wpName(g.w)+' &middot; '+line+(others.length||r.dp?'.':'; <span class="red">no decision point creates, updates or deletes it.</span>')+'</td></tr>';
-      h+=others.map(d=>'<tr><td><span class="anm"><span class="code">'+d.c+'</span><span>'+esc(ACT[d.c].name)+'</span></span></td><td>'+esc(ACT[d.c].Aroles[0])+'</td><td style="color:'+CONSC[ACT[d.c].cons]+'">'+ACT[d.c].cons+'</td></tr>').join('');});
+      h+=others.map(d=>{const K='dc'+a.code+d.c,on=opened[K],tg='event.stopPropagation();opened[\''+K+'\']=!opened[\''+K+'\'];render()';
+        return '<tr><td><span class="anm"><span class="code">'+d.c+'</span><span>'+esc(ACT[d.c].name)+'</span></span></td><td>'+esc(ACT[d.c].Aroles[0])+'</td><td><span class="acons'+(on?' sel':'')+'" style="color:'+CONSC[ACT[d.c].cons]+'" onclick="'+tg+'" title="Consequence of Error">'+ACT[d.c].cons+'</span></td></tr>'+
+          (on?'<tr><td colspan="3">'+coeBox(ACT[d.c],null,'<button class="ix" onclick="'+tg+'">\u00d7</button>')+'</td></tr>':'');}).join('');});
     h+='</table>';}
   return h+'<div class="prov">Proposed governance depth by Consequence of Error; GR-042 defines the record&rsquo;s fields. Modeled.</div></div>';}
 function dpSummary(){const m=dpAnalysis(),L=DATA.acts,dp=L.filter(a=>m[a.code].dp),exc=dp.filter(a=>m[a.code].lead==='AI-led'),ai=L.filter(a=>m[a.code].ai),
