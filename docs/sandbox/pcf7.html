@@ -1716,7 +1716,8 @@ window.FV_SOURCE = { PCF7, WR_DATA, ROLE_TAXONOMY, ACTIVITY_CRUD, ACTIVITY_RACI,
 function showFourViews(v) {
   const f = document.getElementById('fv-frame');
   if (!f) return;
-  if (!f.getAttribute('src')) { f.setAttribute('src', 'four_views.html?view=' + v); return; }
+  // The time stamp makes the browser fetch the current four_views.html, not a cached copy from before a publish.
+  if (!f.getAttribute('src')) { f.setAttribute('src', 'four_views.html?view=' + v + '&t=' + Date.now()); return; }
   try { if (f.contentWindow && f.contentWindow.fvShow) f.contentWindow.fvShow(v); } catch (e) {}
 }
 // After the Work view saves or resets an element-level assessment: the same update the assessment panel makes.
