@@ -114,7 +114,7 @@ function humanHalf(n){const m=META[n];
   let h='<div class="half h"><h4>What it means for the person</h4><div class="who">Human Impact &amp; Readiness · GR-012 · GiGi&rsquo;s lead · recorded and owned by her layer</div>';
   if(ORG==='ref') return h+'<p class="overall ph">Not assessed: readiness is specific to an organization. The Reference Model carries the work side only.</p>'+dimTable(null)+'</div>';
   if(m.pilot!=='run') return h+'<p class="overall"><b>'+m.note+'</b> From GiGi&rsquo;s three-role validation, what to expect:</p><table class="k"><tr><td class="l">What repeats</td><td>'+m.repeats+'</td></tr><tr><td class="l">What changes</td><td>'+m.changes+'</td></tr></table><div style="margin-top:8px">'+dimTable(null,'Pilot not yet run')+'</div></div>';
-  return h+'<p class="overall"><b>Insufficient Evidence</b> &middot; not Ready and not Not Ready. '+m.note+' Every finding is Gray until organization-specific evidence is recorded; the modeled concern is kept separately.</p>'+dimTable(true)+'</div>';}
+  return h+'<p class="overall"><b>Insufficient Evidence</b>: neither Ready nor Not Ready. '+m.note+' Every finding is Gray until organization-specific evidence is recorded; the modeled concern is kept separately.</p>'+dimTable(true)+'</div>';}
 function dimTable(full,na){
   let h='<table class="d"><tr><th>Dimension</th><th>Finding</th>'+(full?'<th>Modeled concern (GiGi) &middot; what would move it</th>':'')+'<th>Owner (role)</th></tr>';
   DIMS.forEach(d=>{if(d[0]==='#'){h+='<tr class="grp"><td colspan="'+(full?4:3)+'">'+esc(d[1])+'</td></tr>';return;}
