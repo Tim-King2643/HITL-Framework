@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate"><head><meta charset="UTF-8"><meta name="google" content="notranslate"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Human-Side Test Pack</title>
+<style>
+:root{--navy:#1B4F8A;--navy-d:#0D2D4F;--dark:#0D1B2A;--gray:#444;--lgray:#6B7A90;--bg:#F4F6FB;--border:#DDE3EE;--teal:#0E5E57;--tealbg:#E7F3F1}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);padding-bottom:60px}
+.sk{background:#FEF3C7;border-bottom:2px solid #B8873F;color:#7A5A1E;font-size:12.5px;text-align:center;padding:9px 16px}
+.sk a{color:#7A5A1E;font-weight:600}
+.wrap{max-width:1300px;margin:0 auto;padding:18px 16px;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
+.side{flex:0 1 340px;min-width:260px;position:sticky;top:12px}
+.side h1{font-family:Georgia,serif;font-size:21px;color:var(--navy-d);line-height:1.3;margin-bottom:8px}
+.side p,.side li{font-size:12.5px;color:var(--gray);line-height:1.6}
+.side p{margin-bottom:10px}
+.side ol,.side ul{margin:0 0 10px 18px}.side li{margin-bottom:4px}
+.side h5{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin:16px 0 6px}
+.prog{font-size:13px;color:var(--navy-d);font-weight:600}
+.btn{font:inherit;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:6px;border:1px solid #C6D8EE;background:#fff;color:var(--navy-d);cursor:pointer;margin:6px 6px 0 0}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.main{flex:1;min-width:300px}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.card.done{border-left:4px solid var(--teal)}
+.card h3{font-size:14.5px;color:var(--navy-d);margin-bottom:3px;font-weight:600}
+.sub{font-size:12px;color:var(--lgray);line-height:1.5}
+.th{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.tid{flex:0 0 auto;font-family:Consolas,monospace;font-size:12px;font-weight:700;color:#fff;background:var(--teal);border-radius:5px;padding:3px 8px}
+.code{font-family:Consolas,monospace;font-size:12.5px;color:var(--lgray);font-weight:400}
+.why{font-size:12.5px;line-height:1.5;background:#F7F9FC;border:1px solid var(--border);border-radius:6px;padding:7px 11px;margin-bottom:12px}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:20px}
+@media(max-width:880px){.cols{grid-template-columns:1fr}.side{position:static}}
+.lbl{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin-bottom:5px;font-weight:600}
+table.g{width:100%;border-collapse:collapse;font-size:12.5px}
+.g th{text-align:left;font-size:10.5px;color:var(--lgray);font-weight:600;padding:3px 6px;border-bottom:1px solid var(--border)}
+.g td{padding:4px 6px;border-bottom:1px solid #EEF1F6;vertical-align:top}
+.g td.el{white-space:nowrap}.g td.ld{white-space:nowrap;font-weight:600}.g td.ph{color:var(--gray);font-size:12px}.g td.cap{color:var(--lgray);white-space:nowrap}
+.g td.ld.p{color:var(--navy-d)}.g td.ld.ai{color:#8A94A6;font-weight:400}
+.ctl{color:var(--navy);margin-left:4px}
+.hs{background:var(--tealbg);border:1px solid #BFDDD8;border-radius:8px;padding:10px 12px}
+.hs table{width:100%;border-collapse:collapse;font-size:12.5px}
+.hs td{padding:5px 4px;border-bottom:1px solid #D5E5E2;vertical-align:top;line-height:1.5}
+.hs td.l{color:var(--teal);font-weight:600;width:30%}
+.small{font-size:11.5px;color:var(--lgray)}
+.ask{margin-top:12px;border-top:1px solid #EEF1F6;padding-top:10px}
+.ask .row{display:grid;grid-template-columns:180px 1fr;gap:10px;align-items:start;margin-bottom:6px;font-size:12.5px}
+.ask .row label{color:var(--teal);font-weight:600;padding-top:5px}
+.ask textarea{width:100%;font:inherit;font-size:12.5px;padding:5px 8px;border:1px solid #C6D8EE;border-radius:6px;min-height:34px;resize:vertical}
+@media(max-width:700px){.ask .row{grid-template-columns:1fr}}
+.res{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:12.5px}
+.res select{font:inherit;font-size:12.5px;padding:4px 6px;border:1px solid #C6D8EE;border-radius:6px}
+textarea.out{width:100%;height:160px;font:12px Consolas,monospace;margin-top:8px;padding:8px;border:1px solid #C6D8EE;border-radius:6px;display:none}
+@media print{.side{position:static}.btn,textarea.out{display:none}}
+</style></head><body>
+<div class="sk"><strong>Test pack</strong> · GR-053 human-side pressure test of the element grid, for GiGi · <a href="../requirements_register.html#GR-053">GR-053</a> · <a href="../../sandbox/pcf7.html">Open the sandbox</a> · <a href="../index.html">WIP hub</a></div>
+<div class="wrap">
+<div class="side">
+  <h1>The element grid from the human side</h1>
+  <p>Six activities where the human questions bite hardest. Each card shows what the element grid says at the activity&rsquo;s Progression Ceiling, the furthest AI may take it, and reads that against your five questions: the judgment that remains, accountability, decision authority, escalation burden, and whether the work left with the person gets lighter or harder. You record what it means for the person.</p>
+  <p>Everything here is Modeled, from the Reference Model. Nothing is about a real organization, so a finding is about the model or the instrument, or names the evidence an organization would need.</p>
+  <h5>Set up once</h5>
+  <ol>
+    <li>Open the <a href="../../sandbox/pcf7.html">sandbox</a>. The Reference Model is enough; no assessment is needed.</li>
+    <li>In <b>Work</b>, choose the case&rsquo;s process group and open its process with <b>+</b>.</li>
+  </ol>
+  <h5>For each case</h5>
+  <ol>
+    <li>In Work, click the activity&rsquo;s steps up to its ceiling to see who does each part of the work at each stage, and its <b>Decision Point</b> for who answers for it.</li>
+    <li>In <b>People</b>, &ldquo;What is left for a person as the work moves up&rdquo;, set the stage to the ceiling to see the role&rsquo;s load.</li>
+    <li>Write what it means for the person under each question; leave any blank that says nothing new.</li>
+    <li>Say whether the model reads the case right, and what kind of finding it is.</li>
+  </ol>
+  <h5>Kinds of finding</h5>
+  <ul>
+    <li><b>Reference model:</b> the grid, a ceiling or a role assignment looks wrong.</li>
+    <li><b>Instrument design:</b> GR-012 needs to ask something differently.</li>
+    <li><b>Needs organization evidence:</b> it can only be answered in a real organization.</li>
+  </ul>
+  <h5>Progress</h5>
+  <div class="prog" id="prog"></div>
+  <button type="button" class="btn primary" onclick="copyOut()">Copy results</button><button type="button" class="btn" onclick="clearAll()">Clear</button>
+  <textarea class="out" id="out" readonly></textarea>
+  <p class="small" style="margin-top:8px">Your notes stay in this browser only. Copy them into an email to Tim when you finish.</p>
+</div>
+<div class="main" id="main"></div>
+</div>
+<script>
+const CASES=[{"code":"7.4.4","name":"Manage employee grievances","proc":"7.4.4 Manage employee grievances","A":"HRBP Manager","R":["HRBP Manager"],"C":[],"I":["Director of HR Ops"],"x":{"I":["Legal*"]},"cons":"Critical","cf":["human","legal"],"ceiling":"Augmentation","factors":["Legal / fiduciary duty","Relational / emotional stakes","Human judgment floor"],"ctl":"Decide","els":["Research","Evaluate","Draft","Verify","Decide","Produce / Execute","Communicate"],"obj":{"Research":"Gather the grievance facts, the relevant CBA provisions, prior ER cases and contractual deadlines","Evaluate":"Investigate and assess the merit: contract interpretation, precedent, retaliation risk","Draft":"Write the step answer or settlement proposal","Verify":"Check the answer against the CBA, timelines and past practice","Decide":"Grant, deny or settle at each grievance step","Produce / Execute":"Record the Grievance Case, track contractual deadlines, carry out the remedy","Communicate":"Meet with the grievant and union representative; deliver the decision"},"na":{},"caps":{"Research":["AI",""],"Evaluate":["Human-led","Legal / fiduciary duty, Human judgment floor"],"Draft":["Human-led","Legal / fiduciary duty, Human judgment floor"],"Verify":["Human-led","Legal / fiduciary duty"],"Decide":["Human","control element"],"Produce / Execute":["AI",""],"Communicate":["Human-led","Relational / emotional stakes"]},"stages":{"Human-only":{"Research":"Human","Evaluate":"Human","Draft":"Human","Verify":"Human","Decide":"Human","Produce / Execute":"Human","Communicate":"Human"},"Judgment":{"Research":"AI","Evaluate":"Human-led","Draft":"Human","Verify":"Human","Decide":"Human","Produce / Execute":"Human","Communicate":"Human"},"Augmentation":{"Research":"AI","Evaluate":"Human-led","Draft":"Human-led","Verify":"Human-led","Decide":"Human","Produce / Execute":"Human-led","Communicate":"Human-led"}},"duties":{"Human-only":{"HRBP Manager":"work"},"Judgment":{"HRBP Manager":"work"},"Augmentation":{"HRBP Manager":"work"}},"dp":true,"dpEl":"Decide","dpLead":"Human","feeds":[],"roleShare":{"HRBP Manager":{"base":[10,25],"ceil":[12,25],"tier":"Managerial","reportsTo":"Director of HR Ops"}}},{"code":"7.2.3.4","name":"Select and reject candidates","proc":"7.2.3 Screen and select candidates","A":"Director of TA","R":["Recruiter"],"C":["HRBP Manager"],"I":[],"x":{"R":["Hiring Managers*"]},"cons":"Critical","cf":["human","legal","reversibility"],"ceiling":"Augmentation","factors":["Legal / fiduciary duty","Human judgment floor"],"ctl":"Decide","els":["Research","Evaluate","Draft","Verify","Decide","Produce / Execute","Communicate"],"obj":{"Research":"Read the Requisition Record and the Applicant Records with interview and test results","Evaluate":"Compare candidates against the selection criteria","Draft":"Write the selection rationale","Verify":"Check the decision is consistent and non-discriminatory","Decide":"Select or reject each candidate","Produce / Execute":"Update the Applicant Records","Communicate":"Tell candidates the outcome"},"na":{},"caps":{"Research":["AI",""],"Evaluate":["Human-led","Legal / fiduciary duty, Human judgment floor"],"Draft":["Human-led","Legal / fiduciary duty, Human judgment floor"],"Verify":["Human-led","Legal / fiduciary duty"],"Decide":["Human","control element"],"Produce / Execute":["AI",""],"Communicate":["AI",""]},"stages":{"Human-only":{"Research":"Human","Evaluate":"Human","Draft":"Human","Verify":"Human","Decide":"Human","Produce / Execute":"Human","Communicate":"Human"},"Judgment":{"Research":"AI","Evaluate":"Human-led","Draft":"Human","Verify":"Human","Decide":"Human","Produce / Execute":"Human","Communicate":"Human"},"Augmentation":{"Research":"AI","Evaluate":"Human-led","Draft":"Human-led","Verify":"Human-led","Decide":"Human","Produce / Execute":"Human-led","Communicate":"Human-led"}},"duties":{"Human-only":{"Director of TA":"answer","Recruiter":"work"},"Judgment":{"Director of TA":"answer","Recruiter":"work"},"Augmentation":{"Director of TA":"answer","Recruiter":"work"}},"dp":true,"dpEl":"Decide","dpLead":"Human","feeds":["7.2.2.2","7.2.3.2","7.2.3.3","7.2.4.3","7.2.5.4"],"roleShare":{"Director of TA":{"base":[0,2],"ceil":[1,3],"tier":"Managerial","reportsTo":"SVP Talent Management"},"Recruiter":{"base":[5,18],"ceil":[5,10],"tier":"Operational","reportsTo":"Director of TA"}}},{"code":"7.2.1.3","name":"Approve job requisition","proc":"7.2.1 Manage employee requisitions","A":"HRBP Manager","R":["HRBP Manager"],"C":["Director of TA"],"I":["Recruiter"],"x":{"I":["Hiring Managers*"]},"cons":"High","cf":["ops","reversibility"],"ceiling":"Oversight","factors":["Governance / sign-off"],"ctl":"Decide","els":["Research","Evaluate","Draft","Verify","Decide","Produce / Execute","Communicate"],"obj":{"Research":"Read the Requisition Record and the Workforce Plan","Evaluate":"Assess the business need and budget","Draft":"Write approval comments or conditions","Verify":"Check headcount, budget and pay band","Decide":"Approve or reject the requisition","Produce / Execute":"Update the Requisition Record status","Communicate":"Tell the requester and recruiter the outcome"},"na":{},"caps":{"Research":["AI",""],"Evaluate":["AI",""],"Draft":["AI",""],"Verify":["AI",""],"Decide":["Human","control element · Governance / sign-off"],"Produce / Execute":["AI",""],"Communicate":["AI",""]},"stages":{"Human-only":{"Research":"Human","Evaluate":"Human","Draft":"Human","Verify":"Human","Decide":"Human","Produce / Execute":"Human","Communicate":"Human"},"Judgment":{"Research":"AI","Evaluate":"Human-led","Draft":"Human","Verify":"Human","Decide":"Human","Produce / Execute":"Human","Communicate":"Human"},"Augmentation":{"Research":"AI","Evaluate":"Human-led","Draft":"Human-led","Verify":"Human-led","Decide":"Human","Produce / Execute":"Human-led","Communicate":"Human-led"},"Oversight":{"Research":"AI","Evaluate":"AI","Draft":"AI","Verify":"AI","Decide":"Human","Produce / Execute":"AI","Communicate":"AI"}},"duties":{"Human-only":{"HRBP Manager":"work"},"Judgment":{"HRBP Manager":"work"},"Augmentation":{"HRBP Manager":"work"},"Oversight":{"HRBP Manager":"approve"}},"dp":true,"dpEl":"Decide","dpLead":"Human","feeds":["7.2.4.3"],"roleShare":{"HRBP Manager":{"base":[10,25],"ceil":[12,25],"tier":"Managerial","reportsTo":"Director of HR Ops"}}},{"code":"7.6.2.2","name":"Manage leave of absence","proc":"7.6.2 Manage separation","A":"HRBP Manager","R":["HR Generalist"],"C":["Compensation & Benefits Manager"],"I":[],"x":{"C":["Legal*"],"I":["Managers*"]},"cons":"High","cf":["legal"],"ceiling":"Agent-delegation","factors":["Legal / fiduciary duty"],"ctl":"Decide","els":["Research","Evaluate","Draft","Verify","Decide","Produce / Execute","Communicate"],"obj":{"Research":"Read the leave request and Time and Attendance Records","Evaluate":"Determine eligibility under FMLA and policy","Draft":"Prepare the leave designation","Verify":"Check legal requirements and the certification","Decide":"Approve or deny the leave","Produce / Execute":"Update the Benefits Enrollment and Employee Master Record","Communicate":"Send leave notices to the employee and manager"},"na":{},"caps":{"Research":["AI",""],"Evaluate":["AI-led","Legal / fiduciary duty"],"Draft":["AI-led","Legal / fiduciary duty"],"Verify":["AI-led","Legal / fiduciary duty"],"Decide":["AI-led","control element"],"Produce / Execute":["AI",""],"Communicate":["AI",""]},"stages":{"Human-only":{"Research":"Human","Evaluate":"Human","Draft":"Human","Verify":"Human","Decide":"Human","Produce / Execute":"Human","Communicate":"Human"},"Judgment":{"Research":"AI","Evaluate":"Human-led","Draft":"Human","Verify":"Human","Decide":"Human","Produce / Execute":"Human","Communicate":"Human"},"Augmentation":{"Research":"AI","Evaluate":"Human-led","Draft":"Human-led","Verify":"Human-led","Decide":"Human","Produce / Execute":"Human-led","Communicate":"Human-led"},"Oversight":{"Research":"AI","Evaluate":"AI-led","Draft":"AI-led","Verify":"AI-led","Decide":"Human","Produce / Execute":"AI","Communicate":"AI"},"Agent-delegation":{"Research":"AI","Evaluate":"AI-led","Draft":"AI-led","Verify":"AI-led","Decide":"AI-led","Produce / Execute":"AI","Communicate":"AI"}},"duties":{"Human-only":{"HRBP Manager":"answer","HR Generalist":"work"},"Judgment":{"HRBP Manager":"answer","HR Generalist":"work"},"Augmentation":{"HRBP Manager":"answer","HR Generalist":"work"},"Oversight":{"HRBP Manager":"answer","HR Generalist":"approve"},"Agent-delegation":{"HRBP Manager":"escIn","HR Generalist":"exc"}},"dp":true,"dpEl":"Decide","dpLead":"AI-led","feeds":["7.2.4.3","7.6.1","7.6.2.3","7.6.3.1"],"roleShare":{"HRBP Manager":{"base":[10,25],"ceil":[12,25],"tier":"Managerial","reportsTo":"Director of HR Ops"},"HR Generalist":{"base":[6,18],"ceil":[6,13],"tier":"Operational","reportsTo":"HRBP Manager"}}},{"code":"7.2.1.4","name":"Post job requisitions","proc":"7.2.1 Manage employee requisitions","A":"Recruiter","R":["Recruiter"],"C":[],"I":["HRBP Manager"],"x":{"I":["Hiring Managers*"]},"cons":"Moderate","cf":["legal","reversibility"],"ceiling":"Automation","factors":[],"ctl":"Verify","els":["Research","Draft","Verify","Produce / Execute"],"obj":{"Research":"Read the approved requisition: role, location, pay band, approval status","Draft":"Write the posting text from the requisition and job profile","Verify":"Check the posting matches the requisition and carries required notices (EEO, pay range)","Produce / Execute":"Publish to the applicant tracking system and job boards (creates the Job Posting)"},"na":{"Evaluate":"7.2.2.1 and 7.2.2.6 choose channels","Decide":"decided upstream at 7.2.1.3","Communicate":"7.2.1.6 notifies the hiring manager"},"caps":{"Research":["AI",""],"Draft":["AI",""],"Verify":["AI",""],"Produce / Execute":["AI",""]},"stages":{"Human-only":{"Research":"Human","Draft":"Human","Verify":"Human","Produce / Execute":"Human"},"Judgment":{"Research":"AI","Draft":"Human","Verify":"Human","Produce / Execute":"Human"},"Augmentation":{"Research":"AI","Draft":"Human-led","Verify":"Human","Produce / Execute":"Human-led"},"Oversight":{"Research":"AI","Draft":"AI","Verify":"Human","Produce / Execute":"AI"},"Agent-delegation":{"Research":"AI","Draft":"AI","Verify":"AI-led","Produce / Execute":"AI"},"Automation":{"Research":"AI","Draft":"AI","Verify":"AI","Produce / Execute":"AI"}},"duties":{"Human-only":{"Recruiter":"work"},"Judgment":{"Recruiter":"work"},"Augmentation":{"Recruiter":"work"},"Oversight":{"Recruiter":"approve"},"Agent-delegation":{"Recruiter":"exc"},"Automation":{"Recruiter":"answer"}},"dp":false,"dpEl":"Verify","dpLead":"AI","feeds":[],"roleShare":{"Recruiter":{"base":[5,18],"ceil":[5,10],"tier":"Operational","reportsTo":"Director of TA"}}},{"code":"7.1.1.2","name":"Define HR and business function roles and accountability","proc":"7.1.1 Develop human resources strategy","A":"CHRO","R":["Director of HR Ops"],"C":["SVP Talent Management","VP People & Culture","HRBP Manager"],"I":[],"x":{"I":["All Managerial-tier"]},"cons":"High","cf":["human","reach","reversibility"],"ceiling":"Augmentation","factors":["Accountability","Human judgment floor"],"ctl":"Decide","els":["Research","Evaluate","Draft","Verify","Decide","Produce / Execute","Communicate"],"obj":{"Research":"Gather the current operating model and decision rights","Evaluate":"Find overlaps and gaps in who owns which decisions","Draft":"Write the roles and accountabilities for HR and the business","Verify":"Check every key decision has one accountable owner","Decide":"Agree the accountability model with the executive team","Produce / Execute":"Update the HR Strategy with the roles and accountabilities","Communicate":"Explain the new accountabilities to the leaders who hold them"},"na":{},"caps":{"Research":["AI",""],"Evaluate":["Human-led","Human judgment floor"],"Draft":["Human-led","Accountability, Human judgment floor"],"Verify":["AI",""],"Decide":["Human","control element"],"Produce / Execute":["AI",""],"Communicate":["AI",""]},"stages":{"Human-only":{"Research":"Human","Evaluate":"Human","Draft":"Human","Verify":"Human","Decide":"Human","Produce / Execute":"Human","Communicate":"Human"},"Judgment":{"Research":"AI","Evaluate":"Human-led","Draft":"Human","Verify":"Human","Decide":"Human","Produce / Execute":"Human","Communicate":"Human"},"Augmentation":{"Research":"AI","Evaluate":"Human-led","Draft":"Human-led","Verify":"Human-led","Decide":"Human","Produce / Execute":"Human-led","Communicate":"Human-led"}},"duties":{"Human-only":{"CHRO":"answer","Director of HR Ops":"work"},"Judgment":{"CHRO":"answer","Director of HR Ops":"work"},"Augmentation":{"CHRO":"answer","Director of HR Ops":"work"}},"dp":true,"dpEl":"Decide","dpLead":"Human","feeds":["7.1.1.1","7.1.1.3","7.1.1.4","7.1.1.5","7.1.1.6","7.1.1.8","7.1.1.10","7.1.3.4"],"roleShare":{"CHRO":{"base":[0,0],"ceil":[0,0],"tier":"Executive","reportsTo":null},"Director of HR Ops":{"base":[3,8],"ceil":[3,8],"tier":"Managerial","reportsTo":"CHRO"}}}];
+const FOCUS=[['judgment','Remaining judgment'],['accountability','Accountability'],['authority','Decision authority'],['escalation','Escalation burden'],['burden','Lighter or harder?']];
+const WHY={
+ '7.4.4':'Your grievance pilot&rsquo;s activity. One role does, decides and answers for all of it.',
+ '7.2.3.4':'Critical, with two roles: the Recruiter does the work, Director of TA answers for it. Where the weakest-link rule would apply.',
+ '7.2.1.3':'At its ceiling AI prepares every requisition and the HRBP Manager approves each one: the verification tax.',
+ '7.6.2.2':'At its ceiling AI handles the routine cases; a person sees only flagged exceptions, and High ones go up a level.',
+ '7.2.1.4':'At its ceiling no person is in the instance at all, yet the Recruiter still answers for it: a named control is needed.',
+ '7.1.1.2':'The executive case: the CHRO decides and answers, another role does the work, and there is no manager above.'};
+const KEY='hitl-human-side-test-pack-v1';
+let st={};try{st=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){st={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+const pct=(a,b)=>b?Math.round(100*a/b)+'%':'—';
+const PERSON=v=>v==='Human'||v==='Human-led'||v==='AI-led';
+const DUTY={work:'does the work in every instance',approve:'approves every instance',exc:'handles flagged exceptions only',escIn:'receives the High or Critical exceptions',answer:'answers for it'};
+function human(c){const g=c.stages[c.ceiling],ctl=c.ctl,d=c.duties[c.ceiling];
+  const kept=c.els.filter(e=>PERSON(g[e]));
+  const judgment=kept.length?kept.map(e=>e+' ('+g[e]+')').join(', '):'None: AI does every element.';
+  const roles=Object.keys(d);
+  const acc=c.A+' is Accountable'+(c.R.length&&!(c.R.length===1&&c.R[0]===c.A)?'; '+c.R.join(', ')+' Responsible':' and Responsible')+'. '+(c.ceiling==='Automation'?'No person is in the instance, so '+c.A+' answers with nothing to review: a named control is needed.':'Accountability does not move with the work.');
+  const lead=g[ctl];
+  const auth=lead==='Human'?'A person holds '+ctl+' on every instance.':lead==='Human-led'?'A person leads '+ctl+' on every instance, with AI assisting.':lead==='AI-led'?'AI leads '+ctl+'; a person '+(ctl==='Verify'?'verifies':'decides')+' only the instances flagged to them.':'AI holds '+ctl+'; no person '+(ctl==='Verify'?'verifies':'decides')+' any instance.';
+  const exc=roles.filter(r=>d[r]==='exc'),up=roles.filter(r=>d[r]==='escIn');
+  const escl=exc.length?exc.join(', ')+' handles flagged exceptions'+(up.length?'; High or Critical ones go to '+up.join(', ')+' (the Accountable role).':'.'):c.ceiling==='Oversight'?'No exception path: a person approves every instance instead.':c.ceiling==='Automation'?'No person in the instance and no exception path.':'No exception path: a person is in every instance.';
+  const burden=Object.entries(c.roleShare).map(([r,x])=>x.ceil[1]?r+': '+pct(x.base[0],x.base[1])+' ('+x.base[0]+' of '+x.base[1]+') → '+pct(x.ceil[0],x.ceil[1])+' ('+x.ceil[0]+' of '+x.ceil[1]+') of its remaining work High or Critical':r+': does none of the work itself; '+(x.tier==='Executive'?'its share is in its decisions':'')).join('<br>');
+  const rd=roles.map(r=>r+' '+DUTY[d[r]]).join('; ');
+  return '<div class="hs"><table>'+
+   '<tr><td class="l">Remaining judgment</td><td>'+judgment+'</td></tr>'+
+   '<tr><td class="l">Accountability</td><td>'+acc+'</td></tr>'+
+   '<tr><td class="l">Decision authority</td><td>'+auth+(c.dp?' It is a decision point.':' It is not a decision point.')+'</td></tr>'+
+   '<tr><td class="l">Escalation burden</td><td>'+escl+'</td></tr>'+
+   '<tr><td class="l">Lighter or harder?</td><td>'+burden+'<div class="small">High or Critical share of each role&rsquo;s work still left to a person, at the Human-only baseline → with every activity at its ceiling (GR-029).</div></td></tr>'+
+   '<tr><td class="l">At the ceiling</td><td>'+rd+'.</td></tr></table></div>';}
+function grid(c){const g=c.stages[c.ceiling];
+  return '<table class="g"><tr><th>Element</th><th>What it acts on</th><th>Lead at '+c.ceiling+'</th><th>Element ceiling</th></tr>'+
+   c.els.map(e=>'<tr><td class="el">'+e+(e===c.ctl?'<span class="ctl" title="Control element">&#9670;</span>':'')+'</td><td class="ph">'+esc(c.obj[e]||'')+'</td><td class="ld '+(PERSON(g[e])?'p':'ai')+'">'+g[e]+'</td><td class="cap">'+(c.caps[e]?c.caps[e][0]:'')+'</td></tr>').join('')+'</table>'+
+   (Object.keys(c.na).length?'<div class="small" style="margin-top:6px">Not part of this activity: '+Object.keys(c.na).map(e=>e+' ('+esc(c.na[e])+')').join('; ')+'</div>':'')+
+   '<div class="small" style="margin-top:6px">&#9670; control element. Lead states: Human, Human-led and AI-led keep a person in it; AI does not.</div>';}
+function card(c,i){const id='H'+(i+1),s=st[id]||{};
+  const done=s.r;
+  return '<div class="card'+(done?' done':'')+'" id="'+id+'"><div class="th"><span class="tid">'+id+'</span><div><h3><span class="code">'+c.code+'</span> '+esc(c.name)+'</h3><div class="sub">Ceiling <b>'+c.ceiling+'</b> · Consequence of Error <b>'+c.cons+'</b> · Accountable '+esc(c.A)+(c.R.length?' · Responsible '+esc(c.R.join(', ')):'')+' · '+esc(c.proc)+'</div></div></div>'+
+   '<div class="why"><b>Why this case.</b> '+WHY[c.code]+(c.factors.length?' <span class="small">Ceiling factors: '+esc(c.factors.join(', '))+'.</span>':'')+'</div>'+
+   '<div class="cols"><div><div class="lbl">What the element grid says at '+c.ceiling+'</div>'+grid(c)+'</div><div><div class="lbl">Read against your five questions</div>'+human(c)+'</div></div>'+
+   '<div class="ask"><div class="lbl">What it means for the person</div>'+FOCUS.map(([k,l])=>'<div class="row"><label for="'+id+k+'">'+l+'</label><textarea id="'+id+k+'" data-c="'+id+'" data-k="'+k+'" rows="1">'+esc(s[k]||'')+'</textarea></div>').join('')+
+   '<div class="res"><span>Does the model read this case right?</span>'+[['right','Yes'],['misses','It misses something'],['unsure','Can&rsquo;t tell']].map(([v,l])=>'<label><input type="radio" name="'+id+'r" value="'+v+'"'+(s.r===v?' checked':'')+'> '+l+'</label>').join('')+
+   '<select data-c="'+id+'" data-k="kind"><option value="">Kind of finding&hellip;</option>'+['Reference model','Instrument design','Needs organization evidence'].map(o=>'<option'+(s.kind===o?' selected':'')+'>'+o+'</option>').join('')+'</select></div></div></div>';}
+function paint(){const n=CASES.length,d=CASES.filter((c,i)=>(st['H'+(i+1)]||{}).r).length;document.getElementById('prog').textContent=d+' of '+n+' cases done';
+  CASES.forEach((c,i)=>{const el=document.getElementById('H'+(i+1));el.classList.toggle('done',!!(st['H'+(i+1)]||{}).r);});}
+function render(){document.getElementById('main').innerHTML=CASES.map(card).join('');
+  document.querySelectorAll('textarea[data-c],select[data-c]').forEach(t=>{t.addEventListener('input',()=>{const c=t.dataset.c;st[c]=st[c]||{};st[c][t.dataset.k]=t.value;save();});t.addEventListener('change',()=>{const c=t.dataset.c;st[c]=st[c]||{};st[c][t.dataset.k]=t.value;save();});});
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.addEventListener('change',()=>{const c=r.name.slice(0,-1);st[c]=st[c]||{};st[c].r=r.value;save();paint();}));
+  paint();}
+function copyOut(){const L=['Human-side test pack (GR-053), '+new Date().toLocaleDateString()];
+  CASES.forEach((c,i)=>{const id='H'+(i+1),s=st[id]||{};L.push('');L.push(id+' '+c.code+' '+c.name+': '+(s.r?{right:'reads right',misses:'misses something',unsure:'can’t tell'}[s.r]:'not done')+(s.kind?' · '+s.kind:''));
+    FOCUS.forEach(([k,l])=>{if(s[k])L.push('  '+l+': '+s[k]);});});
+  const t=L.join('\n'),o=document.getElementById('out');o.style.display='block';o.value=t;o.select();try{navigator.clipboard.writeText(t).catch(()=>{})}catch(e){}}
+function clearAll(){st={};save();render();}
+render();
+</script>
+</body></html>
