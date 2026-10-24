@@ -166,7 +166,7 @@ const tr=(cells,cls)=>'<tr'+(cls?' class="'+cls+'"':'')+'>'+cells.map(c=>'<td>'+
 const EX={};
 EX['BR-01']=()=>{const a=ACT['7.6.1'],c=derivedCeil(a);
   return '<p>'+nm('7.6.1')+', Progression Ceiling '+c+':</p>'+tbl(['Stage','Meaning'],ST.map(s=>tr([esc(s),esc(STEPDEF[s])],rank(s)>rank(c)?'off':s===c?'hit':'')))+
-  '<div class="exp">Stages past the ceiling are closed for this activity (shown faint). Under the four views&rsquo; default (the Consequence of Error gates on), '+acts.filter(x=>derivedCeil(x)==='Automation').length+' of '+acts.length+' activities can reach Automation.</div>';};
+  '<div class="exp">Stages past the ceiling are closed for this activity (shown faint). With the Consequence of Error gates (BR-08), '+acts.filter(x=>derivedCeil(x)==='Automation').length+' of '+acts.length+' activities can reach Automation.</div>';};
 EX['BR-02']=()=>{const p=PROC['7.2.1'],L=p.acts.map(c=>ACT[c]),t={};L.forEach(a=>{const s=derivedCeil(a);t[s]=(t[s]||0)+1});
   const sum=L.reduce((x,a)=>x+HPCT[derivedCeil(a)],0);
   return '<p>Process '+nm('7.2.1')+', every activity at its ceiling:</p>'+tbl(['Activity','Ceiling','% H'],L.map(a=>tr([nm(a.code),esc(derivedCeil(a)),'<span style="float:right">'+HPCT[derivedCeil(a)]+'</span>'])))+
@@ -187,9 +187,12 @@ EX['BR-06']=()=>{const p=PROC['7.2.3'],w=worstCons(p.acts);
 EX['BR-07']=()=>{const L=PROC['7.2.1'].acts.map(c=>ACT[c]);const hi=L.find(a=>HC[a.cons]),lo=L.find(a=>!HC[a.cons]);
   const row=a=>tr([nm(a.code),esc(a.cons),esc(HC[a.cons]?a.A+' (Accountable)':(a.R.length?a.R.join(', '):a.A)+' (does the work)')]);
   return tbl(['Activity','Rating','Takes its exceptions'],[row(hi),row(lo)])+'<div class="exp">Across the catalog, '+acts.filter(a=>HC[a.cons]).length+' activities are High or Critical and send exceptions to their Accountable role; '+acts.filter(a=>!HC[a.cons]).length+' are Low or Moderate and keep them with the role doing the work.</div>';};
-EX['BR-08']=()=>{const m=acts.filter(a=>coeCap(a,a.ceiling)!==a.ceiling);const why=a=>a.cons==='Critical'&&rank(a.ceiling)>rank('Oversight')?'Critical':HC[a.cons]?a.cons:'a factor holds '+lstw([...new Set(a.f.flatMap(f=>FMAP[f]||[]))]);
-  return '<p>The gates move '+m.length+' reference ceilings:</p>'+tbl(['Activity','Rating','Ceiling','Gated','Why'],m.slice(0,8).map(a=>tr([nm(a.code),esc(a.cons),esc(a.ceiling),esc(coeCap(a,a.ceiling)),esc(why(a))])))+(m.length>8?'<div class="sm">and '+(m.length-8)+' more.</div>':'')+
-  '<div class="exp">The four views apply the gates by default; their Ceilings setting turns them off to show the GR-058 ceilings alone.</div>';};
+EX['BR-08']=()=>{const e=CL.find(x=>x.id==='CL-017');if(!e)return '<p>CL-017 not found in the change log.</p>';
+  const seg=(e.from.split('Automation: ')[1]||'').split(/\.\s/)[0],L=seg.split(/,\s*/).map(x=>x.trim()).filter(c=>ACT[c]);
+  const why=a=>HC[a.cons]?a.cons:'a factor holds '+lstw([...new Set(a.f.flatMap(f=>FMAP[f]||[]))]);
+  const now=acts.filter(a=>coeCap(a,a.ceiling)!==a.ceiling).length;
+  return '<p>Applied once, in '+esc(e.id)+' ('+esc(e.date)+'): the gates moved '+L.length+' reference ceilings from Automation to Agent-delegation.</p>'+tbl(['Activity','Rating','Ceiling now','Why the gate holds'],L.map(c=>{const a=ACT[c];return tr([nm(c),esc(a.cons),esc(a.ceiling),esc(why(a))])}))+
+  '<div class="exp">Checked against today&rsquo;s ceilings, the gates move '+now+' more: every stored ceiling already satisfies them. A new or changed ceiling is checked against the gates before it is logged.</div>';};
 EX['BR-09']=()=>{const c='7.2.3.4',a=ACT[c];
   return '<p>'+nm(c)+':</p>'+tbl(['RACI','Role'],[tr(['Accountable',''+esc(a.A)+' &mdash; the anchor']),tr(['Responsible',esc(a.R.join(', ')||'—')]),tr(['Consulted',esc(a.C.join(', ')||'—')]),tr(['Informed',esc(a.I.join(', ')||'—')])])+
   '<div class="exp">Every one of the '+acts.length+' activities has exactly one Accountable role, so every activity has an anchor; '+new Set(acts.map(a=>a.A)).size+' roles anchor at least one.</div>';};
@@ -232,7 +235,7 @@ const R=[
  def:'<p>Each activity is rated Low, Moderate, High or Critical for the worst realistic result of getting it wrong, judged on six factors: human impact, legal / regulatory exposure, operational / financial impact, trust / reputation, reach, and reversibility. The rating records which factors decided it.</p><p>A process&rsquo;s rating is the worst case of its activities.</p>'},
 {id:'BR-07',g:'coe',t:'Who takes the exceptions',st:'adopted',src:'GR-059 (Oct 10); GR-029',app:'Consequence of Error box; People view load',reads:'rating, activity RACI',
  def:'<p>When AI does the work and flags an exception:</p><ul><li>High or Critical &rarr; the Accountable role takes it.</li><li>Low or Moderate &rarr; the role doing the work takes it (Responsible, or the Accountable role when none is named).</li></ul>'},
-{id:'BR-08',g:'coe',t:'Consequence of Error gates on the ceiling',st:'proposed',src:'GR-058 (proposed gates)',app:'Four views, on by default; the Ceilings setting',reads:'rating, ceiling, ceiling factors',
+{id:'BR-08',g:'coe',t:'Consequence of Error gates on the ceiling',st:'adopted',src:'GR-058, applied CL-017',app:'Reference ceilings (applied in CL-017); the four views check every ceiling against it',reads:'rating, ceiling, ceiling factors',
  def:'<p>Two gates cap a reference ceiling by its rating:</p><ul><li>Agent-delegation &rarr; Automation is closed for High or Critical activities, and wherever a ceiling factor holds an element with a person.</li><li>Oversight &rarr; Agent-delegation is closed for Critical activities.</li></ul>'},
 {id:'BR-09',g:'acc',t:'Human Accountability Anchor',st:'adopted',src:'GR-021, GR-060',app:'Work view; decision point box',reads:'ACTIVITY_RACI',
  def:'<p>Every activity has exactly one Accountable role, and that role is its Human Accountability Anchor. The anchor does not change as the work moves up the ramp: AI can take on the work, never the accountability.</p>'},

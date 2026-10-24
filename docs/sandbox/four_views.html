@@ -234,7 +234,7 @@ const HC={High:1,Critical:1};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const pct=(n,d)=>d?Math.round(100*n/d)+'%':'—';
 // RACI is activity level (GR-060, Tim's decision Oct 10, 2026); a process's RACI is computed from its activities (procRaci).
-let S={coe:true,fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'load',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
+let S={fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'load',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
 const VIEWS=[
  {id:'work',name:'Work',q:'Where does each activity sit, and what moves next?'},
  {id:'people',name:'People',q:'What does this mean for each role?'},
@@ -244,12 +244,12 @@ function btns(list,key){return '<div class="stack">'+list.map(o=>'<button class=
 function tile(n,l,w){return '<div class="tile"><div class="n">'+n+'</div><div class="l">'+l+'</div>'+(w!=null?'<div class="was">'+w+'</div>':'')+'</div>'}
 // Consequence of Error gates (proposed Oct 14, 2026): the rating matters only at the two steps where a person stops
 // seeing every instance. Agent-delegation -> Automation is closed for High or Critical, or when a ceiling factor holds
-// an element with a person; Oversight -> Agent-delegation is closed for Critical. Toggle in the left panel.
+// an element with a person; Oversight -> Agent-delegation is closed for Critical. Applied to the reference ceilings in CL-017.
 function coeCap(a,c){const held=a.f.some(f=>FMAP[f]);
   if(c==='Automation'&&(HC[a.cons]||held)) c='Agent-delegation';
   if(a.cons==='Critical'&&rank(c)>rank('Oversight')) c='Oversight';
   return c;}
-const baseCeil=a=>S.coe?coeCap(a,a.ceiling):a.ceiling;
+const baseCeil=a=>coeCap(a,a.ceiling);
 const derivedCeil=a=>{const c=baseCeil(a);return c==='Judgment'?'Augmentation':c};
 
 /* ---------- People: load (from the GR-029/030 stress test) ---------- */
@@ -904,7 +904,10 @@ function refFindings(){
   const cnt=ST.map(s=>DATA.acts.filter(a=>derivedCeil(a)===s).length);
   const nvp=A.reduce((s,x)=>s+x.pts.length,0), hoActs=[...new Set(A.flatMap(x=>x.ho.map(h=>h.c)))];
   const accTop=Object.entries(t.roles).filter(([n,r])=>r.acc).sort((x,y)=>y[1].acc-x[1].acc).slice(0,3);
-  const changed=DATA.acts.filter(a=>a.ceiling!==derivedCeil(a));
+  // Latest change to the reference: the newest ceiling entry in the change log, with each activity's ceiling before it (from the entry) and now.
+  const lc=(SRC.CHANGE_LOG||[]).filter(e=>e.kind==='wr-ceiling').slice(-1)[0], was={};
+  if(lc) for(const m of String(lc.from||'').matchAll(/(Human-only|Judgment|Augmentation|Oversight|Agent-delegation|Automation): ((?:7(?:\.\d+)+(?:, )?)+)\./g)) m[2].split(', ').forEach(c=>{was[c]=m[1]});
+  const changed=Object.keys(was).map(c=>DATA.acts.find(a=>a.code===c)).filter(Boolean);
   let h='<div class="card"><h3>The reference at full progression</h3><div class="sub">Every activity at its Progression Ceiling. Modeled.</div><div class="tiles">'+
     tile(t.org.every+t.org.approve,'activities keep a person in every instance')+tile(t.org.exc,'run on flagged exceptions only')+tile(t.org.none,'have no person in the instance')+tile(hoActs.length,'need a named control for unchecked hand-offs')+'</div></div>';
   h+='<div class="card"><h3>What this shows</h3><ul class="find">'+
@@ -912,9 +915,10 @@ function refFindings(){
     '<li><b>People.</b> '+accTop.map(([n,r])=>n+' ('+r.acc+')').join(', ')+' hold '+pct(accTop.reduce((s,[n,r])=>s+r.acc,0),118)+' of all accountability, and it stays with them as the work moves.</li>'+
     '<li><b>Data.</b> '+nvp+' verification points: places a person checks AI-touched work before acting on it. '+hoActs.length+' activities receive AI-touched work with no person in between and must name a control.</li>'+
     '<li>'+dpFinding()+'</li></ul></div>';
-  h+='<div class="card" style="padding:0;overflow-x:auto"><div style="padding:14px 18px 6px"><h3>Latest change to the reference</h3><div class="sub">GR-058, applied in one change-log entry: '+changed.length+' ceilings derived from their element ceilings'+(S.coe?', '+DATA.acts.filter(a=>coeCap(a,a.ceiling)!==a.ceiling).length+' of them by the proposed Consequence of Error gates,':'')+' and 7.2.1.4&rsquo;s Consequence of Error from Low to Moderate.</div></div><table class="t"><thead><tr><th>Activity</th><th style="text-align:left">Ceiling</th><th class="hide-s" style="text-align:left">Ceiling factors</th></tr></thead><tbody>';
-  changed.forEach(a=>{h+='<tr><td><span class="code">'+a.code+'</span> '+esc(a.name)+'</td><td style="text-align:left;white-space:nowrap">'+a.ceiling+' → '+derivedCeil(a)+'</td><td class="hide-s" style="text-align:left">'+a.f.map(x=>FL[x]).join(', ')+'</td></tr>';});
-  h+='</tbody></table></div>';
+  if(lc){
+  h+='<div class="card" style="padding:0;overflow-x:auto"><div style="padding:14px 18px 6px"><h3>Latest change to the reference</h3><div class="sub">'+esc(lc.id)+' ('+esc(lc.date)+'): '+esc(lc.summary)+'</div></div><table class="t"><thead><tr><th>Activity</th><th style="text-align:left">Ceiling</th><th class="hide-s" style="text-align:left">Ceiling factors</th></tr></thead><tbody>';
+  changed.forEach(a=>{h+='<tr><td><span class="code">'+a.code+'</span> '+esc(a.name)+'</td><td style="text-align:left;white-space:nowrap">'+was[a.code]+' → '+derivedCeil(a)+'</td><td class="hide-s" style="text-align:left">'+a.f.map(x=>FL[x]).join(', ')+'</td></tr>';});
+  h+='</tbody></table></div>';}
   h+='<div class="outline"><h3>Test the next change</h3><p>The <a href="../wip/work_elements/element_ceilings_sketch.html">element-ceilings stress test</a> sits here, so a proposed change to the reference can be tried across all 118 activities before it is applied.</p></div>';
   return h;
 }
@@ -967,10 +971,6 @@ function printExceptionsReport(){P.fvPrintReport(XR_HTML)}
 const ORGS=[['ref','Reference Model'],['abc','ABC Test Org (test data)']];
 function pickOrg(v){if(v==='__new__'){alertNew=true;}else{S.org=v;alertNew=false;if(v==='ref'&&S.ws==='assessed')S.ws='all';}render()}
 let alertNew=false;
-function coeToggle(v){S.coe=v;loadABC();render()}
-function coeSide(){const n=DATA.acts.filter(a=>coeCap(a,a.ceiling)!==a.ceiling).length;
-  return '<h5>Ceilings</h5><div class="stack">'+[[true,'GR-058, with the Consequence of Error gates (proposed)'],[false,'GR-058 only']].map(o=>'<button class="'+(S.coe===o[0]?'on':'')+'" onclick="coeToggle('+o[0]+')">'+o[1]+'</button>').join('')+'</div>'+
-  '<p class="small" style="margin-top:6px">The gates close Agent-delegation &rarr; Automation for High or Critical activities and wherever a ceiling factor holds an element with a person, and Oversight &rarr; Agent-delegation for Critical. They move '+n+' ceilings.</p>';}
 /* ---------- Notes (the sandbox's reactions and notes, sandbox-notes-widget.js) ----------
    A small Notes link after each activity and process name (GR-044: notes on any row); notes are stored by code,
    so every earlier note shows up here. */
