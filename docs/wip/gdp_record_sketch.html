@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate"><head><meta charset="UTF-8"><meta name="google" content="notranslate"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Decision Point Record</title>
+<style>
+:root{--navy:#1B4F8A;--navy-d:#0D2D4F;--dark:#0D1B2A;--gray:#444;--lgray:#6B7A90;--faint:#A9B4C4;--bg:#F4F6FB;--border:#DDE3EE;--amber:#8A5A00;--amberbg:#FEF3C7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);padding-bottom:60px}
+.sk{background:#FEF3C7;border-bottom:2px solid #B8873F;color:#7A5A1E;font-size:12.5px;text-align:center;padding:9px 16px}
+.sk a{color:#7A5A1E;font-weight:600}
+.wrap{max-width:1240px;margin:0 auto;padding:18px 16px;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
+.side{flex:0 1 340px;min-width:260px;position:sticky;top:12px}
+.side h1{font-family:Georgia,serif;font-size:21px;color:var(--navy-d);line-height:1.3;margin-bottom:8px}
+.side p,.side li{font-size:12.5px;color:var(--gray);line-height:1.6}
+.side p{margin-bottom:10px}
+.side ol{margin:0 0 10px 18px}.side li{margin-bottom:5px}
+.side h5{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin:16px 0 6px}
+.btn{font:inherit;font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:6px;border:1px solid #C6D8EE;background:#fff;color:var(--navy-d);cursor:pointer;margin:0 6px 6px 0}
+.btn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0 6px}
+.tile{background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.tile b{display:block;font-size:20px;color:var(--navy-d)}.tile span{font-size:11.5px;color:var(--lgray);line-height:1.35;display:block}
+.main{flex:1;min-width:300px}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.card h3{font-size:14.5px;color:var(--navy-d);margin-bottom:3px;font-weight:600}
+.sub{font-size:12px;color:var(--lgray);line-height:1.5}
+.th{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.tid{flex:0 0 auto;font-family:Consolas,monospace;font-size:12px;font-weight:700;color:#fff;background:var(--navy);border-radius:5px;padding:3px 8px}
+.code{font-family:Consolas,monospace;font-size:12px;color:var(--lgray)}
+.lbl{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin:4px 0 5px;font-weight:600}
+table.g{width:100%;border-collapse:collapse;font-size:12.5px}
+.g th{text-align:left;font-size:10.5px;color:var(--lgray);font-weight:600;padding:3px 6px;border-bottom:1px solid var(--border)}
+.g td{padding:6px 6px;border-bottom:1px solid #EEF1F6;vertical-align:top;line-height:1.5}
+.g td.f{width:150px;color:var(--navy-d)}
+.g td.f .req{display:block;font-size:10.5px;color:var(--lgray)}
+.g td.src{width:72px;white-space:nowrap;font-size:11px;color:var(--lgray)}
+.g td.src.prop{color:var(--amber)}
+.g tr.off td{color:var(--faint)}.g tr.off td.f{color:var(--faint)}
+.g tr.off td .v{text-decoration:none}
+.g ul{margin:0 0 0 16px}.g li{margin-bottom:2px}
+.sm{font-size:11.5px;color:var(--lgray)}
+.was{margin-top:12px}
+.was table td{font-size:12px;color:var(--gray)}
+.find{margin-top:12px}
+.find li{font-size:12.5px;line-height:1.55;margin:0 0 6px 18px;color:var(--gray)}
+.note{font-size:12px;color:var(--amber);background:var(--amberbg);border-radius:6px;padding:6px 10px;margin-top:8px;line-height:1.5}
+table.tier{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px}
+.tier td,.tier th{border-bottom:1px solid var(--border);padding:4px 5px;text-align:left;vertical-align:top;line-height:1.45}
+.tier th{font-size:10.5px;color:var(--lgray);font-weight:600}
+.tier tr.sel td{background:#EEF3FA}
+@media(max-width:860px){.side{position:static}.g td.f{width:110px}}
+@media print{.side{position:static}.btn{display:none}}
+</style></head><body>
+<div class="sk"><strong>Sketch</strong> · GR-042: the Governed Decision Point record, written for 7.4.4 and 7.6.1 · <a href="requirements_register.html#GR-042">GR-042</a> · <a href="requirements_register.html#GR-021">GR-021</a> · <a href="../sandbox/pcf7.html">Sandbox</a> · <a href="index.html">Back to WIP hub</a></div>
+<div class="wrap">
+<div class="side">
+  <h1>The decision point record</h1>
+  <p>GR-021 made every activity point to a decision point. This sketch gives that decision point a record with a fixed set of fields, and rewrites the two decision points that already had prose entries, 7.4.4 and 7.6.1, against it.</p>
+  <p>Fields marked <b>data</b> are read from the sandbox (activity RACI, CRUD, work elements, ceiling, Consequence of Error, the old entry). Fields marked <span style="color:var(--amber)"><b>proposed</b></span> are my recommended values for you and GiGi to react to; the old entries had nothing for them.</p>
+  <h5>The fields</h5>
+  <ol>
+    <li><b>Owner</b> &mdash; the Human Accountability Anchor, the activity&rsquo;s Accountable role.</li>
+    <li><b>Decides or verifies</b> &mdash; the Decide element (or Verify, when there is no Decide).</li>
+    <li><b>Work products</b> &mdash; what the decision acts on, from the activity&rsquo;s CRUD, and the other activities that create, update or delete them.</li>
+    <li><b>Trigger condition</b> &mdash; only where AI leads and a person decides flagged instances.</li>
+    <li><b>Escalation path</b> &mdash; each condition and the role it goes to.</li>
+    <li><b>Override</b> &mdash; who can overturn the decision, and how; and how a person setting aside AI output is recorded.</li>
+    <li><b>Documentation</b> &mdash; what is written down for each decision.</li>
+    <li><b>Review cadence</b> &mdash; when the decisions are looked at again.</li>
+  </ol>
+  <h5>Required by Consequence of Error</h5>
+  <div id="tierTbl"></div>
+  <h5>Show the records as if rated</h5>
+  <div id="tierBtns"></div>
+  <h5>Show</h5>
+  <div id="showBtns"></div>
+  <h5>Result</h5>
+  <div class="tiles" id="tiles"></div>
+  <h5>Applying it</h5>
+  <p>A GDP_RECORDS table in pcf7.html, keyed by activity and covered by the change-log audit. The four data fields fill themselves for all 85 decision points; the four written fields are entered per record, Critical and High first. The decision point box in Work shows the record, with each field&rsquo;s requirement at the activity&rsquo;s rating, and Findings counts records missing a required field.</p>
+</div>
+<div class="main" id="main"></div>
+</div>
+<script>
+const CO=['Low','Moderate','High','Critical'];
+// Which fields each rating requires (GR-042 acceptance line). 'all' = identity fields every record carries.
+const FIELDS=[
+ {k:'owner',  n:'Owner',               min:0},
+ {k:'decides',n:'Decides or verifies', min:0},
+ {k:'wp',     n:'Work products',       min:0},
+ {k:'trigger',n:'Trigger condition',   min:0, flagged:true},
+ {k:'esc',    n:'Escalation path',     min:1},
+ {k:'over',   n:'Override',            min:0},
+ {k:'doc',    n:'Documentation',       min:2},
+ {k:'rev',    n:'Review cadence',      min:0}
+];
+const TIERTXT=[
+ ['Low','Owner and override. Reviewed when an exception comes up.'],
+ ['Moderate','Adds the escalation path. Reviewed periodically.'],
+ ['High','Every field, and each decision documented. Reviewed on a set cadence.'],
+ ['Critical','As High, with the evidence for each decision. Also reviewed after every override.']
+];
+const ROLE_RT={"HRBP Manager":"Director of HR Ops","Director of HR Ops":"CHRO","VP People & Culture":"CHRO","Compensation & Benefits Manager":"Director of TA"};
+const R=[
+{code:'7.4.4',name:'Manage employee grievances',cons:'Critical',ceiling:'Augmentation',control:'Decide',
+ consNote:'Grievances routinely stem from CBA violations or protected-activity retaliation, and a mishandled one is what escalates into an NLRB charge or litigation.',
+ raci:'Accountable and Responsible: HRBP Manager · Informed: Director of HR Ops, Legal*',
+ old:{decision:'Investigate and resolve employee complaint or grievance',authority:'HRBP Manager',impact:'Legal + People — litigation and reputational exposure',escalates:'Director of HR Ops / Legal / CHRO (Managerial → Executive)',trigger:'Case involves potential litigation, an executive-level employee, or regulatory exposure'},
+ f:{
+  owner:{src:'data',v:'HRBP Manager, Accountable and Responsible. Reports to Director of HR Ops.'},
+  decides:{src:'data',v:'Decide: grant, deny or settle at each grievance step.'},
+  wp:{src:'data',v:'<ul><li><span class="code">WP-7-17</span> Grievance Case &mdash; this activity creates and updates it; no other activity creates, updates or deletes it (7.4.2 reads it). The record decides on every grievance case.</li></ul><div class="sm">Reads: Collective Bargaining Agreement <span class="code">WP-7-15</span>, ER Case Record <span class="code">WP-7-14</span>.</div>'},
+  trigger:{src:'data',v:'Not needed. At its ceiling, Augmentation, a person holds Decide on every grievance, so there are no flagged instances.'},
+  esc:{src:'proposed',v:'<ul><li>Potential litigation or regulatory exposure &rarr; Director of HR Ops, with Legal*. Director of HR Ops is the owner&rsquo;s reports-to.</li><li>Grievant is an executive-level employee &rarr; CHRO.</li></ul><div class="sm">From the old entry&rsquo;s three roles on one line, split into condition and role. Both roles are already Informed on 7.4.4.</div>'},
+  over:{src:'proposed',v:'The labor agreement&rsquo;s grievance steps are the override: the grievant or union can take any step decision to the next step, and to arbitration. Inside the organization, Director of HR Ops, with Legal, can reverse or settle before the next step. Where the HRBP Manager sets aside AI research, evaluation or a draft answer, the case notes it.'},
+  doc:{src:'proposed',v:'Each step decision recorded in the Grievance Case with its evidence: the facts found, the CBA provisions applied, precedent relied on, and the contractual deadline met. An AI-assisted draft is marked as such.'},
+  rev:{src:'proposed',v:'Quarterly review of closed grievances by Director of HR Ops with Legal, and a review after every override: a step decision reversed, settled above the HRBP Manager, or lost at arbitration.'}
+ },
+ finds:[
+  'The old entry had no override, documentation or review. Those three fields are new and proposed.',
+  'The old entry&rsquo;s &ldquo;Trigger&rdquo; was the condition for escalating, not a flagged-instance trigger. It is now part of the escalation path.',
+  'Director of HR Ops is both the owner&rsquo;s reports-to and the first escalation, so the path follows the reporting line.'
+ ]},
+{code:'7.6.1',name:'Manage promotion and demotion process',cons:'High',ceiling:'Augmentation',control:'Decide',
+ consNote:'EEOC and adverse-impact liability on an individual promotion or demotion, one tier below a hire decision since it changes an existing employment relationship.',
+ raci:'Accountable and Responsible: HRBP Manager · Consulted: Compensation & Benefits Manager',
+ old:{decision:'Approve an employee promotion or demotion',authority:'HRBP Manager',impact:'Career/compensation — affects employee title, band, and pay level',escalates:'VP People & Culture (Executive)',trigger:'Promotion/demotion involves a significant compensation-band change, a contested or disputed case, or falls outside standard promotion criteria'},
+ f:{
+  owner:{src:'data',v:'HRBP Manager, Accountable and Responsible, with Compensation &amp; Benefits Manager Consulted. Reports to Director of HR Ops.'},
+  decides:{src:'data',v:'Decide: approve the promotion or demotion. Its Verify checks consistency, pay equity and non-discrimination first.'},
+  wp:{src:'data',v:'<ul><li><span class="code">WP-7-25</span> Position Change Record &mdash; this activity creates and updates it, and is the only one that does. The record decides on every position change.</li><li><span class="code">WP-7-19</span> Compensation Record &mdash; updated as a result. Also created or updated at 7.5.1.5, 7.5.1.6 and 7.6.3.1.</li><li><span class="code">WP-7-30</span> Employee Master Record &mdash; updated as a result. Also updated at 7.6.2.1, 7.6.2.2, 7.6.2.3, 7.6.3.1 and 7.7.3.</li></ul><div class="sm">For the two shared records, this record covers only the change the promotion or demotion makes. Reads: Performance Review <span class="code">WP-7-11</span>, Competency Model <span class="code">WP-7-04</span>.</div>'},
+  trigger:{src:'data',v:'Not needed. At its ceiling, Augmentation, a person holds Decide on every promotion and demotion, so there are no flagged instances.'},
+  esc:{src:'proposed',v:'<ul><li>A significant band change &rarr; Compensation &amp; Benefits Manager is consulted before the decision, then VP People &amp; Culture approves.</li><li>A contested or disputed case, or one outside the standard promotion criteria &rarr; VP People &amp; Culture.</li></ul><div class="sm">VP People &amp; Culture is outside the owner&rsquo;s reporting line (Director of HR Ops). Kept deliberately: the escalation goes to the role with authority over career moves, and the record says so.</div>'},
+  over:{src:'proposed',v:'VP People &amp; Culture can amend or reverse the decision before its effective date. After it, a correction is a new Position Change Record, not an edit, so the history stays. An employee&rsquo;s appeal of a demotion goes to VP People &amp; Culture. Where the HRBP Manager sets aside an AI assessment or draft, the record notes it.'},
+  doc:{src:'proposed',v:'Each decision documented in the Position Change Record: the criteria met, the evidence (Performance Review, Competency Model), the result of the pay-equity and non-discrimination check, and who approved.'},
+  rev:{src:'proposed',v:'Quarterly adverse-impact review of the quarter&rsquo;s promotions and demotions by VP People &amp; Culture, with Compensation &amp; Benefits Manager for pay equity.'}
+ },
+ finds:[
+  'The old entry had no override, documentation or review. Those three fields are new and proposed.',
+  'The escalation goes outside the reporting line, to VP People &amp; Culture rather than Director of HR Ops. The record keeps it and says why, so it reads as a choice, not a gap.',
+  'The decision updates two records that five or more other activities also update. The record is scoped to the change it makes, so it does not claim those records.',
+  'Compensation &amp; Benefits Manager, Consulted in the RACI, did not appear in the old entry. It now sits in the escalation path for band changes.'
+ ]}
+];
+let VIEW='actual', SHOW='both';
+const esc=s=>String(s).replace(/&(?![a-z#0-9]+;)/g,'&amp;');
+function req(fd,ti){if(fd.flagged)return 'only for flagged instances';return ti>=fd.min?'required':'not required'}
+function revFor(ti){return ['when an exception comes up','periodically','on a set cadence','on a set cadence and after every override'][ti]}
+function card(x){
+  const ti=VIEW==='actual'?CO.indexOf(x.cons):CO.indexOf(VIEW);
+  const rows=FIELDS.map(fd=>{
+    const r=x.f[fd.k],rq=req(fd,ti),off=rq==='not required';
+    let v=r.v;
+    if(fd.k==='doc'&&ti===2)v=v.replace(' with its evidence','');
+    if(fd.k==='rev'&&ti<2)v='Reviewed '+revFor(ti)+'.';
+    if(fd.k==='rev'&&ti===2)v=v.replace(/, and a review after every override[^.]*\./,'.');
+    if(fd.k==='rev'&&ti===3&&!/after every override/.test(v))v+=' Also reviewed after every override.';
+    return '<tr class="'+(off?'off':'')+'"><td class="f">'+fd.n+'<span class="req">'+(fd.k==='rev'?revFor(ti):rq)+'</span></td><td><span class="v">'+v+'</span></td><td class="src'+(r.src==='proposed'?' prop':'')+'">'+r.src+'</td></tr>';}).join('');
+  const old='<div class="was"><div class="lbl">Old entry (prose, value stream Governed Decision Points table)</div><table class="g"><tr><th>Decision</th><th>Authority</th><th>Impact</th><th>Escalates to</th><th>Trigger</th></tr><tr><td>'+esc(x.old.decision)+'</td><td>'+esc(x.old.authority)+'</td><td>'+esc(x.old.impact)+'</td><td>'+esc(x.old.escalates)+'</td><td>'+esc(x.old.trigger)+'</td></tr></table></div>';
+  const fd='<div class="find"><div class="lbl">What the rewrite found</div><ul>'+x.finds.map(t=>'<li>'+t+'</li>').join('')+'</ul></div>';
+  const tierNote=VIEW!=='actual'&&VIEW!==x.cons?'<div class="note">Shown as if rated '+VIEW+'. Its actual rating is '+x.cons+'.</div>':'';
+  return '<div class="card"><div class="th"><span class="tid">'+x.code+'</span><div><h3>'+esc(x.name)+'</h3><div class="sub">Decision Point · Consequence of Error '+x.cons+' · Progression Ceiling '+x.ceiling+' · '+esc(x.raci)+'</div><div class="sub" style="margin-top:3px">'+esc(x.consNote)+'</div></div></div>'+tierNote+
+   (SHOW!=='old'?'<div class="lbl">Record</div><table class="g">'+rows+'</table>'+fd:'')+(SHOW!=='new'?old:'')+'</div>';
+}
+function render(){
+  const ti=VIEW==='actual'?-1:CO.indexOf(VIEW);
+  document.getElementById('tierTbl').innerHTML='<table class="tier"><tr><th>Rating</th><th>The record must have</th></tr>'+TIERTXT.map((t,i)=>'<tr class="'+(i===ti?'sel':'')+'"><td>'+t[0]+'</td><td>'+t[1]+'</td></tr>').join('')+'</table><div class="sm">Owner, decides or verifies, and work products are on every record; they say what the record is.</div>';
+  document.getElementById('tierBtns').innerHTML=[['actual','Their own rating']].concat(CO.map(c=>[c,c])).map(([k,l])=>'<button type="button" class="btn'+(VIEW===k?' on':'')+'" onclick="VIEW=\''+k+'\';render()">'+l+'</button>').join('');
+  document.getElementById('showBtns').innerHTML=[['both','Record and old entry'],['new','Record only'],['old','Old entry only']].map(([k,l])=>'<button type="button" class="btn'+(SHOW===k?' on':'')+'" onclick="SHOW=\''+k+'\';render()">'+l+'</button>').join('');
+  const nData=R.reduce((a,x)=>a+Object.values(x.f).filter(f=>f.src==='data').length,0),nProp=R.reduce((a,x)=>a+Object.values(x.f).filter(f=>f.src==='proposed').length,0);
+  const T=[[R.length,'records rewritten: 7.4.4 (Critical), 7.6.1 (High)'],[FIELDS.length,'fields per record'],[nData,'field values read from the sandbox'],[nProp,'field values proposed, for review']];
+  document.getElementById('tiles').innerHTML=T.map(([b,s])=>'<div class="tile"><b>'+b+'</b><span>'+s+'</span></div>').join('');
+  document.getElementById('main').innerHTML=R.map(card).join('');
+}
+render();
+</script>
+</body></html>
