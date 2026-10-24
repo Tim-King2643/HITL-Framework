@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate"><head><meta charset="UTF-8"><meta name="google" content="notranslate"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Business Rules Catalog</title>
+<style>
+:root{--navy:#1B4F8A;--navy-d:#0D2D4F;--dark:#0D1B2A;--gray:#444;--lgray:#6B7A90;--faint:#A9B4C4;--bg:#F4F6FB;--border:#DDE3EE;--amber:#8A5A00;--amberbg:#FEF3C7}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-padding-top:12px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);padding-bottom:60px}
+.sk{background:#FEF3C7;border-bottom:2px solid #B8873F;color:#7A5A1E;font-size:12.5px;text-align:center;padding:9px 16px}
+.sk a{color:#7A5A1E;font-weight:600}
+.wrap{max-width:1240px;margin:0 auto;padding:18px 16px;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
+.side{flex:0 1 340px;min-width:260px;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}
+.side h1{font-family:Georgia,serif;font-size:21px;color:var(--navy-d);line-height:1.3;margin-bottom:8px}
+.side p,.side li{font-size:12.5px;color:var(--gray);line-height:1.6}
+.side p{margin-bottom:10px}
+.side h5{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin:16px 0 6px}
+.btn{font:inherit;font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:6px;border:1px solid #C6D8EE;background:#fff;color:var(--navy-d);cursor:pointer;margin:0 6px 6px 0}
+.btn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:4px 0 6px}
+.tile{background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.tile b{display:block;font-size:20px;color:var(--navy-d)}.tile span{font-size:11.5px;color:var(--lgray);line-height:1.35;display:block}
+.toc{list-style:none;font-size:12.5px}
+.toc .grp{font-size:11px;color:var(--lgray);margin:8px 0 2px}
+.toc a{color:var(--navy-d);text-decoration:none;display:flex;gap:8px;padding:2px 0;line-height:1.4}
+.toc a:hover{text-decoration:underline}
+.toc .id{font-family:Consolas,monospace;font-size:11.5px;color:var(--lgray);flex:0 0 42px}
+.toc .pr{color:var(--amber)}
+.main{flex:1;min-width:300px}
+.ghead{font-family:Georgia,serif;font-size:17px;color:var(--navy-d);margin:6px 0 10px}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.card h3{font-size:14.5px;color:var(--navy-d);margin-bottom:3px;font-weight:600}
+.sub{font-size:12px;color:var(--lgray);line-height:1.5}
+.sub .pr{color:var(--amber)}
+.th{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.tid{flex:0 0 auto;font-family:Consolas,monospace;font-size:12px;font-weight:700;color:#fff;background:var(--navy);border-radius:5px;padding:3px 8px}
+.card.prop .tid{background:#B8873F}
+.code{font-family:Consolas,monospace;font-size:12px;color:var(--lgray)}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:22px}
+@media(max-width:860px){.cols{grid-template-columns:1fr}.side{position:static;max-height:none}}
+.lbl{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin-bottom:6px;font-weight:600}
+.def p{font-size:13px;line-height:1.6;margin-bottom:8px}
+.def ol,.def ul{font-size:13px;line-height:1.55;margin:0 0 8px 18px}.def li{margin-bottom:3px}
+.meta{border-top:1px solid #EEF1F6;margin-top:8px;padding-top:8px;font-size:12px;color:var(--gray);line-height:1.55}
+.meta div{display:flex;gap:8px}.meta span.k{flex:0 0 76px;color:var(--lgray)}
+.ex{background:#F8FAFD;border:1px solid #E6EBF3;border-radius:8px;padding:10px 12px}
+.ex p{font-size:12.5px;line-height:1.55;margin-bottom:6px}
+.exp{border-left:4px solid var(--navy);background:#EEF3FA;padding:7px 11px;border-radius:6px;font-size:12.5px;line-height:1.5;margin-top:8px}
+table.g{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:4px}
+.g th{text-align:left;font-size:10.5px;color:var(--lgray);font-weight:600;padding:3px 6px;border-bottom:1px solid var(--border)}
+.g td{padding:4px 6px;border-bottom:1px solid #EEF1F6;vertical-align:top;line-height:1.45}
+.g th{white-space:nowrap}.g td.n{white-space:nowrap;color:var(--lgray)}.g td.r{text-align:right;white-space:nowrap}
+.g tr.off td{color:var(--faint)}
+.g tr.hit td{background:#EEF3FA}
+.sm{font-size:11.5px;color:var(--lgray);line-height:1.5}
+.err{background:#FEE2E2;color:#7F1D1D;border-radius:8px;padding:12px 14px;font-size:13px}
+@media print{.side{position:static;max-height:none}.btn{display:none}.card{break-inside:avoid}}
+</style></head><body>
+<div class="sk"><strong>Sketch</strong> · Business Rules Catalog: each rule&rsquo;s definition, with a worked example computed live from the sandbox&rsquo;s master data · <a href="requirements_register.html#GR-050">GR-050</a> · <a href="../sandbox/pcf7.html">Sandbox</a> · <a href="index.html">Back to WIP hub</a></div>
+<div class="wrap">
+<div class="side">
+  <h1>Business Rules Catalog</h1>
+  <p>The rules the framework computes with. Each card gives the rule&rsquo;s definition on the left and a worked example on the right, worked out from Sandbox 7.0&rsquo;s master data each time the page opens, using the same logic as the four views.</p>
+  <p>Adopted rules match an approved register decision and are built. <span style="color:var(--amber)">Proposed</span> rules are in the sandbox or a sketch but not yet approved.</p>
+  <h5>Show</h5>
+  <div id="flt"></div>
+  <h5>Catalog</h5>
+  <div class="tiles" id="tiles"></div>
+  <ul class="toc" id="toc"></ul>
+  <h5>Applying it</h5>
+  <p>The catalog becomes a BUSINESS_RULES table in pcf7.html, beside the other master data, and is added to the Master Data group as a live view, read from the sandbox like the role taxonomy. A rule changes like any master data: its wording in the table and its code in the same push, with a changelog entry the CI check requires. Each rule&rsquo;s worked example stays computed, so a code change that breaks the rule shows up on its card.</p>
+</div>
+<div class="main" id="main"><div class="card sub">Reading the sandbox&rsquo;s master data&hellip;</div></div>
+</div>
+<script src="changelog-data.js"></script>
+<script>
+(function(){
+const SANDBOX='../sandbox/pcf7.html';
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const nat=(a,b)=>a.localeCompare(b,undefined,{numeric:true});
+const lstw=x=>x.length<2?x.join(''):x.slice(0,-1).join(', ')+' and '+x[x.length-1];
+function literalAfter(src,marker,open,close){
+  const i=src.indexOf(marker);if(i<0)return null;const s=src.indexOf(open,i);let depth=0;
+  for(let j=s;j<src.length;j++){const c=src[j];
+    if(c==='"'){j++;while(j<src.length&&src[j]!=='"'){if(src[j]==='\\')j++;j++;}continue;}
+    if(c==='/'&&src[j+1]==='/'){while(j<src.length&&src[j]!=='\n')j++;continue;}
+    if(c===open)depth++;else if(c===close){depth--;if(depth===0)return src.slice(s,j+1);}}
+  return null;}
+const lit=(src,name,o,c)=>{const t=literalAfter(src,'const '+name+' =',o,c);if(!t)throw new Error(name+' not found in the sandbox file');return (new Function('return '+t))();};
+
+function build(src){
+const PCF7=lit(src,'PCF7','{','}'),WR=lit(src,'WR_DATA','{','}'),ACRUD=lit(src,'ACTIVITY_CRUD','{','}'),ARACI=lit(src,'ACTIVITY_RACI','{','}'),
+      WORKED=lit(src,'WORK_ELEMENTS','{','}'),WPS=lit(src,'WORK_PRODUCTS','[',']'),ROLES=lit(src,'ROLE_TAXONOMY','[',']');
+const CL=typeof CHANGE_LOG!=='undefined'?CHANGE_LOG:[];
+
+/* ---- The sandbox's model, as four_views.html computes it (Reference Model, Consequence of Error gates on, its default) ---- */
+const ST=['Human-only','Judgment','Augmentation','Oversight','Agent-delegation','Automation'],rank=s=>ST.indexOf(s);
+const HPCT={"Human-only":95,"Judgment":82,"Augmentation":62,"Oversight":48,"Agent-delegation":28,"Automation":10};
+const STEPDEF={"Human-only":"A person does all of the work; AI plays no part in it.","Judgment":"A person forms the reasoning and makes the call. AI may supply raw inputs but does not produce the candidate decision.","Augmentation":"The person remains the primary actor; AI assists in real time but never acts unilaterally.","Oversight":"AI performs or proposes the complete work product; a person approves or rejects each instance.","Agent-delegation":"An AI agent does the work within policy bounds; a person handles only flagged exceptions.","Automation":"AI completes the work with no person in the loop for that instance, exceptions included."};
+const HC={High:1,Critical:1},CO=['Low','Moderate','High','Critical'];
+const EL=['Research','Evaluate','Draft','Verify','Decide','Produce / Execute','Communicate'];
+const LEAD=['Human','Human-led','AI-led','AI'],lr=x=>LEAD.indexOf(x);
+const CF=[['human','Human impact'],['legal','Legal / regulatory exposure'],['ops','Operational / financial impact'],['trust','Trust / reputation'],['reach','Reach'],['reversibility','Reversibility']];
+const FL={legal:'Legal / fiduciary duty',floor:'Human judgment floor',relational:'Relational / emotional stakes',accountability:'Accountability',governance:'Governance / sign-off',technical:'Technical readiness gap',top:'Top of the ramp'};
+const FMAP={legal:['Evaluate','Draft','Verify'],floor:['Evaluate','Draft','Decide'],relational:['Communicate'],accountability:['Draft','Decide']};
+const acts=[],procs=[];
+PCF7.groups.forEach(g=>g.l3.forEach(l3=>{const L=(l3.l4&&l3.l4.length?l3.l4:[l3]).filter(x=>WR[x.code]&&ARACI[x.code]);
+  procs.push({code:l3.code,name:l3.name,g:g.code,acts:L.map(x=>x.code)});
+  L.forEach(x=>{const w=WR[x.code],r=ARACI[x.code];acts.push({code:x.code,name:x.name,proc:l3.code,A:r.A,R:r.R.slice(),C:r.C.slice(),I:r.I.slice(),ceiling:w.ceiling,cons:w.cons,f:(w.ceilingFactors||[]).slice(),cf:(w.consFactors||[]).slice(),cn:w.consNote||''});});}));
+const ACT=Object.fromEntries(acts.map(a=>[a.code,a])),PROC=Object.fromEntries(procs.map(p=>[p.code,p])),WPN=Object.fromEntries(WPS.map(w=>[w.id,w]));
+const CRUD=Object.fromEntries(Object.entries(ACRUD).map(([k,x])=>[k,{C:x.create||[],R:x.read||[],U:x.update||[],D:x.delete||[]}]));
+const coeCap=(a,c)=>{const held=a.f.some(f=>FMAP[f]);if(c==='Automation'&&(HC[a.cons]||held))c='Agent-delegation';if(a.cons==='Critical'&&rank(c)>rank('Oversight'))c='Oversight';return c;};
+const baseCeil=a=>coeCap(a,a.ceiling),derivedCeil=a=>{const c=baseCeil(a);return c==='Judgment'?'Augmentation':c};
+const ctlOf=a=>(WORKED[a.code]&&WORKED[a.code].control)||'Decide';
+const elsOf=a=>EL.filter(e=>!(WORKED[a.code]&&WORKED[a.code].na&&WORKED[a.code].na[e]));
+function caps(a){const S0=baseCeil(a),ctl=ctlOf(a),g={};
+  if(S0==='Automation'){elsOf(a).forEach(e=>g[e]=['AI','']);return g;}
+  const held={};a.f.forEach(f=>(FMAP[f]||[]).forEach(e=>{(held[e]=held[e]||[]).push(FL[f])}));
+  elsOf(a).forEach(e=>{
+    if(e===ctl)g[e]=[S0==='Agent-delegation'?'AI-led':'Human','control element'];
+    else if(held[e]){let c;if(S0==='Judgment')c=e==='Evaluate'||e==='Verify'?'Human-led':'Human';else if(S0==='Augmentation')c='Human-led';else c='AI-led';g[e]=[c,held[e].join(', ')];}
+    else g[e]=['AI',''];});
+  return g;}
+const TPL={'Human-only':{},'Judgment':{Research:'AI',Evaluate:'Human-led'},'Augmentation':{Research:'AI',Evaluate:'Human-led',Draft:'Human-led',Verify:'Human-led','Produce / Execute':'Human-led',Communicate:'Human-led'},'Oversight':{Research:'AI',Evaluate:'AI',Draft:'AI',Verify:'AI','Produce / Execute':'AI',Communicate:'AI',Decide:'AI'},'Agent-delegation':'AI','Automation':'AI'};
+function stageEls(a,s){const ctl=ctlOf(a),cp=caps(a),within=rank(s)<=rank(derivedCeil(a)),g={};
+  elsOf(a).forEach(e=>{let v=typeof TPL[s]==='string'?'AI':(TPL[s][e]||'Human');
+    if(e===ctl)v=s==='Agent-delegation'?'AI-led':s==='Automation'?'AI':'Human';
+    if(within&&lr(v)>lr(cp[e][0]))v=cp[e][0];g[e]=v;});return g;}
+function deriveGrid(a,g){const els=Object.keys(g),ctl=ctlOf(a),has=e=>e in g,ai=e=>has(e)&&g[e][0]!=='Human',leads=e=>has(e)&&lr(g[e][0])>=2;
+  const c=g[ctl]?g[ctl][0]:'Human';
+  if(c==='AI')return['Automation',els.every(e=>g[e][0]==='AI')?'every element is AI':'AI holds '+ctl+', the control element, with no person in the instance'];
+  if(c==='AI-led')return['Agent-delegation','AI leads '+ctl+', the control element: a person handles only the instances it flags'];
+  const core=['Evaluate','Draft','Verify','Decide','Communicate'].filter(e=>has(e)&&e!==ctl);
+  if(has('Draft')&&ctl!=='Draft'?leads('Draft'):core.some(leads))return['Oversight','AI leads '+lstw(core.filter(leads))+'; a person approves every instance at '+ctl];
+  const assist=['Draft','Verify','Produce / Execute','Communicate'].filter(e=>e!==ctl&&ai(e)),evl=leads('Evaluate');
+  if(evl||assist.length)return['Augmentation','the person writes the work and holds '+ctl+', with AI '+lstw((evl?['leading Evaluate']:[]).concat(assist.length?['assisting in '+lstw(assist)]:[]))];
+  if(ai('Research')||ai('Evaluate'))return['Judgment','AI only supplies inputs (Research, or assisting in Evaluate); the person does the work and makes the call'];
+  return['Human-only','every element is Human'];}
+const dpEl=a=>{const e=elsOf(a);return e.includes('Decide')?'Decide':e.includes('Verify')?'Verify':null};
+const holds=v=>v==='Human'||v==='Human-led'||v==='AI-led';
+const wpOps=(c,w)=>{const x=CRUD[c];return x?['C','U','D'].filter(k=>x[k].includes(w)).join(''):''};
+const DP={};
+acts.forEach(a=>{const e=dpEl(a),v=e&&stageEls(a,derivedCeil(a))[e];DP[a.code]={el:e,lead:v,dp:!!(e&&holds(v)),groups:[],feeds:[]};});
+acts.forEach(a=>{const r=DP[a.code],x=CRUD[a.code];if(!x)return;
+  const own=[...new Set(x.C.concat(x.U,x.D))].filter(w=>WPN[w]).sort(nat);
+  r.groups=own.map(w=>({w,dps:Object.keys(CRUD).filter(c=>DP[c]&&DP[c].dp&&wpOps(c,w)).sort(nat)}));
+  r.feeds=[...new Set(r.groups.flatMap(g=>g.dps))].filter(c=>c!==a.code).sort(nat);});
+const kindOf=a=>{const r=DP[a.code];return r.dp?(r.lead==='AI-led'?'flag':'every'):r.feeds.length?'at':'ctl'};
+const depth=r=>{let n=0,x=ROLES.find(y=>y.name===r);while(x&&x.reportsTo){n++;x=ROLES.find(y=>y.name===x.reportsTo)}return n};
+function procRaci(p){const cnt={},hc={};
+  p.acts.forEach(c=>{const r=ARACI[c].A,k=CO.indexOf(WR[c].cons);cnt[r]=(cnt[r]||0)+1;hc[r]=Math.max(hc[r]==null?-1:hc[r],k);});
+  const order=Object.keys(cnt).sort((x,y)=>cnt[y]-cnt[x]||hc[y]-hc[x]||depth(x)-depth(y)),owner=order[0],tied=order.filter(r=>cnt[r]===cnt[owner]&&r!==owner);
+  let why='';if(tied.length)why=tied.some(r=>hc[r]===hc[owner])?'Tied with '+tied.join(', ')+' on count and Consequence of Error; '+owner+' is the more senior role.'
+    :'Tied with '+tied.join(', ')+' on count; '+owner+' is Accountable for the higher Consequence of Error ('+CO[hc[owner]]+').';
+  const L={};p.acts.forEach(c=>{const x=ARACI[c];[[x.A,'A']].concat(x.R.map(r=>[r,'R']),x.C.map(r=>[r,'C']),x.I.map(r=>[r,'I'])).forEach(([r,l])=>{(L[r]=L[r]||{A:0,R:0,C:0,I:0})[l]++;});});
+  const rk={A:0,'A+':1,R:2,C:3,I:4};
+  const rows=Object.keys(L).map(r=>{const c=L[r];return{r,c,letter:r===owner?'A':c.A?'A+':c.R?'R':c.C?'C':'I'}}).sort((a,b)=>rk[a.letter]-rk[b.letter]);
+  return{owner,top:cnt[owner],n:p.acts.length,why,rows};}
+const WORD={A:'Accountable (owner)','A+':'Also Accountable',R:'Responsible',C:'Consulted',I:'Informed'};
+const worstCons=L=>CO[Math.max(...L.map(c=>CO.indexOf(ACT[c].cons)))];
+const nm=c=>'<span class="code">'+c+'</span> '+esc(ACT[c]?ACT[c].name:PROC[c]?PROC[c].name:'');
+const wpn=w=>'<span class="code">'+w+'</span> '+esc(WPN[w]?WPN[w].name:w);
+const tbl=(h,rows,cls)=>'<table class="g"><tr>'+h.map(x=>'<th>'+x+'</th>').join('')+'</tr>'+rows.join('')+'</table>';
+const tr=(cells,cls)=>'<tr'+(cls?' class="'+cls+'"':'')+'>'+cells.map(c=>'<td>'+c+'</td>').join('')+'</tr>';
+
+/* ---- Worked examples, one per rule ---- */
+const EX={};
+EX['BR-01']=()=>{const a=ACT['7.6.1'],c=derivedCeil(a);
+  return '<p>'+nm('7.6.1')+', Progression Ceiling '+c+':</p>'+tbl(['Stage','Meaning'],ST.map(s=>tr([esc(s),esc(STEPDEF[s])],rank(s)>rank(c)?'off':s===c?'hit':'')))+
+  '<div class="exp">Stages past the ceiling are closed for this activity (shown faint). Under the four views&rsquo; default (the Consequence of Error gates on), '+acts.filter(x=>derivedCeil(x)==='Automation').length+' of '+acts.length+' activities can reach Automation.</div>';};
+EX['BR-02']=()=>{const p=PROC['7.2.1'],L=p.acts.map(c=>ACT[c]),t={};L.forEach(a=>{const s=derivedCeil(a);t[s]=(t[s]||0)+1});
+  const sum=L.reduce((x,a)=>x+HPCT[derivedCeil(a)],0);
+  return '<p>Process '+nm('7.2.1')+', every activity at its ceiling:</p>'+tbl(['Activity','Ceiling','% H'],L.map(a=>tr([nm(a.code),esc(derivedCeil(a)),'<span style="float:right">'+HPCT[derivedCeil(a)]+'</span>'])))+
+  '<div class="exp">'+ST.filter(s=>t[s]).map(s=>t[s]+' &times; '+s+' ('+HPCT[s]+')').join(' + ')+' = '+sum+' &divide; '+L.length+' = '+(sum/L.length).toFixed(1)+' &rarr; '+Math.round(sum/L.length)+'% H</div>';};
+EX['BR-03']=()=>{const c='7.2.5.2',w=WORKED[c];
+  return '<p>'+nm(c)+':</p>'+tbl(['Element','What it acts on'],EL.map(e=>w.obj[e]?tr([esc(e)+(e===w.control?' &middot; control':''),esc(w.obj[e])],e===w.control?'hit':''):tr([esc(e),'Does not apply: '+esc(w.na[e])],'off')))+
+  '<div class="exp">No Decide element applies, so Verify is the control element. Across the catalog: '+acts.filter(a=>ctlOf(a)==='Decide').length+' activities are controlled at Decide, '+acts.filter(a=>ctlOf(a)==='Verify').length+' at Verify.</div>';};
+EX['BR-04']=()=>{const a=ACT['7.4.4'],cp=caps(a);
+  return '<p>'+nm('7.4.4')+', ceiling '+derivedCeil(a)+', ceiling factors: '+a.f.map(f=>FL[f]).join(', ')+'.</p>'+tbl(['Element','Element ceiling','Held by'],elsOf(a).map(e=>tr([esc(e),esc(cp[e][0]),esc(cp[e][1]||'—')],cp[e][1]?'hit':'')))+
+  '<div class="exp">Legal / fiduciary duty holds Evaluate, Draft and Verify; the judgment floor holds Evaluate, Draft and Decide; relational stakes hold Communicate. Research has no factor on it, so AI may lead it.</div>';};
+EX['BR-05']=()=>{const a=ACT['7.2.1.1'],base=Object.fromEntries(elsOf(a).map(e=>[e,['Human']]));
+  const cases=[['Research AI',{Research:'AI'}],['Research AI, Draft Human-led',{Research:'AI',Draft:'Human-led'}],['Research and Evaluate AI, Draft AI-led',{Research:'AI',Evaluate:'AI',Draft:'AI-led'}],['Decide AI-led, every other element AI',Object.fromEntries(elsOf(a).map(e=>[e,e==='Decide'?'AI-led':'AI']))]];
+  return '<p>Four element assessments of '+nm('7.2.1.1')+' (control element '+ctlOf(a)+'):</p>'+tbl(['Who leads','Current State','Why'],cases.map(([l,s])=>{const g=JSON.parse(JSON.stringify(base));Object.keys(s).forEach(e=>{if(g[e])g[e]=[s[e]]});const d=deriveGrid(a,g);return tr([esc(l),esc(d[0]),esc(d[1])]);}))+
+  '<div class="exp">Its ceiling is '+derivedCeil(a)+', so the last two would also show as past the ceiling.</div>';};
+EX['BR-06']=()=>{const p=PROC['7.2.3'],w=worstCons(p.acts);
+  return '<p>Process '+nm('7.2.3')+':</p>'+tbl(['Activity','Rating','Factors'],p.acts.map(c=>{const a=ACT[c];return tr([nm(c),esc(a.cons),'<span class="sm">'+CF.filter(([k])=>a.cf.includes(k)).map(x=>x[1]).join(', ')+'</span>'],a.cons===w?'hit':'')}))+
+  '<div class="exp">The process&rsquo;s Consequence of Error &ndash; Worst Case is '+w+', the highest of its activities.</div>';};
+EX['BR-07']=()=>{const L=PROC['7.2.1'].acts.map(c=>ACT[c]);const hi=L.find(a=>HC[a.cons]),lo=L.find(a=>!HC[a.cons]);
+  const row=a=>tr([nm(a.code),esc(a.cons),esc(HC[a.cons]?a.A+' (Accountable)':(a.R.length?a.R.join(', '):a.A)+' (does the work)')]);
+  return tbl(['Activity','Rating','Takes its exceptions'],[row(hi),row(lo)])+'<div class="exp">Across the catalog, '+acts.filter(a=>HC[a.cons]).length+' activities are High or Critical and send exceptions to their Accountable role; '+acts.filter(a=>!HC[a.cons]).length+' are Low or Moderate and keep them with the role doing the work.</div>';};
+EX['BR-08']=()=>{const m=acts.filter(a=>coeCap(a,a.ceiling)!==a.ceiling);const why=a=>a.cons==='Critical'&&rank(a.ceiling)>rank('Oversight')?'Critical':HC[a.cons]?a.cons:'a factor holds '+lstw([...new Set(a.f.flatMap(f=>FMAP[f]||[]))]);
+  return '<p>The gates move '+m.length+' reference ceilings:</p>'+tbl(['Activity','Rating','Ceiling','Gated','Why'],m.slice(0,8).map(a=>tr([nm(a.code),esc(a.cons),esc(a.ceiling),esc(coeCap(a,a.ceiling)),esc(why(a))])))+(m.length>8?'<div class="sm">and '+(m.length-8)+' more.</div>':'')+
+  '<div class="exp">The four views apply the gates by default; their Ceilings setting turns them off to show the GR-058 ceilings alone.</div>';};
+EX['BR-09']=()=>{const c='7.2.3.4',a=ACT[c];
+  return '<p>'+nm(c)+':</p>'+tbl(['RACI','Role'],[tr(['Accountable',''+esc(a.A)+' &mdash; the anchor']),tr(['Responsible',esc(a.R.join(', ')||'—')]),tr(['Consulted',esc(a.C.join(', ')||'—')]),tr(['Informed',esc(a.I.join(', ')||'—')])])+
+  '<div class="exp">Every one of the '+acts.length+' activities has exactly one Accountable role, so every activity has an anchor; '+new Set(acts.map(a=>a.A)).size+' roles anchor at least one.</div>';};
+EX['BR-10']=()=>{const p=PROC['7.2.3'],x=procRaci(p);
+  return '<p>Process '+nm('7.2.3')+', '+x.n+' activities:</p>'+tbl(['Role','Process RACI','On its activities'],x.rows.map(r=>tr([esc(r.r),WORD[r.letter],'<span class="sm">'+['A','R','C','I'].filter(k=>r.c[k]).map(k=>k+' '+r.c[k]).join(' &middot; ')+'</span>'],r.letter==='A'?'hit':'')))+
+  '<div class="exp">Owner '+esc(x.owner)+', Accountable for '+x.top+' of '+x.n+'.'+(x.why?' '+esc(x.why):'')+'</div>';};
+EX['BR-11']=()=>{const p=PROC['7.6.2'],ops={};p.acts.forEach(c=>{const x=CRUD[c];if(!x)return;['C','R','U','D'].forEach(k=>x[k].forEach(w=>{((ops[w]=ops[w]||{})[k]=ops[w][k]||[]).push(c)}))});
+  return '<p>Process '+nm('7.6.2')+':</p>'+tbl(['Work product','C','R','U','D'],Object.keys(ops).sort(nat).map(w=>tr([wpn(w)].concat(['C','R','U','D'].map(k=>'<span class="sm">'+(ops[w][k]||[]).map(c=>c.split('.').slice(-1)[0]).map(s=>'.'+s).join(' ')+'</span>')))))+
+  '<div class="sm">Each cell lists the activities (by last number) that do it.</div><div class="exp">The process&rsquo;s CRUD is the union of its '+p.acts.length+' activities&rsquo; CRUD; nothing is stored at the process level.</div>';};
+EX['BR-12']=()=>{const k={every:0,flag:0,at:0,ctl:0};acts.forEach(a=>k[kindOf(a)]++);const pick=t=>acts.find(a=>kindOf(a)===t);
+  const ex=[['every','Decision point, a person on every instance'],['flag','Decision point, a person on each flagged instance']].map(([t,l])=>{const a=pick(t),r=DP[a.code];return tr([nm(a.code),esc(derivedCeil(a)),esc(r.el+' '+r.lead),esc(l)])});
+  const a3=acts.find(a=>!DP[a.code].dp);
+  return tbl(['Activity','Ceiling','Control element','Result'],ex.concat([tr([nm(a3.code),esc(derivedCeil(a3)),esc(DP[a3.code].el+' '+DP[a3.code].lead),'Not a decision point'])]))+
+  '<div class="exp">Reference Model at its ceilings: '+(k.every+k.flag)+' decision points ('+k.every+' on every instance, '+k.flag+' on flagged instances), '+(k.at+k.ctl)+' activities that are not.</div>';};
+EX['BR-13']=()=>{const at=acts.filter(a=>kindOf(a)==='at'),ctl=acts.filter(a=>kindOf(a)==='ctl');const a=at[0],r=DP[a.code];
+  return '<p>'+nm(a.code)+' is not a decision point. Its work products and the decision points on them:</p>'+tbl(['Work product','Decided or verified at'],r.groups.map(g=>tr([wpn(g.w),g.dps.filter(c=>c!==a.code).map(c=>'<span class="code">'+c+'</span>').join(', ')||'—'])))+
+  '<div class="exp">'+at.length+' activities are decided or verified at another activity&rsquo;s decision point. '+ctl.length+' need a named control: '+ctl.map(x=>x.code).join(', ')+'.</div>';};
+EX['BR-14']=()=>{const dps=acts.filter(a=>DP[a.code].dp),n=c=>dps.filter(a=>a.cons===c).length;
+  const REQ={Low:'Owner and override. Reviewed when an exception comes up.',Moderate:'Adds the escalation path. Reviewed periodically.',High:'Every field; each decision documented. Reviewed on a set cadence.',Critical:'As High, with the evidence for each decision. Also reviewed after every override.'};
+  return tbl(['Rating','The record must have','Records'],CO.map(c=>tr([c,esc(REQ[c]),'<span style="float:right">'+n(c)+'</span>'])))+
+  '<div class="exp">'+dps.length+' decision points would carry a record; '+(n('High')+n('Critical'))+' need every field. Written out for 7.4.4 and 7.6.1 in the <a href="gdp_record_sketch.html">decision point record sketch</a>.</div>';};
+EX['BR-15']=()=>{const e=CL[CL.length-1];
+  return e?'<p>Latest entry, '+esc(e.id)+' ('+esc(e.date)+', '+esc(e.requestedBy)+'):</p>'+tbl(['Field','Value'],[tr(['Summary',esc(e.summary)]),tr(['Reason',esc(e.reason||'')]),tr(['Files',esc((e.files||[]).join(', '))])])+
+  '<div class="exp">'+CL.length+' entries in the change log. The CI check fails a push that changes a tracked master-data value without one.</div>':'<p>No change log entries found.</p>';};
+
+/* ---- The catalog ---- */
+const G={stage:'Working relationship',el:'Work elements',coe:'Consequence of Error',acc:'Accountability',dp:'Decision points',gov:'Change control'};
+const R=[
+{id:'BR-01',g:'stage',t:'Stages and their order',st:'adopted',src:'GR-023, GR-036 (locked definitions); order corrected CL-015/016',app:'Work view ramp; every stage selector',reads:'WR_DATA ceiling',
+ def:'<p>Every activity sits on one six-stage ramp: Human-only, Judgment, Augmentation, Oversight, Agent-delegation, Automation, in that order. Each stage is defined by who does the work and who decides (the locked category definitions).</p><p>An activity can move up the ramp only as far as its Progression Ceiling. A ceiling moves only through a logged reference change or an approved organization override (GR-041).</p>'},
+{id:'BR-02',g:'stage',t:'% H, the human share of the work',st:'adopted',src:'GR-014',app:'% H on every process, role and finding',reads:'stage of each activity',
+ def:'<p>Each stage carries a fixed modeled % H: Human-only 95, Judgment 82, Augmentation 62, Oversight 48, Agent-delegation 28, Automation 10.</p><p>The % H of a process, role or group is the average of its activities&rsquo; values, each activity weighted equally, rounded to a whole number. The values are an ordinal model, not calibrated measurements.</p>'},
+{id:'BR-03',g:'el',t:'Work elements and the control element',st:'adopted',src:'GR-058, CL-019',app:'Element grid; decision points',reads:'WORK_ELEMENTS',
+ def:'<p>Every activity breaks into up to seven work elements: Research, Evaluate, Draft, Verify, Decide, Produce / Execute, Communicate. Each element names what it acts on; one that does not apply to the activity says why.</p><p>The control element is Decide, or Verify when the activity has no Decide. It is where a person answers for the outcome.</p>'},
+{id:'BR-04',g:'el',t:'Element ceilings from ceiling factors',st:'adopted',src:'GR-058',app:'Element grid; stage element leads',reads:'ceiling factors, activity ceiling',
+ def:'<p>Each ceiling factor holds specific elements with a person:</p><ul><li>Legal / fiduciary duty: Evaluate, Draft, Verify</li><li>Human judgment floor: Evaluate, Draft, Decide</li><li>Relational / emotional stakes: Communicate</li><li>Accountability: Draft, Decide</li></ul><p>A held element is capped at Human-led at an Augmentation ceiling, and AI-led above it. The control element stays Human up to Oversight and is AI-led at an Agent-delegation ceiling. Elements no factor holds may go to AI.</p>'},
+{id:'BR-05',g:'el',t:'Deriving the stage from who leads each element',st:'adopted',src:'GR-058 (corrected Oct 18)',app:'Element grid&rsquo;s Derived Current State',reads:'an element assessment',
+ def:'<p>Checked top to bottom; the first that holds gives the stage:</p><ol><li>Control element AI &rarr; Automation.</li><li>Control element AI-led &rarr; Agent-delegation.</li><li>AI leads Draft &rarr; Oversight.</li><li>AI leads Evaluate, or assists in Draft, Verify, Produce / Execute or Communicate &rarr; Augmentation.</li><li>AI in Research, or Evaluate Human-led &rarr; Judgment.</li><li>Otherwise, every element Human &rarr; Human-only.</li></ol>'},
+{id:'BR-06',g:'coe',t:'Consequence of Error rating',st:'adopted',src:'GR-017, GR-026',app:'Every Consequence of Error rating and its box',reads:'WR_DATA cons, consFactors',
+ def:'<p>Each activity is rated Low, Moderate, High or Critical for the worst realistic result of getting it wrong, judged on six factors: human impact, legal / regulatory exposure, operational / financial impact, trust / reputation, reach, and reversibility. The rating records which factors decided it.</p><p>A process&rsquo;s rating is the worst case of its activities.</p>'},
+{id:'BR-07',g:'coe',t:'Who takes the exceptions',st:'adopted',src:'GR-059 (Oct 10); GR-029',app:'Consequence of Error box; People view load',reads:'rating, activity RACI',
+ def:'<p>When AI does the work and flags an exception:</p><ul><li>High or Critical &rarr; the Accountable role takes it.</li><li>Low or Moderate &rarr; the role doing the work takes it (Responsible, or the Accountable role when none is named).</li></ul>'},
+{id:'BR-08',g:'coe',t:'Consequence of Error gates on the ceiling',st:'proposed',src:'GR-058 (proposed gates)',app:'Four views, on by default; the Ceilings setting',reads:'rating, ceiling, ceiling factors',
+ def:'<p>Two gates cap a reference ceiling by its rating:</p><ul><li>Agent-delegation &rarr; Automation is closed for High or Critical activities, and wherever a ceiling factor holds an element with a person.</li><li>Oversight &rarr; Agent-delegation is closed for Critical activities.</li></ul>'},
+{id:'BR-09',g:'acc',t:'Human Accountability Anchor',st:'adopted',src:'GR-021, GR-060',app:'Work view; decision point box',reads:'ACTIVITY_RACI',
+ def:'<p>Every activity has exactly one Accountable role, and that role is its Human Accountability Anchor. The anchor does not change as the work moves up the ramp: AI can take on the work, never the accountability.</p>'},
+{id:'BR-10',g:'acc',t:'Process RACI from the activities',st:'adopted',src:'GR-060, CL-020',app:'People view, RACI by process',reads:'ACTIVITY_RACI, rating, reporting lines',
+ def:'<p>A process&rsquo;s RACI is computed, never stored:</p><ol><li>Owner: the role Accountable for the most of its activities. On a tie, the one Accountable for the higher Consequence of Error; then the more senior role.</li><li>Also Accountable: any other role Accountable for some of its activities.</li><li>Every other role takes the strongest letter it holds on any activity: Responsible, then Consulted, then Informed.</li></ol>'},
+{id:'BR-11',g:'acc',t:'Process CRUD from the activities',st:'adopted',src:'CL-014 (Work Product spec A2)',app:'Data view; process CRUD',reads:'ACTIVITY_CRUD',
+ def:'<p>Each activity records which work products it creates, reads, updates and deletes. A process&rsquo;s CRUD is the union of its activities&rsquo; CRUD; nothing is stored at the process level.</p>'},
+{id:'BR-12',g:'dp',t:'Decision point',st:'adopted',src:'GR-021 (Oct 14&ndash;15)',app:'Work view; Findings; People',reads:'control element lead at the stage',
+ def:'<p>An activity is a decision point when a person holds its control element (Decide, or Verify) at the stage being looked at: on every instance (Human or Human-led) or on each flagged instance (AI-led, as at Agent-delegation).</p><p>The Reference Model is read at each activity&rsquo;s ceiling; an organization at its Current State. Consequence of Error sets how much governance the decision point carries, not whether it is one.</p>'},
+{id:'BR-13',g:'dp',t:'Decided elsewhere, or a named control',st:'adopted',src:'GR-021 (Oct 15); GR-054',app:'Work view; Findings; Exceptions Report',reads:'ACTIVITY_CRUD, decision points',
+ def:'<p>A work product&rsquo;s decision points are the activities that create, update or delete it where a person holds the control element. An activity that only reads a work product decides something else.</p><p>An activity that is not a decision point is decided or verified at the decision points on the work products it creates, updates or deletes. If none of them has one, it needs a named control, owned by its Accountable role.</p>'},
+{id:'BR-14',g:'dp',t:'Decision point record by rating',st:'proposed',src:'GR-042',app:'Decision point box (planned)',reads:'decision points, rating',
+ def:'<p>Each decision point carries a record: owner, decides or verifies, work products, trigger condition (flagged instances only), escalation path, override, documentation, review cadence. The rating sets what is required:</p><ul><li>Low: owner and override.</li><li>Moderate: adds the escalation path.</li><li>High: every field, each decision documented.</li><li>Critical: as High, with the evidence for each decision.</li></ul>'},
+{id:'BR-15',g:'gov',t:'Master data changes through the change log',st:'adopted',src:'GR-043, GR-045, GR-050',app:'CI check on every push',reads:'CHANGE_LOG, tracked master data',
+ def:'<p>Master data is changed in the sandbox first, never on a published page. Every change to a tracked value (ceilings, ratings, reporting lines, RACI, CRUD, work products, work elements) is pushed with a change log entry saying who asked, what changed, why, the evidence and how it was verified.</p><p>Entries are added or retired, never deleted.</p>'}
+];
+
+let SHOW='all';
+function card(r){let ex;try{ex=EX[r.id]()}catch(e){ex='<div class="err">Could not compute the example: '+esc(e.message)+'</div>'}
+  return '<div class="card'+(r.st==='proposed'?' prop':'')+'" id="'+r.id+'"><div class="th"><span class="tid">'+r.id+'</span><div><h3>'+r.t+'</h3><div class="sub">'+G[r.g]+' &middot; '+(r.st==='proposed'?'<span class="pr">Proposed</span>':'Adopted')+' &middot; '+r.src+'</div></div></div>'+
+   '<div class="cols"><div class="def"><div class="lbl">Definition</div>'+r.def+'<div class="meta"><div><span class="k">Reads</span><span>'+r.reads+'</span></div><div><span class="k">Applied in</span><span>'+r.app+'</span></div></div></div>'+
+   '<div><div class="lbl">Example</div><div class="ex">'+ex+'</div></div></div></div>';}
+window.setShow=v=>{SHOW=v;render()};
+function render(){
+  const L=R.filter(r=>SHOW==='all'||r.st===SHOW);
+  document.getElementById('flt').innerHTML=[['all','All rules'],['adopted','Adopted'],['proposed','Proposed']].map(([k,l])=>'<button type="button" class="btn'+(SHOW===k?' on':'')+'" onclick="setShow(\''+k+'\')">'+l+'</button>').join('');
+  document.getElementById('tiles').innerHTML=[[R.length,'rules'],[R.filter(r=>r.st==='adopted').length,'adopted'],[R.filter(r=>r.st==='proposed').length,'proposed']].map(([b,s])=>'<div class="tile">'+b+'<span>'+s+'</span></div>').join('');
+  let toc='',main='',last='';
+  L.forEach(r=>{if(r.g!==last){toc+='<li class="grp">'+G[r.g]+'</li>';main+='<div class="ghead">'+G[r.g]+'</div>';last=r.g;}
+    toc+='<li><a href="#'+r.id+'"><span class="id">'+r.id+'</span><span'+(r.st==='proposed'?' class="pr"':'')+'>'+r.t+'</span></a></li>';main+=card(r);});
+  document.getElementById('toc').innerHTML=toc;document.getElementById('main').innerHTML=main;
+  if(location.hash){const el=document.getElementById(location.hash.slice(1));if(el)el.scrollIntoView();}
+}
+render();
+}
+fetch(SANDBOX,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}).then(build)
+ .catch(e=>{document.getElementById('main').innerHTML='<div class="err">Could not read the master data from Sandbox 7.0 ('+esc(e.message)+'). Open the <a href="../sandbox/pcf7.html">sandbox</a> instead.</div>';});
+})();
+</script>
+</body></html>
