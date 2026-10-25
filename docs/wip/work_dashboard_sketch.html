@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate"><head><meta charset="UTF-8"><meta name="google" content="notranslate"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>[DRAFT] Work Dashboard</title>
+<style>
+:root{--navy:#1B4F8A;--navy-d:#0D2D4F;--dark:#0D1B2A;--gray:#444;--lgray:#6B7A90;--faint:#A9B4C4;--bg:#F4F6FB;--border:#DDE3EE;--amber:#8A5A00}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);padding-bottom:60px}
+.sk{background:#FEF3C7;border-bottom:2px solid #B8873F;color:#7A5A1E;font-size:12.5px;text-align:center;padding:9px 16px}
+.sk a{color:#7A5A1E;font-weight:600}
+.wrap{max-width:1320px;margin:0 auto;padding:18px 16px;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
+.side{flex:0 1 300px;min-width:250px;position:sticky;top:12px}
+.side h1{font-family:Georgia,serif;font-size:21px;color:var(--navy-d);line-height:1.3;margin-bottom:8px}
+.side p{font-size:12.5px;color:var(--gray);line-height:1.6;margin-bottom:10px}
+.side h5{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin:16px 0 6px}
+.btn{font:inherit;font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:6px;border:1px solid #C6D8EE;background:#fff;color:var(--navy-d);cursor:pointer;margin:0 6px 6px 0}
+.btn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.main{flex:1;min-width:320px}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.card h3{font-size:14.5px;color:var(--navy-d);margin-bottom:3px;font-weight:600}
+.sub{font-size:12px;color:var(--lgray);line-height:1.5;margin-bottom:10px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.tile{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.tile .n{font-size:28px;color:var(--navy-d);line-height:1.1}
+.tile .n small{font-size:15px;color:var(--lgray)}
+.tile .l{font-size:12px;color:var(--lgray);line-height:1.4;margin-top:4px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--gray);margin:2px 0 12px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+/* capability grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.col h4{font-size:12px;font-weight:600;color:var(--navy-d);line-height:1.35;padding:0 0 6px;border-bottom:2px solid var(--navy);margin-bottom:8px;min-height:40px}
+.col h4 .c{font-family:Consolas,monospace;color:var(--lgray);font-weight:400;margin-right:4px}
+.proc{border:1px solid var(--border);border-radius:8px;padding:7px 9px;margin-bottom:7px;cursor:pointer;background:#fff}
+.proc:hover,.proc.sel{border-color:var(--navy)}
+.proc .pn{font-size:12px;line-height:1.35;color:var(--dark);display:flex;justify-content:space-between;gap:8px}
+.proc .pn .h{color:var(--navy);white-space:nowrap}
+.cells{display:flex;flex-wrap:wrap;gap:2px;margin-top:6px}
+.cell{width:13px;height:13px;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(13,45,79,.12)}
+.detail{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
+table.g{width:100%;border-collapse:collapse;font-size:12.5px}
+.g th{text-align:left;font-size:10.5px;color:var(--lgray);font-weight:600;padding:3px 6px;border-bottom:1px solid var(--border)}
+.g td{padding:5px 6px;border-bottom:1px solid #EEF1F6;vertical-align:top}
+.code{font-family:Consolas,monospace;font-size:12px;color:var(--lgray);white-space:nowrap}
+/* stacked bars */
+.bars .row{display:grid;grid-template-columns:300px 1fr 60px;gap:10px;align-items:center;margin-bottom:7px;font-size:12px}
+.bars .lab{color:var(--dark);line-height:1.3}
+.bar{display:flex;height:20px;gap:2px}
+.bar div{height:100%}
+.bar div:first-child{border-radius:4px 0 0 4px}.bar div:last-child{border-radius:0 4px 4px 0}
+.bars .h{text-align:right;color:var(--navy)}
+/* matrix */
+table.mx{border-collapse:separate;border-spacing:2px;font-size:12px}
+.mx th{font-size:10.5px;color:var(--lgray);font-weight:600;padding:3px 6px;text-align:center}
+.mx th.r{text-align:right}
+.mx td{width:110px;height:38px;text-align:center;border-radius:4px}
+@media(max-width:860px){.side{position:static}.bars .row{grid-template-columns:120px 1fr 44px}}
+.tip{position:fixed;pointer-events:none;background:#0D1B2A;color:#fff;font-size:12px;line-height:1.45;padding:7px 10px;border-radius:6px;max-width:300px;z-index:10;display:none}
+.err{background:#FEE2E2;color:#7F1D1D;border-radius:8px;padding:12px 14px;font-size:13px}
+</style></head><body>
+<div class="sk"><strong>Sketch</strong> · A visual dashboard of the work: the Work view&rsquo;s data as pictures, read live from the sandbox · <a href="../sandbox/pcf7.html">Sandbox</a> · <a href="index.html">Back to WIP hub</a></div>
+<div class="wrap">
+<div class="side">
+  <h1>Work dashboard</h1>
+  <p>The Work view answers how far each activity can move. This sketch shows the same answer as pictures, for an executive reading it in a minute. Every figure is computed from Sandbox 7.0&rsquo;s master data with the four views&rsquo; own rules.</p>
+  <p>The grid has one column per process group, one card per process, and one square per activity. Click a process to list its activities.</p>
+  <h5>Color the squares by</h5>
+  <div id="encBtns"></div>
+  <h5>Where the work is</h5>
+  <div id="stBtns"></div>
+  <p class="sm" style="font-size:11.5px;color:var(--lgray)">Reference Model. An organization&rsquo;s Current State needs the sandbox&rsquo;s sign-in, so it would show once this moves into the four views.</p>
+  <h5>Reading it</h5>
+  <p>Darker navy means more of the work stays with a person. The navy steps are spaced wider than the sandbox&rsquo;s so neighbouring stages read apart. The stacked bars show each group&rsquo;s mix of stages; the matrix shows how Consequence of Error holds the ceilings down.</p>
+</div>
+<div class="main" id="main"><div class="card sub">Reading the sandbox&rsquo;s master data&hellip;</div></div>
+</div>
+<div class="tip" id="tip"></div>
+<script>
+(function(){
+const SANDBOX='../sandbox/pcf7.html';
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const nat=(a,b)=>a.localeCompare(b,undefined,{numeric:true});
+function literalAfter(src,marker,open,close){
+  const i=src.indexOf(marker);if(i<0)return null;const s=src.indexOf(open,i);let depth=0;
+  for(let j=s;j<src.length;j++){const c=src[j];
+    if(c==='"'){j++;while(j<src.length&&src[j]!=='"'){if(src[j]==='\\')j++;j++;}continue;}
+    if(c==='/'&&src[j+1]==='/'){while(j<src.length&&src[j]!=='\n')j++;continue;}
+    if(c===open)depth++;else if(c===close){depth--;if(depth===0)return src.slice(s,j+1);}}
+  return null;}
+const lit=(src,name,o,c)=>{const t=literalAfter(src,'const '+name+' =',o,c);if(!t)throw new Error(name+' not found in the sandbox file');return (new Function('return '+t))();};
+
+function build(src){
+const PCF7=lit(src,'PCF7','{','}'),WR=lit(src,'WR_DATA','{','}'),ACRUD=lit(src,'ACTIVITY_CRUD','{','}'),ARACI=lit(src,'ACTIVITY_RACI','{','}'),
+      WORKED=lit(src,'WORK_ELEMENTS','{','}'),WPS=lit(src,'WORK_PRODUCTS','[',']');
+/* ---- the four views' model (Reference Model) ---- */
+const ST=['Human-only','Judgment','Augmentation','Oversight','Agent-delegation','Automation'],rank=s=>ST.indexOf(s);
+const HPCT={"Human-only":95,"Judgment":82,"Augmentation":62,"Oversight":48,"Agent-delegation":28,"Automation":10};
+// A wider-spaced version of the sandbox ramp (same hue, light to dark), so neighbouring stages read apart in the bars.
+const DOT={"Human-only":"#0D2D4F","Judgment":"#1F4E86","Augmentation":"#3A6FAE","Oversight":"#6895C8","Agent-delegation":"#9CBBE0","Automation":"#CFDDF0"};
+const CO=['Low','Moderate','High','Critical'],CONSC={Low:'#0072B2',Moderate:'#008460',High:'#9A6A00',Critical:'#C15500'},HC={High:1,Critical:1};
+const EL=['Research','Evaluate','Draft','Verify','Decide','Produce / Execute','Communicate'],LEAD=['Human','Human-led','AI-led','AI'],lr=x=>LEAD.indexOf(x);
+const FMAP={legal:['Evaluate','Draft','Verify'],floor:['Evaluate','Draft','Decide'],relational:['Communicate'],accountability:['Draft','Decide']};
+const acts=[],groups=[];
+PCF7.groups.forEach(g=>{const G={code:g.code,name:g.name,procs:[]};groups.push(G);
+  g.l3.forEach(l3=>{const L=(l3.l4&&l3.l4.length?l3.l4:[l3]).filter(x=>WR[x.code]&&ARACI[x.code]);if(!L.length)return;
+    const P={code:l3.code,name:l3.name,acts:[]};G.procs.push(P);
+    L.forEach(x=>{const w=WR[x.code],a={code:x.code,name:x.name,proc:l3.code,g:g.code,A:ARACI[x.code].A,ceiling:w.ceiling,cons:w.cons,f:(w.ceilingFactors||[]).slice()};acts.push(a);P.acts.push(a);});});});
+const coeCap=(a,c)=>{const held=a.f.some(f=>FMAP[f]);if(c==='Automation'&&(HC[a.cons]||held))c='Agent-delegation';if(a.cons==='Critical'&&rank(c)>rank('Oversight'))c='Oversight';return c;};
+const baseCeil=a=>coeCap(a,a.ceiling),ceil=a=>{const c=baseCeil(a);return c==='Judgment'?'Augmentation':c};
+const ctlOf=a=>(WORKED[a.code]&&WORKED[a.code].control)||'Decide';
+const elsOf=a=>EL.filter(e=>!(WORKED[a.code]&&WORKED[a.code].na&&WORKED[a.code].na[e]));
+function caps(a){const S0=baseCeil(a),ctl=ctlOf(a),g={};
+  if(S0==='Automation'){elsOf(a).forEach(e=>g[e]='AI');return g;}
+  const held={};a.f.forEach(f=>(FMAP[f]||[]).forEach(e=>held[e]=1));
+  elsOf(a).forEach(e=>{if(e===ctl)g[e]=S0==='Agent-delegation'?'AI-led':'Human';else if(held[e])g[e]=S0==='Judgment'?(e==='Evaluate'||e==='Verify'?'Human-led':'Human'):S0==='Augmentation'?'Human-led':'AI-led';else g[e]='AI';});return g;}
+const TPL={'Human-only':{},'Judgment':{Research:'AI',Evaluate:'Human-led'},'Augmentation':{Research:'AI',Evaluate:'Human-led',Draft:'Human-led',Verify:'Human-led','Produce / Execute':'Human-led',Communicate:'Human-led'},'Oversight':{Research:'AI',Evaluate:'AI',Draft:'AI',Verify:'AI','Produce / Execute':'AI',Communicate:'AI',Decide:'AI'},'Agent-delegation':'AI','Automation':'AI'};
+function stageEls(a,s){const ctl=ctlOf(a),cp=caps(a),within=rank(s)<=rank(ceil(a)),g={};
+  elsOf(a).forEach(e=>{let v=typeof TPL[s]==='string'?'AI':(TPL[s][e]||'Human');if(e===ctl)v=s==='Agent-delegation'?'AI-led':s==='Automation'?'AI':'Human';if(within&&lr(v)>lr(cp[e]))v=cp[e];g[e]=v;});return g;}
+const dpEl=a=>{const e=elsOf(a);return e.includes('Decide')?'Decide':e.includes('Verify')?'Verify':null};
+const holds=v=>v==='Human'||v==='Human-led'||v==='AI-led';
+const CRUD=Object.fromEntries(Object.entries(ACRUD).map(([k,x])=>[k,{C:x.create||[],U:x.update||[],D:x.delete||[]}]));
+const WPN=Object.fromEntries(WPS.map(w=>[w.id,w]));
+const ACT=Object.fromEntries(acts.map(a=>[a.code,a]));
+
+let ENC='stage',WHERE='ceil',SEL=null;
+const stOf=a=>WHERE==='ceil'?ceil(a):'Human-only';
+function dpKinds(){const D={};
+  acts.forEach(a=>{const e=dpEl(a),v=e&&stageEls(a,stOf(a))[e];D[a.code]={dp:!!(e&&holds(v)),flag:v==='AI-led'};});
+  acts.forEach(a=>{const r=D[a.code];if(r.dp){r.k=r.flag?'flag':'every';return;}const x=CRUD[a.code];
+    const own=x?[...new Set(x.C.concat(x.U,x.D))].filter(w=>WPN[w]):[];
+    const at=own.some(w=>Object.keys(CRUD).some(c=>c!==a.code&&D[c]&&D[c].dp&&(CRUD[c].C.concat(CRUD[c].U,CRUD[c].D)).includes(w)));
+    r.k=at?'at':'ctl';});return D;}
+const DPK={every:['Decision point, a person on every instance','#0D2D4F'],flag:['Decision point, a person on flagged instances','#5A8DC4'],at:['Decided at another activity’s decision point','#C9D3E1'],ctl:['Needs a named control','#B8873F']};
+const ENCS={stage:'Stage',cons:'Consequence of Error',dp:'Decision point'};
+let D;
+function color(a){if(ENC==='stage')return DOT[stOf(a)];if(ENC==='cons')return CONSC[a.cons];return DPK[D[a.code].k][1];}
+function tipFor(a){return '<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>'+(WHERE==='ceil'?'Ceiling ':'Today ')+stOf(a)+' · '+HPCT[stOf(a)]+'% H<br>Consequence of Error '+a.cons+'<br>Accountable '+esc(a.A)+'<br>'+DPK[D[a.code].k][0];}
+const hOf=L=>Math.round(L.reduce((s,a)=>s+HPCT[stOf(a)],0)/L.length);
+function legend(){
+  if(ENC==='stage')return ST.map(s=>'<span><i class="sw" style="background:'+DOT[s]+'"></i>'+s+' ('+HPCT[s]+')</span>').join('');
+  if(ENC==='cons')return CO.map(c=>'<span><i class="sw" style="background:'+CONSC[c]+'"></i>'+c+'</span>').join('');
+  return Object.values(DPK).map(([l,c])=>'<span><i class="sw" style="background:'+c+'"></i>'+l+'</span>').join('');}
+window.setEnc=v=>{ENC=v;render()};window.setWhere=v=>{WHERE=v;render()};window.selProc=c=>{SEL=SEL===c?null:c;render()};
+function render(){
+  D=dpKinds();
+  document.getElementById('encBtns').innerHTML=Object.entries(ENCS).map(([k,l])=>'<button class="btn'+(ENC===k?' on':'')+'" onclick="setEnc(\''+k+'\')">'+l+'</button>').join('');
+  document.getElementById('stBtns').innerHTML=[['ceil','At the Progression Ceiling'],['today','Human-only (today)']].map(([k,l])=>'<button class="btn'+(WHERE===k?' on':'')+'" onclick="setWhere(\''+k+'\')">'+l+'</button>').join('');
+  const n=acts.length,cnt=k=>acts.filter(a=>D[a.code].k===k).length,auto=acts.filter(a=>stOf(a)==='Automation').length,keep=acts.filter(a=>rank(stOf(a))<=3).length;
+  let h='<div class="tiles">'+
+   '<div class="tile"><div class="n">'+hOf(acts)+'<small>% H</small></div><div class="l">'+(WHERE==='ceil'?'human share at the ceiling, from 95 today':'human share today, every activity Human-only')+'</div></div>'+
+   '<div class="tile"><div class="n">'+keep+'<small> of '+n+'</small></div><div class="l">activities keep a person doing or approving every instance</div></div>'+
+   '<div class="tile"><div class="n">'+auto+'</div><div class="l">activities can go to Automation</div></div>'+
+   '<div class="tile"><div class="n">'+(cnt('every')+cnt('flag'))+'</div><div class="l">decision points ('+cnt('every')+' every instance, '+cnt('flag')+' flagged)</div></div>'+
+   '<div class="tile"><div class="n">'+cnt('ctl')+'</div><div class="l">activities need a named control</div></div></div>';
+  h+='<div class="card"><h3>The work, by process</h3><div class="sub">One square per activity, colored by '+ENCS[ENC].toLowerCase()+'. The figure on each card is its process&rsquo;s % H '+(WHERE==='ceil'?'at the ceiling':'today')+'.</div><div class="legend">'+legend()+'</div><div class="grid">'+
+   groups.map(G=>'<div class="col"><h4><span class="c">'+G.code+'</span>'+esc(G.name)+'</h4>'+G.procs.map(P=>'<div class="proc'+(SEL===P.code?' sel':'')+'" onclick="selProc(\''+P.code+'\')"><div class="pn"><span><span class="code">'+P.code+'</span> '+esc(P.name)+'</span><span class="h">'+hOf(P.acts)+'%</span></div><div class="cells">'+
+     P.acts.map(a=>'<i class="cell" data-c="'+a.code+'" style="background:'+color(a)+'"></i>').join('')+'</div></div>').join('')+'</div>').join('')+'</div>';
+  if(SEL){const P=groups.flatMap(g=>g.procs).find(p=>p.code===SEL);
+    h+='<div class="detail"><table class="g"><tr><th>Activity</th><th>'+(WHERE==='ceil'?'Ceiling':'Today')+'</th><th>% H</th><th>Consequence of Error</th><th>Accountable</th><th>Decision point</th></tr>'+
+     P.acts.map(a=>'<tr><td><span class="code">'+a.code+'</span> '+esc(a.name)+'</td><td><i class="sw" style="background:'+DOT[stOf(a)]+';vertical-align:-1px;margin-right:5px"></i>'+stOf(a)+'</td><td>'+HPCT[stOf(a)]+'</td><td style="color:'+CONSC[a.cons]+'">'+a.cons+'</td><td>'+esc(a.A)+'</td><td>'+DPK[D[a.code].k][0]+'</td></tr>').join('')+'</table></div>';}
+  h+='</div>';
+  // stacked bars by group
+  const bars=groups.map(G=>{const L=G.procs.flatMap(p=>p.acts),t={};L.forEach(a=>{const s=stOf(a);t[s]=(t[s]||0)+1});
+    return '<div class="row"><div class="lab"><span class="code">'+G.code+'</span> '+esc(G.name)+'</div><div class="bar">'+ST.filter(s=>t[s]).map(s=>'<div data-t="'+esc(G.code+' '+G.name)+'<br>'+t[s]+' of '+L.length+' activities at '+s+'" style="flex:'+t[s]+';background:'+DOT[s]+';color:'+(rank(s)>=3?'#0D2D4F':'#fff')+';font-size:11px;line-height:20px;text-align:center;overflow:hidden">'+(t[s]>1?t[s]:'')+'</div>').join('')+'</div><div class="h">'+hOf(L)+'% H</div></div>';}).join('');
+  // matrix
+  const mx={};acts.forEach(a=>{const k=a.cons+'|'+stOf(a);mx[k]=(mx[k]||0)+1});const mmax=Math.max(...Object.values(mx));
+  const cellBg=v=>{if(!v)return '#F4F6FB';const t=v/mmax,l=Math.round(94-t*62);return 'hsl(212,55%,'+l+'%)';};
+  const mxh='<table class="mx"><tr><th></th>'+ST.map(s=>'<th>'+s.replace('-','-<br>')+'</th>').join('')+'</tr>'+CO.slice().reverse().map(c=>'<tr><th class="r" style="color:'+CONSC[c]+'">'+c+'</th>'+ST.map(s=>{const v=mx[c+'|'+s]||0;return '<td data-t="'+v+' '+c+' activit'+(v===1?'y':'ies')+' at '+s+'" style="background:'+cellBg(v)+';color:'+(v/mmax>.5?'#fff':'var(--dark)')+'">'+(v||'')+'</td>'}).join('')+'</tr>').join('')+'</table>';
+  h+='<div class="card"><h3>Stage mix by process group</h3><div class="sub">Share of each group&rsquo;s activities at each stage '+(WHERE==='ceil'?'at the ceiling':'today')+'.</div><div class="legend">'+ST.map(s=>'<span><i class="sw" style="background:'+DOT[s]+'"></i>'+s+'</span>').join('')+'</div><div class="bars">'+bars+'</div></div>'+
+   '<div class="card"><h3>Consequence of Error against the stage</h3><div class="sub">Activities in each cell. High and Critical work stops short of Automation.</div><div style="overflow-x:auto">'+mxh+'</div></div>';
+  document.getElementById('main').innerHTML=h;
+}
+render();
+const tip=document.getElementById('tip');
+document.addEventListener('mousemove',e=>{const el=e.target.closest('[data-c],[data-t]');
+  if(!el){tip.style.display='none';return;}
+  tip.innerHTML=el.dataset.c?tipFor(ACT[el.dataset.c]):el.dataset.t;tip.style.display='block';
+  const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-8),y=e.clientY+16+tip.offsetHeight>innerHeight?e.clientY-tip.offsetHeight-10:e.clientY+16;
+  tip.style.left=x+'px';tip.style.top=y+'px';});
+}
+fetch(SANDBOX,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}).then(build)
+ .catch(e=>{document.getElementById('main').innerHTML='<div class="err">Could not read the master data from Sandbox 7.0 ('+esc(e.message)+'). Open the <a href="../sandbox/pcf7.html">sandbox</a> instead.</div>';});
+})();
+</script>
+</body></html>
