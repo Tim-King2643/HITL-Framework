@@ -82,6 +82,7 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .al{border-collapse:collapse;width:100%}
 .al td{font-size:12px;padding:3px 6px;border-top:1px solid #EEF1F6;text-align:left}
 .al tr:first-child td{border-top:none}
+.al tr.alh td,.al tr.alh+tr td{border-top:none}
 .code{font-family:Consolas,monospace;color:var(--gray);white-space:nowrap}
 .hc{color:var(--red)}
 .outline{border:1.5px dashed #C6D8EE;border-radius:10px;padding:18px 20px;background:#FAFBFD;margin-bottom:16px}
@@ -876,7 +877,7 @@ function dataMain(){
       if(o){const li=(p,t)=>{const K='d'+x.w.id+t+p.c+p.p, on=opened[K], tg='opened[\''+K+'\']=!opened[\''+K+'\'];render()';
           return '<tr><td class="code">'+p.c+'</td><td>'+esc(ACT[p.c].name)+'</td><td>'+esc(ACT[p.c].Aroles.join(', '))+'</td><td>'+stageNow(ACT[p.c])+'</td><td class="'+(HC[ACT[p.c].cons]?'hc':'')+'"><span class="acons'+(on?' sel':'')+'" onclick="event.stopPropagation();'+tg+'" title="Consequence of Error">'+ACT[p.c].cons+'</span></td><td class="small">relies on '+p.p+' at '+stageNow(ACT[p.p])+'</td></tr>'+
             (on?'<tr><td colspan="6">'+coeBox(ACT[p.c],null,'<button class="ix" onclick="event.stopPropagation();'+tg+'">\u00d7</button>')+'</td></tr>':'')};
-        h+='<tr class="det"><td colspan="4">'+(x.pts.length?'<div class="small" style="margin:4px 0">Verification points</div><table class="al">'+x.pts.sort((p,q)=>nat(p.c,q.c)).map(p=>li(p,'v')).join('')+'</table>':'')+(x.ho.length?'<div class="small" style="margin:8px 0 4px;color:#9A6A00">Unchecked hand-offs</div><table class="al">'+x.ho.sort((p,q)=>nat(p.c,q.c)).map(p=>li(p,'h')).join('')+'</table>':'')+(quiet?'<div class="small">Produced in '+(x.prods.join(', ')||'no activity')+'. Nothing AI-touched reaches an activity that relies on it.</div>':'')+'</td></tr>';}
+        h+='<tr class="det"><td colspan="4">'+(x.pts.length||x.ho.length?'<table class="al">'+(x.pts.length?'<tr class="alh"><td colspan="6"><div class="small" style="margin:4px 0 0">Verification points</div></td></tr>'+x.pts.sort((p,q)=>nat(p.c,q.c)).map(p=>li(p,'v')).join(''):'')+(x.ho.length?'<tr class="alh"><td colspan="6"><div class="small" style="margin:8px 0 0;color:#9A6A00">Unchecked hand-offs</div></td></tr>'+x.ho.sort((p,q)=>nat(p.c,q.c)).map(p=>li(p,'h')).join(''):'')+'</table>':'')+(quiet?'<div class="small">Produced in '+(x.prods.join(', ')||'no activity')+'. Nothing AI-touched reaches an activity that relies on it.</div>':'')+'</td></tr>';}
     });
     return h+'</tbody></table></div>';
   }
