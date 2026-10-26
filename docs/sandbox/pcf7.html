@@ -1410,6 +1410,9 @@ const CEILING_FACTORS = [
 // parameter, and the organization's ?org= is kept alongside. Links to the six views they replaced
 // open the view that took each one over.
 const VIEW_KEYS = ['work', 'people', 'data', 'findings'];
+// The view the page was opened with, before the address is tidied: an old Working Relationship or Readiness Gate
+// link opens the Work view's activity rows rather than its dashboard (GR-061).
+const FV_OPENED_VIEW = new URLSearchParams(location.search).get('view');
 const VIEW_ALIASES = { wr: 'work', gates: 'work', raci: 'people', fpeople: 'people', fdata: 'data', report: 'findings', ffind: 'findings' };
 function viewFromUrl() {
   let v = new URLSearchParams(location.search).get('view');
@@ -1428,7 +1431,7 @@ window.addEventListener('popstate', function () {
   if (v !== currentView) setView(v, { fromHistory: true });
 });
 const VIEW_NOTES = {
-  work: 'Every activity on the six-step ramp, from Current State to Progression Ceiling, with its Accountable role, decision point and Consequence of Error. With an organization selected, open an activity\u2019s Current State to assess it element by element (GR-058).',
+  work: 'Opens on the dashboard: the work at a glance, by process group, process and activity (GR-061). Activities shows every activity on the six-step ramp, from Current State to Progression Ceiling, with its Accountable role, decision point and Consequence of Error. With an organization selected, open an activity\u2019s Current State to assess it element by element (GR-058).',
   people: 'Every role in the catalog: the activities it is Accountable and Responsible for (activity-level RACI, GR-060), and what is left for a person in each as the work moves up the ramp. The role-level hand-off into Human Impact (GR-056), not the Human Impact assessment.',
   data: 'Each work product, the activities that create and update it, and every activity that relies on it. Once AI touches a work product, the person who relies on it next has to check it (GR-046). By activity shows the activity CRUD.',
   findings: 'On the Reference Model, the reference at a glance and the latest change made to it. For an organization, its executive summary (GR-056) and its exceptions report, printable for executive review.'
@@ -1713,6 +1716,7 @@ if (window.OrgContext) {
 // ── Four views (GR-059) ──────────────────────────────────────────────────
 // four_views.html runs in #fv-frame and reads this page's data through FV_SOURCE
 // (const declarations are not window properties, so they are handed over here).
+window.FV_OPENED_VIEW = FV_OPENED_VIEW;
 window.FV_SOURCE = { PCF7, WR_DATA, ROLE_TAXONOMY, ACTIVITY_CRUD, ACTIVITY_RACI, WORK_ELEMENTS, WORK_PRODUCTS, ASSESS_EVIDENCE_LABEL,
   CHANGE_LOG: (typeof CHANGE_LOG !== 'undefined') ? CHANGE_LOG : [] };
 function showFourViews(v) {

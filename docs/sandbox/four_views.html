@@ -38,6 +38,30 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .card h3{font-size:15px;color:var(--navy-d);margin-bottom:4px}
 .card .sub{font-size:12px;color:var(--lgray);margin-bottom:10px;line-height:1.5}
 .tiles{display:flex;gap:10px;flex-wrap:wrap}
+/* Work dashboard (GR-061) */
+.db-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--gray);margin:2px 0 12px}
+.db-legend span{display:inline-flex;align-items:center;gap:6px}
+.db-sw{width:12px;height:12px;border-radius:3px;display:inline-block;box-shadow:inset 0 0 0 1px rgba(13,45,79,.12)}
+.db-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.db-col h4{font-size:12px;font-weight:600;color:var(--navy-d);line-height:1.35;padding:0 0 6px;border-bottom:2px solid var(--navy);margin-bottom:8px;min-height:40px;text-align:left}
+.db-col h4 .code{margin-right:4px}
+.db-proc{border:1px solid var(--border);border-radius:8px;padding:7px 9px;margin-bottom:7px;cursor:pointer;background:#fff;text-align:left}
+.db-proc:hover{border-color:var(--navy)}
+.db-pn{font-size:12px;line-height:1.35;color:var(--dark);display:flex;justify-content:space-between;gap:8px}
+.db-pn .h{color:var(--navy);white-space:nowrap}
+.db-cells{display:flex;flex-wrap:wrap;gap:2px;margin-top:6px}
+.db-cell{width:13px;height:13px;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(13,45,79,.12)}
+.db-bars .row{display:grid;grid-template-columns:300px 1fr 60px;gap:10px;align-items:center;margin-bottom:7px;font-size:12px;text-align:left}
+.db-bar{display:flex;height:20px;gap:2px}
+.db-bar div{height:100%;font-size:11px;line-height:20px;text-align:center;overflow:hidden}
+.db-bar div:first-child{border-radius:4px 0 0 4px}.db-bar div:last-child{border-radius:0 4px 4px 0}
+.db-bars .h{text-align:right;color:var(--navy)}
+table.db-mx{border-collapse:separate;border-spacing:2px;font-size:12px}
+.db-mx th{font-size:10.5px;color:var(--lgray);font-weight:600;padding:3px 6px;text-align:center}
+.db-mx th.r{text-align:right}
+.db-mx td{width:110px;height:38px;text-align:center;border-radius:4px}
+.db-tip{position:fixed;pointer-events:none;background:#0D1B2A;color:#fff;font-size:12px;line-height:1.45;padding:7px 10px;border-radius:6px;max-width:300px;z-index:20;display:none;text-align:left}
+@media(max-width:860px){.db-bars .row{grid-template-columns:120px 1fr 44px}}
 .tile{flex:1;min-width:140px;border:1px solid #EEF1F6;border-radius:8px;padding:10px 12px}
 .tile .n{font-family:Georgia,serif;font-size:22px;font-weight:700;color:var(--navy-d)}
 .tile .l{font-size:11.5px;color:var(--gray);line-height:1.4}
@@ -236,7 +260,7 @@ const HC={High:1,Critical:1};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const pct=(n,d)=>d?Math.round(100*n/d)+'%':'—';
 // RACI is activity level (GR-060, Tim's decision Oct 10, 2026); a process's RACI is computed from its activities (procRaci).
-let S={fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'load',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
+let S={wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'load',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
 const VIEWS=[
  {id:'work',name:'Work',q:'Where does each activity sit, and what moves next?'},
  {id:'people',name:'People',q:'What does this mean for each role?'},
@@ -545,9 +569,16 @@ function workFilter(){
   return DATA.acts.filter(a=>(S.wg==='all'||a.code.startsWith(S.wg+'.'))&&(
     S.ws==='all'||(S.ws==='auto'&&derivedCeil(a)==='Automation')||(S.ws==='person'&&rank(derivedCeil(a))<=2)||(S.ws==='hc'&&HC[a.cons])||(S.ws==='assessed'&&isOrg()&&ABCSTAGE[a.code])));
 }
+// Work opens on the dashboard (GR-061); the activity rows are one click away. The viewer's own choice is remembered
+// in this browser only; a process card, and old links to the Working Relationship or Readiness Gate views, open the rows.
+try{const m=localStorage.getItem('fv.workMode');if(m==='dash'||m==='acts')S.wmode=m;}catch(e){}
+try{const v=P.FV_OPENED_VIEW;if(v==='wr'||v==='gates')S.wmode='acts';}catch(e){}
+function setWMode(v){S.wmode=v;try{localStorage.setItem('fv.workMode',v)}catch(e){}render();}
+function wmodeBtns(){return '<h5>Show</h5><div class="stack">'+[['dash','Dashboard'],['acts','Activities']].map(o=>'<button class="'+(S.wmode===o[0]?'on':'')+'" onclick="setWMode(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>';}
 function workSide(){
+  if(S.wmode==='dash') return dashSide();
   const gopts='<option value="all">All process groups</option>'+DATA.groups.map(g=>'<option value="'+g[0]+'"'+(S.wg===g[0]?' selected':'')+'>'+g[0]+' '+esc(g[1])+'</option>').join('');
-  return '<div class="q">'+VIEWS[0].q+'</div><p>Every activity on the six-step ramp, from today&rsquo;s Current State up to its Progression Ceiling. Click a step for who does each part of the work at that stage, an arrow for what changes in that step, the lock for what must stay with a person, or the Consequence of Error for what drives it.</p>'+
+  return '<div class="q">'+VIEWS[0].q+'</div>'+wmodeBtns()+'<p style="margin-top:10px">Every activity on the six-step ramp, from today&rsquo;s Current State up to its Progression Ceiling. Click a step for who does each part of the work at that stage, an arrow for what changes in that step, the lock for what must stay with a person, or the Consequence of Error for what drives it.</p>'+
    '<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()">'+gopts.replace('value="'+S.wg+'"','value="'+S.wg+'" selected')+'</select>'+
    '<h5>Show</h5>'+btns([['all','All activities'],['person','Must keep a person doing the work'],['auto','May go to Automation'],['hc','High or Critical consequence']].concat(isOrg()?[['assessed','Assessed']]:[]),'ws')+
    '<h5>Reading a ramp</h5><p>Each step carries a share of the work kept with a person (% H): '+ST.map(s=>s+' '+HPCT[s]).join(', ')+'. A process heading averages its activities; click a % H figure for its calculation, or the + to open the process.</p><p>'+'Reached stages, up to the Current State, are in navy with their stage color square in front; the rest are grey. The lock sits at the Progression Ceiling; stages past it are faint. '+(isOrg()?'A stage in red is reached past the ceiling,'+' and a red dot an activity with an element past its own ceiling. Click the Current State step for its element assessment.':'In the Reference Model every activity starts at the Human-only baseline.')+'</p>'+
@@ -726,6 +757,7 @@ function gridBox(a){
   return h+'</div>';
 }
 function workMain(){
+  if(S.wmode==='dash') return dashMain();
   const L=workFilter(), cnt=ST.map(s=>L.filter(a=>derivedCeil(a)===s).length), org=isOrg();
   let h='<div class="card"><h3>'+(S.wg==='all'?'All process groups':S.wg+' '+esc(DATA.groups.find(g=>g[0]===S.wg)[1]))+'</h3><div class="sub">'+L.length+' activit'+(L.length===1?'y':'ies')+(org?' · '+esc(ORGNAME())+': Current State from its assessments':' · Reference Model: every activity starts at the Human-only baseline')+'</div><div class="tiles">'+
     ST.slice(2).map((s,i)=>tile(cnt[i+2],'ceiling at '+s)).join('')+'</div><div class="prov">Ceilings derived from the element ceilings (GR-058). '+(org?'Current State is Assessed; ceilings are Modeled. '+abcNote():'Modeled.')+'</div></div>';
@@ -755,6 +787,58 @@ function workMain(){
   });
   return h+'</tbody></table></div>';
 }
+
+/* ---------- Work dashboard (GR-061) ---------- */
+// The Work view's answer as pictures: one square per activity, colored by stage, Consequence of Error or decision point.
+// Stage is the Current State or the Progression Ceiling (an organization opens on its Current State, the Reference
+// Model on its ceilings); decision points follow the Work view (an organization's Current State, otherwise the ceilings).
+const DBK={every:['Decision point, a person on every instance','#0D2D4F'],flag:['Decision point, a person on flagged instances','#9CBBE0'],at:['Decided at another activity\u2019s decision point','#E3E8F0'],ctl:['Needs a named control','#B8873F']};
+const dbWhere=()=>S.dwhere==='auto'?(isOrg()?'cur':'ceil'):S.dwhere;
+const dbSt=a=>dbWhere()==='cur'?curOf(a):derivedCeil(a);
+function dbKind(a){const r=dpAnalysis()[a.code];return r.dp?(r.lead==='AI-led'?'flag':'every'):r.feeds.length?'at':'ctl';}
+function dbColor(a){return S.denc==='cons'?CONSC[a.cons]:S.denc==='dp'?DBK[dbKind(a)][1]:DOT[dbSt(a)];}
+const dbH=L=>Math.round(mean(L.map(a=>HPCT[dbSt(a)])));
+function dashSide(){
+  const where=isOrg()?[['cur','Current State ('+esc(ORGNAME())+')'],['ceil','Progression Ceiling']]:[['ceil','Progression Ceiling'],['cur','Current State (Human-only baseline)']];
+  return '<div class="q">'+VIEWS[0].q+'</div>'+wmodeBtns()+'<p style="margin-top:10px">The answer at a glance: one column per process group, one card per process with its % H, one square per activity. Hover a square for the activity; click a card to open its activities.</p>'+
+   '<h5>Color the squares by</h5><div class="stack">'+[['stage','Stage'],['cons','Consequence of Error'],['dp','Decision point']].map(o=>'<button class="'+(S.denc===o[0]?'on':'')+'" onclick="S.denc=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>'+
+   '<h5>Where the work is</h5><div class="stack">'+where.map(o=>'<button class="'+(dbWhere()===o[0]?'on':'')+'" onclick="S.dwhere=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>'+
+   '<h5>Reading it</h5><p>Darker navy means more of the work stays with a person. The stage mix shows each group&rsquo;s spread across the ramp; the matrix shows how Consequence of Error holds the ceilings down.</p>';
+}
+function dashMain(){
+  const A=DATA.acts,n=A.length,cur=dbWhere()==='cur',org=isOrg(),k={every:0,flag:0,at:0,ctl:0};A.forEach(a=>k[dbKind(a)]++);
+  const auto=A.filter(a=>dbSt(a)==='Automation').length,keep=A.filter(a=>rank(dbSt(a))<=3).length,where=cur?'at the Current State':'at the ceiling';
+  let h='<div class="tiles" style="margin-bottom:16px">'+
+   tile(dbH(A)+'% H',cur?(org?esc(ORGNAME())+'&rsquo;s human share today; '+Math.round(mean(A.map(a=>HPCT[derivedCeil(a)])))+'% at the ceilings':'human share today, every activity Human-only'):'human share at the ceilings, from 95 Human-only')+
+   tile(keep+' of '+n,'keep a person doing or approving every instance, '+where)+
+   tile(auto,(cur?'at':'can go to')+' Automation')+
+   tile(k.every+k.flag,'decision points ('+k.every+' every instance, '+k.flag+' flagged)'+(org?' at the Current State':' at the ceilings'))+
+   tile(k.ctl,'need a named control')+(org?tile(A.filter(a=>ABCSTAGE[a.code]).length+' of '+n,'assessed'):'')+'</div>';
+  const leg=S.denc==='stage'?ST.map(s=>'<span><i class="db-sw" style="background:'+DOT[s]+'"></i>'+s+' ('+HPCT[s]+')</span>').join(''):S.denc==='cons'?CONSO.map(c=>'<span><i class="db-sw" style="background:'+CONSC[c]+'"></i>'+c+'</span>').join(''):Object.values(DBK).map(([l,c])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('');
+  h+='<div class="card"><h3>The work, by process</h3><div class="sub">One square per activity, colored by '+({stage:'stage',cons:'Consequence of Error',dp:'decision point'})[S.denc]+'. The figure on each card is its process&rsquo;s % H '+where+'. Click a card to open its activities.</div><div class="db-legend">'+leg+'</div><div class="db-grid">'+
+   DATA.groups.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+PROCS.filter(p=>p.g===gc).map(p=>{const L=p.acts.map(c=>ACT[c]).filter(Boolean);
+     return '<div class="db-proc" onclick="dbOpen(\''+p.code+'\')"><div class="db-pn"><span><span class="code">'+p.code+'</span> '+esc(p.name)+'</span><span class="h">'+dbH(L)+'%</span></div><div class="db-cells">'+L.map(a=>'<i class="db-cell" data-c="'+a.code+'" style="background:'+dbColor(a)+'"></i>').join('')+'</div></div>';}).join('')+'</div>').join('')+'</div></div>';
+  const bars=DATA.groups.map(([gc,gn])=>{const L=A.filter(a=>a.code.startsWith(gc+'.')),t={};L.forEach(a=>{const s=dbSt(a);t[s]=(t[s]||0)+1});
+    return '<div class="row"><div><span class="code">'+gc+'</span> '+esc(gn)+'</div><div class="db-bar">'+ST.filter(s=>t[s]).map(s=>'<div data-t="'+esc(gc+' '+gn)+'<br>'+t[s]+' of '+L.length+' activities at '+s+'" style="flex:'+t[s]+';background:'+DOT[s]+';color:'+(rank(s)>=3?'#0D2D4F':'#fff')+'">'+(t[s]>1?t[s]:'')+'</div>').join('')+'</div><div class="h">'+dbH(L)+'% H</div></div>';}).join('');
+  h+='<div class="card"><h3>Stage mix by process group</h3><div class="sub">Share of each group&rsquo;s activities at each stage, '+where+'.</div><div class="db-legend">'+ST.map(s=>'<span><i class="db-sw" style="background:'+DOT[s]+'"></i>'+s+'</span>').join('')+'</div><div class="db-bars">'+bars+'</div></div>';
+  const mx={};A.forEach(a=>{const key=a.cons+'|'+dbSt(a);mx[key]=(mx[key]||0)+1});const mmax=Math.max(...Object.values(mx));
+  const bg=v=>v?'hsl(212,55%,'+Math.round(94-v/mmax*62)+'%)':'#F4F6FB';
+  h+='<div class="card"><h3>Consequence of Error against the stage</h3><div class="sub">Activities in each cell, '+where+'. High and Critical work stops short of Automation.</div><div style="overflow-x:auto"><table class="db-mx"><tr><th></th>'+ST.map(s=>'<th>'+s.replace('-','-<br>')+'</th>').join('')+'</tr>'+
+   CONSO.slice().reverse().map(c=>'<tr><th class="r" style="color:'+CONSC[c]+'">'+c+'</th>'+ST.map(s=>{const v=mx[c+'|'+s]||0;return '<td data-t="'+v+' '+c+' activit'+(v===1?'y':'ies')+' at '+s+'" style="background:'+bg(v)+';color:'+(v/mmax>.5?'#fff':'var(--dark)')+'">'+(v||'')+'</td>'}).join('')+'</tr>').join('')+'</table></div></div>';
+  return h;
+}
+// A process card opens the activity rows at that process, expanded, and scrolls the page to it.
+function dbOpen(code){const p=PROCS.find(x=>x.code===code);if(!p)return;
+  S.wmode='acts';S.wg=p.g;S.ws='all';opened['p'+code]=true;render();
+  const row=[...document.querySelectorAll('tr.proc')].find(r=>{const c=r.querySelector('.code');return c&&c.textContent===code;});
+  if(row){try{const fr=window.frameElement;if(fr){P.scrollTo({top:fr.getBoundingClientRect().top+P.scrollY+row.getBoundingClientRect().top-70,behavior:'smooth'});}else row.scrollIntoView({behavior:'smooth'});}catch(e){row.scrollIntoView();}}
+}
+{const tip=document.createElement('div');tip.className='db-tip';document.body.appendChild(tip);
+ document.addEventListener('mousemove',e=>{const el=e.target.closest&&e.target.closest('.db-cell,[data-t]');
+  if(!el||!(el.dataset.c||el.dataset.t)){tip.style.display='none';return;}
+  if(el.dataset.c){const a=ACT[el.dataset.c];tip.innerHTML='<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>'+(dbWhere()==='cur'?'Current State ':'Ceiling ')+dbSt(a)+' \u00b7 '+HPCT[dbSt(a)]+'% H<br>Consequence of Error '+a.cons+'<br>Accountable '+esc(a.Aroles.join(', '))+'<br>'+DBK[dbKind(a)][0];}
+  else tip.innerHTML=el.dataset.t;
+  tip.style.display='block';const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-8),y=e.clientY+16+tip.offsetHeight>innerHeight?e.clientY-tip.offsetHeight-10:e.clientY+16;tip.style.left=x+'px';tip.style.top=y+'px';});}
 
 /* ---------- Data ---------- */
 // Same rule as the work-product analysis (GR-046): producers create or update a work product; an activity relies on it when
