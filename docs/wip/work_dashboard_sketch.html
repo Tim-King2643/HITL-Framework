@@ -32,9 +32,15 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .col h4 .c{font-family:Consolas,monospace;color:var(--lgray);font-weight:400;margin-right:4px}
 .proc{border:1px solid var(--border);border-radius:8px;padding:7px 9px;margin-bottom:7px;cursor:pointer;background:#fff}
 .proc:hover,.proc.sel{border-color:var(--navy)}
+.proc.sel{box-shadow:0 0 0 1px var(--navy)}
 .proc .pn{font-size:12px;line-height:1.35;color:var(--dark);display:flex;justify-content:space-between;gap:8px}
 .proc .pn .h{color:var(--navy);white-space:nowrap}
 .cells{display:flex;flex-wrap:wrap;gap:2px;margin-top:6px}
+.alist{margin-top:8px;border-top:1px solid #EEF1F6;padding-top:6px}
+.ar{display:flex;gap:7px;align-items:flex-start;font-size:12px;line-height:1.4;padding:4px 0;border-bottom:1px solid #F1F4F8}
+.ar:last-child{border-bottom:none}
+.ar .cell{flex:0 0 13px;margin-top:2px}
+.am{font-size:11px;color:var(--lgray);margin-top:1px}
 .cell{width:13px;height:13px;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(13,45,79,.12)}
 .detail{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
 table.g{width:100%;border-collapse:collapse;font-size:12.5px}
@@ -62,7 +68,7 @@ table.mx{border-collapse:separate;border-spacing:2px;font-size:12px}
 <div class="side">
   <h1>Work dashboard</h1>
   <p>The Work view answers how far each activity can move. This sketch shows the same answer as pictures, for an executive reading it in a minute. Every figure is computed from Sandbox 7.0&rsquo;s master data with the four views&rsquo; own rules.</p>
-  <p>The grid has one column per process group, one card per process, and one square per activity. Click a process to list its activities.</p>
+  <p>The grid has one column per process group, one card per process, and one square per activity. Click a process card to list its activities in the card; click it again to close it.</p>
   <h5>Color the squares by</h5>
   <div id="encBtns"></div>
   <h5>Where the work is</h5>
@@ -153,10 +159,7 @@ function render(){
    '<div class="tile"><div class="n">'+cnt('ctl')+'</div><div class="l">activities need a named control</div></div></div>';
   h+='<div class="card"><h3>The work, by process</h3><div class="sub">One square per activity, colored by '+ENCS[ENC].toLowerCase()+'. The figure on each card is its process&rsquo;s % H '+(WHERE==='ceil'?'at the ceiling':'today')+'.</div><div class="legend">'+legend()+'</div><div class="grid">'+
    groups.map(G=>'<div class="col"><h4><span class="c">'+G.code+'</span>'+esc(G.name)+'</h4>'+G.procs.map(P=>'<div class="proc'+(SEL===P.code?' sel':'')+'" onclick="selProc(\''+P.code+'\')"><div class="pn"><span><span class="code">'+P.code+'</span> '+esc(P.name)+'</span><span class="h">'+hOf(P.acts)+'%</span></div><div class="cells">'+
-     P.acts.map(a=>'<i class="cell" data-c="'+a.code+'" style="background:'+color(a)+'"></i>').join('')+'</div></div>').join('')+'</div>').join('')+'</div>';
-  if(SEL){const P=groups.flatMap(g=>g.procs).find(p=>p.code===SEL);
-    h+='<div class="detail"><table class="g"><tr><th>Activity</th><th>'+(WHERE==='ceil'?'Ceiling':'Today')+'</th><th>% H</th><th>Consequence of Error</th><th>Accountable</th><th>Decision point</th></tr>'+
-     P.acts.map(a=>'<tr><td><span class="code">'+a.code+'</span> '+esc(a.name)+'</td><td><i class="sw" style="background:'+DOT[stOf(a)]+';vertical-align:-1px;margin-right:5px"></i>'+stOf(a)+'</td><td>'+HPCT[stOf(a)]+'</td><td style="color:'+CONSC[a.cons]+'">'+a.cons+'</td><td>'+esc(a.A)+'</td><td>'+DPK[D[a.code].k][0]+'</td></tr>').join('')+'</table></div>';}
+     P.acts.map(a=>'<i class="cell" data-c="'+a.code+'" style="background:'+color(a)+'"></i>').join('')+'</div>'+(SEL===P.code?'<div class="alist">'+P.acts.map(a=>'<div class="ar"><i class="cell" style="background:'+color(a)+'"></i><div><span class="code">'+a.code+'</span> '+esc(a.name)+'<div class="am">'+stOf(a)+' \u00b7 '+HPCT[stOf(a)]+'% H \u00b7 <span style="color:'+CONSC[a.cons]+'">'+a.cons+'</span><br>'+esc(a.A)+' \u00b7 '+DPK[D[a.code].k][0]+'</div></div></div>').join('')+'</div>':'')+'</div>').join('')+'</div>').join('')+'</div>';
   h+='</div>';
   // stacked bars by group
   const bars=groups.map(G=>{const L=G.procs.flatMap(p=>p.acts),t={};L.forEach(a=>{const s=stOf(a);t[s]=(t[s]||0)+1});
