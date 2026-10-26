@@ -138,6 +138,7 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 /* The six steps share the row's width equally, so they line up from row to row and shrink with the window (never below their names). */
 .step.sn{display:block;flex:1 1 0;width:auto;min-width:max-content;text-align:center;font-size:12.5px;color:#6B7A90;line-height:18px;padding:2px 0}
 .step.sn.on{color:var(--navy)}.step.sn.dim{color:#C4CBD7}.step.sn.past{color:var(--red)}
+.step.sn .sq{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px;box-shadow:inset 0 0 0 1px rgba(13,45,79,.15)}
 .step.sn.sel{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
 .step.sn:hover{text-decoration:underline;text-underline-offset:4px}
 /* A blank line's worth of space under each activity, to separate one from the next */
@@ -549,7 +550,7 @@ function workSide(){
   return '<div class="q">'+VIEWS[0].q+'</div><p>Every activity on the six-step ramp, from today&rsquo;s Current State up to its Progression Ceiling. Click a step for who does each part of the work at that stage, an arrow for what changes in that step, the lock for what must stay with a person, or the Consequence of Error for what drives it.</p>'+
    '<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()">'+gopts.replace('value="'+S.wg+'"','value="'+S.wg+'" selected')+'</select>'+
    '<h5>Show</h5>'+btns([['all','All activities'],['person','Must keep a person doing the work'],['auto','May go to Automation'],['hc','High or Critical consequence']].concat(isOrg()?[['assessed','Assessed']]:[]),'ws')+
-   '<h5>Reading a ramp</h5><p>Each step carries a share of the work kept with a person (% H): '+ST.map(s=>s+' '+HPCT[s]).join(', ')+'. A process heading averages its activities; click a % H figure for its calculation, or the + to open the process.</p><p>'+'Stages in navy are reached, up to the Current State; the rest are grey. The lock sits at the Progression Ceiling; stages past it are faint. '+(isOrg()?'A stage in red is reached past the ceiling,'+' and a red dot an activity with an element past its own ceiling. Click the Current State step for its element assessment.':'In the Reference Model every activity starts at the Human-only baseline.')+'</p>'+
+   '<h5>Reading a ramp</h5><p>Each step carries a share of the work kept with a person (% H): '+ST.map(s=>s+' '+HPCT[s]).join(', ')+'. A process heading averages its activities; click a % H figure for its calculation, or the + to open the process.</p><p>'+'Reached stages, up to the Current State, are in navy with their stage color square in front; the rest are grey. The lock sits at the Progression Ceiling; stages past it are faint. '+(isOrg()?'A stage in red is reached past the ceiling,'+' and a red dot an activity with an element past its own ceiling. Click the Current State step for its element assessment.':'In the Reference Model every activity starts at the Human-only baseline.')+'</p>'+
    '<div class="replaces">Replaces <b>Working Relationship</b> and <b>Readiness Gate</b>, as a consolidation of the screens only. Work says how far an activity can move. Whether the organization and its people can operate there stays with Human Operating Readiness (GR-012) and Meaningful Human Control (GR-013) in the Human Impact &amp; Readiness layer; the work-side evidence and gates feed that layer rather than replace it, and the gate box shows its checks beside the technical evidence.</div>';
 }
 function ramp(a,big){
@@ -557,7 +558,7 @@ function ramp(a,big){
   let r='';
   ST.forEach((st,k)=>{
     const reached=k<=cur, above=k>ci, past=reached&&k>lim;
-    r+='<div class="step sn'+(reached?' on':above?' dim':'')+(past?' past':'')+(sel.t==='stage'&&sel.k===k?' sel':'')+'" onclick="wpick(\''+a.code+'\',\'stage\','+k+')" title="'+(past?'Reached, past the ceiling':reached?'Reached':above?'Past the Progression Ceiling':'Within the ceiling, not reached')+'">'+st+'</div>';
+    r+='<div class="step sn'+(reached?' on':above?' dim':'')+(past?' past':'')+(sel.t==='stage'&&sel.k===k?' sel':'')+'" onclick="wpick(\''+a.code+'\',\'stage\','+k+')" title="'+(past?'Reached, past the ceiling':reached?'Reached':above?'Past the Progression Ceiling':'Within the ceiling, not reached')+'">'+(reached?'<i class="sq" style="background:'+DOT[st]+'"></i>':'')+st+'</div>';
     if(k<5){
       if(k===ci) r+='<div class="lock" onclick="wpick(\''+a.code+'\',\'lock\',0)" title="Progression Ceiling">'+LOCK+'</div>';
       else r+='<div class="arr'+(k>=ci?' dim':'')+(sel.t==='gate'&&sel.k===k?' sel':'')+'" onclick="wpick(\''+a.code+'\',\'gate\','+k+')">→</div>';
