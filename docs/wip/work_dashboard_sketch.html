@@ -69,7 +69,7 @@ table.mx{border-collapse:separate;border-spacing:2px;font-size:12px}
   <div id="stBtns"></div>
   <p class="sm" style="font-size:11.5px;color:var(--lgray)">Reference Model. An organization&rsquo;s Current State needs the sandbox&rsquo;s sign-in, so it would show once this moves into the four views.</p>
   <h5>Reading it</h5>
-  <p>Darker navy means more of the work stays with a person. The navy steps are spaced wider than the sandbox&rsquo;s so neighbouring stages read apart. The stacked bars show each group&rsquo;s mix of stages; the matrix shows how Consequence of Error holds the ceilings down.</p>
+  <p>Darker navy means more of the work stays with a person. The stacked bars show each group&rsquo;s mix of stages; the matrix shows how Consequence of Error holds the ceilings down.</p>
 </div>
 <div class="main" id="main"><div class="card sub">Reading the sandbox&rsquo;s master data&hellip;</div></div>
 </div>
@@ -94,7 +94,7 @@ const PCF7=lit(src,'PCF7','{','}'),WR=lit(src,'WR_DATA','{','}'),ACRUD=lit(src,'
 /* ---- the four views' model (Reference Model) ---- */
 const ST=['Human-only','Judgment','Augmentation','Oversight','Agent-delegation','Automation'],rank=s=>ST.indexOf(s);
 const HPCT={"Human-only":95,"Judgment":82,"Augmentation":62,"Oversight":48,"Agent-delegation":28,"Automation":10};
-// A wider-spaced version of the sandbox ramp (same hue, light to dark), so neighbouring stages read apart in the bars.
+// The sandbox's stage colors (pcf7.html WR_CATS, Oct 26, 2026).
 const DOT={"Human-only":"#0D2D4F","Judgment":"#1F4E86","Augmentation":"#3A6FAE","Oversight":"#6895C8","Agent-delegation":"#9CBBE0","Automation":"#CFDDF0"};
 const CO=['Low','Moderate','High','Critical'],CONSC={Low:'#0072B2',Moderate:'#008460',High:'#9A6A00',Critical:'#C15500'},HC={High:1,Critical:1};
 const EL=['Research','Evaluate','Draft','Verify','Decide','Produce / Execute','Communicate'],LEAD=['Human','Human-led','AI-led','AI'],lr=x=>LEAD.indexOf(x);

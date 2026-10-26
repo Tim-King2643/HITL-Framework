@@ -677,13 +677,15 @@ const PCF7 = { code:"7.0", name:"Develop and Manage Human Resources", l1mv:[77, 
 //   render time and, when any exist, shows a Change History link to the
 //   Production Changelog instead of inline text.
 
+// Stage colors: one navy hue, light to dark, spaced so neighbouring stages read apart (Oct 26, 2026,
+// from the work dashboard sketch). ink is the text color on that step: white on the dark steps, navy on the light.
 const WR_CATS = {
-  "Automation":       { color:"#7DAEE0", h:10 },
-  "Agent-delegation":  { color:"#5A8DC4", h:28 },
-  "Oversight":         { color:"#3D6FA8", h:48 },
-  "Augmentation":      { color:"#2457A3", h:62 },
-  "Judgment":          { color:"#204474", h:82 },
-  "Human-only":        { color:"#0D2D4F", h:95 },
+  "Automation":       { color:"#CFDDF0", ink:"#0D2D4F", h:10 },
+  "Agent-delegation":  { color:"#9CBBE0", ink:"#0D2D4F", h:28 },
+  "Oversight":         { color:"#6895C8", ink:"#0D2D4F", h:48 },
+  "Augmentation":      { color:"#3A6FAE", ink:"#fff", h:62 },
+  "Judgment":          { color:"#1F4E86", ink:"#fff", h:82 },
+  "Human-only":        { color:"#0D2D4F", ink:"#fff", h:95 },
 };
 
 // Okabe-Ito-derived — blue/teal/amber/burnt-orange rather than green/red, so
@@ -1519,7 +1521,7 @@ const XR_RAMP = ['Human-only', 'Judgment', 'Augmentation', 'Oversight', 'Agent-d
 const XR_OVERRIDE_CONS = { Low: 1, Moderate: 1 };
 function xrCat(c) {
   const k = WR_CATS[c];
-  return '<span class="xr-cat" style="background:' + ((k && k.color) || '#888') + '">' + escHtml(c || '—') + '</span>';
+  return '<span class="xr-cat" style="background:' + ((k && k.color) || '#888') + ';color:' + ((k && k.ink) || '#fff') + '">' + escHtml(c || '—') + '</span>';
 }
 function xrCons(c) {
   return c ? '<span style="color:' + (CONS_COLOR[c] || '#333') + ';font-weight:600">' + escHtml(c) + '</span>' : '&mdash;';

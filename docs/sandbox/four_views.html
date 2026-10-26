@@ -396,7 +396,8 @@ function peopleMain(){
 /* ---------- Work ---------- */
 const EL=['Research','Evaluate','Draft','Verify','Decide','Produce / Execute','Communicate'];
 const LEAD=['Human','Human-led','AI-led','AI'], lr=x=>LEAD.indexOf(x);
-const DOT={"Human-only":"#0D2D4F","Judgment":"#204474","Augmentation":"#2457A3","Oversight":"#3D6FA8","Agent-delegation":"#5A8DC4","Automation":"#7DAEE0"};
+// Stage colors, matching pcf7.html's WR_CATS (Oct 26, 2026).
+const DOT={"Human-only":"#0D2D4F","Judgment":"#1F4E86","Augmentation":"#3A6FAE","Oversight":"#6895C8","Agent-delegation":"#9CBBE0","Automation":"#CFDDF0"};
 const CF=[['human','Human impact'],['legal','Legal / regulatory exposure'],['ops','Operational / financial impact'],['trust','Trust / reputation'],['reach','Reach'],['reversibility','Reversibility']];
 function coeBox(a,ppl,close){
   const hc=HC[a.cons], worker=a.R&&a.R.length?a.R.join(', '):a.Aroles.join(', ');
