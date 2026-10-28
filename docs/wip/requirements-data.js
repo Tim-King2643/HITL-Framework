@@ -1672,7 +1672,7 @@ window.REQUIREMENTS = [
  },
  {
   "id": "GR-061",
-  "title": "Work dashboard as the Work view's default",
+  "title": "Dashboards as the default in Work and People",
   "progress": "Built",
   "category": "Sandbox Environment",
   "group": "Administration",
@@ -1681,22 +1681,22 @@ window.REQUIREMENTS = [
   "raised_by": "Tim King",
   "source_doc": "Tim King — framework direction (Oct 2026)",
   "source_section": "Working session, Oct 25–26, 2026",
-  "distilled": "Open the Work view on a visual dashboard of the work, so an executive gets the answer in a minute, with the activity rows one click away.",
-  "acceptance": "The Work view opens on the dashboard: headline tiles, a grid with one column per process group, one card per process with its % H and one square per activity (colored by stage, Consequence of Error or decision point), the stage mix by process group, and Consequence of Error against the stage, all computed from the sandbox with the four views' rules. It follows the organization dropdown (an organization opens on its Current State, the Reference Model on its ceilings). A viewer's switch to Activities is remembered in their browser; a process card opens Activities at that process, expanded; old Working Relationship and Readiness Gate links open Activities.",
+  "distilled": "Open the Work and People views on visual dashboards, so an executive gets the answer in a minute, with the detail one click away.",
+  "acceptance": "The Work view opens on the dashboard: headline tiles, a grid with one column per process group, one card per process with its % H and one square per activity (colored by stage, Consequence of Error or decision point), the stage mix by process group, and Consequence of Error against the stage, all computed from the sandbox with the four views' rules. It follows the organization dropdown (an organization opens on its Current State, the Reference Model on its ceilings). A viewer's switch to Activities is remembered in their browser; a process card opens Activities at that process, expanded; old Working Relationship and Readiness Gate links open Activities. The People view opens on its dashboard: one panel per role in tier order, with a chip per activity showing the role's strongest RACI letter (Accountable, Responsible, Consulted, Informed), grouped by process group and process, for the selected process group; hovering a chip shows the activity, clicking a panel opens the role's row in the RACI table. The People choice is remembered the same way.",
   "raw": "“What would a visual dashboard of work look like?” … “Would the work dashboard be the default view?” … “Yes.”",
   "converged": "GR-059, GR-056",
   "spec_doc": "docs/wip/work_dashboard_sketch.html",
   "spec_section": "The sketch is the design; the sandbox's Work view is the build",
   "wip_item": "docs/wip/work_dashboard_sketch.html",
-  "next_action": "Tim and GiGi approve the design (the decision here); it is already built into the sandbox's Work view to try.",
+  "next_action": "Tim and GiGi approve the design (the decision here); both are already built into the sandbox's Work and People views to try.",
   "decision": {
    "id": "design",
    "type": "design",
-   "question": "Approve the work dashboard as the Work view's default, with Activities one click away.",
+   "question": "Approve the dashboards as the default in Work and People, with the detail one click away.",
    "summary": "Work opens on the dashboard; Activities shows the activity rows as before. A viewer's own choice is remembered in their browser; a process card opens its activities; old Working Relationship and Readiness Gate links open the rows. The four-view structure (GR-059) is unchanged."
   },
   "decisions": [],
-  "log": "Oct 25, 2026 (Tim): asked what a visual dashboard of work would look like; sketched as docs/wip/work_dashboard_sketch.html (logged on GR-059), read live from the sandbox. Its stage colors became the sandbox's (Oct 26), and the Work view's reached stages took the dashboard's color squares.\n\nOct 26, 2026 (Tim: would the work dashboard be the default view? Yes): logged as its own requirement so GR-059's accept vote stays as it is, and built into the sandbox to try. The Work view's left panel gains Show: Dashboard / Activities. The dashboard follows the organization dropdown (an organization opens on its Current State, with a tile for how many activities are assessed; the Reference Model on its ceilings) and offers either. Decision points follow the Work view's own rule (an organization's Current State, otherwise the ceilings). Reference Model figures match the sketch: 33% H at the ceilings, 41 of 118 keep a person on every instance, 33 can go to Automation, 85 decision points, 12 named controls. A viewer's switch is kept in their browser (fv.workMode); a process card opens Activities at that process, expanded, and scrolls to it; ?view=wr and ?view=gates open Activities (pcf7.html keeps the view it was opened with as FV_OPENED_VIEW).",
+  "log": "Oct 25, 2026 (Tim): asked what a visual dashboard of work would look like; sketched as docs/wip/work_dashboard_sketch.html (logged on GR-059), read live from the sandbox. Its stage colors became the sandbox's (Oct 26), and the Work view's reached stages took the dashboard's color squares.\n\nOct 26, 2026 (Tim: would the work dashboard be the default view? Yes): logged as its own requirement so GR-059's accept vote stays as it is, and built into the sandbox to try. The Work view's left panel gains Show: Dashboard / Activities. The dashboard follows the organization dropdown (an organization opens on its Current State, with a tile for how many activities are assessed; the Reference Model on its ceilings) and offers either. Decision points follow the Work view's own rule (an organization's Current State, otherwise the ceilings). Reference Model figures match the sketch: 33% H at the ceilings, 41 of 118 keep a person on every instance, 33 can go to Automation, 85 decision points, 12 named controls. A viewer's switch is kept in their browser (fv.workMode); a process card opens Activities at that process, expanded, and scrolls to it; ?view=wr and ?view=gates open Activities (pcf7.html keeps the view it was opened with as FV_OPENED_VIEW).\n\nOct 28, 2026 (Tim: a People dashboard like Work\u2019s, with a role panel of RACI chips per activity within the process levels): built into the People view as the first Show option and its default, remembered per browser (fv.peopleMode). One panel per role in tier order; each activity is a chip with the role\u2019s strongest letter, grouped by process group and process; a Chips setting shows every activity or only those where the role has a letter. The panel header gives the reporting line, its A, R, C and I counts, decision points anchored and % H at the ceiling across its Accountable activities. It follows the People view\u2019s process group selector. Checks: one Accountable chip per activity (118 with all groups); clicking a panel opens that role\u2019s row in the RACI table. Same design decision as Work\u2019s, so the question now covers both.",
   "legacy_status": null
  }
 ];

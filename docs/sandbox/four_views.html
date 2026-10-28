@@ -60,6 +60,19 @@ table.db-mx{border-collapse:separate;border-spacing:2px;font-size:12px}
 .db-mx th{font-size:10.5px;color:var(--lgray);font-weight:600;padding:3px 6px;text-align:center}
 .db-mx th.r{text-align:right}
 .db-mx td{width:110px;height:38px;text-align:center;border-radius:4px}
+.pd-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:12px;margin-bottom:6px}
+.pd-tier{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);font-weight:600;margin:6px 0 8px;text-align:left}
+.pd-role{border:1px solid var(--border);border-radius:8px;padding:10px 12px;background:#fff;cursor:pointer;text-align:left}
+.pd-role:hover{border-color:var(--navy)}
+.pd-rn{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--navy-d)}
+.pd-rn .h{color:var(--navy);white-space:nowrap;font-size:12px}
+.pd-sub{font-size:11.5px;color:var(--lgray);margin:2px 0 8px;line-height:1.4}
+.pd-g{display:flex;gap:8px;align-items:flex-start;margin-bottom:5px}
+.pd-g .gc{flex:0 0 26px;font-family:Consolas,monospace;font-size:11px;color:var(--lgray);line-height:16px}
+.pd-ps{display:flex;flex-wrap:wrap;gap:3px 8px}
+.pd-p{display:flex;gap:2px}
+.pd-chip{width:16px;height:16px;border-radius:3px;font-size:9.5px;line-height:16px;text-align:center;font-family:Consolas,monospace;box-shadow:inset 0 0 0 1px rgba(13,45,79,.14)}
+.pd-chip.n{background:#fff;box-shadow:inset 0 0 0 1px #E3E8F0}
 .db-tip{position:fixed;pointer-events:none;background:#0D1B2A;color:#fff;font-size:12px;line-height:1.45;padding:7px 10px;border-radius:6px;max-width:300px;z-index:20;display:none;text-align:left}
 @media(max-width:860px){.db-bars .row{grid-template-columns:120px 1fr 44px}}
 .tile{flex:1;min-width:140px;border:1px solid #EEF1F6;border-radius:8px;padding:10px 12px}
@@ -260,7 +273,7 @@ const HC={High:1,Critical:1};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const pct=(n,d)=>d?Math.round(100*n/d)+'%':'—';
 // RACI is activity level (GR-060, Tim's decision Oct 10, 2026); a process's RACI is computed from its activities (procRaci).
-let S={wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'load',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
+let S={wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'pdash',pchips:'all',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
 const VIEWS=[
  {id:'work',name:'Work',q:'Where does each activity sit, and what moves next?'},
  {id:'people',name:'People',q:'What does this mean for each role?'},
@@ -313,10 +326,16 @@ function stageBtns(){
   if(S.stage==='Today'&&!isOrg()) S.stage='Human-only';
   return '<h5>Where the work is</h5>'+btns((isOrg()?[['Today','Today in '+esc(ORGNAME())+': each activity at its assessed Current State']]:[]).concat([['Human-only','Every activity at the Human-only baseline']]).concat(ST.slice(1,5).map(s=>[s,'Up to '+s+', or each activity\u2019s ceiling if lower'])).concat([['Automation','Every activity at its Progression Ceiling']]),'stage');
 }
+// People opens on its dashboard (GR-061), remembered per browser like Work's.
+try{const m=localStorage.getItem('fv.peopleMode');if(['pdash','raci','praci','load'].includes(m))S.pmode=m;}catch(e){}
+function setPMode(v){S.pmode=v;try{localStorage.setItem('fv.peopleMode',v)}catch(e){}render();}
 function peopleSide(){
   let h='<div class="q">'+VIEWS[1].q+'</div><p>Every role in the catalog, the activities it is Responsible and Accountable for, and what is left for a person in each as the work moves up the ramp. Accountability doesn&rsquo;t move with the work.</p>'+
    '<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()"><option value="all">All process groups</option>'+DATA.groups.map(g=>'<option value="'+g[0]+'"'+(S.wg===g[0]?' selected':'')+'>'+g[0]+' '+esc(g[1])+'</option>').join('')+'</select>'+
-   '<h5>Show</h5>'+btns([['raci','Who is Responsible and Accountable'],['praci','RACI by process'],['load','What is left for a person as the work moves up']],'pmode');
+   '<h5>Show</h5><div class="stack">'+[['pdash','Dashboard'],['raci','Who is Responsible and Accountable'],['praci','RACI by process'],['load','What is left for a person as the work moves up']].map(o=>'<button class="'+(S.pmode===o[0]?'on':'')+'" onclick="setPMode(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>';
+  if(S.pmode==='pdash'){
+    h+='<h5>Chips</h5>'+btns([['all','Every activity'],['own','Only where the role has a letter']],'pchips')+
+     '<h5>Reading it</h5><p>One panel per role, in tier order, with one chip per activity, grouped by process group and process. The chip shows the role&rsquo;s strongest letter on that activity: Accountable, Responsible, Consulted or Informed. An Accountable role with no Responsible named also does the work. Hover a chip for the activity; click a panel for the role&rsquo;s row in the RACI table.</p>';}
   if(S.pmode==='praci'){
     h+='<h5>Reading a process RACI</h5><p>Computed from its activities&rsquo; RACI, not stored. The owner is the role Accountable for most of its activities; on a tie, the one Accountable for the highest Consequence of Error, then the more senior role. Any other role Accountable for some of them is Also Accountable. Every other role takes the strongest letter it holds on any activity. The counts show where each letter comes from.</p>';}
   if(S.pmode==='load'){
@@ -353,6 +372,7 @@ function peopleMain(){
   const base=tally('Human-only',PA), now=tally(S.stage,PA), R=now.roles, B=base.roles;
   const names=DATA.roles.map(r=>r.name).filter(n=>B[n].acc||B[n].resp||R[n].left);
   if(S.pmode==='praci') return procRaciMain();
+  if(S.pmode==='pdash') return peopleDash();
   if(S.pmode==='raci'){
     const noR=PA.filter(a=>a.R.includes(a.A)).length;
     const RC={};DATA.roles.forEach(r=>RC[r.name]={C:0,I:0,acts:{}});
@@ -839,6 +859,42 @@ function dbOpen(code){const p=PROCS.find(x=>x.code===code);if(!p)return;
   if(el.dataset.c){const a=ACT[el.dataset.c];tip.innerHTML='<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>'+(dbWhere()==='cur'?'Current State ':'Ceiling ')+dbSt(a)+' \u00b7 '+HPCT[dbSt(a)]+'% H<br>Consequence of Error '+a.cons+'<br>Accountable '+esc(a.Aroles.join(', '))+'<br>'+DBK[dbKind(a)][0];}
   else tip.innerHTML=el.dataset.t;
   tip.style.display='block';const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-8),y=e.clientY+16+tip.offsetHeight>innerHeight?e.clientY-tip.offsetHeight-10:e.clientY+16;tip.style.left=x+'px';tip.style.top=y+'px';});}
+
+/* ---------- People dashboard (GR-061) ---------- */
+// One panel per role with a RACI chip per activity, grouped by process group and process, for the selected group.
+const PDC={A:['Accountable','#0D2D4F','#fff'],R:['Responsible','#3A6FAE','#fff'],C:['Consulted','#9CBBE0','#0D2D4F'],I:['Informed','#E3E8F0','#0D2D4F']};
+const escA=x=>esc(x).replace(/"/g,'&quot;');
+function letterOf(a,n){if(a.Aroles.includes(n))return 'A';if(a.R.includes(n))return 'R';const x=ciOf(a);if(x.C.includes(n))return 'C';if(x.I.includes(n))return 'I';return '';}
+function peopleDash(){
+  const SC=peopleScope(),PA=SC.PA,N=SC.N,inG=c=>SC.all||c.startsWith(S.wg+'.');
+  const cnt={};DATA.roles.forEach(r=>{cnt[r.name]={A:0,R:0,C:0,I:0}});
+  PA.forEach(a=>DATA.roles.forEach(r=>{const l=letterOf(a,r.name);if(l)cnt[r.name][l]++;}));
+  const holders=DATA.roles.filter(r=>cnt[r.name].A||cnt[r.name].R),top=DATA.roles.slice().sort((x,y)=>cnt[y.name].A-cnt[x.name].A).slice(0,3);
+  const ciOnly=DATA.roles.filter(r=>!cnt[r.name].A&&!cnt[r.name].R&&(cnt[r.name].C||cnt[r.name].I));
+  const DPM=dpAnalysis(),dpn=n=>PA.filter(a=>DPM[a.code].dp&&a.Aroles[0]===n).length;
+  const hRole=n=>{const L=PA.filter(a=>a.Aroles.includes(n));return L.length?Math.round(mean(L.map(a=>HPCT[derivedCeil(a)]))):null;};
+  let h='<div class="tiles" style="margin-bottom:16px">'+tile(holders.length+' of '+DATA.roles.length,'roles hold an R or A in '+SC.label)+
+    tile(pct(top.reduce((x,r)=>x+cnt[r.name].A,0),N),'of accountability sits with '+top.map(r=>r.name).join(', '))+
+    tile(ciOnly.length,'roles are Consulted or Informed only')+tile(PA.filter(a=>!a.R.length||a.R.includes(a.A)).length,'activities where the Accountable role also does the work')+'</div>';
+  const leg=Object.entries(PDC).map(([k,v])=>'<span><i class="pd-chip" style="display:inline-block;background:'+v[1]+';color:'+v[2]+'">'+k+'</i>'+v[0]+'</span>').join('')+'<span><i class="pd-chip n" style="display:inline-block"></i>No letter</span>';
+  const groups=DATA.groups.filter(([gc])=>SC.all||gc===S.wg);
+  const panel=r=>{const n=r.name,c=cnt[n],hr=hRole(n);
+    const rows=groups.map(([gc])=>{const ps=PROCS.filter(p=>p.g===gc).map(p=>{const L=p.acts.map(x=>ACT[x]).filter(Boolean).filter(a=>S.pchips==='all'||letterOf(a,n));
+        if(!L.length)return '';return '<span class="pd-p">'+L.map(a=>{const l=letterOf(a,n),v=PDC[l];
+          return '<i class="pd-chip'+(l?'':' n')+'" data-t="'+escA('<span style="opacity:.75">'+a.code+'</span> '+a.name+'<br>'+esc(n)+': '+(l?v[0]+(l==='A'&&!a.R.length?', and does the work':''):'no RACI letter')+'<br>Accountable '+a.Aroles.join(', ')+(a.R.length?' · Responsible '+a.R.join(', '):'')+'<br>Ceiling '+derivedCeil(a)+' · Consequence of Error '+a.cons)+'"'+(l?' style="background:'+v[1]+';color:'+v[2]+'"':'')+'>'+l+'</i>';}).join('')+'</span>';}).filter(Boolean);
+      return ps.length?'<div class="pd-g"><span class="gc">'+gc+'</span><span class="pd-ps">'+ps.join('')+'</span></div>':'';}).join('');
+    return '<div class="pd-role" onclick="pdOpen(\''+esc(n).replace(/'/g,"\\'")+'\')"><div class="pd-rn"><span>'+esc(n)+'</span>'+(hr==null?'':'<span class="h">'+hr+'% H at ceiling</span>')+'</div>'+
+      '<div class="pd-sub">'+(r.reportsTo?'Reports to '+esc(r.reportsTo):'Top of the role catalog')+' · A '+c.A+' · R '+c.R+' · C '+c.C+' · I '+c.I+' · '+dpn(n)+' decision point'+(dpn(n)===1?'':'s')+' anchored</div>'+
+      (rows||'<div class="small">No RACI letter '+(SC.all?'in PCF 7.0':'in '+S.wg)+'.</div>')+'</div>';};
+  h+='<div class="card"><h3>RACI by role &middot; '+(SC.all?'All process groups':S.wg+' '+esc(DATA.groups.find(g=>g[0]===S.wg)[1]))+'</h3><div class="sub">One chip per activity, '+SC.label+', grouped by process group and process. The % H is the mean of the role&rsquo;s Accountable activities at their ceilings.</div><div class="db-legend">'+leg+'</div>'+
+    ['Executive','Managerial','Operational'].map(t=>{const L=DATA.roles.filter(r=>r.tier===t);return L.length?'<div class="pd-tier">'+t+'</div><div class="pd-grid">'+L.map(panel).join('')+'</div>':'';}).join('')+'</div>';
+  return h;
+}
+// A role panel opens that role's row in the RACI table, expanded, and scrolls to it.
+function pdOpen(n){S.pmode='raci';opened['r'+n]=true;render();
+  const row=[...document.querySelectorAll('tr.r')].find(r=>r.textContent.replace(/^[+\u2212−]/,'').startsWith(n));
+  if(row){try{const fr=window.frameElement;if(fr)P.scrollTo({top:fr.getBoundingClientRect().top+P.scrollY+row.getBoundingClientRect().top-70,behavior:'smooth'});else row.scrollIntoView({behavior:'smooth'});}catch(e){row.scrollIntoView();}}
+}
 
 /* ---------- Data ---------- */
 // Same rule as the work-product analysis (GR-046): producers create or update a work product; an activity relies on it when
