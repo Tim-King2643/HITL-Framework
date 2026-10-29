@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[DRAFT] Human Operating Readiness Instrument v0.2 (GR-012) — Human-AI Partnership Framework</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="stylesheet" href="wip-print.css" media="print"/>
+<style>
+:root {
+  --navy:   #1B4F8A;
+  --navy-d: #0D2D4F;
+  --navy-l: #EEF3FA;
+  --dark:   #0D1B2A;
+  --gray:   #444;
+  --lgray:  #888;
+  --white:  #fff;
+  --bg:     #F4F6FB;
+  --border: #DDE3EE;
+  --amber:  #B8873F;
+  --amber-bg: #FEF3C7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+.masthead { background: var(--navy-d); color: #fff; padding: 32px 24px 28px; text-align: center; }
+.masthead .eyebrow { font-family: 'Consolas', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9FC2EE; margin-bottom: 10px; }
+.masthead h1 { font-family: 'Georgia', serif; font-weight: 700; font-size: 26px; margin-bottom: 8px; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.3; }
+.masthead .tagline2 { font-size: 14px; color: #9FC2EE; font-style: italic; max-width: 640px; margin: 0 auto 16px; line-height: 1.5; }
+.masthead nav a { color: #CFE0F5; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 14px; padding-bottom: 3px; border-bottom: 2px solid transparent; }
+.masthead nav a:hover, .masthead nav a.active { color: #fff; border-bottom-color: #7B9FD1; }
+
+.draft-ribbon {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--amber-bg); border-bottom: 2px solid var(--amber);
+  padding: 10px 20px; text-align: center; font-size: 12.5px; color: #7A5A1E;
+}
+.draft-ribbon strong { letter-spacing: .04em; text-transform: uppercase; }
+.draft-ribbon a { color: #7A5A1E; font-weight: 600; }
+
+.wrap { max-width: 780px; margin: 0 auto; padding: 36px 24px 72px; }
+
+.callout {
+  background: var(--amber-bg); border-left: 4px solid var(--amber); border-radius: 6px;
+  padding: 16px 20px; margin: 0 0 32px; font-size: 13.5px; color: #7A5A1E; font-style: italic; line-height: 1.6;
+}
+
+h2 { font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d); font-size: 20px; margin: 40px 0 12px; }
+h3 { font-family: 'Segoe UI', sans-serif; font-weight: 600; color: var(--navy); font-size: 14.5px; margin: 26px 0 8px; }
+p { font-size: 14.5px; color: var(--gray); line-height: 1.75; margin-bottom: 16px; }
+ul { margin: 0 0 18px 22px; }
+li { font-size: 14.5px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+
+.pull-quote {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 16px; line-height: 1.5;
+}
+.sequence {
+  background: var(--navy-l); border-radius: 6px; padding: 16px 20px; margin: 18px 0 24px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-weight: 600;
+  color: var(--navy-d); font-size: 15px; line-height: 1.6;
+}
+
+.closing-quote {
+  background: var(--navy-d); color: #fff; border-radius: 8px; padding: 24px 28px; margin: 8px 0 8px;
+  text-align: center; font-family: 'Georgia', serif; font-style: italic; font-size: 17px; line-height: 1.6;
+}
+.closing-line {
+  text-align: center; font-family: 'Georgia', serif; font-weight: 700; color: var(--navy-d);
+  font-size: 16px; line-height: 1.6; margin: 22px 0 6px;
+}
+
+.section-num {
+  display: inline-block; font-family: 'Consolas', monospace; font-size: 11px; color: var(--navy);
+  background: var(--navy-l); border-radius: 4px; padding: 2px 8px; margin-right: 8px; vertical-align: middle;
+}
+
+.pdf-download {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .02em;
+  color: var(--navy-d); background: var(--navy-l); border: 1px solid #B8CCE8; border-radius: 6px;
+  padding: 8px 14px; text-decoration: none; margin: 0 0 28px;
+}
+.pdf-download:hover { background: #DCE8F8; }
+
+footer { text-align: center; padding: 32px 24px 56px; border-top: 1px solid var(--border); margin-top: 24px; }
+footer p { font-size: 12px; color: var(--lgray); line-height: 1.9; }
+footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
+
+table.gt { width: 100%; border-collapse: collapse; margin: 10px 0 24px; font-size: 13px; }
+.gt th { background: var(--navy); color: #fff; text-align: left; vertical-align: bottom; padding: 10px 12px 7px; font-size: 11px; letter-spacing: .02em; text-transform: uppercase; }
+.gt td { border: 1px solid var(--border); padding: 9px 12px; vertical-align: top; color: #222; line-height: 1.55; }
+.gt tr:nth-child(even) td { background: #FAFBFD; }
+.gt td.k { font-weight: 700; color: var(--navy-d); }
+.dim { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin: 0 0 14px; }
+.dim h3 { margin: 0 0 6px; }
+.dim p { margin-bottom: 8px; }
+.dim p:last-child { margin-bottom: 0; }
+.dim .lbl { font-weight: 600; color: var(--navy-d); }
+.qbox { background: var(--navy-l); border-radius: 6px; padding: 14px 20px; margin: 14px 0 20px; }
+.qbox p { margin: 0 0 8px; color: var(--navy-d); }
+.qbox ul { margin-bottom: 0; }
+.qbox li { color: var(--dark); }
+.find { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; border-radius: 4px; padding: 2px 8px; white-space: nowrap; }
+.f-green { background: #DCFCE7; color: #166534; border: 1px solid #86EFAC; }
+.f-yellow { background: #FEF9C3; color: #854D0E; border: 1px solid #FDE047; }
+.f-red { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+.f-gray { background: #F1F3F6; color: #475569; border: 1px solid #CBD5E1; }
+.cover-line { text-align: center; font-size: 13px; color: var(--lgray); font-style: italic; margin: -4px 0 26px; }
+</style>
+</head>
+<body>
+
+<div class="draft-ribbon">
+  <strong>Draft — Not Yet Part of the Framework</strong>
+  &nbsp;·&nbsp; External review notes from GiGi Garcia, for joint discussion with Tim. Nothing on this page is official yet.
+  &nbsp;·&nbsp; <a href="index.html">Back to WIP hub</a>
+</div>
+
+<div class="masthead">
+  <div class="eyebrow">External Review · GiGi Garcia · GR-012 · October 28, 2026</div>
+  <h1>GR-012 Human Operating Readiness Instrument v0.2</h1>
+  <div class="tagline2">Evidence-backed readiness for the human-AI operating relationship</div>
+  <nav>
+    <a href="../index.html">Documentation</a>
+    <a href="../sandbox/pcf7.html">Dashboard</a>
+    <a href="index.html" class="active">Work in Progress</a>
+  </nav>
+</div>
+
+<div data-wip-download-mount data-item="gigi-gr012-human-operating-readiness-v02"></div>
+
+<div class="wrap">
+
+  <div class="callout">
+    GiGi's working specification for GR-012 (Human Operating Readiness), v0.2, sent to Tim October 28, 2026 with her email &ldquo;GR-012 v0.2 + Human Impact &amp; Readiness Update for Friday&rdquo;, transcribed here in the site's visual language so it can be read and referenced alongside the rest of the framework. The words, dimensions, findings and decisions below are hers, not Tim's or Claude's. Her cover email follows the specification at the end. Her original is the PDF. It supersedes <a href="gigi_gr012_human_operating_readiness.html">v0.1</a> as the working specification for her side.
+  </div>
+
+  <div class="qbox">
+    <p><strong>Working position</strong></p>
+    <p style="margin-bottom:0;color:var(--dark)">Keep GR-012. Refine it; do not rethink it. The instrument should prove that human responsibility is operationally real &mdash; not merely present on a diagram &mdash; before a work transition is treated as ready.</p>
+  </div>
+  <p class="cover-line">Prepared by GiGi Garcia for joint review with Timothy King, October 28, 2026. Status: DRAFT &mdash; for pressure testing and design agreement; not yet framework-wide policy.</p>
+
+  <h2><span class="section-num">1</span>Executive Summary</h2>
+  <p>GR-012 answers a specific question that the work-side architecture cannot answer by itself: <strong>can the people and organization actually operate the proposed human-AI relationship?</strong> It is not a generic AI-readiness survey, a sentiment measure, or a technical validation instrument.</p>
+  <div class="pull-quote">Can the organization operate this proposed human-AI relationship with real authority, capability, evidence, capacity, and escalation?</div>
+  <p>v0.2 keeps the ten-dimension instrument, makes its layers explicit, strengthens the evidence rules, keeps Gray/Insufficient Evidence legitimate, and preserves the decision not to collapse readiness into one composite score. It also incorporates the current work-side proposals on Human Intensity, weakest-link behavior, the top-of-catalog governance variant, and Human Criticality &mdash; with the refinements documented below.</p>
+  <table class="gt">
+    <tr><th style="width:26%">Item</th><th style="width:30%">Current status</th><th>v0.2 direction</th></tr>
+    <tr><td class="k">GR-012 wording</td><td>Adopted direction</td><td>Each dimension produces a finding with evidence; no unexplained composite score.</td></tr>
+    <tr><td class="k">HRBP Manager / grievance</td><td>First pass complete</td><td>Outcome: Insufficient Evidence. Gray remained Gray where organization-specific proof was missing.</td></tr>
+    <tr><td class="k">Recruiter</td><td>Next human-readiness pilot</td><td>Run the same ten dimensions without redefining them.</td></tr>
+    <tr><td class="k">CHRO</td><td>Third human-readiness pilot</td><td>Use the same instrument and test the executive/top-of-catalog case.</td></tr>
+    <tr><td class="k">Hard gates</td><td>Candidate only</td><td>Do not lock until the same instrument has been run across all three roles.</td></tr>
+    <tr><td class="k">GR-013 Human Agency</td><td>Direction settled, final integration pending</td><td>Keep distinct as a derived human-impact finding; do not add an 11th readiness score/dimension.</td></tr>
+  </table>
+
+  <h2><span class="section-num">2</span>Purpose and Unit of Assessment</h2>
+  <p>GR-012 must be applied to a specific proposed transition in the Working Relationship. It should never ask a broad question such as &ldquo;Is HR ready for AI?&rdquo; The unit is one activity/transition, with the work-side facts handed into Human Impact &amp; Readiness.</p>
+  <div class="qbox">
+    <p><strong>Example assessment unit</strong></p>
+    <p style="margin-bottom:0;color:var(--dark)">Activity: Manage employee grievances. Current relationship: assessed state. Proposed relationship: the next intended working relationship, never beyond the Progression Ceiling. Readiness question: what must be true of the affected role(s) and organization for that specific transition to operate responsibly in practice?</p>
+  </div>
+
+  <h2><span class="section-num">3</span>The Ten Readiness Dimensions &mdash; Same Instrument, Clearer Architecture</h2>
+  <p>v0.2 keeps all ten dimensions. The change is architectural: users should be able to see whether a question tests a role/human operating condition, an organizational operating condition, or the shared evidence boundary.</p>
+  <table class="gt">
+    <tr><th style="width:50%">Role / Human Operating Conditions</th><th>Organizational Operating Conditions</th></tr>
+    <tr><td>Role Clarity</td><td>Manager / Governance-Oversight Readiness</td></tr>
+    <tr><td>Decision Authority</td><td>Leadership Support / Governance</td></tr>
+    <tr><td>Capability / Skill</td><td>Change Capacity</td></tr>
+    <tr><td>Confidence / Decision Fluency</td><td></td></tr>
+    <tr><td>Psychological Safety</td><td></td></tr>
+    <tr><td>Capacity / Workload</td><td></td></tr>
+  </table>
+  <p><strong>Shared evidence condition &mdash; Trust / Evidence Quality.</strong> Technical evidence comes from the technical/process lane. GR-012 does not re-run technical validation; it tests whether the human side can see enough of the evidence, understand its limits and failure modes, and rely on it appropriately.</p>
+
+  <h2><span class="section-num">4</span>Dimension Definitions and Evidence Questions</h2>
+  <table class="gt">
+    <tr><th style="width:24%">Dimension</th><th style="width:40%">Readiness question</th><th>Evidence to look for</th></tr>
+    <tr><td class="k">Role Clarity</td><td>Does the person understand what AI is allowed to do, what stays human, what must be reviewed/decided, and what cannot be delegated?</td><td>Workflow, role language, RACI, training, scenario walkthrough.</td></tr>
+    <tr><td class="k">Decision Authority</td><td>When the person believes the AI-supported result is wrong, what are they actually allowed to do?</td><td>Override rights, system permissions, escalation process, approval matrix, governed decision points.</td></tr>
+    <tr><td class="k">Capability / Skill</td><td>Does the person have enough domain expertise and judgment to evaluate the AI-supported work independently?</td><td>Case review, scenario testing, qualifications, exception-handling evidence.</td></tr>
+    <tr><td class="k">Confidence / Decision Fluency</td><td>If the person and system disagree, will the person make and defend an independent decision?</td><td>Scenario exercises, observed override behavior, manager feedback.</td></tr>
+    <tr><td class="k">Psychological Safety</td><td>Can the person challenge the system and act on that concern without unreasonable personal or professional risk?</td><td>Speak-up history, leadership behavior, escalation norms, incident reviews.</td></tr>
+    <tr><td class="k">Capacity / Workload</td><td>Does the new relationship leave enough real capacity for meaningful review, exception handling and escalation?</td><td>Caseload, review time, exception volume, backlog, staffing, verification effort.</td></tr>
+    <tr><td class="k">Manager / Governance-Oversight Readiness</td><td>Is the surrounding manager or governance body prepared to coach, challenge, absorb escalation and govern the redesigned relationship?</td><td>Manager/governance expectations, escalation criteria, monitoring, coaching, evidence of the actual oversight body.</td></tr>
+    <tr><td class="k">Leadership Support / Governance</td><td>Who owns the outcome and what happens when the new relationship fails?</td><td>Decision rights, risk tolerance, stop conditions, escalation routes, named owners, governance standards.</td></tr>
+    <tr><td class="k">Trust / Evidence Quality</td><td>What evidence justifies asking the person to rely on the system at this level?</td><td>Traceable technical evidence: type, source, reference, confidence, limitations, failure modes, real-volume results.</td></tr>
+    <tr><td class="k">Change Capacity</td><td>Even if the transition is right, can the organization absorb it now?</td><td>Competing initiatives, staffing changes, implementation timing, leadership capacity, change load.</td></tr>
+  </table>
+
+  <h2><span class="section-num">5</span>Finding States and Evidence Rule</h2>
+  <table class="gt">
+    <tr><th style="width:24%">Finding</th><th style="width:36%">Meaning</th><th>Evidence rule</th></tr>
+    <tr><td><span class="find f-green">READY</span></td><td>The condition is in place and supported by evidence.</td><td>Evidence demonstrates the operating condition exists in practice.</td></tr>
+    <tr><td><span class="find f-yellow">CONDITIONAL</span></td><td>The transition may proceed only if a named condition, gap or control is resolved.</td><td>Requires actual evidence of a gap or condition; a modeled concern alone is not enough.</td></tr>
+    <tr><td><span class="find f-red">NOT READY</span></td><td>A material condition prevents responsible progression right now.</td><td>Evidence shows a real stop condition or unacceptable operating gap.</td></tr>
+    <tr><td><span class="find f-gray">INSUFFICIENT EVIDENCE</span></td><td>There is not enough organization-specific evidence to make a defensible readiness conclusion.</td><td>Unknown stays unknown. This is not failure and is not &ldquo;Not Ready.&rdquo;</td></tr>
+  </table>
+  <div class="callout" style="font-style:normal">
+    <strong>Non-negotiable evidence rule.</strong> Gray / Insufficient Evidence may not be converted into Ready, Conditional or Not Ready based only on reference-model assumptions, modeled concerns, or intuition. A finding changes only when organization-specific evidence supports the change.
+  </div>
+
+  <h2><span class="section-num">6</span>Standard Assessment Record</h2>
+  <p>Every dimension should leave the same auditable record. The framework should never store only a color, status or score.</p>
+  <table class="gt">
+    <tr><th style="width:30%">Field</th><th>What gets recorded</th></tr>
+    <tr><td class="k">Activity / transition</td><td>Specific activity; assessed Current State; proposed next relationship; Progression Ceiling.</td></tr>
+    <tr><td class="k">Roles affected</td><td>Responsible role(s), Accountable role, manager/governance/escalation path where relevant.</td></tr>
+    <tr><td class="k">Dimension finding</td><td>Ready / Conditional / Not Ready / Insufficient Evidence.</td></tr>
+    <tr><td class="k">Evidence</td><td>What is actually known, including Assessed vs. Modeled status.</td></tr>
+    <tr><td class="k">Evidence provenance</td><td>Evidence type, source role, reference, confidence, coverage, evidence date.</td></tr>
+    <tr><td class="k">Gap / concern</td><td>What is missing, uncertain, or evidenced as a problem.</td></tr>
+    <tr><td class="k">Required action / control</td><td>What must happen before progression or what condition must be maintained.</td></tr>
+    <tr><td class="k">Owner</td><td>Role accountable for closing the gap or maintaining the control.</td></tr>
+    <tr><td class="k">What would move this finding</td><td>Specific evidence or operating change that would justify a different finding.</td></tr>
+    <tr><td class="k">Version / timing</td><td>Assessment date, reference-model version, and review trigger.</td></tr>
+  </table>
+
+  <h2><span class="section-num">7</span>Candidate Hard Gates &mdash; Do Not Lock Yet</h2>
+  <p>The first draft identified six dimensions that may behave like hard gates. v0.2 keeps them as a hypothesis until the same instrument is run across HRBP Manager, Recruiter and CHRO.</p>
+  <ul>
+    <li>Decision Authority</li>
+    <li>Capability / Skill</li>
+    <li>Psychological Safety</li>
+    <li>Capacity / Workload</li>
+    <li>Leadership Support / Governance</li>
+    <li>Trust / Evidence Quality</li>
+  </ul>
+  <p><strong>Gate test:</strong> Did failure of this condition actually make the proposed human-AI relationship unsafe, non-credible, or impossible to operate responsibly? If the answer is not consistently yes across relevant pilots, the dimension should remain diagnostic/conditional rather than universal hard gate.</p>
+
+  <h2><span class="section-num">8</span>v0.2 Decisions on the Four Work-Side Proposals</h2>
+  <h3>8.1 Human Intensity &mdash; qualitative finding, not a proxy score</h3>
+  <p>Human Intensity remains a qualitative Human Impact &amp; Readiness finding in v0.2. The work-side High/Critical share of work remaining with the person is useful evidence, but it is not the definition of intensity and should not be treated as a proxy for cognitive, emotional, relational or operational burden.</p>
+  <div class="qbox">
+    <p><strong>Human Intensity question</strong></p>
+    <p style="margin-bottom:0;color:var(--dark)">Does AI truly reduce human burden, or does it remove routine/easier work and concentrate the hardest cognitive, emotional, relational or operational work in the human?</p>
+  </div>
+  <h3>8.2 Weakest-link behavior &mdash; material operational roles only</h3>
+  <p>For High or Critical activities, readiness should roll up no stronger than the weakest materially required operational A/R role. Multiple roles should not be averaged into a reassuring composite. Low/Moderate activities can retain role-specific findings without a mandatory roll-up.</p>
+  <p>For a single decision-maker, the manager, executive committee or board should not automatically become another role in the same weakest-link calculation. That relationship is assessed separately as Manager / Governance-Oversight Readiness unless the body itself has an operational RACI responsibility for the activity.</p>
+  <h3>8.3 Manager Absorption &mdash; top-of-catalog governance variant</h3>
+  <p>Where a role has no manager above it in the role catalog, the framework should not display &ldquo;no data.&rdquo; Use a named Governance/Oversight Body variant. The actual body &mdash; board, executive committee or other governance structure &mdash; must be evidenced for the organization rather than assumed.</p>
+  <h3>8.4 Human Criticality &mdash; interpret existing Consequence of Error evidence</h3>
+  <p>Do not create a competing Human Criticality score. Use the existing Consequence of Error evidence &mdash; particularly Human Impact, Reach and Reversibility &mdash; as the work-side evidence base, then interpret what that consequence means for the human retaining the decision/control element.</p>
+  <p>Human Criticality should also be able to surface downstream human consequences even when the primary Consequence of Error factor is legal, operational or trust-related.</p>
+
+  <h2><span class="section-num">9</span>GR-013 Human Agency / Meaningful Human Control</h2>
+  <div class="qbox">
+    <p><strong>Definition</strong></p>
+    <p style="margin-bottom:0;color:var(--dark)">Human Agency / Meaningful Human Control is whether a person can actually exercise the judgment and accountability the operating model assigns to them, including the practical ability to understand, question, challenge, override, pause and escalate AI-supported work when appropriate.</p>
+  </div>
+  <p>Human Agency remains a distinct construct because &ldquo;human present&rdquo; is not the same as &ldquo;human in meaningful control.&rdquo; However, it should not become an eleventh GR-012 dimension or another readiness score. It should be a derived human-impact finding informed especially by Decision Authority, Capability/Skill, Confidence/Decision Fluency, Psychological Safety, Capacity/Workload, and usable Evidence Quality.</p>
+  <p>For executive/top-of-catalog roles, the agency question may shift. The issue may be less &ldquo;can I override AI?&rdquo; and more &ldquo;do I have sufficiently trustworthy evidence, independent judgment and governance challenge to decide well?&rdquo;</p>
+
+  <h2><span class="section-num">10</span>Narrative Conclusion &mdash; No Composite Readiness Percentage</h2>
+  <p>Each completed GR-012 assessment should end with a short narrative conclusion rather than a 0&ndash;100 score. The conclusion must show the outcome, the evidence behind it, the principal gaps, and what must happen before progression.</p>
+  <div class="qbox">
+    <p><strong>Narrative template</strong></p>
+    <p style="margin-bottom:0;color:var(--dark)">[Role / activity] is [Ready / Conditional / Not Ready / Insufficient Evidence] for the proposed transition. The strongest operating conditions are ____. The principal unresolved conditions are ____. The available evidence shows ____. Before progression, the organization must ____. Human Agency is [supported / constrained / not yet evidenced] because ____.</p>
+  </div>
+
+  <h2><span class="section-num">11</span>Pilot Sequence and Pressure-Test Plan</h2>
+  <p>The same ten dimensions must be used without adding, dropping or redefining a dimension between pilots. The success condition is not identical findings across roles. The success condition is a stable method that produces credible, role-specific findings.</p>
+  <h3>11.1 Pilot 1 &mdash; HRBP Manager / Manage employee grievances</h3>
+  <p>Status: first pass complete. The instrument correctly produced Insufficient Evidence where organization-specific proof was missing. The pilot should remain the baseline example for Gray/unknown discipline and for separating organization findings from instrument-design findings.</p>
+  <h3>11.2 Pilot 2 &mdash; Recruiter / 7.2.3.4 Select and reject candidates</h3>
+  <p>Purpose: pressure-test the same instrument on Critical, higher-volume operational work and test weakest-link behavior without changing the ten dimensions.</p>
+  <table class="gt">
+    <tr><th style="width:34%">Dimension</th><th>Recruiter pressure-test question</th></tr>
+    <tr><td class="k">Role Clarity</td><td>Does Recruiter know exactly what AI may do in sourcing/screening/ranking versus what remains the human select/reject decision?</td></tr>
+    <tr><td class="k">Decision Authority</td><td>Can Recruiter reject, override, pause or challenge an AI ranking/recommendation?</td></tr>
+    <tr><td class="k">Capability / Skill</td><td>Can Recruiter detect biased, incomplete, weak or misleading AI-supported candidate recommendations?</td></tr>
+    <tr><td class="k">Confidence / Decision Fluency</td><td>Will Recruiter challenge a confident-looking AI recommendation when independent judgment differs?</td></tr>
+    <tr><td class="k">Psychological Safety</td><td>Can Recruiter slow, stop or challenge the process without pressure to accept AI output for speed or volume?</td></tr>
+    <tr><td class="k">Capacity / Workload</td><td>Is there enough real time to review the harder cases that remain after AI absorbs more routine work?</td></tr>
+    <tr><td class="k">Manager / Governance-Oversight Readiness</td><td>Is Director of TA prepared to support, govern and absorb escalations under the new operating model?</td></tr>
+    <tr><td class="k">Leadership Support / Governance</td><td>Are hiring decision rights, escalation rules, controls and accountability operationally defined?</td></tr>
+    <tr><td class="k">Trust / Evidence Quality</td><td>Can Recruiter see enough traceable evidence, limitations and failure modes to rely appropriately on AI-supported screening/ranking?</td></tr>
+    <tr><td class="k">Change Capacity</td><td>Can recruiting absorb the new workflow, capability requirements and escalation model at real operating volume?</td></tr>
+  </table>
+  <p><strong>Pilot rule:</strong> Where organization-specific evidence is unavailable, record Insufficient Evidence and explicitly state what would move the finding. Do not infer readiness from the reference model.</p>
+  <h3>11.3 Pilot 3 &mdash; CHRO / 7.1.1.2 Define HR and business function roles and accountability</h3>
+  <p>Purpose: test whether the same instrument holds at executive level, where authority, governance and organizational consequence are shaped differently and there is no traditional manager-above relationship inside the role catalog.</p>
+  <ul>
+    <li>Use the same ten dimensions with no redefinition.</li>
+    <li>Use the Governance/Oversight Body variant instead of treating top-of-catalog as &ldquo;no data.&rdquo;</li>
+    <li>Test whether the relevant governance body is evidenced rather than assumed.</li>
+    <li>Pay special attention to Decision Authority, Leadership/Governance, Evidence Quality, Change Capacity and the executive form of Human Agency.</li>
+    <li>End with the same narrative conclusion format used for HRBP Manager and Recruiter.</li>
+  </ul>
+
+  <h2><span class="section-num">12</span>Decisions to Make Only After the Three Pilots</h2>
+  <table class="gt">
+    <tr><th style="width:30%">Decision</th><th>Question the pilots must answer</th></tr>
+    <tr><td class="k">Hard gates</td><td>Which dimensions repeatedly behaved as true stop conditions rather than remediable diagnostics?</td></tr>
+    <tr><td class="k">Weakest-link rule</td><td>Did the rule protect High/Critical work without over-penalizing roles that were not materially required?</td></tr>
+    <tr><td class="k">Executive exception</td><td>Did the Governance/Oversight Body variant work for CHRO and other top-of-catalog cases?</td></tr>
+    <tr><td class="k">Human Agency</td><td>Did the derived GR-013 finding add information beyond the ten dimensions without duplicating them?</td></tr>
+    <tr><td class="k">Human Intensity</td><td>Did qualitative findings reveal burden that the High/Critical share could not explain on its own?</td></tr>
+    <tr><td class="k">Evidence schema</td><td>Were evidence type, source role, reference, confidence, date and coverage sufficient to move findings defensibly?</td></tr>
+    <tr><td class="k">Instrument stability</td><td>Did the same ten dimensions hold without redefinition across Managerial, Operational and Executive roles?</td></tr>
+  </table>
+
+  <h2><span class="section-num">13</span>Design Guardrails</h2>
+  <ul>
+    <li>Do not turn the ten dimensions into one readiness percentage.</li>
+    <li>Do not treat Insufficient Evidence as failure or as Not Ready.</li>
+    <li>Do not turn Modeled potential into an observed readiness finding.</li>
+    <li>Do not re-run technical validation inside GR-012; consume technical evidence with provenance.</li>
+    <li>Do not average materially different role-level findings into one reassuring number.</li>
+    <li>Do not treat a governance body as an operational touching role unless it actually holds operational responsibility.</li>
+    <li>Do not use High/Critical work share as the definition of Human Intensity.</li>
+    <li>Do not create a second Human Criticality rating that can disagree with Consequence of Error.</li>
+    <li>Do not automate scoring or polish the dashboard until the manual evidence logic survives all three pilots.</li>
+  </ul>
+
+  <h2><span class="section-num">14</span>Immediate Next Steps</h2>
+  <ol style="margin:0 0 18px 22px">
+    <li>Send Timothy the consolidated response on the four work-side proposals and confirm the refinements in this draft.</li>
+    <li>Use this v0.2 structure as the working instrument for Recruiter Test 2 without changing the ten dimensions.</li>
+    <li>Record finding, evidence, gap, required action, owner and what-would-move-it for every Recruiter dimension.</li>
+    <li>Run CHRO Test 3 using the same instrument and the Governance/Oversight Body variant.</li>
+    <li>Compare the three pilots side by side before declaring any dimension a universal hard gate.</li>
+    <li>Finalize GR-013 Human Agency and the v0.2 hard-gate logic only after the comparison is complete.</li>
+    <li>Freeze what held; revise only what the evidence challenged; then decide what should be built into the sandbox.</li>
+  </ol>
+
+  <h2><span class="section-num">15</span>Consolidated Note to Timothy</h2>
+  <p>Tim &mdash; I worked through the GR-012 v0.2 issues and pulled them into one working specification so we have a single place to pressure-test the human-readiness logic. I am keeping the ten dimensions, but making the role/human, organizational and shared-evidence layers explicit. I also want the four finding states &mdash; Ready, Conditional, Not Ready and Insufficient Evidence &mdash; to be evidence-driven, with Gray remaining a legitimate outcome when organization-specific proof is missing.</p>
+  <p>I am aligned with the four work-side proposals with a few refinements: Human Intensity stays qualitative and the High/Critical share is an input rather than its definition; weakest-link applies to materially required operational roles on High/Critical work while governance/oversight stays a separate readiness condition; the top-of-catalog case should use an evidence-based Governance/Oversight Body variant; and Human Criticality should interpret the existing Consequence of Error evidence rather than create a second rating.</p>
+  <p>For GR-013, I want Human Agency to remain distinct because human presence is not the same as meaningful control, but I do not want it to become an eleventh readiness dimension or another score. It should be a derived finding that answers whether the person can actually exercise the judgment and accountability the model leaves with them.</p>
+  <p>The next step on my side is to run the same v0.2 instrument through Recruiter and CHRO without redefining the dimensions, then use those three pilots to decide which dimensions truly behave as hard gates and what should be built into the sandbox. My goal is still the same: a reusable operating-readiness instrument that produces defensible, evidence-backed findings rather than another scorecard.</p>
+
+  <h2><span class="section-num">16</span>Working Basis</h2>
+  <p>This draft consolidates GiGi Garcia's GR-012 Human Operating Readiness working notes, the Human Impact &amp; Readiness workstream update, the Working-Relationship Progression methodology, the completed HRBP grievance pressure test, and the October work-side proposals reviewed for GR-012 v0.2. It is intended as a working specification for joint discussion with Timothy King, not as a claim that every open construct is already implemented.</p>
+
+  <h2><span class="section-num">17</span>v0.2 Change Summary</h2>
+  <ul>
+    <li>Keeps the original ten dimensions but makes the Role/Human, Organizational and Shared Evidence layers explicit.</li>
+    <li>Replaces unsupported Yellow assumptions with Gray / Insufficient Evidence until organization-specific proof exists.</li>
+    <li>Strengthens the evidence record so every finding carries provenance, a gap, an owner and a clear &ldquo;what would move this finding&rdquo; statement.</li>
+    <li>Keeps hard gates as candidates until the same instrument is tested across HRBP Manager, Recruiter and CHRO.</li>
+    <li>Integrates refined positions on Human Intensity, weakest-link behavior, the Governance/Oversight Body variant and Human Criticality.</li>
+    <li>Defines Human Agency as a distinct derived finding without creating an eleventh readiness dimension or another score.</li>
+    <li>Requires a narrative conclusion instead of a composite readiness percentage.</li>
+  </ul>
+
+  <h2><span class="section-num">18</span>Items for Joint Confirmation with Timothy King</h2>
+  <ul>
+    <li>Confirm agreement on the four work-side proposal refinements in Section 8.</li>
+    <li>Confirm &ldquo;Governance/Oversight Body&rdquo; as the top-of-catalog naming convention, or agree a final alternative that does not conflict with the Working Relationship category &ldquo;Oversight.&rdquo;</li>
+    <li>Confirm that the Recruiter and CHRO human-readiness pilots will use the same ten dimensions without modification.</li>
+    <li>Confirm that candidate hard gates remain provisional until the three-pilot comparison is complete.</li>
+    <li>Confirm the evidence fields that the sandbox should eventually retain for each GR-012 finding.</li>
+  </ul>
+
+  <h2>Her Cover Email, October 28, 2026</h2>
+  <p class="cover-line" style="text-align:left;margin:0 0 16px">&ldquo;RE: GR-012 v0.2 + Human Impact &amp; Readiness Update for Friday&rdquo;, GiGi Garcia to Timothy King.</p>
+  <p>Hi Timothy,</p>
+  <p>I wanted to pull everything together before Friday because I have worked through quite a bit on my side today, and I think we are at the point where it makes sense to consolidate the Human Impact &amp; Readiness work rather than continue addressing each piece separately.</p>
+  <p>I&rsquo;ve attached my GR-012 Human Operating Readiness Instrument v0.2 working draft. I would like to use this as the working specification for my side of the framework going forward and as the basis for our discussion on Friday.</p>
+  <p>The biggest thing I wanted to preserve in v0.2 is that Human Operating Readiness does not become another generic AI-readiness score. The instrument is designed to answer whether the people and organization can actually operate the proposed Human-AI relationship in practice. Each of the ten dimensions produces a finding with evidence behind it, rather than being averaged into one readiness percentage.</p>
+  <p>I have kept the ten dimensions intact but made the layers clearer:</p>
+  <p><strong>Role / Human Operating Conditions</strong><br>Role Clarity, Decision Authority, Capability/Skill, Confidence/Decision Fluency, Psychological Safety, and Capacity/Workload.</p>
+  <p><strong>Organizational Operating Conditions</strong><br>Manager/Governance-Oversight Readiness, Leadership Support/Governance, and Change Capacity.</p>
+  <p><strong>Shared Evidence Condition</strong><br>Trust/Evidence Quality, which should consume the technical/process evidence rather than duplicate the work-side validation.</p>
+  <p>I also want the finding structure to remain:</p>
+  <p>Ready | Conditional | Not Ready | Insufficient Evidence</p>
+  <p>One thing the grievance pressure test reinforced for me is that Insufficient Evidence has to remain a legitimate outcome. Gray should mean we do not yet have enough organization-specific evidence to reach a defensible conclusion. It should not quietly become a negative readiness finding, and modeled concerns should not be converted into Conditional findings unless there is actual evidence of a gap.</p>
+  <p>I also worked through the four work-side proposals you prepared for GR-012 v0.2.</p>
+  <p>Human Intensity: I support keeping this qualitative for now. The share of High/Critical work remaining with the human is useful evidence, but I would not make it the definition of Human Intensity. Cognitive, emotional, relational, and operational burden may increase even when that percentage does not.</p>
+  <p>Weakest Link: I support the rule for materially required A/R roles touching High or Critical work. Where a single decision-maker is involved, I would keep manager, board, or executive oversight as a separate Governance/Oversight Readiness condition rather than treating that body as another operational role in the same weakest-link calculation.</p>
+  <p>Manager Absorption / top-of-catalog roles: I support creating the variant for roles like CHRO. I would prefer the term Governance Body or Governance/Oversight Body so it is not confused with Oversight as a Working Relationship category. I also think the actual governance body should be evidenced for the organization rather than assumed.</p>
+  <p>Human Criticality: I support using the existing Consequence of Error evidence instead of creating a second rating. Human Criticality should interpret Human Impact, Reach, and Reversibility through the human lens and explain what retaining that decision means for the person carrying it. I would also leave room to surface downstream human consequences when the primary Consequence of Error factor is legal, operational, or trust-related.</p>
+  <p>I have also gone back through several of the supporting requirements and closed out or approved the pieces that now align with the newer architecture, including the work-element model, four-view structure, Human Accountability Anchor, H% definition/provenance, ceiling-override safeguards, and the locked Working Relationship definitions. The revised boundary between Augmentation and Oversight and the updated Human-only definition addressed the concerns I had previously raised.</p>
+  <p>I marked the Shock Wave / broader Human Impact concept as Needs Revision, not because I disagree with the direction, but because I think it should be refreshed against the newer GR-021, GR-060, work-product, and RACI work before we treat it as settled. I like the blast-radius logic, verification-load concept, and the idea that work can redistribute while accountability remains concentrated. I just want the current architecture reflected before we lock it.</p>
+  <p><strong>What I plan to work on next</strong></p>
+  <p>My next major step is to finish pressure-testing GR-012 across the other two role levels rather than changing the instrument again.</p>
+  <p>I want to run the same ten dimensions against:</p>
+  <p>Recruiter &mdash; 7.2.3.4 Select and reject candidates</p>
+  <p>and then:</p>
+  <p>CHRO &mdash; 7.1.1.2 Define HR and business function roles and accountability</p>
+  <p>I want to hold the instrument constant across HRBP Manager, Recruiter, and CHRO so we can see what actually survives across Operational, Managerial, and Executive roles.</p>
+  <p>After those three human-readiness pilots, I want to compare the results and settle:</p>
+  <ul>
+    <li>which dimensions actually behave as hard gates;</li>
+    <li>when the weakest-link rule is appropriate;</li>
+    <li>whether Manager/Governance-Oversight Readiness becomes a gate in certain transitions;</li>
+    <li>whether Human Agency remains distinct enough to stay in GR-013;</li>
+    <li>how the CHRO/top-of-catalog case should operate;</li>
+    <li>whether Human Intensity should eventually become a tracked field or remain qualitative;</li>
+    <li>and whether the evidence schema is strong enough to move findings out of Gray consistently.</li>
+  </ul>
+  <p>For GR-013, my current position is that Human Agency should stay distinct, but I do not think it needs to become an eleventh readiness dimension or another score. The question I want it to answer is:</p>
+  <p>Can the person actually exercise the judgment and accountability the operating model leaves with them?</p>
+  <p>That should include the practical ability to understand, question, challenge, override, pause, and escalate AI-supported work when appropriate.</p>
+  <p>I also want to review the human-side test pack and the proposed placement of Human Impact &amp; Readiness findings in the sandbox after we settle the v0.2 logic. I want the executive-facing output to show not just a color, but what changed, what remains human, the readiness finding, the evidence or gap behind it, the required intervention, and the owner.</p>
+  <p>If Friday still works for you, I think that would be a good session to:</p>
+  <ol style="margin:0 0 18px 22px">
+    <li>Review GR-012 v0.2 as the working specification.</li>
+    <li>Confirm the four proposal refinements above.</li>
+    <li>Agree on what is considered candidate versus confirmed hard-gate logic.</li>
+    <li>Confirm the Recruiter and CHRO pressure-test sequence.</li>
+    <li>Clarify the GR-013 Human Agency relationship.</li>
+    <li>Review any implications for the Human Impact Pathway and sandbox placement.</li>
+  </ol>
+  <p>I feel like the work has moved materially from &ldquo;what should readiness mean?&rdquo; to &ldquo;can we produce a defensible, evidence-backed answer across different roles without changing the instrument every time?&rdquo;</p>
+  <p>That is where I want to keep the focus.</p>
+  <p>Let me know if Friday, October 30th still works for you, and I&rsquo;ll come prepared to work through the remaining design questions.</p>
+  <p>Best,<br>GiGi</p>
+
+  <div class="closing-line">Working specification &mdash; pressure test before adoption</div>
+
+</div>
+
+<footer>
+  <p>
+    Working draft &mdash; <strong style="color:var(--navy)">GiGi Garcia</strong> &middot; GR-012 Human Operating Readiness v0.2<br>
+    Shared with <strong style="color:var(--navy)">Tim King</strong>, October 28, 2026 · HITL-Driven Architecture · developed with the assistance of Claude (Anthropic)<br>
+    <a href="index.html">Back to WIP hub</a> &nbsp;&middot;&nbsp; <a href="requirements_register.html#GR-012">GR-012</a> &nbsp;&middot;&nbsp; <a href="requirements_register.html#GR-013">GR-013</a> in the Requirements Register
+  </p>
+</footer>
+
+<script src="wip-download-widget.js"></script>
+</body>
+</html>
