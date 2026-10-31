@@ -291,7 +291,7 @@ const HC={High:1,Critical:1};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const pct=(n,d)=>d?Math.round(100*n/d)+'%':'—';
 // RACI is activity level (GR-060, Tim's decision Oct 10, 2026); a process's RACI is computed from its activities (procRaci).
-let S={wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'pdash',playout:'proc',prows:'all',pchips:'all',stage:'Automation',appr:'R',esc:'A',wg:'all',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
+let S={wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'pdash',penc:'raci',playout:'proc',prows:'all',pchips:'all',stage:'Automation',appr:'R',esc:'A',wg:'all',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
 const VIEWS=[
  {id:'work',name:'Work',q:'Where does each activity sit, and what moves next?'},
  {id:'people',name:'People',q:'What does this mean for each role?'},
@@ -360,7 +360,9 @@ function peopleSide(){
     h+='<h5>Roles</h5>'+btns([['all','Every role with a letter'],['ar','Accountable and Responsible only']],'prows')+
      '<h5>Reading it</h5><p>Organized like the dashboard: process group, then process, then role, then the role&rsquo;s activities. Click the + to open a process. Under it, each role holding a letter on any of its activities, the owner first, then Also Accountable, Responsible, Consulted and Informed, with the activities it holds and its letter on each. An Accountable role with no Responsible named also does the work.</p>';}
   if(S.pmode==='pdash'){
-    h+='<h5>Lay out by</h5>'+btns([['proc','Process, like Work'],['role','Role']],'playout');
+    h+='<h5>Lay out by</h5>'+btns([['proc','Process'],['role','Role']],'playout')+
+     '<h5>Color the squares by</h5>'+btns([['raci','RACI letter'],['stage','Stage'],['cons','Consequence of Error'],['dp','Decision point']],'penc')+
+     (S.penc==='stage'||S.penc==='dp'?'<h5>Where the work is</h5><div class="stack">'+dbWhereOpts().map(o=>'<button class="'+(dbWhere()===o[0]?'on':'')+'" onclick="S.dwhere=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>':'');
     if(S.playout==='proc') h+='<h5>Roles on each card</h5>'+btns([['all','Every role with a letter'],['ar','Accountable and Responsible only']],'prows')+
      '<h5>Reading it</h5><p>The same layout as Work: one column per process group, one card per process. Each card is the process&rsquo;s RACI broken out by activity: one row per role with its chips underneath, one chip per activity, in catalog order. The process owner is the first row; the other rows follow in Also Accountable, Responsible, Consulted, Informed order. An Accountable role with no Responsible named also does the work. Hover a chip for the activity; click a card to open its activities.</p>';
     else h+='<h5>Chips</h5>'+btns([['all','Every activity'],['own','Only where the role has a letter']],'pchips')+
@@ -848,8 +850,10 @@ const dbSt=a=>dbWhere()==='cur'?curOf(a):derivedCeil(a);
 function dbKind(a){const r=dpAnalysis()[a.code];return r.dp?(r.lead==='AI-led'?'flag':'every'):r.feeds.length?'at':'ctl';}
 function dbColor(a){return S.denc==='cons'?CONSC[a.cons]:S.denc==='dp'?DBK[dbKind(a)][1]:DOT[dbSt(a)];}
 const dbH=L=>Math.round(mean(L.map(a=>HPCT[dbSt(a)])));
+// The two places the work can be shown, the selected organization's first (shared by Work's and People's dashboards).
+function dbWhereOpts(){return isOrg()?[['cur','Current State ('+esc(ORGNAME())+')'],['ceil','Progression Ceiling']]:[['ceil','Progression Ceiling'],['cur','Current State (Human-only baseline)']];}
 function dashSide(){
-  const where=isOrg()?[['cur','Current State ('+esc(ORGNAME())+')'],['ceil','Progression Ceiling']]:[['ceil','Progression Ceiling'],['cur','Current State (Human-only baseline)']];
+  const where=dbWhereOpts();
   return '<div class="q">'+VIEWS[0].q+'</div>'+wmodeBtns()+'<p style="margin-top:10px">The answer at a glance: one column per process group, one card per process with its % H, one square per activity. Hover a square for the activity; click a card to open its activities.</p>'+
    '<h5>Color the squares by</h5><div class="stack">'+[['stage','Stage'],['cons','Consequence of Error'],['dp','Decision point']].map(o=>'<button class="'+(S.denc===o[0]?'on':'')+'" onclick="S.denc=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>'+
    '<h5>Where the work is</h5><div class="stack">'+where.map(o=>'<button class="'+(dbWhere()===o[0]?'on':'')+'" onclick="S.dwhere=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>'+
@@ -906,13 +910,12 @@ function peopleDash(){
   let h='<div class="tiles" style="margin-bottom:16px">'+tile(holders.length+' of '+DATA.roles.length,'roles hold an R or A in '+SC.label)+
     tile(pct(top.reduce((x,r)=>x+cnt[r.name].A,0),N),'of accountability sits with '+top.map(r=>r.name).join(', '))+
     tile(ciOnly.length,'roles are Consulted or Informed only')+tile(PA.filter(a=>!a.R.length||a.R.includes(a.A)).length,'activities where the Accountable role also does the work')+'</div>';
-  const leg=Object.entries(PDC).map(([k,v])=>'<span><i class="pd-chip" style="display:inline-block;background:'+v[1]+';color:'+v[2]+'">'+k+'</i>'+v[0]+'</span>').join('')+'<span><i class="pd-chip n" style="display:inline-block"></i>No letter</span>';
+  const leg=pdLegend();
   const groups=DATA.groups;
   if(S.playout==='proc') return h+peopleByProc(groups,leg);
   const panel=r=>{const n=r.name,c=cnt[n],hr=hRole(n);
     const rows=groups.map(([gc])=>{const ps=PROCS.filter(p=>p.g===gc).map(p=>{const L=p.acts.map(x=>ACT[x]).filter(Boolean).filter(a=>S.pchips==='all'||letterOf(a,n));
-        if(!L.length)return '';return '<span class="pd-p">'+L.map(a=>{const l=letterOf(a,n),v=PDC[l];
-          return '<i class="pd-chip'+(l?'':' n')+'" data-t="'+escA('<span style="opacity:.75">'+a.code+'</span> '+a.name+'<br>'+esc(n)+': '+(l?v[0]+(l==='A'&&!a.R.length?', and does the work':''):'no RACI letter')+'<br>Accountable '+a.Aroles.join(', ')+(a.R.length?' · Responsible '+a.R.join(', '):'')+'<br>Ceiling '+derivedCeil(a)+' · Consequence of Error '+a.cons)+'"'+(l?' style="background:'+v[1]+';color:'+v[2]+'"':'')+'>'+l+'</i>';}).join('')+'</span>';}).filter(Boolean);
+        if(!L.length)return '';return '<span class="pd-p">'+L.map(a=>pdChip(a,n,S.penc)).join('')+'</span>';}).filter(Boolean);
       return ps.length?'<div class="pd-g"><span class="gc">'+gc+'</span><span class="pd-ps">'+ps.join('')+'</span></div>':'';}).join('');
     return '<div class="pd-role" onclick="pdOpen(\''+esc(n).replace(/'/g,"\\'")+'\')"><div class="pd-rn"><span>'+esc(n)+'</span>'+(hr==null?'':'<span class="h">'+hr+'% H at ceiling</span>')+'</div>'+
       '<div class="pd-sub">'+(r.reportsTo?'Reports to '+esc(r.reportsTo):'Top of the role catalog')+' · A '+c.A+' · R '+c.R+' · C '+c.C+' · I '+c.I+' · '+dpn(n)+' decision point'+(dpn(n)===1?'':'s')+' anchored</div>'+
@@ -923,8 +926,18 @@ function peopleDash(){
 }
 // By process (Tim, Oct 31, 2026): Work's layout for People. One column per process group, one card per process, each
 // card the process RACI broken out by activity: a row per role (the order procRaci gives, owner first), a chip per activity.
-function pdChip(a,n){const l=letterOf(a,n),v=PDC[l];
-  return '<i class="pd-chip'+(l?'':' n')+'" data-t="'+escA('<span style="opacity:.75">'+a.code+'</span> '+a.name+'<br>'+esc(n)+': '+(l?v[0]+(l==='A'&&!a.R.length?', and does the work':''):'no RACI letter')+'<br>Accountable '+a.Aroles.join(', ')+(a.R.length?' · Responsible '+a.R.join(', '):'')+'<br>Ceiling '+derivedCeil(a)+' · Consequence of Error '+a.cons)+'"'+(l?' style="background:'+v[1]+';color:'+v[2]+'"':'')+'>'+l+'</i>';}
+// A chip carries the role's RACI letter; its color is the RACI letter, or, on the dashboard, the activity's stage,
+// Consequence of Error or decision point, as Work's squares are colored (Tim, Oct 31, 2026). No letter stays blank.
+const PDLIGHT=['#6895C8','#9CBBE0','#CFDDF0','#E3E8F0','#B8873F'];
+function pdBg(a,l,enc){return enc==='stage'?DOT[dbSt(a)]:enc==='cons'?CONSC[a.cons]:enc==='dp'?DBK[dbKind(a)][1]:PDC[l][1];}
+function pdChip(a,n,enc){enc=enc||'raci';const l=letterOf(a,n),v=PDC[l],bg=l?pdBg(a,l,enc):'';
+  const fg=!l?'':enc==='raci'?v[2]:PDLIGHT.includes(bg)?'#0D2D4F':'#fff';
+  return '<i class="pd-chip'+(l?'':' n')+'" data-t="'+escA('<span style="opacity:.75">'+a.code+'</span> '+a.name+'<br>'+esc(n)+': '+(l?v[0]+(l==='A'&&!a.R.length?', and does the work':''):'no RACI letter')+'<br>Accountable '+a.Aroles.join(', ')+(a.R.length?' · Responsible '+a.R.join(', '):'')+'<br>'+(enc==='stage'||enc==='dp'?(dbWhere()==='cur'?'Current State ':'Ceiling ')+dbSt(a):'Ceiling '+derivedCeil(a))+' · Consequence of Error '+a.cons+(enc==='dp'?'<br>'+DBK[dbKind(a)][0]:''))+'"'+(l?' style="background:'+bg+';color:'+fg+'"':'')+'>'+l+'</i>';}
+// The dashboard legend for the chosen coloring; the letter on a chip is always the role's RACI letter.
+function pdLegend(){
+  if(S.penc==='raci') return Object.entries(PDC).map(([k,v])=>'<span><i class="pd-chip" style="display:inline-block;background:'+v[1]+';color:'+v[2]+'">'+k+'</i>'+v[0]+'</span>').join('')+'<span><i class="pd-chip n" style="display:inline-block"></i>No letter</span>';
+  const it=S.penc==='stage'?ST.map(s=>[DOT[s],s+' ('+HPCT[s]+')']):S.penc==='cons'?CONSO.map(c=>[CONSC[c],c]):Object.values(DBK).map(([l,c])=>[c,l]);
+  return it.map(([c,l])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('')+'<span style="color:var(--lgray)">The letter is the role&rsquo;s RACI letter; a blank chip, no letter</span>';}
 function peopleByProc(groups,leg){
   const card=p=>{const L=p.acts.map(c=>ACT[c]).filter(Boolean);if(!L.length)return '';
     const x=procRaci(p),cat=DATA.roles.map(r=>r.name);
@@ -932,7 +945,7 @@ function peopleByProc(groups,leg){
     return '<div class="db-proc" onclick="ppOpen(\''+p.code+'\')"><div class="db-pn"><span><span class="code">'+p.code+'</span> '+esc(p.name)+'</span></div>'+
       '<div class="pp-own">Owner <b>'+esc(x.owner)+'</b> · '+L.length+' activit'+(L.length===1?'y':'ies')+'</div>'+
       '<div class="pp-mx">'+
-      rows.map(r=>'<div><div class="rn'+(r.letter==='A'?' own':'')+'" title="'+escA(r.r+' · '+RACI_WORD[r.letter]+' for the process')+'">'+esc(r.r)+'</div><div class="pp-ch">'+L.map(a=>pdChip(a,r.r)).join('')+'</div></div>').join('')+'</div></div>';};
+      rows.map(r=>'<div><div class="rn'+(r.letter==='A'?' own':'')+'" title="'+escA(r.r+' · '+RACI_WORD[r.letter]+' for the process')+'">'+esc(r.r)+'</div><div class="pp-ch">'+L.map(a=>pdChip(a,r.r,S.penc)).join('')+'</div></div>').join('')+'</div></div>';};
   return '<div class="card"><h3>RACI by process and activity &middot; '+(groups.length>1?'All process groups':groups[0][0]+' '+esc(groups[0][1]))+'</h3><div class="sub">Each process&rsquo;s RACI broken out by activity: one row per role, one chip per activity, the owner first. Click a card to open its activities.</div><div class="db-legend">'+leg+'</div><div class="pp-grid">'+
     groups.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+PROCS.filter(p=>p.g===gc).map(card).join('')+'</div>').join('')+'</div></div>';
 }
