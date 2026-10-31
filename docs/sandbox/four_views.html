@@ -82,7 +82,9 @@ table.db-mx{border-collapse:separate;border-spacing:2px;font-size:12px}
 .pp-mx .rn.own{font-weight:600;color:var(--navy-d)}
 .t.pa td:nth-child(2){white-space:nowrap}
 .pa-role{display:grid;grid-template-columns:210px 1fr;gap:12px;padding:8px 0;border-top:1px solid #EEF1F6}
-.pa-role:first-child{border-top:0}
+.pa-own{font-size:12px;color:var(--gray);padding:2px 0 8px}
+.pa-own b{font-weight:600;color:var(--navy-d)}
+.pa-own+.pa-role{border-top:0}
 .pa-rn{font-size:12.5px;color:var(--dark);line-height:1.35}
 .pa-rn.own{font-weight:600;color:var(--navy-d)}
 .pa-rn .small{font-weight:400}
@@ -345,7 +347,7 @@ function stageBtns(){
   return '<h5>Where the work is</h5>'+btns((isOrg()?[['Today','Today in '+esc(ORGNAME())+': each activity at its assessed Current State']]:[]).concat([['Human-only','Every activity at the Human-only baseline']]).concat(ST.slice(1,5).map(s=>[s,'Up to '+s+', or each activity\u2019s ceiling if lower'])).concat([['Automation','Every activity at its Progression Ceiling']]),'stage');
 }
 // People opens on its dashboard (GR-061), remembered per browser like Work's.
-try{const m=localStorage.getItem('fv.peopleMode');if(['pdash','acts','raci','praci','load'].includes(m))S.pmode=m;}catch(e){}
+try{const m=localStorage.getItem('fv.peopleMode');if(m==='praci')S.pmode='acts';else if(['pdash','acts','raci','load'].includes(m))S.pmode=m;}catch(e){}
 function setPMode(v){S.pmode=v;try{localStorage.setItem('fv.peopleMode',v)}catch(e){}render();}
 // People's left column mirrors Work's (Tim, Oct 31, 2026): Show Dashboard or Activities. The dashboard covers every
 // process group; Activities opens on all of them, with the Process group selector and the activity-level displays.
@@ -357,42 +359,21 @@ function peopleSide(){
      (S.penc==='stage'||S.penc==='dp'?'<h5>Where the work is</h5><div class="stack">'+dbWhereOpts().map(o=>'<button class="'+(dbWhere()===o[0]?'on':'')+'" onclick="S.dwhere=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>':''):'')+
    '<p style="margin-top:10px">Every role in the catalog, the activities it is Responsible and Accountable for, and what is left for a person in each as the work moves up the ramp. Accountability doesn&rsquo;t move with the work.</p>';
   if(!dash) h+='<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()"><option value="all">All process groups</option>'+DATA.groups.map(g=>'<option value="'+g[0]+'"'+(S.wg===g[0]?' selected':'')+'>'+g[0]+' '+esc(g[1])+'</option>').join('')+'</select>'+
-   '<h5>Show</h5><div class="stack">'+[['acts','RACI by role and activity'],['raci','Who is Responsible and Accountable'],['praci','RACI by process'],['load','What is left for a person as the work moves up']].map(o=>'<button class="'+(S.pmode===o[0]?'on':'')+'" onclick="setPMode(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>';
+   '<h5>Show</h5><div class="stack">'+[['acts','RACI by role and activity'],['raci','Who is Responsible and Accountable'],['load','What is left for a person as the work moves up']].map(o=>'<button class="'+(S.pmode===o[0]?'on':'')+'" onclick="setPMode(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>';
   if(S.pmode==='acts'){
     h+='<h5>Roles</h5>'+btns([['all','Every role with a letter'],['ar','Accountable and Responsible only']],'prows')+
-     '<h5>Reading it</h5><p>Organized like the dashboard: process group, then process, then role, then the role&rsquo;s activities. Click the + to open a process. Under it, each role holding a letter on any of its activities, the owner first, then Also Accountable, Responsible, Consulted and Informed, with the activities it holds and its letter on each. An Accountable role with no Responsible named also does the work.</p>';}
+     '<h5>Reading it</h5><p>Organized like the dashboard: process group, then process, then role, then the role&rsquo;s activities. Click the + to open a process. Under it, each role holding a letter on any of its activities, the owner first, then Also Accountable, Responsible, Consulted and Informed, with the activities it holds and its letter on each. An Accountable role with no Responsible named also does the work.</p><p>The process owner is computed from its activities&rsquo; RACI, not stored (GR-060). It is the role Accountable for most of the process&rsquo;s activities; on a tie, the one Accountable for the highest Consequence of Error, then the more senior role. Any other role Accountable for some of them is Also Accountable. Every other role takes the strongest letter it holds on any activity. An open process says when a tie decided its owner.</p>';}
   if(S.pmode==='pdash'){
     h+='<h5>Lay out by</h5>'+btns([['proc','Process'],['role','Role']],'playout');
     if(S.playout==='proc') h+='<h5>Roles on each card</h5>'+btns([['all','Every role with a letter'],['ar','Accountable and Responsible only']],'prows')+
      '<h5>Reading it</h5><p>The same layout as Work: one column per process group, one card per process. Each card is the process&rsquo;s RACI broken out by activity: one row per role with its chips underneath, one chip per activity, in catalog order. The process owner is the first row; the other rows follow in Also Accountable, Responsible, Consulted, Informed order. An Accountable role with no Responsible named also does the work. Hover a chip for the activity; click a card to open its activities.</p>';
     else h+='<h5>Chips</h5>'+btns([['all','Every activity'],['own','Only where the role has a letter']],'pchips')+
      '<h5>Reading it</h5><p>One panel per role, in tier order, with one chip per activity, grouped by process group and process. The chip shows the role&rsquo;s strongest letter on that activity: Accountable, Responsible, Consulted or Informed. An Accountable role with no Responsible named also does the work. Hover a chip for the activity; click a panel for the role&rsquo;s row in the RACI table.</p>';}
-  if(S.pmode==='praci'){
-    h+='<h5>Reading a process RACI</h5><p>Computed from its activities&rsquo; RACI, not stored. The owner is the role Accountable for most of its activities; on a tie, the one Accountable for the highest Consequence of Error, then the more senior role. Any other role Accountable for some of them is Also Accountable. Every other role takes the strongest letter it holds on any activity. The counts show where each letter comes from.</p>';}
   if(S.pmode==='load'){
     h+=stageBtns()+
      '<h5>At Oversight, every instance is approved by</h5>'+btns([['R','The role that did the work'],['A','The Accountable role']],'appr')+
      '<h5>High and Critical exceptions go to</h5>'+btns([['A','The Accountable role (recommended)'],['mgr','The manager of the role that did the work'],['same','Stay with the role that did the work']],'esc');
   }
-  return h+'<div class="replaces">Replaces <b>People View</b> and <b>RACI Table</b>, and brings in the exception-load stress test (GR-029, GR-030). People is the role-level hand-off into Human Impact (GR-056), not the Human Impact assessment itself; accountability stays visible here in the RACI table and on every activity in Work.</div>';
-}
-function procRaciMain(){
-  const L=PROCS.filter(p=>p.acts.length&&(S.wg==='all'||p.g===S.wg)),R=L.map(p=>Object.assign({p},procRaci(p)));
-  const gname=S.wg==='all'?'All process groups':S.wg+' '+esc(DATA.groups.find(g=>g[0]===S.wg)[1]);
-  const owners=[...new Set(R.map(x=>x.owner))];
-  let h='<div class="card"><h3>RACI by process &middot; '+gname+'</h3><div class="sub">Each process&rsquo;s RACI, computed from its activities&rsquo; (GR-060, CL-020). Nothing here is stored at process level.</div><div class="tiles">'+
-    tile(R.length,'process'+(R.length===1?'':'es'))+tile(owners.length,'role'+(owners.length===1?'':'s')+' own them')+tile(R.filter(x=>x.rows.some(r=>r.letter==='A+')).length,'with a role Also Accountable')+tile(R.filter(x=>x.why).length,'owner decided by a tie-break')+'</div></div>';
-  const cnts=c=>['A','R','C','I'].filter(k=>c[k]).map(k=>k+' '+c[k]).join(' · ');
-  R.forEach(x=>{const p=x.p,xs=Object.keys(x.X);
-    h+='<div class="card" id="prc-'+p.code.replace(/\./g,'-')+'"><h3><span class="code">'+p.code+'</span> '+esc(p.name)+' '+nBtn(p.code)+'</h3><div class="sub">'+x.n+' activit'+(x.n>1?'ies':'y')+'</div>'+
-      '<div class="pown">Owner <b>'+esc(x.owner)+'</b>, Accountable for '+x.top+' of '+x.n+' activit'+(x.n>1?'ies':'y')+'.'+(x.why?' '+esc(x.why):'')+'</div>'+
-      '<div class="pcols"><div><div class="plbl">Process RACI</div><table class="pr"><tr><th>Role</th><th>Process RACI</th><th>On its activities</th></tr>'+
-      x.rows.map(r=>'<tr'+(r.letter==='A'?' class="own"':'')+'><td>'+esc(r.r)+'</td><td class="nw">'+RACI_WORD[r.letter]+'</td><td class="nw small">'+cnts(r.c)+'</td></tr>').join('')+'</table>'+
-      (xs.length?'<div class="small" style="margin-top:6px">Outside the catalog: '+xs.map(t=>esc(t)+' ('+x.X[t].join(', ')+')').join(' · ')+'</div>':'')+'</div>'+
-      '<div><div class="plbl">Its activities</div><table class="pr"><tr><th>Activity</th><th>Accountable</th><th>Consequence of Error</th></tr>'+
-      p.acts.map(c=>{const K='pc'+c,on=opened[K],tg='opened[\''+K+'\']=!opened[\''+K+'\'];render()';
-        return '<tr><td><span class="code">'+c+'</span> '+esc(ACT[c].name)+'</td><td>'+esc(RACI_ACT[c].A)+'</td><td class="nw"><span class="acons'+(on?' sel':'')+'" style="color:'+CONSC[ACT[c].cons]+'" onclick="'+tg+'" title="Consequence of Error">'+ACT[c].cons+'</span></td></tr>'+
-          (on?'<tr><td colspan="3">'+coeBox(ACT[c],null,'<button class="ix" onclick="'+tg+'">\u00d7</button>')+'</td></tr>':'');}).join('')+'</table></div></div>'+nPanel(p.code)+'</div>';});
   return h;
 }
 // People counts only the activities in the chosen process group, the same selector as Work.
@@ -402,7 +383,6 @@ function peopleMain(){
   const SC=peopleScope(),PA=SC.PA,N=SC.N;
   const base=tally('Human-only',PA), now=tally(S.stage,PA), R=now.roles, B=base.roles;
   const names=DATA.roles.map(r=>r.name).filter(n=>B[n].acc||B[n].resp||R[n].left);
-  if(S.pmode==='praci') return procRaciMain();
   if(S.pmode==='pdash') return peopleDash();
   if(S.pmode==='acts') return peopleActs();
   if(S.pmode==='raci'){
@@ -633,8 +613,7 @@ function workSide(){
   return '<div class="q">'+VIEWS[0].q+'</div>'+wmodeBtns()+'<p style="margin-top:10px">Every activity on the six-step ramp, from today&rsquo;s Current State up to its Progression Ceiling. Click a step for who does each part of the work at that stage, an arrow for what changes in that step, the lock for what must stay with a person, or the Consequence of Error for what drives it.</p>'+
    '<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()">'+gopts.replace('value="'+S.wg+'"','value="'+S.wg+'" selected')+'</select>'+
    '<h5>Show</h5>'+btns([['all','All activities'],['person','Must keep a person doing the work'],['auto','May go to Automation'],['hc','High or Critical consequence']].concat(isOrg()?[['assessed','Assessed']]:[]),'ws')+
-   '<h5>Reading a ramp</h5><p>Each step carries a share of the work kept with a person (% H): '+ST.map(s=>s+' '+HPCT[s]).join(', ')+'. A process heading averages its activities; click a % H figure for its calculation, or the + to open the process.</p><p>'+'Reached stages, up to the Current State, are in navy with their stage color square in front; the rest are grey. The lock sits at the Progression Ceiling; stages past it are faint. '+(isOrg()?'A stage in red is reached past the ceiling,'+' and a red dot an activity with an element past its own ceiling. Click the Current State step for its element assessment.':'In the Reference Model every activity starts at the Human-only baseline.')+'</p>'+
-   '<div class="replaces">Replaces <b>Working Relationship</b> and <b>Readiness Gate</b>, as a consolidation of the screens only. Work says how far an activity can move. Whether the organization and its people can operate there stays with Human Operating Readiness (GR-012) and Meaningful Human Control (GR-013) in the Human Impact &amp; Readiness layer; the work-side evidence and gates feed that layer rather than replace it, and the gate box shows its checks beside the technical evidence.</div>';
+   '<h5>Reading a ramp</h5><p>Each step carries a share of the work kept with a person (% H): '+ST.map(s=>s+' '+HPCT[s]).join(', ')+'. A process heading averages its activities; click a % H figure for its calculation, or the + to open the process.</p><p>'+'Reached stages, up to the Current State, are in navy with their stage color square in front; the rest are grey. The lock sits at the Progression Ceiling; stages past it are faint. '+(isOrg()?'A stage in red is reached past the ceiling,'+' and a red dot an activity with an element past its own ceiling. Click the Current State step for its element assessment.':'In the Reference Model every activity starts at the Human-only baseline.')+'</p>';
 }
 function ramp(a,big){
   const ci=rank(derivedCeil(a)), cur=rank(curOf(a)), sel=S.wsel[a.code]||{}, lim=abcLim(a);
@@ -904,12 +883,13 @@ function peopleDash(){
   const cnt={};DATA.roles.forEach(r=>{cnt[r.name]={A:0,R:0,C:0,I:0}});
   PA.forEach(a=>DATA.roles.forEach(r=>{const l=letterOf(a,r.name);if(l)cnt[r.name][l]++;}));
   const holders=DATA.roles.filter(r=>cnt[r.name].A||cnt[r.name].R),top=DATA.roles.slice().sort((x,y)=>cnt[y.name].A-cnt[x.name].A).slice(0,3);
-  const ciOnly=DATA.roles.filter(r=>!cnt[r.name].A&&!cnt[r.name].R&&(cnt[r.name].C||cnt[r.name].I));
+  // High or Critical activities done by a role other than the one Accountable for them (Responsible named, Accountable not among them).
+  const hcAway=PA.filter(a=>HC[a.cons]&&a.R.length&&!a.R.some(r=>a.Aroles.includes(r))).length,hcAll=PA.filter(a=>HC[a.cons]).length;
   const DPM=dpAnalysis(),dpn=n=>PA.filter(a=>DPM[a.code].dp&&a.Aroles[0]===n).length;
   const hRole=n=>{const L=PA.filter(a=>a.Aroles.includes(n));return L.length?Math.round(mean(L.map(a=>HPCT[derivedCeil(a)]))):null;};
   let h='<div class="tiles" style="margin-bottom:16px">'+tile(holders.length+' of '+DATA.roles.length,'roles hold an R or A in '+SC.label)+
     tile(pct(top.reduce((x,r)=>x+cnt[r.name].A,0),N),'of accountability sits with '+top.map(r=>r.name).join(', '))+
-    tile(ciOnly.length,'roles are Consulted or Informed only')+tile(PA.filter(a=>!a.R.length||a.R.includes(a.A)).length,'activities where the Accountable role also does the work')+'</div>';
+    tile(hcAway+' of '+hcAll,'High or Critical activities done by a role other than the Accountable one')+tile(PA.filter(a=>!a.R.length||a.R.includes(a.A)).length,'activities where the Accountable role also does the work')+'</div>';
   const leg=pdLegend();
   const groups=DATA.groups;
   if(S.playout==='proc') return h+peopleByProc(groups,leg);
@@ -963,7 +943,7 @@ function peopleActs(){
       const L=p.acts.map(c=>ACT[c]).filter(Boolean),x=procRaci(p),k='pa'+p.code,o=opened[k];
       const rows=x.rows.filter(r=>cat.includes(r.r)&&(S.prows==='all'||r.letter!=='C'&&r.letter!=='I'));
       h+='<tr class="tier proc r" id="pa-'+p.code.replace(/\./g,'-')+'" onclick="opened[\''+k+'\']=!opened[\''+k+'\'];render()"><td><span class="tg">'+(o?'\u2212':'+')+'</span><span class="code">'+p.code+'</span> '+esc(p.name)+'</td><td class="nw">'+esc(x.owner)+'</td><td class="hide-s" style="text-align:right">'+rows.length+'</td><td class="hide-s" style="text-align:right">'+L.length+'</td></tr>';
-      if(o) h+='<tr class="det"><td colspan="4">'+rows.map(r=>{const held=L.filter(a=>letterOf(a,r.r));
+      if(o) h+='<tr class="det"><td colspan="4"><div class="pa-own">Owner <b>'+esc(x.owner)+'</b>, Accountable for '+x.top+' of '+x.n+' activit'+(x.n>1?'ies':'y')+'.'+(x.why?' '+esc(x.why):'')+'</div>'+rows.map(r=>{const held=L.filter(a=>letterOf(a,r.r));
         return '<div class="pa-role"><div class="pa-rn'+(r.letter==='A'?' own':'')+'">'+esc(r.r)+'<div class="small">'+(r.letter==='A'?'Owner':RACI_WORD[r.letter])+' · '+held.length+' of '+L.length+'</div></div><div class="pa-acts">'+
           held.map(a=>'<div class="pa-a">'+pdChip(a,r.r)+'<span class="code">'+a.code+'</span><span>'+esc(a.name)+'</span></div>').join('')+'</div></div>';}).join('')+'</td></tr>';
     });
