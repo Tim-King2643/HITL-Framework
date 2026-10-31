@@ -943,13 +943,13 @@ function peopleActs(){
   const ps=PROCS.filter(p=>p.acts.length&&groups.some(g=>g[0]===p.g));
   const leg=Object.entries(PDC).map(([k,v])=>'<span><i class="pd-chip" style="display:inline-block;background:'+v[1]+';color:'+v[2]+'">'+k+'</i>'+v[0]+'</span>').join('');
   let h='<div class="card"><h3>'+(SC.all?'All process groups':S.wg+' '+esc(groups[0][1]))+'</h3><div class="sub">'+SC.N+' activities in '+ps.length+' processes, by process group, process, role and activity. Click the + to open a process.</div><div class="db-legend" style="margin-bottom:0">'+leg+'</div></div>';
-  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t pa"><thead><tr><th>Process <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; then each role and the activities it holds</span></th><th>Owner</th><th class="hide-s">Roles</th><th class="hide-s">Activities</th></tr></thead><tbody>';
+  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t pa"><thead><tr><th>Process <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; then each role and the activities it holds</span></th><th style="text-align:left">Owner</th><th class="hide-s">Roles</th><th class="hide-s">Activities</th></tr></thead><tbody>';
   groups.forEach(([gc,gn])=>{
     if(SC.all) h+='<tr class="tier"><td colspan="4"><span class="code">'+gc+'</span> '+esc(gn)+'</td></tr>';
     PROCS.filter(p=>p.g===gc&&p.acts.length).forEach(p=>{
       const L=p.acts.map(c=>ACT[c]).filter(Boolean),x=procRaci(p),k='pa'+p.code,o=opened[k];
       const rows=x.rows.filter(r=>cat.includes(r.r)&&(S.prows==='all'||r.letter!=='C'&&r.letter!=='I'));
-      h+='<tr class="tier proc r" id="pa-'+p.code.replace(/\./g,'-')+'" onclick="opened[\''+k+'\']=!opened[\''+k+'\'];render()"><td><span class="tg">'+(o?'\u2212':'+')+'</span><span class="code">'+p.code+'</span> '+esc(p.name)+'</td><td class="nw">'+esc(x.owner)+'</td><td class="hide-s">'+rows.length+'</td><td class="hide-s">'+L.length+'</td></tr>';
+      h+='<tr class="tier proc r" id="pa-'+p.code.replace(/\./g,'-')+'" onclick="opened[\''+k+'\']=!opened[\''+k+'\'];render()"><td><span class="tg">'+(o?'\u2212':'+')+'</span><span class="code">'+p.code+'</span> '+esc(p.name)+'</td><td class="nw">'+esc(x.owner)+'</td><td class="hide-s" style="text-align:right">'+rows.length+'</td><td class="hide-s" style="text-align:right">'+L.length+'</td></tr>';
       if(o) h+='<tr class="det"><td colspan="4">'+rows.map(r=>{const held=L.filter(a=>letterOf(a,r.r));
         return '<div class="pa-role"><div class="pa-rn'+(r.letter==='A'?' own':'')+'">'+esc(r.r)+'<div class="small">'+(r.letter==='A'?'Owner':RACI_WORD[r.letter])+' · '+held.length+' of '+L.length+'</div></div><div class="pa-acts">'+
           held.map(a=>'<div class="pa-a">'+pdChip(a,r.r)+'<span class="code">'+a.code+'</span><span>'+esc(a.name)+'</span></div>').join('')+'</div></div>';}).join('')+'</td></tr>';
