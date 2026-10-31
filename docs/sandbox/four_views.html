@@ -80,6 +80,17 @@ table.db-mx{border-collapse:separate;border-spacing:2px;font-size:12px}
 .pp-ch{display:flex;gap:2px;margin-top:2px}
 .pp-mx .rn{font-size:11px;color:var(--dark);line-height:14px}
 .pp-mx .rn.own{font-weight:600;color:var(--navy-d)}
+.t.pa td:nth-child(2){white-space:nowrap}
+.pa-role{display:grid;grid-template-columns:210px 1fr;gap:12px;padding:8px 0;border-top:1px solid #EEF1F6}
+.pa-role:first-child{border-top:0}
+.pa-rn{font-size:12.5px;color:var(--dark);line-height:1.35}
+.pa-rn.own{font-weight:600;color:var(--navy-d)}
+.pa-rn .small{font-weight:400}
+.pa-acts{display:flex;flex-direction:column;gap:4px}
+.pa-a{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;line-height:16px}
+.pa-a .pd-chip{flex:0 0 16px}
+.pa-a .code{flex:0 0 66px}
+@media(max-width:640px){.pa-role{grid-template-columns:1fr;gap:4px}}
 .db-tip{position:fixed;pointer-events:none;background:#0D1B2A;color:#fff;font-size:12px;line-height:1.45;padding:7px 10px;border-radius:6px;max-width:300px;z-index:20;display:none;text-align:left}
 @media(max-width:860px){.db-bars .row{grid-template-columns:120px 1fr 44px}}
 .tile{flex:1;min-width:140px;border:1px solid #EEF1F6;border-radius:8px;padding:10px 12px}
@@ -280,7 +291,7 @@ const HC={High:1,Critical:1};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const pct=(n,d)=>d?Math.round(100*n/d)+'%':'—';
 // RACI is activity level (GR-060, Tim's decision Oct 10, 2026); a process's RACI is computed from its activities (procRaci).
-let S={wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'pdash',playout:'proc',prows:'all',pchips:'all',stage:'Automation',appr:'R',esc:'A',wg:'7.2',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
+let S={wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'pdash',playout:'proc',prows:'all',pchips:'all',stage:'Automation',appr:'R',esc:'A',wg:'all',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
 const VIEWS=[
  {id:'work',name:'Work',q:'Where does each activity sit, and what moves next?'},
  {id:'people',name:'People',q:'What does this mean for each role?'},
@@ -334,16 +345,24 @@ function stageBtns(){
   return '<h5>Where the work is</h5>'+btns((isOrg()?[['Today','Today in '+esc(ORGNAME())+': each activity at its assessed Current State']]:[]).concat([['Human-only','Every activity at the Human-only baseline']]).concat(ST.slice(1,5).map(s=>[s,'Up to '+s+', or each activity\u2019s ceiling if lower'])).concat([['Automation','Every activity at its Progression Ceiling']]),'stage');
 }
 // People opens on its dashboard (GR-061), remembered per browser like Work's.
-try{const m=localStorage.getItem('fv.peopleMode');if(['pdash','raci','praci','load'].includes(m))S.pmode=m;}catch(e){}
+try{const m=localStorage.getItem('fv.peopleMode');if(['pdash','acts','raci','praci','load'].includes(m))S.pmode=m;}catch(e){}
 function setPMode(v){S.pmode=v;try{localStorage.setItem('fv.peopleMode',v)}catch(e){}render();}
+// People's left column mirrors Work's (Tim, Oct 31, 2026): Show Dashboard or Activities. The dashboard covers every
+// process group; Activities opens on all of them, with the Process group selector and the activity-level displays.
 function peopleSide(){
-  let h='<div class="q">'+VIEWS[1].q+'</div><p>Every role in the catalog, the activities it is Responsible and Accountable for, and what is left for a person in each as the work moves up the ramp. Accountability doesn&rsquo;t move with the work.</p>'+
-   '<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()"><option value="all">All process groups</option>'+DATA.groups.map(g=>'<option value="'+g[0]+'"'+(S.wg===g[0]?' selected':'')+'>'+g[0]+' '+esc(g[1])+'</option>').join('')+'</select>'+
-   '<h5>Show</h5><div class="stack">'+[['pdash','Dashboard'],['raci','Who is Responsible and Accountable'],['praci','RACI by process'],['load','What is left for a person as the work moves up']].map(o=>'<button class="'+(S.pmode===o[0]?'on':'')+'" onclick="setPMode(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>';
+  const dash=S.pmode==='pdash';
+  let h='<div class="q">'+VIEWS[1].q+'</div>'+
+   '<h5>Show</h5><div class="stack">'+[['pdash','Dashboard'],['acts','Activities']].map(o=>'<button class="'+((o[0]==='pdash')===dash?'on':'')+'" onclick="'+(o[0]==='acts'?'S.wg=\'all\';':'')+'setPMode(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>'+
+   '<p style="margin-top:10px">Every role in the catalog, the activities it is Responsible and Accountable for, and what is left for a person in each as the work moves up the ramp. Accountability doesn&rsquo;t move with the work.</p>';
+  if(!dash) h+='<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()"><option value="all">All process groups</option>'+DATA.groups.map(g=>'<option value="'+g[0]+'"'+(S.wg===g[0]?' selected':'')+'>'+g[0]+' '+esc(g[1])+'</option>').join('')+'</select>'+
+   '<h5>Show</h5><div class="stack">'+[['acts','RACI by role and activity'],['raci','Who is Responsible and Accountable'],['praci','RACI by process'],['load','What is left for a person as the work moves up']].map(o=>'<button class="'+(S.pmode===o[0]?'on':'')+'" onclick="setPMode(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>';
+  if(S.pmode==='acts'){
+    h+='<h5>Roles</h5>'+btns([['all','Every role with a letter'],['ar','Accountable and Responsible only']],'prows')+
+     '<h5>Reading it</h5><p>Organized like the dashboard: process group, then process, then role, then the role&rsquo;s activities. Click the + to open a process. Under it, each role holding a letter on any of its activities, the owner first, then Also Accountable, Responsible, Consulted and Informed, with the activities it holds and its letter on each. An Accountable role with no Responsible named also does the work.</p>';}
   if(S.pmode==='pdash'){
     h+='<h5>Lay out by</h5>'+btns([['proc','Process, like Work'],['role','Role']],'playout');
     if(S.playout==='proc') h+='<h5>Roles on each card</h5>'+btns([['all','Every role with a letter'],['ar','Accountable and Responsible only']],'prows')+
-     '<h5>Reading it</h5><p>The same layout as Work: one column per process group, one card per process. Each card is the process&rsquo;s RACI broken out by activity: one row per role with its chips underneath, one chip per activity, in catalog order. The process owner is the first row; the other rows follow in Also Accountable, Responsible, Consulted, Informed order. An Accountable role with no Responsible named also does the work. Hover a chip for the activity; click a card for its process RACI.</p>';
+     '<h5>Reading it</h5><p>The same layout as Work: one column per process group, one card per process. Each card is the process&rsquo;s RACI broken out by activity: one row per role with its chips underneath, one chip per activity, in catalog order. The process owner is the first row; the other rows follow in Also Accountable, Responsible, Consulted, Informed order. An Accountable role with no Responsible named also does the work. Hover a chip for the activity; click a card to open its activities.</p>';
     else h+='<h5>Chips</h5>'+btns([['all','Every activity'],['own','Only where the role has a letter']],'pchips')+
      '<h5>Reading it</h5><p>One panel per role, in tier order, with one chip per activity, grouped by process group and process. The chip shows the role&rsquo;s strongest letter on that activity: Accountable, Responsible, Consulted or Informed. An Accountable role with no Responsible named also does the work. Hover a chip for the activity; click a panel for the role&rsquo;s row in the RACI table.</p>';}
   if(S.pmode==='praci'){
@@ -375,7 +394,7 @@ function procRaciMain(){
   return h;
 }
 // People counts only the activities in the chosen process group, the same selector as Work.
-function peopleScope(){const all=S.wg==='all',PA=all?DATA.acts:DATA.acts.filter(a=>a.code.startsWith(S.wg+'.'));
+function peopleScope(dash){const all=dash||S.wg==='all',PA=all?DATA.acts:DATA.acts.filter(a=>a.code.startsWith(S.wg+'.'));
   return {PA,N:PA.length,all,label:all?'all '+PA.length+' activities':'the '+PA.length+' activities in '+S.wg+' '+esc(DATA.groups.find(g=>g[0]===S.wg)[1])};}
 function peopleMain(){
   const SC=peopleScope(),PA=SC.PA,N=SC.N;
@@ -383,6 +402,7 @@ function peopleMain(){
   const names=DATA.roles.map(r=>r.name).filter(n=>B[n].acc||B[n].resp||R[n].left);
   if(S.pmode==='praci') return procRaciMain();
   if(S.pmode==='pdash') return peopleDash();
+  if(S.pmode==='acts') return peopleActs();
   if(S.pmode==='raci'){
     const noR=PA.filter(a=>a.R.includes(a.A)).length;
     const RC={};DATA.roles.forEach(r=>RC[r.name]={C:0,I:0,acts:{}});
@@ -604,7 +624,7 @@ function workFilter(){
 try{const m=localStorage.getItem('fv.workMode');if(m==='dash'||m==='acts')S.wmode=m;}catch(e){}
 try{const v=P.FV_OPENED_VIEW;if(v==='wr'||v==='gates')S.wmode='acts';}catch(e){}
 function setWMode(v){S.wmode=v;try{localStorage.setItem('fv.workMode',v)}catch(e){}render();}
-function wmodeBtns(){return '<h5>Show</h5><div class="stack">'+[['dash','Dashboard'],['acts','Activities']].map(o=>'<button class="'+(S.wmode===o[0]?'on':'')+'" onclick="setWMode(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>';}
+function wmodeBtns(){return '<h5>Show</h5><div class="stack">'+[['dash','Dashboard'],['acts','Activities']].map(o=>'<button class="'+(S.wmode===o[0]?'on':'')+'" onclick="'+(o[0]==='acts'?'S.wg=\'all\';':'')+'setWMode(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>';}
 function workSide(){
   if(S.wmode==='dash') return dashSide();
   const gopts='<option value="all">All process groups</option>'+DATA.groups.map(g=>'<option value="'+g[0]+'"'+(S.wg===g[0]?' selected':'')+'>'+g[0]+' '+esc(g[1])+'</option>').join('');
@@ -876,7 +896,7 @@ const PDC={A:['Accountable','#0D2D4F','#fff'],R:['Responsible','#3A6FAE','#fff']
 const escA=x=>esc(x).replace(/"/g,'&quot;');
 function letterOf(a,n){if(a.Aroles.includes(n))return 'A';if(a.R.includes(n))return 'R';const x=ciOf(a);if(x.C.includes(n))return 'C';if(x.I.includes(n))return 'I';return '';}
 function peopleDash(){
-  const SC=peopleScope(),PA=SC.PA,N=SC.N,inG=c=>SC.all||c.startsWith(S.wg+'.');
+  const SC=peopleScope(true),PA=SC.PA,N=SC.N,inG=c=>SC.all||c.startsWith(S.wg+'.');
   const cnt={};DATA.roles.forEach(r=>{cnt[r.name]={A:0,R:0,C:0,I:0}});
   PA.forEach(a=>DATA.roles.forEach(r=>{const l=letterOf(a,r.name);if(l)cnt[r.name][l]++;}));
   const holders=DATA.roles.filter(r=>cnt[r.name].A||cnt[r.name].R),top=DATA.roles.slice().sort((x,y)=>cnt[y.name].A-cnt[x.name].A).slice(0,3);
@@ -887,7 +907,7 @@ function peopleDash(){
     tile(pct(top.reduce((x,r)=>x+cnt[r.name].A,0),N),'of accountability sits with '+top.map(r=>r.name).join(', '))+
     tile(ciOnly.length,'roles are Consulted or Informed only')+tile(PA.filter(a=>!a.R.length||a.R.includes(a.A)).length,'activities where the Accountable role also does the work')+'</div>';
   const leg=Object.entries(PDC).map(([k,v])=>'<span><i class="pd-chip" style="display:inline-block;background:'+v[1]+';color:'+v[2]+'">'+k+'</i>'+v[0]+'</span>').join('')+'<span><i class="pd-chip n" style="display:inline-block"></i>No letter</span>';
-  const groups=DATA.groups.filter(([gc])=>SC.all||gc===S.wg);
+  const groups=DATA.groups;
   if(S.playout==='proc') return h+peopleByProc(groups,leg);
   const panel=r=>{const n=r.name,c=cnt[n],hr=hRole(n);
     const rows=groups.map(([gc])=>{const ps=PROCS.filter(p=>p.g===gc).map(p=>{const L=p.acts.map(x=>ACT[x]).filter(Boolean).filter(a=>S.pchips==='all'||letterOf(a,n));
@@ -913,12 +933,33 @@ function peopleByProc(groups,leg){
       '<div class="pp-own">Owner <b>'+esc(x.owner)+'</b> · '+L.length+' activit'+(L.length===1?'y':'ies')+'</div>'+
       '<div class="pp-mx">'+
       rows.map(r=>'<div><div class="rn'+(r.letter==='A'?' own':'')+'" title="'+escA(r.r+' · '+RACI_WORD[r.letter]+' for the process')+'">'+esc(r.r)+'</div><div class="pp-ch">'+L.map(a=>pdChip(a,r.r)).join('')+'</div></div>').join('')+'</div></div>';};
-  return '<div class="card"><h3>RACI by process and activity &middot; '+(groups.length>1?'All process groups':groups[0][0]+' '+esc(groups[0][1]))+'</h3><div class="sub">Each process&rsquo;s RACI broken out by activity: one row per role, one chip per activity, the owner first. Click a card for its process RACI.</div><div class="db-legend">'+leg+'</div><div class="pp-grid">'+
+  return '<div class="card"><h3>RACI by process and activity &middot; '+(groups.length>1?'All process groups':groups[0][0]+' '+esc(groups[0][1]))+'</h3><div class="sub">Each process&rsquo;s RACI broken out by activity: one row per role, one chip per activity, the owner first. Click a card to open its activities.</div><div class="db-legend">'+leg+'</div><div class="pp-grid">'+
     groups.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+PROCS.filter(p=>p.g===gc).map(card).join('')+'</div>').join('')+'</div></div>';
 }
-// A process card opens the RACI by process view at that process and scrolls to it.
-function ppOpen(code){const p=PROCS.find(x=>x.code===code);if(!p)return;S.wg=p.g;setPMode('praci');
-  const el=document.getElementById('prc-'+code.replace(/\./g,'-'));
+// People's Activities (Tim, Oct 31, 2026): process group, process, role, activities. A process row opens like Work's;
+// under it each role with a letter (the order procRaci gives, owner first) and the activities it holds, with its letter.
+function peopleActs(){
+  const SC=peopleScope(),groups=DATA.groups.filter(([gc])=>SC.all||gc===S.wg),cat=DATA.roles.map(r=>r.name);
+  const ps=PROCS.filter(p=>p.acts.length&&groups.some(g=>g[0]===p.g));
+  const leg=Object.entries(PDC).map(([k,v])=>'<span><i class="pd-chip" style="display:inline-block;background:'+v[1]+';color:'+v[2]+'">'+k+'</i>'+v[0]+'</span>').join('');
+  let h='<div class="card"><h3>'+(SC.all?'All process groups':S.wg+' '+esc(groups[0][1]))+'</h3><div class="sub">'+SC.N+' activities in '+ps.length+' processes, by process group, process, role and activity. Click the + to open a process.</div><div class="db-legend" style="margin-bottom:0">'+leg+'</div></div>';
+  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t pa"><thead><tr><th>Process <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; then each role and the activities it holds</span></th><th>Owner</th><th class="hide-s">Roles</th><th class="hide-s">Activities</th></tr></thead><tbody>';
+  groups.forEach(([gc,gn])=>{
+    if(SC.all) h+='<tr class="tier"><td colspan="4"><span class="code">'+gc+'</span> '+esc(gn)+'</td></tr>';
+    PROCS.filter(p=>p.g===gc&&p.acts.length).forEach(p=>{
+      const L=p.acts.map(c=>ACT[c]).filter(Boolean),x=procRaci(p),k='pa'+p.code,o=opened[k];
+      const rows=x.rows.filter(r=>cat.includes(r.r)&&(S.prows==='all'||r.letter!=='C'&&r.letter!=='I'));
+      h+='<tr class="tier proc r" id="pa-'+p.code.replace(/\./g,'-')+'" onclick="opened[\''+k+'\']=!opened[\''+k+'\'];render()"><td><span class="tg">'+(o?'\u2212':'+')+'</span><span class="code">'+p.code+'</span> '+esc(p.name)+'</td><td class="nw">'+esc(x.owner)+'</td><td class="hide-s">'+rows.length+'</td><td class="hide-s">'+L.length+'</td></tr>';
+      if(o) h+='<tr class="det"><td colspan="4">'+rows.map(r=>{const held=L.filter(a=>letterOf(a,r.r));
+        return '<div class="pa-role"><div class="pa-rn'+(r.letter==='A'?' own':'')+'">'+esc(r.r)+'<div class="small">'+(r.letter==='A'?'Owner':RACI_WORD[r.letter])+' · '+held.length+' of '+L.length+'</div></div><div class="pa-acts">'+
+          held.map(a=>'<div class="pa-a">'+pdChip(a,r.r)+'<span class="code">'+a.code+'</span><span>'+esc(a.name)+'</span></div>').join('')+'</div></div>';}).join('')+'</td></tr>';
+    });
+  });
+  return h+'</tbody></table></div>';
+}
+// A process card opens People's Activities at that process, expanded, and scrolls to it (as a Work card does).
+function ppOpen(code){const p=PROCS.find(x=>x.code===code);if(!p)return;S.wg=p.g;opened['pa'+code]=true;setPMode('acts');
+  const el=document.getElementById('pa-'+code.replace(/\./g,'-'));
   if(el){try{const fr=window.frameElement;if(fr)P.scrollTo({top:fr.getBoundingClientRect().top+P.scrollY+el.getBoundingClientRect().top-70,behavior:'smooth'});else el.scrollIntoView({behavior:'smooth'});}catch(e){el.scrollIntoView();}}
 }
 // A role panel opens that role's row in the RACI table, expanded, and scrolls to it.
