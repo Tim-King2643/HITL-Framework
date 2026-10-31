@@ -353,6 +353,8 @@ function peopleSide(){
   const dash=S.pmode==='pdash';
   let h='<div class="q">'+VIEWS[1].q+'</div>'+
    '<h5>Show</h5><div class="stack">'+[['pdash','Dashboard'],['acts','Activities']].map(o=>'<button class="'+((o[0]==='pdash')===dash?'on':'')+'" onclick="'+(o[0]==='acts'?'S.wg=\'all\';':'')+'setPMode(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>'+
+   (dash?'<h5>Color the squares by</h5>'+btns([['raci','RACI letter'],['stage','Stage'],['cons','Consequence of Error'],['dp','Decision point']],'penc')+
+     (S.penc==='stage'||S.penc==='dp'?'<h5>Where the work is</h5><div class="stack">'+dbWhereOpts().map(o=>'<button class="'+(dbWhere()===o[0]?'on':'')+'" onclick="S.dwhere=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>':''):'')+
    '<p style="margin-top:10px">Every role in the catalog, the activities it is Responsible and Accountable for, and what is left for a person in each as the work moves up the ramp. Accountability doesn&rsquo;t move with the work.</p>';
   if(!dash) h+='<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()"><option value="all">All process groups</option>'+DATA.groups.map(g=>'<option value="'+g[0]+'"'+(S.wg===g[0]?' selected':'')+'>'+g[0]+' '+esc(g[1])+'</option>').join('')+'</select>'+
    '<h5>Show</h5><div class="stack">'+[['acts','RACI by role and activity'],['raci','Who is Responsible and Accountable'],['praci','RACI by process'],['load','What is left for a person as the work moves up']].map(o=>'<button class="'+(S.pmode===o[0]?'on':'')+'" onclick="setPMode(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>';
@@ -360,9 +362,7 @@ function peopleSide(){
     h+='<h5>Roles</h5>'+btns([['all','Every role with a letter'],['ar','Accountable and Responsible only']],'prows')+
      '<h5>Reading it</h5><p>Organized like the dashboard: process group, then process, then role, then the role&rsquo;s activities. Click the + to open a process. Under it, each role holding a letter on any of its activities, the owner first, then Also Accountable, Responsible, Consulted and Informed, with the activities it holds and its letter on each. An Accountable role with no Responsible named also does the work.</p>';}
   if(S.pmode==='pdash'){
-    h+='<h5>Lay out by</h5>'+btns([['proc','Process'],['role','Role']],'playout')+
-     '<h5>Color the squares by</h5>'+btns([['raci','RACI letter'],['stage','Stage'],['cons','Consequence of Error'],['dp','Decision point']],'penc')+
-     (S.penc==='stage'||S.penc==='dp'?'<h5>Where the work is</h5><div class="stack">'+dbWhereOpts().map(o=>'<button class="'+(dbWhere()===o[0]?'on':'')+'" onclick="S.dwhere=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>':'');
+    h+='<h5>Lay out by</h5>'+btns([['proc','Process'],['role','Role']],'playout');
     if(S.playout==='proc') h+='<h5>Roles on each card</h5>'+btns([['all','Every role with a letter'],['ar','Accountable and Responsible only']],'prows')+
      '<h5>Reading it</h5><p>The same layout as Work: one column per process group, one card per process. Each card is the process&rsquo;s RACI broken out by activity: one row per role with its chips underneath, one chip per activity, in catalog order. The process owner is the first row; the other rows follow in Also Accountable, Responsible, Consulted, Informed order. An Accountable role with no Responsible named also does the work. Hover a chip for the activity; click a card to open its activities.</p>';
     else h+='<h5>Chips</h5>'+btns([['all','Every activity'],['own','Only where the role has a letter']],'pchips')+
