@@ -76,7 +76,7 @@ table.db-mx{border-collapse:separate;border-spacing:2px;font-size:12px}
 .pp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px}
 .pp-own{font-size:11.5px;color:var(--lgray);margin:2px 0 7px;line-height:1.4}
 .pp-own b{font-weight:600;color:var(--navy-d)}
-.pp-mx{display:grid;gap:3px 2px;align-items:center;overflow-x:auto;padding-bottom:1px}
+.pp-mx{display:grid;gap:3px 2px;align-items:center;justify-content:start;overflow-x:auto;padding-bottom:1px}
 .pp-mx .rn{font-size:11px;color:var(--dark);padding-right:6px;line-height:13px}
 .pp-mx .rn.own{font-weight:600;color:var(--navy-d)}
 .db-tip{position:fixed;pointer-events:none;background:#0D1B2A;color:#fff;font-size:12px;line-height:1.45;padding:7px 10px;border-radius:6px;max-width:300px;z-index:20;display:none;text-align:left}
@@ -910,7 +910,7 @@ function peopleByProc(groups,leg){
     const rows=x.rows.filter(r=>cat.includes(r.r)&&(S.prows==='all'||r.letter!=='C'&&r.letter!=='I'));
     return '<div class="db-proc" onclick="ppOpen(\''+p.code+'\')"><div class="db-pn"><span><span class="code">'+p.code+'</span> '+esc(p.name)+'</span></div>'+
       '<div class="pp-own">Owner <b>'+esc(x.owner)+'</b> · '+L.length+' activit'+(L.length===1?'y':'ies')+'</div>'+
-      '<div class="pp-mx" style="grid-template-columns:minmax(84px,1fr) repeat('+L.length+',16px)">'+
+      '<div class="pp-mx" style="grid-template-columns:minmax(84px,150px) repeat('+L.length+',16px)">'+
       rows.map(r=>'<span class="rn'+(r.letter==='A'?' own':'')+'" title="'+escA(r.r+' · '+RACI_WORD[r.letter]+' for the process')+'">'+esc(r.r)+'</span>'+L.map(a=>pdChip(a,r.r)).join('')).join('')+'</div></div>';};
   return '<div class="card"><h3>RACI by process and activity &middot; '+(groups.length>1?'All process groups':groups[0][0]+' '+esc(groups[0][1]))+'</h3><div class="sub">Each process&rsquo;s RACI broken out by activity: one row per role, one chip per activity, the owner first. Click a card for its process RACI.</div><div class="db-legend">'+leg+'</div><div class="pp-grid">'+
     groups.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+PROCS.filter(p=>p.g===gc).map(card).join('')+'</div>').join('')+'</div></div>';
