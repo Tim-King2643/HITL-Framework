@@ -67,10 +67,11 @@ table.db-mx{border-collapse:separate;border-spacing:2px;font-size:12px}
 .pd-rn{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--navy-d)}
 .pd-rn .h{color:var(--navy);white-space:nowrap;font-size:12px}
 .pd-sub{font-size:11.5px;color:var(--lgray);margin:2px 0 8px;line-height:1.4}
-.pd-g{display:flex;gap:8px;align-items:flex-start;margin-bottom:5px}
-.pd-g .gc{flex:0 0 26px;font-family:Consolas,monospace;font-size:11px;color:var(--lgray);line-height:16px}
-.pd-ps{display:flex;flex-wrap:wrap;gap:3px 8px}
-.pd-p{display:flex;gap:2px}
+.pd-g{margin:8px 0 2px}
+.pd-gh{font-size:11.5px;font-weight:600;color:var(--navy-d);line-height:1.35;padding-bottom:3px;border-bottom:1px solid var(--border);margin-bottom:5px}
+.pd-pl{margin:0 0 6px}
+.pd-pn{font-size:11.5px;color:var(--dark);line-height:1.35;margin-bottom:2px}
+.pd-p{display:flex;flex-wrap:wrap;gap:2px}
 .pd-chip{width:16px;height:16px;border-radius:3px;font-size:9.5px;line-height:16px;text-align:center;font-family:Consolas,monospace;box-shadow:inset 0 0 0 1px rgba(13,45,79,.14)}
 .pd-chip.n{background:#fff;box-shadow:inset 0 0 0 1px #E3E8F0}
 .pp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px}
@@ -293,7 +294,7 @@ const HC={High:1,Critical:1};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const pct=(n,d)=>d?Math.round(100*n/d)+'%':'—';
 // RACI is activity level (GR-060, Tim's decision Oct 10, 2026); a process's RACI is computed from its activities (procRaci).
-let S={wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'pdash',penc:'raci',playout:'proc',prows:'all',pchips:'all',stage:'Automation',appr:'R',esc:'A',wg:'all',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
+let S={wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'pdash',penc:'raci',playout:'proc',prows:'all',pchips:'own',stage:'Automation',appr:'R',esc:'A',wg:'all',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
 const VIEWS=[
  {id:'work',name:'Work',q:'Where does each activity sit, and what moves next?'},
  {id:'people',name:'People',q:'What does this mean for each role?'},
@@ -367,8 +368,8 @@ function peopleSide(){
     h+='<h5>Lay out by</h5>'+btns([['proc','Process'],['role','Role']],'playout');
     if(S.playout==='proc') h+='<h5>Roles on each card</h5>'+btns([['all','Every role with a letter'],['ar','Accountable and Responsible only']],'prows')+
      '<h5>Reading it</h5><p>The same layout as Work: one column per process group, one card per process. Each card is the process&rsquo;s RACI broken out by activity: one row per role with its chips underneath, one chip per activity, in catalog order. The process owner is the first row; the other rows follow in Also Accountable, Responsible, Consulted, Informed order. An Accountable role with no Responsible named also does the work. Hover a chip for the activity; click a card to open its activities.</p>';
-    else h+='<h5>Chips</h5>'+btns([['all','Every activity'],['own','Only where the role has a letter']],'pchips')+
-     '<h5>Reading it</h5><p>One panel per role, in tier order, with one chip per activity, grouped by process group and process. The chip shows the role&rsquo;s strongest letter on that activity: Accountable, Responsible, Consulted or Informed. An Accountable role with no Responsible named also does the work. Hover a chip for the activity; click a panel for the role&rsquo;s row in the RACI table.</p>';}
+    else h+='<h5>Chips</h5>'+btns([['own','Only where the role has a letter'],['all','Every activity']],'pchips')+
+     '<h5>Reading it</h5><p>One panel per role, in tier order, broken down like the other views: process group, then process, then a chip per activity in catalog order. By default only the processes and activities where the role holds a letter are shown. The chip shows the role&rsquo;s strongest letter on that activity: Accountable, Responsible, Consulted or Informed. An Accountable role with no Responsible named also does the work. Hover a chip for the activity; click a panel for the role&rsquo;s row in the RACI table.</p>';}
   if(S.pmode==='load'){
     h+=stageBtns()+
      '<h5>At Oversight, every instance is approved by</h5>'+btns([['R','The role that did the work'],['A','The Accountable role']],'appr')+
@@ -894,13 +895,14 @@ function peopleDash(){
   const groups=DATA.groups;
   if(S.playout==='proc') return h+peopleByProc(groups,leg);
   const panel=r=>{const n=r.name,c=cnt[n],hr=hRole(n);
-    const rows=groups.map(([gc])=>{const ps=PROCS.filter(p=>p.g===gc).map(p=>{const L=p.acts.map(x=>ACT[x]).filter(Boolean).filter(a=>S.pchips==='all'||letterOf(a,n));
-        if(!L.length)return '';return '<span class="pd-p">'+L.map(a=>pdChip(a,n,S.penc)).join('')+'</span>';}).filter(Boolean);
-      return ps.length?'<div class="pd-g"><span class="gc">'+gc+'</span><span class="pd-ps">'+ps.join('')+'</span></div>':'';}).join('');
+    // By process group, then process, then activity, as in the other views (Tim, Oct 31, 2026).
+    const rows=groups.map(([gc,gn])=>{const ps=PROCS.filter(p=>p.g===gc).map(p=>{const L=p.acts.map(x=>ACT[x]).filter(Boolean).filter(a=>S.pchips==='all'||letterOf(a,n));
+        if(!L.length)return '';return '<div class="pd-pl"><div class="pd-pn"><span class="code">'+p.code+'</span> '+esc(p.name)+'</div><div class="pd-p">'+L.map(a=>pdChip(a,n,S.penc)).join('')+'</div></div>';}).filter(Boolean);
+      return ps.length?'<div class="pd-g"><div class="pd-gh"><span class="code">'+gc+'</span> '+esc(gn)+'</div>'+ps.join('')+'</div>':'';}).join('');
     return '<div class="pd-role" onclick="pdOpen(\''+esc(n).replace(/'/g,"\\'")+'\')"><div class="pd-rn"><span>'+esc(n)+'</span>'+(hr==null?'':'<span class="h">'+hr+'% H at ceiling</span>')+'</div>'+
       '<div class="pd-sub">'+(r.reportsTo?'Reports to '+esc(r.reportsTo):'Top of the role catalog')+' · A '+c.A+' · R '+c.R+' · C '+c.C+' · I '+c.I+' · '+dpn(n)+' decision point'+(dpn(n)===1?'':'s')+' anchored</div>'+
       (rows||'<div class="small">No RACI letter '+(SC.all?'in PCF 7.0':'in '+S.wg)+'.</div>')+'</div>';};
-  h+='<div class="card"><h3>RACI by role &middot; '+(SC.all?'All process groups':S.wg+' '+esc(DATA.groups.find(g=>g[0]===S.wg)[1]))+'</h3><div class="sub">One chip per activity, '+SC.label+', grouped by process group and process. The % H is the mean of the role&rsquo;s Accountable activities at their ceilings.</div><div class="db-legend">'+leg+'</div>'+
+  h+='<div class="card"><h3>RACI by role &middot; '+(SC.all?'All process groups':S.wg+' '+esc(DATA.groups.find(g=>g[0]===S.wg)[1]))+'</h3><div class="sub">By process group, process and activity: one chip per activity '+(S.pchips==='own'?'where the role holds a letter':'of '+SC.label)+'. The % H is the mean of the role&rsquo;s Accountable activities at their ceilings.</div><div class="db-legend">'+leg+'</div>'+
     ['Executive','Managerial','Operational'].map(t=>{const L=DATA.roles.filter(r=>r.tier===t);return L.length?'<div class="pd-tier">'+t+'</div><div class="pd-grid">'+L.map(panel).join('')+'</div>':'';}).join('')+'</div>';
   return h;
 }
