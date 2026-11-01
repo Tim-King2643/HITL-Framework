@@ -135,8 +135,8 @@ function dpKinds(){const D={};
     const own=x?[...new Set(x.C.concat(x.U,x.D))].filter(w=>WPN[w]):[];
     const at=own.some(w=>Object.keys(CRUD).some(c=>c!==a.code&&D[c]&&D[c].dp&&(CRUD[c].C.concat(CRUD[c].U,CRUD[c].D)).includes(w)));
     r.k=at?'at':'ctl';});return D;}
-const DPK={every:['Decision point, a person on every instance','#0D2D4F'],flag:['Decision point, a person on flagged instances','#5A8DC4'],at:['Decided at another activity’s decision point','#C9D3E1'],ctl:['Needs a named control','#B8873F']};
-const ENCS={stage:'Stage',cons:'Consequence of Error',dp:'Decision point'};
+const DPK={every:['Control point, a person on every instance','#0D2D4F'],flag:['Control point, a person on flagged instances','#5A8DC4'],at:['Decided or verified at another activity’s control point','#C9D3E1'],ctl:['Needs a named control','#B8873F']};
+const ENCS={stage:'Stage',cons:'Consequence of Error',dp:'Control point'};
 let D;
 function color(a){if(ENC==='stage')return DOT[stOf(a)];if(ENC==='cons')return CONSC[a.cons];return DPK[D[a.code].k][1];}
 function tipFor(a){return '<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>'+(WHERE==='ceil'?'Ceiling ':'Today ')+stOf(a)+' · '+HPCT[stOf(a)]+'% H<br>Consequence of Error '+a.cons+'<br>Accountable '+esc(a.A)+'<br>'+DPK[D[a.code].k][0];}
@@ -155,7 +155,7 @@ function render(){
    '<div class="tile"><div class="n">'+hOf(acts)+'<small>% H</small></div><div class="l">'+(WHERE==='ceil'?'human share at the ceiling, from 95 today':'human share today, every activity Human-only')+'</div></div>'+
    '<div class="tile"><div class="n">'+keep+'<small> of '+n+'</small></div><div class="l">activities keep a person doing or approving every instance</div></div>'+
    '<div class="tile"><div class="n">'+auto+'</div><div class="l">activities can go to Automation</div></div>'+
-   '<div class="tile"><div class="n">'+(cnt('every')+cnt('flag'))+'</div><div class="l">decision points ('+cnt('every')+' every instance, '+cnt('flag')+' flagged)</div></div>'+
+   '<div class="tile"><div class="n">'+(cnt('every')+cnt('flag'))+'</div><div class="l">control points ('+cnt('every')+' every instance, '+cnt('flag')+' flagged)</div></div>'+
    '<div class="tile"><div class="n">'+cnt('ctl')+'</div><div class="l">activities need a named control</div></div></div>';
   h+='<div class="card"><h3>The work, by process</h3><div class="sub">One square per activity, colored by '+ENCS[ENC].toLowerCase()+'. The figure on each card is its process&rsquo;s % H '+(WHERE==='ceil'?'at the ceiling':'today')+'.</div><div class="legend">'+legend()+'</div><div class="grid">'+
    groups.map(G=>'<div class="col"><h4><span class="c">'+G.code+'</span>'+esc(G.name)+'</h4>'+G.procs.map(P=>'<div class="proc'+(SEL===P.code?' sel':'')+'" onclick="selProc(\''+P.code+'\')"><div class="pn"><span><span class="code">'+P.code+'</span> '+esc(P.name)+'</span><span class="h">'+hOf(P.acts)+'%</span></div><div class="cells">'+

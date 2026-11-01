@@ -52,7 +52,7 @@ table.tier{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px}
 <div class="wrap">
 <div class="side">
   <h1>The decision point record</h1>
-  <p>GR-021 made every activity point to a decision point. This sketch gives that decision point a record with a fixed set of fields, and writes it for two decision points, 7.4.4 and 7.6.1.</p>
+  <p>GR-021 made every activity point to a control point &mdash; a decision point, or a verification point where the activity has no Decide. This sketch gives that control point a record with a fixed set of fields, and writes it for two decision points, 7.4.4 and 7.6.1.</p>
   <p>Fields marked <b>data</b> are read from the sandbox (activity RACI, CRUD, work elements, ceiling, Consequence of Error). Fields marked <span style="color:var(--amber)"><b>proposed</b></span> are my recommended values for you and GiGi to react to.</p>
   <h5>The fields</h5>
   <ol>
@@ -72,7 +72,7 @@ table.tier{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px}
   <h5>Result</h5>
   <div class="tiles" id="tiles"></div>
   <h5>Applying it</h5>
-  <p>A GDP_RECORDS table in pcf7.html, keyed by activity and covered by the change-log audit. The four data fields fill themselves for all 85 decision points; the four written fields are entered per record, Critical and High first. The decision point box in Work shows the record, with each field&rsquo;s requirement at the activity&rsquo;s rating, and Findings counts records missing a required field.</p>
+  <p>A GDP_RECORDS table in pcf7.html, keyed by activity and covered by the change-log audit. The four data fields fill themselves for all 85 control points (82 decision, 3 verification); the four written fields are entered per record, Critical and High first. The decision point box in Work shows the record, with each field&rsquo;s requirement at the activity&rsquo;s rating, and Findings counts records missing a required field.</p>
 </div>
 <div class="main" id="main"></div>
 </div>

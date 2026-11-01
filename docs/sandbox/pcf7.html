@@ -217,7 +217,7 @@ table.xr-t { width: 100%; border-collapse: collapse; font-size: 12px; }
   <strong>PCF 7.0 — Develop and Manage Human Resources.</strong>
   This is a live working copy of the full PCF 7.0 content in four views (GR-059): <strong>Work</strong>, <strong>People</strong>, <strong>Data</strong> and <strong>Findings</strong>. It is the framework&rsquo;s <strong>Reference Model</strong>: for each of the 118 activities, Work shows
   the Human-only baseline and the <strong>Progression Ceiling</strong>, which is how far AI may take the activity, on the full
-  six-step ramp, with what changes at each step, the activity&rsquo;s decision point and its Consequence of Error. Choose an organization at the top
+  six-step ramp, with what changes at each step, the activity&rsquo;s control point and its Consequence of Error. Choose an organization at the top
   to see its assessed <strong>Current State</strong> instead, and open any activity to assess it. The process structure, RACI, and CRUD data are
   the framework&rsquo;s real PCF 7.0 data. Ceilings, Consequence-of-Error ratings, and every % H figure are
   <strong>modeled</strong> &mdash; reasoned judgments for Tim and GiGi to pressure-test, not measured observations. Leave a reaction or a note on any row using the <strong>Notes</strong> button; GiGi and Tim can both see
@@ -1431,8 +1431,8 @@ window.addEventListener('popstate', function () {
   if (v !== currentView) setView(v, { fromHistory: true });
 });
 const VIEW_NOTES = {
-  work: 'Opens on the dashboard: the work at a glance, by process group, process and activity (GR-061). Activities shows every activity on the six-step ramp, from Current State to Progression Ceiling, with its Accountable role, decision point and Consequence of Error. With an organization selected, open an activity\u2019s Current State to assess it element by element (GR-058).',
-  people: 'Opens on the dashboard: one card per process, each its RACI broken out by role and activity (GR-061), colored by RACI letter, stage, Consequence of Error or decision point; or one panel per role. Activities shows each process\u2019s roles and the activities each holds, with the owner and how it was decided (activity-level RACI, GR-060), and what is left for a person in each role as the work moves up the ramp. The role-level hand-off into Human Impact (GR-056), not the Human Impact assessment.',
+  work: 'Opens on the dashboard: the work at a glance, by process group, process and activity (GR-061). Activities shows every activity on the six-step ramp, from Current State to Progression Ceiling, with its Accountable role, control point and Consequence of Error. With an organization selected, open an activity\u2019s Current State to assess it element by element (GR-058).',
+  people: 'Opens on the dashboard: one card per process, each its RACI broken out by role and activity (GR-061), colored by RACI letter, stage, Consequence of Error or control point; or one panel per role. Activities shows each process\u2019s roles and the activities each holds, with the owner and how it was decided (activity-level RACI, GR-060), and what is left for a person in each role as the work moves up the ramp. The role-level hand-off into Human Impact (GR-056), not the Human Impact assessment.',
   data: 'Opens on the dashboard: each work product by system of record, with a square for every activity that relies on it, colored by its check, and where the checking lands by role (GR-061). Each work product, the activities that create and update it, and every activity that relies on it. Once AI touches a work product, the person who relies on it next has to check it (GR-046). By activity shows the activity CRUD.',
   findings: 'On the Reference Model, the reference at a glance and the latest change made to it. For an organization, its executive summary (GR-056) and its exceptions report, printable for executive review.'
 };

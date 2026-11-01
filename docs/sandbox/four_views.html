@@ -189,7 +189,7 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 @media(max-width:640px){.it td.obj{display:none}.it td.el,.it td.stt{width:auto;white-space:normal}.step{min-width:78px}}
 @media(max-width:640px){.side,.main{flex:1 1 100%;min-width:0}.hide-s{display:none}.t th,.t td{padding:7px 4px}.views button{padding:8px 11px;font-size:12.5px}.views button small{display:none}}
 .abcset{font-size:12px;color:var(--gray);padding:0 0 10px;margin:0 0 12px;border-bottom:1px solid var(--border)}
-.aright{display:flex;gap:14px;align-items:baseline;white-space:nowrap}/* Assess / Reassess: black with a dotted underline, like the decision point */
+.aright{display:flex;gap:14px;align-items:baseline;white-space:nowrap}/* Assess / Reassess: black with a dotted underline, like the control point */
 .assess{font-size:12px;color:var(--dark);text-decoration:none;border-bottom:1px dotted currentColor}.assess:hover{border-bottom-style:solid}
 .abcset a{color:var(--navy);font-weight:600;text-decoration:none}.abcset a:hover{text-decoration:underline}
 .dpm{font-size:12px;color:var(--dark);cursor:pointer;border-bottom:1px dotted currentColor;white-space:nowrap}.dpm.red{color:var(--red)}.dpm.sel{font-weight:600}
@@ -365,7 +365,7 @@ function peopleSide(){
   const dash=S.pmode==='pdash';
   let h='<div class="q">'+VIEWS[1].q+'</div>'+
    '<h5>Show</h5><div class="stack">'+[['pdash','Dashboard'],['acts','Activities']].map(o=>'<button class="'+((o[0]==='pdash')===dash?'on':'')+'" onclick="'+(o[0]==='acts'?'S.wg=\'all\';':'')+'setPMode(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>'+
-   (dash?'<h5>Color the squares by</h5>'+btns([['raci','RACI letter'],['stage','Stage'],['cons','Consequence of Error'],['dp','Decision point']],'penc')+
+   (dash?'<h5>Color the squares by</h5>'+btns([['raci','RACI letter'],['stage','Stage'],['cons','Consequence of Error'],['dp','Control point']],'penc')+
      (S.penc==='stage'||S.penc==='dp'?'<h5>Where the work is</h5><div class="stack">'+dbWhereOpts().map(o=>'<button class="'+(dbWhere()===o[0]?'on':'')+'" onclick="S.dwhere=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>':''):'')+
    '<p style="margin-top:10px">Every role in the catalog, the activities it is Responsible and Accountable for, and what is left for a person in each as the work moves up the ramp. Accountability doesn&rsquo;t move with the work.</p>';
   if(!dash) h+='<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()"><option value="all">All process groups</option>'+DATA.groups.map(g=>'<option value="'+g[0]+'"'+(S.wg===g[0]?' selected':'')+'>'+g[0]+' '+esc(g[1])+'</option>').join('')+'</select>'+
@@ -415,7 +415,7 @@ function peopleMain(){
     const top=names.slice().sort((x,y)=>B[y].acc-B[x].acc);
     h+='<div class="card"><h3>What this shows</h3><ul class="find"><li>'+top.slice(0,3).map(n=>n+' is Accountable for '+B[n].acc).join(', ')+' of '+(SC.all?'the 118 activities':SC.label)+': '+pct(top.slice(0,3).reduce((s,n)=>s+B[n].acc,0),N)+' of '+(SC.all?'all ':'')+'accountability sits with three roles.</li>'+
       (none.length?'<li>'+none.map(r=>r.name+(RC[r.name].C||RC[r.name].I?' is '+[RC[r.name].C?'Consulted on '+RC[r.name].C:'',RC[r.name].I?'Informed on '+RC[r.name].I:''].filter(Boolean).join(' and '):' has no RACI role')).join('; ')+'. None holds a Responsible or Accountable activity '+(SC.all?'in PCF 7.0':'in '+S.wg)+'.</li>':'<li>Every catalog role holds a Responsible or Accountable activity'+(SC.all?'':' in '+S.wg)+'.</li>')+'</ul></div>';
-    h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t"><thead><tr><th>Role</th><th>Accountable</th><th>Responsible</th><th>Consulted</th><th>Informed</th><th title="Decision points where this role is the Human Accountability Anchor (GR-021)">Decision points anchored</th><th class="hide-s">% H, current → ceiling</th><th class="hide-s" style="text-align:left">Reporting line</th></tr></thead><tbody>';
+    h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t"><thead><tr><th>Role</th><th>Accountable</th><th>Responsible</th><th>Consulted</th><th>Informed</th><th title="Control points (decision or verification) where this role is the Human Accountability Anchor (GR-021)">Control points anchored</th><th class="hide-s">% H, current → ceiling</th><th class="hide-s" style="text-align:left">Reporting line</th></tr></thead><tbody>';
     const DPM=dpAnalysis(),dpn=n=>PA.filter(a=>DPM[a.code].dp&&a.Aroles[0]===n).length;
     let tier='';DATA.roles.forEach(r=>{const n=r.name;if(r.tier!==tier){tier=r.tier;h+='<tr class="tier"><td colspan="8">'+tier+'</td></tr>';}
       const x=B[n],c=RC[n],z=v=>v||'<span class="z">0</span>',hc=rH(n,'cur'),dr=direct(n).length,sp=span(n);
@@ -811,12 +811,12 @@ function workMain(){
     if(top.length) f.push('What keeps a person in the work: '+top.map(([k,n])=>FL[k].toLowerCase()+' ('+n+')').join(', ')+'.');
     if(hcHigh.length) f.push(hcHigh.length+' High or Critical activit'+(hcHigh.length>1?'ies have':'y has')+' a ceiling at Agent-delegation or Automation, where no person sees every instance: '+hcHigh.slice(0,5).map(a=>a.code).join(', ')+(hcHigh.length>5?' and '+(hcHigh.length-5)+' more':'')+'.');
     {const m=dpAnalysis(),dp=L.filter(a=>m[a.code].dp).length,fd=L.filter(a=>!m[a.code].dp&&m[a.code].feeds.length).length,no=L.filter(a=>!m[a.code].dp&&!m[a.code].feeds.length);
-      f.push(dp+' decision point'+(dp===1?'':'s')+(org?' at the Current State':' at the ceilings')+(fd?'; '+fd+' decided or verified at another activity\u2019s decision point':'')+(no.length?'; <span class="red">'+no.length+' need'+(no.length===1?'s':'')+' a named control</span> ('+no.slice(0,5).map(a=>a.code).join(', ')+(no.length>5?' and '+(no.length-5)+' more':'')+')':'')+'. Click a decision point to see its anchor and the decision points on each of its work products.');}
+      f.push(dp+' control point'+(dp===1?'':'s')+' ('+L.filter(a=>m[a.code].dp&&m[a.code].el==='Verify').length+' of them verification points)'+(org?' at the Current State':' at the ceilings')+(fd?'; '+fd+' decided or verified at another activity\u2019s control point':'')+(no.length?'; <span class="red">'+no.length+' need'+(no.length===1?'s':'')+' a named control</span> ('+no.slice(0,5).map(a=>a.code).join(', ')+(no.length>5?' and '+(no.length-5)+' more':'')+')':'')+'. Click a control point to see its anchor and the control points on each of its work products.');}
     if(org){const as=L.filter(a=>ABCSTAGE[a.code]), past=as.filter(a=>rank(curOf(a))>rank(derivedCeil(a))), cov=past.filter(a=>ABC_OV[a.code]), pe=as.filter(a=>pastEls(a).length&&rank(curOf(a))<=rank(derivedCeil(a)));
       f.push(as.length+' of '+L.length+' assessed. '+(past.length?past.length+' past the ceiling'+(cov.length?', '+cov.length+' of them covered by an approved override':'')+'. ':'None past its ceiling. ')+(pe.length?pe.map(a=>a.code+' '+pastEls(a).join(', ')).join('; ')+' past '+(pe.length>1?'their':'its')+' element ceiling, even though the activit'+(pe.length>1?'ies are':'y is')+' within its ceiling.':''));}
   }
   h+='<div class="card"><h3>What this shows</h3><ul class="find">'+f.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
-  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t wt"><thead><tr><th><div class="ahead hd"><span>Activity <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; click a step, an arrow, the lock, the decision point or the rating</span></span><span class="aright">'+''+'<span class="col crole" title="The Human Accountability Anchor">Accountable role</span><span class="col cdp">Decision point</span><span class="col ccoe">Consequence of Error</span></span></div></th></tr>'+'</thead><tbody>';
+  h+='<div class="card" style="padding:0;overflow-x:auto"><table class="t wt"><thead><tr><th><div class="ahead hd"><span>Activity <span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; click a step, an arrow, the lock, the control point or the rating</span></span><span class="aright">'+''+'<span class="col crole" title="The Human Accountability Anchor">Accountable role</span><span class="col cdp">Control point</span><span class="col ccoe">Consequence of Error</span></span></div></th></tr>'+'</thead><tbody>';
   let proc='';
   L.forEach(a=>{
     const head=!a.proc.startsWith(a.code+' ');
@@ -830,10 +830,10 @@ function workMain(){
 }
 
 /* ---------- Work dashboard (GR-061) ---------- */
-// The Work view's answer as pictures: one square per activity, colored by stage, Consequence of Error or decision point.
+// The Work view's answer as pictures: one square per activity, colored by stage, Consequence of Error or control point.
 // Stage is the Current State or the Progression Ceiling (an organization opens on its Current State, the Reference
-// Model on its ceilings); decision points follow the Work view (an organization's Current State, otherwise the ceilings).
-const DBK={every:['Decision point, a person on every instance','#0D2D4F'],flag:['Decision point, a person on flagged instances','#9CBBE0'],at:['Decided at another activity\u2019s decision point','#E3E8F0'],ctl:['Needs a named control','#B8873F']};
+// Model on its ceilings); control points follow the Work view (an organization's Current State, otherwise the ceilings).
+const DBK={every:['Control point, a person on every instance','#0D2D4F'],flag:['Control point, a person on flagged instances','#9CBBE0'],at:['Decided or verified at another activity\u2019s control point','#E3E8F0'],ctl:['Needs a named control','#B8873F']};
 const dbWhere=()=>S.dwhere==='auto'?(isOrg()?'cur':'ceil'):S.dwhere;
 const dbSt=a=>dbWhere()==='cur'?curOf(a):derivedCeil(a);
 function dbKind(a){const r=dpAnalysis()[a.code];return r.dp?(r.lead==='AI-led'?'flag':'every'):r.feeds.length?'at':'ctl';}
@@ -844,7 +844,7 @@ function dbWhereOpts(){return isOrg()?[['cur','Current State ('+esc(ORGNAME())+'
 function dashSide(){
   const where=dbWhereOpts();
   return '<div class="q">'+VIEWS[0].q+'</div>'+wmodeBtns()+'<p style="margin-top:10px">The answer at a glance: one column per process group, one card per process with its % H, one square per activity. Hover a square for the activity; click a card to open its activities.</p>'+
-   '<h5>Color the squares by</h5><div class="stack">'+[['stage','Stage'],['cons','Consequence of Error'],['dp','Decision point']].map(o=>'<button class="'+(S.denc===o[0]?'on':'')+'" onclick="S.denc=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>'+
+   '<h5>Color the squares by</h5><div class="stack">'+[['stage','Stage'],['cons','Consequence of Error'],['dp','Control point']].map(o=>'<button class="'+(S.denc===o[0]?'on':'')+'" onclick="S.denc=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>'+
    '<h5>Where the work is</h5><div class="stack">'+where.map(o=>'<button class="'+(dbWhere()===o[0]?'on':'')+'" onclick="S.dwhere=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>'+
    '<h5>Reading it</h5><p>Darker navy means more of the work stays with a person. The stage mix shows each group&rsquo;s spread across the ramp; the matrix shows how Consequence of Error holds the ceilings down.</p>';
 }
@@ -855,10 +855,10 @@ function dashMain(){
    tile(dbH(A)+'% H',cur?(org?esc(ORGNAME())+'&rsquo;s human share today; '+Math.round(mean(A.map(a=>HPCT[derivedCeil(a)])))+'% at the ceilings':'human share today, every activity Human-only'):'human share at the ceilings, from 95 Human-only')+
    tile(keep+' of '+n,'keep a person doing or approving every instance, '+where)+
    tile(auto,(cur?'at':'can go to')+' Automation')+
-   tile(k.every+k.flag,'decision points ('+k.every+' every instance, '+k.flag+' flagged)'+(org?' at the Current State':' at the ceilings'))+
+   tile(k.every+k.flag,'control points ('+k.every+' every instance, '+k.flag+' flagged)'+(org?' at the Current State':' at the ceilings'))+
    tile(k.ctl,'need a named control')+(org?tile(A.filter(a=>ABCSTAGE[a.code]).length+' of '+n,'assessed'):'')+'</div>';
   const leg=S.denc==='stage'?ST.map(s=>'<span><i class="db-sw" style="background:'+DOT[s]+'"></i>'+s+' ('+HPCT[s]+')</span>').join(''):S.denc==='cons'?CONSO.map(c=>'<span><i class="db-sw" style="background:'+CONSC[c]+'"></i>'+c+'</span>').join(''):Object.values(DBK).map(([l,c])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('');
-  h+='<div class="card"><h3>The work, by process</h3><div class="sub">One square per activity, colored by '+({stage:'stage',cons:'Consequence of Error',dp:'decision point'})[S.denc]+'. The figure on each card is its process&rsquo;s % H '+where+'. Click a card to open its activities.</div><div class="db-legend">'+leg+'</div><div class="db-grid">'+
+  h+='<div class="card"><h3>The work, by process</h3><div class="sub">One square per activity, colored by '+({stage:'stage',cons:'Consequence of Error',dp:'control point'})[S.denc]+'. The figure on each card is its process&rsquo;s % H '+where+'. Click a card to open its activities.</div><div class="db-legend">'+leg+'</div><div class="db-grid">'+
    DATA.groups.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+PROCS.filter(p=>p.g===gc).map(p=>{const L=p.acts.map(c=>ACT[c]).filter(Boolean);
      return '<div class="db-proc" onclick="dbOpen(\''+p.code+'\')"><div class="db-pn"><span><span class="code">'+p.code+'</span> '+esc(p.name)+'</span><span class="h">'+dbH(L)+'%</span></div><div class="db-cells">'+L.map(a=>'<i class="db-cell" data-c="'+a.code+'" style="background:'+dbColor(a)+'"></i>').join('')+'</div></div>';}).join('')+'</div>').join('')+'</div></div>';
   const bars=DATA.groups.map(([gc,gn])=>{const L=A.filter(a=>a.code.startsWith(gc+'.')),t={};L.forEach(a=>{const s=dbSt(a);t[s]=(t[s]||0)+1});
@@ -910,7 +910,7 @@ function peopleDash(){
         if(!L.length)return '';return '<div class="pd-pl"><div class="pd-pn"><span class="code">'+p.code+'</span> '+esc(p.name)+'</div><div class="pd-p">'+L.map(a=>pdChip(a,n,S.penc)).join('')+'</div></div>';}).filter(Boolean);
       return ps.length?'<div class="pd-g"><div class="pd-gh"><span class="code">'+gc+'</span> '+esc(gn)+'</div>'+ps.join('')+'</div>':'';}).join('');
     return '<div class="pd-role" onclick="pdOpen(\''+esc(n).replace(/'/g,"\\'")+'\')"><div class="pd-rn"><span>'+esc(n)+'</span>'+(hr==null?'':'<span class="h">'+hr+'% H at ceiling</span>')+'</div>'+
-      '<div class="pd-sub">'+(r.reportsTo?'Reports to '+esc(r.reportsTo):'Top of the role catalog')+' · A '+c.A+' · R '+c.R+' · C '+c.C+' · I '+c.I+' · '+dpn(n)+' decision point'+(dpn(n)===1?'':'s')+' anchored</div>'+
+      '<div class="pd-sub">'+(r.reportsTo?'Reports to '+esc(r.reportsTo):'Top of the role catalog')+' · A '+c.A+' · R '+c.R+' · C '+c.C+' · I '+c.I+' · '+dpn(n)+' control point'+(dpn(n)===1?'':'s')+' anchored</div>'+
       (rows||'<div class="small">No RACI letter '+(SC.all?'in PCF 7.0':'in '+S.wg)+'.</div>')+'</div>';};
   h+='<div class="card"><h3>RACI by role &middot; '+(SC.all?'All process groups':S.wg+' '+esc(DATA.groups.find(g=>g[0]===S.wg)[1]))+'</h3><div class="sub">By process group, process and activity: one chip per activity '+(S.pchips==='own'?'where the role holds a letter':'of '+SC.label)+'. The % H is the mean of the role&rsquo;s Accountable activities at their ceilings.</div><div class="db-legend">'+leg+'</div>'+
     ['Executive','Managerial','Operational'].map(t=>{const L=DATA.roles.filter(r=>r.tier===t);return L.length?'<div class="pd-tier">'+t+'</div><div class="pd-grid">'+L.map(panel).join('')+'</div>':'';}).join('')+'</div>';
@@ -919,7 +919,7 @@ function peopleDash(){
 // By process (Tim, Oct 31, 2026): Work's layout for People. One column per process group, one card per process, each
 // card the process RACI broken out by activity: a row per role (the order procRaci gives, owner first), a chip per activity.
 // A chip carries the role's RACI letter; its color is the RACI letter, or, on the dashboard, the activity's stage,
-// Consequence of Error or decision point, as Work's squares are colored (Tim, Oct 31, 2026). No letter stays blank.
+// Consequence of Error or control point, as Work's squares are colored (Tim, Oct 31, 2026). No letter stays blank.
 const PDLIGHT=['#6895C8','#9CBBE0','#CFDDF0','#E3E8F0','#B8873F'];
 function pdBg(a,l,enc){return enc==='stage'?DOT[dbSt(a)]:enc==='cons'?CONSC[a.cons]:enc==='dp'?DBK[dbKind(a)][1]:PDC[l][1];}
 function pdChip(a,n,enc){enc=enc||'raci';const l=letterOf(a,n),v=PDC[l],bg=l?pdBg(a,l,enc):'';
@@ -976,8 +976,9 @@ function pdOpen(n){S.pmode='raci';opened['r'+n]=true;render();
 /* ---------- Data ---------- */
 // Same rule as the work-product analysis (GR-046): producers create or update a work product; an activity relies on it when
 // it reads or updates it. It is AI-touched when its most automated other producer is at Augmentation or further. A relying
-// activity at Judgment, Augmentation or Oversight is a verification point; at Agent-delegation or Automation with a High or
-// Critical Consequence of Error it is an unchecked hand-off.
+// activity at Judgment, Augmentation or Oversight is a checked input (it is always a control point, where a person checks the
+// work before acting); at Agent-delegation or Automation with a High or Critical Consequence of Error it is an unchecked input.
+// (Called verification points and unchecked hand-offs before Nov 1, 2026: verification point now names a Verify control point.)
 const ACT=Object.fromEntries(DATA.acts.map(a=>[a.code,a]));
 const WPN=Object.fromEntries(CRUD.wps.map(w=>[w.id,w]));
 function stageNow(a){const c=derivedCeil(a);return S.stage==='Today'?curOf(a):S.stage==='Human-only'?'Human-only':(rank(S.stage)<rank(c)?S.stage:c)}
@@ -996,11 +997,11 @@ function wpAnalysis(){
     return {w,prods,top,pts,ho};
   });
 }
-/* ---------- Decision points (GR-021, GR-042) ---------- */
-// The Human Accountability Anchor is each activity's Accountable role. An activity is a decision point when a person
+/* ---------- Control points: decision and verification points (GR-021, GR-042) ---------- */
+// The Human Accountability Anchor is each activity's Accountable role. An activity is a control point when a person
 // holds its Decide element, or its Verify element when it has no Decide, on every instance or on each flagged instance. Consequence of Error sets how much governance
-// the decision point's record carries, not whether it is one. An activity that is neither maps to the downstream
-// decision points its work product reaches; one that reaches none needs a named control (GR-054).
+// the control point's record carries, not whether it is one. An activity that is neither maps to the downstream
+// control points its work product reaches; one that reaches none needs a named control (GR-054).
 // Where the work is: the Reference Model at each activity's ceiling; an organization at its Current State.
 const dpEl=a=>{const e=elsOf(a);return e.includes('Decide')?'Decide':e.includes('Verify')?'Verify':null};
 const dpStage=a=>isOrg()?curOf(a):derivedCeil(a);
@@ -1015,10 +1016,10 @@ function dpAnalysis(){
   if(DPC&&DPC.org===S.org) return DPC.m;
   const m={};
   DATA.acts.forEach(a=>{const e=dpEl(a),v=e&&dpLeads(a)[e];m[a.code]={el:e,lead:v,dp:!!(e&&holds(v)),ai:rank(dpStage(a))>=1,groups:[],feeds:[]};});
-  // Read from each work product's CRUD (Tim, Oct 15): its decision points are the activities that create, update or delete
+  // Read from each work product's CRUD (Tim, Oct 15): its control points are the activities that create, update or delete
   // it where a person holds Decide or Verify. An activity's own work products are those it creates, updates or deletes;
-  // an activity that only reads a work product decides something else. An activity that is not a decision point is decided
-  // or verified at the decision points on its work products; none on any of them: it needs a named control.
+  // an activity that only reads a work product decides something else. An activity that is not a control point is decided
+  // or verified at the control points on its work products; none on any of them: it needs a named control.
   DATA.acts.forEach(a=>{const r=m[a.code],x=CRUD.crud[a.code];if(!x)return;
     const own=[...new Set(x.C.concat(x.U,x.D))].filter(w=>WPN[w]).sort(nat);
     r.groups=own.map(w=>({w,mine:x.C.includes(w)?'C':x.U.includes(w)?'U':'D',
@@ -1028,28 +1029,31 @@ function dpAnalysis(){
 }
 // Which of create, update and delete an activity does to a work product ('C', 'U', 'D', joined), or '' if none.
 function wpOps(c,w){const x=CRUD.crud[c];return x?['C','U','D'].filter(k=>x[k].includes(w)).join(''):''}
+// A control point is named by its control element (Tim, Nov 1, 2026): a Decision Point where a person holds Decide,
+// a Verification Point where the activity has no Decide and a person holds Verify. Control point covers both.
+const cpName=a=>dpEl(a)==='Verify'?'Verification Point':'Decision Point';
 function dpTag(a){const r=dpAnalysis()[a.code],on=(S.wsel[a.code]||{}).t==='dp'?' sel':'';
-  if(r.dp) return '<span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="A person holds '+r.el+': this activity is a decision point">Decision Point</span>';
-  if(r.feeds.length) return '<span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person holds '+r.el+' here; its work products are decided or verified at '+r.feeds.join(', ')+'">Decision Point '+r.feeds[0]+'</span>';
-  return '<span class="dpm red'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person decides or verifies, and no decision point creates, updates or deletes its work products: it needs a named control">Named control needed</span>';}
+  if(r.dp) return '<span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="A person holds '+r.el+', its control element: this activity is a '+cpName(a).toLowerCase()+'">'+cpName(a)+'</span>';
+  if(r.feeds.length) return '<span class="dpm'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person holds '+r.el+' here; its work products are decided or verified at '+r.feeds.join(', ')+'">'+cpName(ACT[r.feeds[0]])+' '+r.feeds[0]+'</span>';
+  return '<span class="dpm red'+on+'" onclick="wpick(\''+a.code+'\',\'dp\',0)" title="No person decides or verifies, and no control point creates, updates or deletes its work products: it needs a named control">Named control needed</span>';}
 const wpName=w=>'<b>'+esc(WPN[w].name)+'</b> <span class="code">'+w+'</span>';
 const OPN={C:'creates',U:'updates',D:'deletes'};
 function dpBox(a){const m=dpAnalysis(),r=m[a.code],at=isOrg()?'at '+esc(ORGNAME())+'’s Current State ('+dpStage(a)+')':'at its ceiling ('+dpStage(a)+')';
   const ops=o=>o.split('').map(k=>OPN[k]).join(', ');
-  let h='<div class="ibox">'+X(a)+'<h4>'+(r.dp||r.feeds.length?'Decision Point':'Named control needed')+'</h4><div class="isub">Human Accountability Anchor: <b>'+esc(a.Aroles[0])+'</b>. ';
-  if(r.dp) h+=r.el+' is '+r.lead+' '+at+(r.lead==='AI-led'?': AI leads it, and a person decides each flagged instance, so the record also names the trigger condition':'')+(r.el==='Verify'?'; the activity has no Decide element, so the verification is the decision point':'')+'. Its Governed Decision Point record carries, for a '+a.cons+' Consequence of Error: '+DPGOV[a.cons]+'.';
-  else if(r.feeds.length) h+='No person holds '+(r.el||'Decide or Verify')+' '+at+', so its work is decided or verified at the decision points on its work products, below. The anchor stays answerable for the activity itself.';
-  else h+='<span class="red">No person holds '+(r.el||'Decide or Verify')+' '+at+', and '+(r.groups.length?'no activity that creates, updates or deletes its work products is a decision point':'it creates, updates or deletes no work product in the catalog yet')+'.</span> With no person in the instance, it needs a named control, such as sampled review or outcome monitoring (GR-054). The anchor stays answerable and owns the control.';
+  let h='<div class="ibox">'+X(a)+'<h4>'+(r.dp?cpName(a):r.feeds.length?'Control Point':'Named control needed')+'</h4><div class="isub">Human Accountability Anchor: <b>'+esc(a.Aroles[0])+'</b>. ';
+  if(r.dp) h+=r.el+' is '+r.lead+' '+at+(r.lead==='AI-led'?': AI leads it, and a person decides each flagged instance, so the record also names the trigger condition':'')+(r.el==='Verify'?'; the activity has no Decide element, so Verify is its control element and this is a verification point':'')+'. Its Governed Decision Point record carries, for a '+a.cons+' Consequence of Error: '+DPGOV[a.cons]+'.';
+  else if(r.feeds.length) h+='No person holds '+(r.el||'Decide or Verify')+' '+at+', so its work is decided or verified at the control points on its work products, below. The anchor stays answerable for the activity itself.';
+  else h+='<span class="red">No person holds '+(r.el||'Decide or Verify')+' '+at+', and '+(r.groups.length?'no activity that creates, updates or deletes its work products is a control point':'it creates, updates or deletes no work product in the catalog yet')+'.</span> With no person in the instance, it needs a named control, such as sampled review or outcome monitoring (GR-054). The anchor stays answerable and owns the control.';
   h+='</div>';
   if(r.groups.length){
-    h+='<h5 style="margin:8px 0 4px">Decision points on its work products</h5><div class="isub" style="margin-bottom:4px">From each work product&rsquo;s CRUD: the activities that create, update or delete it where a person holds Decide or Verify.</div><table class="al">';
+    h+='<h5 style="margin:8px 0 4px">Control points on its work products</h5><div class="isub" style="margin-bottom:4px">From each work product&rsquo;s CRUD: the activities that create, update or delete it where a person holds Decide or Verify.</div><table class="al">';
     // One line per work product says what this activity and the others do to it, e.g. "this activity (C)reates the work
-    // product, the following activities (U)pdate it"; the rows list the other decision points on it.
+    // product, the following activities (U)pdate it"; the rows list the other control points on it.
     const V1={C:'(C)reates',U:'(U)pdates',D:'(D)eletes'},VN={C:'(C)reate',U:'(U)pdate',D:'(D)elete'};
     const vlist=(o,V)=>{const k=['C','U','D'].filter(x=>o.includes(x)).map(x=>V[x]);return k.length<2?k.join(''):k.slice(0,-1).join(', ')+' or '+k[k.length-1]};
     r.groups.forEach(g=>{const others=g.dps.filter(d=>d.c!==a.code),oo=others.map(d=>d.op).join(''),mine=wpOps(a.code,g.w);
-      const line='this activity '+vlist(mine,V1)+' the work product'+(others.length?', the following activit'+(others.length>1?'ies '+vlist(oo,VN):'y '+vlist(oo,V1))+' it':r.dp?' and is its only decision point':'');
-      h+='<tr><td colspan="3" style="padding-top:8px">'+wpName(g.w)+' &middot; '+line+(others.length||r.dp?'.':'; <span class="red">no decision point creates, updates or deletes it.</span>')+'</td></tr>';
+      const line='this activity '+vlist(mine,V1)+' the work product'+(others.length?', the following activit'+(others.length>1?'ies '+vlist(oo,VN):'y '+vlist(oo,V1))+' it':r.dp?' and is its only control point':'');
+      h+='<tr><td colspan="3" style="padding-top:8px">'+wpName(g.w)+' &middot; '+line+(others.length||r.dp?'.':'; <span class="red">no control point creates, updates or deletes it.</span>')+'</td></tr>';
       h+=others.map(d=>{const K='dc'+a.code+d.c,on=opened[K],tg='event.stopPropagation();opened[\''+K+'\']=!opened[\''+K+'\'];render()';
         return '<tr><td><span class="anm"><span class="code">'+d.c+'</span><span>'+esc(ACT[d.c].name)+'</span></span></td><td>'+esc(ACT[d.c].Aroles[0])+'</td><td><span class="acons'+(on?' sel':'')+'" style="color:'+CONSC[ACT[d.c].cons]+'" onclick="'+tg+'" title="Consequence of Error">'+ACT[d.c].cons+'</span></td></tr>'+
           (on?'<tr><td colspan="3">'+coeBox(ACT[d.c],null,'<button class="ix" onclick="'+tg+'">\u00d7</button>')+'</td></tr>':'');}).join('');});
@@ -1059,9 +1063,9 @@ function dpSummary(){const m=dpAnalysis(),L=DATA.acts,dp=L.filter(a=>m[a.code].d
   fd=L.filter(a=>!m[a.code].dp&&m[a.code].feeds.length),no=L.filter(a=>!m[a.code].dp&&!m[a.code].feeds.length);
   return {dp,exc,ai,fd,no,ver:dp.filter(a=>m[a.code].el==='Verify')};}
 function dpFinding(){const x=dpSummary();
-  return '<b>Accountability.</b> '+x.dp.length+' decision points, where a person holds Decide'+(x.ver.length?' (or Verify, in '+x.ver.length+')':'')+(x.exc.length?': '+(x.dp.length-x.exc.length)+' on every instance, '+x.exc.length+' on flagged exceptions':'')+'. '+
-    (x.fd.length?x.fd.length+' activit'+(x.fd.length>1?'ies have':'y has')+' no person deciding or verifying, and '+(x.fd.length>1?'are':'is')+' decided or verified at another activity\u2019s decision point. ':'')+
-    (x.no.length?'<span class="red">'+x.no.length+' reach'+(x.no.length>1?'':'es')+' none and need'+(x.no.length>1?'':'s')+' a named control:</span> '+x.no.map(a=>a.code).join(', ')+'.':'Every activity has a decision point, its own or another activity\u2019s.');}
+  return '<b>Accountability.</b> '+x.dp.length+' control points, where a person holds the control element: '+(x.dp.length-x.ver.length)+' decision points (Decide) and '+x.ver.length+' verification point'+(x.ver.length===1?'':'s')+' (Verify)'+(x.exc.length?': '+(x.dp.length-x.exc.length)+' on every instance, '+x.exc.length+' on flagged exceptions':'')+'. '+
+    (x.fd.length?x.fd.length+' activit'+(x.fd.length>1?'ies have':'y has')+' no person deciding or verifying, and '+(x.fd.length>1?'are':'is')+' decided or verified at another activity\u2019s control point. ':'')+
+    (x.no.length?'<span class="red">'+x.no.length+' reach'+(x.no.length>1?'':'es')+' none and need'+(x.no.length>1?'':'s')+' a named control:</span> '+x.no.map(a=>a.code).join(', ')+'.':'Every activity has a control point, its own or another activity\u2019s.');}
 // Data opens on its dashboard (GR-061), remembered per browser like Work's and People's.
 try{const m=localStorage.getItem('fv.dataMode');if(m==='dash'||m==='acts')S.dview=m;}catch(e){}
 function setDView(v){S.dview=v;try{localStorage.setItem('fv.dataMode',v)}catch(e){}render();}
@@ -1072,9 +1076,9 @@ function dataSide(){
    '<p style="margin-top:10px">Each work product, the activities that produce it and every activity that relies on it. Once AI touches a work product, the person who relies on it next has to check it.</p>'+
    (dash?'':'<h5>Show</h5>'+btns([['wp','By work product: who has to check it'],['act','By activity: what it creates, reads, updates and deletes']],'dmode'))+
    stageBtns()+
-   '<h5>Terms</h5><p><b>AI-touched:</b> the most automated activity that produces it is at Augmentation or further.<br><b>Verification point:</b> an activity at Judgment, Augmentation or Oversight relies on an AI-touched work product, so a person checks it before acting.<br><b>Unchecked hand-off:</b> the activity relying on it is at Agent-delegation or Automation with a High or Critical Consequence of Error, so no person is in between.</p>'+
+   '<h5>Terms</h5><p><b>AI-touched:</b> the most automated activity that produces it is at Augmentation or further.<br><b>Checked input:</b> an activity at Judgment, Augmentation or Oversight relies on an AI-touched work product, so a person at its control point checks it before acting.<br><b>Unchecked input:</b> the activity relying on it is at Agent-delegation or Automation with a High or Critical Consequence of Error, so no person is in between.</p>'+
    '<div class="pl"><a href="../wip/work_product_catalog.html">Work-Product Catalog</a>: every work product\u2019s definition, system of record and the activities that use it.</div>'+
-   (dash?'<h5>Reading it</h5><p>One column per system of record, one card per work product. Each square is an activity that relies on it, in catalog order, colored by its check at this stage. The figure on each card is its verification points; an amber line counts its unchecked hand-offs. Hover a square for the activity; click a card for its detail. The bars below show where the checking lands, by Accountable role.</p>':'')+
+   (dash?'<h5>Reading it</h5><p>One column per system of record, one card per work product. Each square is an activity that relies on it, in catalog order, colored by its check at this stage. The figure on each card is its checked inputs; an amber line counts its unchecked inputs. Hover a square for the activity; click a card for its detail. The bars below show where the checking lands, by Accountable role.</p>':'')+
    '<div class="replaces">Replaces <b>Data View (CRUD)</b> and brings in the work-product verification analysis (GR-046).</div>';
 }
 const nat=(a,b)=>a.localeCompare(b,undefined,{numeric:true});
@@ -1085,26 +1089,26 @@ function dataMain(){
   const hoActs=[...new Set(A.flatMap(x=>x.ho.map(h=>h.c)))].sort(nat);
   const where=S.stage==='Today'?'Today in '+esc(ORGNAME())+': each activity at its assessed Current State; activities not yet assessed count as Human-only':S.stage==='Human-only'?'Today’s baseline':S.stage==='Automation'?'Every activity at its Progression Ceiling':'Every activity up to '+S.stage+', or its ceiling if lower';
   let h='<div class="card"><h3>Work products</h3><div class="sub">'+where+'.</div><div class="tiles">'+
-    tile(CRUD.wps.length,'work products in the catalog')+tile(touched.length,'AI-touched where someone relies on them')+tile(nvp,'verification points, across '+Object.keys(roleCnt).length+' roles')+tile(nho,'unchecked hand-offs into High or Critical steps')+'</div><div class="prov">'+(S.stage==='Today'?'Assessed: each activity&rsquo;s Current State from '+esc(ORGNAME())+'&rsquo;s records, with the activity CRUD.':'Modeled from the reference and the activity CRUD (all 118 activities confirmed).')+'</div></div>';
+    tile(CRUD.wps.length,'work products in the catalog')+tile(touched.length,'AI-touched where someone relies on them')+tile(nvp,'checked inputs, across '+Object.keys(roleCnt).length+' roles')+tile(nho,'unchecked inputs into High or Critical steps')+'</div><div class="prov">'+(S.stage==='Today'?'Assessed: each activity&rsquo;s Current State from '+esc(ORGNAME())+'&rsquo;s records, with the activity CRUD.':'Modeled from the reference and the activity CRUD (all 118 activities confirmed).')+'</div></div>';
   const f=[];
   if(!touched.length) f.push(S.stage==='Human-only'?'Today no work product is AI-touched, so nothing needs checking. Choose a stage to move the work up the ramp.':'Up to '+S.stage+', AI only supplies inputs, so no work product reaches the next activity AI-touched. Checking starts once a producer reaches Augmentation.');
   else{
     const top=A.slice().sort((x,y)=>y.pts.length-x.pts.length)[0], rr=Object.entries(roleCnt).sort((x,y)=>y[1]-x[1]);
-    f.push(touched.length+' of '+CRUD.wps.length+' work products are AI-touched where someone relies on them. '+esc(top.w.name)+' carries the most checking: '+top.pts.length+' verification points.');
+    f.push(touched.length+' of '+CRUD.wps.length+' work products are AI-touched where someone relies on them. '+esc(top.w.name)+' carries the most checking: '+top.pts.length+' checked inputs.');
     f.push('The checking falls mostly on '+rr.slice(0,3).map(([r,n])=>r+' ('+n+')').join(', ')+'.');
-    if(nho) f.push(nho+' unchecked hand-off'+(nho>1?'s':'')+' fall on '+hoActs.length+' activit'+(hoActs.length>1?'ies':'y')+': '+hoActs.map(c=>c+' '+esc(ACT[c].name)).slice(0,4).join('; ')+(hoActs.length>4?' and '+(hoActs.length-4)+' more':'')+'. Each needs a named control (GR-054).');
+    if(nho) f.push(nho+' unchecked input'+(nho>1?'s':'')+' fall on '+hoActs.length+' activit'+(hoActs.length>1?'ies':'y')+': '+hoActs.map(c=>c+' '+esc(ACT[c].name)).slice(0,4).join('; ')+(hoActs.length>4?' and '+(hoActs.length-4)+' more':'')+'. Each needs a named control (GR-054).');
   }
   h+='<div class="card"><h3>What this shows</h3><ul class="find">'+f.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
   if(S.dmode==='wp'){
-    h+='<div class="card" style="padding:0;overflow-x:auto"><div style="padding:14px 18px 6px"><h3>By work product</h3><div class="sub">AI-touched first. Click a work product for each verification point and hand-off.</div></div><table class="t"><thead><tr><th>Work product</th><th style="text-align:left">Most automated producer</th><th class="hide-s" style="text-align:left">Verifications Required</th><th>Verification points</th></tr></thead><tbody>';
+    h+='<div class="card" style="padding:0;overflow-x:auto"><div style="padding:14px 18px 6px"><h3>By work product</h3><div class="sub">AI-touched first. Click a work product for each checked and unchecked input.</div></div><table class="t"><thead><tr><th>Work product</th><th style="text-align:left">Most automated producer</th><th class="hide-s" style="text-align:left">Verifications Required</th><th>Checked inputs</th></tr></thead><tbody>';
     A.slice().sort((x,y)=>(y.pts.length+y.ho.length?1:0)-(x.pts.length+x.ho.length?1:0)||y.pts.length-x.pts.length||x.w.name.localeCompare(y.w.name)).forEach(x=>{
       const o=opened['w'+x.w.id], rc={};x.pts.forEach(p=>ACT[p.c].Aroles.forEach(r=>rc[r]=(rc[r]||0)+1));
       const quiet=!(x.pts.length||x.ho.length);
-      h+='<tr class="r" onclick="opened[\'w'+x.w.id+'\']=!opened[\'w'+x.w.id+'\'];render()"'+(quiet?' style="color:#8A94A6"':'')+'><td><span class="tg">'+(o?'−':'+')+'</span>'+esc(x.w.name)+'<div class="small" style="margin-left:12px">'+esc(x.w.system)+'</div></td><td style="text-align:left">'+(x.top?stageNow(ACT[x.top])+' <span class="small">'+x.top+'</span>':'—')+'</td><td class="hide-s" style="text-align:left">'+(Object.keys(rc).length?Object.entries(rc).sort((p,q)=>q[1]-p[1]).map(([r,n])=>esc(r)+(n>1?' ×'+n:'')).join(' · '):'<span class="z">—</span>')+'</td><td>'+(x.pts.length||'<span class="z">0</span>')+(x.ho.length?'<div class="small" style="color:#9A6A00">+'+x.ho.length+' unchecked hand-off'+(x.ho.length>1?'s':'')+'</div>':'')+'</td></tr>';
+      h+='<tr class="r" onclick="opened[\'w'+x.w.id+'\']=!opened[\'w'+x.w.id+'\'];render()"'+(quiet?' style="color:#8A94A6"':'')+'><td><span class="tg">'+(o?'−':'+')+'</span>'+esc(x.w.name)+'<div class="small" style="margin-left:12px">'+esc(x.w.system)+'</div></td><td style="text-align:left">'+(x.top?stageNow(ACT[x.top])+' <span class="small">'+x.top+'</span>':'—')+'</td><td class="hide-s" style="text-align:left">'+(Object.keys(rc).length?Object.entries(rc).sort((p,q)=>q[1]-p[1]).map(([r,n])=>esc(r)+(n>1?' ×'+n:'')).join(' · '):'<span class="z">—</span>')+'</td><td>'+(x.pts.length||'<span class="z">0</span>')+(x.ho.length?'<div class="small" style="color:#9A6A00">+'+x.ho.length+' unchecked input'+(x.ho.length>1?'s':'')+'</div>':'')+'</td></tr>';
       if(o){const li=(p,t)=>{const K='d'+x.w.id+t+p.c+p.p, on=opened[K], tg='opened[\''+K+'\']=!opened[\''+K+'\'];render()';
           return '<tr><td class="code">'+p.c+'</td><td>'+esc(ACT[p.c].name)+'</td><td>'+esc(ACT[p.c].Aroles.join(', '))+'</td><td>'+stageNow(ACT[p.c])+'</td><td class="'+(HC[ACT[p.c].cons]?'hc':'')+'"><span class="acons'+(on?' sel':'')+'" onclick="event.stopPropagation();'+tg+'" title="Consequence of Error">'+ACT[p.c].cons+'</span></td><td class="small">relies on '+p.p+' at '+stageNow(ACT[p.p])+'</td></tr>'+
             (on?'<tr><td colspan="6">'+coeBox(ACT[p.c],null,'<button class="ix" onclick="event.stopPropagation();'+tg+'">\u00d7</button>')+'</td></tr>':'')};
-        h+='<tr class="det"><td colspan="4">'+(x.pts.length||x.ho.length?'<table class="al">'+(x.pts.length?'<tr class="alh"><td colspan="6"><div class="small" style="margin:4px 0 0">Verification points</div></td></tr>'+x.pts.sort((p,q)=>nat(p.c,q.c)).map(p=>li(p,'v')).join(''):'')+(x.ho.length?'<tr class="alh"><td colspan="6"><div class="small" style="margin:8px 0 0;color:#9A6A00">Unchecked hand-offs</div></td></tr>'+x.ho.sort((p,q)=>nat(p.c,q.c)).map(p=>li(p,'h')).join(''):'')+'</table>':'')+(quiet?'<div class="small">Produced in '+(x.prods.join(', ')||'no activity')+'. Nothing AI-touched reaches an activity that relies on it.</div>':'')+'</td></tr>';}
+        h+='<tr class="det"><td colspan="4">'+(x.pts.length||x.ho.length?'<table class="al">'+(x.pts.length?'<tr class="alh"><td colspan="6"><div class="small" style="margin:4px 0 0">Checked inputs</div></td></tr>'+x.pts.sort((p,q)=>nat(p.c,q.c)).map(p=>li(p,'v')).join(''):'')+(x.ho.length?'<tr class="alh"><td colspan="6"><div class="small" style="margin:8px 0 0;color:#9A6A00">Unchecked inputs</div></td></tr>'+x.ho.sort((p,q)=>nat(p.c,q.c)).map(p=>li(p,'h')).join(''):'')+'</table>':'')+(quiet?'<div class="small">Produced in '+(x.prods.join(', ')||'no activity')+'. Nothing AI-touched reaches an activity that relies on it.</div>':'')+'</td></tr>';}
     });
     return h+'</tbody></table></div>';
   }
@@ -1120,7 +1124,7 @@ function dataMain(){
 /* ---------- Data dashboard (GR-061) ---------- */
 // One card per work product, grouped by system of record; a square per activity that relies on it (reads or updates
 // it while another activity produces it), colored by its check at the selected stage. Same rule as wpAnalysis (GR-046).
-const DDK={vp:['Verification point: a person checks it','#3A6FAE'],ho:['Unchecked hand-off: High or Critical, no person in between','#B8873F'],no:['No check: not AI-touched, or Low/Moderate work with no person','#E3E8F0']};
+const DDK={vp:['Checked input: a person checks it at a control point','#3A6FAE'],ho:['Unchecked input: High or Critical, no person sees every instance','#B8873F'],no:['No check: not AI-touched, or Low/Moderate work with no person','#E3E8F0']};
 function ddRelies(x){const id=x.w.id,vp={},ho={};x.pts.forEach(q=>vp[q.c]=q.p);x.ho.forEach(q=>ho[q.c]=q.p);
   return Object.keys(CRUD.crud).filter(c=>ACT[c]&&CRUD.crud[c].R.concat(CRUD.crud[c].U).includes(id)&&x.prods.some(p=>p!==c)).sort(nat)
     .map(c=>({c,k:vp[c]?'vp':ho[c]?'ho':'no',p:vp[c]||ho[c]||x.top}));}
@@ -1129,21 +1133,21 @@ function dataDash(){
   const hoActs=[...new Set(A.flatMap(x=>x.ho.map(h=>h.c)))];
   const where=S.stage==='Today'?'at '+esc(ORGNAME())+'&rsquo;s Current State':S.stage==='Human-only'?'at the Human-only baseline':S.stage==='Automation'?'at the Progression Ceilings':'up to '+S.stage;
   let h='<div class="tiles" style="margin-bottom:16px">'+tile(touched.length+' of '+CRUD.wps.length,'work products AI-touched where someone relies on them, '+where)+
-    tile(nvp,'verification points: a person checks AI-touched work')+tile(nho,'unchecked hand-offs into High or Critical work, on '+hoActs.length+' activit'+(hoActs.length===1?'y':'ies'))+
+    tile(nvp,'checked inputs: a person checks AI-touched work at a control point')+tile(nho,'unchecked inputs into High or Critical work, on '+hoActs.length+' activit'+(hoActs.length===1?'y':'ies'))+
     tile(A.filter(x=>!ddRelies(x).length).length,'work products no other activity relies on')+'</div>';
   const sys=[...new Set(CRUD.wps.map(w=>w.system))].sort((a,b)=>CRUD.wps.filter(w=>w.system===b).length-CRUD.wps.filter(w=>w.system===a).length||a.localeCompare(b));
   const card=x=>{const L=ddRelies(x),quiet=!(x.pts.length||x.ho.length);
-    return '<div class="dd-card'+(quiet?' quiet':'')+'" onclick="ddOpen(\''+x.w.id+'\')"><div class="dd-pn"><span>'+esc(x.w.name)+' <span class="code">'+x.w.id+'</span></span><span class="n" title="Verification points">'+(x.pts.length||'')+'</span></div>'+
+    return '<div class="dd-card'+(quiet?' quiet':'')+'" onclick="ddOpen(\''+x.w.id+'\')"><div class="dd-pn"><span>'+esc(x.w.name)+' <span class="code">'+x.w.id+'</span></span><span class="n" title="Checked inputs">'+(x.pts.length||'')+'</span></div>'+
       (L.length?'<div class="db-cells">'+L.map(r=>'<i class="db-cell" data-d="'+x.w.id+'|'+r.c+'|'+r.k+'|'+r.p+'" style="background:'+DDK[r.k][1]+'"></i>').join('')+'</div>':'<div class="dd-sub">No other activity relies on it</div>')+
-      (x.ho.length?'<div class="dd-sub" style="color:#8A5A00">'+x.ho.length+' unchecked hand-off'+(x.ho.length>1?'s':'')+'</div>':'')+'</div>';};
-  h+='<div class="card"><h3>Work products, by system of record</h3><div class="sub">One square per activity that relies on the work product, '+where+'. Click a card for its verification points and hand-offs.</div><div class="db-legend">'+Object.values(DDK).map(([l,c])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('')+'</div><div class="dd-grid">'+
+      (x.ho.length?'<div class="dd-sub" style="color:#8A5A00">'+x.ho.length+' unchecked input'+(x.ho.length>1?'s':'')+'</div>':'')+'</div>';};
+  h+='<div class="card"><h3>Work products, by system of record</h3><div class="sub">One square per activity that relies on the work product, '+where+'. Click a card for its checked and unchecked inputs.</div><div class="db-legend">'+Object.values(DDK).map(([l,c])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('')+'</div><div class="dd-grid">'+
     sys.map(sy=>'<div class="db-col"><h4>'+esc(sy)+'</h4>'+A.filter(x=>x.w.system===sy).sort((a,b)=>nat(a.w.id,b.w.id)).map(card).join('')+'</div>').join('')+'</div></div>';
   const rl={};A.forEach(x=>{x.pts.forEach(q=>{const r=ACT[q.c].A;(rl[r]=rl[r]||{vp:0,ho:0}).vp++});x.ho.forEach(q=>{const r=ACT[q.c].A;(rl[r]=rl[r]||{vp:0,ho:0}).ho++});});
   const roles=Object.entries(rl).sort((a,b)=>(b[1].vp+b[1].ho)-(a[1].vp+a[1].ho)),mx=Math.max(1,...roles.map(([n,v])=>v.vp+v.ho));
-  h+='<div class="card"><h3>Where the checking lands</h3><div class="sub">Verification points and unchecked hand-offs by the Accountable role of the activity that relies on the work, '+where+'.</div><div class="db-legend"><span><i class="db-sw" style="background:'+DDK.vp[1]+'"></i>Verification points</span><span><i class="db-sw" style="background:'+DDK.ho[1]+'"></i>Unchecked hand-offs</span></div><div class="dd-load">'+
+  h+='<div class="card"><h3>Where the checking lands</h3><div class="sub">Checked and unchecked inputs by the Accountable role of the activity that relies on the work, '+where+'.</div><div class="db-legend"><span><i class="db-sw" style="background:'+DDK.vp[1]+'"></i>Checked inputs</span><span><i class="db-sw" style="background:'+DDK.ho[1]+'"></i>Unchecked inputs</span></div><div class="dd-load">'+
     (roles.length?roles.map(([n,v])=>'<div class="row"><div>'+esc(n)+'</div><div class="db-bar" style="width:'+Math.max(2,Math.round(100*(v.vp+v.ho)/mx))+'%">'+
-      (v.vp?'<div data-t="'+esc(n)+'<br>'+v.vp+' verification point'+(v.vp>1?'s':'')+'" style="flex:'+v.vp+';background:'+DDK.vp[1]+';color:#fff">'+(v.vp>1?v.vp:'')+'</div>':'')+
-      (v.ho?'<div data-t="'+esc(n)+'<br>'+v.ho+' unchecked hand-off'+(v.ho>1?'s':'')+'" style="flex:'+v.ho+';background:'+DDK.ho[1]+';color:#fff">'+(v.ho>1?v.ho:'')+'</div>':'')+
+      (v.vp?'<div data-t="'+esc(n)+'<br>'+v.vp+' checked input'+(v.vp>1?'s':'')+'" style="flex:'+v.vp+';background:'+DDK.vp[1]+';color:#fff">'+(v.vp>1?v.vp:'')+'</div>':'')+
+      (v.ho?'<div data-t="'+esc(n)+'<br>'+v.ho+' unchecked input'+(v.ho>1?'s':'')+'" style="flex:'+v.ho+';background:'+DDK.ho[1]+';color:#fff">'+(v.ho>1?v.ho:'')+'</div>':'')+
       '</div><div class="h">'+v.vp+' · '+v.ho+'</div></div>').join(''):'<div class="small">No checking at this stage.</div>')+'</div></div>';
   return h;
 }
@@ -1173,11 +1177,11 @@ function refFindings(){
   if(lc) for(const m of String(lc.from||'').matchAll(/(Human-only|Judgment|Augmentation|Oversight|Agent-delegation|Automation): ((?:7(?:\.\d+)+(?:, )?)+)\./g)) m[2].split(', ').forEach(c=>{was[c]=m[1]});
   const changed=Object.keys(was).map(c=>DATA.acts.find(a=>a.code===c)).filter(Boolean);
   let h='<div class="card"><h3>The reference at full progression</h3><div class="sub">Every activity at its Progression Ceiling. Modeled.</div><div class="tiles">'+
-    tile(t.org.every+t.org.approve,'activities keep a person in every instance')+tile(t.org.exc,'run on flagged exceptions only')+tile(t.org.none,'have no person in the instance')+tile(hoActs.length,'need a named control for unchecked hand-offs')+'</div></div>';
+    tile(t.org.every+t.org.approve,'activities keep a person in every instance')+tile(t.org.exc,'run on flagged exceptions only')+tile(t.org.none,'have no person in the instance')+tile(hoActs.length,'need a named control for unchecked inputs')+'</div></div>';
   h+='<div class="card"><h3>What this shows</h3><ul class="find">'+
     '<li><b>Work.</b> '+cnt[5]+' activities may go to Automation and '+cnt[4]+' to Agent-delegation; '+(cnt[2]+cnt[3])+' keep a person doing or approving every instance.</li>'+
     '<li><b>People.</b> '+accTop.map(([n,r])=>n+' ('+r.acc+')').join(', ')+' hold '+pct(accTop.reduce((s,[n,r])=>s+r.acc,0),118)+' of all accountability, and it stays with them as the work moves.</li>'+
-    '<li><b>Data.</b> '+nvp+' verification points: places a person checks AI-touched work before acting on it. '+hoActs.length+' activities receive AI-touched work with no person in between and must name a control.</li>'+
+    '<li><b>Data.</b> '+nvp+' checked inputs: places a person checks AI-touched work at a control point before acting on it. '+hoActs.length+' activities receive AI-touched work with no person in between and must name a control.</li>'+
     '<li>'+dpFinding()+'</li></ul></div>';
   if(lc){
   h+='<div class="card" style="padding:0;overflow-x:auto"><div style="padding:14px 18px 6px"><h3>Latest change to the reference</h3><div class="sub">'+esc(lc.id)+' ('+esc(lc.date)+'): '+esc(lc.summary)+'</div></div><table class="t"><thead><tr><th>Activity</th><th style="text-align:left">Ceiling</th><th class="hide-s" style="text-align:left">Ceiling factors</th></tr></thead><tbody>';
@@ -1224,7 +1228,7 @@ function xrExtra(){
   const noRows=no.map(a=>({code:a.code,cells:[esc(a.Aroles[0]),(()=>{const x=CRUD.crud[a.code]||{C:[],U:[],D:[]},ids=[...new Set(x.C.concat(x.U,x.D||[]))];return ids.map(i=>esc(WPN[i]?WPN[i].name:i)+' <span class="xr-code">'+i+'</span>').join('<br>')})()||'<span class="xr-sub">creates, updates or deletes no work product</span>',cons(a)]}));
   return [
     {label:'Element past its ceiling',title:'Element past its own ceiling',def:'The activity is within its Progression Ceiling, but an element is led further toward AI than its own ceiling allows (GR-058). The element is what its ceiling factor protects, so this needs a decision even though the activity passes.',head:['Activity','Element: assessed &rarr; element ceiling','Ceiling factor','CoE'],rows:peRows},
-    {label:'Named control needed',title:'Named control needed',def:'No person decides or verifies the activity, and no decision point creates, updates or deletes the work products it touches (GR-021). Its Human Accountability Anchor names the control that stands in for a decision point (GR-054).',head:['Activity','Human Accountability Anchor','Work products it creates, updates or deletes','CoE'],rows:noRows}];
+    {label:'Named control needed',title:'Named control needed',def:'No person decides or verifies the activity, and no control point creates, updates or deletes the work products it touches (GR-021). Its Human Accountability Anchor names the control that stands in for a control point (GR-054).',head:['Activity','Human Accountability Anchor','Work products it creates, updates or deletes','CoE'],rows:noRows}];
 }
 function xrCard(){
   XR_HTML=P.exceptionsReportHTML(xrExtra());
