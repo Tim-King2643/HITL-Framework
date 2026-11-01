@@ -94,6 +94,15 @@ table.db-mx{border-collapse:separate;border-spacing:2px;font-size:12px}
 .pa-a .pd-chip{flex:0 0 16px}
 .pa-a .code{flex:0 0 66px}
 @media(max-width:640px){.pa-role{grid-template-columns:1fr;gap:4px}}
+.dd-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.dd-card{border:1px solid var(--border);border-radius:8px;padding:7px 9px;margin-bottom:7px;cursor:pointer;background:#fff;text-align:left}
+.dd-card:hover{border-color:var(--navy)}
+.dd-card.quiet{background:#FAFBFD}
+.dd-pn{font-size:12px;line-height:1.35;color:var(--dark);display:flex;justify-content:space-between;gap:8px}
+.dd-pn .n{color:var(--navy);white-space:nowrap}
+.dd-sub{font-size:11px;color:var(--lgray);margin-top:2px}
+.dd-load .row{display:grid;grid-template-columns:230px 1fr 92px;gap:10px;align-items:center;margin-bottom:7px;font-size:12px;text-align:left}
+.dd-load .h{text-align:right;color:var(--navy);white-space:nowrap}
 .db-tip{position:fixed;pointer-events:none;background:#0D1B2A;color:#fff;font-size:12px;line-height:1.45;padding:7px 10px;border-radius:6px;max-width:300px;z-index:20;display:none;text-align:left}
 @media(max-width:860px){.db-bars .row{grid-template-columns:120px 1fr 44px}}
 .tile{flex:1;min-width:140px;border:1px solid #EEF1F6;border-radius:8px;padding:10px 12px}
@@ -294,7 +303,7 @@ const HC={High:1,Critical:1};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const pct=(n,d)=>d?Math.round(100*n/d)+'%':'—';
 // RACI is activity level (GR-060, Tim's decision Oct 10, 2026); a process's RACI is computed from its activities (procRaci).
-let S={wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'pdash',penc:'raci',playout:'proc',prows:'all',pchips:'own',stage:'Automation',appr:'R',esc:'A',wg:'all',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
+let S={dview:'dash',wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'pdash',penc:'raci',playout:'proc',prows:'all',pchips:'own',stage:'Automation',appr:'R',esc:'A',wg:'all',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
 const VIEWS=[
  {id:'work',name:'Work',q:'Where does each activity sit, and what moves next?'},
  {id:'people',name:'People',q:'What does this mean for each role?'},
@@ -868,8 +877,9 @@ function dbOpen(code){const p=PROCS.find(x=>x.code===code);if(!p)return;
   if(row){try{const fr=window.frameElement;if(fr){P.scrollTo({top:fr.getBoundingClientRect().top+P.scrollY+row.getBoundingClientRect().top-70,behavior:'smooth'});}else row.scrollIntoView({behavior:'smooth'});}catch(e){row.scrollIntoView();}}
 }
 {const tip=document.createElement('div');tip.className='db-tip';document.body.appendChild(tip);
- document.addEventListener('mousemove',e=>{const el=e.target.closest&&e.target.closest('.db-cell,[data-t]');
-  if(!el||!(el.dataset.c||el.dataset.t)){tip.style.display='none';return;}
+ document.addEventListener('mousemove',e=>{const el=e.target.closest&&e.target.closest('.db-cell,[data-t],[data-d]');
+  if(!el||!(el.dataset.c||el.dataset.t||el.dataset.d)){tip.style.display='none';return;}
+  if(el.dataset.d){const [w,c,k,pr]=el.dataset.d.split('|'),a=ACT[c],q=ACT[pr];tip.innerHTML='<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>Relies on '+esc((WPN[w]||{}).name||w)+(q?' from '+q.code+' at '+stageNow(q):'')+'<br>'+esc(a.Aroles.join(', '))+' (Accountable) · '+stageNow(a)+' · '+a.cons+'<br>'+DDK[k][0];tip.style.display='block';const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-8),y=e.clientY+16+tip.offsetHeight>innerHeight?e.clientY-tip.offsetHeight-10:e.clientY+16;tip.style.left=x+'px';tip.style.top=y+'px';return;}
   if(el.dataset.c){const a=ACT[el.dataset.c];tip.innerHTML='<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>'+(dbWhere()==='cur'?'Current State ':'Ceiling ')+dbSt(a)+' \u00b7 '+HPCT[dbSt(a)]+'% H<br>Consequence of Error '+a.cons+'<br>Accountable '+esc(a.Aroles.join(', '))+'<br>'+DBK[dbKind(a)][0];}
   else tip.innerHTML=el.dataset.t;
   tip.style.display='block';const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-8),y=e.clientY+16+tip.offsetHeight>innerHeight?e.clientY-tip.offsetHeight-10:e.clientY+16;tip.style.left=x+'px';tip.style.top=y+'px';});}
@@ -1052,16 +1062,24 @@ function dpFinding(){const x=dpSummary();
   return '<b>Accountability.</b> '+x.dp.length+' decision points, where a person holds Decide'+(x.ver.length?' (or Verify, in '+x.ver.length+')':'')+(x.exc.length?': '+(x.dp.length-x.exc.length)+' on every instance, '+x.exc.length+' on flagged exceptions':'')+'. '+
     (x.fd.length?x.fd.length+' activit'+(x.fd.length>1?'ies have':'y has')+' no person deciding or verifying, and '+(x.fd.length>1?'are':'is')+' decided or verified at another activity\u2019s decision point. ':'')+
     (x.no.length?'<span class="red">'+x.no.length+' reach'+(x.no.length>1?'':'es')+' none and need'+(x.no.length>1?'':'s')+' a named control:</span> '+x.no.map(a=>a.code).join(', ')+'.':'Every activity has a decision point, its own or another activity\u2019s.');}
+// Data opens on its dashboard (GR-061), remembered per browser like Work's and People's.
+try{const m=localStorage.getItem('fv.dataMode');if(m==='dash'||m==='acts')S.dview=m;}catch(e){}
+function setDView(v){S.dview=v;try{localStorage.setItem('fv.dataMode',v)}catch(e){}render();}
 function dataSide(){
-  return '<div class="q">'+VIEWS[2].q+'</div><p>Each work product, the activities that produce it and every activity that relies on it. Once AI touches a work product, the person who relies on it next has to check it.</p>'+
-   '<h5>Show</h5>'+btns([['wp','By work product: who has to check it'],['act','By activity: what it creates, reads, updates and deletes']],'dmode')+
+  const dash=S.dview==='dash';
+  return '<div class="q">'+VIEWS[2].q+'</div>'+
+   '<h5>Show</h5><div class="stack">'+[['dash','Dashboard'],['acts','Activities']].map(o=>'<button class="'+(S.dview===o[0]?'on':'')+'" onclick="setDView(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>'+
+   '<p style="margin-top:10px">Each work product, the activities that produce it and every activity that relies on it. Once AI touches a work product, the person who relies on it next has to check it.</p>'+
+   (dash?'':'<h5>Show</h5>'+btns([['wp','By work product: who has to check it'],['act','By activity: what it creates, reads, updates and deletes']],'dmode'))+
    stageBtns()+
    '<h5>Terms</h5><p><b>AI-touched:</b> the most automated activity that produces it is at Augmentation or further.<br><b>Verification point:</b> an activity at Judgment, Augmentation or Oversight relies on an AI-touched work product, so a person checks it before acting.<br><b>Unchecked hand-off:</b> the activity relying on it is at Agent-delegation or Automation with a High or Critical Consequence of Error, so no person is in between.</p>'+
    '<div class="pl"><a href="../wip/work_product_catalog.html">Work-Product Catalog</a>: every work product\u2019s definition, system of record and the activities that use it.</div>'+
+   (dash?'<h5>Reading it</h5><p>One column per system of record, one card per work product. Each square is an activity that relies on it, in catalog order, colored by its check at this stage. The figure on each card is its verification points; an amber line counts its unchecked hand-offs. Hover a square for the activity; click a card for its detail. The bars below show where the checking lands, by Accountable role.</p>':'')+
    '<div class="replaces">Replaces <b>Data View (CRUD)</b> and brings in the work-product verification analysis (GR-046).</div>';
 }
 const nat=(a,b)=>a.localeCompare(b,undefined,{numeric:true});
 function dataMain(){
+  if(S.dview==='dash') return dataDash();
   const A=wpAnalysis(), touched=A.filter(x=>x.pts.length||x.ho.length), nvp=A.reduce((s,x)=>s+x.pts.length,0), nho=A.reduce((s,x)=>s+x.ho.length,0);
   const roleCnt={};A.forEach(x=>x.pts.forEach(p=>ACT[p.c].Aroles.forEach(r=>roleCnt[r]=(roleCnt[r]||0)+1)));
   const hoActs=[...new Set(A.flatMap(x=>x.ho.map(h=>h.c)))].sort(nat);
@@ -1097,6 +1115,42 @@ function dataMain(){
     const cell=(ids,cls)=>'<td class="'+(cls||'')+'" style="text-align:left;font-size:12px">'+(ids.length?ids.map(i=>esc(WPN[i]?WPN[i].name:i)+(WPN[i]&&WPN[i].system?'<div class="small">'+esc(WPN[i].system)+'</div>':'')).join(''):'<span class="z">—</span>')+'</td>';
     h+='<tr><td><span class="code">'+a.code+'</span> '+esc(a.name)+'</td>'+cell(x.C)+cell(x.R)+cell(x.U,'hide-s')+cell(x.D,'hide-s')+'</tr>';});
   return h+'</tbody></table></div>';
+}
+
+/* ---------- Data dashboard (GR-061) ---------- */
+// One card per work product, grouped by system of record; a square per activity that relies on it (reads or updates
+// it while another activity produces it), colored by its check at the selected stage. Same rule as wpAnalysis (GR-046).
+const DDK={vp:['Verification point: a person checks it','#3A6FAE'],ho:['Unchecked hand-off: High or Critical, no person in between','#B8873F'],no:['No check: not AI-touched, or Low/Moderate work with no person','#E3E8F0']};
+function ddRelies(x){const id=x.w.id,vp={},ho={};x.pts.forEach(q=>vp[q.c]=q.p);x.ho.forEach(q=>ho[q.c]=q.p);
+  return Object.keys(CRUD.crud).filter(c=>ACT[c]&&CRUD.crud[c].R.concat(CRUD.crud[c].U).includes(id)&&x.prods.some(p=>p!==c)).sort(nat)
+    .map(c=>({c,k:vp[c]?'vp':ho[c]?'ho':'no',p:vp[c]||ho[c]||x.top}));}
+function dataDash(){
+  const A=wpAnalysis(),nvp=A.reduce((s,x)=>s+x.pts.length,0),nho=A.reduce((s,x)=>s+x.ho.length,0),touched=A.filter(x=>x.pts.length||x.ho.length);
+  const hoActs=[...new Set(A.flatMap(x=>x.ho.map(h=>h.c)))];
+  const where=S.stage==='Today'?'at '+esc(ORGNAME())+'&rsquo;s Current State':S.stage==='Human-only'?'at the Human-only baseline':S.stage==='Automation'?'at the Progression Ceilings':'up to '+S.stage;
+  let h='<div class="tiles" style="margin-bottom:16px">'+tile(touched.length+' of '+CRUD.wps.length,'work products AI-touched where someone relies on them, '+where)+
+    tile(nvp,'verification points: a person checks AI-touched work')+tile(nho,'unchecked hand-offs into High or Critical work, on '+hoActs.length+' activit'+(hoActs.length===1?'y':'ies'))+
+    tile(A.filter(x=>!ddRelies(x).length).length,'work products no other activity relies on')+'</div>';
+  const sys=[...new Set(CRUD.wps.map(w=>w.system))].sort((a,b)=>CRUD.wps.filter(w=>w.system===b).length-CRUD.wps.filter(w=>w.system===a).length||a.localeCompare(b));
+  const card=x=>{const L=ddRelies(x),quiet=!(x.pts.length||x.ho.length);
+    return '<div class="dd-card'+(quiet?' quiet':'')+'" onclick="ddOpen(\''+x.w.id+'\')"><div class="dd-pn"><span>'+esc(x.w.name)+' <span class="code">'+x.w.id+'</span></span><span class="n" title="Verification points">'+(x.pts.length||'')+'</span></div>'+
+      (L.length?'<div class="db-cells">'+L.map(r=>'<i class="db-cell" data-d="'+x.w.id+'|'+r.c+'|'+r.k+'|'+r.p+'" style="background:'+DDK[r.k][1]+'"></i>').join('')+'</div>':'<div class="dd-sub">No other activity relies on it</div>')+
+      (x.ho.length?'<div class="dd-sub" style="color:#8A5A00">'+x.ho.length+' unchecked hand-off'+(x.ho.length>1?'s':'')+'</div>':'')+'</div>';};
+  h+='<div class="card"><h3>Work products, by system of record</h3><div class="sub">One square per activity that relies on the work product, '+where+'. Click a card for its verification points and hand-offs.</div><div class="db-legend">'+Object.values(DDK).map(([l,c])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('')+'</div><div class="dd-grid">'+
+    sys.map(sy=>'<div class="db-col"><h4>'+esc(sy)+'</h4>'+A.filter(x=>x.w.system===sy).sort((a,b)=>nat(a.w.id,b.w.id)).map(card).join('')+'</div>').join('')+'</div></div>';
+  const rl={};A.forEach(x=>{x.pts.forEach(q=>{const r=ACT[q.c].A;(rl[r]=rl[r]||{vp:0,ho:0}).vp++});x.ho.forEach(q=>{const r=ACT[q.c].A;(rl[r]=rl[r]||{vp:0,ho:0}).ho++});});
+  const roles=Object.entries(rl).sort((a,b)=>(b[1].vp+b[1].ho)-(a[1].vp+a[1].ho)),mx=Math.max(1,...roles.map(([n,v])=>v.vp+v.ho));
+  h+='<div class="card"><h3>Where the checking lands</h3><div class="sub">Verification points and unchecked hand-offs by the Accountable role of the activity that relies on the work, '+where+'.</div><div class="db-legend"><span><i class="db-sw" style="background:'+DDK.vp[1]+'"></i>Verification points</span><span><i class="db-sw" style="background:'+DDK.ho[1]+'"></i>Unchecked hand-offs</span></div><div class="dd-load">'+
+    (roles.length?roles.map(([n,v])=>'<div class="row"><div>'+esc(n)+'</div><div class="db-bar" style="width:'+Math.max(2,Math.round(100*(v.vp+v.ho)/mx))+'%">'+
+      (v.vp?'<div data-t="'+esc(n)+'<br>'+v.vp+' verification point'+(v.vp>1?'s':'')+'" style="flex:'+v.vp+';background:'+DDK.vp[1]+';color:#fff">'+(v.vp>1?v.vp:'')+'</div>':'')+
+      (v.ho?'<div data-t="'+esc(n)+'<br>'+v.ho+' unchecked hand-off'+(v.ho>1?'s':'')+'" style="flex:'+v.ho+';background:'+DDK.ho[1]+';color:#fff">'+(v.ho>1?v.ho:'')+'</div>':'')+
+      '</div><div class="h">'+v.vp+' · '+v.ho+'</div></div>').join(''):'<div class="small">No checking at this stage.</div>')+'</div></div>';
+  return h;
+}
+// A work-product card opens its row in By work product, expanded, and scrolls to it.
+function ddOpen(id){S.dview='acts';S.dmode='wp';opened['w'+id]=true;render();
+  const nm=(WPN[id]||{}).name,row=[...document.querySelectorAll('tr.r')].find(r=>nm&&r.textContent.replace(/^[+\u2212−]/,'').startsWith(nm));
+  if(row){try{const fr=window.frameElement;if(fr)P.scrollTo({top:fr.getBoundingClientRect().top+P.scrollY+row.getBoundingClientRect().top-70,behavior:'smooth'});else row.scrollIntoView({behavior:'smooth'});}catch(e){row.scrollIntoView();}}
 }
 
 /* ---------- Findings ---------- */
