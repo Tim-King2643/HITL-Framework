@@ -101,6 +101,9 @@ table.db-mx{border-collapse:separate;border-spacing:2px;font-size:12px}
 .dd-pn{font-size:12px;line-height:1.35;color:var(--dark);display:flex;justify-content:space-between;gap:8px}
 .dd-pn .n{color:var(--navy);white-space:nowrap}
 .dd-sub{font-size:11px;color:var(--lgray);margin-top:2px}
+.dp-wn{font-size:11px;color:var(--dark);line-height:14px}
+.dp-wn .code{font-size:10.5px}
+.dp-wn.made{font-weight:600;color:var(--navy-d)}
 .dd-load .row{display:grid;grid-template-columns:230px 1fr 92px;gap:10px;align-items:center;margin-bottom:7px;font-size:12px;text-align:left}
 .dd-load .h{text-align:right;color:var(--navy);white-space:nowrap}
 .db-tip{position:fixed;pointer-events:none;background:#0D1B2A;color:#fff;font-size:12px;line-height:1.45;padding:7px 10px;border-radius:6px;max-width:300px;z-index:20;display:none;text-align:left}
@@ -303,7 +306,7 @@ const HC={High:1,Critical:1};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const pct=(n,d)=>d?Math.round(100*n/d)+'%':'—';
 // RACI is activity level (GR-060, Tim's decision Oct 10, 2026); a process's RACI is computed from its activities (procRaci).
-let S={dview:'dash',wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'pdash',penc:'raci',playout:'proc',prows:'all',pchips:'own',stage:'Automation',appr:'R',esc:'A',wg:'all',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
+let S={dview:'dash',dlayout:'proc',denc2:'crud',wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'pdash',penc:'raci',playout:'proc',prows:'all',pchips:'own',stage:'Automation',appr:'R',esc:'A',wg:'all',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
 const VIEWS=[
  {id:'work',name:'Work',q:'Where does each activity sit, and what moves next?'},
  {id:'people',name:'People',q:'What does this mean for each role?'},
@@ -1078,7 +1081,9 @@ function dataSide(){
    stageBtns()+
    '<h5>Terms</h5><p><b>AI-touched:</b> the most automated activity that produces it is at Augmentation or further.<br><b>Checked input:</b> an activity at Judgment, Augmentation or Oversight relies on an AI-touched work product, so a person at its control point checks it before acting.<br><b>Unchecked input:</b> the activity relying on it is at Agent-delegation or Automation with a High or Critical Consequence of Error, so no person is in between.</p>'+
    '<div class="pl"><a href="../wip/work_product_catalog.html">Work-Product Catalog</a>: every work product\u2019s definition, system of record and the activities that use it.</div>'+
-   (dash?'<h5>Reading it</h5><p>One column per system of record, one card per work product. Each square is an activity that relies on it, in catalog order, colored by its check at this stage. The figure on each card is its checked inputs; an amber line counts its unchecked inputs. Hover a square for the activity; click a card for its detail. The bars below show where the checking lands, by Accountable role.</p>':'')+
+   (dash?'<h5>Lay out by</h5>'+btns([['proc','Process'],['sys','System of record']],'dlayout')+(S.dlayout==='proc'?'<h5>Color the chips by</h5>'+btns([['crud','CRUD letter'],['check','Check']],'denc2'):''):'')+
+   (dash&&S.dlayout==='proc'?'<h5>Reading it</h5><p>The same layout as Work and People: one column per process group, one card per process. Each card is the process&rsquo;s CRUD broken out by activity: one row per work product its activities touch, one chip per activity in catalog order, with the activity&rsquo;s letter on it &mdash; Create, Update, Delete or Read, the strongest it holds. Work products the process creates come first, in bold. Colored by Check, a chip shows what happens where the activity relies on AI-touched work: checked at its control point, unchecked, or no check. Hover a chip for the activity; click a card to open its activities.</p>':'')+
+   (dash&&S.dlayout==='sys'?'<h5>Reading it</h5><p>One column per system of record, one card per work product. Each square is an activity that relies on it, in catalog order, colored by its check at this stage. The figure on each card is its checked inputs; an amber line counts its unchecked inputs. Hover a square for the activity; click a card for its detail. The bars below show where the checking lands, by Accountable role.</p>':'')+
    '<div class="replaces">Replaces <b>Data View (CRUD)</b> and brings in the work-product verification analysis (GR-046).</div>';
 }
 const nat=(a,b)=>a.localeCompare(b,undefined,{numeric:true});
@@ -1129,6 +1134,7 @@ function ddRelies(x){const id=x.w.id,vp={},ho={};x.pts.forEach(q=>vp[q.c]=q.p);x
   return Object.keys(CRUD.crud).filter(c=>ACT[c]&&CRUD.crud[c].R.concat(CRUD.crud[c].U).includes(id)&&x.prods.some(p=>p!==c)).sort(nat)
     .map(c=>({c,k:vp[c]?'vp':ho[c]?'ho':'no',p:vp[c]||ho[c]||x.top}));}
 function dataDash(){
+  if(S.dlayout==='proc') return dataByProc();
   const A=wpAnalysis(),nvp=A.reduce((s,x)=>s+x.pts.length,0),nho=A.reduce((s,x)=>s+x.ho.length,0),touched=A.filter(x=>x.pts.length||x.ho.length);
   const hoActs=[...new Set(A.flatMap(x=>x.ho.map(h=>h.c)))];
   const where=S.stage==='Today'?'at '+esc(ORGNAME())+'&rsquo;s Current State':S.stage==='Human-only'?'at the Human-only baseline':S.stage==='Automation'?'at the Progression Ceilings':'up to '+S.stage;
@@ -1154,6 +1160,43 @@ function dataDash(){
 // A work-product card opens its row in By work product, expanded, and scrolls to it.
 function ddOpen(id){S.dview='acts';S.dmode='wp';opened['w'+id]=true;render();
   const nm=(WPN[id]||{}).name,row=[...document.querySelectorAll('tr.r')].find(r=>nm&&r.textContent.replace(/^[+\u2212−]/,'').startsWith(nm));
+  if(row){try{const fr=window.frameElement;if(fr)P.scrollTo({top:fr.getBoundingClientRect().top+P.scrollY+row.getBoundingClientRect().top-70,behavior:'smooth'});else row.scrollIntoView({behavior:'smooth'});}catch(e){row.scrollIntoView();}}
+}
+
+// By process (Tim, Nov 1, 2026): Work's and People's layout for Data. One column per process group, one card per process,
+// each card the process CRUD broken out by activity: a row per work product its activities touch (those it creates first),
+// a chip per activity with its strongest CRUD letter (Create, Update, Delete, Read). Colored by CRUD letter, or by the
+// check where the activity relies on AI-touched work (checked input, unchecked input, no check), the Data view's own rule.
+const CRC={C:['Create','#0D2D4F','#fff'],U:['Update','#3A6FAE','#fff'],D:['Delete','#9CBBE0','#0D2D4F'],R:['Read','#E3E8F0','#0D2D4F']};
+const crudOf=(c,w)=>{const x=CRUD.crud[c];return x?['C','U','D','R'].filter(k=>x[k].includes(w)):[]};
+function dataByProc(){
+  const A=wpAnalysis(),AW=Object.fromEntries(A.map(x=>[x.w.id,x])),nvp=A.reduce((s,x)=>s+x.pts.length,0),nho=A.reduce((s,x)=>s+x.ho.length,0),touched=A.filter(x=>x.pts.length||x.ho.length);
+  const hoActs=[...new Set(A.flatMap(x=>x.ho.map(h=>h.c)))];
+  const where=S.stage==='Today'?'at '+esc(ORGNAME())+'&rsquo;s Current State':S.stage==='Human-only'?'at the Human-only baseline':S.stage==='Automation'?'at the Progression Ceilings':'up to '+S.stage;
+  const chk=(w,c)=>{const x=AW[w];return x.pts.some(q=>q.c===c)?'vp':x.ho.some(q=>q.c===c)?'ho':'no'};
+  let h='<div class="tiles" style="margin-bottom:16px">'+tile(touched.length+' of '+CRUD.wps.length,'work products AI-touched where someone relies on them, '+where)+
+    tile(nvp,'checked inputs: a person checks AI-touched work at a control point')+tile(nho,'unchecked inputs into High or Critical work, on '+hoActs.length+' activit'+(hoActs.length===1?'y':'ies'))+
+    tile(A.filter(x=>!ddRelies(x).length).length,'work products no other activity relies on')+'</div>';
+  const leg=S.denc2==='crud'?Object.entries(CRC).map(([k,v])=>'<span><i class="pd-chip" style="display:inline-block;background:'+v[1]+';color:'+v[2]+'">'+k+'</i>'+v[0]+'</span>').join('')+'<span><i class="pd-chip n" style="display:inline-block"></i>Does not touch it</span>'
+    :Object.values(DDK).map(([l,c])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('')+'<span style="color:var(--lgray)">The letter is the activity&rsquo;s CRUD letter; a blank chip, it does not touch the work product</span>';
+  const chip=(a,w)=>{const ops=crudOf(a.code,w),l=ops[0]||'';if(!l)return '<i class="pd-chip n"></i>';
+    const k=S.denc2==='check'?chk(w,a.code):null,bg=k?DDK[k][1]:CRC[l][1],fg=k?(k==='no'?'#0D2D4F':'#fff'):CRC[l][2];
+    return '<i class="pd-chip" data-t="'+escA('<span style="opacity:.75">'+a.code+'</span> '+a.name+'<br>'+ops.map(o=>CRC[o][0]+'s').join(', ')+' '+(WPN[w]||{}).name+' <span style="opacity:.75">'+w+'</span><br>'+a.Aroles.join(', ')+' (Accountable) · '+stageNow(a)+' · '+a.cons+(k?'<br>'+DDK[k][0]:''))+'" style="background:'+bg+';color:'+fg+'">'+l+'</i>';};
+  const card=p=>{const L=p.acts.map(c=>ACT[c]).filter(Boolean);if(!L.length)return '';
+    const ws={};L.forEach(a=>{const x=CRUD.crud[a.code];if(!x)return;['C','U','D','R'].forEach(k=>x[k].forEach(w=>{if(WPN[w])(ws[w]=ws[w]||new Set()).add(k)}));});
+    const rank=w=>ws[w].has('C')?0:ws[w].has('U')||ws[w].has('D')?1:2,ids=Object.keys(ws).sort((a,b)=>rank(a)-rank(b)||nat(a,b));
+    const made=ids.filter(w=>ws[w].has('C')).length;
+    return '<div class="db-proc" onclick="dpOpenProc(\''+p.code+'\')"><div class="db-pn"><span><span class="code">'+p.code+'</span> '+esc(p.name)+'</span></div>'+
+      '<div class="pp-own">'+ids.length+' work product'+(ids.length===1?'':'s')+(made?' · creates '+made:'')+' · '+L.length+' activit'+(L.length===1?'y':'ies')+'</div>'+
+      (ids.length?'<div class="pp-mx">'+ids.map(w=>'<div><div class="dp-wn'+(ws[w].has('C')?' made':'')+'" title="'+escA(WPN[w].name+' · '+WPN[w].system)+'">'+esc(WPN[w].name)+' <span class="code">'+w+'</span></div><div class="pp-ch">'+L.map(a=>chip(a,w)).join('')+'</div></div>').join('')+'</div>':'<div class="small">No work products recorded.</div>')+'</div>';};
+  h+='<div class="card"><h3>Work products by process and activity &middot; All process groups</h3><div class="sub">Each process&rsquo;s CRUD broken out by activity: one row per work product, one chip per activity, '+where+'. Click a card to open its activities.</div><div class="db-legend">'+leg+'</div><div class="pp-grid">'+
+    DATA.groups.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+PROCS.filter(p=>p.g===gc).map(card).join('')+'</div>').join('')+'</div></div>';
+  return h;
+}
+// A process card opens By activity at that process and scrolls to it.
+function dpOpenProc(code){S.dview='acts';S.dmode='act';try{localStorage.setItem('fv.dataMode','acts')}catch(e){}render();
+  // A process with sub-activities has its own heading row; a single-activity process (such as 7.4.4) is its activity's row.
+  const row=[...document.querySelectorAll('tr.tier')].find(r=>r.textContent.trim().startsWith(code+' '))||[...document.querySelectorAll('#main tr')].find(r=>r.textContent.trim().startsWith(code+' '));
   if(row){try{const fr=window.frameElement;if(fr)P.scrollTo({top:fr.getBoundingClientRect().top+P.scrollY+row.getBoundingClientRect().top-70,behavior:'smooth'});else row.scrollIntoView({behavior:'smooth'});}catch(e){row.scrollIntoView();}}
 }
 
