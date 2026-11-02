@@ -306,7 +306,7 @@ const HC={High:1,Critical:1};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const pct=(n,d)=>d?Math.round(100*n/d)+'%':'—';
 // RACI is activity level (GR-060, Tim's decision Oct 10, 2026); a process's RACI is computed from its activities (procRaci).
-let S={dview:'dash',dlayout:'proc',denc2:'crud',wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'pdash',penc:'raci',playout:'proc',prows:'all',pchips:'own',stage:'Automation',appr:'R',esc:'A',wg:'all',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
+let S={fview:'dash',dview:'dash',dlayout:'proc',denc2:'crud',wmode:'dash',denc:'stage',dwhere:'auto',fmode:'exec',dmode:'wp',view:'work',org:'ref',pmode:'pdash',penc:'raci',playout:'proc',prows:'all',pchips:'own',stage:'Automation',appr:'R',esc:'A',wg:'all',ws:'all',wsel:{'7.2.1.4':{t:'gate',k:2}}}, opened={};
 const VIEWS=[
  {id:'work',name:'Work',q:'Where does each activity sit, and what moves next?'},
  {id:'people',name:'People',q:'What does this mean for each role?'},
@@ -880,8 +880,9 @@ function dbOpen(code){const p=PROCS.find(x=>x.code===code);if(!p)return;
   if(row){try{const fr=window.frameElement;if(fr){P.scrollTo({top:fr.getBoundingClientRect().top+P.scrollY+row.getBoundingClientRect().top-70,behavior:'smooth'});}else row.scrollIntoView({behavior:'smooth'});}catch(e){row.scrollIntoView();}}
 }
 {const tip=document.createElement('div');tip.className='db-tip';document.body.appendChild(tip);
- document.addEventListener('mousemove',e=>{const el=e.target.closest&&e.target.closest('.db-cell,[data-t],[data-d]');
-  if(!el||!(el.dataset.c||el.dataset.t||el.dataset.d)){tip.style.display='none';return;}
+ document.addEventListener('mousemove',e=>{const el=e.target.closest&&e.target.closest('.db-cell,[data-t],[data-d],[data-f]');
+  if(!el||!(el.dataset.c||el.dataset.t||el.dataset.d||el.dataset.f)){tip.style.display='none';return;}
+  if(el.dataset.f){const a=ACT[el.dataset.f],F=findAll()[a.code];tip.innerHTML='<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>'+esc(a.Aroles.join(', '))+' (Accountable) \u00b7 '+(isOrg()?'Current State '+curOf(a)+' \u00b7 ':'')+'ceiling '+derivedCeil(a)+' \u00b7 '+a.cons+'<br>'+F.map(k=>FDM[k][1]).join('<br>');tip.style.display='block';const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-8),y=e.clientY+16+tip.offsetHeight>innerHeight?e.clientY-tip.offsetHeight-10:e.clientY+16;tip.style.left=x+'px';tip.style.top=y+'px';return;}
   if(el.dataset.d){const [w,c,k,pr]=el.dataset.d.split('|'),a=ACT[c],q=ACT[pr];tip.innerHTML='<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>Relies on '+esc((WPN[w]||{}).name||w)+(q?' from '+q.code+' at '+stageNow(q):'')+'<br>'+esc(a.Aroles.join(', '))+' (Accountable) · '+stageNow(a)+' · '+a.cons+'<br>'+DDK[k][0];tip.style.display='block';const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-8),y=e.clientY+16+tip.offsetHeight>innerHeight?e.clientY-tip.offsetHeight-10:e.clientY+16;tip.style.left=x+'px';tip.style.top=y+'px';return;}
   if(el.dataset.c){const a=ACT[el.dataset.c];tip.innerHTML='<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>'+(dbWhere()==='cur'?'Current State ':'Ceiling ')+dbSt(a)+' \u00b7 '+HPCT[dbSt(a)]+'% H<br>Consequence of Error '+a.cons+'<br>Accountable '+esc(a.Aroles.join(', '))+'<br>'+DBK[dbKind(a)][0];}
   else tip.innerHTML=el.dataset.t;
@@ -1208,10 +1209,15 @@ function dpOpenProc(code){S.dview='acts';S.dmode='act';try{localStorage.setItem(
 }
 
 /* ---------- Findings ---------- */
+// Findings opens on its dashboard (GR-061), remembered per browser like the other views.
+try{const m=localStorage.getItem('fv.findMode');if(m==='dash'||m==='sum')S.fview=m;}catch(e){}
+function setFView(v){S.fview=v;try{localStorage.setItem('fv.findMode',v)}catch(e){}render();}
 function findSide(){
-  const org=isOrg();
-  return '<div class="q">'+VIEWS[3].q+'</div><p>'+(org?'Where '+esc(ORGNAME())+' departs from the reference, and the few items that need a decision. Every number is read from its assessment and override records.':'The reference at a glance, drawn from the other three views, and the latest change made to it. Select an organization for its executive summary and exceptions.')+'</p>'+
-   (org?'<h5>Show</h5>'+btns([['exec','Executive summary'],['exc','Exceptions report']],'fmode'):'')+
+  const org=isOrg(),dash=S.fview==='dash';
+  return '<div class="q">'+VIEWS[3].q+'</div>'+
+   '<h5>Show</h5><div class="stack">'+[['dash','Dashboard'],['sum',org?'Summary and exceptions':'Summary']].map(o=>'<button class="'+(S.fview===o[0]?'on':'')+'" onclick="setFView(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>'+
+   (dash?'<p style="margin-top:10px">Every finding on one map: one column per process group, one card per process, one square per activity, colored by the most serious finding on it'+(org?' for '+esc(ORGNAME())+', at its Current State':', with every activity at its Progression Ceiling')+'. Hover a square for all its findings; click a card or square to open the activity in Work.</p>':'<p style="margin-top:10px">'+(org?'Where '+esc(ORGNAME())+' departs from the reference, and the few items that need a decision. Every number is read from its assessment and override records.':'The reference at a glance, drawn from the other three views, and the latest change made to it. Select an organization for its executive summary and exceptions.')+'</p>')+
+   (org&&!dash?'<h5>Show</h5>'+btns([['exec','Executive summary'],['exc','Exceptions report']],'fmode'):'')+
    '<div class="pl"><a href="../wip/requirements_register.html">Requirements Register</a>: what Tim and GiGi have decided and what still needs a decision.<br><a href="../wip/production_changelog.html">Change log</a>: every change made to the reference, and why.</div>'+
    '<div class="replaces">Replaces <b>Exceptions Report</b>: the same report, printable, with two more sections (elements past their own ceilings, GR-058, and named controls needed, GR-054). It is also where the executive summary (GR-056) and the reference stress tests live.</div>';
 }
@@ -1260,7 +1266,59 @@ function orgFindings(){
   h+='<div class="outline"><h3>Handed to the human-impact side</h3><p>The role hand-off (GR-056) carries, for each role, the work change that lands on it: the People view&rsquo;s load numbers read from this organization&rsquo;s Current State instead of the ceiling.</p></div>';
   return h;
 }
-function findMain(){return isOrg()?orgFindings():refFindings();}
+function findMain(){return S.fview==='dash'?findDash():isOrg()?orgFindings():refFindings();}
+
+
+/* ---------- Findings dashboard (GR-061) ---------- */
+// Every finding on Work's grid: one square per activity, colored by the most serious finding on it, in this order.
+// Organization findings read its assessment and override records; the reference findings read the model at the ceilings
+// (Reference Model) or at the organization's Current State, as the Work view's control points do.
+const FDK=[
+ ['pastHC','Past the ceiling at High or Critical: no override possible','#B91C1C','#fff'],
+ ['past','Past the ceiling at Low or Moderate, no override yet','#E57373','#fff'],
+ ['elem','Within the ceiling, an element past its own ceiling','#F2B8B5','#0D2D4F'],
+ ['ctl','Needs a named control: reaches no control point','#B8873F','#fff'],
+ ['unchk','Unchecked input: relies on AI-touched work, no person in between','#E2C58F','#0D2D4F'],
+ ['ref','To reassess: reference changed since assessed','#6895C8','#fff'],
+ ['ovr','Past the ceiling, covered by an approved override','#9CBBE0','#0D2D4F'],
+ ['none','No finding','#E3E8F0','#0D2D4F']];
+const FDM=Object.fromEntries(FDK.map(x=>[x[0],x]));
+function findAll(){
+  const org=isOrg(),m=dpAnalysis(),saved=S.stage;S.stage=org?'Today':'Automation';const A=wpAnalysis();S.stage=saved;
+  const unchk=new Set(A.flatMap(x=>x.ho.map(h=>h.c))),out={};
+  DATA.acts.forEach(a=>{const f=[],r=m[a.code];
+    if(org&&ABCSTAGE[a.code]){const cur=rank(curOf(a)),ci=rank(derivedCeil(a));
+      if(cur>ci){if(cur>abcLim(a))f.push(HC[a.cons]?'pastHC':'past');else f.push('ovr');}
+      else if(pastEls(a).length) f.push('elem');
+      const rf=ABC_REF[a.code];if(rf&&(rf.ceiling!==derivedCeil(a)||rf.cons!==a.cons)) f.push('ref');}
+    if(!r.dp&&!r.feeds.length) f.push('ctl');
+    if(unchk.has(a.code)) f.push('unchk');
+    f.sort((x,y)=>FDK.findIndex(k=>k[0]===x)-FDK.findIndex(k=>k[0]===y));
+    out[a.code]=f.length?f:['none'];});
+  return out;}
+function findDash(){
+  const org=isOrg(),F=findAll(),L=DATA.acts,cnt={};FDK.forEach(k=>cnt[k[0]]=0);
+  L.forEach(a=>F[a.code].forEach(k=>cnt[k]++));
+  const top=k=>L.filter(a=>F[a.code][0]===k).length,flagged=L.filter(a=>F[a.code][0]!=='none').length;
+  let h='<div class="tiles" style="margin-bottom:16px">'+
+    (org?tile(L.filter(a=>ABCSTAGE[a.code]).length+' of '+L.length,'activities assessed')+tile(cnt.pastHC+cnt.past,'past the ceiling with no override ('+cnt.pastHC+' at High or Critical)')+tile(cnt.elem,'with an element past its own ceiling'):'')+
+    tile(cnt.ctl,'need a named control: no control point')+tile(cnt.unchk,'receive AI-touched work with no person in between')+
+    (org?tile(cnt.ref,'to reassess: reference changed'):tile(flagged+' of '+L.length,'activities with a finding at the ceilings'))+'</div>';
+  const used=FDK.filter(k=>k[0]==='none'||cnt[k[0]]||!org&&['ctl','unchk'].includes(k[0]));
+  const leg=used.map(k=>'<span><i class="db-sw" style="background:'+k[2]+'"></i>'+k[1]+(k[0]==='none'?'':' ('+cnt[k[0]]+')')+'</span>').join('');
+  h+='<div class="card"><h3>Findings, by process</h3><div class="sub">One square per activity, colored by its most serious finding'+(org?', for '+esc(ORGNAME())+' at its Current State':', at the Progression Ceilings')+'. The figure on each card is how many of its activities have a finding.</div><div class="db-legend">'+leg+'</div><div class="db-grid">'+
+    DATA.groups.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+PROCS.filter(p=>p.g===gc).map(p=>{const PL=p.acts.map(c=>ACT[c]).filter(Boolean),n=PL.filter(a=>F[a.code][0]!=='none').length;
+      return '<div class="db-proc" onclick="fdOpen(\''+p.code+'\')"><div class="db-pn"><span><span class="code">'+p.code+'</span> '+esc(p.name)+'</span><span class="h"'+(n?'':' style="color:var(--lgray)"')+'>'+n+'</span></div><div class="db-cells">'+
+        PL.map(a=>'<i class="db-cell" data-f="'+a.code+'" onclick="event.stopPropagation();fdOpen(\''+p.code+'\',\''+a.code+'\')" style="background:'+FDM[F[a.code][0]][2]+'"></i>').join('')+'</div></div>';}).join('')+'</div>').join('')+'</div></div>';
+  // Findings by process group: activities by their most serious finding.
+  const rows=DATA.groups.map(([gc,gn])=>{const G=L.filter(a=>a.code.startsWith(gc+'.')),t={};G.forEach(a=>{const k=F[a.code][0];t[k]=(t[k]||0)+1});
+    return '<div class="row"><div><span class="code">'+gc+'</span> '+esc(gn)+'</div><div class="db-bar">'+FDK.filter(k=>t[k[0]]).map(k=>'<div data-t="'+esc(gc+' '+gn)+'<br>'+t[k[0]]+' of '+G.length+': '+k[1]+'" style="flex:'+t[k[0]]+';background:'+k[2]+';color:'+k[3]+'">'+(t[k[0]]>1?t[k[0]]:'')+'</div>').join('')+'</div><div class="h">'+G.filter(a=>F[a.code][0]!=='none').length+' of '+G.length+'</div></div>';}).join('');
+  h+='<div class="card"><h3>Findings by process group</h3><div class="sub">Each group&rsquo;s activities by their most serious finding.</div><div class="db-bars">'+rows+'</div></div>';
+  return h;
+}
+// A card (or a square) opens the Work view's activities at that process, expanded, and selects the activity's control point.
+function fdOpen(code,act){try{P.setView('work')}catch(e){S.view='work'}
+  if(act)S.wsel[act]={t:'dp',k:0};dbOpen(code);}
 
 /* ---------- Exceptions report (GR-059: replaces the Exceptions Report button) ----------
    The sandbox's own report, built by pcf7.html (exceptionsReportHTML), with two sections the four views add:
