@@ -379,9 +379,9 @@ function peopleSide(){
   if(S.pmode==='pdash'){
     h+='<h5>Lay out by</h5>'+btns([['proc','Process'],['role','Role']],'playout');
     if(S.playout==='proc') h+='<h5>Roles on each card</h5>'+btns([['all','Every role with a letter'],['ar','Accountable and Responsible only']],'prows')+
-     '<h5>Reading it</h5><p>The same layout as Work: one column per process group, one card per process. Each card is the process&rsquo;s RACI broken out by activity: one row per role with its chips underneath, one chip per activity, in catalog order. The process owner is the first row; the other rows follow in Also Accountable, Responsible, Consulted, Informed order. An Accountable role with no Responsible named also does the work. Hover a chip for the activity; click a card to open its activities.</p>';
-    else h+='<h5>Chips</h5>'+btns([['own','Only where the role has a letter'],['all','Every activity']],'pchips')+
-     '<h5>Reading it</h5><p>One panel per role, in tier order, broken down like the other views: process group, then process, then a chip per activity in catalog order. By default only the processes and activities where the role holds a letter are shown. The chip shows the role&rsquo;s strongest letter on that activity: Accountable, Responsible, Consulted or Informed. An Accountable role with no Responsible named also does the work. Hover a chip for the activity; click a panel for the role&rsquo;s row in the RACI table.</p>';}
+     '<h5>Reading it</h5><p>The same layout as Work: one column per process group, one card per process. Each card is the process&rsquo;s RACI broken out by activity: one row per role with its squares underneath, one square per activity, in catalog order. The process owner is the first row; the other rows follow in Also Accountable, Responsible, Consulted, Informed order. An Accountable role with no Responsible named also does the work. Hover a square for the activity; click a card to open its activities.</p>';
+    else h+='<h5>Squares</h5>'+btns([['own','Only where the role has a letter'],['all','Every activity']],'pchips')+
+     '<h5>Reading it</h5><p>One panel per role, in tier order, broken down like the other views: process group, then process, then a square per activity in catalog order. By default only the processes and activities where the role holds a letter are shown. The square shows the role&rsquo;s strongest letter on that activity: Accountable, Responsible, Consulted or Informed. An Accountable role with no Responsible named also does the work. Hover a square for the activity; click a panel for the role&rsquo;s row in the RACI table.</p>';}
   if(S.pmode==='load'){
     h+=stageBtns()+
      '<h5>At Oversight, every instance is approved by</h5>'+btns([['R','The role that did the work'],['A','The Accountable role']],'appr')+
@@ -915,7 +915,7 @@ function peopleDash(){
     return '<div class="pd-role" onclick="pdOpen(\''+esc(n).replace(/'/g,"\\'")+'\')"><div class="pd-rn"><span>'+esc(n)+'</span>'+(hr==null?'':'<span class="h">'+hr+'% H at ceiling</span>')+'</div>'+
       '<div class="pd-sub">'+(r.reportsTo?'Reports to '+esc(r.reportsTo):'Top of the role catalog')+' · A '+c.A+' · R '+c.R+' · C '+c.C+' · I '+c.I+' · '+dpn(n)+' control point'+(dpn(n)===1?'':'s')+' anchored</div>'+
       (rows||'<div class="small">No RACI letter '+(SC.all?'in PCF 7.0':'in '+S.wg)+'.</div>')+'</div>';};
-  h+='<div class="card"><h3>RACI by role &middot; '+(SC.all?'All process groups':S.wg+' '+esc(DATA.groups.find(g=>g[0]===S.wg)[1]))+'</h3><div class="sub">By process group, process and activity: one chip per activity '+(S.pchips==='own'?'where the role holds a letter':'of '+SC.label)+'. The % H is the mean of the role&rsquo;s Accountable activities at their ceilings.</div><div class="db-legend">'+leg+'</div>'+
+  h+='<div class="card"><h3>RACI by role &middot; '+(SC.all?'All process groups':S.wg+' '+esc(DATA.groups.find(g=>g[0]===S.wg)[1]))+'</h3><div class="sub">By process group, process and activity: one square per activity '+(S.pchips==='own'?'where the role holds a letter':'of '+SC.label)+'. The % H is the mean of the role&rsquo;s Accountable activities at their ceilings.</div><div class="db-legend">'+leg+'</div>'+
     ['Executive','Managerial','Operational'].map(t=>{const L=DATA.roles.filter(r=>r.tier===t);return L.length?'<div class="pd-tier">'+t+'</div><div class="pd-grid">'+L.map(panel).join('')+'</div>':'';}).join('')+'</div>';
   return h;
 }
@@ -928,11 +928,11 @@ function pdBg(a,l,enc){return enc==='stage'?DOT[dbSt(a)]:enc==='cons'?CONSC[a.co
 function pdChip(a,n,enc){enc=enc||'raci';const l=letterOf(a,n),v=PDC[l],bg=l?pdBg(a,l,enc):'';
   const fg=!l?'':enc==='raci'?v[2]:PDLIGHT.includes(bg)?'#0D2D4F':'#fff';
   return '<i class="pd-chip'+(l?'':' n')+'" data-t="'+escA('<span style="opacity:.75">'+a.code+'</span> '+a.name+'<br>'+esc(n)+': '+(l?v[0]+(l==='A'&&!a.R.length?', and does the work':''):'no RACI letter')+'<br>Accountable '+a.Aroles.join(', ')+(a.R.length?' · Responsible '+a.R.join(', '):'')+'<br>'+(enc==='stage'||enc==='dp'?(dbWhere()==='cur'?'Current State ':'Ceiling ')+dbSt(a):'Ceiling '+derivedCeil(a))+' · Consequence of Error '+a.cons+(enc==='dp'?'<br>'+DBK[dbKind(a)][0]:''))+'"'+(l?' style="background:'+bg+';color:'+fg+'"':'')+'>'+l+'</i>';}
-// The dashboard legend for the chosen coloring; the letter on a chip is always the role's RACI letter.
+// The dashboard legend for the chosen coloring; the letter on a square is always the role's RACI letter.
 function pdLegend(){
   if(S.penc==='raci') return Object.entries(PDC).map(([k,v])=>'<span><i class="pd-chip" style="display:inline-block;background:'+v[1]+';color:'+v[2]+'">'+k+'</i>'+v[0]+'</span>').join('')+'<span><i class="pd-chip n" style="display:inline-block"></i>No letter</span>';
   const it=S.penc==='stage'?ST.map(s=>[DOT[s],s+' ('+HPCT[s]+')']):S.penc==='cons'?CONSO.map(c=>[CONSC[c],c]):Object.values(DBK).map(([l,c])=>[c,l]);
-  return it.map(([c,l])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('')+'<span style="color:var(--lgray)">The letter is the role&rsquo;s RACI letter; a blank chip, no letter</span>';}
+  return it.map(([c,l])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('')+'<span style="color:var(--lgray)">The letter is the role&rsquo;s RACI letter; a blank square, no letter</span>';}
 function peopleByProc(groups,leg){
   const card=p=>{const L=p.acts.map(c=>ACT[c]).filter(Boolean);if(!L.length)return '';
     const x=procRaci(p),cat=DATA.roles.map(r=>r.name);
@@ -941,7 +941,7 @@ function peopleByProc(groups,leg){
       '<div class="pp-own">Owner <b>'+esc(x.owner)+'</b> · '+L.length+' activit'+(L.length===1?'y':'ies')+'</div>'+
       '<div class="pp-mx">'+
       rows.map(r=>'<div><div class="rn'+(r.letter==='A'?' own':'')+'" title="'+escA(r.r+' · '+RACI_WORD[r.letter]+' for the process')+'">'+esc(r.r)+'</div><div class="pp-ch">'+L.map(a=>pdChip(a,r.r,S.penc)).join('')+'</div></div>').join('')+'</div></div>';};
-  return '<div class="card"><h3>RACI by process and activity &middot; '+(groups.length>1?'All process groups':groups[0][0]+' '+esc(groups[0][1]))+'</h3><div class="sub">Each process&rsquo;s RACI broken out by activity: one row per role, one chip per activity, the owner first. Click a card to open its activities.</div><div class="db-legend">'+leg+'</div><div class="pp-grid">'+
+  return '<div class="card"><h3>RACI by process and activity &middot; '+(groups.length>1?'All process groups':groups[0][0]+' '+esc(groups[0][1]))+'</h3><div class="sub">Each process&rsquo;s RACI broken out by activity: one row per role, one square per activity, the owner first. Click a card to open its activities.</div><div class="db-legend">'+leg+'</div><div class="pp-grid">'+
     groups.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+PROCS.filter(p=>p.g===gc).map(card).join('')+'</div>').join('')+'</div></div>';
 }
 // People's Activities (Tim, Oct 31, 2026): process group, process, role, activities. A process row opens like Work's;
@@ -1082,7 +1082,7 @@ function dataSide(){
    '<h5>Terms</h5><p><b>AI-touched:</b> the most automated activity that produces it is at Augmentation or further.<br><b>Checked input:</b> an activity at Judgment, Augmentation or Oversight relies on an AI-touched work product, so a person at its control point checks it before acting.<br><b>Unchecked input:</b> the activity relying on it is at Agent-delegation or Automation with a High or Critical Consequence of Error, so no person is in between.</p>'+
    '<div class="pl"><a href="../wip/work_product_catalog.html">Work-Product Catalog</a>: every work product\u2019s definition, system of record and the activities that use it.</div>'+
    (dash?'<h5>Lay out by</h5>'+btns([['proc','Process'],['sys','System of record']],'dlayout')+(S.dlayout==='proc'?'<h5>Color the squares by</h5>'+btns([['crud','CRUD letter'],['check','Check']],'denc2'):''):'')+
-   (dash&&S.dlayout==='proc'?'<h5>Reading it</h5><p>The same layout as Work and People: one column per process group, one card per process. Each card is the process&rsquo;s CRUD broken out by activity: one row per work product its activities touch, one chip per activity in catalog order, with the activity&rsquo;s letter on it &mdash; Create, Update, Delete or Read, the strongest it holds. Work products the process creates come first, in bold. Colored by Check, a chip shows what happens where the activity relies on AI-touched work: checked at its control point, unchecked, or no check. Hover a chip for the activity; click a card to open its activities.</p>':'')+
+   (dash&&S.dlayout==='proc'?'<h5>Reading it</h5><p>The same layout as Work and People: one column per process group, one card per process. Each card is the process&rsquo;s CRUD broken out by activity: one row per work product its activities touch, one square per activity in catalog order, with the activity&rsquo;s letter on it &mdash; Create, Update, Delete or Read, the strongest it holds. Work products the process creates come first, in bold. Colored by Check, a square shows what happens where the activity relies on AI-touched work: checked at its control point, unchecked, or no check. Hover a square for the activity; click a card to open its activities.</p>':'')+
    (dash&&S.dlayout==='sys'?'<h5>Reading it</h5><p>One column per system of record, one card per work product. Each square is an activity that relies on it, in catalog order, colored by its check at this stage. The figure on each card is its checked inputs; an amber line counts its unchecked inputs. Hover a square for the activity; click a card for its detail. The bars below show where the checking lands, by Accountable role.</p>':'')+
    '<div class="replaces">Replaces <b>Data View (CRUD)</b> and brings in the work-product verification analysis (GR-046).</div>';
 }
@@ -1178,7 +1178,7 @@ function dataByProc(){
     tile(nvp,'checked inputs: a person checks AI-touched work at a control point')+tile(nho,'unchecked inputs into High or Critical work, on '+hoActs.length+' activit'+(hoActs.length===1?'y':'ies'))+
     tile(A.filter(x=>!ddRelies(x).length).length,'work products no other activity relies on')+'</div>';
   const leg=S.denc2==='crud'?Object.entries(CRC).map(([k,v])=>'<span><i class="pd-chip" style="display:inline-block;background:'+v[1]+';color:'+v[2]+'">'+k+'</i>'+v[0]+'</span>').join('')+'<span><i class="pd-chip n" style="display:inline-block"></i>Does not touch it</span>'
-    :Object.values(DDK).map(([l,c])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('')+'<span style="color:var(--lgray)">The letter is the activity&rsquo;s CRUD letter; a blank chip, it does not touch the work product</span>';
+    :Object.values(DDK).map(([l,c])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('')+'<span style="color:var(--lgray)">The letter is the activity&rsquo;s CRUD letter; a blank square, it does not touch the work product</span>';
   const chip=(a,w)=>{const ops=crudOf(a.code,w),l=ops[0]||'';if(!l)return '<i class="pd-chip n"></i>';
     const k=S.denc2==='check'?chk(w,a.code):null,bg=k?DDK[k][1]:CRC[l][1],fg=k?(k==='no'?'#0D2D4F':'#fff'):CRC[l][2];
     return '<i class="pd-chip" data-t="'+escA('<span style="opacity:.75">'+a.code+'</span> '+a.name+'<br>'+ops.map(o=>CRC[o][0]+'s').join(', ')+' '+(WPN[w]||{}).name+' <span style="opacity:.75">'+w+'</span><br>'+a.Aroles.join(', ')+' (Accountable) · '+stageNow(a)+' · '+a.cons+(k?'<br>'+DDK[k][0]:''))+'" style="background:'+bg+';color:'+fg+'">'+l+'</i>';};
@@ -1189,7 +1189,7 @@ function dataByProc(){
     return '<div class="db-proc" onclick="dpOpenProc(\''+p.code+'\')"><div class="db-pn"><span><span class="code">'+p.code+'</span> '+esc(p.name)+'</span></div>'+
       '<div class="pp-own">'+ids.length+' work product'+(ids.length===1?'':'s')+(made?' · creates '+made:'')+' · '+L.length+' activit'+(L.length===1?'y':'ies')+'</div>'+
       (ids.length?'<div class="pp-mx">'+ids.map(w=>'<div><div class="dp-wn'+(ws[w].has('C')?' made':'')+'" title="'+escA(WPN[w].name+' · '+WPN[w].system)+'">'+esc(WPN[w].name)+' <span class="code">'+w+'</span></div><div class="pp-ch">'+L.map(a=>chip(a,w)).join('')+'</div></div>').join('')+'</div>':'<div class="small">No work products recorded.</div>')+'</div>';};
-  h+='<div class="card"><h3>Work products by process and activity &middot; All process groups</h3><div class="sub">Each process&rsquo;s CRUD broken out by activity: one row per work product, one chip per activity, '+where+'. Click a card to open its activities.</div><div class="db-legend">'+leg+'</div><div class="pp-grid">'+
+  h+='<div class="card"><h3>Work products by process and activity &middot; All process groups</h3><div class="sub">Each process&rsquo;s CRUD broken out by activity: one row per work product, one square per activity, '+where+'. Click a card to open its activities.</div><div class="db-legend">'+leg+'</div><div class="pp-grid">'+
     DATA.groups.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+PROCS.filter(p=>p.g===gc).map(card).join('')+'</div>').join('')+'</div></div>';
   return h;
 }
