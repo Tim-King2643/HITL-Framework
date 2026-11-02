@@ -1082,7 +1082,7 @@ function dataSide(){
    '<h5>Terms</h5><p><b>AI-touched:</b> the most automated activity that produces it is at Augmentation or further.<br><b>Checked input:</b> an activity at Judgment, Augmentation or Oversight relies on an AI-touched work product, so a person at its control point checks it before acting.<br><b>Unchecked input:</b> the activity relying on it is at Agent-delegation or Automation with a High or Critical Consequence of Error, so no person is in between.</p>'+
    '<div class="pl"><a href="../wip/work_product_catalog.html">Work-Product Catalog</a>: every work product\u2019s definition, system of record and the activities that use it.</div>'+
    (dash?'<h5>Lay out by</h5>'+btns([['proc','Process'],['sys','System of record']],'dlayout')+(S.dlayout==='proc'?'<h5>Color the squares by</h5>'+btns([['crud','CRUD letter'],['check','Check']],'denc2'):''):'')+
-   (dash&&S.dlayout==='proc'?'<h5>Reading it</h5><p>The same layout as Work and People: one column per process group, one card per process. Each card is the process&rsquo;s CRUD broken out by activity: one row per work product its activities touch, one square per activity in catalog order, with the activity&rsquo;s letter on it &mdash; Create, Update, Delete or Read, the strongest it holds. Work products the process creates come first, in bold. Colored by Check, a square shows what happens where the activity relies on AI-touched work: checked at its control point, unchecked, or no check. Hover a square for the activity; click a card to open its activities.</p>':'')+
+   (dash&&S.dlayout==='proc'?'<h5>Reading it</h5><p>The same layout as Work and People: one column per process group, one card per process. Each card is the process&rsquo;s CRUD broken out by activity: one row per work product its activities touch, one square per activity in catalog order, with the activity&rsquo;s letter on it &mdash; Create, Update, Delete or Read, the strongest it holds. Work products the process creates come first, in bold. Colored by Check, a square shows what happens where the activity relies on AI-touched work: checked at its control point, unchecked, or no check. Hover a square for the activity; click a card to open its activities. The bars below show where the checking lands, by Accountable role.</p>':'')+
    (dash&&S.dlayout==='sys'?'<h5>Reading it</h5><p>One column per system of record, one card per work product. Each square is an activity that relies on it, in catalog order, colored by its check at this stage. The figure on each card is its checked inputs; an amber line counts its unchecked inputs. Hover a square for the activity; click a card for its detail. The bars below show where the checking lands, by Accountable role.</p>':'')+
    '<div class="replaces">Replaces <b>Data View (CRUD)</b> and brings in the work-product verification analysis (GR-046).</div>';
 }
@@ -1133,6 +1133,18 @@ const DDK={vp:['Checked input: a person checks it at a control point','#3A6FAE']
 function ddRelies(x){const id=x.w.id,vp={},ho={};x.pts.forEach(q=>vp[q.c]=q.p);x.ho.forEach(q=>ho[q.c]=q.p);
   return Object.keys(CRUD.crud).filter(c=>ACT[c]&&CRUD.crud[c].R.concat(CRUD.crud[c].U).includes(id)&&x.prods.some(p=>p!==c)).sort(nat)
     .map(c=>({c,k:vp[c]?'vp':ho[c]?'ho':'no',p:vp[c]||ho[c]||x.top}));}
+// Where the checking lands (GR-061): checked and unchecked inputs by the Accountable role of the activity relying on the
+// work, shown under both Data dashboard layouts.
+function ddLoad(A,where){let h='';
+  const rl={};A.forEach(x=>{x.pts.forEach(q=>{const r=ACT[q.c].A;(rl[r]=rl[r]||{vp:0,ho:0}).vp++});x.ho.forEach(q=>{const r=ACT[q.c].A;(rl[r]=rl[r]||{vp:0,ho:0}).ho++});});
+  const roles=Object.entries(rl).sort((a,b)=>(b[1].vp+b[1].ho)-(a[1].vp+a[1].ho)),mx=Math.max(1,...roles.map(([n,v])=>v.vp+v.ho));
+  h+='<div class="card"><h3>Where the checking lands</h3><div class="sub">Checked and unchecked inputs by the Accountable role of the activity that relies on the work, '+where+'.</div><div class="db-legend"><span><i class="db-sw" style="background:'+DDK.vp[1]+'"></i>Checked inputs</span><span><i class="db-sw" style="background:'+DDK.ho[1]+'"></i>Unchecked inputs</span></div><div class="dd-load">'+
+    (roles.length?roles.map(([n,v])=>'<div class="row"><div>'+esc(n)+'</div><div class="db-bar" style="width:'+Math.max(2,Math.round(100*(v.vp+v.ho)/mx))+'%">'+
+      (v.vp?'<div data-t="'+esc(n)+'<br>'+v.vp+' checked input'+(v.vp>1?'s':'')+'" style="flex:'+v.vp+';background:'+DDK.vp[1]+';color:#fff">'+(v.vp>1?v.vp:'')+'</div>':'')+
+      (v.ho?'<div data-t="'+esc(n)+'<br>'+v.ho+' unchecked input'+(v.ho>1?'s':'')+'" style="flex:'+v.ho+';background:'+DDK.ho[1]+';color:#fff">'+(v.ho>1?v.ho:'')+'</div>':'')+
+      '</div><div class="h">'+v.vp+' · '+v.ho+'</div></div>').join(''):'<div class="small">No checking at this stage.</div>')+'</div></div>';
+  return h;
+}
 function dataDash(){
   if(S.dlayout==='proc') return dataByProc();
   const A=wpAnalysis(),nvp=A.reduce((s,x)=>s+x.pts.length,0),nho=A.reduce((s,x)=>s+x.ho.length,0),touched=A.filter(x=>x.pts.length||x.ho.length);
@@ -1148,13 +1160,7 @@ function dataDash(){
       (x.ho.length?'<div class="dd-sub" style="color:#8A5A00">'+x.ho.length+' unchecked input'+(x.ho.length>1?'s':'')+'</div>':'')+'</div>';};
   h+='<div class="card"><h3>Work products, by system of record</h3><div class="sub">One square per activity that relies on the work product, '+where+'. Click a card for its checked and unchecked inputs.</div><div class="db-legend">'+Object.values(DDK).map(([l,c])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('')+'</div><div class="dd-grid">'+
     sys.map(sy=>'<div class="db-col"><h4>'+esc(sy)+'</h4>'+A.filter(x=>x.w.system===sy).sort((a,b)=>nat(a.w.id,b.w.id)).map(card).join('')+'</div>').join('')+'</div></div>';
-  const rl={};A.forEach(x=>{x.pts.forEach(q=>{const r=ACT[q.c].A;(rl[r]=rl[r]||{vp:0,ho:0}).vp++});x.ho.forEach(q=>{const r=ACT[q.c].A;(rl[r]=rl[r]||{vp:0,ho:0}).ho++});});
-  const roles=Object.entries(rl).sort((a,b)=>(b[1].vp+b[1].ho)-(a[1].vp+a[1].ho)),mx=Math.max(1,...roles.map(([n,v])=>v.vp+v.ho));
-  h+='<div class="card"><h3>Where the checking lands</h3><div class="sub">Checked and unchecked inputs by the Accountable role of the activity that relies on the work, '+where+'.</div><div class="db-legend"><span><i class="db-sw" style="background:'+DDK.vp[1]+'"></i>Checked inputs</span><span><i class="db-sw" style="background:'+DDK.ho[1]+'"></i>Unchecked inputs</span></div><div class="dd-load">'+
-    (roles.length?roles.map(([n,v])=>'<div class="row"><div>'+esc(n)+'</div><div class="db-bar" style="width:'+Math.max(2,Math.round(100*(v.vp+v.ho)/mx))+'%">'+
-      (v.vp?'<div data-t="'+esc(n)+'<br>'+v.vp+' checked input'+(v.vp>1?'s':'')+'" style="flex:'+v.vp+';background:'+DDK.vp[1]+';color:#fff">'+(v.vp>1?v.vp:'')+'</div>':'')+
-      (v.ho?'<div data-t="'+esc(n)+'<br>'+v.ho+' unchecked input'+(v.ho>1?'s':'')+'" style="flex:'+v.ho+';background:'+DDK.ho[1]+';color:#fff">'+(v.ho>1?v.ho:'')+'</div>':'')+
-      '</div><div class="h">'+v.vp+' · '+v.ho+'</div></div>').join(''):'<div class="small">No checking at this stage.</div>')+'</div></div>';
+  h+=ddLoad(A,where);
   return h;
 }
 // A work-product card opens its row in By work product, expanded, and scrolls to it.
@@ -1191,6 +1197,7 @@ function dataByProc(){
       (ids.length?'<div class="pp-mx">'+ids.map(w=>'<div><div class="dp-wn'+(ws[w].has('C')?' made':'')+'" title="'+escA(WPN[w].name+' · '+WPN[w].system)+'">'+esc(WPN[w].name)+' <span class="code">'+w+'</span></div><div class="pp-ch">'+L.map(a=>chip(a,w)).join('')+'</div></div>').join('')+'</div>':'<div class="small">No work products recorded.</div>')+'</div>';};
   h+='<div class="card"><h3>Work products by process and activity &middot; All process groups</h3><div class="sub">Each process&rsquo;s CRUD broken out by activity: one row per work product, one square per activity, '+where+'. Click a card to open its activities.</div><div class="db-legend">'+leg+'</div><div class="pp-grid">'+
     DATA.groups.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+PROCS.filter(p=>p.g===gc).map(card).join('')+'</div>').join('')+'</div></div>';
+  h+=ddLoad(A,where);
   return h;
 }
 // A process card opens By activity at that process and scrolls to it.
