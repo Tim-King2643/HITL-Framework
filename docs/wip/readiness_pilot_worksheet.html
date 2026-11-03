@@ -175,6 +175,7 @@ function facts(a,s,d){const els=stageEls(a,s),ctl=ctlOf(a),obj=(WORKED[a.code]||
   return '<ul>'+L.map(x=>'<li>'+x+'</li>').join('')+'</ul>';}
 
 function render(){
+  {const o=document.getElementById('out');if(o){o.value='';o.style.display='none';}}
   const a=ACT[CUR],P=PILOTS[CUR],r=rec(),cl=ceil(a);
   document.getElementById('pilot').innerHTML=Object.entries(PILOTS).map(([c,p])=>'<option value="'+c+'"'+(c===CUR?' selected':'')+'>'+p.n+' &mdash; '+c+'</option>').join('');
   const opts=ST.slice(1,rank(cl)+1);let s=r.meta.stage&&opts.includes(r.meta.stage)?r.meta.stage:cl;
