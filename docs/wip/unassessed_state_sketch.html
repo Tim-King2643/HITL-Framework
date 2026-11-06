@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate"><head><meta charset="UTF-8"><meta name="google" content="notranslate"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>[DRAFT] Unassessed State</title>
+<style>
+:root{--navy:#1B4F8A;--navy-d:#0D2D4F;--dark:#0D1B2A;--gray:#444;--lgray:#6B7A90;--faint:#A9B4C4;--bg:#F4F6FB;--border:#DDE3EE;--amber:#8A5A00;--amberbg:#FEF3C7}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-padding-top:12px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);padding-bottom:60px}
+.sk{background:#FEF3C7;border-bottom:2px solid #B8873F;color:#7A5A1E;font-size:12.5px;text-align:center;padding:9px 16px}
+.sk a{color:#7A5A1E;font-weight:600}
+.wrap{max-width:1240px;margin:0 auto;padding:18px 16px;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
+.side{flex:0 1 340px;min-width:260px;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}
+.side h1{font-family:Georgia,serif;font-size:21px;color:var(--navy-d);line-height:1.3;margin-bottom:8px}
+.side p,.side li{font-size:12.5px;color:var(--gray);line-height:1.6}
+.side p{margin-bottom:10px}
+.side h5{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin:16px 0 6px}
+.btn{font:inherit;font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:6px;border:1px solid #C6D8EE;background:#fff;color:var(--navy-d);cursor:pointer;margin:0 6px 6px 0}
+.btn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:4px 0 6px}
+.tile{background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.tile b{display:block;font-size:20px;color:var(--navy-d)}.tile span{font-size:11.5px;color:var(--lgray);line-height:1.35;display:block}
+.toc{list-style:none;font-size:12.5px}
+.toc .grp{font-size:11px;color:var(--lgray);margin:8px 0 2px}
+.toc a{color:var(--navy-d);text-decoration:none;display:flex;gap:8px;padding:2px 0;line-height:1.4}
+.toc a:hover{text-decoration:underline}
+.toc .id{font-family:Consolas,monospace;font-size:11.5px;color:var(--lgray);flex:0 0 42px}
+.toc .pr{color:var(--amber)}
+.main{flex:1;min-width:300px}
+.ghead{font-family:Georgia,serif;font-size:17px;color:var(--navy-d);margin:6px 0 10px}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.card h3{font-size:14.5px;color:var(--navy-d);margin-bottom:3px;font-weight:600}
+.sub{font-size:12px;color:var(--lgray);line-height:1.5}
+.sub .pr{color:var(--amber)}
+.th{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.tid{flex:0 0 auto;font-family:Consolas,monospace;font-size:12px;font-weight:700;color:#fff;background:var(--navy);border-radius:5px;padding:3px 8px}
+.card.prop .tid{background:#B8873F}
+.code{font-family:Consolas,monospace;font-size:12px;color:var(--lgray)}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:22px}
+@media(max-width:860px){.cols{grid-template-columns:1fr}.side{position:static;max-height:none}}
+.lbl{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin-bottom:6px;font-weight:600}
+.def p{font-size:13px;line-height:1.6;margin-bottom:8px}
+.def ol,.def ul{font-size:13px;line-height:1.55;margin:0 0 8px 18px}.def li{margin-bottom:3px}
+.meta{border-top:1px solid #EEF1F6;margin-top:8px;padding-top:8px;font-size:12px;color:var(--gray);line-height:1.55}
+.meta div{display:flex;gap:8px}.meta span.k{flex:0 0 76px;color:var(--lgray)}
+.ex{background:#F8FAFD;border:1px solid #E6EBF3;border-radius:8px;padding:10px 12px}
+.ex p{font-size:12.5px;line-height:1.55;margin-bottom:6px}
+.exp{border-left:4px solid var(--navy);background:#EEF3FA;padding:7px 11px;border-radius:6px;font-size:12.5px;line-height:1.5;margin-top:8px}
+table.g{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:4px}
+.g th{text-align:left;font-size:10.5px;color:var(--lgray);font-weight:600;padding:3px 6px;border-bottom:1px solid var(--border)}
+.g td{padding:4px 6px;border-bottom:1px solid #EEF1F6;vertical-align:top;line-height:1.45}
+.g th{white-space:nowrap}.g td.n{white-space:nowrap;color:var(--lgray)}.g td.r{text-align:right;white-space:nowrap}
+.g tr.off td{color:var(--faint)}
+.g tr.hit td{background:#EEF3FA}
+.sm{font-size:11.5px;color:var(--lgray);line-height:1.5}
+.err{background:#FEE2E2;color:#7F1D1D;border-radius:8px;padding:12px 14px;font-size:13px}
+@media print{.side{position:static;max-height:none}.btn{display:none}.card{break-inside:avoid}}
+
+.cols2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media(max-width:860px){.cols2{grid-template-columns:1fr}}
+.colh{font-size:12px;font-weight:600;color:var(--navy-d);margin-bottom:6px}
+.colh span{font-weight:400;color:var(--lgray)}
+.sq{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 2px 2px 0;vertical-align:middle}
+.sq.u{background:#fff;border:1.5px dashed #8A94A6}
+.pc{border:1px solid var(--border);border-radius:8px;padding:6px 8px;margin-bottom:6px;background:#fff}
+.pc .pn{font-size:11.5px;color:var(--dark);margin-bottom:3px;display:flex;justify-content:space-between;gap:6px}
+.pc .pn b{font-weight:600;color:var(--navy-d);white-space:nowrap}
+.gcols{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.gh{font-size:11px;color:var(--lgray);margin-bottom:4px}
+.bar{display:flex;height:16px;border-radius:4px;overflow:hidden;border:1px solid var(--border)}
+.bar i{display:block;height:100%}
+.bar i.u{background:repeating-linear-gradient(45deg,#fff 0 4px,#E3E8F0 4px 8px)}
+.leg{font-size:11.5px;color:var(--gray);margin-top:6px;line-height:1.7}
+.ramp{display:flex;gap:4px;font-size:11px;margin:4px 0 2px;flex-wrap:wrap}
+.ramp span{padding:2px 6px;border-radius:4px;border:1px solid #E6EBF3;color:var(--lgray);white-space:nowrap}
+.ramp span.r{color:var(--dark)}.ramp span.ceil{border-color:#1F4E86}
+.chip{font-size:11px;border-radius:10px;padding:1px 8px;border:1px solid var(--border);color:var(--lgray);white-space:nowrap}
+.chip.u{border-style:dashed;color:#5B6576}
+.old{color:#9AA4B5;text-decoration:line-through}
+.rules li{margin-bottom:4px}
+</style></head><body>
+<div class="sk"><strong>Sketch</strong> · Unassessed state: what an organization sees before its activities are assessed, computed live from the sandbox&rsquo;s master data · <a href="requirements_register.html#GR-052">GR-052</a> · <a href="gigi_gr012_three_pilot_comparison.pdf">GiGi&rsquo;s three-pilot comparison</a> · <a href="../sandbox/pcf7.html">Sandbox</a> · <a href="index.html">Back to WIP hub</a></div>
+<div class="wrap">
+<div class="side">
+  <h1>Unassessed, not Human-only</h1>
+  <p>Agreed Nov 5 (GR-052, from GiGi&rsquo;s three-pilot comparison): organization assessments start Unassessed, with no predetermined stage. An organization with no assessment no longer inherits a Human-only Current State as if it had been observed.</p>
+  <p>Today the sandbox counts every activity an organization has not assessed as Human-only, at 95% H. Human-only stays the Reference Model&rsquo;s baseline; it stops standing in for an organization&rsquo;s Current State.</p>
+  <h5>Assessed so far</h5>
+  <div id="cov"></div>
+  <h5>Compare</h5>
+  <div id="cmp"></div>
+  <p class="sm">Assessed activities are simulated one step below their ceiling, so the example has something to show. In the sandbox they come from the organization&rsquo;s saved assessments.</p>
+  <h5>The rules, recommended</h5>
+  <ol class="rules" style="margin:0 0 10px 18px;font-size:12.5px;color:var(--gray);line-height:1.55">
+   <li>An activity is Unassessed until its organization saves an assessment. It shows as Unassessed, with a dashed square, and no step of its ramp is marked reached.</li>
+   <li>Current % H and the stage mix count assessed activities only, always with their coverage (&ldquo;Assessed 12 of 118&rdquo;). With nothing assessed, Current State shows no figure.</li>
+   <li>Findings that read the Current State (past the ceiling, element past its ceiling) cover assessed activities only; coverage is reported beside them, never as a finding.</li>
+   <li>Where an analysis needs a stage for an Unassessed activity (control points, checked inputs), it uses the Reference Model at the ceiling, labeled Modeled, as the views already do for the reference.</li>
+   <li>The Reference Model itself is unchanged: its views still show Human-only as the starting baseline.</li>
+  </ol>
+</div>
+<div class="main" id="main"><div class="card sub">Reading the sandbox&rsquo;s master data&hellip;</div></div>
+</div>
+<script>
+(function(){
+const SANDBOX='../sandbox/pcf7.html';
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const nat=(a,b)=>a.localeCompare(b,undefined,{numeric:true});
+const lstw=x=>x.length<2?x.join(''):x.slice(0,-1).join(', ')+' and '+x[x.length-1];
+function literalAfter(src,marker,open,close){
+  const i=src.indexOf(marker);if(i<0)return null;const s=src.indexOf(open,i);let depth=0;
+  for(let j=s;j<src.length;j++){const c=src[j];
+    if(c==='"'){j++;while(j<src.length&&src[j]!=='"'){if(src[j]==='\\')j++;j++;}continue;}
+    if(c==='/'&&src[j+1]==='/'){while(j<src.length&&src[j]!=='\n')j++;continue;}
+    if(c===open)depth++;else if(c===close){depth--;if(depth===0)return src.slice(s,j+1);}}
+  return null;}
+const lit=(src,name,o,c)=>{const t=literalAfter(src,'const '+name+' =',o,c);if(!t)throw new Error(name+' not found in the sandbox file');return (new Function('return '+t))();};
+
+function build(src){
+const PCF7=lit(src,'PCF7','{','}'),WR=lit(src,'WR_DATA','{','}'),ACRUD=lit(src,'ACTIVITY_CRUD','{','}'),ARACI=lit(src,'ACTIVITY_RACI','{','}'),
+      WORKED=lit(src,'WORK_ELEMENTS','{','}'),WPS=lit(src,'WORK_PRODUCTS','[',']'),ROLES=lit(src,'ROLE_TAXONOMY','[',']');
+const CL=typeof CHANGE_LOG!=='undefined'?CHANGE_LOG:[];
+
+/* ---- The sandbox's model, as four_views.html computes it (Reference Model, Consequence of Error gates on, its default) ---- */
+const ST=['Human-only','Judgment','Augmentation','Oversight','Agent-delegation','Automation'],rank=s=>ST.indexOf(s);
+const HPCT={"Human-only":95,"Judgment":82,"Augmentation":62,"Oversight":48,"Agent-delegation":28,"Automation":10};
+const STEPDEF={"Human-only":"A person does all of the work; AI plays no part in it.","Judgment":"A person forms the reasoning and makes the call. AI may supply raw inputs but does not produce the candidate decision.","Augmentation":"The person remains the primary actor; AI assists in real time but never acts unilaterally.","Oversight":"AI performs or proposes the complete work product; a person approves or rejects each instance.","Agent-delegation":"An AI agent does the work within policy bounds; a person handles only flagged exceptions.","Automation":"AI completes the work with no person in the loop for that instance, exceptions included."};
+const HC={High:1,Critical:1},CO=['Low','Moderate','High','Critical'];
+const EL=['Research','Evaluate','Draft','Verify','Decide','Produce / Execute','Communicate'];
+const LEAD=['Human','Human-led','AI-led','AI'],lr=x=>LEAD.indexOf(x);
+const CF=[['human','Human impact'],['legal','Legal / regulatory exposure'],['ops','Operational / financial impact'],['trust','Trust / reputation'],['reach','Reach'],['reversibility','Reversibility']];
+const FL={legal:'Legal / fiduciary duty',floor:'Human judgment floor',relational:'Relational / emotional stakes',accountability:'Accountability',governance:'Governance / sign-off',technical:'Technical readiness gap',top:'Top of the ramp'};
+const FMAP={legal:['Evaluate','Draft','Verify'],floor:['Evaluate','Draft','Decide'],relational:['Communicate'],accountability:['Draft','Decide']};
+const acts=[],procs=[];
+PCF7.groups.forEach(g=>g.l3.forEach(l3=>{const L=(l3.l4&&l3.l4.length?l3.l4:[l3]).filter(x=>WR[x.code]&&ARACI[x.code]);
+  procs.push({code:l3.code,name:l3.name,g:g.code,acts:L.map(x=>x.code)});
+  L.forEach(x=>{const w=WR[x.code],r=ARACI[x.code];acts.push({code:x.code,name:x.name,proc:l3.code,A:r.A,R:r.R.slice(),C:r.C.slice(),I:r.I.slice(),ceiling:w.ceiling,cons:w.cons,f:(w.ceilingFactors||[]).slice(),cf:(w.consFactors||[]).slice(),cn:w.consNote||''});});}));
+const ACT=Object.fromEntries(acts.map(a=>[a.code,a])),PROC=Object.fromEntries(procs.map(p=>[p.code,p])),WPN=Object.fromEntries(WPS.map(w=>[w.id,w]));
+const CRUD=Object.fromEntries(Object.entries(ACRUD).map(([k,x])=>[k,{C:x.create||[],R:x.read||[],U:x.update||[],D:x.delete||[]}]));
+const coeCap=(a,c)=>{const held=a.f.some(f=>FMAP[f]);if(c==='Automation'&&(HC[a.cons]||held))c='Agent-delegation';if(a.cons==='Critical'&&rank(c)>rank('Oversight'))c='Oversight';return c;};
+const baseCeil=a=>coeCap(a,a.ceiling),derivedCeil=a=>{const c=baseCeil(a);return c==='Judgment'?'Augmentation':c};
+const ctlOf=a=>(WORKED[a.code]&&WORKED[a.code].control)||'Decide';
+const elsOf=a=>EL.filter(e=>!(WORKED[a.code]&&WORKED[a.code].na&&WORKED[a.code].na[e]));
+function caps(a){const S0=baseCeil(a),ctl=ctlOf(a),g={};
+  if(S0==='Automation'){elsOf(a).forEach(e=>g[e]=['AI','']);return g;}
+  const held={};a.f.forEach(f=>(FMAP[f]||[]).forEach(e=>{(held[e]=held[e]||[]).push(FL[f])}));
+  elsOf(a).forEach(e=>{
+    if(e===ctl)g[e]=[S0==='Agent-delegation'?'AI-led':'Human','control element'];
+    else if(held[e]){let c;if(S0==='Judgment')c=e==='Evaluate'||e==='Verify'?'Human-led':'Human';else if(S0==='Augmentation')c='Human-led';else c='AI-led';g[e]=[c,held[e].join(', ')];}
+    else g[e]=['AI',''];});
+  return g;}
+const TPL={'Human-only':{},'Judgment':{Research:'AI',Evaluate:'Human-led'},'Augmentation':{Research:'AI',Evaluate:'Human-led',Draft:'Human-led',Verify:'Human-led','Produce / Execute':'Human-led',Communicate:'Human-led'},'Oversight':{Research:'AI',Evaluate:'AI',Draft:'AI',Verify:'AI','Produce / Execute':'AI',Communicate:'AI',Decide:'AI'},'Agent-delegation':'AI','Automation':'AI'};
+function stageEls(a,s){const ctl=ctlOf(a),cp=caps(a),within=rank(s)<=rank(derivedCeil(a)),g={};
+  elsOf(a).forEach(e=>{let v=typeof TPL[s]==='string'?'AI':(TPL[s][e]||'Human');
+    if(e===ctl)v=s==='Agent-delegation'?'AI-led':s==='Automation'?'AI':'Human';
+    if(within&&lr(v)>lr(cp[e][0]))v=cp[e][0];g[e]=v;});return g;}
+function deriveGrid(a,g){const els=Object.keys(g),ctl=ctlOf(a),has=e=>e in g,ai=e=>has(e)&&g[e][0]!=='Human',leads=e=>has(e)&&lr(g[e][0])>=2;
+  const c=g[ctl]?g[ctl][0]:'Human';
+  if(c==='AI')return['Automation',els.every(e=>g[e][0]==='AI')?'every element is AI':'AI holds '+ctl+', the control element, with no person in the instance'];
+  if(c==='AI-led')return['Agent-delegation','AI leads '+ctl+', the control element: a person handles only the instances it flags'];
+  const core=['Evaluate','Draft','Verify','Decide','Communicate'].filter(e=>has(e)&&e!==ctl);
+  if(has('Draft')&&ctl!=='Draft'?leads('Draft'):core.some(leads))return['Oversight','AI leads '+lstw(core.filter(leads))+'; a person approves every instance at '+ctl];
+  const assist=['Draft','Verify','Produce / Execute','Communicate'].filter(e=>e!==ctl&&ai(e)),evl=leads('Evaluate');
+  if(evl||assist.length)return['Augmentation','the person writes the work and holds '+ctl+', with AI '+lstw((evl?['leading Evaluate']:[]).concat(assist.length?['assisting in '+lstw(assist)]:[]))];
+  if(ai('Research')||ai('Evaluate'))return['Judgment','AI only supplies inputs (Research, or assisting in Evaluate); the person does the work and makes the call'];
+  return['Human-only','every element is Human'];}
+const dpEl=a=>{const e=elsOf(a);return e.includes('Decide')?'Decide':e.includes('Verify')?'Verify':null};
+const holds=v=>v==='Human'||v==='Human-led'||v==='AI-led';
+const wpOps=(c,w)=>{const x=CRUD[c];return x?['C','U','D'].filter(k=>x[k].includes(w)).join(''):''};
+const DP={};
+acts.forEach(a=>{const e=dpEl(a),v=e&&stageEls(a,derivedCeil(a))[e];DP[a.code]={el:e,lead:v,dp:!!(e&&holds(v)),groups:[],feeds:[]};});
+acts.forEach(a=>{const r=DP[a.code],x=CRUD[a.code];if(!x)return;
+  const own=[...new Set(x.C.concat(x.U,x.D))].filter(w=>WPN[w]).sort(nat);
+  r.groups=own.map(w=>({w,dps:Object.keys(CRUD).filter(c=>DP[c]&&DP[c].dp&&wpOps(c,w)).sort(nat)}));
+  r.feeds=[...new Set(r.groups.flatMap(g=>g.dps))].filter(c=>c!==a.code).sort(nat);});
+const kindOf=a=>{const r=DP[a.code];return r.dp?(r.lead==='AI-led'?'flag':'every'):r.feeds.length?'at':'ctl'};
+const depth=r=>{let n=0,x=ROLES.find(y=>y.name===r);while(x&&x.reportsTo){n++;x=ROLES.find(y=>y.name===x.reportsTo)}return n};
+function procRaci(p){const cnt={},hc={};
+  p.acts.forEach(c=>{const r=ARACI[c].A,k=CO.indexOf(WR[c].cons);cnt[r]=(cnt[r]||0)+1;hc[r]=Math.max(hc[r]==null?-1:hc[r],k);});
+  const order=Object.keys(cnt).sort((x,y)=>cnt[y]-cnt[x]||hc[y]-hc[x]||depth(x)-depth(y)),owner=order[0],tied=order.filter(r=>cnt[r]===cnt[owner]&&r!==owner);
+  let why='';if(tied.length)why=tied.some(r=>hc[r]===hc[owner])?'Tied with '+tied.join(', ')+' on count and Consequence of Error; '+owner+' is the more senior role.'
+    :'Tied with '+tied.join(', ')+' on count; '+owner+' is Accountable for the higher Consequence of Error ('+CO[hc[owner]]+').';
+  const L={};p.acts.forEach(c=>{const x=ARACI[c];[[x.A,'A']].concat(x.R.map(r=>[r,'R']),x.C.map(r=>[r,'C']),x.I.map(r=>[r,'I'])).forEach(([r,l])=>{(L[r]=L[r]||{A:0,R:0,C:0,I:0})[l]++;});});
+  const rk={A:0,'A+':1,R:2,C:3,I:4};
+  const rows=Object.keys(L).map(r=>{const c=L[r];return{r,c,letter:r===owner?'A':c.A?'A+':c.R?'R':c.C?'C':'I'}}).sort((a,b)=>rk[a.letter]-rk[b.letter]);
+  return{owner,top:cnt[owner],n:p.acts.length,why,rows};}
+const WORD={A:'Accountable (owner)','A+':'Also Accountable',R:'Responsible',C:'Consulted',I:'Informed'};
+const worstCons=L=>CO[Math.max(...L.map(c=>CO.indexOf(ACT[c].cons)))];
+const nm=c=>'<span class="code">'+c+'</span> '+esc(ACT[c]?ACT[c].name:PROC[c]?PROC[c].name:'');
+const wpn=w=>'<span class="code">'+w+'</span> '+esc(WPN[w]?WPN[w].name:w);
+const tbl=(h,rows,cls)=>'<table class="g"><tr>'+h.map(x=>'<th>'+x+'</th>').join('')+'</tr>'+rows.join('')+'</table>';
+const tr=(cells,cls)=>'<tr'+(cls?' class="'+cls+'"':'')+'>'+cells.map(c=>'<td>'+c+'</td>').join('')+'</tr>';
+
+/* ---- Worked examples, one per rule ---- */
+
+const DOT={"Human-only":"#0D2D4F","Judgment":"#1F4E86","Augmentation":"#3A6FAE","Oversight":"#6895C8","Agent-delegation":"#9CBBE0","Automation":"#CFDDF0"};
+const GROUPS=PCF7.groups.map(g=>[g.code,g.name]);
+const COV=[['none','None (a new organization)'],['some','Two processes (7.2.3 and 7.4)'],['half','About half'],['all','Every activity']];
+let S={cov:'some',cmp:'after'};
+function assessedSet(){if(S.cov==='none')return new Set();if(S.cov==='all')return new Set(acts.map(a=>a.code));
+  if(S.cov==='some')return new Set(acts.filter(a=>a.proc==='7.2.3'||a.code.startsWith('7.4')).map(a=>a.code));
+  return new Set(acts.filter((a,i)=>i%2===0).map(a=>a.code));}
+const sim=a=>ST[Math.max(0,rank(derivedCeil(a))-1)];
+function cur(a,A){return A.has(a.code)?sim(a):(S.cmp==='before'?'Human-only':null)}
+const sqH=(a,s)=>s?'<i class="sq" style="background:'+DOT[s]+'" title="'+a.code+' '+esc(a.name)+': '+s+'"></i>':'<i class="sq u" title="'+a.code+' '+esc(a.name)+': Unassessed"></i>';
+const hOf=L=>L.length?Math.round(L.reduce((t,s)=>t+HPCT[s],0)/L.length):null;
+window.setS=(k,v)=>{S[k]=v;render()};
+const btns=(k,opts)=>opts.map(([v,l])=>'<button type="button" class="btn'+(S[k]===v?' on':'')+'" onclick="setS(\''+k+'\',\''+v+'\')">'+l+'</button>').join('');
+function render(){
+  document.getElementById('cov').innerHTML=btns('cov',COV);
+  document.getElementById('cmp').innerHTML=btns('cmp',[['after','Unassessed (agreed)'],['before','Human-only (today)']]);
+  const A=assessedSet(),n=acts.length,na=A.size,after=S.cmp==='after';
+  const stages=acts.map(a=>cur(a,A)),known=stages.filter(Boolean),h=hOf(known);
+  const hTxt=h==null?'&mdash;':h+'% H';
+  const cnt={};stages.forEach(s=>{const k=s||'Unassessed';cnt[k]=(cnt[k]||0)+1});
+  let x='<div class="card"><h3>ABC Test Org &middot; Current State</h3><div class="sub">'+(after?'As agreed: activities not yet assessed are Unassessed.':'As the sandbox works today: activities not yet assessed count as Human-only.')+'</div><div class="tiles" style="margin-top:10px">'+
+   [[hTxt,'Current % H'+(after?(na?', across the '+na+' assessed':', nothing assessed yet'):', all '+n+' activities')],[na+' of '+n,'activities assessed'],[n-na,after?'Unassessed, with no stage':'never assessed, counted as Human-only']].map(([b,s])=>'<div class="tile"><b>'+b+'</b><span>'+s+'</span></div>').join('')+'</div>'+
+   (!after&&na<n?'<div class="exp" style="border-color:#B8873F;background:#FEF9EC">'+(n-na)+' activities that were never assessed are counted at Human-only, 95% H, as if observed. That pulls Current % H toward 95.</div>':'')+
+   (after&&na<n?'<div class="exp">Current % H covers the '+na+' assessed activities only, and says so. The other '+(n-na)+' show as Unassessed until assessed.</div>':'')+'</div>';
+  x+='<div class="card"><h3>Work dashboard, colored by Current State</h3><div class="sub">One square per activity. '+(after?'A dashed square is Unassessed.':'')+' Each process shows its Current % H over its assessed activities.</div><div class="gcols" style="margin-top:10px">';
+  GROUPS.forEach(([gc,gn])=>{const P=procs.filter(p=>p.g===gc&&p.acts.length);x+='<div><div class="gh">'+gc+' '+esc(gn)+'</div>'+P.map(p=>{const L=p.acts.map(c=>ACT[c]),ss=L.map(a=>cur(a,A)),hh=hOf(ss.filter(Boolean));
+    return '<div class="pc"><div class="pn"><span>'+p.code+'</span><b>'+(hh==null?'&mdash;':hh+'%')+'</b></div>'+L.map((a,i)=>sqH(a,ss[i])).join('')+'</div>'}).join('')+'</div>';});
+  x+='</div></div>';
+  const order=ST.concat(['Unassessed']);
+  x+='<div class="card"><h3>Stage mix</h3><div class="sub">All '+n+' activities at the Current State.</div><div class="bar" style="margin-top:10px">'+order.filter(s=>cnt[s]).map(s=>'<i'+(s==='Unassessed'?' class="u"':'')+' style="width:'+(100*cnt[s]/n)+'%;'+(s==='Unassessed'?'':'background:'+DOT[s])+'" title="'+s+': '+cnt[s]+'"></i>').join('')+'</div>'+
+   '<div class="leg">'+order.filter(s=>cnt[s]).map(s=>(s==='Unassessed'?'<i class="sq u"></i>':'<i class="sq" style="background:'+DOT[s]+'"></i>')+s+' '+cnt[s]).join(' &nbsp; ')+'</div></div>';
+  const ex=[ACT['7.2.3.4'],ACT['7.6.1']].filter(Boolean);
+  x+='<div class="card"><h3>An activity row in the Work view</h3><div class="sub">The ramp marks the steps reached at the Current State; the ceiling is outlined.</div>';
+  ex.forEach(a=>{const s=cur(a,A),r=s?rank(s):-1,c=rank(derivedCeil(a));
+    x+='<div style="margin-top:10px;font-size:12.5px"><span class="code">'+a.code+'</span> '+esc(a.name)+' &nbsp; '+(s?'<span class="chip">Current State: '+s+'</span>':'<span class="chip u">Unassessed</span>')+
+     '<div class="ramp">'+ST.map((t,i)=>'<span class="'+(i<=r?'r':'')+(i===c?' ceil':'')+'">'+(i<=r?'<i class="sq" style="background:'+DOT[t]+'"></i>':'')+t+'</span>').join('')+'</div>'+
+     (s?'':'<div class="sm">No step is marked: nothing has been observed. Its control point and checked inputs are read at the ceiling ('+derivedCeil(a)+'), Modeled.</div>')+'</div>';});
+  x+='</div>';
+  x+='<div class="card"><h3>Findings</h3><div class="sub">Findings that read the Current State.</div><div class="exp" style="margin-top:10px">'+(after?
+    'Past-the-ceiling and element findings are checked on the '+na+' assessed activities. Coverage, '+na+' of '+n+' assessed, is shown beside them as context, not as a finding.':
+    'Today the same findings run on all '+n+' activities, with the '+(n-na)+' never assessed treated as Human-only, so they can never be past their ceiling and look clean.')+'</div></div>';
+  document.getElementById('main').innerHTML=x;}
+render();
+}
+fetch(SANDBOX,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}).then(build)
+ .catch(e=>{document.getElementById('main').innerHTML='<div class="err">Could not read the master data from Sandbox 7.0 ('+esc(e.message)+'). Open the <a href="../sandbox/pcf7.html">sandbox</a> instead.</div>';});
+})();
+</script>
+</body></html>
