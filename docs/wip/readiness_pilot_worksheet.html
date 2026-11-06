@@ -59,12 +59,12 @@ textarea.out{width:100%;height:150px;font:12px Consolas,monospace;margin-top:8px
   <select id="pilot" onchange="pick(this.value)"></select>
   <h5>Proposed relationship</h5>
   <select id="stage" onchange="setStage(this.value)"></select>
-  <p class="small">The next intended working relationship, never beyond the Progression Ceiling (v0.2 section 2). Current State is the Human-only baseline until an organization is assessed.</p>
+  <p class="small">The next intended working relationship, never beyond the Progression Ceiling (v0.2 section 2). Human-only is the reference baseline. An organization&rsquo;s Current State starts Unassessed, with no predetermined stage, until it is assessed (GR-052, Nov 5).</p>
   <h5>Who determines the findings</h5>
-  <input id="who-assessor" placeholder="Assessed by" oninput="meta('assessor',this.value)">
+  <input id="who-assessor" placeholder="Assessed by (not the sole role holder)" oninput="meta('assessor',this.value)">
   <input id="who-sources" placeholder="Evidence gathered from" oninput="meta('sources',this.value)">
   <input id="who-signoff" placeholder="Findings signed off by" oninput="meta('signoff',this.value)">
-  <p class="small">v0.2 does not say yet; GiGi&rsquo;s to settle in the pilot comparison. One option: the assessor, with evidence from the role holder, manager and governance body, and a panel review for High and Critical transitions.</p>
+  <p class="small">Agreed Nov 5 (GR-012). Assessed by a trained assessor or facilitator who is not the sole role holder and, where practical, is independent of the system owner. Evidence from the role holder, manager or governance body, technical/process owner, relevant policies, system permissions, operating records and observed scenarios. Sign-off: the Accountable business owner plus the assessor on Low or Moderate work; a cross-functional review or panel on High or Critical work.</p>
   <h5>Progress</h5>
   <div class="prog" id="prog"></div>
   <button type="button" class="btn primary" onclick="copyOut()">Copy results</button><button type="button" class="btn" onclick="clearPilot()">Clear this pilot</button>
@@ -181,14 +181,14 @@ function render(){
   const opts=ST.slice(1,rank(cl)+1);let s=r.meta.stage&&opts.includes(r.meta.stage)?r.meta.stage:cl;
   document.getElementById('stage').innerHTML=opts.map(x=>'<option'+(x===s?' selected':'')+'>'+x+'</option>').join('');
   ['assessor','sources','signoff'].forEach(k=>{document.getElementById('who-'+k).value=r.meta[k]||'';});
-  const rp=role(a.A),wl=[a.A].concat(a.R.filter(x=>x!==a.A));
+  const rp=role(a.A),wl=[...new Set([a.A].concat(a.R,a.x.R||[]))];
   let h='<div class="card"><div class="th"><span class="tid">'+a.code+'</span><div><h3>'+esc(a.name)+'</h3><div class="sub">'+P.n+' &middot; '+esc(P.purpose)+'</div></div></div>'+
     '<table class="g"><tr><th>Assessment unit</th><th></th></tr>'+
-    '<tr><td>Transition</td><td>Human-only (Current State, reference baseline) &rarr; '+s+' (proposed); Progression Ceiling '+cl+'</td></tr>'+
+    '<tr><td>Transition</td><td>Human-only (reference baseline; the organization&rsquo;s Current State starts Unassessed) &rarr; '+s+' (proposed); Progression Ceiling '+cl+'</td></tr>'+
     '<tr><td>Roles affected</td><td>Accountable '+esc(a.A)+(a.R.length?' &middot; Responsible '+esc(a.R.join(', ')):'')+((a.x.R||[]).length?' (and '+esc(a.x.R.join(', '))+')':'')+(a.C.length?' &middot; Consulted '+esc(a.C.join(', ')):'')+'</td></tr>'+
     '<tr><td>Governance above</td><td>'+(rp.reportsTo?esc(a.A)+' reports to '+esc(rp.reportsTo):'Top of the role catalog: Governance/Oversight Body variant')+'</td></tr>'+
-    '<tr><td>Consequence of Error</td><td>'+a.cons+(HC[a.cons]?' &mdash; weakest-link applies to the materially required A/R roles: '+esc(wl.join(', ')):'')+'</td></tr></table>';
-  if(CUR==='7.2.3.4') h+='<div class="note">Work-side note for the pilot: since activity-level RACI (GR-060, Oct 21), the Accountable role on 7.2.3.4 is Director of TA, with Recruiter Responsible. v0.2 wrote Director of TA as the manager above Recruiter. Here Director of TA is both the Accountable role and Recruiter&rsquo;s manager, so the weakest-link rule covers Director of TA and Recruiter, and the oversight layer above the accountable decision is SVP Talent Management.</div>';
+    '<tr><td>Consequence of Error</td><td>'+a.cons+(HC[a.cons]?(wl.length>1?' &mdash; weakest-link (BR-16) across the materially required A/R roles: '+esc(wl.join(', '))+'. No averaging; any role at Insufficient Evidence caps the result there.':' &mdash; one materially required role ('+esc(wl[0])+'), so weakest-link (BR-16) has nothing to roll up: the role is assessed directly and governance separately.'):' &mdash; weakest-link (BR-16) does not apply below High; each role&rsquo;s finding stands on its own.')+'</td></tr></table>';
+  if(CUR==='7.2.3.4') h+='<div class="note">Work-side note for the pilot: since activity-level RACI (GR-060, Oct 21), the Accountable role on 7.2.3.4 is Director of TA, with Recruiter Responsible. v0.2 wrote Director of TA as the manager above Recruiter. Here Director of TA is both the Accountable role and Recruiter&rsquo;s manager. Agreed Nov 5: Hiring Managers, Responsible through the extended RACI, also count, so the weakest-link rule (BR-16) covers Director of TA, Recruiter and Hiring Managers. The oversight layer above the accountable decision, SVP Talent Management, is assessed separately.</div>';
   h+='</div>';
   LAYERS.forEach(([lk,ln])=>{h+='<div class="ghead">'+ln+'</div>';
     DIMS.filter(d=>d.l===lk).forEach(d=>{const x=r.dims[d.k]||{},f=x.f||'ins',pq=P.pq[d.k],focus=(P.focus||[]).includes(d.k);
