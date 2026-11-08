@@ -77,6 +77,26 @@ table.g{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:4px}
 .chip.u{border-style:dashed;color:#5B6576}
 .old{color:#9AA4B5;text-decoration:line-through}
 .rules li{margin-bottom:4px}
+.db-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--gray);margin:10px 0 12px}
+.db-legend span{display:inline-flex;align-items:center;gap:6px}
+.db-sw{width:12px;height:12px;border-radius:3px;display:inline-block;box-shadow:inset 0 0 0 1px rgba(13,45,79,.12)}
+.db-sw.u,.db-cell.u{background:#fff;box-shadow:none;border:1.5px dashed #8A94A6}
+.db-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.db-col h4{font-size:12px;font-weight:600;color:var(--navy-d);line-height:1.35;padding:0 0 6px;border-bottom:2px solid var(--navy);margin-bottom:8px;min-height:40px;text-align:left}
+.db-col h4 .code{margin-right:4px}
+.db-proc{border:1px solid var(--border);border-radius:8px;padding:7px 9px;margin-bottom:7px;background:#fff;text-align:left}
+.db-pn{font-size:12px;line-height:1.35;color:var(--dark);display:flex;justify-content:space-between;gap:8px}
+.db-pn .h{color:var(--navy);white-space:nowrap}
+.db-cells{display:flex;flex-wrap:wrap;gap:2px;margin-top:6px}
+.db-cell{width:13px;height:13px;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(13,45,79,.12)}
+.db-bars .row{display:grid;grid-template-columns:260px 1fr 60px;gap:10px;align-items:center;margin-bottom:7px;font-size:12px;text-align:left}
+.db-bar{display:flex;height:20px;gap:2px}
+.db-bar div{height:100%;font-size:11px;line-height:20px;text-align:center;overflow:hidden}
+.db-bar div.u{background:repeating-linear-gradient(45deg,#fff 0 4px,#E3E8F0 4px 8px);color:#5B6576;box-shadow:inset 0 0 0 1px #C7CEDA}
+.db-bar div:first-child{border-radius:4px 0 0 4px}
+.db-bar div:last-child{border-radius:0 4px 4px 0}
+.db-bars .h{text-align:right;color:var(--navy)}
+@media(max-width:700px){.db-bars .row{grid-template-columns:120px 1fr 44px}}
 </style></head><body>
 <div class="sk"><strong>Sketch</strong> · Unassessed state: what an organization sees before its activities are assessed, computed live from the sandbox&rsquo;s master data · <a href="requirements_register.html#GR-052">GR-052</a> · <a href="gigi_gr012_three_pilot_comparison.pdf">GiGi&rsquo;s three-pilot comparison</a> · <a href="../sandbox/pcf7.html">Sandbox</a> · <a href="index.html">Back to WIP hub</a></div>
 <div class="wrap">
@@ -216,13 +236,15 @@ function render(){
    [[hTxt,'Current % H'+(after?(na?', across the '+na+' assessed':', nothing assessed yet'):', all '+n+' activities')],[na+' of '+n,'activities assessed'],[n-na,after?'Unassessed, with no stage':'never assessed, counted as Human-only']].map(([b,s])=>'<div class="tile"><b>'+b+'</b><span>'+s+'</span></div>').join('')+'</div>'+
    (!after&&na<n?'<div class="exp" style="border-color:#B8873F;background:#FEF9EC">'+(n-na)+' activities that were never assessed are counted at Human-only, 95% H, as if observed. That pulls Current % H toward 95.</div>':'')+
    (after&&na<n?'<div class="exp">Current % H covers the '+na+' assessed activities only, and says so. The other '+(n-na)+' show as Unassessed until assessed.</div>':'')+'</div>';
-  x+='<div class="card"><h3>Work dashboard, colored by Current State</h3><div class="sub">One square per activity. '+(after?'A dashed square is Unassessed.':'')+' Each process shows its Current % H over its assessed activities.</div><div class="gcols" style="margin-top:10px">';
-  GROUPS.forEach(([gc,gn])=>{const P=procs.filter(p=>p.g===gc&&p.acts.length);x+='<div><div class="gh">'+gc+' '+esc(gn)+'</div>'+P.map(p=>{const L=p.acts.map(c=>ACT[c]),ss=L.map(a=>cur(a,A)),hh=hOf(ss.filter(Boolean));
-    return '<div class="pc"><div class="pn"><span>'+p.code+'</span><b>'+(hh==null?'&mdash;':hh+'%')+'</b></div>'+L.map((a,i)=>sqH(a,ss[i])).join('')+'</div>'}).join('')+'</div>';});
-  x+='</div></div>';
+  const U='<i class="db-sw u"></i>Unassessed';
+  const legend='<div class="db-legend">'+ST.map(t=>'<span><i class="db-sw" style="background:'+DOT[t]+'"></i>'+t+' ('+HPCT[t]+')</span>').join('')+(after?'<span>'+U+'</span>':'')+'</div>';
+  x+='<div class="card"><h3>The work, by process</h3><div class="sub">One square per activity, colored by stage at the Current State'+(after?'; a dashed square is Unassessed':'')+'. The figure on each card is its process&rsquo;s Current % H'+(after?', over its assessed activities':'')+'. Hover a square for the activity.</div>'+legend+'<div class="db-grid">'+
+   GROUPS.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+procs.filter(p=>p.g===gc&&p.acts.length).map(p=>{const L=p.acts.map(c=>ACT[c]),ss=L.map(a=>cur(a,A)),hh=hOf(ss.filter(Boolean));
+     return '<div class="db-proc"><div class="db-pn"><span><span class="code">'+p.code+'</span> '+esc(p.name)+'</span><span class="h">'+(hh==null?'&mdash;':hh+'%')+'</span></div><div class="db-cells">'+L.map((a,i)=>'<i class="db-cell'+(ss[i]?'':' u')+'" title="'+a.code+' '+esc(a.name)+': '+(ss[i]||'Unassessed')+'"'+(ss[i]?' style="background:'+DOT[ss[i]]+'"':'')+'></i>').join('')+'</div></div>';}).join('')+'</div>').join('')+'</div></div>';
   const order=ST.concat(['Unassessed']);
-  x+='<div class="card"><h3>Stage mix</h3><div class="sub">All '+n+' activities at the Current State.</div><div class="bar" style="margin-top:10px">'+order.filter(s=>cnt[s]).map(s=>'<i'+(s==='Unassessed'?' class="u"':'')+' style="width:'+(100*cnt[s]/n)+'%;'+(s==='Unassessed'?'':'background:'+DOT[s])+'" title="'+s+': '+cnt[s]+'"></i>').join('')+'</div>'+
-   '<div class="leg">'+order.filter(s=>cnt[s]).map(s=>(s==='Unassessed'?'<i class="sq u"></i>':'<i class="sq" style="background:'+DOT[s]+'"></i>')+s+' '+cnt[s]).join(' &nbsp; ')+'</div></div>';
+  const bars=GROUPS.map(([gc,gn])=>{const G=acts.filter(a=>a.code.startsWith(gc+'.')),t={};G.forEach(a=>{const k=cur(a,A)||'Unassessed';t[k]=(t[k]||0)+1});const hh=hOf(G.map(a=>cur(a,A)).filter(Boolean));
+    return '<div class="row"><div><span class="code">'+gc+'</span> '+esc(gn)+'</div><div class="db-bar">'+order.filter(k=>t[k]).map(k=>'<div title="'+esc(gc+' '+gn)+': '+t[k]+' of '+G.length+' activities '+(k==='Unassessed'?'Unassessed':'at '+k)+'"'+(k==='Unassessed'?' class="u"':'')+' style="flex:'+t[k]+';'+(k==='Unassessed'?'':'background:'+DOT[k]+';color:'+(rank(k)>=3?'#0D2D4F':'#fff'))+'">'+(t[k]>1?t[k]:'')+'</div>').join('')+'</div><div class="h">'+(hh==null?'&mdash;':hh+'% H')+'</div></div>';}).join('');
+  x+='<div class="card"><h3>Stage mix by process group</h3><div class="sub">Share of each group&rsquo;s activities at each stage, at the Current State.</div><div class="db-legend">'+order.filter(k=>cnt[k]).map(k=>'<span>'+(k==='Unassessed'?U:'<i class="db-sw" style="background:'+DOT[k]+'"></i>'+k)+' '+cnt[k]+'</span>').join('')+'</div><div class="db-bars">'+bars+'</div></div>';
   const ex=[ACT['7.2.3.4'],ACT['7.6.1']].filter(Boolean);
   x+='<div class="card"><h3>An activity row in the Work view</h3><div class="sub">The ramp marks the steps reached at the Current State; the ceiling is outlined.</div>';
   ex.forEach(a=>{const s=cur(a,A),r=s?rank(s):-1,c=rank(derivedCeil(a));
