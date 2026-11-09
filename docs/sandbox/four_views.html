@@ -270,6 +270,16 @@ body{background:transparent;padding-bottom:0}
 .rdf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .rdf input{font:inherit;font-size:12px;padding:5px 7px;border:1px solid #C6D8EE;border-radius:6px;width:100%}
 @media(max-width:640px){.rdd,.rdf{grid-template-columns:1fr}}
+.rdk{border:1px solid var(--border);border-radius:8px;margin:0 0 8px;background:#fff}
+.rdk summary{cursor:pointer;padding:8px 12px;font-size:13px;font-weight:600;color:var(--navy-d);list-style-position:inside}
+.rdk .rdno{display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:5px;background:#1B4F8A;color:#fff;font-size:11px;margin:0 8px 0 4px}
+.rdkb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;padding:0 14px 12px}
+.rdq{font-size:13px;line-height:1.5;color:var(--dark)}
+.rdfx{background:#F8FAFD;border:1px solid #E6EBF3;border-radius:6px;padding:4px 10px;font-size:12px;line-height:1.5}
+.rdfx ul{margin:4px 0 4px 16px;padding:0}
+.rdl{display:block;font-size:11.5px;color:var(--lgray);margin-bottom:6px}
+.rdl textarea{display:block;margin-top:2px;font:inherit;font-size:12px;color:var(--dark);padding:5px 7px;border:1px solid #C6D8EE;border-radius:6px;min-height:38px;resize:vertical;width:100%}
+@media(max-width:760px){.rdkb{grid-template-columns:1fr}}
 </style></head><body>
 <div class="wrap">
   <div class="side" id="side"></div>
@@ -689,16 +699,16 @@ function elHead(a,third){return '<tr class="ith"><th>Element</th>'+(WORKED[a.cod
    is Conditional, and clears when all are Ready. Candidate hard gates are tagged; they stay provisional. Readiness is
    assessed per organization; the Reference Model cannot model it. */
 const RD_DIMS=[
- {k:'clarity',l:'role',n:'Role Clarity',q:'Does the person understand what AI is allowed to do, what stays human, what must be reviewed/decided, and what cannot be delegated?'},
- {k:'authority',l:'role',n:'Decision Authority',q:'When the person believes the AI-supported result is wrong, what are they actually allowed to do?',gate:1},
- {k:'skill',l:'role',n:'Capability / Skill',q:'Does the person have enough domain expertise and judgment to evaluate the AI-supported work independently?',gate:1},
- {k:'fluency',l:'role',n:'Confidence / Decision Fluency',q:'If the person and system disagree, will the person make and defend an independent decision?'},
- {k:'safety',l:'role',n:'Psychological Safety',q:'Can the person challenge the system and act on that concern without unreasonable personal or professional risk?'},
- {k:'capacity',l:'role',n:'Capacity / Workload',q:'Does the new relationship leave enough real capacity for meaningful review, exception handling and escalation?'},
- {k:'manager',l:'org',n:'Manager / Governance-Oversight Readiness',q:'Is the surrounding manager or governance body prepared to coach, challenge, absorb escalation and govern the redesigned relationship?'},
- {k:'governance',l:'org',n:'Leadership Support / Governance',q:'Who owns the outcome and what happens when the new relationship fails?'},
- {k:'change',l:'org',n:'Change Capacity',q:'Even if the transition is right, can the organization absorb it now?'},
- {k:'evidence',l:'shared',n:'Trust / Evidence Quality',q:'What evidence justifies asking the person to rely on the system at this level?',gate:1}];
+ {k:'clarity',l:'role',n:'Role Clarity',q:'Does the person understand what AI is allowed to do, what stays human, what must be reviewed/decided, and what cannot be delegated?',ev:'Workflow, role language, RACI, training, scenario walkthrough.'},
+ {k:'authority',l:'role',n:'Decision Authority',q:'When the person believes the AI-supported result is wrong, what are they actually allowed to do?',ev:'Override rights, system permissions, escalation process, approval matrix, governed decision points.',gate:1},
+ {k:'skill',l:'role',n:'Capability / Skill',q:'Does the person have enough domain expertise and judgment to evaluate the AI-supported work independently?',ev:'Case review, scenario testing, qualifications, exception-handling evidence.',gate:1},
+ {k:'fluency',l:'role',n:'Confidence / Decision Fluency',q:'If the person and system disagree, will the person make and defend an independent decision?',ev:'Scenario exercises, observed override behavior, manager feedback.'},
+ {k:'safety',l:'role',n:'Psychological Safety',q:'Can the person challenge the system and act on that concern without unreasonable personal or professional risk?',ev:'Speak-up history, leadership behavior, escalation norms, incident reviews.'},
+ {k:'capacity',l:'role',n:'Capacity / Workload',q:'Does the new relationship leave enough real capacity for meaningful review, exception handling and escalation?',ev:'Caseload, review time, exception volume, backlog, staffing, verification effort.'},
+ {k:'manager',l:'org',n:'Manager / Governance-Oversight Readiness',q:'Is the surrounding manager or governance body prepared to coach, challenge, absorb escalation and govern the redesigned relationship?',ev:'Manager/governance expectations, escalation criteria, monitoring, coaching, evidence of the actual oversight body.'},
+ {k:'governance',l:'org',n:'Leadership Support / Governance',q:'Who owns the outcome and what happens when the new relationship fails?',ev:'Decision rights, risk tolerance, stop conditions, escalation routes, named owners, governance standards.'},
+ {k:'change',l:'org',n:'Change Capacity',q:'Even if the transition is right, can the organization absorb it now?',ev:'Competing initiatives, staffing changes, implementation timing, leadership capacity, change load.'},
+ {k:'evidence',l:'shared',n:'Trust / Evidence Quality',q:'What evidence justifies asking the person to rely on the system at this level?',ev:'Traceable technical evidence: type, source, reference, confidence, limitations, failure modes, real-volume results.',gate:1}];
 const RD_LAYER={role:'Role / Human Operating Conditions',org:'Organizational Operating Conditions',shared:'Shared Evidence Condition'};
 const RD_F={ins:['Insufficient Evidence',3,'#E5E7EB','#374151'],not:['Not Ready',2,'#FEE2E2','#991B1B'],cond:['Conditional',1,'#FEF9C3','#854D0E'],ready:['Ready',0,'#DCFCE7','#166534']};
 const RD_ORDER=['ins','ready','cond','not'];
@@ -738,7 +748,7 @@ function readiness(a,k){const to=ST[k+1],org=isOrg(),rec=rdRec(a),open=RD&&RD.co
   if(!open&&rec&&rec.to===to) h+='<div class="small" style="margin-top:4px">Assessed'+(rec.meta&&rec.meta.by?' by '+esc(rec.meta.by):'')+(rec.savedAt?' on '+new Date(rec.savedAt).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'')+(rec.meta&&rec.meta.signed?' · signed off by '+esc(rec.meta.signed):' · not yet signed off')+'.</div>';
   return h+(open?rdPanel(a,k):'');}
 function rdOpen(code,k){const a=ACT[code],to=ST[k+1],rec=rdRec(a),same=rec&&rec.to===to;
-  RD={code,k,to,cells:same?Object.assign({},rec.cells):{},dims:same?JSON.parse(JSON.stringify(rec.dims||{})):{},meta:same?Object.assign({},rec.meta||{}):{},busy:false,msg:''};render();}
+  RD={code,k,to,cells:same?Object.assign({},rec.cells):{},dims:same?JSON.parse(JSON.stringify(rec.dims||{})):{},meta:same?Object.assign({},rec.meta||{}):{},busy:false,msg:'',shut:{}};render();}
 function rdSet(key,v){if(!RD)return;RD.cells[key]=v;render();}
 function rdText(d,f,v){if(!RD)return;(RD.dims[d]=RD.dims[d]||{})[f]=v;}
 function rdMeta(f,v){if(!RD)return;RD.meta[f]=v;}
@@ -748,18 +758,49 @@ function rdSave(){const a=ACT[RD.code];RD.busy=true;RD.msg='Saving…';render();
    .then(j=>{RD.busy=false;RD.msg='Saved for '+ORGNAME()+'.';P.fvReadinessSaved(a.code,j.record);})
    .catch(e=>{RD.busy=false;RD.msg='Could not save: '+e.message;render();});}
 const rdSel=(key,f,wk)=>'<select class="rds'+(wk?' wk':'')+'" style="background:'+RD_F[f][2]+';color:'+RD_F[f][3]+'" onchange="rdSet(\''+key.replace(/'/g,"\\'")+'\',this.value)">'+RD_ORDER.map(x=>'<option value="'+x+'"'+(x===f?' selected':'')+'>'+RD_F[x][0]+'</option>').join('')+'</select>';
-function rdPanel(a,k){const R=rdRoles(a),rl=rdRoll(a,RD.cells),ov=rdOver(a),c=RD.cells;
+// Work-side facts for one dimension at the proposed step: Modeled context for the assessor (as in the pilot worksheet).
+function rdFacts(a,to,d){const els=stageEls(a,to),ctl=ctlOf(a),obj=(WORKED[a.code]||{}).obj||{},A0=a.Aroles[0],role=n=>DATA.roles.find(x=>x.name===n)||{},xR=((RACI_ACT[a.code]||{}).x||{}).R||[];
+  const AIel=elsOf(a).filter(e=>lr(els[e])>=2),L=[],lst=x=>x.length>1?x.slice(0,-1).join(', ')+' and '+x[x.length-1]:x[0]||'';
+  if(d==='clarity'){L.push('At '+to+', who leads each element: '+elsOf(a).map(e=>e+' '+els[e]).join(', ')+'.');L.push('Stays with a person: '+(elsOf(a).filter(e=>els[e]==='Human').join(', ')||'none')+'. AI leads: '+(AIel.join(', ')||'none')+'.');
+    L.push('Accountable '+esc(a.Aroles.join(', '))+(a.R.length?'; Responsible '+esc(a.R.join(', ')):'')+(xR.length?' (and '+esc(xR.join(', '))+')':'')+'.');}
+  if(d==='authority'){L.push('Control element: '+ctl+(obj[ctl]?' &mdash; &ldquo;'+esc(obj[ctl])+'&rdquo;':'')+', '+els[ctl]+' at '+to+'. A '+(ctl==='Verify'?'verification':'decision')+' point, anchored on '+esc(A0)+'.');
+    L.push('The Governed Decision Point record at '+a.cons+' requires: '+(DPGOV[a.cons]||'owner and override')+' (GR-042).');}
+  if(d==='skill'){const ev=elsOf(a).filter(e=>['Evaluate','Verify','Draft'].includes(e)&&els[e]!=='Human');L.push(ev.length?'The person evaluates AI-assisted work in '+lst(ev)+': '+ev.map(e=>'&ldquo;'+esc(obj[e]||e)+'&rdquo;').join('; ')+'.':'No element where the person reviews AI-assisted work at '+to+'.');
+    if(a.f.length)L.push('Ceiling factors that keep work with a person: '+a.f.map(f=>FL[f]).join(', ')+'.');}
+  if(d==='fluency'){const pre=elsOf(a).filter(e=>e!==ctl&&lr(els[e])>=1&&elsOf(a).indexOf(e)<elsOf(a).indexOf(ctl));L.push(pre.length?'AI is involved before the '+ctl+' element in '+lst(pre)+', so the person meets AI output before deciding.':'No AI involvement before the '+ctl+' element at '+to+'.');}
+  if(d==='safety')L.push('<span class="small">No work-side evidence. Organization-specific only.</span>');
+  if(d==='capacity'){const sv=S.stage;S.stage=to;const W=wpAnalysis();S.stage=sv;const ch=W.filter(x=>x.pts.some(y=>y.c===a.code)),un=W.filter(x=>x.ho.some(y=>y.c===a.code));
+    L.push(ch.length?ch.length+' checked input'+(ch.length>1?'s':'')+' at '+to+': '+ch.map(x=>esc(x.w.name)).join(', ')+'.':'No AI-touched input to check at '+to+'.');
+    if(un.length)L.push(un.length+' unchecked input'+(un.length>1?'s':'')+': '+un.map(x=>esc(x.w.name)).join(', ')+'.');
+    const load=n=>DATA.acts.filter(b=>b.Aroles.includes(n)||b.R.includes(n)).length;L.push([...new Set(a.Aroles.concat(a.R))].map(r=>esc(r)+' holds A or R on '+load(r)+' activities').join('; ')+'.');}
+  if(d==='manager'){const rp=role(A0);if(!rp.reportsTo)L.push('Top of the role catalog: no manager above '+esc(A0)+'. Use the Governance/Oversight Body variant; the actual body must be evidenced, not assumed.');
+    else{L.push(esc(A0)+' reports to '+esc(rp.reportsTo)+'.');a.R.filter(r=>r!==A0).forEach(r=>{const m=role(r).reportsTo;L.push(esc(r)+' reports to '+esc(m||'—')+(m===A0?', who is also the Accountable role here: the manager and the accountable decision-maker are the same role.':'.'));});}}
+  if(d==='governance'){L.push('Consequence of Error '+a.cons+(a.cf&&a.cf.length?' ('+CF.filter(([k])=>a.cf.includes(k)).map(x=>x[1]).join(', ')+')':'')+'. '+(HC[a.cons]?'The ceiling cannot be overridden.':'An override is possible with evidence (GR-054).'));
+    L.push('Progression Ceiling '+derivedCeil(a)+'; ceiling factors '+(a.f.map(f=>FL[f]).join(', ')||'none')+'. Owner of the outcome: '+esc(A0)+'.');}
+  if(d==='change'){const Pp=DATA.acts.filter(b=>b.proc===a.proc);L.push('<span class="small">No work-side evidence of the organization&rsquo;s change load.</span>');L.push('In the same process ('+a.proc+'), '+Pp.filter(b=>rank(derivedCeil(b))>=2).length+' of '+Pp.length+' activities can move to Augmentation or beyond.');}
+  if(d==='evidence')L.push('Reference Model: Modeled, no technical evidence yet. The organization&rsquo;s element assessment carries evidence type and the reference it was assessed against.');
+  return '<ul>'+L.map(x=>'<li>'+x+'</li>').join('')+'</ul>';}
+const RD_REC=[['ev','Evidence: what is actually known','Organization-specific evidence only'],['prov','Evidence provenance','Type, source role, reference, confidence, coverage, date'],['gap','Gap / concern','What is missing, uncertain, or evidenced as a problem'],
+  ['act','Required action / control','What must happen before progression'],['owner','Owner','Role accountable for closing the gap'],['move','What would move this finding','Evidence or operating change that would justify a different finding']];
+function rdToggle(k,el){if(RD)RD.shut[k]=!el.open;}
+function rdCard(a,d,i,rl){const x=RD.dims[d.k]||{},R=rdRoles(a),f=rl[d.k].f;
+  const fl=d.l==='role'?(R.length>1?R.map(r=>esc(r)+' '+rdChip(RD.cells[r+'|'+d.k]||'ins')).join(' &nbsp;')+' &rarr; activity '+rdChip(f):rdChip(f)):rdChip(f)+' <span class="small">for the activity</span>';
+  return '<details class="rdk"'+(RD.shut[d.k]?'':' open')+' ontoggle="rdToggle(\''+d.k+'\',this)"><summary><span class="rdno">'+(i+1)+'</span>'+esc(d.n)+(d.gate?rdGt:'')+' '+rdChip(f)+'</summary><div class="rdkb"><div>'+
+   '<div class="gh2">Readiness question</div><div class="rdq">'+esc(d.q)+'</div><div class="gh2">Evidence to look for</div><div class="small" style="font-size:12px">'+esc(d.ev)+'</div>'+
+   '<div class="gh2">Work-side facts &middot; Modeled</div><div class="rdfx">'+rdFacts(a,RD.to,d.k)+'</div></div><div>'+
+   '<div class="gh2">Record</div><div class="small" style="margin-bottom:6px">Finding: '+fl+' <span class="small">(set in the matrix above)</span></div>'+
+   RD_REC.map(([k,l,ph])=>'<label class="rdl">'+l+'<textarea placeholder="'+ph+'" oninput="rdText(\''+d.k+'\',\''+k+'\',this.value)">'+esc(x[k]||'')+'</textarea></label>').join('')+'</div></div></details>';}
+function rdPanel(a,k){const R=rdRoles(a),rl=rdRoll(a,RD.cells),ov=rdOver(a),c=RD.cells,multi=R.length>1,nc=R.length+(multi?2:1);
   let h='<div class="rdp"><h4>Assess readiness &middot; '+a.code+' to '+RD.to+'</h4><div class="isub">'+esc(ORGNAME())+'. '+(R.length>1?'Weakest link across the '+R.length+' required roles (BR-16): '+esc(R.join(', '))+'.':'One role read directly: '+esc(R[0])+(HC[a.cons]?' (BR-16).':', the Accountable role.'))+
    ' Organizational and shared dimensions are assessed once for the activity. Every finding starts at Insufficient Evidence; modeled facts never move one (GR-012 v0.2). Hover a dimension for its readiness question.</div>'+
-   '<div style="overflow-x:auto"><table class="rdm"><tr><th>Dimension</th>'+R.map(r=>'<th>'+esc(r)+'</th>').join('')+'<th class="roll">Activity</th></tr>';
-  ['role','org','shared'].forEach(l=>{h+='<tr><td class="lay" colspan="'+(R.length+2)+'">'+RD_LAYER[l]+'</td></tr>';
+   '<div style="overflow-x:auto"><table class="rdm"><tr><th>Dimension</th>'+R.map(r=>'<th>'+esc(r)+'</th>').join('')+(multi?'<th class="roll">Activity (weakest link)</th>':'')+'</tr>';
+  ['role','org','shared'].forEach(l=>{h+='<tr><td class="lay" colspan="'+nc+'">'+RD_LAYER[l]+'</td></tr>';
     RD_DIMS.filter(d=>d.l===l).forEach(d=>{const x=rl[d.k];
-      h+='<tr><td title="'+esc(d.q)+'">'+esc(d.n)+(d.gate?rdGt:'')+'</td>'+(l==='role'?R.map(r=>{const f=c[r+'|'+d.k]||'ins';return '<td>'+rdSel(r+'|'+d.k,f,R.length>1&&x.who.includes(r)&&x.who.length<R.length&&f!=='ready')+'</td>'}).join(''):'<td colspan="'+R.length+'">'+rdSel('_|'+d.k,x.f)+' <span class="small">for the activity</span></td>')+'<td class="roll">'+rdChip(x.f)+'</td></tr>';});});
-  if(ov&&HC[a.cons]) h+='<tr><td class="lay" colspan="'+(R.length+2)+'">Oversight above, assessed separately</td></tr><tr><td>'+esc(ov)+' &middot; Manager / Governance-Oversight Readiness</td><td colspan="'+R.length+'">'+rdSel('_over|manager',c['_over|manager']||'ins')+'</td><td class="roll small">not rolled in</td></tr>';
+      h+='<tr><td title="'+esc(d.q)+'">'+esc(d.n)+(d.gate?rdGt:'')+'</td>'+(l==='role'?R.map(r=>{const f=c[r+'|'+d.k]||'ins';return '<td>'+rdSel(r+'|'+d.k,f,multi&&x.who.includes(r)&&x.who.length<R.length&&f!=='ready')+'</td>'}).join(''):'<td colspan="'+R.length+'">'+rdSel('_|'+d.k,x.f)+' <span class="small">for the activity</span></td>')+(multi?'<td class="roll">'+(l==='role'?rdChip(x.f):'')+'</td>':'')+'</tr>';});});
+  if(ov&&HC[a.cons]) h+='<tr><td class="lay" colspan="'+nc+'">Oversight above, assessed separately</td></tr><tr><td>'+esc(ov)+' &middot; Manager / Governance-Oversight Readiness</td><td colspan="'+R.length+'">'+rdSel('_over|manager',c['_over|manager']||'ins')+' <span class="small">not rolled in</span></td>'+(multi?'<td class="roll"></td>':'')+'</tr>';
   h+='</table></div>';
-  const open=RD_DIMS.filter(d=>rl[d.k].f!=='ready');
-  if(open.length) h+='<div class="gh2">Evidence and required action</div><div class="isub">For each dimension that is not Ready: what is actually known, and what must happen before progression. A Conditional dimension clears only with its required action recorded.</div>'+
-    open.map(d=>{const x=RD.dims[d.k]||{};return '<div class="rdd"><div>'+esc(d.n)+' '+rdChip(rl[d.k].f)+'</div><textarea placeholder="Evidence: what is actually known" oninput="rdText(\''+d.k+'\',\'ev\',this.value)">'+esc(x.ev||'')+'</textarea><textarea placeholder="Required action before progression, and its owner" oninput="rdText(\''+d.k+'\',\'act\',this.value)">'+esc(x.act||'')+'</textarea></div>'}).join('');
+  h+='<div class="gh2">Dimension assessments</div><div class="isub">GiGi&rsquo;s standard record for each dimension. Work-side facts are Modeled, from the Reference Model at '+RD.to+': context for the assessor, never a finding. A Conditional dimension clears only with its required action recorded.</div>'+
+    RD_DIMS.map((d,i)=>rdCard(a,d,i,rl)).join('');
   const m=RD.meta;
   h+='<div class="gh2">Who determines the findings</div><div class="isub">The assessor is not the sole role holder. Sign-off: '+(HC[a.cons]?'a cross-functional review or panel, since this is '+a.cons+' work.':'the Accountable owner, '+esc(a.Aroles[0])+', plus the assessor.')+'</div>'+
    '<div class="rdf"><input placeholder="Assessed by" value="'+esc(m.by||'')+'" oninput="rdMeta(\'by\',this.value)"><input placeholder="Evidence gathered from" value="'+esc(m.from||'')+'" oninput="rdMeta(\'from\',this.value)"><input placeholder="Signed off by" value="'+esc(m.signed||'')+'" oninput="rdMeta(\'signed\',this.value)"></div>'+

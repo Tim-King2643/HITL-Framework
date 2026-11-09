@@ -801,8 +801,8 @@ async function handleOrgApi(request, env, url) {
   // Re-confirm an override after the process owner's audit: stamps the date
   // and who confirmed it, and re-checks it against the current reference.
   // Human Operating Readiness (GR-012 v0.2, GiGi Garcia) for one activity's proposed step, assessed in the Work
-  // view's Readiness Gate (Nov 8, 2026). Findings per required role and dimension; evidence and required action per
-  // dimension; who assessed, the evidence sources and the sign-off. Gray is never converted: anything missing stays
+  // view's Readiness Gate (Nov 8, 2026). Findings per required role and dimension; GiGi's standard record per dimension
+  // (evidence, provenance, gap, required action, owner, what would move it); who assessed, the evidence sources and the sign-off. Gray is never converted: anything missing stays
   // Insufficient Evidence.
   if (url.pathname === '/org-api/readiness' && (request.method === 'POST' || request.method === 'DELETE')) {
     if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
@@ -836,8 +836,9 @@ async function handleOrgApi(request, env, url) {
     const dims = {};
     for (const d of Object.keys(dimsIn)) {
       if (!READY_DIMS.has(d) || !dimsIn[d] || typeof dimsIn[d] !== 'object') continue;
-      const ev = clip(dimsIn[d].ev, NOTE_MAX), act = clip(dimsIn[d].act, NOTE_MAX);
-      if (ev || act) dims[d] = { ev, act };
+      const rec = {};
+      for (const f of ['ev', 'prov', 'gap', 'act', 'owner', 'move']) { const v = clip(dimsIn[d][f], NOTE_MAX); if (v) rec[f] = v; }
+      if (Object.keys(rec).length) dims[d] = rec;
     }
     const m = body.meta && typeof body.meta === 'object' ? body.meta : {};
     const meta = { by: clip(m.by, ORG_MAX), from: clip(m.from, NOTE_MAX), signed: clip(m.signed, ORG_MAX), agency: clip(m.agency, NOTE_MAX) };
