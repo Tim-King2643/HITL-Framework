@@ -19,6 +19,7 @@
 //   OrgContext.selectedId()                -> 'reference' or an org id
 //   OrgContext.getAssessment(orgId)        -> { org, records, overrides, reviewer }
 //   OrgContext.saveAssessment(record)      -> { record }
+//   OrgContext.saveReadiness(record)       -> { record }   (GR-012 readiness for one activity's proposed step)
 //   OrgContext.resetAssessment(orgId, code)
 //   OrgContext.saveOverride(record)        -> { override }  (ceiling override, GR-054)
 //   OrgContext.removeOverride(orgId, code)
@@ -180,6 +181,7 @@
     refresh: loadOrgs,
     getAssessment: function (orgId) { return api('GET', '/org-api/assessment?org=' + encodeURIComponent(orgId)); },
     saveAssessment: function (rec) { return api('POST', '/org-api/assessment', rec); },
+    saveReadiness: function (rec) { return api('POST', '/org-api/readiness', rec); },
     resetAssessment: function (orgId, code) { return api('DELETE', '/org-api/assessment', { org: orgId, code: code }); },
     saveOverride: function (rec) { return api('POST', '/org-api/ceiling-override', rec); },
     removeOverride: function (orgId, code) { return api('DELETE', '/org-api/ceiling-override', { org: orgId, code: code }); },

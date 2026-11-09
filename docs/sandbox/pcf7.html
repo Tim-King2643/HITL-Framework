@@ -1462,6 +1462,7 @@ Object.keys(WR_DATA).forEach(code => { REF_REL[code] = WR_DATA[code].rel; });
 var ACTIVE_ORG = null;  // var, not let: renderTopPills() reads it before this line runs
 var ORG_RECORDS = {};
 var ORG_OVERRIDES = {};  // ceiling overrides (GR-054) for the selected organization
+var ORG_READINESS = {};  // readiness for a proposed step (GR-012, assessed in the Readiness Gate) for the selected organization
 function rerenderAllViews() {
   refreshFourViews();
   renderTopPills();
@@ -1486,6 +1487,7 @@ function applyOrg(org) {
   if (!org || org.reference) {
     ORG_RECORDS = {};
     ORG_OVERRIDES = {};
+    ORG_READINESS = {};
     Object.keys(WR_DATA).forEach(code => { WR_DATA[code].rel = REF_REL[code]; });
     orgBanner(org, 0);
     rerenderAllViews();
@@ -1493,6 +1495,7 @@ function applyOrg(org) {
   }
   OrgContext.getAssessment(org.id).then(j => {
     ORG_RECORDS = j.records || {};
+    ORG_READINESS = j.readiness || {};
     ORG_OVERRIDES = {};
     Object.keys(j.overrides || {}).forEach(k => { if (j.overrides[k] && j.overrides[k].level) ORG_OVERRIDES[k] = j.overrides[k]; });
     let assessed = 0;
@@ -1733,6 +1736,11 @@ function fvAssessmentSaved(code, rec) {
   WR_DATA[code].rel = rec && rec.current ? rec.current : 'Human-only';
   const assessed = Object.keys(ORG_RECORDS).filter(k => ORG_RECORDS[k] && ORG_RECORDS[k].current).length;
   orgBanner(ACTIVE_ORG, assessed);
+  rerenderKeepingOpen();
+}
+// The Readiness Gate saves readiness (GR-012) itself and reports it here.
+function fvReadinessSaved(code, rec) {
+  if (rec && rec.current) ORG_READINESS[code] = rec; else delete ORG_READINESS[code];
   rerenderKeepingOpen();
 }
 // The element grid saves ceiling overrides (GR-054) itself and reports them here.

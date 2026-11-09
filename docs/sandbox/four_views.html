@@ -251,6 +251,25 @@ body{background:transparent;padding-bottom:0}
 .ovsec{border-top:1px solid #DDE3EE;margin-top:14px;padding-top:10px}.ovsec h5{font-size:12.5px;color:#0D2D4F;margin:0 0 6px}
 .ovt td.el{width:190px}
 .gbtn:disabled{opacity:.6;cursor:default}
+.gh2{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);font-weight:600;margin:12px 0 4px}
+.rdc{display:inline-block;font-size:11px;font-weight:600;border-radius:10px;padding:1px 8px;white-space:nowrap}
+.rdg{font-size:10px;color:#9A6A00;border:1px solid #E8C98A;border-radius:4px;padding:0 5px;margin-left:5px;white-space:nowrap}
+.rdv{margin-top:8px;border-left:4px solid #1B4F8A;background:#EEF3FA;padding:7px 11px;border-radius:6px;font-size:12.5px;line-height:1.55}
+.rdv.hold{border-color:#B91C1C;background:#FEF2F2}.rdv.cond{border-color:#B8873F;background:#FEF9EC}
+.rdp{margin-top:12px;border-top:1px solid var(--border);padding-top:10px}
+.rdp h4{font-size:13.5px;color:var(--navy-d);margin-bottom:2px}
+.rdm{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+.rdm th{background:none;position:static;font-size:10.5px;color:var(--lgray);font-weight:600;text-align:left;padding:4px 6px;border-bottom:1px solid var(--border);vertical-align:bottom;text-transform:none;letter-spacing:0}
+.rdm td{padding:3px 6px;border-bottom:1px solid #EEF1F6;vertical-align:middle;text-align:left}
+.rdm td.lay{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--lgray);font-weight:600;padding-top:9px;background:#FAFBFD}
+.rdm td.roll{background:#F8FAFD;border-left:2px solid var(--border);white-space:nowrap}
+.rds{font:inherit;font-size:11.5px;padding:2px 4px;border:1px solid #C6D8EE;border-radius:5px;max-width:150px}
+.rds.wk{outline:2px solid #B91C1C;outline-offset:-2px}
+.rdd{display:grid;grid-template-columns:220px 1fr 1fr;gap:8px;align-items:start;margin-bottom:6px;font-size:12px}
+.rdd textarea,.rdn{font:inherit;font-size:12px;padding:5px 7px;border:1px solid #C6D8EE;border-radius:6px;min-height:40px;resize:vertical;width:100%}
+.rdf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rdf input{font:inherit;font-size:12px;padding:5px 7px;border:1px solid #C6D8EE;border-radius:6px;width:100%}
+@media(max-width:640px){.rdd,.rdf{grid-template-columns:1fr}}
 </style></head><body>
 <div class="wrap">
   <div class="side" id="side"></div>
@@ -661,7 +680,93 @@ function elRow(a,e,state,extra,chg){const obj=WORKED[a.code]&&WORKED[a.code].obj
 // The Readiness Gate&rsquo;s three checks: all must clear before an activity takes a step (methodology section 5).
 // Column headers for the element tables; the work column shows only where the activity's work is written out.
 function elHead(a,third){return '<tr class="ith"><th>Element</th>'+(WORKED[a.code]&&WORKED[a.code].obj?'<th>The work here</th>':'')+'<th>'+third+'</th></tr>'}
-function readiness(){return '<table class="it" style="margin-top:8px"><tr><td class="el">Technical / process</td><td class="stt">The evidence above</td></tr><tr><td class="el">Role readiness</td><td class="stt">Not yet measured (GR-012)</td></tr><tr><td class="el">Organizational readiness</td><td class="stt">Not yet measured (GR-012)</td></tr></table><div class="small" style="margin-top:4px">All three must clear before the activity takes this step.</div>'}
+/* ---------- Human Operating Readiness in the Readiness Gate (GR-012 v0.2, GiGi Garcia; GR-001) ----------
+   Placement and rules approved Nov 8, 2026 (docs/wip/readiness_gate_sketch.html). Role readiness reads GiGi's six role
+   dimensions, Organizational readiness her three organizational ones; Trust / Evidence Quality, her shared layer, shows
+   under both. On High or Critical work each dimension rolls up the required roles by weakest link (BR-16); below High the
+   Accountable role is read directly. The oversight above is assessed separately and never rolled in. The step holds
+   while any dimension is Not Ready or Insufficient Evidence (gray is never converted), clears with conditions while any
+   is Conditional, and clears when all are Ready. Candidate hard gates are tagged; they stay provisional. Readiness is
+   assessed per organization; the Reference Model cannot model it. */
+const RD_DIMS=[
+ {k:'clarity',l:'role',n:'Role Clarity',q:'Does the person understand what AI is allowed to do, what stays human, what must be reviewed/decided, and what cannot be delegated?'},
+ {k:'authority',l:'role',n:'Decision Authority',q:'When the person believes the AI-supported result is wrong, what are they actually allowed to do?',gate:1},
+ {k:'skill',l:'role',n:'Capability / Skill',q:'Does the person have enough domain expertise and judgment to evaluate the AI-supported work independently?',gate:1},
+ {k:'fluency',l:'role',n:'Confidence / Decision Fluency',q:'If the person and system disagree, will the person make and defend an independent decision?'},
+ {k:'safety',l:'role',n:'Psychological Safety',q:'Can the person challenge the system and act on that concern without unreasonable personal or professional risk?'},
+ {k:'capacity',l:'role',n:'Capacity / Workload',q:'Does the new relationship leave enough real capacity for meaningful review, exception handling and escalation?'},
+ {k:'manager',l:'org',n:'Manager / Governance-Oversight Readiness',q:'Is the surrounding manager or governance body prepared to coach, challenge, absorb escalation and govern the redesigned relationship?'},
+ {k:'governance',l:'org',n:'Leadership Support / Governance',q:'Who owns the outcome and what happens when the new relationship fails?'},
+ {k:'change',l:'org',n:'Change Capacity',q:'Even if the transition is right, can the organization absorb it now?'},
+ {k:'evidence',l:'shared',n:'Trust / Evidence Quality',q:'What evidence justifies asking the person to rely on the system at this level?',gate:1}];
+const RD_LAYER={role:'Role / Human Operating Conditions',org:'Organizational Operating Conditions',shared:'Shared Evidence Condition'};
+const RD_F={ins:['Insufficient Evidence',3,'#E5E7EB','#374151'],not:['Not Ready',2,'#FEE2E2','#991B1B'],cond:['Conditional',1,'#FEF9C3','#854D0E'],ready:['Ready',0,'#DCFCE7','#166534']};
+const RD_ORDER=['ins','ready','cond','not'];
+const rdChip=f=>'<span class="rdc" style="background:'+RD_F[f][2]+';color:'+RD_F[f][3]+'">'+RD_F[f][0]+'</span>';
+const rdRec=a=>isOrg()?((P.ORG_READINESS||{})[a.code]||null):null;
+function rdRoles(a){const x=((RACI_ACT[a.code]||{}).x||{}).R||[];return HC[a.cons]?[...new Set(a.Aroles.concat(a.R,x))]:[a.Aroles[0]];}
+const rdOver=a=>{const r=DATA.roles.find(x=>x.name===a.Aroles[0]);return r&&r.reportsTo||''};
+// Each dimension's finding for the activity: weakest link across the required roles for the role dimensions; once for the rest.
+function rdRoll(a,cells){const R=rdRoles(a),out={};
+  RD_DIMS.forEach(d=>{if(d.l==='role'){let w=null,who=[];R.forEach(r=>{const f=cells[r+'|'+d.k]||'ins';if(w==null||RD_F[f][1]>RD_F[w][1]){w=f;who=[r]}else if(f===w)who.push(r)});out[d.k]={f:w,who:w==='ready'?[]:who};}
+    else out[d.k]={f:cells['_|'+d.k]||'ins',who:[]};});return out;}
+function rdLayer(rl,ls){const D=RD_DIMS.filter(d=>ls.includes(d.l));let w='ready';D.forEach(d=>{if(RD_F[rl[d.k].f][1]>RD_F[w][1])w=rl[d.k].f});
+  const cnt={};D.forEach(d=>cnt[rl[d.k].f]=(cnt[rl[d.k].f]||0)+1);return {w,worst:D.filter(d=>w!=='ready'&&rl[d.k].f===w),cnt,n:D.length};}
+// The verdict for the step to `to`: none (not assessed for it), hold, cond or clear.
+function rdVerdict(a,to,cells0){const rec=rdRec(a),cells=cells0||(rec&&rec.to===to?rec.cells:null);if(!cells)return {v:'none'};
+  const rl=rdRoll(a,cells),fs=RD_DIMS.map(d=>rl[d.k].f);
+  return {v:fs.some(f=>f==='not'||f==='ins')?'hold':fs.includes('cond')?'cond':'clear',rl};}
+const rdGt='<span class="rdg" title="Candidate hard gate (GR-012 v0.2): provisional, not locked">candidate gate</span>';
+function rdRow(name,L,rl,assessed){const by=['ready','cond','not','ins'].filter(f=>L.cnt[f]).map(f=>L.cnt[f]+' '+RD_F[f][0]).join(' · ');
+  const ww=L.worst.length===L.n?'every dimension':L.worst.map(d=>esc(d.n)+(L.w!=='ins'&&rl[d.k].who.length?' ('+esc(rl[d.k].who.join(', '))+')':'')+(d.gate?rdGt:'')).join('; ');
+  return '<tr><td class="el">'+name+'</td><td>'+rdChip(L.w)+(assessed&&ww?' '+ww:'')+'<div class="small">'+(assessed?by+' across '+L.n+' dimensions':'Not yet assessed for this step')+'</div></td></tr>';}
+let RD=null;
+function readiness(a,k){const to=ST[k+1],org=isOrg(),rec=rdRec(a),open=RD&&RD.code===a.code&&RD.k===k;
+  let h='<div class="gh2">Readiness Gate</div><table class="it"><tr><td class="el">Technical / process</td><td>The evidence above. The evidence each step requires is GR-037, not yet defined.</td></tr>';
+  if(!org) return h+'<tr><td class="el">Role readiness</td><td>Assessed per organization: readiness cannot be modeled. Choose an organization to assess it.</td></tr><tr><td class="el">Organizational readiness</td><td>Assessed per organization.</td></tr></table><div class="small" style="margin-top:4px">All three must clear before the activity takes this step.</div>';
+  const cells=open?RD.cells:(rec&&rec.to===to?rec.cells:{}),assessed=open||!!(rec&&rec.to===to),rl=rdRoll(a,cells),ov=rdOver(a);
+  h+=rdRow('Role readiness',rdLayer(rl,['role','shared']),rl,assessed)+rdRow('Organizational readiness',rdLayer(rl,['org','shared']),rl,assessed)+
+    (ov&&HC[a.cons]?'<tr><td class="el">Oversight above</td><td>'+esc(ov)+': '+rdChip(cells['_over|manager']||'ins')+' <span class="small">assessed separately, shown beside the roll-up, never rolled in (BR-16)</span></td></tr>':'')+'</table>';
+  const V=rdVerdict(a,to,assessed?cells:null);
+  const holds=V.rl?RD_DIMS.filter(d=>['not','ins'].includes(V.rl[d.k].f)):[],conds=V.rl?RD_DIMS.filter(d=>V.rl[d.k].f==='cond'):[];
+  const dims=open?RD.dims:(rec&&rec.dims)||{},noAct=conds.filter(d=>!((dims[d.k]||{}).act||'').trim());
+  const link=canEdit()?' <span class="assess" style="cursor:pointer;margin-left:6px" onclick="rdOpen(\''+a.code+'\','+k+')">'+(rec&&rec.to===to?'Reassess readiness':'Assess readiness')+'</span>':'';
+  h+='<div class="rdv'+(V.v==='clear'?'':V.v==='cond'?' cond':' hold')+'">'+(V.v==='none'?'Holds. Readiness for '+to+' is not yet assessed: every dimension is Insufficient Evidence.'+(rec&&rec.to!==to?' Readiness was assessed for the step to '+rec.to+'.':''):
+    V.v==='hold'?'Holds. '+(Object.values(cells).every(x=>x==='ins')?'Nothing is assessed yet: every dimension is Insufficient Evidence.':
+      ['not','ins'].map(f=>{const D=holds.filter(d=>V.rl[d.k].f===f);return D.length?RD_F[f][0]+': '+D.map(d=>esc(d.n)+(f==='not'&&d.l==='role'&&V.rl[d.k].who.length?' ('+esc(V.rl[d.k].who.join(', '))+')':'')).join(', ')+'.':''}).filter(Boolean).join(' ')):
+    V.v==='cond'?'Clears with conditions: '+conds.map(d=>esc(d.n)).join(', ')+'.'+(noAct.length?' <span class="amber">Record the required action for '+noAct.map(d=>esc(d.n)).join(', ')+'.</span>':' Required actions recorded.'):'Clears. Every dimension is Ready.')+link+'</div>';
+  if(!open&&rec&&rec.to===to) h+='<div class="small" style="margin-top:4px">Assessed'+(rec.meta&&rec.meta.by?' by '+esc(rec.meta.by):'')+(rec.savedAt?' on '+new Date(rec.savedAt).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'')+(rec.meta&&rec.meta.signed?' · signed off by '+esc(rec.meta.signed):' · not yet signed off')+'.</div>';
+  return h+(open?rdPanel(a,k):'');}
+function rdOpen(code,k){const a=ACT[code],to=ST[k+1],rec=rdRec(a),same=rec&&rec.to===to;
+  RD={code,k,to,cells:same?Object.assign({},rec.cells):{},dims:same?JSON.parse(JSON.stringify(rec.dims||{})):{},meta:same?Object.assign({},rec.meta||{}):{},busy:false,msg:''};render();}
+function rdSet(key,v){if(!RD)return;RD.cells[key]=v;render();}
+function rdText(d,f,v){if(!RD)return;(RD.dims[d]=RD.dims[d]||{})[f]=v;}
+function rdMeta(f,v){if(!RD)return;RD.meta[f]=v;}
+function rdClose(){RD=null;render();}
+function rdSave(){const a=ACT[RD.code];RD.busy=true;RD.msg='Saving…';render();
+  P.OrgContext.saveReadiness({org:P.ACTIVE_ORG.id,code:a.code,to:RD.to,cells:RD.cells,dims:RD.dims,meta:RD.meta})
+   .then(j=>{RD.busy=false;RD.msg='Saved for '+ORGNAME()+'.';P.fvReadinessSaved(a.code,j.record);})
+   .catch(e=>{RD.busy=false;RD.msg='Could not save: '+e.message;render();});}
+const rdSel=(key,f,wk)=>'<select class="rds'+(wk?' wk':'')+'" style="background:'+RD_F[f][2]+';color:'+RD_F[f][3]+'" onchange="rdSet(\''+key.replace(/'/g,"\\'")+'\',this.value)">'+RD_ORDER.map(x=>'<option value="'+x+'"'+(x===f?' selected':'')+'>'+RD_F[x][0]+'</option>').join('')+'</select>';
+function rdPanel(a,k){const R=rdRoles(a),rl=rdRoll(a,RD.cells),ov=rdOver(a),c=RD.cells;
+  let h='<div class="rdp"><h4>Assess readiness &middot; '+a.code+' to '+RD.to+'</h4><div class="isub">'+esc(ORGNAME())+'. '+(R.length>1?'Weakest link across the '+R.length+' required roles (BR-16): '+esc(R.join(', '))+'.':'One role read directly: '+esc(R[0])+(HC[a.cons]?' (BR-16).':', the Accountable role.'))+
+   ' Organizational and shared dimensions are assessed once for the activity. Every finding starts at Insufficient Evidence; modeled facts never move one (GR-012 v0.2). Hover a dimension for its readiness question.</div>'+
+   '<div style="overflow-x:auto"><table class="rdm"><tr><th>Dimension</th>'+R.map(r=>'<th>'+esc(r)+'</th>').join('')+'<th class="roll">Activity</th></tr>';
+  ['role','org','shared'].forEach(l=>{h+='<tr><td class="lay" colspan="'+(R.length+2)+'">'+RD_LAYER[l]+'</td></tr>';
+    RD_DIMS.filter(d=>d.l===l).forEach(d=>{const x=rl[d.k];
+      h+='<tr><td title="'+esc(d.q)+'">'+esc(d.n)+(d.gate?rdGt:'')+'</td>'+(l==='role'?R.map(r=>{const f=c[r+'|'+d.k]||'ins';return '<td>'+rdSel(r+'|'+d.k,f,R.length>1&&x.who.includes(r)&&x.who.length<R.length&&f!=='ready')+'</td>'}).join(''):'<td colspan="'+R.length+'">'+rdSel('_|'+d.k,x.f)+' <span class="small">for the activity</span></td>')+'<td class="roll">'+rdChip(x.f)+'</td></tr>';});});
+  if(ov&&HC[a.cons]) h+='<tr><td class="lay" colspan="'+(R.length+2)+'">Oversight above, assessed separately</td></tr><tr><td>'+esc(ov)+' &middot; Manager / Governance-Oversight Readiness</td><td colspan="'+R.length+'">'+rdSel('_over|manager',c['_over|manager']||'ins')+'</td><td class="roll small">not rolled in</td></tr>';
+  h+='</table></div>';
+  const open=RD_DIMS.filter(d=>rl[d.k].f!=='ready');
+  if(open.length) h+='<div class="gh2">Evidence and required action</div><div class="isub">For each dimension that is not Ready: what is actually known, and what must happen before progression. A Conditional dimension clears only with its required action recorded.</div>'+
+    open.map(d=>{const x=RD.dims[d.k]||{};return '<div class="rdd"><div>'+esc(d.n)+' '+rdChip(rl[d.k].f)+'</div><textarea placeholder="Evidence: what is actually known" oninput="rdText(\''+d.k+'\',\'ev\',this.value)">'+esc(x.ev||'')+'</textarea><textarea placeholder="Required action before progression, and its owner" oninput="rdText(\''+d.k+'\',\'act\',this.value)">'+esc(x.act||'')+'</textarea></div>'}).join('');
+  const m=RD.meta;
+  h+='<div class="gh2">Who determines the findings</div><div class="isub">The assessor is not the sole role holder. Sign-off: '+(HC[a.cons]?'a cross-functional review or panel, since this is '+a.cons+' work.':'the Accountable owner, '+esc(a.Aroles[0])+', plus the assessor.')+'</div>'+
+   '<div class="rdf"><input placeholder="Assessed by" value="'+esc(m.by||'')+'" oninput="rdMeta(\'by\',this.value)"><input placeholder="Evidence gathered from" value="'+esc(m.from||'')+'" oninput="rdMeta(\'from\',this.value)"><input placeholder="Signed off by" value="'+esc(m.signed||'')+'" oninput="rdMeta(\'signed\',this.value)"></div>'+
+   '<div class="gh2">Human Agency (GR-013) &middot; derived</div><div class="isub">Read from '+['authority','skill','fluency','safety','capacity','evidence'].map(k2=>esc(RD_DIMS.find(d=>d.k===k2).n)+' '+rdChip(rl[k2].f)).join(' ')+'. No score.</div>'+
+   '<textarea class="rdn" placeholder="Narrative conclusion: can the person actually exercise the judgment and accountability the operating model leaves with them?" oninput="rdMeta(\'agency\',this.value)">'+esc(m.agency||'')+'</textarea>'+
+   '<div class="gact"><button type="button" class="gbtn primary"'+(RD.busy?' disabled':'')+' onclick="rdSave()">Save readiness</button><button type="button" class="gbtn" onclick="rdClose()">Close</button>'+(RD.msg?'<span class="small" style="margin-left:8px">'+esc(RD.msg)+'</span>':'')+'</div></div>';
+  return h;}
 // At Agent-delegation and Automation the doer's work on the activity drops away; count how far the same pattern reaches across the role.
 function roleImpact(a,s){
   const k=rank(s); if(k<4) return '';
@@ -682,7 +787,7 @@ function infoBox(a){
   if(sel.t==='stage'){const s=ST[sel.k],g=stageEls(a,s),p=sel.k>0?stageEls(a,ST[sel.k-1]):g;
     return '<div class="ibox">'+X(a)+'<h4>'+s+' — who does what</h4>'+(isOrg()&&ABCSTAGE[a.code]===s?assessLine(a):'')+'<div class="isub">'+s+' keeps '+HPCT[s]+'% H. '+esc(STEPDEF[s])+(sel.k>ci?' <span class="amber">'+(isOrg()&&ABCSTAGE[a.code]===s?(ABC_OV[a.code]&&rank(ABC_OV[a.code].level)>=sel.k?'This activity is past its Progression Ceiling ('+derivedCeil(a)+'), covered by an approved override to '+ABC_OV[a.code].level+'.':'This activity is past its Progression Ceiling ('+derivedCeil(a)+'), with no approved override.'):'Past this activity’s ceiling ('+derivedCeil(a)+'); shown for illustration.')+'</span>':'')+'</div><table class="it">'+elHead(a,'At this step')+elsOf(a).map(e=>elRow(a,e,g[e]+(e===ctlOf(a)&&CTLNOTE[s]?'<span class="small">'+CTLNOTE[s]+'</span>':''),'',sel.k>0&&p[e]!==g[e])).join('')+'</table>'+roleImpact(a,s)+na+phr+'</div>';}
   if(sel.t==='gate'){const k=sel.k,f=stageEls(a,ST[k]),t=stageEls(a,ST[k+1]),ch=elsOf(a).filter(e=>f[e]!==t[e]);
-    return '<div class="ibox">'+X(a)+'<h4>'+ST[k]+' → '+ST[k+1]+' — what changes</h4><div class="isub">'+ch.length+' of '+elsOf(a).length+' elements change in this step.</div><table class="it">'+elHead(a,'Change in this step')+ch.map(e=>elRow(a,e,f[e]+' → '+t[e]+(e===ctlOf(a)&&CTLNOTE[ST[k+1]]?'<span class="small">'+CTLNOTE[ST[k+1]]+'</span>':''))).join('')+'</table><div class="ev"><b>Evidence to take this step:</b> '+GATE_EV[k].join('; ')+'.</div>'+readiness()+(k+1>ci?'<div class="amber" style="margin-top:6px">This step goes past the Progression Ceiling ('+derivedCeil(a)+').</div>':'')+'</div>';}
+    return '<div class="ibox">'+X(a)+'<h4>'+ST[k]+' → '+ST[k+1]+' — what changes</h4><div class="isub">'+ch.length+' of '+elsOf(a).length+' elements change in this step.</div><table class="it">'+elHead(a,'Change in this step')+ch.map(e=>elRow(a,e,f[e]+' → '+t[e]+(e===ctlOf(a)&&CTLNOTE[ST[k+1]]?'<span class="small">'+CTLNOTE[ST[k+1]]+'</span>':''))).join('')+'</table><div class="ev"><b>Evidence to take this step:</b> '+GATE_EV[k].join('; ')+'.</div>'+readiness(a,k)+(k+1>ci?'<div class="amber" style="margin-top:6px">This step goes past the Progression Ceiling ('+derivedCeil(a)+').</div>':'')+'</div>';}
   if(sel.t==='abc'&&ABC_EL[a.code]){const pe=pastEls(a),g=ABC_EL[a.code],ov=ABC_OV[a.code];
     return '<div class="ibox">'+X(a)+'<h4>'+esc(ORGNAME())+' today — '+curOf(a)+'</h4><div class="isub">Derived from the assessed elements. '+(pe.length?'<span class="red">'+pe.join(', ')+' past its element ceiling.</span>':'Every element is within its element ceiling.')+(ov?' Ceiling raised to '+ov.level+' by an approved override ('+(FL[ov.factor]||ov.factor).toLowerCase()+', approved by '+esc(ov.approverRole)+').':'')+' <a href="javascript:void 0" onclick="openGrid(\''+a.code+'\')">'+(canEdit()?'Reassess':'View the element grid')+'</a></div><table class="it">'+elHead(a,'Assessed state and evidence')+elsOf(a).map(e=>{const [st,ev,ref]=g[e],past=lr(st)>lr(cp[e][0]);return elRow(a,e,st+(past?' <span class="red">past element ceiling ('+cp[e][0]+')</span>':'')+'<div class="small">'+(ev?EVL[ev]+(ref?': '+esc(ref):''):'No evidence recorded')+'</div>')}).join('')+'</table></div>';}
   return '<div class="ibox">'+X(a)+'<h4>Progression Ceiling — '+derivedCeil(a)+'</h4><div class="isub">'+esc(a.note)+(!isOrg()&&CHIST.includes(a.code)?' <a href="../wip/production_changelog.html?q='+a.code+'" target="_blank" rel="noopener">Change history</a>':'')+(a.ceiling!==derivedCeil(a)?' <b>GR-058:</b> derived as '+derivedCeil(a)+' from the element ceilings below, which hold the line the '+a.ceiling+' ceiling used to.':'')+'</div><table class="it">'+elHead(a,'Element ceiling')+elsOf(a).map(e=>elRow(a,e,cp[e][0],cp[e][1]?' <span class="small">'+esc(cp[e][1])+'</span>':'')).join('')+'</table>'+na+phr+'</div>';
@@ -1278,6 +1383,7 @@ function orgFindings(){
   const f=[];
   f.push(as.length+' of 118 activities assessed: '+ST.filter(s=>st[s]).map(s=>st[s]+' at '+s).join(', ')+'. '+(118-as.length)+' are Unassessed: they have no Current State, and the Current State findings cover the assessed activities only.');
   f.push(past.length?past.length+' past the Progression Ceiling: '+ovs.length+' covered by an approved override, '+blocked.length+' at High or Critical that cannot be overridden ('+blocked.map(a=>a.code).join(', ')+'), and '+(pastNo.length-blocked.length)+' at Low or Moderate with no override yet.':'None is past its Progression Ceiling.');
+  {const ra=DATA.acts.filter(a=>rdRec(a)),rh=ra.filter(a=>rdVerdict(a,rdRec(a).to).v==='hold');if(ra.length) f.push('<b>Readiness (GR-012).</b> Assessed for '+ra.length+' activit'+(ra.length===1?'y':'ies')+'\'s proposed step: '+(rh.length?rh.length+' not cleared ('+rh.map(a=>a.code+' to '+rdRec(a).to).join(', ')+')':'none held')+'. Coverage, '+ra.length+' of 118, is context, not a finding.');}
   if(pe.length) f.push('<b>Needs a decision:</b> '+pe.map(a=>a.code+' '+pastEls(a).join(', ')).join('; ')+'. Each activity is within its ceiling, but the element its ceiling factor protects is not.');
   f.push(dpFinding());
   if(refChg.length) f.push('<b>To reassess:</b> '+refChg.map(a=>a.code).join(', ')+' '+(refChg.length>1?'were':'was')+' assessed against the reference before GR-058, so '+(refChg.length>1?'they show':'it shows')+' &ldquo;reference changed since assessed&rdquo; until confirmed.');
@@ -1296,6 +1402,7 @@ const FDK=[
  ['pastHC','Past the ceiling at High or Critical: no override possible','#B91C1C','#fff'],
  ['past','Past the ceiling at Low or Moderate, no override yet','#E57373','#fff'],
  ['elem','Within the ceiling, an element past its own ceiling','#F2B8B5','#0D2D4F'],
+ ['rdy','Readiness not cleared for its proposed step','#7E5AA8','#fff'],
  ['ctl','Needs a named control: reaches no control point','#B8873F','#fff'],
  ['unchk','Unchecked input: relies on AI-touched work, no person in between','#E2C58F','#0D2D4F'],
  ['ref','To reassess: reference changed since assessed','#6895C8','#fff'],
@@ -1310,6 +1417,7 @@ function findAll(){
       if(cur>ci){if(cur>abcLim(a))f.push(HC[a.cons]?'pastHC':'past');else f.push('ovr');}
       else if(pastEls(a).length) f.push('elem');
       const rf=ABC_REF[a.code];if(rf&&(rf.ceiling!==derivedCeil(a)||rf.cons!==a.cons)) f.push('ref');}
+    if(org){const rr=rdRec(a);if(rr&&rdVerdict(a,rr.to).v==='hold') f.push('rdy');}
     if(!r.dp&&!r.feeds.length) f.push('ctl');
     if(unchk.has(a.code)) f.push('unchk');
     f.sort((x,y)=>FDK.findIndex(k=>k[0]===x)-FDK.findIndex(k=>k[0]===y));
@@ -1320,7 +1428,7 @@ function findDash(){
   L.forEach(a=>F[a.code].forEach(k=>cnt[k]++));
   const top=k=>L.filter(a=>F[a.code][0]===k).length,flagged=L.filter(a=>F[a.code][0]!=='none').length;
   let h='<div class="tiles" style="margin-bottom:16px">'+
-    (org?tile(L.filter(a=>ABCSTAGE[a.code]).length+' of '+L.length,'activities assessed')+tile(cnt.pastHC+cnt.past,'past the ceiling with no override ('+cnt.pastHC+' at High or Critical)')+tile(cnt.elem,'with an element past its own ceiling'):'')+
+    (org?tile(L.filter(a=>ABCSTAGE[a.code]).length+' of '+L.length,'activities assessed')+tile(cnt.pastHC+cnt.past,'past the ceiling with no override ('+cnt.pastHC+' at High or Critical)')+tile(cnt.elem,'with an element past its own ceiling')+tile(cnt.rdy,'readiness not cleared, of '+L.filter(a=>rdRec(a)).length+' with readiness assessed'):'')+
     tile(cnt.ctl,'need a named control: no control point')+tile(cnt.unchk,'receive AI-touched work with no person in between')+
     (org?tile(cnt.ref,'to reassess: reference changed'):tile(flagged+' of '+L.length,'activities with a finding at the ceilings'))+'</div>';
   const used=FDK.filter(k=>k[0]==='none'||cnt[k[0]]||!org&&['ctl','unchk'].includes(k[0]));
@@ -1337,7 +1445,7 @@ function findDash(){
 }
 // A card (or a square) opens the Work view's activities at that process, expanded, and selects the activity's control point.
 function fdOpen(code,act){try{P.setView('work')}catch(e){S.view='work'}
-  if(act)S.wsel[act]={t:'dp',k:0};dbOpen(code);}
+  if(act){const rr=rdRec(ACT[act]);S.wsel[act]=rr&&findAll()[act][0]==='rdy'?{t:'gate',k:Math.max(0,rank(rr.to)-1)}:{t:'dp',k:0};}dbOpen(code);}
 
 /* ---------- Exceptions report (GR-059: replaces the Exceptions Report button) ----------
    The sandbox's own report, built by pcf7.html (exceptionsReportHTML), with two sections the four views add:

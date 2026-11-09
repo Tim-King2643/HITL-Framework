@@ -622,6 +622,9 @@ function cleanElements(el) {
   return Object.keys(out).length ? out : null;
 }
 const ORG_MAX = 200, NOTE_MAX = 2000, HISTORY_MAX = 25;
+// GiGi's ten v0.2 dimensions and four findings (GR-012).
+const READY_DIMS = new Set(['clarity', 'authority', 'skill', 'fluency', 'safety', 'capacity', 'manager', 'governance', 'change', 'evidence']);
+const READY_FINDINGS = new Set(['ins', 'ready', 'cond', 'not']);
 const OVERRIDE_CONS = new Set(['Low', 'Moderate']);
 const CEILING_FACTOR_KEYS = new Set(['technical', 'governance', 'legal', 'relational', 'floor', 'accountability']);
 const REFERENCE_PATH = '/sandbox/reference-wr.json';
@@ -721,7 +724,13 @@ async function handleOrgApi(request, env, url) {
       const raw = await env.SANDBOX_NOTES.get(k);
       if (raw) overrides[k.slice(oPrefix.length)] = JSON.parse(raw);
     }
-    return json({ reviewer, org, records, overrides });
+    const rPrefix = 'ready:' + orgId + ':';
+    const readiness = {};
+    for (const k of await listKeys(env, rPrefix)) {
+      const raw = await env.SANDBOX_NOTES.get(k);
+      if (raw) { const r = JSON.parse(raw); if (r && r.current) readiness[k.slice(rPrefix.length)] = r; }
+    }
+    return json({ reviewer, org, records, overrides, readiness });
   }
 
   if (url.pathname === '/org-api/assessment' && (request.method === 'POST' || request.method === 'DELETE')) {
@@ -791,6 +800,52 @@ async function handleOrgApi(request, env, url) {
 
   // Re-confirm an override after the process owner's audit: stamps the date
   // and who confirmed it, and re-checks it against the current reference.
+  // Human Operating Readiness (GR-012 v0.2, GiGi Garcia) for one activity's proposed step, assessed in the Work
+  // view's Readiness Gate (Nov 8, 2026). Findings per required role and dimension; evidence and required action per
+  // dimension; who assessed, the evidence sources and the sign-off. Gray is never converted: anything missing stays
+  // Insufficient Evidence.
+  if (url.pathname === '/org-api/readiness' && (request.method === 'POST' || request.method === 'DELETE')) {
+    if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
+    let body;
+    try { body = await request.json(); } catch (e) { return json({ error: 'invalid JSON body' }, { status: 400 }); }
+    const orgId = body && body.org, code = body && body.code;
+    if (typeof orgId !== 'string' || !ORG_ID_RE.test(orgId) || !(await readOrg(env, orgId))) {
+      return json({ error: 'unknown organization' }, { status: 400 });
+    }
+    if (typeof code !== 'string' || !ASSESS_CODE_RE.test(code)) return json({ error: 'unknown activity' }, { status: 400 });
+    const key = 'ready:' + orgId + ':' + code;
+    const prevRaw = await env.SANDBOX_NOTES.get(key);
+    const prev = prevRaw ? JSON.parse(prevRaw) : null;
+    const history = prev ? (prev.history || []) : [];
+    if (prev && prev.current) { const snap = Object.assign({}, prev); delete snap.history; history.unshift(snap); }
+    if (request.method === 'DELETE') {
+      const rec = { current: null, resetBy: reviewer, resetAt: Date.now(), history: history.slice(0, HISTORY_MAX) };
+      await env.SANDBOX_NOTES.put(key, JSON.stringify(rec));
+      return json({ ok: true, record: rec });
+    }
+    const to = body.to;
+    if (!WR_STEPS.includes(to)) return json({ error: 'name the step being assessed' }, { status: 400 });
+    const cellsIn = body.cells && typeof body.cells === 'object' && !Array.isArray(body.cells) ? body.cells : {};
+    const cells = {};
+    for (const k of Object.keys(cellsIn).slice(0, 200)) {
+      const [role, dim] = k.split('|');
+      if (!role || role.length > ORG_MAX || !READY_DIMS.has(dim) || !READY_FINDINGS.has(cellsIn[k])) continue;
+      cells[k] = cellsIn[k];
+    }
+    const dimsIn = body.dims && typeof body.dims === 'object' && !Array.isArray(body.dims) ? body.dims : {};
+    const dims = {};
+    for (const d of Object.keys(dimsIn)) {
+      if (!READY_DIMS.has(d) || !dimsIn[d] || typeof dimsIn[d] !== 'object') continue;
+      const ev = clip(dimsIn[d].ev, NOTE_MAX), act = clip(dimsIn[d].act, NOTE_MAX);
+      if (ev || act) dims[d] = { ev, act };
+    }
+    const m = body.meta && typeof body.meta === 'object' ? body.meta : {};
+    const meta = { by: clip(m.by, ORG_MAX), from: clip(m.from, NOTE_MAX), signed: clip(m.signed, ORG_MAX), agency: clip(m.agency, NOTE_MAX) };
+    const rec = { current: true, to, cells, dims, meta, savedBy: reviewer, savedAt: Date.now(), history: history.slice(0, HISTORY_MAX) };
+    await env.SANDBOX_NOTES.put(key, JSON.stringify(rec));
+    return json({ ok: true, record: rec });
+  }
+
   if (url.pathname === '/org-api/ceiling-override/review' && request.method === 'POST') {
     if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
     let body;
