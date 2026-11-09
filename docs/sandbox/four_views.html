@@ -51,6 +51,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .db-pn .h{color:var(--navy);white-space:nowrap}
 .db-cells{display:flex;flex-wrap:wrap;gap:2px;margin-top:6px}
 .db-cell{width:13px;height:13px;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(13,45,79,.12)}
+.db-cell.u,.db-sw.u{background:#fff!important;box-shadow:none;border:1.5px dashed #8A94A6}
+.db-bar div.u{background:repeating-linear-gradient(45deg,#fff 0 4px,#E3E8F0 4px 8px);color:#5B6576;box-shadow:inset 0 0 0 1px #C7CEDA}
 .db-bars .row{display:grid;grid-template-columns:300px 1fr 60px;gap:10px;align-items:center;margin-bottom:7px;font-size:12px;text-align:left}
 .db-bar{display:flex;height:20px;gap:2px}
 .db-bar div{height:100%;font-size:11px;line-height:20px;text-align:center;overflow:hidden}
@@ -341,9 +343,10 @@ function duties(a,s){
 }
 function tally(target,L){
   const roles={}; DATA.roles.forEach(r=>roles[r.name]={acc:0,resp:0,work:0,approve:0,exc:0,escIn:0,answer:0,left:0,leftHC:0,acts:[],racts:[]});
-  const org={every:0,approve:0,exc:0,none:0,escHC:0,escMoved:0};
+  const org={every:0,approve:0,exc:0,none:0,escHC:0,escMoved:0,una:0};
   (L||DATA.acts).forEach(a=>{
     const c=ceilOf(a), s=target==='Today'?curOf(a):target==='Human-only'?'Human-only':(rank(target)<rank(c)?target:c);
+    if(!s){org.una++; a.Aroles.forEach(r=>{if(roles[r]){roles[r].acc++;roles[r].racts.push({a,k:'A'})}}); a.R.forEach(r=>{if(roles[r]){roles[r].resp++;roles[r].racts.push({a,k:'R'})}}); return;}
     if(rank(s)<=2) org.every++; else if(s==='Oversight') org.approve++; else if(s==='Agent-delegation'){org.exc++; if(HC[a.cons]){org.escHC++; const tg=S.esc==='A'?a.Aroles:S.esc==='mgr'?workers(a).map(mgr):workers(a); if(tg.some(x=>!workers(a).includes(x))) org.escMoved++;}} else org.none++;
     a.Aroles.forEach(r=>{if(roles[r]){roles[r].acc++;roles[r].racts.push({a,k:'A'})}});
     a.R.forEach(r=>{if(roles[r]){roles[r].resp++;roles[r].racts.push({a,k:'R'})}});
@@ -410,9 +413,9 @@ function peopleMain(){
     // A role's % H: the equal-weighted mean of its Accountable processes, each the mean of its activities (as pcf7.html does).
     const rprocs=n=>[...new Set(PA.filter(a=>a.Aroles.includes(n)).map(a=>a.proc))];
     // Only the role's own Accountable activities in each process count; with process-level RACI that is the whole process.
-    const pH=(p,f,n)=>mean(PA.filter(a=>a.proc===p&&a.Aroles.includes(n)).map(a=>HPCT[stOf(a,f)]));
-    const rH=(n,f)=>{const P=rprocs(n);return P.length?Math.round(mean(P.map(p=>pH(p,f,n)))):null};
-    const rCalc=(n,f)=>{const P=rprocs(n),v=P.map(p=>pH(p,f,n));return 'Average across the '+P.length+' process'+(P.length>1?'es':'')+' where it is Accountable, counting only its own activities in each: '+P.map((p,i)=>p.split(' ')[0]+' ('+(Math.round(v[i]*10)/10)+')').join(' + ')+' = '+(Math.round(v.reduce((x,y)=>x+y,0)*10)/10)+' ÷ '+P.length+' → '+Math.round(mean(v))+'% H'};
+    const pH=(p,f,n)=>{const K=staged(PA.filter(a=>a.proc===p&&a.Aroles.includes(n)),f);return K.length?mean(K.map(a=>HPCT[stOf(a,f)])):null};
+    const rH=(n,f)=>{const v=rprocs(n).map(p=>pH(p,f,n)).filter(x=>x!=null);return v.length?Math.round(mean(v)):null};
+    const rCalc=(n,f)=>{const P=rprocs(n).filter(p=>pH(p,f,n)!=null),v=P.map(p=>pH(p,f,n));return 'Average across the '+P.length+' process'+(P.length>1?'es':'')+' where it is Accountable, counting only its own activities in each: '+P.map((p,i)=>p.split(' ')[0]+' ('+(Math.round(v[i]*10)/10)+')').join(' + ')+' = '+(Math.round(v.reduce((x,y)=>x+y,0)*10)/10)+' ÷ '+P.length+' → '+Math.round(mean(v))+'% H'};
     const none=DATA.roles.filter(r=>!names.includes(r.name));
     let h='<div class="card"><h3>Responsibility and accountability &middot; '+(SC.all?'All process groups':S.wg+' '+esc(DATA.groups.find(g=>g[0]===S.wg)[1]))+'</h3><div class="sub">Across '+SC.label+'. Activity-level RACI (GR-060, confirmed by GiGi, CL-018): each activity has its own four letters. RACI by process shows each process&rsquo;s, computed from them.</div><div class="tiles">'+
       tile(names.length,'roles hold an R or A')+tile(none.filter(r=>RC[r.name].C||RC[r.name].I).length,'roles are Consulted or Informed only')+tile(noR,'activities where the Accountable role also does the work')+'</div></div>';
@@ -434,7 +437,7 @@ function peopleMain(){
     return h+'</tbody></table></div>';
   }
   const o=now.org;
-  let h='<div class="card"><h3>Across '+SC.label+'</h3><div class="sub">'+(S.stage==='Today'?'Today in '+esc(ORGNAME())+': each activity at its assessed Current State; activities not yet assessed count as Human-only.':S.stage==='Human-only'?'Today\u2019s baseline: a person in every instance of every activity.':S.stage==='Automation'?'Every activity at its Progression Ceiling.':'Every activity moved up to '+S.stage+', or its ceiling if lower.')+'</div><div class="tiles">'+
+  let h='<div class="card"><h3>Across '+SC.label+'</h3><div class="sub">'+(S.stage==='Today'?'Today in '+esc(ORGNAME())+': each assessed activity at its Current State'+(o.una?'; the '+o.una+' Unassessed are left out until assessed':'')+'.':S.stage==='Human-only'?'Today\u2019s baseline: a person in every instance of every activity.':S.stage==='Automation'?'Every activity at its Progression Ceiling.':'Every activity moved up to '+S.stage+', or its ceiling if lower.')+'</div><div class="tiles">'+
     tile(o.every,'a person in every instance','Human-only '+N)+tile(o.approve,'a person approves every instance','Human-only 0')+tile(o.exc,'a person handles flagged exceptions only'+(o.exc?' ('+o.escHC+' High or Critical)':''),'Human-only 0')+tile(o.none,'no person in the instance; the Accountable role stays answerable','Human-only 0')+'</div><div class="prov">Modeled from the reference. Counts of activities, not hours or volumes.</div></div>';
   const f=[];
   if(S.stage==='Human-only') f.push('Today every activity has a person in every instance. Choose a stage to move the work up the ramp.');
@@ -550,7 +553,7 @@ function loadABC(){
   Object.keys(R).forEach(k=>{const r=R[k];if(r&&r.current){ABCSTAGE[k]=r.current;ABC_REC[k]=r;if(r.el)ABC_EL[k]=r.el;if(r.refSnapshot)ABC_REF[k]=r.refSnapshot;}});
   Object.keys(O).forEach(k=>{if(O[k]&&O[k].level)ABC_OV[k]=O[k];});
 }
-const abcNote=()=>'Current State from '+esc(ORGNAME())+'’s saved assessments ('+Object.keys(ABCSTAGE).length+' of '+DATA.acts.length+' assessed); activities not yet assessed stay at the Human-only baseline.';
+const abcNote=()=>'Current State from '+esc(ORGNAME())+'’s saved assessments ('+Object.keys(ABCSTAGE).length+' of '+DATA.acts.length+' assessed); the rest are Unassessed, with no Current State, until assessed (GR-052).';
 function abcSide(){return ''}
 // One line on how an activity's Current State was assessed, shown in its Current State box.
 function assessLine(a){const r=ABC_REC[a.code];if(!r)return'';const ev=(SRC.ASSESS_EVIDENCE_LABEL||{})[r.evidence]||r.evidence||'';
@@ -559,7 +562,11 @@ function assessLine(a){const r=ABC_REC[a.code];if(!r)return'';const ev=(SRC.ASSE
 const abcLim=a=>{const ci=rank(derivedCeil(a)),o=isOrg()&&ABC_OV[a.code];return o?Math.max(ci,rank(o.level)):ci};
 const EVL=SRC.ASSESS_EVIDENCE_LABEL||{};
 const isOrg=()=>!!(P.ACTIVE_ORG&&!P.ACTIVE_ORG.reference);
-function curOf(a){return isOrg()&&ABCSTAGE[a.code]?ABCSTAGE[a.code]:'Human-only'}
+// An organization's activity is Unassessed until it saves an assessment: no predetermined stage (GR-052, agreed Nov 5,
+// 2026). Human-only stays the Reference Model's baseline. Current State figures count assessed activities only.
+function curOf(a){return isOrg()?(ABCSTAGE[a.code]||null):'Human-only'}
+const UNA='Unassessed', curLbl=a=>curOf(a)||UNA;
+const staged=(L,f)=>f==='cur'?L.filter(a=>curOf(a)):L;
 const l3Of=a=>a.proc.split(' ')[0];
 const ciOf=a=>({C:RACI_ACT[a.code].C,I:RACI_ACT[a.code].I});
 // A process's RACI, computed from its activities (GR-060, CL-020). The owner is the role Accountable for most of its
@@ -586,14 +593,17 @@ const worstCons=L=>CONSO[Math.max(...L.map(a=>CONSO.indexOf(a.cons)))];
 const stOf=(a,f)=>f==='cur'?curOf(a):derivedCeil(a);
 const mean=v=>v.reduce((s,x)=>s+x,0)/v.length;
 // % H for a set of activities: the mean of each activity's step value (as pcf7.html does for a process).
-function hRoll(L,f){return Math.round(mean(L.map(a=>HPCT[stOf(a,f)])))}
+function hRoll(L,f){const K=staged(L,f);return K.length?Math.round(mean(K.map(a=>HPCT[stOf(a,f)]))):null}
 function hLabel(L,f){
   if(f==='ceil') return 'Modeled';
   if(!isOrg()) return 'Modeled';
   const n=L.filter(a=>ABCSTAGE[a.code]).length;
-  return n===L.length?'Assessed':n?'Assessed '+n+'/'+L.length:'Baseline';
+  return n===L.length?'Assessed':n?'Assessed '+n+'/'+L.length:UNA;
 }
-function hCalc(L,f){
+function hCalc(L0,f){
+  const L=staged(L0,f),gone=L0.length-L.length;
+  if(!L.length) return 'Nothing assessed yet, so no Current State: '+L0.length+' activit'+(L0.length===1?'y is':'ies are')+' Unassessed';
+  if(gone) return hCalc(L,f)+' ('+gone+' Unassessed, left out)';
   const t={};L.forEach(a=>{const s=stOf(a,f);t[s]=(t[s]||0)+1});
   const parts=ST.filter(s=>t[s]).map(s=>t[s]+' × '+s+' ('+HPCT[s]+')');
   const sum=L.reduce((x,a)=>x+HPCT[stOf(a,f)],0);
@@ -603,7 +613,7 @@ function hCalc(L,f){
 function hFig(txt,key){return '<span class="hfig'+(opened[key]?' sel':'')+'" title="Show the calculation" onclick="event.stopPropagation();opened[\''+key+'\']=!opened[\''+key+'\'];render()">'+txt+'</span>'}
 // Laid out like the current dashboard's process row: fixed columns, so every process lines up.
 // Each label sits right next to its % H. The pair is right-aligned, so the % H figures, the arrow and Ceiling line up row to row.
-function hPair(L,c){return '<span class="ph"><span class="hgrp"><span class="lab">Current</span><span class="hprov">'+hLabel(L,'cur')+'</span><span class="hv">'+hFig(hRoll(L,'cur')+'% H','hc'+c)+'</span></span><span class="sep">→</span><span class="hgrp"><span class="lab">Ceiling</span><span class="hprov">Modeled</span><span class="hv">'+hFig(hRoll(L,'ceil')+'% H','hk'+c)+'</span></span></span>'}
+function hPair(L,c){return '<span class="ph"><span class="hgrp"><span class="lab">Current</span><span class="hprov">'+hLabel(L,'cur')+'</span><span class="hv">'+(hRoll(L,'cur')==null?'<span class="z">—</span>':hFig(hRoll(L,'cur')+'% H','hc'+c))+'</span></span><span class="sep">→</span><span class="hgrp"><span class="lab">Ceiling</span><span class="hprov">Modeled</span><span class="hv">'+hFig(hRoll(L,'ceil')+'% H','hk'+c)+'</span></span></span>'}
 function hCalcRow(lines,cols){return lines.length?'<tr class="det"><td'+(cols?' colspan="'+cols+'"':'')+'><div class="small" style="line-height:1.6">'+lines.join('<br>')+'<br>% H is modeled from each step\u2019s value, not measured.</div></td></tr>':''}
 function procRow(proc){
   const c=proc.split(' ')[0], L=DATA.acts.filter(a=>a.proc===proc), k='p'+c, o=opened[k], w=worstCons(L);
@@ -843,8 +853,10 @@ const DBK={every:['Control point, a person on every instance','#0D2D4F'],flag:['
 const dbWhere=()=>S.dwhere==='auto'?(isOrg()?'cur':'ceil'):S.dwhere;
 const dbSt=a=>dbWhere()==='cur'?curOf(a):derivedCeil(a);
 function dbKind(a){const r=dpAnalysis()[a.code];return r.dp?(r.lead==='AI-led'?'flag':'every'):r.feeds.length?'at':'ctl';}
-function dbColor(a){return S.denc==='cons'?CONSC[a.cons]:S.denc==='dp'?DBK[dbKind(a)][1]:DOT[dbSt(a)];}
-const dbH=L=>Math.round(mean(L.map(a=>HPCT[dbSt(a)])));
+function dbColor(a){return S.denc==='cons'?CONSC[a.cons]:S.denc==='dp'?DBK[dbKind(a)][1]:(DOT[dbSt(a)]||'#fff');}
+const dbU=a=>S.denc==='stage'&&!dbSt(a);
+const dbH=L=>{const K=L.filter(a=>dbSt(a));return K.length?Math.round(mean(K.map(a=>HPCT[dbSt(a)]))):null};
+const dbHs=(L,u)=>{const v=dbH(L);return v==null?'—':v+(u||'%')};
 // The two places the work can be shown, the selected organization's first (shared by Work's and People's dashboards).
 function dbWhereOpts(){return isOrg()?[['cur','Current State ('+esc(ORGNAME())+')'],['ceil','Progression Ceiling']]:[['ceil','Progression Ceiling'],['cur','Current State (Human-only baseline)']];}
 function dashSide(){
@@ -856,19 +868,19 @@ function dashSide(){
 }
 function dashMain(){
   const A=DATA.acts,n=A.length,cur=dbWhere()==='cur',org=isOrg(),k={every:0,flag:0,at:0,ctl:0};A.forEach(a=>k[dbKind(a)]++);
-  const auto=A.filter(a=>dbSt(a)==='Automation').length,keep=A.filter(a=>rank(dbSt(a))<=3).length,where=cur?'at the Current State':'at the ceiling';
+  const auto=A.filter(a=>dbSt(a)==='Automation').length,keep=A.filter(a=>dbSt(a)&&rank(dbSt(a))<=3).length,una=A.filter(a=>!dbSt(a)).length,where=cur?'at the Current State':'at the ceiling';
   let h='<div class="tiles" style="margin-bottom:16px">'+
-   tile(dbH(A)+'% H',cur?(org?esc(ORGNAME())+'&rsquo;s human share today; '+Math.round(mean(A.map(a=>HPCT[derivedCeil(a)])))+'% at the ceilings':'human share today, every activity Human-only'):'human share at the ceilings, from 95 Human-only')+
+   tile(dbHs(A,'% H'),cur?(org?esc(ORGNAME())+'&rsquo;s human share today'+(una?', across the '+(n-una)+' assessed':'')+'; '+Math.round(mean(A.map(a=>HPCT[derivedCeil(a)])))+'% at the ceilings':'human share today, every activity Human-only'):'human share at the ceilings, from 95 Human-only')+
    tile(keep+' of '+n,'keep a person doing or approving every instance, '+where)+
    tile(auto,(cur?'at':'can go to')+' Automation')+
-   tile(k.every+k.flag,'control points ('+k.every+' every instance, '+k.flag+' flagged)'+(org?' at the Current State':' at the ceilings'))+
+   tile(k.every+k.flag,'control points ('+k.every+' every instance, '+k.flag+' flagged)'+(org?' at the Current State'+(una?'; the '+una+' Unassessed read at their ceilings, Modeled':''):' at the ceilings'))+
    tile(k.ctl,'need a named control')+(org?tile(A.filter(a=>ABCSTAGE[a.code]).length+' of '+n,'assessed'):'')+'</div>';
-  const leg=S.denc==='stage'?ST.map(s=>'<span><i class="db-sw" style="background:'+DOT[s]+'"></i>'+s+' ('+HPCT[s]+')</span>').join(''):S.denc==='cons'?CONSO.map(c=>'<span><i class="db-sw" style="background:'+CONSC[c]+'"></i>'+c+'</span>').join(''):Object.values(DBK).map(([l,c])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('');
+  const leg=S.denc==='stage'?ST.map(s=>'<span><i class="db-sw" style="background:'+DOT[s]+'"></i>'+s+' ('+HPCT[s]+')</span>').join('')+(una?'<span><i class="db-sw u"></i>Unassessed ('+una+')</span>':''):S.denc==='cons'?CONSO.map(c=>'<span><i class="db-sw" style="background:'+CONSC[c]+'"></i>'+c+'</span>').join(''):Object.values(DBK).map(([l,c])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('');
   h+='<div class="card"><h3>The work, by process</h3><div class="sub">One square per activity, colored by '+({stage:'stage',cons:'Consequence of Error',dp:'control point'})[S.denc]+'. The figure on each card is its process&rsquo;s % H '+where+'. Click a card to open its activities.</div><div class="db-legend">'+leg+'</div><div class="db-grid">'+
    DATA.groups.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+PROCS.filter(p=>p.g===gc).map(p=>{const L=p.acts.map(c=>ACT[c]).filter(Boolean);
-     return '<div class="db-proc" onclick="dbOpen(\''+p.code+'\')"><div class="db-pn"><span><span class="code">'+p.code+'</span> '+esc(p.name)+'</span><span class="h">'+dbH(L)+'%</span></div><div class="db-cells">'+L.map(a=>'<i class="db-cell" data-c="'+a.code+'" style="background:'+dbColor(a)+'"></i>').join('')+'</div></div>';}).join('')+'</div>').join('')+'</div></div>';
-  const bars=DATA.groups.map(([gc,gn])=>{const L=A.filter(a=>a.code.startsWith(gc+'.')),t={};L.forEach(a=>{const s=dbSt(a);t[s]=(t[s]||0)+1});
-    return '<div class="row"><div><span class="code">'+gc+'</span> '+esc(gn)+'</div><div class="db-bar">'+ST.filter(s=>t[s]).map(s=>'<div data-t="'+esc(gc+' '+gn)+'<br>'+t[s]+' of '+L.length+' activities at '+s+'" style="flex:'+t[s]+';background:'+DOT[s]+';color:'+(rank(s)>=3?'#0D2D4F':'#fff')+'">'+(t[s]>1?t[s]:'')+'</div>').join('')+'</div><div class="h">'+dbH(L)+'% H</div></div>';}).join('');
+     return '<div class="db-proc" onclick="dbOpen(\''+p.code+'\')"><div class="db-pn"><span><span class="code">'+p.code+'</span> '+esc(p.name)+'</span><span class="h">'+dbHs(L)+'</span></div><div class="db-cells">'+L.map(a=>'<i class="db-cell'+(dbU(a)?' u':'')+'" data-c="'+a.code+'" style="background:'+dbColor(a)+'"></i>').join('')+'</div></div>';}).join('')+'</div>').join('')+'</div></div>';
+  const bars=DATA.groups.map(([gc,gn])=>{const L=A.filter(a=>a.code.startsWith(gc+'.')),t={};L.forEach(a=>{const s=dbSt(a)||UNA;t[s]=(t[s]||0)+1});
+    return '<div class="row"><div><span class="code">'+gc+'</span> '+esc(gn)+'</div><div class="db-bar">'+ST.filter(s=>t[s]).map(s=>'<div data-t="'+esc(gc+' '+gn)+'<br>'+t[s]+' of '+L.length+' activities at '+s+'" style="flex:'+t[s]+';background:'+DOT[s]+';color:'+(rank(s)>=3?'#0D2D4F':'#fff')+'">'+(t[s]>1?t[s]:'')+'</div>').join('')+(t[UNA]?'<div class="u" data-t="'+esc(gc+' '+gn)+'<br>'+t[UNA]+' of '+L.length+' activities Unassessed" style="flex:'+t[UNA]+'">'+(t[UNA]>1?t[UNA]:'')+'</div>':'')+'</div><div class="h">'+dbHs(L,'% H')+'</div></div>';}).join('');
   h+='<div class="card"><h3>Stage mix by process group</h3><div class="sub">Share of each group&rsquo;s activities at each stage, '+where+'.</div><div class="db-legend">'+ST.map(s=>'<span><i class="db-sw" style="background:'+DOT[s]+'"></i>'+s+'</span>').join('')+'</div><div class="db-bars">'+bars+'</div></div>';
   const mx={};A.forEach(a=>{const key=a.cons+'|'+dbSt(a);mx[key]=(mx[key]||0)+1});const mmax=Math.max(...Object.values(mx));
   const bg=v=>v?'hsl(212,55%,'+Math.round(94-v/mmax*62)+'%)':'#F4F6FB';
@@ -885,8 +897,8 @@ function dbOpen(code){const p=PROCS.find(x=>x.code===code);if(!p)return;
 {const tip=document.createElement('div');tip.className='db-tip';document.body.appendChild(tip);
  document.addEventListener('mousemove',e=>{const el=e.target.closest&&e.target.closest('.db-cell,[data-t],[data-d],[data-f]');
   if(!el||!(el.dataset.c||el.dataset.t||el.dataset.d||el.dataset.f)){tip.style.display='none';return;}
-  if(el.dataset.f){const a=ACT[el.dataset.f],F=findAll()[a.code];tip.innerHTML='<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>'+esc(a.Aroles.join(', '))+' (Accountable) \u00b7 '+(isOrg()?'Current State '+curOf(a)+' \u00b7 ':'')+'ceiling '+derivedCeil(a)+' \u00b7 '+a.cons+'<br>'+F.map(k=>FDM[k][1]).join('<br>');tip.style.display='block';const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-8),y=e.clientY+16+tip.offsetHeight>innerHeight?e.clientY-tip.offsetHeight-10:e.clientY+16;tip.style.left=x+'px';tip.style.top=y+'px';return;}
-  if(el.dataset.d){const [w,c,k,pr]=el.dataset.d.split('|'),a=ACT[c],q=ACT[pr];tip.innerHTML='<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>Relies on '+esc((WPN[w]||{}).name||w)+(q?' from '+q.code+' at '+stageNow(q):'')+'<br>'+esc(a.Aroles.join(', '))+' (Accountable) · '+stageNow(a)+' · '+a.cons+'<br>'+DDK[k][0];tip.style.display='block';const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-8),y=e.clientY+16+tip.offsetHeight>innerHeight?e.clientY-tip.offsetHeight-10:e.clientY+16;tip.style.left=x+'px';tip.style.top=y+'px';return;}
+  if(el.dataset.f){const a=ACT[el.dataset.f],F=findAll()[a.code];tip.innerHTML='<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>'+esc(a.Aroles.join(', '))+' (Accountable) \u00b7 '+(isOrg()?'Current State '+curLbl(a)+' \u00b7 ':'')+'ceiling '+derivedCeil(a)+' \u00b7 '+a.cons+'<br>'+F.map(k=>FDM[k][1]).join('<br>');tip.style.display='block';const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-8),y=e.clientY+16+tip.offsetHeight>innerHeight?e.clientY-tip.offsetHeight-10:e.clientY+16;tip.style.left=x+'px';tip.style.top=y+'px';return;}
+  if(el.dataset.d){const [w,c,k,pr]=el.dataset.d.split('|'),a=ACT[c],q=ACT[pr];tip.innerHTML='<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>Relies on '+esc((WPN[w]||{}).name||w)+(q?' from '+q.code+' at '+stageNowLbl(q):'')+'<br>'+esc(a.Aroles.join(', '))+' (Accountable) · '+stageNowLbl(a)+' · '+a.cons+'<br>'+DDK[k][0];tip.style.display='block';const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-8),y=e.clientY+16+tip.offsetHeight>innerHeight?e.clientY-tip.offsetHeight-10:e.clientY+16;tip.style.left=x+'px';tip.style.top=y+'px';return;}
   if(el.dataset.c){const a=ACT[el.dataset.c];tip.innerHTML='<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>'+(dbWhere()==='cur'?'Current State ':'Ceiling ')+dbSt(a)+' \u00b7 '+HPCT[dbSt(a)]+'% H<br>Consequence of Error '+a.cons+'<br>Accountable '+esc(a.Aroles.join(', '))+'<br>'+DBK[dbKind(a)][0];}
   else tip.innerHTML=el.dataset.t;
   tip.style.display='block';const x=Math.min(e.clientX+14,innerWidth-tip.offsetWidth-8),y=e.clientY+16+tip.offsetHeight>innerHeight?e.clientY-tip.offsetHeight-10:e.clientY+16;tip.style.left=x+'px';tip.style.top=y+'px';});}
@@ -988,7 +1000,9 @@ function pdOpen(n){S.pmode='raci';opened['r'+n]=true;render();
 // (Called verification points and unchecked hand-offs before Nov 1, 2026: verification point now names a Verify control point.)
 const ACT=Object.fromEntries(DATA.acts.map(a=>[a.code,a]));
 const WPN=Object.fromEntries(CRUD.wps.map(w=>[w.id,w]));
-function stageNow(a){const c=derivedCeil(a);return S.stage==='Today'?curOf(a):S.stage==='Human-only'?'Human-only':(rank(S.stage)<rank(c)?S.stage:c)}
+// At Today an Unassessed activity is read at its ceiling, Modeled, where a stage is needed (GR-052 rule 4).
+const stageNowLbl=a=>S.stage==='Today'&&!curOf(a)?'Unassessed (read at its ceiling, '+derivedCeil(a)+', Modeled)':stageNow(a);
+function stageNow(a){const c=derivedCeil(a);return S.stage==='Today'?(curOf(a)||c):S.stage==='Human-only'?'Human-only':(rank(S.stage)<rank(c)?S.stage:c)}
 function wpAnalysis(){
   return CRUD.wps.map(w=>{
     const prods=Object.keys(CRUD.crud).filter(c=>CRUD.crud[c].C.concat(CRUD.crud[c].U).includes(w.id));
@@ -1011,7 +1025,7 @@ function wpAnalysis(){
 // control points its work product reaches; one that reaches none needs a named control (GR-054).
 // Where the work is: the Reference Model at each activity's ceiling; an organization at its Current State.
 const dpEl=a=>{const e=elsOf(a);return e.includes('Decide')?'Decide':e.includes('Verify')?'Verify':null};
-const dpStage=a=>isOrg()?curOf(a):derivedCeil(a);
+const dpStage=a=>isOrg()?(curOf(a)||derivedCeil(a)):derivedCeil(a);
 function dpLeads(a){if(isOrg()&&ABC_EL[a.code]){const g=ABC_EL[a.code];return Object.fromEntries(Object.keys(g).map(e=>[e,g[e][0]]));}return stageEls(a,dpStage(a));}
 // A person holds it on every instance (Human, Human-led) or decides each flagged instance (AI-led, as at Agent-delegation).
 const holds=v=>v==='Human'||v==='Human-led'||v==='AI-led';
@@ -1096,7 +1110,7 @@ function dataMain(){
   const A=wpAnalysis(), touched=A.filter(x=>x.pts.length||x.ho.length), nvp=A.reduce((s,x)=>s+x.pts.length,0), nho=A.reduce((s,x)=>s+x.ho.length,0);
   const roleCnt={};A.forEach(x=>x.pts.forEach(p=>ACT[p.c].Aroles.forEach(r=>roleCnt[r]=(roleCnt[r]||0)+1)));
   const hoActs=[...new Set(A.flatMap(x=>x.ho.map(h=>h.c)))].sort(nat);
-  const where=S.stage==='Today'?'Today in '+esc(ORGNAME())+': each activity at its assessed Current State; activities not yet assessed count as Human-only':S.stage==='Human-only'?'Today’s baseline':S.stage==='Automation'?'Every activity at its Progression Ceiling':'Every activity up to '+S.stage+', or its ceiling if lower';
+  const where=S.stage==='Today'?'Today in '+esc(ORGNAME())+': each assessed activity at its Current State; Unassessed activities are read at their ceilings, Modeled':S.stage==='Human-only'?'Today’s baseline':S.stage==='Automation'?'Every activity at its Progression Ceiling':'Every activity up to '+S.stage+', or its ceiling if lower';
   let h='<div class="card"><h3>Work products</h3><div class="sub">'+where+'.</div><div class="tiles">'+
     tile(CRUD.wps.length,'work products in the catalog')+tile(touched.length,'AI-touched where someone relies on them')+tile(nvp,'checked inputs, across '+Object.keys(roleCnt).length+' roles')+tile(nho,'unchecked inputs into High or Critical steps')+'</div><div class="prov">'+(S.stage==='Today'?'Assessed: each activity&rsquo;s Current State from '+esc(ORGNAME())+'&rsquo;s records, with the activity CRUD.':'Modeled from the reference and the activity CRUD (all 118 activities confirmed).')+'</div></div>';
   const f=[];
@@ -1115,7 +1129,7 @@ function dataMain(){
       const quiet=!(x.pts.length||x.ho.length);
       h+='<tr class="r" onclick="opened[\'w'+x.w.id+'\']=!opened[\'w'+x.w.id+'\'];render()"'+(quiet?' style="color:#8A94A6"':'')+'><td><span class="tg">'+(o?'−':'+')+'</span>'+esc(x.w.name)+'<div class="small" style="margin-left:12px">'+esc(x.w.system)+'</div></td><td style="text-align:left">'+(x.top?stageNow(ACT[x.top])+' <span class="small">'+x.top+'</span>':'—')+'</td><td class="hide-s" style="text-align:left">'+(Object.keys(rc).length?Object.entries(rc).sort((p,q)=>q[1]-p[1]).map(([r,n])=>esc(r)+(n>1?' ×'+n:'')).join(' · '):'<span class="z">—</span>')+'</td><td>'+(x.pts.length||'<span class="z">0</span>')+(x.ho.length?'<div class="small" style="color:#9A6A00">+'+x.ho.length+' unchecked input'+(x.ho.length>1?'s':'')+'</div>':'')+'</td></tr>';
       if(o){const li=(p,t)=>{const K='d'+x.w.id+t+p.c+p.p, on=opened[K], tg='opened[\''+K+'\']=!opened[\''+K+'\'];render()';
-          return '<tr><td class="code">'+p.c+'</td><td>'+esc(ACT[p.c].name)+'</td><td>'+esc(ACT[p.c].Aroles.join(', '))+'</td><td>'+stageNow(ACT[p.c])+'</td><td class="'+(HC[ACT[p.c].cons]?'hc':'')+'"><span class="acons'+(on?' sel':'')+'" onclick="event.stopPropagation();'+tg+'" title="Consequence of Error">'+ACT[p.c].cons+'</span></td><td class="small">relies on '+p.p+' at '+stageNow(ACT[p.p])+'</td></tr>'+
+          return '<tr><td class="code">'+p.c+'</td><td>'+esc(ACT[p.c].name)+'</td><td>'+esc(ACT[p.c].Aroles.join(', '))+'</td><td>'+stageNowLbl(ACT[p.c])+'</td><td class="'+(HC[ACT[p.c].cons]?'hc':'')+'"><span class="acons'+(on?' sel':'')+'" onclick="event.stopPropagation();'+tg+'" title="Consequence of Error">'+ACT[p.c].cons+'</span></td><td class="small">relies on '+p.p+' at '+stageNow(ACT[p.p])+'</td></tr>'+
             (on?'<tr><td colspan="6">'+coeBox(ACT[p.c],null,'<button class="ix" onclick="event.stopPropagation();'+tg+'">\u00d7</button>')+'</td></tr>':'')};
         h+='<tr class="det"><td colspan="4">'+(x.pts.length||x.ho.length?'<table class="al">'+(x.pts.length?'<tr class="alh"><td colspan="6"><div class="small" style="margin:4px 0 0">Checked inputs</div></td></tr>'+x.pts.sort((p,q)=>nat(p.c,q.c)).map(p=>li(p,'v')).join(''):'')+(x.ho.length?'<tr class="alh"><td colspan="6"><div class="small" style="margin:8px 0 0;color:#9A6A00">Unchecked inputs</div></td></tr>'+x.ho.sort((p,q)=>nat(p.c,q.c)).map(p=>li(p,'h')).join(''):'')+'</table>':'')+(quiet?'<div class="small">Produced in '+(x.prods.join(', ')||'no activity')+'. Nothing AI-touched reaches an activity that relies on it.</div>':'')+'</td></tr>';}
     });
@@ -1153,7 +1167,8 @@ function dataDash(){
   if(S.dlayout==='proc') return dataByProc();
   const A=wpAnalysis(),nvp=A.reduce((s,x)=>s+x.pts.length,0),nho=A.reduce((s,x)=>s+x.ho.length,0),touched=A.filter(x=>x.pts.length||x.ho.length);
   const hoActs=[...new Set(A.flatMap(x=>x.ho.map(h=>h.c)))];
-  const where=S.stage==='Today'?'at '+esc(ORGNAME())+'&rsquo;s Current State':S.stage==='Human-only'?'at the Human-only baseline':S.stage==='Automation'?'at the Progression Ceilings':'up to '+S.stage;
+  const una=S.stage==='Today'?DATA.acts.filter(a=>!curOf(a)).length:0;
+  const where=S.stage==='Today'?'at '+esc(ORGNAME())+'&rsquo;s Current State'+(una?' (the '+una+' Unassessed read at their ceilings, Modeled)':''):S.stage==='Human-only'?'at the Human-only baseline':S.stage==='Automation'?'at the Progression Ceilings':'up to '+S.stage;
   let h='<div class="tiles" style="margin-bottom:16px">'+tile(touched.length+' of '+CRUD.wps.length,'work products AI-touched where someone relies on them, '+where)+
     tile(nvp,'checked inputs: a person checks AI-touched work at a control point')+tile(nho,'unchecked inputs into High or Critical work, on '+hoActs.length+' activit'+(hoActs.length===1?'y':'ies'))+
     tile(A.filter(x=>!ddRelies(x).length).length,'work products no other activity relies on')+'</div>';
@@ -1182,7 +1197,8 @@ const crudOf=(c,w)=>{const x=CRUD.crud[c];return x?['C','U','D','R'].filter(k=>x
 function dataByProc(){
   const A=wpAnalysis(),AW=Object.fromEntries(A.map(x=>[x.w.id,x])),nvp=A.reduce((s,x)=>s+x.pts.length,0),nho=A.reduce((s,x)=>s+x.ho.length,0),touched=A.filter(x=>x.pts.length||x.ho.length);
   const hoActs=[...new Set(A.flatMap(x=>x.ho.map(h=>h.c)))];
-  const where=S.stage==='Today'?'at '+esc(ORGNAME())+'&rsquo;s Current State':S.stage==='Human-only'?'at the Human-only baseline':S.stage==='Automation'?'at the Progression Ceilings':'up to '+S.stage;
+  const una=S.stage==='Today'?DATA.acts.filter(a=>!curOf(a)).length:0;
+  const where=S.stage==='Today'?'at '+esc(ORGNAME())+'&rsquo;s Current State'+(una?' (the '+una+' Unassessed read at their ceilings, Modeled)':''):S.stage==='Human-only'?'at the Human-only baseline':S.stage==='Automation'?'at the Progression Ceilings':'up to '+S.stage;
   const chk=(w,c)=>{const x=AW[w];return x.pts.some(q=>q.c===c)?'vp':x.ho.some(q=>q.c===c)?'ho':'no'};
   let h='<div class="tiles" style="margin-bottom:16px">'+tile(touched.length+' of '+CRUD.wps.length,'work products AI-touched where someone relies on them, '+where)+
     tile(nvp,'checked inputs: a person checks AI-touched work at a control point')+tile(nho,'unchecked inputs into High or Critical work, on '+hoActs.length+' activit'+(hoActs.length===1?'y':'ies'))+
@@ -1191,7 +1207,7 @@ function dataByProc(){
     :Object.values(DDK).map(([l,c])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('')+'<span style="color:var(--lgray)">The letter is the activity&rsquo;s CRUD letter; a blank square, it does not touch the work product</span>';
   const chip=(a,w)=>{const ops=crudOf(a.code,w),l=ops[0]||'';if(!l)return '<i class="pd-chip n"></i>';
     const k=S.denc2==='check'?chk(w,a.code):null,bg=k?DDK[k][1]:CRC[l][1],fg=k?(k==='no'?'#0D2D4F':'#fff'):CRC[l][2];
-    return '<i class="pd-chip" data-t="'+escA('<span style="opacity:.75">'+a.code+'</span> '+a.name+'<br>'+ops.map(o=>CRC[o][0]+'s').join(', ')+' '+(WPN[w]||{}).name+' <span style="opacity:.75">'+w+'</span><br>'+a.Aroles.join(', ')+' (Accountable) · '+stageNow(a)+' · '+a.cons+(k?'<br>'+DDK[k][0]:''))+'" style="background:'+bg+';color:'+fg+'">'+l+'</i>';};
+    return '<i class="pd-chip" data-t="'+escA('<span style="opacity:.75">'+a.code+'</span> '+a.name+'<br>'+ops.map(o=>CRC[o][0]+'s').join(', ')+' '+(WPN[w]||{}).name+' <span style="opacity:.75">'+w+'</span><br>'+a.Aroles.join(', ')+' (Accountable) · '+stageNowLbl(a)+' · '+a.cons+(k?'<br>'+DDK[k][0]:''))+'" style="background:'+bg+';color:'+fg+'">'+l+'</i>';};
   const card=p=>{const L=p.acts.map(c=>ACT[c]).filter(Boolean);if(!L.length)return '';
     const ws={};L.forEach(a=>{const x=CRUD.crud[a.code];if(!x)return;['C','U','D','R'].forEach(k=>x[k].forEach(w=>{if(WPN[w])(ws[w]=ws[w]||new Set()).add(k)}));});
     const rank=w=>ws[w].has('C')?0:ws[w].has('U')||ws[w].has('D')?1:2,ids=Object.keys(ws).sort((a,b)=>rank(a)-rank(b)||nat(a,b));
@@ -1260,7 +1276,7 @@ function orgFindings(){
     tile(as.length+' of 118','activities assessed')+tile(pastNo.length,'past the Progression Ceiling with no override')+tile(pe.length,'within the ceiling, with an element past its own')+tile(refChg.length,'to reassess: reference changed since assessed')+'</div>'+note+'</div>';
   const st={};as.forEach(a=>st[curOf(a)]=(st[curOf(a)]||0)+1);
   const f=[];
-  f.push(as.length+' of 118 activities assessed: '+ST.filter(s=>st[s]).map(s=>st[s]+' at '+s).join(', ')+'. '+(118-as.length)+' not yet assessed stay at the Human-only baseline.');
+  f.push(as.length+' of 118 activities assessed: '+ST.filter(s=>st[s]).map(s=>st[s]+' at '+s).join(', ')+'. '+(118-as.length)+' are Unassessed: they have no Current State, and the Current State findings cover the assessed activities only.');
   f.push(past.length?past.length+' past the Progression Ceiling: '+ovs.length+' covered by an approved override, '+blocked.length+' at High or Critical that cannot be overridden ('+blocked.map(a=>a.code).join(', ')+'), and '+(pastNo.length-blocked.length)+' at Low or Moderate with no override yet.':'None is past its Progression Ceiling.');
   if(pe.length) f.push('<b>Needs a decision:</b> '+pe.map(a=>a.code+' '+pastEls(a).join(', ')).join('; ')+'. Each activity is within its ceiling, but the element its ceiling factor protects is not.');
   f.push(dpFinding());
