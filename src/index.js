@@ -834,8 +834,11 @@ async function handleOrgApi(request, env, url) {
     }
     const dimsIn = body.dims && typeof body.dims === 'object' && !Array.isArray(body.dims) ? body.dims : {};
     const dims = {};
-    for (const d of Object.keys(dimsIn)) {
-      if (!READY_DIMS.has(d) || !dimsIn[d] || typeof dimsIn[d] !== 'object') continue;
+    // A record per dimension: '<role>|<dimension>' for the role dimensions (Nov 10, 2026), '<dimension>' otherwise.
+    for (const d of Object.keys(dimsIn).slice(0, 120)) {
+      const parts = d.split('|'), dim = parts.length === 2 ? parts[1] : d;
+      if (parts.length > 2 || (parts.length === 2 && (!parts[0] || parts[0].length > ORG_MAX))) continue;
+      if (!READY_DIMS.has(dim) || !dimsIn[d] || typeof dimsIn[d] !== 'object') continue;
       const rec = {};
       for (const f of ['ev', 'prov', 'gap', 'act', 'owner', 'move']) { const v = clip(dimsIn[d][f], NOTE_MAX); if (v) rec[f] = v; }
       if (Object.keys(rec).length) dims[d] = rec;
