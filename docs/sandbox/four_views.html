@@ -714,7 +714,13 @@ const RD_F={ins:['Insufficient Evidence',3,'#E5E7EB','#374151'],not:['Not Ready'
 const RD_ORDER=['ins','ready','cond','not'];
 const rdChip=f=>'<span class="rdc" style="background:'+RD_F[f][2]+';color:'+RD_F[f][3]+'">'+RD_F[f][0]+'</span>';
 const rdRec=a=>isOrg()?((P.ORG_READINESS||{})[a.code]||null):null;
-function rdRoles(a){const x=((RACI_ACT[a.code]||{}).x||{}).R||[];return HC[a.cons]?[...new Set(a.Aroles.concat(a.R,x))]:[a.Aroles[0]];}
+// Every Accountable and Responsible role, at every rating (Nov 9, 2026). On High or Critical work the activity's finding is
+// the weakest link across them (BR-16); below High each role's finding stands on its own (GiGi, three-pilot comparison).
+function rdRoles(a){const x=((RACI_ACT[a.code]||{}).x||{}).R||[];return [...new Set(a.Aroles.concat(a.R,x))];}
+const rdPer=a=>!HC[a.cons]&&rdRoles(a).length>1;
+// One role's findings: its own role dimensions, plus the activity's organizational and shared ones.
+function rdRollRole(a,cells,r){const out={};RD_DIMS.forEach(d=>{out[d.k]={f:cells[(d.l==='role'?r:'_')+'|'+d.k]||'ins',who:[]}});return out;}
+const rdV=rl=>{const fs=RD_DIMS.map(d=>rl[d.k].f);return fs.some(f=>f==='not'||f==='ins')?'hold':fs.includes('cond')?'cond':'clear'};
 const rdOver=a=>{const r=DATA.roles.find(x=>x.name===a.Aroles[0]);return r&&r.reportsTo||''};
 // Each dimension's finding for the activity: weakest link across the required roles for the role dimensions; once for the rest.
 function rdRoll(a,cells){const R=rdRoles(a),out={};
@@ -724,8 +730,15 @@ function rdLayer(rl,ls){const D=RD_DIMS.filter(d=>ls.includes(d.l));let w='ready
   const cnt={};D.forEach(d=>cnt[rl[d.k].f]=(cnt[rl[d.k].f]||0)+1);return {w,worst:D.filter(d=>w!=='ready'&&rl[d.k].f===w),cnt,n:D.length};}
 // The verdict for the step to `to`: none (not assessed for it), hold, cond or clear.
 function rdVerdict(a,to,cells0){const rec=rdRec(a),cells=cells0||(rec&&rec.to===to?rec.cells:null);if(!cells)return {v:'none'};
-  const rl=rdRoll(a,cells),fs=RD_DIMS.map(d=>rl[d.k].f);
-  return {v:fs.some(f=>f==='not'||f==='ins')?'hold':fs.includes('cond')?'cond':'clear',rl};}
+  const rl=rdRoll(a,cells);
+  if(!rdPer(a)) return {v:rdV(rl),rl};
+  const per=rdRoles(a).map(r=>{const x=rdRollRole(a,cells,r);return {r,rl:x,v:rdV(x)}}),O={clear:0,cond:1,hold:2};
+  return {v:per.reduce((w,x)=>O[x.v]>O[w]?x.v:w,'clear'),rl,per};}
+// The verdict sentence for one set of findings (the activity, or one role below High).
+function rdSay(rl,v,cells,dims,allIns){const holds=RD_DIMS.filter(d=>['not','ins'].includes(rl[d.k].f)),conds=RD_DIMS.filter(d=>rl[d.k].f==='cond'),noAct=conds.filter(d=>!((dims[d.k]||{}).act||'').trim());
+  return v==='hold'?'Holds. '+(allIns?'Nothing is assessed yet: every dimension is Insufficient Evidence.':
+      ['not','ins'].map(f=>{const D=holds.filter(d=>rl[d.k].f===f);return D.length?RD_F[f][0]+': '+D.map(d=>esc(d.n)+(f==='not'&&d.l==='role'&&rl[d.k].who.length?' ('+esc(rl[d.k].who.join(', '))+')':'')).join(', ')+'.':''}).filter(Boolean).join(' ')):
+    v==='cond'?'Clears with conditions: '+conds.map(d=>esc(d.n)).join(', ')+'.'+(noAct.length?' <span class="amber">Record the required action for '+noAct.map(d=>esc(d.n)).join(', ')+'.</span>':' Required actions recorded.'):'Clears. Every dimension is Ready.';}
 const rdGt='<span class="rdg" title="Candidate hard gate (GR-012 v0.2): provisional, not locked">candidate gate</span>';
 function rdRow(name,L,rl,assessed){const by=['ready','cond','not','ins'].filter(f=>L.cnt[f]).map(f=>L.cnt[f]+' '+RD_F[f][0]).join(' · ');
   const ww=L.worst.length===L.n?'every dimension':L.worst.map(d=>esc(d.n)+(L.w!=='ins'&&rl[d.k].who.length?' ('+esc(rl[d.k].who.join(', '))+')':'')+(d.gate?rdGt:'')).join('; ');
@@ -735,16 +748,18 @@ function readiness(a,k){const to=ST[k+1],org=isOrg(),rec=rdRec(a),open=RD&&RD.co
   let h='<div class="gh2">Readiness Gate</div><table class="it"><tr><td class="el">Technical / process</td><td>The evidence above. The evidence each step requires is GR-037, not yet defined.</td></tr>';
   if(!org) return h+'<tr><td class="el">Role readiness</td><td>Assessed per organization: readiness cannot be modeled. Choose an organization to assess it.</td></tr><tr><td class="el">Organizational readiness</td><td>Assessed per organization.</td></tr></table><div class="small" style="margin-top:4px">All three must clear before the activity takes this step.</div>';
   const cells=open?RD.cells:(rec&&rec.to===to?rec.cells:{}),assessed=open||!!(rec&&rec.to===to),rl=rdRoll(a,cells),ov=rdOver(a);
-  h+=rdRow('Role readiness',rdLayer(rl,['role','shared']),rl,assessed)+rdRow('Organizational readiness',rdLayer(rl,['org','shared']),rl,assessed)+
+  const per=rdPer(a);
+  h+=(per?'<tr><td class="el">Role readiness</td><td>'+rdRoles(a).map(r=>{const x=rdRollRole(a,cells,r),L=rdLayer(x,['role','shared']);
+      return '<div style="margin-bottom:3px">'+esc(r)+': '+rdChip(L.w)+(assessed&&L.worst.length&&L.worst.length<L.n?' '+L.worst.map(d=>esc(d.n)+(d.gate?rdGt:'')).join('; '):'')+'</div>'}).join('')+
+      '<div class="small">'+(assessed?'Each role&rsquo;s finding stands on its own below High; no roll-up.':'Not yet assessed for this step')+'</div></td></tr>':rdRow('Role readiness',rdLayer(rl,['role','shared']),rl,assessed))+
+    rdRow('Organizational readiness',rdLayer(rl,['org','shared']),rl,assessed)+
     (ov&&HC[a.cons]?'<tr><td class="el">Oversight above</td><td>'+esc(ov)+': '+rdChip(cells['_over|manager']||'ins')+' <span class="small">assessed separately, shown beside the roll-up, never rolled in (BR-16)</span></td></tr>':'')+'</table>';
   const V=rdVerdict(a,to,assessed?cells:null);
-  const holds=V.rl?RD_DIMS.filter(d=>['not','ins'].includes(V.rl[d.k].f)):[],conds=V.rl?RD_DIMS.filter(d=>V.rl[d.k].f==='cond'):[];
-  const dims=open?RD.dims:(rec&&rec.dims)||{},noAct=conds.filter(d=>!((dims[d.k]||{}).act||'').trim());
+  const dims=open?RD.dims:(rec&&rec.dims)||{},allIns=Object.values(cells).every(x=>x==='ins');
   const link=canEdit()?' <span class="assess" style="cursor:pointer;margin-left:6px" onclick="rdOpen(\''+a.code+'\','+k+')">'+(rec&&rec.to===to?'Reassess readiness':'Assess readiness')+'</span>':'';
   h+='<div class="rdv'+(V.v==='clear'?'':V.v==='cond'?' cond':' hold')+'">'+(V.v==='none'?'Holds. Readiness for '+to+' is not yet assessed: every dimension is Insufficient Evidence.'+(rec&&rec.to!==to?' Readiness was assessed for the step to '+rec.to+'.':''):
-    V.v==='hold'?'Holds. '+(Object.values(cells).every(x=>x==='ins')?'Nothing is assessed yet: every dimension is Insufficient Evidence.':
-      ['not','ins'].map(f=>{const D=holds.filter(d=>V.rl[d.k].f===f);return D.length?RD_F[f][0]+': '+D.map(d=>esc(d.n)+(f==='not'&&d.l==='role'&&V.rl[d.k].who.length?' ('+esc(V.rl[d.k].who.join(', '))+')':'')).join(', ')+'.':''}).filter(Boolean).join(' ')):
-    V.v==='cond'?'Clears with conditions: '+conds.map(d=>esc(d.n)).join(', ')+'.'+(noAct.length?' <span class="amber">Record the required action for '+noAct.map(d=>esc(d.n)).join(', ')+'.</span>':' Required actions recorded.'):'Clears. Every dimension is Ready.')+link+'</div>';
+    V.per?(allIns?'Holds. Nothing is assessed yet: every dimension is Insufficient Evidence.':V.per.map(x=>'<div><b>'+esc(x.r)+'</b> &mdash; '+rdSay(x.rl,x.v,cells,dims,false)+'</div>').join('')):
+    rdSay(V.rl,V.v,cells,dims,allIns))+link+'</div>';
   if(!open&&rec&&rec.to===to) h+='<div class="small" style="margin-top:4px">Assessed'+(rec.meta&&rec.meta.by?' by '+esc(rec.meta.by):'')+(rec.savedAt?' on '+new Date(rec.savedAt).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'')+(rec.meta&&rec.meta.signed?' · signed off by '+esc(rec.meta.signed):' · not yet signed off')+'.</div>';
   return h+(open?rdPanel(a,k):'');}
 function rdOpen(code,k){const a=ACT[code],to=ST[k+1],rec=rdRec(a),same=rec&&rec.to===to;
@@ -784,14 +799,14 @@ const RD_REC=[['ev','Evidence: what is actually known','Organization-specific ev
   ['act','Required action / control','What must happen before progression'],['owner','Owner','Role accountable for closing the gap'],['move','What would move this finding','Evidence or operating change that would justify a different finding']];
 function rdToggle(k,el){if(RD)RD.shut[k]=!el.open;}
 function rdCard(a,d,i,rl){const x=RD.dims[d.k]||{},R=rdRoles(a),f=rl[d.k].f;
-  const fl=d.l==='role'?(R.length>1?R.map(r=>esc(r)+' '+rdChip(RD.cells[r+'|'+d.k]||'ins')).join(' &nbsp;')+' &rarr; activity '+rdChip(f):rdChip(f)):rdChip(f)+' <span class="small">for the activity</span>';
+  const fl=d.l==='role'?(R.length>1?R.map(r=>esc(r)+' '+rdChip(RD.cells[r+'|'+d.k]||'ins')).join(' &nbsp;')+(HC[a.cons]?' &rarr; activity '+rdChip(f):''):rdChip(f)):rdChip(f)+' <span class="small">for the activity</span>';
   return '<details class="rdk"'+(RD.shut[d.k]?'':' open')+' ontoggle="rdToggle(\''+d.k+'\',this)"><summary><span class="rdno">'+(i+1)+'</span>'+esc(d.n)+(d.gate?rdGt:'')+' '+rdChip(f)+'</summary><div class="rdkb"><div>'+
    '<div class="gh2">Readiness question</div><div class="rdq">'+esc(d.q)+'</div><div class="gh2">Evidence to look for</div><div class="small" style="font-size:12px">'+esc(d.ev)+'</div>'+
    '<div class="gh2">Work-side facts &middot; Modeled</div><div class="rdfx">'+rdFacts(a,RD.to,d.k)+'</div></div><div>'+
    '<div class="gh2">Record</div><div class="small" style="margin-bottom:6px">Finding: '+fl+' <span class="small">(set in the matrix above)</span></div>'+
    RD_REC.map(([k,l,ph])=>'<label class="rdl">'+l+'<textarea placeholder="'+ph+'" oninput="rdText(\''+d.k+'\',\''+k+'\',this.value)">'+esc(x[k]||'')+'</textarea></label>').join('')+'</div></div></details>';}
-function rdPanel(a,k){const R=rdRoles(a),rl=rdRoll(a,RD.cells),ov=rdOver(a),c=RD.cells,multi=R.length>1,nc=R.length+(multi?2:1);
-  let h='<div class="rdp"><h4>Assess readiness &middot; '+a.code+' to '+RD.to+'</h4><div class="isub">'+esc(ORGNAME())+'. '+(R.length>1?'Weakest link across the '+R.length+' required roles (BR-16): '+esc(R.join(', '))+'.':'One role read directly: '+esc(R[0])+(HC[a.cons]?' (BR-16).':', the Accountable role.'))+
+function rdPanel(a,k){const R=rdRoles(a),rl=rdRoll(a,RD.cells),ov=rdOver(a),c=RD.cells,multi=R.length>1&&HC[a.cons],nc=R.length+(multi?2:1);
+  let h='<div class="rdp"><h4>Assess readiness &middot; '+a.code+' to '+RD.to+'</h4><div class="isub">'+esc(ORGNAME())+'. '+(R.length>1?(HC[a.cons]?'Weakest link across the '+R.length+' required roles (BR-16): '+esc(R.join(', '))+'.':'Each role&rsquo;s finding stands on its own below High: '+esc(R.join(', '))+'.'):'One required role, read directly: '+esc(R[0])+'.')+
    ' Organizational and shared dimensions are assessed once for the activity. Every finding starts at Insufficient Evidence; modeled facts never move one (GR-012 v0.2). Hover a dimension for its readiness question.</div>'+
    '<div style="overflow-x:auto"><table class="rdm"><tr><th>Dimension</th>'+R.map(r=>'<th>'+esc(r)+'</th>').join('')+(multi?'<th class="roll">Activity (weakest link)</th>':'')+'</tr>';
   ['role','org','shared'].forEach(l=>{h+='<tr><td class="lay" colspan="'+nc+'">'+RD_LAYER[l]+'</td></tr>';
