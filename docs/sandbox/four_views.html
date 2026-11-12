@@ -283,6 +283,14 @@ body{background:transparent;padding-bottom:0}
 .rdrole{margin:4px 0 10px;font-size:12px;color:var(--gray)}
 .rdrole button{font:inherit;font-size:12px;border:1px solid var(--border);background:#fff;border-radius:6px;padding:4px 10px;margin:0 6px 6px 0;cursor:pointer}
 .rdrole button.on{border-color:#1B4F8A;box-shadow:inset 0 0 0 1px #1B4F8A;color:var(--navy-d)}
+.rdm tr.rdr td:first-child{white-space:nowrap}
+.rdplus{display:inline-block;width:18px;height:18px;line-height:16px;text-align:center;border:1px solid #C6D8EE;border-radius:4px;margin-right:8px;color:#1B4F8A;font-weight:600;cursor:pointer;font-size:13px}
+.rdm tr.rdr.open td{background:#F4F7FC}
+.rdm th.sel{color:var(--navy-d);box-shadow:inset 0 -2px 0 #1B4F8A}
+.rdm td.sel{background:#F7FAFE}
+.rdm tr.rdx>td{background:#FAFBFD;padding:6px 0 10px;border-bottom:1px solid var(--border)}
+.rdm tr.rdx .rdkb{padding:0 14px}
+.rdrec{font-size:10px;color:#166534;border:1px solid #BBE5C8;border-radius:4px;padding:0 5px;margin-left:6px}
 </style></head><body>
 <div class="wrap">
   <div class="side" id="side"></div>
@@ -772,7 +780,7 @@ function readiness(a,k){const to=ST[k+1],org=isOrg(),rec=rdRec(a),open=RD&&RD.co
 function rdOpen(code,k){const a=ACT[code],to=ST[k+1],rec=rdRec(a),same=rec&&rec.to===to;
   const dims=same?JSON.parse(JSON.stringify(rec.dims||{})):{},R=rdRoles(a);
   RD_DIMS.filter(d=>d.l==='role'&&dims[d.k]).forEach(d=>{if(!dims[R[0]+'|'+d.k])dims[R[0]+'|'+d.k]=dims[d.k];delete dims[d.k];});
-  RD={code,k,to,cells:same?Object.assign({},rec.cells):{},dims,meta:same?Object.assign({},rec.meta||{}):{},busy:false,msg:'',shut:{},role:R[0]};render();}
+  RD={code,k,to,cells:same?Object.assign({},rec.cells):{},dims,meta:same?Object.assign({},rec.meta||{}):{},busy:false,msg:'',exp:{},role:R[0]};render();}
 function rdRole(r){if(RD){RD.role=r;render();}}
 function rdSet(key,v){if(!RD)return;RD.cells[key]=v;render();}
 function rdText(d,f,v){if(!RD)return;(RD.dims[d]=RD.dims[d]||{})[f]=v;}
@@ -808,27 +816,28 @@ function rdFacts(a,to,d,who){const els=stageEls(a,to),ctl=ctlOf(a),obj=(WORKED[a
   return '<ul>'+L.map(x=>'<li>'+x+'</li>').join('')+'</ul>';}
 const RD_REC=[['ev','Evidence: what is actually known','Organization-specific evidence only'],['prov','Evidence provenance','Type, source role, reference, confidence, coverage, date'],['gap','Gap / concern','What is missing, uncertain, or evidenced as a problem'],
   ['act','Required action / control','What must happen before progression'],['owner','Owner','Role accountable for closing the gap'],['move','What would move this finding','Evidence or operating change that would justify a different finding']];
-function rdToggle(k,el){if(RD)RD.shut[k]=!el.open;}
-function rdCard(a,d,i,rl){const r=RD.role,key=rdKey(d,r),x=RD.dims[key]||{},R=rdRoles(a),own=d.l==='role'?(RD.cells[r+'|'+d.k]||'ins'):rl[d.k].f;
-  const fl=d.l==='role'?esc(r)+' '+rdSel(r+'|'+d.k,own)+(R.length>1&&HC[a.cons]?' &nbsp;activity (weakest link) '+rdChip(rl[d.k].f):''):rdSel('_|'+d.k,own)+' <span class="small">for the activity</span>';
-  const id=key.replace(/[^a-z0-9]/gi,'_');
-  return '<details class="rdk"'+(RD.shut[id]?'':' open')+' ontoggle="rdToggle(\''+id+'\',this)"><summary><span class="rdno">'+(i+1)+'</span>'+esc(d.n)+(d.gate?rdGt:'')+' '+rdChip(own)+(d.l==='role'&&R.length>1?' <span class="small">'+esc(r)+'</span>':'')+'</summary><div class="rdkb"><div>'+
+// One dimension's detailed assessment, opened from its row in the matrix with +: the selected role's record for a role
+// dimension, the activity's record otherwise (Nov 12, 2026).
+function rdDetail(a,d){const r=RD.role,key=rdKey(d,r),x=RD.dims[key]||{};
+  return '<div class="rdkb"><div>'+
    '<div class="gh2">Readiness question</div><div class="rdq">'+esc(d.q)+'</div><div class="gh2">Evidence to look for</div><div class="small" style="font-size:12px">'+esc(d.ev)+'</div>'+
    '<div class="gh2">Work-side facts &middot; Modeled</div><div class="rdfx">'+rdFacts(a,RD.to,d.k,d.l==='role'?r:null)+'</div></div><div>'+
-   '<div class="gh2">Record'+(d.l==='role'?' &middot; '+esc(r):' &middot; the activity')+'</div><div class="small" style="margin-bottom:6px">Finding: '+fl+'</div>'+
-   RD_REC.map(([k,l,ph])=>'<label class="rdl">'+l+'<textarea placeholder="'+ph+'" oninput="rdText(\''+key.replace(/'/g,"\\'")+'\',\''+k+'\',this.value)">'+esc(x[k]||'')+'</textarea></label>').join('')+'</div></div></details>';}
-function rdPanel(a,k){const R=rdRoles(a),rl=rdRoll(a,RD.cells),ov=rdOver(a),c=RD.cells,multi=R.length>1&&HC[a.cons],nc=R.length+(multi?2:1);
-  let h='<div class="rdp"><h4>Assess readiness &middot; '+a.code+' to '+RD.to+'</h4><div class="isub">'+esc(ORGNAME())+'. '+(R.length>1?(HC[a.cons]?'Weakest link across the '+R.length+' required roles (BR-16): '+esc(R.join(', '))+'.':'Each role&rsquo;s finding stands on its own below High: '+esc(R.join(', '))+'.'):'One required role, read directly: '+esc(R[0])+'.')+
-   ' Organizational and shared dimensions are assessed once for the activity. Every finding starts at Insufficient Evidence; modeled facts never move one (GR-012 v0.2). Hover a dimension for its readiness question.</div>'+
-   '<div style="overflow-x:auto"><table class="rdm"><tr><th>Dimension</th>'+R.map(r=>'<th>'+esc(r)+'</th>').join('')+(multi?'<th class="roll">Activity (weakest link)</th>':'')+'</tr>';
-  ['role','org','shared'].forEach(l=>{h+='<tr><td class="lay" colspan="'+nc+'">'+RD_LAYER[l]+'</td></tr>';
-    RD_DIMS.filter(d=>d.l===l).forEach(d=>{const x=rl[d.k];
-      h+='<tr><td title="'+esc(d.q)+'">'+esc(d.n)+(d.gate?rdGt:'')+'</td>'+(l==='role'?R.map(r=>{const f=c[r+'|'+d.k]||'ins';return '<td>'+rdSel(r+'|'+d.k,f,multi&&x.who.includes(r)&&x.who.length<R.length&&f!=='ready')+'</td>'}).join(''):'<td colspan="'+R.length+'">'+rdSel('_|'+d.k,x.f)+' <span class="small">for the activity</span></td>')+(multi?'<td class="roll">'+(l==='role'?rdChip(x.f):'')+'</td>':'')+'</tr>';});});
+   '<div class="gh2">Record &middot; '+(d.l==='role'?esc(r):'the activity')+'</div>'+
+   RD_REC.map(([k,l,ph])=>'<label class="rdl">'+l+'<textarea placeholder="'+ph+'" oninput="rdText(\''+key.replace(/'/g,"\\'")+'\',\''+k+'\',this.value)">'+esc(x[k]||'')+'</textarea></label>').join('')+'</div></div>';}
+const rdHas=(d,r)=>{const x=RD.dims[rdKey(d,r)]||{};return Object.values(x).some(v=>(v||'').trim())};
+function rdExp(k){if(!RD)return;RD.exp[k]=!RD.exp[k];render();}
+function rdPanel(a,k){const R=rdRoles(a),rl=rdRoll(a,RD.cells),ov=rdOver(a),c=RD.cells,multi=R.length>1&&HC[a.cons],nc=R.length+(multi?2:1),sel=RD.role;
+  let h='<div class="rdp"><h4>Assess readiness &middot; '+a.code+' to '+RD.to+'</h4><div class="isub">'+esc(ORGNAME())+'. '+(R.length>1?(HC[a.cons]?'Weakest link across the '+R.length+' required roles (BR-16).':'Each role&rsquo;s finding stands on its own below High.'):'One required role, read directly: '+esc(R[0])+'.')+
+   ' Every finding starts at Insufficient Evidence; modeled facts never move one (GR-012 v0.2). Click + on a dimension for its detailed assessment'+(R.length>1?' for the role selected below':'')+'.</div>'+
+   (R.length>1?'<div class="rdrole">Assess: '+R.map(r=>'<button type="button" class="'+(sel===r?'on':'')+'" onclick="rdRole(\''+r.replace(/'/g,"\\'")+'\')">'+esc(r)+' <span class="small">'+({hold:'holds',cond:'clears with conditions',clear:'clears'})[rdV(rdRollRole(a,RD.cells,r))]+'</span></button>').join('')+'</div>':'')+
+   '<div style="overflow-x:auto"><table class="rdm"><tr><th>Dimension</th>'+R.map(r=>'<th'+(R.length>1&&r===sel?' class="sel"':'')+'>'+esc(r)+'</th>').join('')+(multi?'<th class="roll">Activity (weakest link)</th>':'')+'</tr>';
+  ['role','org','shared'].forEach(l=>{h+='<tr><td class="lay" colspan="'+nc+'">'+RD_LAYER[l]+(l==='role'?'':' &middot; once for the activity')+'</td></tr>';
+    RD_DIMS.filter(d=>d.l===l).forEach(d=>{const x=rl[d.k],ek=d.k,open=!!RD.exp[ek],has=rdHas(d,sel);
+      h+='<tr class="rdr'+(open?' open':'')+'"><td><span class="rdplus" onclick="rdExp(\''+ek+'\')" title="'+(open?'Close':'Open')+' the detailed assessment">'+(open?'&minus;':'+')+'</span><span title="'+esc(d.q)+'">'+esc(d.n)+'</span>'+(d.gate?rdGt:'')+(has?'<span class="rdrec" title="Record started'+(d.l==='role'?' for '+esc(sel):'')+'">recorded</span>':'')+'</td>'+
+       (l==='role'?R.map(r=>{const f=c[r+'|'+d.k]||'ins';return '<td'+(R.length>1&&r===sel?' class="sel"':'')+'>'+rdSel(r+'|'+d.k,f,multi&&x.who.includes(r)&&x.who.length<R.length&&f!=='ready')+'</td>'}).join(''):'<td colspan="'+R.length+'">'+rdSel('_|'+d.k,x.f)+' <span class="small">for the activity</span></td>')+(multi?'<td class="roll">'+(l==='role'?rdChip(x.f):'')+'</td>':'')+'</tr>';
+      if(open) h+='<tr class="rdx"><td colspan="'+nc+'">'+rdDetail(a,d)+'</td></tr>';});});
   if(ov&&HC[a.cons]) h+='<tr><td class="lay" colspan="'+nc+'">Oversight above, assessed separately</td></tr><tr><td>'+esc(ov)+' &middot; Manager / Governance-Oversight Readiness</td><td colspan="'+R.length+'">'+rdSel('_over|manager',c['_over|manager']||'ins')+' <span class="small">not rolled in</span></td>'+(multi?'<td class="roll"></td>':'')+'</tr>';
   h+='</table></div>';
-  h+='<div class="gh2">Dimension assessments</div><div class="isub">GiGi&rsquo;s standard record for each dimension. Work-side facts are Modeled, from the Reference Model at '+RD.to+': context for the assessor, never a finding. A Conditional dimension clears only with its required action recorded.</div>'+
-    (R.length>1?'<div class="rdrole">Record for: '+R.map(r=>'<button type="button" class="'+(RD.role===r?'on':'')+'" onclick="rdRole(\''+r.replace(/'/g,"\\'")+'\')">'+esc(r)+' <span class="small">'+({hold:'holds',cond:'clears with conditions',clear:'clears'})[rdV(rdRollRole(a,RD.cells,r))]+'</span></button>').join('')+'<div class="small">The six role dimensions are recorded for each role; the organizational and shared dimensions once for the activity.</div></div>':'')+
-    RD_DIMS.map((d,i)=>rdCard(a,d,i,rl)).join('');
   const m=RD.meta;
   h+='<div class="gh2">Who determines the findings</div><div class="isub">The assessor is not the sole role holder. Sign-off: '+(HC[a.cons]?'a cross-functional review or panel, since this is '+a.cons+' work.':'the Accountable owner, '+esc(a.Aroles[0])+', plus the assessor.')+'</div>'+
    '<div class="rdf"><input placeholder="Assessed by" value="'+esc(m.by||'')+'" oninput="rdMeta(\'by\',this.value)"><input placeholder="Evidence gathered from" value="'+esc(m.from||'')+'" oninput="rdMeta(\'from\',this.value)"><input placeholder="Signed off by" value="'+esc(m.signed||'')+'" oninput="rdMeta(\'signed\',this.value)"></div>'+
