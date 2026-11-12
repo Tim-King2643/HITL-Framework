@@ -819,25 +819,29 @@ const RD_REC=[['ev','Evidence: what is actually known','Organization-specific ev
   ['act','Required action / control','What must happen before progression'],['owner','Owner','Role accountable for closing the gap'],['move','What would move this finding','Evidence or operating change that would justify a different finding']];
 // One dimension's detailed assessment, opened from its row in the matrix with +: the selected role's record for a role
 // dimension, the activity's record otherwise (Nov 12, 2026).
-function rdDetail(a,d){const r=RD.role,key=rdKey(d,r),x=RD.dims[key]||{};
+// The Readiness Rating is set here, in the detail; the matrix only shows it (Nov 12, 2026). `ov` is the governance
+// oversight role, assessed separately on Manager / Governance-Oversight Readiness.
+function rdDetail(a,d,ov){const r=RD.role,key=ov?'_over|manager':rdKey(d,r),x=RD.dims[key]||{},ck=ov?'_over|manager':(d.l==='role'?r:'_')+'|'+d.k,f=RD.cells[ck]||'ins';
   return '<div class="rdkb"><div>'+
    '<div class="gh2">Readiness question</div><div class="rdq">'+esc(d.q)+'</div><div class="gh2">Evidence to look for</div><div class="small" style="font-size:12px">'+esc(d.ev)+'</div>'+
-   '<div class="gh2">Work-side facts &middot; Modeled</div><div class="rdfx">'+rdFacts(a,RD.to,d.k,d.l==='role'?r:null)+'</div></div><div>'+
-   '<div class="gh2">Record &middot; '+(d.l==='role'?esc(r):'the activity')+'</div>'+
+   '<div class="gh2">Work-side facts &middot; Modeled</div><div class="rdfx">'+rdFacts(a,RD.to,d.k,ov||(d.l==='role'?r:null))+'</div></div><div>'+
+   '<div class="gh2">Record &middot; '+(ov?esc(ov):d.l==='role'?esc(r):'the activity')+'</div>'+
+   '<label class="rdl">Readiness Rating<div style="margin-top:2px">'+rdSel(ck,f)+'</div></label>'+
    RD_REC.map(([k,l,ph])=>'<label class="rdl">'+l+'<textarea placeholder="'+ph+'" oninput="rdText(\''+key.replace(/'/g,"\\'")+'\',\''+k+'\',this.value)">'+esc(x[k]||'')+'</textarea></label>').join('')+'</div></div>';}
 const rdHas=(d,r)=>{const x=RD.dims[rdKey(d,r)]||{};return Object.values(x).some(v=>(v||'').trim())};
 function rdExp(k){if(!RD)return;RD.exp[k]=!RD.exp[k];render();}
 function rdPanel(a,k){const R=rdRoles(a),rl=rdRoll(a,RD.cells),ov=rdOver(a),c=RD.cells,multi=R.length>1&&HC[a.cons],nc=multi?3:2,sel=RD.role;
   let h='<div class="rdp"><h4>Assess readiness &middot; '+a.code+' to '+RD.to+'</h4><div class="isub">'+esc(ORGNAME())+'. '+(R.length>1?(HC[a.cons]?'Weakest link across the '+R.length+' required roles (BR-16).':'Each role&rsquo;s finding stands on its own below High.'):'One required role, read directly: '+esc(R[0])+'.')+
-   ' Every finding starts at Insufficient Evidence; modeled facts never move one (GR-012 v0.2). '+(R.length>1?'Choose the role to assess; its Readiness Rating and detailed assessment show below. ':'')+'Click + on a dimension for its detailed assessment.</div>'+
+   ' Every finding starts at Insufficient Evidence; modeled facts never move one (GR-012 v0.2). '+(R.length>1?'Choose the role to assess. ':'')+'Click + on a dimension to set its Readiness Rating and record the assessment.</div>'+
    (R.length>1?'<div class="rdrole">Assess: '+R.map(r=>'<button type="button" class="'+(sel===r?'on':'')+'" onclick="rdRole(\''+r.replace(/'/g,"\\'")+'\')">'+esc(r)+' <span class="small">'+({hold:'holds',cond:'clears with conditions',clear:'clears'})[rdV(rdRollRole(a,RD.cells,r))]+'</span></button>').join('')+'</div>':'')+
    '<div style="overflow-x:auto"><table class="rdm"><tr><th>Dimension</th><th>Readiness Rating'+(R.length>1?' &middot; '+esc(sel):'')+'</th>'+(multi?'<th class="roll">Activity (weakest link)</th>':'')+'</tr>';
   ['role','org','shared'].forEach(l=>{h+='<tr><td class="lay" colspan="'+nc+'">'+RD_LAYER[l]+(l==='role'?'':' &middot; once for the activity')+'</td></tr>';
     RD_DIMS.filter(d=>d.l===l).forEach(d=>{const x=rl[d.k],ek=d.k,open=!!RD.exp[ek],has=rdHas(d,sel);
       h+='<tr class="rdr'+(open?' open':'')+'"><td><span class="rdplus" onclick="rdExp(\''+ek+'\')" title="'+(open?'Close':'Open')+' the detailed assessment">'+(open?'&minus;':'+')+'</span><span title="'+esc(d.q)+'">'+esc(d.n)+'</span>'+(d.gate?rdGt:'')+(has?'<span class="rdrec" title="Record started'+(d.l==='role'?' for '+esc(sel):'')+'">recorded</span>':'')+'</td>'+
-       (l==='role'?'<td>'+rdSel(sel+'|'+d.k,c[sel+'|'+d.k]||'ins')+'</td>':'<td>'+rdSel('_|'+d.k,x.f)+' <span class="small">for the activity</span></td>')+(multi?'<td class="roll">'+(l==='role'?rdChip(x.f):'')+'</td>':'')+'</tr>';
+       (l==='role'?'<td>'+rdChip(c[sel+'|'+d.k]||'ins')+'</td>':'<td>'+rdChip(x.f)+' <span class="small">for the activity</span></td>')+(multi?'<td class="roll">'+(l==='role'?rdChip(x.f):'')+'</td>':'')+'</tr>';
       if(open) h+='<tr class="rdx"><td colspan="'+nc+'">'+rdDetail(a,d)+'</td></tr>';});});
-  if(ov&&HC[a.cons]) h+='<tr><td class="lay" colspan="'+nc+'">Governance oversight &middot; assessed separately, never rolled in (BR-16)</td></tr><tr><td>'+esc(ov)+' <span class="small">('+esc(a.Aroles[0])+' reports to this role) &middot; Manager / Governance-Oversight Readiness</span></td><td>'+rdSel('_over|manager',c['_over|manager']||'ins')+' <span class="small">not rolled in</span></td>'+(multi?'<td class="roll"></td>':'')+'</tr>';
+  if(ov&&HC[a.cons]) h+='<tr><td class="lay" colspan="'+nc+'">Governance oversight &middot; assessed separately, never rolled in (BR-16)</td></tr><tr class="rdr'+(RD.exp._over?' open':'')+'"><td><span class="rdplus" onclick="rdExp(\'_over\')">'+(RD.exp._over?'&minus;':'+')+'</span>'+esc(ov)+' <span class="small">('+esc(a.Aroles[0])+' reports to this role) &middot; Manager / Governance-Oversight Readiness</span></td><td>'+rdChip(c['_over|manager']||'ins')+' <span class="small">not rolled in</span></td>'+(multi?'<td class="roll"></td>':'')+'</tr>'+
+    (RD.exp._over?'<tr class="rdx"><td colspan="'+nc+'">'+rdDetail(a,RD_DIMS.find(d=>d.k==='manager'),ov)+'</td></tr>':'');
   h+='</table></div>';
   const m=RD.meta;
   h+='<div class="gh2">Who determines the findings</div><div class="isub">The assessor is not the sole role holder. Sign-off: '+(HC[a.cons]?'a cross-functional review or panel, since this is '+a.cons+' work.':'the Accountable owner, '+esc(a.Aroles[0])+', plus the assessor.')+'</div>'+
