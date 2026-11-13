@@ -784,11 +784,14 @@ function readiness(a,k){const to=ST[k+1],org=isOrg(),rec=rdRec(a),open=RD&&RD.co
 function rdOpen(code,k){const a=ACT[code],to=ST[k+1],rec=rdRec(a),same=rec&&rec.to===to;
   const dims=same?JSON.parse(JSON.stringify(rec.dims||{})):{},R=rdRoles(a);
   RD_DIMS.filter(d=>d.l==='role'&&dims[d.k]).forEach(d=>{if(!dims[R[0]+'|'+d.k])dims[R[0]+'|'+d.k]=dims[d.k];delete dims[d.k];});
-  RD={code,k,to,cells:same?Object.assign({},rec.cells):{},dims,meta:same?Object.assign({},rec.meta||{}):{},busy:false,msg:'',exp:{},role:R[0]};render();}
+  const meta=same?JSON.parse(JSON.stringify(rec.meta||{})):{};if(meta.agency){meta.agencyBy=meta.agencyBy||{};if(!meta.agencyBy[R[0]])meta.agencyBy[R[0]]=meta.agency;delete meta.agency;}
+  RD={code,k,to,cells:same?Object.assign({},rec.cells):{},dims,meta,busy:false,msg:'',exp:{},role:R[0]};render();}
 function rdRole(r){if(RD){RD.role=r;render();}}
 function rdSet(key,v){if(!RD)return;RD.cells[key]=v;render();}
 function rdText(d,f,v){if(!RD)return;(RD.dims[d]=RD.dims[d]||{})[f]=v;}
 function rdMeta(f,v){if(!RD)return;RD.meta[f]=v;}
+// The Human Agency narrative is written for each role (Nov 13, 2026); one written before then opens as the Accountable role's.
+function rdAgency(v){if(!RD)return;(RD.meta.agencyBy=RD.meta.agencyBy||{})[RD.role]=v;}
 function rdClose(){RD=null;render();}
 // Reset an activity's readiness (Nov 13, 2026): clears the draft and, once confirmed, the saved record; the Worker keeps
 // the saved version in the record's history.
@@ -857,8 +860,8 @@ function rdPanel(a,k){const R=rdRoles(a),rl=rdRoll(a,RD.cells),ov=rdOver(a),c=RD
   const m=RD.meta;
   h+='<div class="gh2">Who determines the findings</div><div class="isub">The assessor is not the sole role holder. Sign-off: '+(HC[a.cons]?'a cross-functional review or panel, since this is '+a.cons+' work.':'the Accountable owner, '+esc(a.Aroles[0])+', plus the assessor.')+'</div>'+
    '<div class="rdf"><input placeholder="Assessed by" value="'+esc(m.by||'')+'" oninput="rdMeta(\'by\',this.value)"><input placeholder="Evidence gathered from" value="'+esc(m.from||'')+'" oninput="rdMeta(\'from\',this.value)"><input placeholder="Signed off by" value="'+esc(m.signed||'')+'" oninput="rdMeta(\'signed\',this.value)"></div>'+
-   '<div class="gh2">Human Agency (GR-013) &middot; derived</div><div class="isub">Read from '+['authority','skill','fluency','safety','capacity','evidence'].map(k2=>esc(RD_DIMS.find(d=>d.k===k2).n)+' '+rdChip(rl[k2].f)).join(' ')+'. No score.</div>'+
-   '<textarea class="rdn" placeholder="Narrative conclusion: can the person actually exercise the judgment and accountability the operating model leaves with them?" oninput="rdMeta(\'agency\',this.value)">'+esc(m.agency||'')+'</textarea>'+
+   '<div class="gh2">Human Agency (GR-013) &middot; derived'+(R.length>1?' &middot; '+esc(sel):'')+'</div><div class="isub">Derived from Decision Authority, Capability / Skill, Confidence / Decision Fluency, Psychological Safety, Capacity / Workload and Trust / Evidence Quality above. No score.'+(R.length>1?' Written for each role; choose the role above.':'')+'</div>'+
+   '<textarea class="rdn" placeholder="Narrative conclusion: can the person actually exercise the judgment and accountability the operating model leaves with them?" oninput="rdAgency(this.value)">'+esc((m.agencyBy||{})[sel]||'')+'</textarea>'+
    '<div class="gact"><button type="button" class="gbtn primary"'+(RD.busy?' disabled':'')+' onclick="rdSave()">Save readiness</button><button type="button" class="gbtn" onclick="rdClose()">Close</button><button type="button" class="gbtn" style="margin-left:auto"'+(RD.busy?' disabled':'')+' onclick="rdResetAsk(true)">Reset readiness</button>'+(RD.msg?'<span class="small" style="margin-left:8px">'+esc(RD.msg)+'</span>':'')+'</div>'+
    (RD.ask?'<div class="rdv hold" style="margin-top:8px">Reset readiness for '+a.code+'? Every rating goes back to Insufficient Evidence and every record, sign-off and narrative is cleared, for every role.'+(rdRec(a)?' The saved version stays in its history.':'')+
      '<div class="gact" style="margin-top:6px"><button type="button" class="gbtn primary" onclick="rdReset()">Reset readiness</button><button type="button" class="gbtn" onclick="rdResetAsk(false)">Keep it</button></div></div>':'')+'</div>';

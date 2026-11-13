@@ -845,6 +845,12 @@ async function handleOrgApi(request, env, url) {
     }
     const m = body.meta && typeof body.meta === 'object' ? body.meta : {};
     const meta = { by: clip(m.by, ORG_MAX), from: clip(m.from, NOTE_MAX), signed: clip(m.signed, ORG_MAX), agency: clip(m.agency, NOTE_MAX) };
+    // The Human Agency narrative for each role (GR-013; Nov 13, 2026).
+    if (m.agencyBy && typeof m.agencyBy === 'object' && !Array.isArray(m.agencyBy)) {
+      const ab = {};
+      for (const r of Object.keys(m.agencyBy).slice(0, 20)) { const v = clip(m.agencyBy[r], NOTE_MAX); if (r && r.length <= ORG_MAX && v) ab[r] = v; }
+      if (Object.keys(ab).length) meta.agencyBy = ab;
+    }
     const rec = { current: true, to, cells, dims, meta, savedBy: reviewer, savedAt: Date.now(), history: history.slice(0, HISTORY_MAX) };
     await env.SANDBOX_NOTES.put(key, JSON.stringify(rec));
     return json({ ok: true, record: rec });
