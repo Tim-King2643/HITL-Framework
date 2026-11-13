@@ -761,8 +761,8 @@ function rdSay(rl,v,cells,dims,allIns,role){const holds=RD_DIMS.filter(d=>['not'
     v==='cond'?'Clears with conditions on '+conds.length+' dimension'+(conds.length>1?'s':'')+'.'+(noAct.length?' <span class="amber">Record the required action for '+noAct.map(d=>esc(d.n)).join(', ')+'.</span>':' Required actions recorded.'):'Clears. Every dimension is Ready.';}
 const rdGt='<span class="rdg" title="Candidate hard gate (GR-012 v0.2): provisional, not locked">candidate gate</span>';
 function rdRow(name,L,rl,assessed){const by=['ready','cond','not','ins'].filter(f=>L.cnt[f]).map(f=>L.cnt[f]+' '+RD_F[f][0]).join(' · ');
-  const ww=L.worst.length===L.n?'every dimension':L.worst.map(d=>esc(d.n)+(L.w!=='ins'&&rl[d.k].who.length?' ('+esc(rl[d.k].who.join(', '))+')':'')+(d.gate?rdGt:'')).join('; ');
-  return '<tr><td class="el">'+name+'</td><td>'+rdChip(L.w)+(assessed&&ww?' '+ww:'')+'<div class="small">'+(assessed?by+' across '+L.n+' dimensions':'Not yet assessed for this step')+'</div></td></tr>';}
+  // The finding and its counts only (Nov 13, 2026): the dimensions themselves are in the assessment matrix.
+  return '<tr><td class="el">'+name+'</td><td>'+rdChip(L.w)+' <span class="small">'+(assessed?by+' across '+L.n+' dimensions':'Not yet assessed for this step')+'</span></td></tr>';}
 let RD=null;
 function readiness(a,k){const to=ST[k+1],org=isOrg(),rec=rdRec(a),open=RD&&RD.code===a.code&&RD.k===k;
   let h='<div class="gh2">Readiness Gate</div><table class="it"><tr><td class="el">Technical / process</td><td>The evidence above. The evidence each step requires is GR-037, not yet defined.</td></tr>';
@@ -770,7 +770,7 @@ function readiness(a,k){const to=ST[k+1],org=isOrg(),rec=rdRec(a),open=RD&&RD.co
   const cells=open?RD.cells:(rec&&rec.to===to?rec.cells:{}),assessed=open||!!(rec&&rec.to===to),rl=rdRoll(a,cells),ov=rdOver(a);
   const per=rdPer(a);
   h+=(per?'<tr><td class="el">Role readiness</td><td>'+rdRoles(a).map(r=>{const x=rdRollRole(a,cells,r),L=rdLayer(x,['role','shared']);
-      return '<div style="margin-bottom:3px">'+esc(r)+': '+rdChip(L.w)+(assessed&&L.worst.length&&L.worst.length<L.n?' '+L.worst.map(d=>esc(d.n)+(d.gate?rdGt:'')).join('; '):'')+'</div>'}).join('')+
+      const by=['ready','cond','not','ins'].filter(f=>L.cnt[f]).map(f=>L.cnt[f]+' '+RD_F[f][0]).join(' · ');return '<div style="margin-bottom:3px">'+esc(r)+': '+rdChip(L.w)+(assessed?' <span class="small">'+by+'</span>':'')+'</div>'}).join('')+
       '<div class="small">'+(assessed?'Each role&rsquo;s finding stands on its own below High; no roll-up.':'Not yet assessed for this step')+'</div></td></tr>':rdRow('Role readiness',rdLayer(rl,['role','shared']),rl,assessed))+
     rdRow('Organizational readiness',rdLayer(rl,['org','shared']),rl,assessed)+
     (ov&&HC[a.cons]?'<tr><td class="el">Governance oversight</td><td>'+esc(ov)+' <span class="small">('+esc(a.Aroles[0])+' reports to this role)</span>: '+rdChip(cells['_over|manager']||'ins')+' <span class="small">assessed separately, never rolled in (BR-16)</span></td></tr>':'')+'</table>';
