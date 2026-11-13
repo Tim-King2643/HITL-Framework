@@ -70,7 +70,8 @@ table.g{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:4px}
 .ev{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 12px;margin-top:6px}
 .ev label{display:flex;flex-direction:column;justify-content:flex-end;font-size:11.5px;color:var(--lgray)}
 .ev input,.ev textarea,.ev select{display:block;width:100%;margin-top:2px;font:inherit;font-size:12.5px;color:var(--dark);padding:5px 7px;border:1px solid #C6D8EE;border-radius:6px;background:#fff}
-.ev .w2{grid-column:span 2}.ev .w3{grid-column:1/-1}
+.ev .w2{grid-column:span 2}
+.ev .calc{margin-top:2px;padding:6px 8px;border:1px dashed #C6D8EE;border-radius:6px;background:#F8FAFD;color:var(--navy-d);font-size:13px}.ev .w3{grid-column:1/-1}
 .verd{margin-top:10px;border-left:4px solid #1B4F8A;background:#EEF3FA;padding:7px 11px;border-radius:6px;font-size:12.5px;line-height:1.55}
 .verd.hold{border-color:#B91C1C;background:#FEF2F2}.verd.ok{border-color:#15803D;background:#F0FDF4}
 .rules li{margin-bottom:5px}
@@ -193,11 +194,11 @@ const tr=(cells,cls)=>'<tr'+(cls?' class="'+cls+'"':'')+'>'+cells.map(c=>'<td>'+
 
 /* GR-037 recommended defaults (Nov 13, 2026): starting points, not established standards. */
 const LADDER={
- 'Judgment':{m:[{k:'use',n:'Usefulness',d:'share of sampled instances where people rate the AI input useful',op:'>=',t:70}],vol:30,wk:2,meth:'Replay',how:'Run the AI on past cases; people rate whether its input would have helped.'},
- 'Augmentation':{m:[{k:'use',n:'Use rate',d:'share of instances where the person uses the AI assistance',op:'>=',t:60},{k:'err',n:'Errors introduced',d:'share of spot-checked instances where the assistance introduced an error the person missed',op:'<=',t:2}],vol:50,wk:4,meth:'Bounded trial',how:'Offer the assistance, opt-in, to a few people or a low-risk slice of the work; spot-check it.'},
- 'Oversight':{m:[{k:'agree',n:'Agreement rate',d:'share of instances where the AI&rsquo;s complete work matches what the person produced or decided',op:'>=',t:90}],vol:100,wk:4,meth:'Shadow run',how:'The AI drafts the complete work product in parallel; the person still does the work; compare.'},
- 'Agent-delegation':{m:[{k:'pass',n:'Audit-pass rate',d:'share of reviewed instances that pass clean',op:'>=',t:98},{k:'recall',n:'Exception-detection recall',d:'share of real exceptions the AI flags',op:'>=',t:95}],vol:500,wk:8,meth:'In-stage audit',how:'The Oversight reviews already happening give the audit-pass rate; shadow the AI&rsquo;s flags against what reviewers caught.'},
- 'Automation':{m:[{k:'exc',n:'Exception rate',d:'share of instances needing a person, including missed exceptions found in sampled audits of unflagged work',op:'<=',t:1}],vol:1000,wk:12,meth:'In-stage audit',how:'Sample-audit instances the agent did not flag, as well as the flagged ones.'}};
+ 'Judgment':{m:[{k:'use',n:'Usefulness',d:'share of sampled instances where people rate the AI input useful',op:'>=',t:70,num:['useful','Rated useful'],den:['rated','Instances rated']}],vol:30,wk:2,meth:'Replay',how:'Run the AI on past cases; people rate whether its input would have helped.'},
+ 'Augmentation':{m:[{k:'use',n:'Use rate',d:'share of instances where the person uses the AI assistance',op:'>=',t:60,num:['used','Assistance used'],den:['inst','Instances in the trial']},{k:'err',n:'Errors introduced',d:'share of spot-checked instances where the assistance introduced an error the person missed',op:'<=',t:2,num:['errs','With an AI-introduced error'],den:['spot','Instances spot-checked']}],vol:50,wk:4,meth:'Bounded trial',how:'Offer the assistance, opt-in, to a few people or a low-risk slice of the work; spot-check it.'},
+ 'Oversight':{m:[{k:'agree',n:'Agreement rate',d:'share of instances where the AI&rsquo;s complete work matches what the person produced or decided',op:'>=',t:90,num:['match','AI matched the person'],den:['shadow','Instances shadowed']}],vol:100,wk:4,meth:'Shadow run',how:'The AI drafts the complete work product in parallel; the person still does the work; compare.'},
+ 'Agent-delegation':{m:[{k:'pass',n:'Audit-pass rate',d:'share of reviewed instances that pass clean',op:'>=',t:98,num:['passed','Passed clean'],den:['reviewed','Instances reviewed']},{k:'recall',n:'Exception-detection recall',d:'share of real exceptions the AI flags',op:'>=',t:95,num:['flagged','Flagged by the AI'],den:['realexc','Real exceptions (flagged + missed)']}],vol:500,wk:8,meth:'In-stage audit',how:'The Oversight reviews already happening give the audit-pass rate; shadow the AI&rsquo;s flags against what reviewers caught.'},
+ 'Automation':{m:[{k:'exc',n:'Exception rate',d:'share of instances needing a person, including missed exceptions found in sampled audits of unflagged work',op:'<=',t:1,num:['needed','Needed a person'],den:['instances','Instances']}],vol:1000,wk:12,meth:'In-stage audit',how:'Sample-audit instances the agent did not flag, as well as the flagged ones.'}};
 const methFor=(a,to)=>{const L=LADDER[to];if(L.meth==='Bounded trial'&&HC[a.cons])return a.cons==='Critical'?'Shadow or replay':'Shadow or replay';return L.meth;};
 const volFor=(a,to)=>LADDER[to].vol*(HC[a.cons]?2:1), wkFor=(a,to)=>LADDER[to].wk*(HC[a.cons]?2:1);
 const signoff=(a,to)=>to==='Automation'||(HC[a.cons]&&rank(to)>=rank('Agent-delegation'));
@@ -206,14 +207,18 @@ const OBJ=c=>(WORKED[c]||{}).obj||{};
 function changes(a,to){const f=stageEls(a,ST[rank(to)-1]),g=stageEls(a,to);return elsOf(a).filter(e=>f[e]!==g[e]).map(e=>({e,from:f[e],to:g[e],w:OBJ(a.code)[e]||''}));}
 const PIL=['7.2.1.2','7.2.3.4'];
 /* Sample evidence, invented for the sketch */
-const SAMPLE={'7.2.1.2':{'Judgment':{use:84,n:40,wk:3,serious:0},'Augmentation':{use:71,err:1.2,n:64,wk:5,serious:0},'Oversight':{agree:93,n:120,wk:5,serious:0},'Agent-delegation':{pass:96.4,recall:97,n:540,wk:8,serious:1}},
- '7.2.3.4':{'Judgment':{use:78,n:70,wk:4,serious:0},'Augmentation':{use:66,err:1.8,n:60,wk:6,serious:0}}};
+const SAMPLE={'7.2.1.2':{'Judgment':{rated:40,useful:34,wk:3,serious:0},'Augmentation':{inst:64,used:45,spot:50,errs:1,wk:5,serious:0},'Oversight':{shadow:120,match:112,wk:5,serious:0},'Agent-delegation':{reviewed:540,passed:521,realexc:30,flagged:29,wk:8,serious:1}},
+ '7.2.3.4':{'Judgment':{rated:70,useful:55,wk:4,serious:0},'Augmentation':{inst:60,used:40,spot:40,errs:0,wk:6,serious:0}}};
 let S={act:'7.2.1.2',ev:'sample',to:null},E={};
 const cur=()=>{const a=ACT[S.act];return {a,ceil:derivedCeil(a)}};
 function rec(code,to){const k=code+'|'+to;if(!E[k])E[k]=JSON.parse(JSON.stringify(S.ev==='sample'?((SAMPLE[code]||{})[to]||{}):{}));return E[k];}
-function finding(a,to,r){const L=LADDER[to];if(!r.n||!r.wk||r.n<volFor(a,to)||r.wk<wkFor(a,to)||L.m.some(m=>r[m.k]==null||r[m.k]===''))return 'ins';
+// Each rate is calculated from the audit's counts (Nov 13, 2026); the sample size is the first measure's denominator.
+const num=v=>v===''||v==null||isNaN(+v)?null:+v;
+const rate=(m,r)=>{const n=num(r[m.num[0]]),d=num(r[m.den[0]]);return n==null||!d||n>d?null:Math.round(1000*n/d)/10;};
+const sampleN=(L,r)=>num(r[L.m[0].den[0]])||0;
+function finding(a,to,r){const L=LADDER[to];const N=sampleN(L,r);if(!N||!r.wk||N<volFor(a,to)||r.wk<wkFor(a,to)||L.m.some(m=>rate(m,r)==null))return 'ins';
   if(+r.serious>0)return 'not';if(signoff(a,to)&&!(r.signed||'').trim())return 'ins';
-  return L.m.every(m=>m.op==='>='?+r[m.k]>=m.t:+r[m.k]<=m.t)?'met':'not';}
+  return L.m.every(m=>m.op==='>='?rate(m,r)>=m.t:rate(m,r)<=m.t)?'met':'not';}
 const FN={met:'Met',not:'Not met',ins:'Insufficient Evidence'},chip=f=>'<span class="chip c-'+f+'">'+FN[f]+'</span>';
 window.setS=(k,v)=>{S[k]=v;if(k!=='to')E={};if(k==='act')S.to=null;render()};
 // Typing only stores the value; the finding updates when the field is left or Enter is pressed, so the page never
@@ -235,13 +240,13 @@ function render(keepFocus){
   if(!past){
    h+='<div class="lbl" style="margin-top:12px">How the evidence is gathered, before moving</div><div style="font-size:12.5px;line-height:1.5"><span class="meth">'+methFor(a,to)+'</span> '+(methFor(a,to)!==L.meth?'Bounded live trials are for Low and Moderate work; at '+a.cons+' the evidence comes from shadow runs or replay of past cases, never a live trial at the next stage.':L.how)+'</div>'+
     '<div class="lbl" style="margin-top:12px">Audit rubric &middot; the elements that change</div><ul style="margin:0 0 0 18px;font-size:12.5px;line-height:1.55">'+ch.map(x=>'<li>'+x.e+' ('+x.from+' &rarr; '+x.to+')'+(x.w?': '+esc(x.w):'')+'</li>').join('')+'</ul>';
-   h+='<div class="lbl" style="margin-top:14px">Readiness Gate</div><table class="gate"><tr><td class="el">Technical / process</td><td>'+chip(f)+' '+L.m.map(m=>m.n+' '+(r[m.k]!=null&&r[m.k]!==''?r[m.k]+'%':'—')+' vs '+thr(m)).join('; ')+' <span class="sm">&middot; '+(r.n||0)+' instances (minimum '+volFor(a,to)+'), '+(r.wk||0)+' weeks (minimum '+wkFor(a,to)+')'+(+r.serious>0?' &middot; '+r.serious+' serious discrepanc'+(r.serious==1?'y':'ies'):'')+'</span></td></tr>'+
+   h+='<div class="lbl" style="margin-top:14px">Readiness Gate</div><table class="gate"><tr><td class="el">Technical / process</td><td>'+chip(f)+' '+L.m.map(m=>m.n+' '+(rate(m,r)!=null?rate(m,r)+'% <span class="sm">('+r[m.num[0]]+' of '+r[m.den[0]]+')</span>':'—')+' vs '+thr(m)).join('; ')+' <span class="sm">&middot; '+sampleN(L,r)+' instances (minimum '+volFor(a,to)+'), '+(r.wk||0)+' weeks (minimum '+wkFor(a,to)+')'+(+r.serious>0?' &middot; '+r.serious+' serious discrepanc'+(r.serious==1?'y':'ies'):'')+'</span></td></tr>'+
     '<tr><td class="el">Role readiness</td><td class="sm">GiGi&rsquo;s instrument (GR-012), in the sandbox&rsquo;s Readiness Gate</td></tr><tr><td class="el">Organizational readiness</td><td class="sm">GiGi&rsquo;s instrument (GR-012)</td></tr></table>'+
-    '<div class="verd'+(f==='met'?' ok':' hold')+'">'+(f==='met'?'Technical / process clears. The step still needs Role and Organizational readiness to clear.':f==='not'?'Holds: the evidence does not meet the threshold'+(+r.serious>0?', and a serious discrepancy was found':'')+'.':'Holds: Insufficient Evidence. '+((r.n||0)<volFor(a,to)||(r.wk||0)<wkFor(a,to)?'Below the minimum volume or period.':signoff(a,to)&&!(r.signed||'').trim()?'Waiting for the governance sign-off.':'A measure is not yet recorded.'))+'</div>';
+    '<div class="verd'+(f==='met'?' ok':' hold')+'">'+(f==='met'?'Technical / process clears. The step still needs Role and Organizational readiness to clear.':f==='not'?'Holds: the evidence does not meet the threshold'+(+r.serious>0?', and a serious discrepancy was found':'')+'.':'Holds: Insufficient Evidence. '+(sampleN(L,r)<volFor(a,to)||(r.wk||0)<wkFor(a,to)?'Below the minimum volume or period.':signoff(a,to)&&!(r.signed||'').trim()?'Waiting for the governance sign-off.':'A measure is not yet recorded.'))+'</div>';
    const fld=(k,l,ty,cls,ph)=>'<label class="'+(cls||'')+'">'+l+'<input data-f="'+k+'" type="'+(ty||'text')+'" value="'+esc(r[k]==null?'':r[k])+'" placeholder="'+(ph||'')+'" oninput="keepE(\''+to+'\',\''+k+'\',this.value)" onchange="setE(\''+to+'\',\''+k+'\',this.value)"></label>';
-   h+='<div class="lbl" style="margin-top:14px">Evidence record &middot; '+(S.ev==='sample'?'sample values, invented':'enter values')+'</div><div class="sm" style="margin-bottom:4px">'+L.m.map(m=>m.n+': '+m.d+'.').join(' ')+'</div><div class="ev">'+
-    L.m.map(m=>fld(m.k,'<span title="'+m.d.replace(/&rsquo;/g,'’')+'">'+m.n+' (%)</span>','number')).join('')+
-    fld('n','Instances in the sample','number')+fld('wk','Period (weeks)','number')+fld('serious','Serious discrepancies','number')+
+   h+='<div class="lbl" style="margin-top:14px">Evidence record &middot; '+(S.ev==='sample'?'sample values, invented':'enter values')+'</div><div class="sm" style="margin-bottom:4px">Enter the audit&rsquo;s counts; each rate is calculated from them. '+L.m.map(m=>m.n+': '+m.d+'.').join(' ')+'</div><div class="ev">'+
+    L.m.map(m=>fld(m.den[0],m.den[1],'number')+fld(m.num[0],m.num[1],'number')+'<label><span title="'+m.d.replace(/&rsquo;/g,'’')+'">'+m.n+' &middot; calculated</span><div class="calc">'+(rate(m,r)!=null?rate(m,r)+'%':num(r[m.num[0]])!=null&&num(r[m.den[0]])!=null&&+r[m.num[0]]>+r[m.den[0]]?'more than the total':'—')+' <span class="sm">threshold '+thr(m)+'</span></div></label>').join('')+
+    fld('wk','Period (weeks)','number')+fld('serious','Serious discrepancies','number')+
     fld('auditor','Auditor (independent of the work)','text','','Name and role')+fld('source','Source','text','w2','System, report or audit log')+
     (signoff(a,to)?fld('signed','Governance sign-off','text','w3','Body, name and date'):'')+'</div>';}
   h+='</div>';
