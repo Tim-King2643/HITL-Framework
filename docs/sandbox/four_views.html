@@ -755,9 +755,10 @@ const rdKey=(d,r)=>d.l==='role'?r+'|'+d.k:d.k;
 // A Conditional dimension clears only with the required action of each role holding it recorded.
 const rdActs=(dims,d,roles)=>(d.l==='role'?roles:[null]).every(r=>((dims[r?r+'|'+d.k:d.k]||{}).act||'').trim());
 function rdSay(rl,v,cells,dims,allIns,role){const holds=RD_DIMS.filter(d=>['not','ins'].includes(rl[d.k].f)),conds=RD_DIMS.filter(d=>rl[d.k].f==='cond'),noAct=conds.filter(d=>!rdActs(dims,d,role?[role]:rl[d.k].who));
-  return v==='hold'?'Holds. '+(allIns?'Nothing is assessed yet: every dimension is Insufficient Evidence.':
-      ['not','ins'].map(f=>{const D=holds.filter(d=>rl[d.k].f===f);return D.length?RD_F[f][0]+': '+D.map(d=>esc(d.n)+(f==='not'&&d.l==='role'&&rl[d.k].who.length?' ('+esc(rl[d.k].who.join(', '))+')':'')).join(', ')+'.':''}).filter(Boolean).join(' ')):
-    v==='cond'?'Clears with conditions: '+conds.map(d=>esc(d.n)).join(', ')+'.'+(noAct.length?' <span class="amber">Record the required action for '+noAct.map(d=>esc(d.n)).join(', ')+'.</span>':' Required actions recorded.'):'Clears. Every dimension is Ready.';}
+  // The verdict only (Nov 13, 2026): the readiness rows above already name the dimensions holding the step.
+  const n=f=>RD_DIMS.filter(d=>rl[d.k].f===f).length,cnt=['not','ins'].filter(n).map(f=>n(f)+' '+RD_F[f][0]).join(', ');
+  return v==='hold'?'Holds'+(allIns?': nothing is assessed yet.':' on '+holds.length+' of '+RD_DIMS.length+' dimensions ('+cnt+').'):
+    v==='cond'?'Clears with conditions on '+conds.length+' dimension'+(conds.length>1?'s':'')+'.'+(noAct.length?' <span class="amber">Record the required action for '+noAct.map(d=>esc(d.n)).join(', ')+'.</span>':' Required actions recorded.'):'Clears. Every dimension is Ready.';}
 const rdGt='<span class="rdg" title="Candidate hard gate (GR-012 v0.2): provisional, not locked">candidate gate</span>';
 function rdRow(name,L,rl,assessed){const by=['ready','cond','not','ins'].filter(f=>L.cnt[f]).map(f=>L.cnt[f]+' '+RD_F[f][0]).join(' · ');
   const ww=L.worst.length===L.n?'every dimension':L.worst.map(d=>esc(d.n)+(L.w!=='ins'&&rl[d.k].who.length?' ('+esc(rl[d.k].who.join(', '))+')':'')+(d.gate?rdGt:'')).join('; ');
@@ -776,8 +777,8 @@ function readiness(a,k){const to=ST[k+1],org=isOrg(),rec=rdRec(a),open=RD&&RD.co
   const V=rdVerdict(a,to,assessed?cells:null);
   const dims=open?RD.dims:(rec&&rec.dims)||{},allIns=Object.values(cells).every(x=>x==='ins');
   const link=canEdit()?' <span class="assess" style="cursor:pointer;margin-left:6px" onclick="rdOpen(\''+a.code+'\','+k+')">'+(rec&&rec.to===to?'Reassess readiness':'Assess readiness')+'</span>':'';
-  h+='<div class="rdv'+(V.v==='clear'?'':V.v==='cond'?' cond':' hold')+'">'+(V.v==='none'?'Holds. Readiness for '+to+' is not yet assessed: every dimension is Insufficient Evidence.'+(rec&&rec.to!==to?' Readiness was assessed for the step to '+rec.to+'.':''):
-    V.per?(allIns?'Holds. Nothing is assessed yet: every dimension is Insufficient Evidence.':V.per.map(x=>'<div><b>'+esc(x.r)+'</b> &mdash; '+rdSay(x.rl,x.v,cells,dims,false,x.r)+'</div>').join('')):
+  h+='<div class="rdv'+(V.v==='clear'?'':V.v==='cond'?' cond':' hold')+'">'+(V.v==='none'?'Holds: readiness for '+to+' is not yet assessed.'+(rec&&rec.to!==to?' Readiness was assessed for the step to '+rec.to+'.':''):
+    V.per?(allIns?'Holds: nothing is assessed yet.':V.per.map(x=>'<div><b>'+esc(x.r)+'</b> &mdash; '+rdSay(x.rl,x.v,cells,dims,false,x.r)+'</div>').join('')):
     rdSay(V.rl,V.v,cells,dims,allIns))+link+'</div>';
   if(!open&&rec&&rec.to===to) h+='<div class="small" style="margin-top:4px">Assessed'+(rec.meta&&rec.meta.by?' by '+esc(rec.meta.by):'')+(rec.savedAt?' on '+new Date(rec.savedAt).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'')+(rec.meta&&rec.meta.signed?' · signed off by '+esc(rec.meta.signed):' · not yet signed off')+'.</div>';
   return h+(open?rdPanel(a,k):'');}
