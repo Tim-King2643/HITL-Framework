@@ -216,7 +216,10 @@ function finding(a,to,r){const L=LADDER[to];if(!r.n||!r.wk||r.n<volFor(a,to)||r.
   return L.m.every(m=>m.op==='>='?+r[m.k]>=m.t:+r[m.k]<=m.t)?'met':'not';}
 const FN={met:'Met',not:'Not met',ins:'Insufficient Evidence'},chip=f=>'<span class="chip c-'+f+'">'+FN[f]+'</span>';
 window.setS=(k,v)=>{S[k]=v;if(k!=='to')E={};if(k==='act')S.to=null;render()};
-window.setE=(to,f,v)=>{rec(S.act,to)[f]=v;render(true)};
+// Typing only stores the value; the finding updates when the field is left or Enter is pressed, so the page never
+// redraws under the cursor (a redraw put the caret back at the start of a number field: 100 typed as 001).
+window.keepE=(to,f,v)=>{rec(S.act,to)[f]=v};
+window.setE=(to,f,v)=>{rec(S.act,to)[f]=v;render()};
 const btns=(k,o)=>o.map(([v,l])=>'<button type="button" class="btn'+(S[k]===v?' on':'')+'" onclick="setS(\''+k+'\',\''+v+'\')">'+l+'</button>').join('');
 function render(keepFocus){
   const fo=keepFocus&&document.activeElement&&document.activeElement.dataset?document.activeElement.dataset.f:null;
@@ -235,7 +238,7 @@ function render(keepFocus){
    h+='<div class="lbl" style="margin-top:14px">Readiness Gate</div><table class="gate"><tr><td class="el">Technical / process</td><td>'+chip(f)+' '+L.m.map(m=>m.n+' '+(r[m.k]!=null&&r[m.k]!==''?r[m.k]+'%':'—')+' vs '+thr(m)).join('; ')+' <span class="sm">&middot; '+(r.n||0)+' instances (minimum '+volFor(a,to)+'), '+(r.wk||0)+' weeks (minimum '+wkFor(a,to)+')'+(+r.serious>0?' &middot; '+r.serious+' serious discrepanc'+(r.serious==1?'y':'ies'):'')+'</span></td></tr>'+
     '<tr><td class="el">Role readiness</td><td class="sm">GiGi&rsquo;s instrument (GR-012), in the sandbox&rsquo;s Readiness Gate</td></tr><tr><td class="el">Organizational readiness</td><td class="sm">GiGi&rsquo;s instrument (GR-012)</td></tr></table>'+
     '<div class="verd'+(f==='met'?' ok':' hold')+'">'+(f==='met'?'Technical / process clears. The step still needs Role and Organizational readiness to clear.':f==='not'?'Holds: the evidence does not meet the threshold'+(+r.serious>0?', and a serious discrepancy was found':'')+'.':'Holds: Insufficient Evidence. '+((r.n||0)<volFor(a,to)||(r.wk||0)<wkFor(a,to)?'Below the minimum volume or period.':signoff(a,to)&&!(r.signed||'').trim()?'Waiting for the governance sign-off.':'A measure is not yet recorded.'))+'</div>';
-   const fld=(k,l,ty,cls,ph)=>'<label class="'+(cls||'')+'">'+l+'<input data-f="'+k+'" type="'+(ty||'text')+'" value="'+esc(r[k]==null?'':r[k])+'" placeholder="'+(ph||'')+'" oninput="setE(\''+to+'\',\''+k+'\',this.value)"></label>';
+   const fld=(k,l,ty,cls,ph)=>'<label class="'+(cls||'')+'">'+l+'<input data-f="'+k+'" type="'+(ty||'text')+'" value="'+esc(r[k]==null?'':r[k])+'" placeholder="'+(ph||'')+'" oninput="keepE(\''+to+'\',\''+k+'\',this.value)" onchange="setE(\''+to+'\',\''+k+'\',this.value)"></label>';
    h+='<div class="lbl" style="margin-top:14px">Evidence record &middot; '+(S.ev==='sample'?'sample values, invented':'enter values')+'</div><div class="sm" style="margin-bottom:4px">'+L.m.map(m=>m.n+': '+m.d+'.').join(' ')+'</div><div class="ev">'+
     L.m.map(m=>fld(m.k,'<span title="'+m.d.replace(/&rsquo;/g,'’')+'">'+m.n+' (%)</span>','number')).join('')+
     fld('n','Instances in the sample','number')+fld('wk','Period (weeks)','number')+fld('serious','Serious discrepancies','number')+
