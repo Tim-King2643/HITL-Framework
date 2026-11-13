@@ -68,7 +68,7 @@ table.g{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:4px}
 .gate td{padding:6px 8px;border-top:1px solid #EEF1F6;vertical-align:top;text-align:left}.gate tr:first-child td{border-top:none}
 .gate td.el{width:170px;color:var(--dark)}
 .ev{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 12px;margin-top:6px}
-.ev label{display:block;font-size:11.5px;color:var(--lgray)}
+.ev label{display:flex;flex-direction:column;justify-content:flex-end;font-size:11.5px;color:var(--lgray)}
 .ev input,.ev textarea,.ev select{display:block;width:100%;margin-top:2px;font:inherit;font-size:12.5px;color:var(--dark);padding:5px 7px;border:1px solid #C6D8EE;border-radius:6px;background:#fff}
 .ev .w2{grid-column:span 2}.ev .w3{grid-column:1/-1}
 .verd{margin-top:10px;border-left:4px solid #1B4F8A;background:#EEF3FA;padding:7px 11px;border-radius:6px;font-size:12.5px;line-height:1.55}
@@ -236,8 +236,8 @@ function render(keepFocus){
     '<tr><td class="el">Role readiness</td><td class="sm">GiGi&rsquo;s instrument (GR-012), in the sandbox&rsquo;s Readiness Gate</td></tr><tr><td class="el">Organizational readiness</td><td class="sm">GiGi&rsquo;s instrument (GR-012)</td></tr></table>'+
     '<div class="verd'+(f==='met'?' ok':' hold')+'">'+(f==='met'?'Technical / process clears. The step still needs Role and Organizational readiness to clear.':f==='not'?'Holds: the evidence does not meet the threshold'+(+r.serious>0?', and a serious discrepancy was found':'')+'.':'Holds: Insufficient Evidence. '+((r.n||0)<volFor(a,to)||(r.wk||0)<wkFor(a,to)?'Below the minimum volume or period.':signoff(a,to)&&!(r.signed||'').trim()?'Waiting for the governance sign-off.':'A measure is not yet recorded.'))+'</div>';
    const fld=(k,l,ty,cls,ph)=>'<label class="'+(cls||'')+'">'+l+'<input data-f="'+k+'" type="'+(ty||'text')+'" value="'+esc(r[k]==null?'':r[k])+'" placeholder="'+(ph||'')+'" oninput="setE(\''+to+'\',\''+k+'\',this.value)"></label>';
-   h+='<div class="lbl" style="margin-top:14px">Evidence record &middot; '+(S.ev==='sample'?'sample values, invented':'enter values')+'</div><div class="ev">'+
-    L.m.map(m=>fld(m.k,m.n+' (%) &middot; '+m.d,'number')).join('')+
+   h+='<div class="lbl" style="margin-top:14px">Evidence record &middot; '+(S.ev==='sample'?'sample values, invented':'enter values')+'</div><div class="sm" style="margin-bottom:4px">'+L.m.map(m=>m.n+': '+m.d+'.').join(' ')+'</div><div class="ev">'+
+    L.m.map(m=>fld(m.k,'<span title="'+m.d.replace(/&rsquo;/g,'’')+'">'+m.n+' (%)</span>','number')).join('')+
     fld('n','Instances in the sample','number')+fld('wk','Period (weeks)','number')+fld('serious','Serious discrepancies','number')+
     fld('auditor','Auditor (independent of the work)','text','','Name and role')+fld('source','Source','text','w2','System, report or audit log')+
     (signoff(a,to)?fld('signed','Governance sign-off','text','w3','Body, name and date'):'')+'</div>';}
