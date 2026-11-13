@@ -830,7 +830,7 @@ const RD_REC=[['ev','Evidence: what is actually known','Organization-specific ev
   ['act','Required action / control','What must happen before progression'],['owner','Owner','Role accountable for closing the gap'],['move','What would move this finding','Evidence or operating change that would justify a different finding']];
 // One dimension's detailed assessment, opened from its row in the matrix with +: the selected role's record for a role
 // dimension, the activity's record otherwise (Nov 12, 2026).
-// The Readiness Rating is set here, in the detail; the matrix only shows it (Nov 12, 2026). `ov` is the governance
+// The Readiness Rating is set here, in the detail; the matrix only shows it (Nov 12, 2026); the matrix shows the chip alone (Nov 13). `ov` is the governance
 // oversight role, assessed separately on Manager / Governance-Oversight Readiness.
 function rdDetail(a,d,ov){const r=RD.role,key=ov?'_over|manager':rdKey(d,r),x=RD.dims[key]||{},ck=ov?'_over|manager':(d.l==='role'?r:'_')+'|'+d.k,f=RD.cells[ck]||'ins';
   return '<div class="rdkb"><div>'+
