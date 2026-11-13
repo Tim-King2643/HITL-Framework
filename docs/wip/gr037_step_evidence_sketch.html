@@ -71,6 +71,9 @@ table.g{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:4px}
 .ev label{display:flex;flex-direction:column;justify-content:flex-end;font-size:11.5px;color:var(--lgray)}
 .ev input,.ev textarea,.ev select{display:block;width:100%;margin-top:2px;font:inherit;font-size:12.5px;color:var(--dark);padding:5px 7px;border:1px solid #C6D8EE;border-radius:6px;background:#fff}
 .ev .w2{grid-column:span 2}
+.dlog{border:1px solid var(--border);border-left:4px solid #C6D8EE;border-radius:8px;padding:8px 10px;margin-bottom:8px;background:#fff}
+.dlog.ser{border-left-color:#B91C1C;background:#FFFBFB}
+.dlx{font-size:11.5px;color:var(--lgray);cursor:pointer;border-bottom:1px dotted currentColor}
 .ev .calc{margin-top:2px;padding:6px 8px;border:1px dashed #C6D8EE;border-radius:6px;background:#F8FAFD;color:var(--navy-d);font-size:13px}.ev .w3{grid-column:1/-1}
 .verd{margin-top:10px;border-left:4px solid #1B4F8A;background:#EEF3FA;padding:7px 11px;border-radius:6px;font-size:12.5px;line-height:1.55}
 .verd.hold{border-color:#B91C1C;background:#FEF2F2}.verd.ok{border-color:#15803D;background:#F0FDF4}
@@ -92,8 +95,8 @@ table.g{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:4px}
    <li>Thresholds are global defaults. An organization may tighten them, never loosen them.</li>
    <li>Each step names its evidence method. Consequence of Error decides it: Low and Moderate may run a bounded live trial; High uses shadow or replay only; Critical never runs live at the next stage.</li>
    <li>High and Critical need double the volume, and a governance sign-off from Agent-delegation up. Automation always needs one.</li>
-   <li>An audit has an independent auditor, a rubric drawn from the elements that change in the step, and discrepancies graded by severity: one serious miss is Not met, whatever the rate.</li>
-   <li>The finding is Met, Not met or Insufficient Evidence. Below the minimum volume or period it is Insufficient Evidence; gray is never converted.</li>
+   <li>An audit has an independent auditor, a rubric drawn from the elements that change in the step, and discrepancies logged and graded by severity (BR-17): one open Serious entry is Not met, whatever the rate; once its fix is recorded and re-audited it no longer holds the step.</li>
+   <li>The finding is Met, Not met or Insufficient Evidence (BR-18). Below the minimum volume or period it is Insufficient Evidence; gray is never converted.</li>
    <li>Re-validation: on the review cadence, a measure back below its threshold flags the activity to step back.</li>
   </ol>
   <p class="sm">Threshold numbers are starting points for Tim and GiGi to set, not established standards.</p>
@@ -207,23 +210,36 @@ const OBJ=c=>(WORKED[c]||{}).obj||{};
 function changes(a,to){const f=stageEls(a,ST[rank(to)-1]),g=stageEls(a,to);return elsOf(a).filter(e=>f[e]!==g[e]).map(e=>({e,from:f[e],to:g[e],w:OBJ(a.code)[e]||''}));}
 const PIL=['7.2.1.2','7.2.3.4'];
 /* Sample evidence, invented for the sketch */
-const SAMPLE={'7.2.1.2':{'Judgment':{rated:40,useful:34,wk:3,serious:0},'Augmentation':{inst:64,used:45,spot:50,errs:1,wk:5,serious:0},'Oversight':{shadow:120,match:112,wk:5,serious:0},'Agent-delegation':{reviewed:540,passed:521,realexc:30,flagged:29,wk:8,serious:1}},
- '7.2.3.4':{'Judgment':{rated:70,useful:55,wk:4,serious:0},'Augmentation':{inst:60,used:40,spot:40,errs:0,wk:6,serious:0}}};
+const SAMPLE={'7.2.1.2':{'Judgment':{rated:40,useful:34,wk:3},'Augmentation':{inst:64,used:45,spot:50,errs:1,wk:5},'Oversight':{shadow:120,match:112,wk:5},'Agent-delegation':{reviewed:540,passed:521,realexc:30,flagged:29,wk:8,log:[
+   {inst:'REQ-2026-0418',el:'Verify',what:'AI-led Verify passed a requisition whose pay band was above the Job Profile’s range.',sev:'Serious',why:'Would have committed budget outside the approved Staffing Plan (operational / financial impact).',by:'HR Ops audit lead, Oct 30',disp:'',re:false},
+   {inst:'REQ-2026-0377',el:'Verify',what:'Flagged for a missing justification that was attached under another field.',sev:'Moderate',why:'Wrong, but the HRBP Manager caught it before approval.',by:'HR Ops audit lead, Oct 22',disp:'Field mapping corrected.',re:true}]}},
+ '7.2.3.4':{'Judgment':{rated:70,useful:55,wk:4},'Augmentation':{inst:60,used:40,spot:40,errs:0,wk:6}}};
 let S={act:'7.2.1.2',ev:'sample',to:null},E={};
 const cur=()=>{const a=ACT[S.act];return {a,ceil:derivedCeil(a)}};
 function rec(code,to){const k=code+'|'+to;if(!E[k])E[k]=JSON.parse(JSON.stringify(S.ev==='sample'?((SAMPLE[code]||{})[to]||{}):{}));return E[k];}
+// Discrepancy severity (BR-17, proposed Nov 13, 2026): Serious if it would have caused the harm the activity's Consequence
+// of Error is about, or bypassed the control point; Moderate if wrong but caught before it had any effect; Minor if a
+// quality or formatting issue with no effect on the outcome. One open Serious entry is Not met, whatever the rate; a
+// Serious entry whose fix is recorded and re-audited is closed and no longer holds the step.
+const SEV=[['Serious','would have caused the harm the activity&rsquo;s Consequence of Error is about, or bypassed the control point'],['Moderate','wrong, but caught further along before it had any effect'],['Minor','a quality or formatting issue with no effect on the outcome']];
+const openSerious=r=>(r.log||[]).filter(x=>x.sev==='Serious'&&!(x.re&&(x.disp||'').trim()));
 // Each rate is calculated from the audit's counts (Nov 13, 2026); the sample size is the first measure's denominator.
 const num=v=>v===''||v==null||isNaN(+v)?null:+v;
 const rate=(m,r)=>{const n=num(r[m.num[0]]),d=num(r[m.den[0]]);return n==null||!d||n>d?null:Math.round(1000*n/d)/10;};
 const sampleN=(L,r)=>num(r[L.m[0].den[0]])||0;
 function finding(a,to,r){const L=LADDER[to];const N=sampleN(L,r);if(!N||!r.wk||N<volFor(a,to)||r.wk<wkFor(a,to)||L.m.some(m=>rate(m,r)==null))return 'ins';
-  if(+r.serious>0)return 'not';if(signoff(a,to)&&!(r.signed||'').trim())return 'ins';
+  if(openSerious(r).length)return 'not';if(signoff(a,to)&&!(r.signed||'').trim())return 'ins';
   return L.m.every(m=>m.op==='>='?rate(m,r)>=m.t:rate(m,r)<=m.t)?'met':'not';}
 const FN={met:'Met',not:'Not met',ins:'Insufficient Evidence'},chip=f=>'<span class="chip c-'+f+'">'+FN[f]+'</span>';
 window.setS=(k,v)=>{S[k]=v;if(k!=='to')E={};if(k==='act')S.to=null;render()};
 // Typing only stores the value; the finding updates when the field is left or Enter is pressed, so the page never
 // redraws under the cursor (a redraw put the caret back at the start of a number field: 100 typed as 001).
 window.keepE=(to,f,v)=>{rec(S.act,to)[f]=v};
+const LG=()=>{const r=rec(S.act,S.to);return r.log=r.log||[]};
+window.keepL=(n,k,v)=>{LG()[n][k]=v};
+window.setL=(n,k,v)=>{LG()[n][k]=v;render()};
+window.addL=()=>{const c=changes(ACT[S.act],S.to);LG().push({inst:'',el:(c[0]||{}).e||'',what:'',sev:'Serious',why:'',by:'',disp:'',re:false});render()};
+window.delL=n=>{LG().splice(n,1);render()};
 window.setE=(to,f,v)=>{rec(S.act,to)[f]=v;render()};
 const btns=(k,o)=>o.map(([v,l])=>'<button type="button" class="btn'+(S[k]===v?' on':'')+'" onclick="setS(\''+k+'\',\''+v+'\')">'+l+'</button>').join('');
 function render(keepFocus){
@@ -240,15 +256,25 @@ function render(keepFocus){
   if(!past){
    h+='<div class="lbl" style="margin-top:12px">How the evidence is gathered, before moving</div><div style="font-size:12.5px;line-height:1.5"><span class="meth">'+methFor(a,to)+'</span> '+(methFor(a,to)!==L.meth?'Bounded live trials are for Low and Moderate work; at '+a.cons+' the evidence comes from shadow runs or replay of past cases, never a live trial at the next stage.':L.how)+'</div>'+
     '<div class="lbl" style="margin-top:12px">Audit rubric &middot; the elements that change</div><ul style="margin:0 0 0 18px;font-size:12.5px;line-height:1.55">'+ch.map(x=>'<li>'+x.e+' ('+x.from+' &rarr; '+x.to+')'+(x.w?': '+esc(x.w):'')+'</li>').join('')+'</ul>';
-   h+='<div class="lbl" style="margin-top:14px">Readiness Gate</div><table class="gate"><tr><td class="el">Technical / process</td><td>'+chip(f)+' '+L.m.map(m=>m.n+' '+(rate(m,r)!=null?rate(m,r)+'% <span class="sm">('+r[m.num[0]]+' of '+r[m.den[0]]+')</span>':'—')+' vs '+thr(m)).join('; ')+' <span class="sm">&middot; '+sampleN(L,r)+' instances (minimum '+volFor(a,to)+'), '+(r.wk||0)+' weeks (minimum '+wkFor(a,to)+')'+(+r.serious>0?' &middot; '+r.serious+' serious discrepanc'+(r.serious==1?'y':'ies'):'')+'</span></td></tr>'+
+   h+='<div class="lbl" style="margin-top:14px">Readiness Gate</div><table class="gate"><tr><td class="el">Technical / process</td><td>'+chip(f)+' '+L.m.map(m=>m.n+' '+(rate(m,r)!=null?rate(m,r)+'% <span class="sm">('+r[m.num[0]]+' of '+r[m.den[0]]+')</span>':'—')+' vs '+thr(m)).join('; ')+' <span class="sm">&middot; '+sampleN(L,r)+' instances (minimum '+volFor(a,to)+'), '+(r.wk||0)+' weeks (minimum '+wkFor(a,to)+')'+(openSerious(r).length?' &middot; '+openSerious(r).length+' open serious discrepanc'+(openSerious(r).length==1?'y':'ies')+': '+openSerious(r).map(x=>esc(x.inst||'instance')+(x.what?', '+esc(x.what):'')).join('; '):'')+'</span></td></tr>'+
     '<tr><td class="el">Role readiness</td><td class="sm">GiGi&rsquo;s instrument (GR-012), in the sandbox&rsquo;s Readiness Gate</td></tr><tr><td class="el">Organizational readiness</td><td class="sm">GiGi&rsquo;s instrument (GR-012)</td></tr></table>'+
-    '<div class="verd'+(f==='met'?' ok':' hold')+'">'+(f==='met'?'Technical / process clears. The step still needs Role and Organizational readiness to clear.':f==='not'?'Holds: the evidence does not meet the threshold'+(+r.serious>0?', and a serious discrepancy was found':'')+'.':'Holds: Insufficient Evidence. '+(sampleN(L,r)<volFor(a,to)||(r.wk||0)<wkFor(a,to)?'Below the minimum volume or period.':signoff(a,to)&&!(r.signed||'').trim()?'Waiting for the governance sign-off.':'A measure is not yet recorded.'))+'</div>';
+    '<div class="verd'+(f==='met'?' ok':' hold')+'">'+(f==='met'?'Technical / process clears. The step still needs Role and Organizational readiness to clear.':f==='not'?'Holds: the evidence does not meet the threshold'+(openSerious(r).length?(L.m.every(m=>m.op==='>='?rate(m,r)>=m.t:rate(m,r)<=m.t)?'; ':', and ')+'an open serious discrepancy holds it ('+openSerious(r).map(x=>esc(x.inst||'instance')).join(', ')+')':'')+'.':'Holds: Insufficient Evidence. '+(sampleN(L,r)<volFor(a,to)||(r.wk||0)<wkFor(a,to)?'Below the minimum volume or period.':signoff(a,to)&&!(r.signed||'').trim()?'Waiting for the governance sign-off.':'A measure is not yet recorded.'))+'</div>';
    const fld=(k,l,ty,cls,ph)=>'<label class="'+(cls||'')+'">'+l+'<input data-f="'+k+'" type="'+(ty||'text')+'" value="'+esc(r[k]==null?'':r[k])+'" placeholder="'+(ph||'')+'" oninput="keepE(\''+to+'\',\''+k+'\',this.value)" onchange="setE(\''+to+'\',\''+k+'\',this.value)"></label>';
    h+='<div class="lbl" style="margin-top:14px">Evidence record &middot; '+(S.ev==='sample'?'sample values, invented':'enter values')+'</div><div class="sm" style="margin-bottom:4px">Enter the audit&rsquo;s counts; each rate is calculated from them. '+L.m.map(m=>m.n+': '+m.d+'.').join(' ')+'</div><div class="ev">'+
     L.m.map(m=>fld(m.den[0],m.den[1],'number')+fld(m.num[0],m.num[1],'number')+'<label><span title="'+m.d.replace(/&rsquo;/g,'’')+'">'+m.n+' &middot; calculated</span><div class="calc">'+(rate(m,r)!=null?rate(m,r)+'%':num(r[m.num[0]])!=null&&num(r[m.den[0]])!=null&&+r[m.num[0]]>+r[m.den[0]]?'more than the total':'—')+' <span class="sm">threshold '+thr(m)+'</span></div></label>').join('')+
-    fld('wk','Period (weeks)','number')+fld('serious','Serious discrepancies','number')+
+    fld('wk','Period (weeks)','number')+
     fld('auditor','Auditor (independent of the work)','text','','Name and role')+fld('source','Source','text','w2','System, report or audit log')+
-    (signoff(a,to)?fld('signed','Governance sign-off','text','w3','Body, name and date'):'')+'</div>';}
+    (signoff(a,to)?fld('signed','Governance sign-off','text','w3','Body, name and date'):'')+'</div>';
+   const lg=r.log||[],chEls=ch.map(x=>x.e),io=(n,k,v,ph,w)=>'<input value="'+esc(v||'')+'" placeholder="'+ph+'" oninput="keepL('+n+',\''+k+'\',this.value)" onchange="setL('+n+',\''+k+'\',this.value)"'+(w?' style="'+w+'"':'')+'>';
+   h+='<div class="lbl" style="margin-top:14px">Discrepancy log &middot; '+lg.length+' entr'+(lg.length===1?'y':'ies')+', '+openSerious(r).length+' open serious</div><div class="sm" style="margin-bottom:6px">Grade each discrepancy (BR-17): '+SEV.map(([k,d])=>k+', '+d).join('; ')+'. Moderates also count against the pass rate.</div>'+
+    lg.map((x,n)=>'<div class="dlog'+(x.sev==='Serious'&&!(x.re&&(x.disp||'').trim())?' ser':'')+'"><div class="ev">'+
+      '<label>Instance'+io(n,'inst',x.inst,'Reference')+'</label><label>Element'+'<select onchange="setL('+n+',\'el\',this.value)">'+chEls.concat(chEls.includes(x.el)||!x.el?[]:[x.el]).map(e=>'<option'+(e===x.el?' selected':'')+'>'+e+'</option>').join('')+'</select></label>'+
+      '<label>Severity<select onchange="setL('+n+',\'sev\',this.value)">'+SEV.map(([k])=>'<option'+(k===x.sev?' selected':'')+'>'+k+'</option>').join('')+'</select></label>'+
+      '<label class="w3">What happened'+io(n,'what',x.what,'What went wrong, against the rubric')+'</label>'+
+      '<label class="w2">Why this severity'+io(n,'why',x.why,'The harm it would have caused, or why it had no effect')+'</label><label>Found by, date'+io(n,'by',x.by,'Auditor, date')+'</label>'+
+      '<label class="w2">Disposition'+io(n,'disp',x.disp,'Root cause and fix')+'</label><label>Fix re-audited<select onchange="setL('+n+',\'re\',this.value===\'yes\')"><option value="no"'+(x.re?'':' selected')+'>Not yet</option><option value="yes"'+(x.re?' selected':'')+'>Yes</option></select></label>'+
+      '</div><div style="text-align:right;margin-top:4px"><span class="dlx" onclick="delL('+n+')">Remove</span></div></div>').join('')+
+    '<button type="button" class="btn" style="display:inline-block" onclick="addL()">Add discrepancy</button>';}
   h+='</div>';
   h+='<div class="card"><h3>Re-validation</h3><div class="sub">After the step is taken, the measure keeps running on the review cadence of the Governed Decision Point record (GR-042). A value back below its threshold flags the activity to step back, as a finding.</div></div>';
   document.getElementById('main').innerHTML=h;
