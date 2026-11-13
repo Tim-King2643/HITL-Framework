@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate"><head><meta charset="UTF-8"><meta name="google" content="notranslate"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>[DRAFT] GR-037 Step Evidence</title>
+<style>
+:root{--navy:#1B4F8A;--navy-d:#0D2D4F;--dark:#0D1B2A;--gray:#444;--lgray:#6B7A90;--faint:#A9B4C4;--bg:#F4F6FB;--border:#DDE3EE;--amber:#8A5A00;--amberbg:#FEF3C7}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-padding-top:12px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);padding-bottom:60px}
+.sk{background:#FEF3C7;border-bottom:2px solid #B8873F;color:#7A5A1E;font-size:12.5px;text-align:center;padding:9px 16px}
+.sk a{color:#7A5A1E;font-weight:600}
+.wrap{max-width:1240px;margin:0 auto;padding:18px 16px;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
+.side{flex:0 1 340px;min-width:260px;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}
+.side h1{font-family:Georgia,serif;font-size:21px;color:var(--navy-d);line-height:1.3;margin-bottom:8px}
+.side p,.side li{font-size:12.5px;color:var(--gray);line-height:1.6}
+.side p{margin-bottom:10px}
+.side h5{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin:16px 0 6px}
+.btn{font:inherit;font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:6px;border:1px solid #C6D8EE;background:#fff;color:var(--navy-d);cursor:pointer;margin:0 6px 6px 0}
+.btn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:4px 0 6px}
+.tile{background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.tile b{display:block;font-size:20px;color:var(--navy-d)}.tile span{font-size:11.5px;color:var(--lgray);line-height:1.35;display:block}
+.toc{list-style:none;font-size:12.5px}
+.toc .grp{font-size:11px;color:var(--lgray);margin:8px 0 2px}
+.toc a{color:var(--navy-d);text-decoration:none;display:flex;gap:8px;padding:2px 0;line-height:1.4}
+.toc a:hover{text-decoration:underline}
+.toc .id{font-family:Consolas,monospace;font-size:11.5px;color:var(--lgray);flex:0 0 42px}
+.toc .pr{color:var(--amber)}
+.main{flex:1;min-width:300px}
+.ghead{font-family:Georgia,serif;font-size:17px;color:var(--navy-d);margin:6px 0 10px}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.card h3{font-size:14.5px;color:var(--navy-d);margin-bottom:3px;font-weight:600}
+.sub{font-size:12px;color:var(--lgray);line-height:1.5}
+.sub .pr{color:var(--amber)}
+.th{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.tid{flex:0 0 auto;font-family:Consolas,monospace;font-size:12px;font-weight:700;color:#fff;background:var(--navy);border-radius:5px;padding:3px 8px}
+.card.prop .tid{background:#B8873F}
+.code{font-family:Consolas,monospace;font-size:12px;color:var(--lgray)}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:22px}
+@media(max-width:860px){.cols{grid-template-columns:1fr}.side{position:static;max-height:none}}
+.lbl{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin-bottom:6px;font-weight:600}
+.def p{font-size:13px;line-height:1.6;margin-bottom:8px}
+.def ol,.def ul{font-size:13px;line-height:1.55;margin:0 0 8px 18px}.def li{margin-bottom:3px}
+.meta{border-top:1px solid #EEF1F6;margin-top:8px;padding-top:8px;font-size:12px;color:var(--gray);line-height:1.55}
+.meta div{display:flex;gap:8px}.meta span.k{flex:0 0 76px;color:var(--lgray)}
+.ex{background:#F8FAFD;border:1px solid #E6EBF3;border-radius:8px;padding:10px 12px}
+.ex p{font-size:12.5px;line-height:1.55;margin-bottom:6px}
+.exp{border-left:4px solid var(--navy);background:#EEF3FA;padding:7px 11px;border-radius:6px;font-size:12.5px;line-height:1.5;margin-top:8px}
+table.g{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:4px}
+.g th{text-align:left;font-size:10.5px;color:var(--lgray);font-weight:600;padding:3px 6px;border-bottom:1px solid var(--border)}
+.g td{padding:4px 6px;border-bottom:1px solid #EEF1F6;vertical-align:top;line-height:1.45}
+.g th{white-space:nowrap}.g td.n{white-space:nowrap;color:var(--lgray)}.g td.r{text-align:right;white-space:nowrap}
+.g tr.off td{color:var(--faint)}
+.g tr.hit td{background:#EEF3FA}
+.sm{font-size:11.5px;color:var(--lgray);line-height:1.5}
+.err{background:#FEE2E2;color:#7F1D1D;border-radius:8px;padding:12px 14px;font-size:13px}
+@media print{.side{position:static;max-height:none}.btn{display:none}.card{break-inside:avoid}}
+
+.btn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.lad{width:100%;border-collapse:collapse;font-size:12.5px}
+.lad th{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--lgray);font-weight:600;text-align:left;padding:4px 8px;border-bottom:1px solid var(--border);background:none}
+.lad td{padding:7px 8px;border-bottom:1px solid #EEF1F6;vertical-align:top;text-align:left}
+.lad tr.sel td{background:#F4F7FC}.lad tr.past td{color:#A3ADBD}
+.lad tr{cursor:pointer}
+.chip{display:inline-block;font-size:11px;font-weight:600;border-radius:10px;padding:1px 8px;white-space:nowrap}
+.c-met{background:#DCFCE7;color:#166534}.c-not{background:#FEE2E2;color:#991B1B}.c-ins{background:#E5E7EB;color:#374151}
+.meth{display:inline-block;font-size:11px;border:1px solid #C6D8EE;border-radius:4px;padding:0 6px;color:#1B4F8A;white-space:nowrap}
+.gate{width:100%;border-collapse:collapse;font-size:12.5px}
+.gate td{padding:6px 8px;border-top:1px solid #EEF1F6;vertical-align:top;text-align:left}.gate tr:first-child td{border-top:none}
+.gate td.el{width:170px;color:var(--dark)}
+.ev{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 12px;margin-top:6px}
+.ev label{display:block;font-size:11.5px;color:var(--lgray)}
+.ev input,.ev textarea,.ev select{display:block;width:100%;margin-top:2px;font:inherit;font-size:12.5px;color:var(--dark);padding:5px 7px;border:1px solid #C6D8EE;border-radius:6px;background:#fff}
+.ev .w2{grid-column:span 2}.ev .w3{grid-column:1/-1}
+.verd{margin-top:10px;border-left:4px solid #1B4F8A;background:#EEF3FA;padding:7px 11px;border-radius:6px;font-size:12.5px;line-height:1.55}
+.verd.hold{border-color:#B91C1C;background:#FEF2F2}.verd.ok{border-color:#15803D;background:#F0FDF4}
+.rules li{margin-bottom:5px}
+@media(max-width:760px){.ev{grid-template-columns:1fr}.ev .w2{grid-column:auto}}
+</style></head><body>
+<div class="sk"><strong>Sketch</strong> · GR-037 step evidence: the measure, threshold and evidence method for each step on the ramp, and how the Readiness Gate&rsquo;s Technical / process check would read them. Computed live from the sandbox&rsquo;s master data · <a href="requirements_register.html#GR-037">GR-037</a> · <a href="readiness_gate_sketch.html">Readiness Gate sketch</a> · <a href="../sandbox/pcf7.html">Sandbox</a> · <a href="index.html">Back to WIP hub</a></div>
+<div class="wrap">
+<div class="side">
+  <h1>Evidence to take a step</h1>
+  <p>The Readiness Gate has three checks. Role and Organizational readiness are GiGi&rsquo;s instrument. This is the third, Technical / process: what evidence must exist before an activity actually moves to the next working relationship (GR-037).</p>
+  <p>The evidence is gathered <em>before</em> moving: the current stage records its own audit trail, and the next stage is shadowed without taking effect.</p>
+  <h5>Activity</h5><div id="pa"></div>
+  <h5>Evidence entered</h5><div id="pe"></div>
+  <p class="sm">Click a step in the ladder to see its gate and evidence record. Change any value in the record to see the finding respond.</p>
+  <h5>The rules, recommended</h5>
+  <ol class="rules" style="margin:0 0 10px 18px;font-size:12.5px;color:var(--gray);line-height:1.5">
+   <li>Each step has one measure (two at Augmentation and Agent-delegation), a threshold, and a minimum volume and period.</li>
+   <li>Thresholds are global defaults. An organization may tighten them, never loosen them.</li>
+   <li>Each step names its evidence method. Consequence of Error decides it: Low and Moderate may run a bounded live trial; High uses shadow or replay only; Critical never runs live at the next stage.</li>
+   <li>High and Critical need double the volume, and a governance sign-off from Agent-delegation up. Automation always needs one.</li>
+   <li>An audit has an independent auditor, a rubric drawn from the elements that change in the step, and discrepancies graded by severity: one serious miss is Not met, whatever the rate.</li>
+   <li>The finding is Met, Not met or Insufficient Evidence. Below the minimum volume or period it is Insufficient Evidence; gray is never converted.</li>
+   <li>Re-validation: on the review cadence, a measure back below its threshold flags the activity to step back.</li>
+  </ol>
+  <p class="sm">Threshold numbers are starting points for Tim and GiGi to set, not established standards.</p>
+</div>
+<div class="main" id="main"><div class="card sub">Reading the sandbox&rsquo;s master data&hellip;</div></div>
+</div>
+<script>
+(function(){
+const SANDBOX='../sandbox/pcf7.html';
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const nat=(a,b)=>a.localeCompare(b,undefined,{numeric:true});
+const lstw=x=>x.length<2?x.join(''):x.slice(0,-1).join(', ')+' and '+x[x.length-1];
+function literalAfter(src,marker,open,close){
+  const i=src.indexOf(marker);if(i<0)return null;const s=src.indexOf(open,i);let depth=0;
+  for(let j=s;j<src.length;j++){const c=src[j];
+    if(c==='"'){j++;while(j<src.length&&src[j]!=='"'){if(src[j]==='\\')j++;j++;}continue;}
+    if(c==='/'&&src[j+1]==='/'){while(j<src.length&&src[j]!=='\n')j++;continue;}
+    if(c===open)depth++;else if(c===close){depth--;if(depth===0)return src.slice(s,j+1);}}
+  return null;}
+const lit=(src,name,o,c)=>{const t=literalAfter(src,'const '+name+' =',o,c);if(!t)throw new Error(name+' not found in the sandbox file');return (new Function('return '+t))();};
+
+function build(src){
+const PCF7=lit(src,'PCF7','{','}'),WR=lit(src,'WR_DATA','{','}'),ACRUD=lit(src,'ACTIVITY_CRUD','{','}'),ARACI=lit(src,'ACTIVITY_RACI','{','}'),
+      WORKED=lit(src,'WORK_ELEMENTS','{','}'),WPS=lit(src,'WORK_PRODUCTS','[',']'),ROLES=lit(src,'ROLE_TAXONOMY','[',']');
+const CL=typeof CHANGE_LOG!=='undefined'?CHANGE_LOG:[];
+
+/* ---- The sandbox's model, as four_views.html computes it (Reference Model, Consequence of Error gates on, its default) ---- */
+const ST=['Human-only','Judgment','Augmentation','Oversight','Agent-delegation','Automation'],rank=s=>ST.indexOf(s);
+const HPCT={"Human-only":95,"Judgment":82,"Augmentation":62,"Oversight":48,"Agent-delegation":28,"Automation":10};
+const STEPDEF={"Human-only":"A person does all of the work; AI plays no part in it.","Judgment":"A person forms the reasoning and makes the call. AI may supply raw inputs but does not produce the candidate decision.","Augmentation":"The person remains the primary actor; AI assists in real time but never acts unilaterally.","Oversight":"AI performs or proposes the complete work product; a person approves or rejects each instance.","Agent-delegation":"An AI agent does the work within policy bounds; a person handles only flagged exceptions.","Automation":"AI completes the work with no person in the loop for that instance, exceptions included."};
+const HC={High:1,Critical:1},CO=['Low','Moderate','High','Critical'];
+const EL=['Research','Evaluate','Draft','Verify','Decide','Produce / Execute','Communicate'];
+const LEAD=['Human','Human-led','AI-led','AI'],lr=x=>LEAD.indexOf(x);
+const CF=[['human','Human impact'],['legal','Legal / regulatory exposure'],['ops','Operational / financial impact'],['trust','Trust / reputation'],['reach','Reach'],['reversibility','Reversibility']];
+const FL={legal:'Legal / fiduciary duty',floor:'Human judgment floor',relational:'Relational / emotional stakes',accountability:'Accountability',governance:'Governance / sign-off',technical:'Technical readiness gap',top:'Top of the ramp'};
+const FMAP={legal:['Evaluate','Draft','Verify'],floor:['Evaluate','Draft','Decide'],relational:['Communicate'],accountability:['Draft','Decide']};
+const acts=[],procs=[];
+PCF7.groups.forEach(g=>g.l3.forEach(l3=>{const L=(l3.l4&&l3.l4.length?l3.l4:[l3]).filter(x=>WR[x.code]&&ARACI[x.code]);
+  procs.push({code:l3.code,name:l3.name,g:g.code,acts:L.map(x=>x.code)});
+  L.forEach(x=>{const w=WR[x.code],r=ARACI[x.code];acts.push({code:x.code,name:x.name,proc:l3.code,A:r.A,R:r.R.slice(),C:r.C.slice(),I:r.I.slice(),ceiling:w.ceiling,cons:w.cons,f:(w.ceilingFactors||[]).slice(),cf:(w.consFactors||[]).slice(),cn:w.consNote||''});});}));
+const ACT=Object.fromEntries(acts.map(a=>[a.code,a])),PROC=Object.fromEntries(procs.map(p=>[p.code,p])),WPN=Object.fromEntries(WPS.map(w=>[w.id,w]));
+const CRUD=Object.fromEntries(Object.entries(ACRUD).map(([k,x])=>[k,{C:x.create||[],R:x.read||[],U:x.update||[],D:x.delete||[]}]));
+const coeCap=(a,c)=>{const held=a.f.some(f=>FMAP[f]);if(c==='Automation'&&(HC[a.cons]||held))c='Agent-delegation';if(a.cons==='Critical'&&rank(c)>rank('Oversight'))c='Oversight';return c;};
+const baseCeil=a=>coeCap(a,a.ceiling),derivedCeil=a=>{const c=baseCeil(a);return c==='Judgment'?'Augmentation':c};
+const ctlOf=a=>(WORKED[a.code]&&WORKED[a.code].control)||'Decide';
+const elsOf=a=>EL.filter(e=>!(WORKED[a.code]&&WORKED[a.code].na&&WORKED[a.code].na[e]));
+function caps(a){const S0=baseCeil(a),ctl=ctlOf(a),g={};
+  if(S0==='Automation'){elsOf(a).forEach(e=>g[e]=['AI','']);return g;}
+  const held={};a.f.forEach(f=>(FMAP[f]||[]).forEach(e=>{(held[e]=held[e]||[]).push(FL[f])}));
+  elsOf(a).forEach(e=>{
+    if(e===ctl)g[e]=[S0==='Agent-delegation'?'AI-led':'Human','control element'];
+    else if(held[e]){let c;if(S0==='Judgment')c=e==='Evaluate'||e==='Verify'?'Human-led':'Human';else if(S0==='Augmentation')c='Human-led';else c='AI-led';g[e]=[c,held[e].join(', ')];}
+    else g[e]=['AI',''];});
+  return g;}
+const TPL={'Human-only':{},'Judgment':{Research:'AI',Evaluate:'Human-led'},'Augmentation':{Research:'AI',Evaluate:'Human-led',Draft:'Human-led',Verify:'Human-led','Produce / Execute':'Human-led',Communicate:'Human-led'},'Oversight':{Research:'AI',Evaluate:'AI',Draft:'AI',Verify:'AI','Produce / Execute':'AI',Communicate:'AI',Decide:'AI'},'Agent-delegation':'AI','Automation':'AI'};
+function stageEls(a,s){const ctl=ctlOf(a),cp=caps(a),within=rank(s)<=rank(derivedCeil(a)),g={};
+  elsOf(a).forEach(e=>{let v=typeof TPL[s]==='string'?'AI':(TPL[s][e]||'Human');
+    if(e===ctl)v=s==='Agent-delegation'?'AI-led':s==='Automation'?'AI':'Human';
+    if(within&&lr(v)>lr(cp[e][0]))v=cp[e][0];g[e]=v;});return g;}
+function deriveGrid(a,g){const els=Object.keys(g),ctl=ctlOf(a),has=e=>e in g,ai=e=>has(e)&&g[e][0]!=='Human',leads=e=>has(e)&&lr(g[e][0])>=2;
+  const c=g[ctl]?g[ctl][0]:'Human';
+  if(c==='AI')return['Automation',els.every(e=>g[e][0]==='AI')?'every element is AI':'AI holds '+ctl+', the control element, with no person in the instance'];
+  if(c==='AI-led')return['Agent-delegation','AI leads '+ctl+', the control element: a person handles only the instances it flags'];
+  const core=['Evaluate','Draft','Verify','Decide','Communicate'].filter(e=>has(e)&&e!==ctl);
+  if(has('Draft')&&ctl!=='Draft'?leads('Draft'):core.some(leads))return['Oversight','AI leads '+lstw(core.filter(leads))+'; a person approves every instance at '+ctl];
+  const assist=['Draft','Verify','Produce / Execute','Communicate'].filter(e=>e!==ctl&&ai(e)),evl=leads('Evaluate');
+  if(evl||assist.length)return['Augmentation','the person writes the work and holds '+ctl+', with AI '+lstw((evl?['leading Evaluate']:[]).concat(assist.length?['assisting in '+lstw(assist)]:[]))];
+  if(ai('Research')||ai('Evaluate'))return['Judgment','AI only supplies inputs (Research, or assisting in Evaluate); the person does the work and makes the call'];
+  return['Human-only','every element is Human'];}
+const dpEl=a=>{const e=elsOf(a);return e.includes('Decide')?'Decide':e.includes('Verify')?'Verify':null};
+const holds=v=>v==='Human'||v==='Human-led'||v==='AI-led';
+const wpOps=(c,w)=>{const x=CRUD[c];return x?['C','U','D'].filter(k=>x[k].includes(w)).join(''):''};
+const DP={};
+acts.forEach(a=>{const e=dpEl(a),v=e&&stageEls(a,derivedCeil(a))[e];DP[a.code]={el:e,lead:v,dp:!!(e&&holds(v)),groups:[],feeds:[]};});
+acts.forEach(a=>{const r=DP[a.code],x=CRUD[a.code];if(!x)return;
+  const own=[...new Set(x.C.concat(x.U,x.D))].filter(w=>WPN[w]).sort(nat);
+  r.groups=own.map(w=>({w,dps:Object.keys(CRUD).filter(c=>DP[c]&&DP[c].dp&&wpOps(c,w)).sort(nat)}));
+  r.feeds=[...new Set(r.groups.flatMap(g=>g.dps))].filter(c=>c!==a.code).sort(nat);});
+const kindOf=a=>{const r=DP[a.code];return r.dp?(r.lead==='AI-led'?'flag':'every'):r.feeds.length?'at':'ctl'};
+const depth=r=>{let n=0,x=ROLES.find(y=>y.name===r);while(x&&x.reportsTo){n++;x=ROLES.find(y=>y.name===x.reportsTo)}return n};
+function procRaci(p){const cnt={},hc={};
+  p.acts.forEach(c=>{const r=ARACI[c].A,k=CO.indexOf(WR[c].cons);cnt[r]=(cnt[r]||0)+1;hc[r]=Math.max(hc[r]==null?-1:hc[r],k);});
+  const order=Object.keys(cnt).sort((x,y)=>cnt[y]-cnt[x]||hc[y]-hc[x]||depth(x)-depth(y)),owner=order[0],tied=order.filter(r=>cnt[r]===cnt[owner]&&r!==owner);
+  let why='';if(tied.length)why=tied.some(r=>hc[r]===hc[owner])?'Tied with '+tied.join(', ')+' on count and Consequence of Error; '+owner+' is the more senior role.'
+    :'Tied with '+tied.join(', ')+' on count; '+owner+' is Accountable for the higher Consequence of Error ('+CO[hc[owner]]+').';
+  const L={};p.acts.forEach(c=>{const x=ARACI[c];[[x.A,'A']].concat(x.R.map(r=>[r,'R']),x.C.map(r=>[r,'C']),x.I.map(r=>[r,'I'])).forEach(([r,l])=>{(L[r]=L[r]||{A:0,R:0,C:0,I:0})[l]++;});});
+  const rk={A:0,'A+':1,R:2,C:3,I:4};
+  const rows=Object.keys(L).map(r=>{const c=L[r];return{r,c,letter:r===owner?'A':c.A?'A+':c.R?'R':c.C?'C':'I'}}).sort((a,b)=>rk[a.letter]-rk[b.letter]);
+  return{owner,top:cnt[owner],n:p.acts.length,why,rows};}
+const WORD={A:'Accountable (owner)','A+':'Also Accountable',R:'Responsible',C:'Consulted',I:'Informed'};
+const worstCons=L=>CO[Math.max(...L.map(c=>CO.indexOf(ACT[c].cons)))];
+const nm=c=>'<span class="code">'+c+'</span> '+esc(ACT[c]?ACT[c].name:PROC[c]?PROC[c].name:'');
+const wpn=w=>'<span class="code">'+w+'</span> '+esc(WPN[w]?WPN[w].name:w);
+const tbl=(h,rows,cls)=>'<table class="g"><tr>'+h.map(x=>'<th>'+x+'</th>').join('')+'</tr>'+rows.join('')+'</table>';
+const tr=(cells,cls)=>'<tr'+(cls?' class="'+cls+'"':'')+'>'+cells.map(c=>'<td>'+c+'</td>').join('')+'</tr>';
+
+/* ---- Worked examples, one per rule ---- */
+
+/* GR-037 recommended defaults (Nov 13, 2026): starting points, not established standards. */
+const LADDER={
+ 'Judgment':{m:[{k:'use',n:'Usefulness',d:'share of sampled instances where people rate the AI input useful',op:'>=',t:70}],vol:30,wk:2,meth:'Replay',how:'Run the AI on past cases; people rate whether its input would have helped.'},
+ 'Augmentation':{m:[{k:'use',n:'Use rate',d:'share of instances where the person uses the AI assistance',op:'>=',t:60},{k:'err',n:'Errors introduced',d:'share of spot-checked instances where the assistance introduced an error the person missed',op:'<=',t:2}],vol:50,wk:4,meth:'Bounded trial',how:'Offer the assistance, opt-in, to a few people or a low-risk slice of the work; spot-check it.'},
+ 'Oversight':{m:[{k:'agree',n:'Agreement rate',d:'share of instances where the AI&rsquo;s complete work matches what the person produced or decided',op:'>=',t:90}],vol:100,wk:4,meth:'Shadow run',how:'The AI drafts the complete work product in parallel; the person still does the work; compare.'},
+ 'Agent-delegation':{m:[{k:'pass',n:'Audit-pass rate',d:'share of reviewed instances that pass clean',op:'>=',t:98},{k:'recall',n:'Exception-detection recall',d:'share of real exceptions the AI flags',op:'>=',t:95}],vol:500,wk:8,meth:'In-stage audit',how:'The Oversight reviews already happening give the audit-pass rate; shadow the AI&rsquo;s flags against what reviewers caught.'},
+ 'Automation':{m:[{k:'exc',n:'Exception rate',d:'share of instances needing a person, including missed exceptions found in sampled audits of unflagged work',op:'<=',t:1}],vol:1000,wk:12,meth:'In-stage audit',how:'Sample-audit instances the agent did not flag, as well as the flagged ones.'}};
+const methFor=(a,to)=>{const L=LADDER[to];if(L.meth==='Bounded trial'&&HC[a.cons])return a.cons==='Critical'?'Shadow or replay':'Shadow or replay';return L.meth;};
+const volFor=(a,to)=>LADDER[to].vol*(HC[a.cons]?2:1), wkFor=(a,to)=>LADDER[to].wk*(HC[a.cons]?2:1);
+const signoff=(a,to)=>to==='Automation'||(HC[a.cons]&&rank(to)>=rank('Agent-delegation'));
+const thr=m=>(m.op==='>='?'&ge; ':'&le; ')+m.t+'%';
+const OBJ=c=>(WORKED[c]||{}).obj||{};
+function changes(a,to){const f=stageEls(a,ST[rank(to)-1]),g=stageEls(a,to);return elsOf(a).filter(e=>f[e]!==g[e]).map(e=>({e,from:f[e],to:g[e],w:OBJ(a.code)[e]||''}));}
+const PIL=['7.2.1.2','7.2.3.4'];
+/* Sample evidence, invented for the sketch */
+const SAMPLE={'7.2.1.2':{'Judgment':{use:84,n:40,wk:3,serious:0},'Augmentation':{use:71,err:1.2,n:64,wk:5,serious:0},'Oversight':{agree:93,n:120,wk:5,serious:0},'Agent-delegation':{pass:96.4,recall:97,n:540,wk:8,serious:1}},
+ '7.2.3.4':{'Judgment':{use:78,n:70,wk:4,serious:0},'Augmentation':{use:66,err:1.8,n:60,wk:6,serious:0}}};
+let S={act:'7.2.1.2',ev:'sample',to:null},E={};
+const cur=()=>{const a=ACT[S.act];return {a,ceil:derivedCeil(a)}};
+function rec(code,to){const k=code+'|'+to;if(!E[k])E[k]=JSON.parse(JSON.stringify(S.ev==='sample'?((SAMPLE[code]||{})[to]||{}):{}));return E[k];}
+function finding(a,to,r){const L=LADDER[to];if(!r.n||!r.wk||r.n<volFor(a,to)||r.wk<wkFor(a,to)||L.m.some(m=>r[m.k]==null||r[m.k]===''))return 'ins';
+  if(+r.serious>0)return 'not';if(signoff(a,to)&&!(r.signed||'').trim())return 'ins';
+  return L.m.every(m=>m.op==='>='?+r[m.k]>=m.t:+r[m.k]<=m.t)?'met':'not';}
+const FN={met:'Met',not:'Not met',ins:'Insufficient Evidence'},chip=f=>'<span class="chip c-'+f+'">'+FN[f]+'</span>';
+window.setS=(k,v)=>{S[k]=v;if(k!=='to')E={};if(k==='act')S.to=null;render()};
+window.setE=(to,f,v)=>{rec(S.act,to)[f]=v;render(true)};
+const btns=(k,o)=>o.map(([v,l])=>'<button type="button" class="btn'+(S[k]===v?' on':'')+'" onclick="setS(\''+k+'\',\''+v+'\')">'+l+'</button>').join('');
+function render(keepFocus){
+  const fo=keepFocus&&document.activeElement&&document.activeElement.dataset?document.activeElement.dataset.f:null;
+  document.getElementById('pa').innerHTML=btns('act',PIL.filter(c=>ACT[c]).map(c=>[c,c+' '+ACT[c].name]));
+  document.getElementById('pe').innerHTML=btns('ev',[['sample','Sample evidence'],['none','Nothing gathered yet']]);
+  const {a,ceil}=cur(),steps=ST.slice(1);if(!S.to)S.to=steps.find(t=>rank(t)<=rank(ceil)&&finding(a,t,rec(a.code,t))!=='met')||steps[0];
+  let h='<div class="card"><h3><span class="code">'+a.code+'</span> '+esc(a.name)+'</h3><div class="sub">'+a.cons+' Consequence of Error &middot; Accountable '+esc(a.A)+' &middot; Progression Ceiling '+ceil+'. Every step is evidenced before it is taken; steps past the ceiling are not taken.</div>'+
+   '<table class="lad" style="margin-top:10px"><tr><th>Step</th><th>Evidence method</th><th>Measure and threshold</th><th>Minimum</th><th>Finding</th></tr>'+
+   steps.map(t=>{const L=LADDER[t],past=rank(t)>rank(ceil),f=past?null:finding(a,t,rec(a.code,t));
+     return '<tr class="'+(t===S.to?'sel':'')+(past?' past':'')+'" onclick="setS(\'to\',\''+t+'\')"><td>'+ST[rank(t)-1]+' &rarr; '+t+'</td><td><span class="meth">'+methFor(a,t)+'</span></td><td>'+L.m.map(m=>m.n+' '+thr(m)).join('<br>')+(signoff(a,t)?'<br><span class="sm">+ governance sign-off</span>':'')+'</td><td>'+volFor(a,t)+' instances<br><span class="sm">over '+wkFor(a,t)+' weeks</span></td><td>'+(past?'<span class="sm">past the ceiling</span>':chip(f))+'</td></tr>';}).join('')+'</table></div>';
+  const to=S.to,L=LADDER[to],past=rank(to)>rank(ceil),r=rec(a.code,to),f=past?null:finding(a,to,r),ch=changes(a,to);
+  h+='<div class="card"><h3>'+ST[rank(to)-1]+' &rarr; '+to+'</h3><div class="sub">'+(past?'Past the Progression Ceiling ('+ceil+'): not a step this activity takes.':ch.length+' of '+elsOf(a).length+' elements change in this step.')+'</div>';
+  if(!past){
+   h+='<div class="lbl" style="margin-top:12px">How the evidence is gathered, before moving</div><div style="font-size:12.5px;line-height:1.5"><span class="meth">'+methFor(a,to)+'</span> '+(methFor(a,to)!==L.meth?'Bounded live trials are for Low and Moderate work; at '+a.cons+' the evidence comes from shadow runs or replay of past cases, never a live trial at the next stage.':L.how)+'</div>'+
+    '<div class="lbl" style="margin-top:12px">Audit rubric &middot; the elements that change</div><ul style="margin:0 0 0 18px;font-size:12.5px;line-height:1.55">'+ch.map(x=>'<li>'+x.e+' ('+x.from+' &rarr; '+x.to+')'+(x.w?': '+esc(x.w):'')+'</li>').join('')+'</ul>';
+   h+='<div class="lbl" style="margin-top:14px">Readiness Gate</div><table class="gate"><tr><td class="el">Technical / process</td><td>'+chip(f)+' '+L.m.map(m=>m.n+' '+(r[m.k]!=null&&r[m.k]!==''?r[m.k]+'%':'—')+' vs '+thr(m)).join('; ')+' <span class="sm">&middot; '+(r.n||0)+' of '+volFor(a,to)+' instances, '+(r.wk||0)+' of '+wkFor(a,to)+' weeks'+(+r.serious>0?' &middot; '+r.serious+' serious discrepanc'+(r.serious==1?'y':'ies'):'')+'</span></td></tr>'+
+    '<tr><td class="el">Role readiness</td><td class="sm">GiGi&rsquo;s instrument (GR-012), in the sandbox&rsquo;s Readiness Gate</td></tr><tr><td class="el">Organizational readiness</td><td class="sm">GiGi&rsquo;s instrument (GR-012)</td></tr></table>'+
+    '<div class="verd'+(f==='met'?' ok':' hold')+'">'+(f==='met'?'Technical / process clears. The step still needs Role and Organizational readiness to clear.':f==='not'?'Holds: the evidence does not meet the threshold'+(+r.serious>0?', and a serious discrepancy was found':'')+'.':'Holds: Insufficient Evidence. '+((r.n||0)<volFor(a,to)||(r.wk||0)<wkFor(a,to)?'Below the minimum volume or period.':signoff(a,to)&&!(r.signed||'').trim()?'Waiting for the governance sign-off.':'A measure is not yet recorded.'))+'</div>';
+   const fld=(k,l,ty,cls,ph)=>'<label class="'+(cls||'')+'">'+l+'<input data-f="'+k+'" type="'+(ty||'text')+'" value="'+esc(r[k]==null?'':r[k])+'" placeholder="'+(ph||'')+'" oninput="setE(\''+to+'\',\''+k+'\',this.value)"></label>';
+   h+='<div class="lbl" style="margin-top:14px">Evidence record &middot; '+(S.ev==='sample'?'sample values, invented':'enter values')+'</div><div class="ev">'+
+    L.m.map(m=>fld(m.k,m.n+' (%) &middot; '+m.d,'number')).join('')+
+    fld('n','Instances in the sample','number')+fld('wk','Period (weeks)','number')+fld('serious','Serious discrepancies','number')+
+    fld('auditor','Auditor (independent of the work)','text','','Name and role')+fld('source','Source','text','w2','System, report or audit log')+
+    (signoff(a,to)?fld('signed','Governance sign-off','text','w3','Body, name and date'):'')+'</div>';}
+  h+='</div>';
+  h+='<div class="card"><h3>Re-validation</h3><div class="sub">After the step is taken, the measure keeps running on the review cadence of the Governed Decision Point record (GR-042). A value back below its threshold flags the activity to step back, as a finding.</div></div>';
+  document.getElementById('main').innerHTML=h;
+  if(fo){const el=document.querySelector('[data-f="'+fo+'"]');if(el){el.focus();const v=el.value;try{el.setSelectionRange(v.length,v.length)}catch(e){}}}}
+render();
+}
+fetch(SANDBOX,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}).then(build)
+ .catch(e=>{document.getElementById('main').innerHTML='<div class="err">Could not read the master data from Sandbox 7.0 ('+esc(e.message)+'). Open the <a href="../sandbox/pcf7.html">sandbox</a> instead.</div>';});
+})();
+</script>
+</body></html>

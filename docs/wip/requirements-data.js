@@ -991,7 +991,7 @@ window.REQUIREMENTS = [
  {
   "id": "GR-037",
   "title": "Evidence required before progressing",
-  "progress": "Open",
+  "progress": "Designed",
   "category": "Readiness Gate",
   "group": "Organizational Assessment",
   "feeds": ["Human Impact & Readiness"],
@@ -1007,10 +1007,10 @@ window.REQUIREMENTS = [
   "spec_doc": "Working_Relationship_Progression_Methodology.docx",
   "spec_section": "Section 5, The Readiness Gate / section 6, Per-Transition Evidence Ladder",
   "wip_item": null,
-  "next_action": "Define the technical/process readiness signal and the evidence each step on the ramp requires.",
+  "next_action": "Tim and GiGi review the GR-037 sketch: the measures, evidence methods and the threshold numbers. Once set, the evidence record is built into the sandbox’s Readiness Gate as its Technical / process check, saved with each organization’s assessments.",
   "decision": null,
   "decisions": [],
-  "log": "Tim has confirmed readiness should be an AND-gate (org-readiness self-assessment + a technical/process-readiness signal), and WRPM section 6 names a Per-Transition Evidence Ladder — but the technical/process-readiness signal itself doesn't exist anywhere in the framework yet. No instrument built.\n\nSept 29, 2026: acceptance extended with GiGi's condition from her GR-001 approval — the evidence behind each threshold must be visible, since the readiness verdict beside each ceiling draws on it.",
+  "log": "Tim has confirmed readiness should be an AND-gate (org-readiness self-assessment + a technical/process-readiness signal), and WRPM section 6 names a Per-Transition Evidence Ladder — but the technical/process-readiness signal itself doesn't exist anywhere in the framework yet. No instrument built.\n\nSept 29, 2026: acceptance extended with GiGi's condition from her GR-001 approval — the evidence behind each threshold must be visible, since the readiness verdict beside each ceiling draws on it.\n\nNov 13, 2026 (Tim): sketched as docs/wip/gr037_step_evidence_sketch.html, the Readiness Gate’s Technical / process check. Each step on the ramp gets an evidence method, a measure (two at Augmentation and Agent-delegation), a threshold and a minimum volume and period: Judgment usefulness ≥70% (replay); Augmentation use rate ≥60% and errors introduced ≤2% (bounded trial); Oversight agreement ≥90% (shadow run); Agent-delegation audit-pass ≥98% and exception-detection recall ≥95% (in-stage audit of the Oversight reviews); Automation exception rate ≤1% (sampled audit of unflagged work) with a governance sign-off. The evidence is gathered before moving: the current stage records its own audit trail and the next stage is shadowed without taking effect. Recommended: thresholds are global defaults an organization may tighten, never loosen; High and Critical need double the volume and a governance sign-off from Agent-delegation up, and never run a live trial at the next stage; an audit has an independent auditor, a rubric from the elements that change, and one serious discrepancy is Not met; the finding is Met, Not met or Insufficient Evidence, and gray is never converted; a measure back below its threshold on the review cadence flags the activity to step back. The threshold numbers are starting points for Tim and GiGi to set.",
   "legacy_status": "Open"
  },
  {
