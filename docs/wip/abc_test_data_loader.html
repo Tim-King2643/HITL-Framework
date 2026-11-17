@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate"><head><meta charset="UTF-8"><meta name="google" content="notranslate"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ABC Test Org — Test Data for 7.2</title>
+<style>
+:root{--navy:#1B4F8A;--navy-d:#0D2D4F;--dark:#0D1B2A;--gray:#444;--lgray:#6B7A90;--faint:#A9B4C4;--bg:#F4F6FB;--border:#DDE3EE;--amber:#8A5A00;--amberbg:#FEF3C7;--red:#A23B3B;--green:#166534}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);padding-bottom:60px}
+.sk{background:#FEF3C7;border-bottom:2px solid #B8873F;color:#7A5A1E;font-size:12.5px;text-align:center;padding:9px 16px}
+.sk a{color:#7A5A1E;font-weight:600}
+.wrap{max-width:1240px;margin:0 auto;padding:18px 16px;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
+.side{flex:0 1 340px;min-width:260px;position:sticky;top:12px}
+.side h1{font-family:Georgia,serif;font-size:21px;color:var(--navy-d);line-height:1.3;margin-bottom:8px}
+.side p,.side li{font-size:12.5px;color:var(--gray);line-height:1.6}
+.side p{margin-bottom:10px}.side ul{margin:0 0 10px 18px}
+.side h5{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin:16px 0 6px}
+.btn{font:inherit;font-size:12.5px;font-weight:600;padding:7px 12px;border-radius:6px;border:1px solid #C6D8EE;background:#fff;color:var(--navy-d);cursor:pointer;margin:0 6px 6px 0}
+.btn.pri{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn.warn{border-color:#E8B4B4;color:var(--red)}
+.btn:disabled{opacity:.5;cursor:default}
+.confirm{background:var(--amberbg);color:var(--amber);border-radius:8px;padding:9px 11px;font-size:12.5px;line-height:1.5;margin:4px 0 8px}
+.status{font-size:12.5px;line-height:1.5;margin:6px 0;min-height:18px}
+.status.ok{color:var(--green)}.status.err{color:var(--red)}
+.log{font-family:Consolas,monospace;font-size:11px;color:var(--gray);background:#fff;border:1px solid var(--border);border-radius:6px;padding:6px 8px;max-height:220px;overflow:auto;white-space:pre-wrap;display:none}
+.main{flex:1;min-width:300px}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.card h3{font-size:14.5px;color:var(--navy-d);margin-bottom:3px;font-weight:600}
+.sub{font-size:12px;color:var(--lgray);line-height:1.5;margin-bottom:8px}
+table.t{width:100%;border-collapse:collapse;font-size:12.5px}
+.t th{text-align:left;font-size:10.5px;color:var(--lgray);font-weight:600;padding:4px 6px;border-bottom:1px solid var(--border)}
+.t td{padding:6px 6px;border-bottom:1px solid #EEF1F6;vertical-align:top;line-height:1.45}
+.code{font-family:Consolas,monospace;font-size:12px;color:var(--lgray);white-space:nowrap}
+.out{font-weight:600;white-space:nowrap}
+.cov li{font-size:12.5px;line-height:1.55;margin:0 0 5px 18px;color:var(--gray)}
+@media(max-width:860px){.side{position:static}}
+</style>
+</head><body>
+<div class="sk"><strong>Test data</strong> · ABC Test Org, process group 7.2 · <a href="../sandbox/pcf7.html?org=abc-test-org&view=findings">Open ABC Test Org in the sandbox</a> · <a href="index.html">Back to WIP hub</a></div>
+<div class="wrap">
+<div class="side">
+  <h1>ABC Test Org: a complete data set for 7.2</h1>
+  <p>One worked example of every input the sandbox takes, across the 24 activities of <b>7.2 Recruit, Source and Select</b>, so each part of the Work, People, Data and Findings views has something real to show. Each activity carries one scenario, chosen so every outcome appears at least once.</p>
+  <p>Loading saves the set through the sandbox&rsquo;s own endpoints, under your sign-in, exactly as if each record were entered by hand. It replaces ABC Test Org&rsquo;s current 7.2 data; every earlier entry stays in its record&rsquo;s history. Nothing outside 7.2 is touched.</p>
+  <h5>Load</h5>
+  <div id="act"></div>
+  <div class="status" id="status"></div>
+  <div class="log" id="log"></div>
+  <h5>What&rsquo;s in it</h5>
+  <ul>
+    <li><b id="nA">22</b> stage assessments with element grids, and <b id="nU">2</b> left Unassessed</li>
+    <li><b id="nR">14</b> readiness assessments for the next step</li>
+    <li><b id="nS">13</b> step-evidence records</li>
+    <li><b>1</b> ceiling override, with a review</li>
+  </ul>
+  <p class="sub">Every text field starts &ldquo;Test data.&rdquo; Generated Nov 17, 2026 from the sandbox&rsquo;s own model, so each element grid derives to the stage it records.</p>
+</div>
+<div class="main">
+  <div class="card"><h3>The 24 scenarios</h3><div class="sub">What each activity shows once loaded. The outcome is the Readiness Gate for its next step, as Findings&rsquo; Readiness dashboard reads it.</div>
+    <table class="t" id="scen"></table></div>
+  <div class="card"><h3>Where each input shows</h3><ul class="cov">
+    <li><b>Stage assessment and element grid</b>: Work, the Current State step; open Reassess on any assessed activity. Evidence types and confidence vary across the set.</li>
+    <li><b>Unassessed</b> (7.2.1.6, 7.2.5.3): dashed squares in Work and Findings.</li>
+    <li><b>Element past its own ceiling</b> (7.2.2.4): red dot in Work; Findings map and Exceptions report.</li>
+    <li><b>Past the ceiling, no override</b> (7.2.2.2) and <b>ceiling override with a review</b> (7.2.2.1): Work and the Findings summary.</li>
+    <li><b>Readiness Gate</b>: Work, the arrow before the next step. Role readiness by weakest link on High and Critical work (7.2.1.3, 7.2.3.4), by role below High (7.2.2.4), governance oversight (7.2.1.3, 7.2.3.2, 7.2.3.3, 7.2.3.4, 7.2.5.1), required actions recorded or missing, Human Agency narratives per role.</li>
+    <li><b>Step evidence</b>: Met, Not met by a rate (7.2.1.2, 7.2.5.1), Not met by an open Serious entry (7.2.2.6), Insufficient on volume (7.2.1.5), sign-off on High work and Automation, discrepancy logs with resolved and open entries.</li>
+    <li><b>Findings</b>: the Readiness dashboard shows every gate outcome; &ldquo;What&rsquo;s holding the work&rdquo; ranks what holds them.</li>
+  </ul></div>
+</div>
+</div>
+<script src="abc-test-data-7-2.js"></script>
+<script>
+const D=window.ABC_TEST_DATA,ORG=D.org,G=D.group+'.';
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const $=id=>document.getElementById(id);
+let ask=null,busy=false;
+$('nA').textContent=D.assess.length;$('nU').textContent=D.del.length;$('nR').textContent=D.ready.length;$('nS').textContent=D.stepev.length;
+$('scen').innerHTML='<tr><th>Activity</th><th>Current State</th><th>Outcome</th><th>What it shows</th></tr>'+D.scenarios.map(s=>'<tr><td><span class="code">'+s.code+'</span> '+esc(s.name)+'</td><td>'+esc(s.cur||'Unassessed')+'</td><td class="out">'+esc(s.out)+'</td><td>'+esc(s.say)+'</td></tr>').join('');
+
+function drawAct(){
+  $('act').innerHTML=ask==='load'?'<div class="confirm">This replaces ABC Test Org&rsquo;s data for every 7.2 activity with the test set. Earlier entries stay in each record&rsquo;s history.</div><button class="btn pri" onclick="run(\'load\')">Yes, load it</button><button class="btn" onclick="ask=null;drawAct()">Cancel</button>':
+   ask==='remove'?'<div class="confirm">This clears ABC Test Org&rsquo;s 7.2 data: every activity goes back to Unassessed, with no readiness, step evidence or overrides. Earlier entries stay in each record&rsquo;s history.</div><button class="btn warn" onclick="run(\'remove\')">Yes, clear 7.2</button><button class="btn" onclick="ask=null;drawAct()">Cancel</button>':
+   '<button class="btn pri"'+(busy?' disabled':'')+' onclick="ask=\'load\';drawAct()">Load the test data</button><button class="btn warn"'+(busy?' disabled':'')+' onclick="ask=\'remove\';drawAct()">Clear 7.2</button>';}
+drawAct();
+function say(t,c){$('status').className='status'+(c?' '+c:'');$('status').innerHTML=t;}
+function log(t){const l=$('log');l.style.display='block';l.textContent+=t+'\n';l.scrollTop=l.scrollHeight;}
+async function api(method,path,body){
+  const r=await fetch(path,{method,credentials:'same-origin',headers:body?{'content-type':'application/json'}:{},body:body?JSON.stringify(body):undefined});
+  if(r.status===401||r.status===403||r.redirected)throw new Error('sign in to the site as Tim or GiGi, then reload this page');
+  let j;try{j=await r.json();}catch(e){throw new Error('sign in to the site as Tim or GiGi, then reload this page');}
+  if(!r.ok)throw new Error(j.error||('server error '+r.status));return j;}
+
+async function run(mode){ask=null;busy=true;drawAct();$('log').textContent='';
+  try{
+    say('Checking your sign-in and ABC Test Org&hellip;');
+    const o=await api('GET','/org-api/orgs');
+    if(!o.reviewer)throw new Error('sign in to the site as Tim or GiGi, then reload this page');
+    if(!(o.orgs||[]).some(x=>x.id===ORG))throw new Error('ABC Test Org was not found');
+    const cur=await api('GET','/org-api/assessment?org='+ORG);
+    const in72=k=>k.startsWith(G);
+    const steps=[];
+    // What exists now in 7.2 and is not part of the set (or all of it, to clear): removed first.
+    const keepR=mode==='load'?new Set(D.ready.map(r=>r.code)):new Set();
+    const keepS=mode==='load'?new Set(D.stepev.map(r=>r.code+':'+r.to)):new Set();
+    const keepO=mode==='load'?new Set(D.override.map(r=>r.code)):new Set();
+    Object.keys(cur.readiness||{}).filter(in72).filter(c=>!keepR.has(c)).forEach(c=>steps.push(['DELETE','/org-api/readiness',{org:ORG,code:c},'clear readiness '+c]));
+    Object.entries(cur.stepEvidence||{}).filter(([c])=>in72(c)).forEach(([c,m])=>Object.keys(m).filter(t=>!keepS.has(c+':'+t)).forEach(t=>steps.push(['DELETE','/org-api/step-evidence',{org:ORG,code:c,to:t},'clear step evidence '+c+' '+t])));
+    Object.entries(cur.overrides||{}).filter(([c,v])=>in72(c)&&v&&v.level&&!keepO.has(c)).forEach(([c])=>steps.push(['DELETE','/org-api/ceiling-override',{org:ORG,code:c},'remove override '+c]));
+    const recs=cur.records||{},has=c=>recs[c]&&recs[c].current;
+    if(mode==='load'){
+      D.del.filter(has).forEach(c=>steps.push(['DELETE','/org-api/assessment',{org:ORG,code:c},'set '+c+' to Unassessed']));
+      D.assess.forEach(r=>steps.push(['POST','/org-api/assessment',r,'assess '+r.code+' at '+r.current]));
+      D.override.forEach(r=>steps.push(['POST','/org-api/ceiling-override',r,'override '+r.code+' to '+r.level]));
+      D.review.forEach(r=>steps.push(['POST','/org-api/ceiling-override/review',r,'review override '+r.code]));
+      D.ready.forEach(r=>steps.push(['POST','/org-api/readiness',r,'readiness '+r.code+' for '+r.to]));
+      D.stepev.forEach(r=>steps.push(['POST','/org-api/step-evidence',r,'step evidence '+r.code+' for '+r.to]));
+    } else Object.keys(recs).filter(in72).filter(has).forEach(c=>steps.push(['DELETE','/org-api/assessment',{org:ORG,code:c},'set '+c+' to Unassessed']));
+    let ok=0,bad=0;
+    for(let i=0;i<steps.length;i++){const [m,pth,b,lbl]=steps[i];say((mode==='load'?'Loading':'Clearing')+'&hellip; '+(i+1)+' of '+steps.length);
+      try{await api(m,pth,b);ok++;log('OK   '+lbl);}catch(e){bad++;log('FAIL '+lbl+': '+e.message);}}
+    say(bad?'Done with '+bad+' failure'+(bad>1?'s':'')+' of '+steps.length+'; see the log.':(mode==='load'?'Loaded: '+ok+' saves. <a href="../sandbox/pcf7.html?org=abc-test-org&view=findings">Open ABC Test Org</a> to see it.':'Cleared: '+ok+' changes. 7.2 is Unassessed in ABC Test Org.'),bad?'err':'ok');
+  }catch(e){say('Stopped: '+esc(e.message)+'.','err');}
+  busy=false;drawAct();}
+</script>
+</body></html>
