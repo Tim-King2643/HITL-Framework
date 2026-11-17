@@ -450,5 +450,61 @@ const CHANGE_LOG = [
     "source": "GR-042 design approved by Tim and GiGi on the Nov 5, 2026 call; register next action: build GDP_RECORDS starting with 7.4.4 and 7.6.1.",
     "reason": "A record kept as master data can be checked: the decision point box shows it field by field, and Findings counts control points missing a field their rating requires.",
     "verified": "The Work view's decision point box for 7.4.4 and 7.6.1 shows every field matching the sketch; the other control points list their missing required fields; Findings' count matches the 85 control points by rating. The change-log audit now tracks GDP_RECORDS."
+  },
+  {
+    "id": "CL-022",
+    "date": "2026-11-17",
+    "requestedBy": "Tim",
+    "kind": "gdp",
+    "changeType": "decision",
+    "target": {
+      "domain": "7.0",
+      "activities": [
+        "7.1.1.2",
+        "7.1.1.8",
+        "7.1.2.2",
+        "7.1.2.3",
+        "7.1.2.5",
+        "7.1.2.6",
+        "7.1.2.10",
+        "7.1.2.12",
+        "7.2.1.3",
+        "7.2.3.2",
+        "7.2.3.3",
+        "7.2.3.4",
+        "7.2.4.2",
+        "7.2.5.1",
+        "7.3.2.2",
+        "7.3.2.3",
+        "7.3.3.4",
+        "7.3.4.5",
+        "7.3.4.6",
+        "7.4.1",
+        "7.4.2",
+        "7.4.5",
+        "7.5.1.1",
+        "7.5.1.2",
+        "7.5.1.5",
+        "7.5.4",
+        "7.6.2.2",
+        "7.6.2.3",
+        "7.6.3.1",
+        "7.7.6",
+        "7.7.7.3",
+        "7.7.8.3"
+      ]
+    },
+    "summary": "Proposed Governed Decision Point records for the other 32 High and Critical control points (GR-042), for Tim and GiGi to review.",
+    "from": "Only 7.4.4 and 7.6.1 had a record (CL-021); the other 32 High and Critical control points showed their required fields as not written.",
+    "to": "32 records marked proposed: 3 Critical (7.2.3.4, 7.4.1, 7.4.2) and 29 High, one of them the verification point 7.3.2.3. Each with escalation path, override, documentation and review cadence, and a trigger condition for the 11 that are AI-led at their ceiling. Escalations go to the owner's reports-to or a role already Consulted or Informed unless the record says why not; CHRO-owned decisions escalate to a Governance Body* that each organization must evidence.",
+    "files": [
+      "docs/sandbox/pcf7.html",
+      "docs/sandbox/four_views.html",
+      "docs/wip/requirements-data.js",
+      "docs/wip/gdp_record_review.html"
+    ],
+    "source": "GR-042 next action: write the High and Critical records, proposed, for review (Tim, Nov 17, 2026).",
+    "reason": "High and Critical control points need every field; writing them as proposals from each activity's RACI, reporting line and Consequence of Error note lets Tim and GiGi react rather than draft.",
+    "verified": "Every escalation role is in the role catalog or marked * as outside it; every record has the fields its rating requires, and the trigger condition exactly where the control point is AI-led; Findings shows 34 of 85 control points with every required field, with none missing at High or Critical."
   }
 ];

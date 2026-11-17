@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate"><head><meta charset="UTF-8"><meta name="google" content="notranslate"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Decision Point Records — Review</title>
+<style>
+:root{--navy:#1B4F8A;--navy-d:#0D2D4F;--dark:#0D1B2A;--gray:#444;--lgray:#6B7A90;--faint:#A9B4C4;--bg:#F4F6FB;--border:#DDE3EE;--amber:#8A5A00;--amberbg:#FEF3C7;--red:#A23B3B;--crit:#A23B3B;--high:#B8660B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);padding-bottom:60px}
+.sk{background:#FEF3C7;border-bottom:2px solid #B8873F;color:#7A5A1E;font-size:12.5px;text-align:center;padding:9px 16px}
+.sk a{color:#7A5A1E;font-weight:600}
+.wrap{max-width:1240px;margin:0 auto;padding:18px 16px;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
+.side{flex:0 1 340px;min-width:260px;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow-y:auto}
+.side h1{font-family:Georgia,serif;font-size:21px;color:var(--navy-d);line-height:1.3;margin-bottom:8px}
+.side p,.side li{font-size:12.5px;color:var(--gray);line-height:1.6}
+.side p{margin-bottom:10px}
+.side ul{margin:0 0 10px 18px}.side li{margin-bottom:4px}
+.side h5{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin:16px 0 6px}
+.btn{font:inherit;font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:6px;border:1px solid #C6D8EE;background:#fff;color:var(--navy-d);cursor:pointer;margin:0 6px 6px 0}
+.btn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0 6px}
+.tile{background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.tile b{display:block;font-size:20px;color:var(--navy-d)}.tile span{font-size:11.5px;color:var(--lgray);line-height:1.35;display:block}
+.main{flex:1;min-width:300px}
+.grp{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);font-weight:600;margin:18px 0 8px}
+.grp:first-child{margin-top:0}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.card h3{font-size:14.5px;color:var(--navy-d);margin-bottom:3px;font-weight:600}
+.sub{font-size:12px;color:var(--lgray);line-height:1.5}
+.th{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.tid{flex:0 0 auto;font-family:Consolas,monospace;font-size:12px;font-weight:700;color:#fff;background:var(--navy);border-radius:5px;padding:3px 8px}
+.code{font-family:Consolas,monospace;font-size:12px;color:var(--lgray)}
+.coe{font-weight:600}
+table.g{width:100%;border-collapse:collapse;font-size:12.5px}
+.g td{padding:6px 6px;border-bottom:1px solid #EEF1F6;vertical-align:top;line-height:1.5}
+.g tr:last-child td{border-bottom:none}
+.g td.f{width:150px;color:var(--navy-d);font-weight:600}
+.g td.f .req{display:block;font-size:10.5px;color:var(--lgray);font-weight:400}
+.g td.src{width:72px;white-space:nowrap;font-size:11px;color:var(--lgray);text-align:right}
+.g td.src.prop{color:var(--amber)}
+.g tr.off td,.g tr.off td.f{color:var(--faint);font-weight:400}
+.g ul{margin:0 0 0 16px}.g li{margin-bottom:2px}
+.sm{font-size:11.5px;color:var(--lgray)}
+.note{font-size:12px;color:var(--amber);background:var(--amberbg);border-radius:6px;padding:7px 11px;margin:10px 0 2px;line-height:1.5}
+.note b{display:block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.note ul{margin:0 0 0 16px}
+.vote{margin-top:12px}
+.empty{background:#fff;border:1px dashed var(--border);border-radius:10px;padding:22px;text-align:center;color:var(--lgray);font-size:13px}
+.err{background:#FBEAEA;color:var(--red);border-radius:8px;padding:14px 16px;font-size:13px}
+@media(max-width:860px){.side{position:static;max-height:none}.g td.f{width:110px}}
+@media print{.side{position:static;max-height:none}.btn,.vote{display:none}.card{break-inside:avoid}}
+</style>
+</head><body>
+<div class="sk"><strong>Review</strong> · GR-042: the proposed Governed Decision Point records for the High and Critical control points · <a href="requirements_register.html#GR-042">GR-042</a> · <a href="gdp_record_sketch.html">Record sketch</a> · <a href="../sandbox/pcf7.html">Sandbox</a> · <a href="index.html">Back to WIP hub</a></div>
+<div class="wrap">
+<div class="side">
+  <h1>Decision point records, for review</h1>
+  <p>Every High and Critical control point needs a full Governed Decision Point record. 7.4.4 and 7.6.1 were approved on Nov 5. This page holds the other <span id="nProp">32</span>, written as proposals from each activity&rsquo;s RACI, reporting line and Consequence of Error note, so you only need to react.</p>
+  <p>Each record has its own vote. <b>Approve</b> it as written, <b>Not approve</b> it with a note saying what to change, or <b>Defer</b> it. Once you have both approved a record, it is marked approved in the sandbox at the next push; a note on a Not approve becomes the revision.</p>
+  <p>The amber box on a record names the choices worth a closer look: an escalation outside the owner&rsquo;s reporting line, a Governance Body* the organization must name, or a threshold the organization sets.</p>
+  <h5>Progress</h5>
+  <div class="tiles" id="tiles"></div>
+  <h5>Show</h5>
+  <div id="fStatus"></div>
+  <h5>Consequence of Error</h5>
+  <div id="fCons"></div>
+  <h5>Look closely</h5>
+  <div id="fFlag"></div>
+  <h5>Reading a record</h5>
+  <ul>
+    <li><b>data</b>: read from the sandbox (RACI, work elements, CRUD).</li>
+    <li><b style="color:var(--amber)">proposed</b>: written for this review.</li>
+    <li>Roles marked * sit outside the role catalog (Legal*, Finance*, Governance Body*).</li>
+    <li>The trigger condition appears only where AI leads the decision at the ceiling and a person decides flagged instances.</li>
+  </ul>
+  <p class="sm">The records are read live from GDP_RECORDS in the sandbox, so this page always shows the current text.</p>
+</div>
+<div class="main" id="main"><div class="empty">Reading the records from the sandbox&hellip;</div></div>
+</div>
+<script src="decision-widget.js"></script>
+<script>
+const SANDBOX='../sandbox/pcf7.html';
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+function literalAfter(src,marker,open,close){
+  const i=src.indexOf(marker);if(i<0)return null;const s=src.indexOf(open,i);let depth=0;
+  for(let j=s;j<src.length;j++){const c=src[j];
+    if(c==='"'){j++;while(j<src.length&&src[j]!=='"'){if(src[j]==='\\')j++;j++;}continue;}
+    if(c==='/'&&src[j+1]==='/'){while(j<src.length&&src[j]!=='\n')j++;continue;}
+    if(c===open)depth++;else if(c===close){depth--;if(depth===0)return src.slice(s,j+1);}}
+  return null;}
+const lit=(src,name,o,c)=>{const t=literalAfter(src,'const '+name+' =',o,c);if(!t)throw new Error(name+' not found in the sandbox file');return (new Function('return '+t))();};
+
+const CORK={Low:0,Moderate:1,High:2,Critical:3},CONSC={Critical:'var(--crit)',High:'var(--high)'};
+const OPN={C:'creates',U:'updates',D:'deletes'};
+let M=null;                                   // the model, once read
+const F={status:'all',cons:'all',flag:'all'}; // filters
+try{const v=JSON.parse(localStorage.getItem('gdpReview.f')||'{}');Object.assign(F,v);}catch(e){}
+
+function build(src){
+  const PCF7=lit(src,'PCF7','{','}'),WR=lit(src,'WR_DATA','{','}'),ACRUD=lit(src,'ACTIVITY_CRUD','{','}'),ARACI=lit(src,'ACTIVITY_RACI','{','}'),
+        WORKED=lit(src,'WORK_ELEMENTS','{','}'),WPS=lit(src,'WORK_PRODUCTS','[',']'),ROLES=lit(src,'ROLE_TAXONOMY','[',']'),GDP=lit(src,'GDP_RECORDS','{','}');
+  const WPN=Object.fromEntries(WPS.map(w=>[w.id,w])),RT=Object.fromEntries(ROLES.map(r=>[r.name,r.reportsTo||'']));
+  const recs=[];
+  PCF7.groups.forEach(g=>g.l3.forEach(l3=>(l3.l4&&l3.l4.length?l3.l4:[l3]).forEach(x=>{
+    const r=GDP[x.code];if(!r||r.status==='approved')return;
+    const w=WR[x.code]||{},ra=ARACI[x.code]||{A:'',R:[],C:[],I:[]},we=WORKED[x.code]||{},cr=ACRUD[x.code]||{};
+    recs.push({code:x.code,name:x.name,group:g.code+' '+g.name,cons:w.cons,ceiling:w.ceiling,consNote:w.consNote||'',ra,el:we.control||'Decide',elText:(we.obj||{})[we.control]||'',
+      crud:{C:cr.create||[],U:cr.update||[],D:cr.delete||[]},r,flags:flags(r,ra,RT)});})));
+  M={recs,WPN,RT,approved:Object.values(GDP).filter(r=>r.status==='approved').length};
+  render();
+}
+// The choices worth a closer look, worked out from the record and the RACI.
+function flags(r,ra,RT){const out=[];
+  if((r.esc||[]).some(e=>e[1]==='Governance Body*'))out.push(['gb','Escalates to a Governance Body*: the owner is at the top of the role catalog, so each organization names the body.']);
+  const tos=[...new Set((r.esc||[]).map(e=>e[1]).filter(t=>!/\*$/.test(t)))];
+  tos.forEach(t=>{if(t!==RT[ra.A]&&!(ra.C||[]).includes(t)&&!(ra.I||[]).includes(t)&&!(ra.R||[]).includes(t))
+    out.push(['line','Escalates to '+t+', outside the owner&rsquo;s reporting line ('+esc(ra.A)+' reports to '+esc(RT[ra.A]||'no one')+') and not otherwise in its RACI.']);});
+  if(/set margin|set amount|tolerance|more than the plan allows/.test(r.trigger||''))out.push(['thr','The trigger condition uses a threshold each organization sets.']);
+  if(/role catalog has no/.test(r.escNote||''))out.push(['gap','Works around a gap in the role catalog.']);
+  return out;}
+
+const keyOf=x=>'gdp-'+x.code.replace(/\./g,'-');
+const reqOf=x=>({id:'GR-042',decision:{id:keyOf(x),type:'design',question:'Approve the proposed record for '+x.code+' '+x.name+' as written?'}});
+function statusOf(x){const st=DecisionStore.state,live=st.decisions['GR-042:'+keyOf(x)]||{},me=st.reviewer,mine=me==='Tim'?live.tim:me==='GiGi'?live.gigi:null;
+  const o=DecisionStore.outcome(reqOf(x)).code;
+  return {o,mine:!!mine,approved:o==='approve',closed:o==='approve'||o==='not-approve'||o==='defer'};}
+
+function row(n,rq,v,src,off){return '<tr'+(off?' class="off"':'')+'><td class="f">'+n+'<span class="req">'+rq+'</span></td><td>'+v+'</td><td class="src'+(src==='proposed'?' prop':'')+'">'+src+'</td></tr>';}
+function card(x){const r=x.r,ra=x.ra,t=CORK[x.cons],ai=!!r.trigger,RT=M.RT;
+  const R=(ra.R||[]).filter(z=>z!==ra.A);
+  const owner=esc(ra.A)+', Accountable'+((ra.R||[]).includes(ra.A)?' and Responsible':'')+(R.length?'; Responsible: '+R.map(esc).join(', '):'')+'. '+(RT[ra.A]?'Reports to '+esc(RT[ra.A])+'.':'Top of the role catalog.');
+  const ids=[...new Set(x.crud.C.concat(x.crud.U,x.crud.D))];
+  const wp=ids.length?ids.map(i=>esc(M.WPN[i]?M.WPN[i].name:i)+' <span class="code">'+i+'</span> ('+['C','U','D'].filter(k=>x.crud[k].includes(i)).map(k=>OPN[k]).join(', ')+')').join('<br>'):'Creates, updates or deletes no work product in the catalog yet.';
+  const escV='<ul>'+(r.esc||[]).map(e=>'<li>'+esc(e[0])+' &rarr; '+esc(e[1])+(e[2]?', with '+esc(e[2]):'')+'</li>').join('')+'</ul>'+(r.escNote?'<div class="sm">'+esc(r.escNote)+'</div>':'');
+  const raci=['A','R','C','I'].map(k=>{const v=(k==='A'?[ra.A]:ra[k]||[]).concat(((ra.x||{})[k])||[]);return v.length?{A:'Accountable',R:'Responsible',C:'Consulted',I:'Informed'}[k]+': '+v.map(esc).join(', '):''}).filter(Boolean).join(' · ');
+  let h='<div class="card" id="r'+x.code+'"><div class="th"><span class="tid">'+x.code+'</span><div><h3>'+esc(x.name)+'</h3>'+
+    '<div class="sub">'+(x.el==='Verify'?'Verification Point':'Decision Point')+' · Consequence of Error <span class="coe" style="color:'+CONSC[x.cons]+'">'+x.cons+'</span> · Progression Ceiling '+esc(x.ceiling)+(ai?' · AI leads the '+x.el+' at the ceiling':'')+'</div>'+
+    '<div class="sub">'+raci+'</div><div class="sub" style="margin-top:3px">'+esc(x.consNote)+'</div></div></div><table class="g">';
+  h+=row('Owner','on every record',owner,'data');
+  h+=row(x.el==='Verify'?'Verifies':'Decides','on every record',esc(x.el)+(x.elText?': '+esc(x.elText):'')+'.','data');
+  h+=row('Work products','on every record',wp,'data');
+  h+=ai?row('Trigger condition','required: AI leads, a person decides flagged instances',esc(r.trigger),'proposed'):row('Trigger condition','only where AI leads','Not needed: a person holds '+x.el+' on every instance.','data',1);
+  h+=row('Escalation path','required at '+x.cons,escV,'proposed');
+  h+=row('Override','required',esc(r.over),'proposed');
+  h+=row('Documentation',t===3?'required, with the evidence for each decision':'required: each decision',esc(r.doc),'proposed');
+  h+=row('Review cadence',t===3?'on a set cadence and after every override':'on a set cadence',esc(r.rev),'proposed');
+  h+='</table>';
+  if(x.flags.length)h+='<div class="note"><b>Look closely</b>'+(x.flags.length>1?'<ul>'+x.flags.map(f=>'<li>'+f[1]+'</li>').join('')+'</ul>':x.flags[0][1])+'</div>';
+  return h+'<div class="vote">'+DecisionWidget.html(reqOf(x))+'</div></div>';}
+
+function btns(id,key,opts){document.getElementById(id).innerHTML=opts.map(([k,l])=>'<button type="button" class="btn'+(F[key]===k?' on':'')+'" onclick="setF(\''+key+'\',\''+k+'\')">'+l+'</button>').join('');}
+function setF(k,v){F[k]=v;try{localStorage.setItem('gdpReview.f',JSON.stringify(F))}catch(e){}render();}
+function render(){if(!M)return;
+  const st=DecisionStore.state,me=st.reviewer,S=M.recs.map(x=>[x,statusOf(x)]);
+  const n=S.length,ap=S.filter(([x,s])=>s.approved).length,cl=S.filter(([x,s])=>s.closed&&!s.approved).length,mine=S.filter(([x,s])=>!s.mine&&!s.closed).length;
+  document.getElementById('nProp').textContent=n;
+  document.getElementById('tiles').innerHTML=[[n,'proposed records'],[ap,'approved by both of you'],[cl,'not approved or deferred'],[me?mine:n-ap-cl,me?'waiting for your vote':'still open']].map(([b,s])=>'<div class="tile"><b>'+b+'</b><span>'+s+'</span></div>').join('');
+  btns('fStatus','status',[['all','All'],['open','Still open'],['mine','Waiting for my vote'],['done','Decided']]);
+  btns('fCons','cons',[['all','All'],['Critical','Critical'],['High','High']]);
+  btns('fFlag','flag',[['all','All records'],['any','Only with a closer look']]);
+  const keep=([x,s])=>(F.cons==='all'||x.cons===F.cons)&&(F.flag==='all'||x.flags.length)&&
+    (F.status==='all'||F.status==='open'&&!s.closed||F.status==='mine'&&!s.closed&&!s.mine||F.status==='done'&&s.closed);
+  const L=S.filter(keep).map(z=>z[0]);
+  let h='',g='';
+  L.forEach(x=>{if(x.group!==g){g=x.group;h+='<div class="grp">'+esc(g)+'</div>';}h+=card(x);});
+  if(!L.length)h='<div class="empty">'+(F.status==='mine'&&!me?'Sign in as Tim or GiGi to see which records wait for your vote.':'No records match these filters.')+'</div>';
+  const main=document.getElementById('main');main.innerHTML=h;DecisionWidget.wire(main,render);}
+
+Promise.all([fetch(SANDBOX,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}),DecisionStore.load()])
+ .then(([src])=>build(src))
+ .catch(e=>{document.getElementById('main').innerHTML='<div class="err">Could not read the records from Sandbox 7.0 ('+esc(e.message)+'). Open the <a href="../sandbox/pcf7.html">sandbox</a> instead.</div>';});
+</script>
+</body></html>
