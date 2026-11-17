@@ -715,34 +715,25 @@ async function handleOrgApi(request, env, url) {
     if (!ORG_ID_RE.test(orgId)) return json({ error: 'unknown organization' }, { status: 400 });
     const org = await readOrg(env, orgId);
     if (!org) return json({ error: 'unknown organization' }, { status: 404 });
-    const prefix = 'assess:' + orgId + ':';
-    const records = {};
-    for (const k of await listKeys(env, prefix)) {
-      const raw = await env.SANDBOX_NOTES.get(k);
-      if (raw) records[k.slice(prefix.length)] = JSON.parse(raw);
-    }
-    const oPrefix = 'ceil:' + orgId + ':';
-    const overrides = {};
-    for (const k of await listKeys(env, oPrefix)) {
-      const raw = await env.SANDBOX_NOTES.get(k);
-      if (raw) overrides[k.slice(oPrefix.length)] = JSON.parse(raw);
-    }
-    const rPrefix = 'ready:' + orgId + ':';
+    // Read every record in parallel (Nov 17, 2026): a fully assessed organization holds hundreds of records,
+    // and reading them one at a time slowed every sandbox load.
+    const readAll = async (prefix) => {
+      const keys = await listKeys(env, prefix);
+      const raws = await Promise.all(keys.map(k => env.SANDBOX_NOTES.get(k)));
+      return keys.map((k, i) => [k.slice(prefix.length), raws[i] ? JSON.parse(raws[i]) : null]).filter(x => x[1]);
+    };
+    const [recs, ovs, rds, sevs] = await Promise.all([
+      readAll('assess:' + orgId + ':'), readAll('ceil:' + orgId + ':'), readAll('ready:' + orgId + ':'), readAll('stepev:' + orgId + ':')]);
+    const records = Object.fromEntries(recs);
+    const overrides = Object.fromEntries(ovs);
     const readiness = {};
-    for (const k of await listKeys(env, rPrefix)) {
-      const raw = await env.SANDBOX_NOTES.get(k);
-      if (raw) { const r = JSON.parse(raw); if (r && r.current) readiness[k.slice(rPrefix.length)] = r; }
-    }
-    const sPrefix = 'stepev:' + orgId + ':';
+    rds.forEach(([k, r]) => { if (r && r.current) readiness[k] = r; });
     const stepEvidence = {};
-    for (const k of await listKeys(env, sPrefix)) {
-      const raw = await env.SANDBOX_NOTES.get(k);
-      if (!raw) continue;
-      const r = JSON.parse(raw);
-      if (!r || !r.current) continue;
-      const [code, to] = k.slice(sPrefix.length).split(':');
+    sevs.forEach(([k, r]) => {
+      if (!r || !r.current) return;
+      const [code, to] = k.split(':');
       (stepEvidence[code] = stepEvidence[code] || {})[to] = r;
-    }
+    });
     return json({ reviewer, org, records, overrides, readiness, stepEvidence });
   }
 

@@ -1,15 +1,7 @@
-// Rebuild: serve docs/ on port 8765 (python3 -m http.server 8765), then NODE_PATH=$(npm root -g) node scripts/build-7-2.js;
-// it writes abc72_payloads.json, which is folded into docs/wip/abc-test-data-7-2.js with the scenario list.
-// Inputs: scripts/spec-7-2.js (one scenario per activity) and scripts/evidence-7-2.js (readiness evidence text).
-// Builds the ABC Test Org 7.2 payloads from the scenario spec, using the sandbox's own model (run headless).
-const {chromium}=require('playwright'),fs=require('fs');
-const SPEC=require('./spec-7-2.js'),EV=require('./evidence-7-2.js');
-(async()=>{const b=await chromium.launch();const p=await b.newPage();
-await p.route('**/*-api/**',r=>r.fulfill({status:200,contentType:'application/json',body:'{}'}));
-await p.goto('http://localhost:8765/sandbox/pcf7.html');await p.waitForTimeout(2500);
-const f=p.frames().find(x=>x.url().includes('four_views'));
-const out=await f.evaluate(([SPEC,EV])=>{
- const W=P.FV_SOURCE.WR_DATA,ORG='abc-test-org',DATE='Nov 17, 2026',TAG='ABC Test Org test data (7.2), '+DATE;
+// The payload builder shared by scripts/build-7.js: runs inside the sandbox's four_views frame, with SPEC (one scenario
+// per activity) and EV (readiness evidence text), and returns the save payloads for the org API.
+
+ const W=P.FV_SOURCE.WR_DATA,ORG='abc-test-org',DATE='Nov 17, 2026',TAG='ABC Test Org test data (PCF 7.0), '+DATE;
  const EVT=['observed','system','audit','interview','document'],REFS={observed:'Observed instances, Oct 2026',system:'System logs, Q3 2026',audit:'Internal audit sample, Oct 2026',interview:'Interviews with the team, Oct 2026',document:'Process documentation, rev. 2026'};
  const res={assess:[],del:[],override:[],review:[],ready:[],stepev:[],checks:[]};
  const oneOf=(arr,i)=>arr[i%arr.length];
@@ -17,15 +9,18 @@ const out=await f.evaluate(([SPEC,EV])=>{
   if(!sp.cur){res.del.push(code);return;}
   // Element grid: the sandbox's reference grid for the stage, each element with an evidence type and reference.
   const g0=stageEls(a,sp.cur),ctl=ctlOf(a),cp=caps(a);
-  if(sp.elPast){const e=Object.keys(g0).find(e=>e!==ctl&&cp[e]&&lr(cp[e][0])<3&&lr(g0[e])<3);if(e){g0[e]='AI';res.checks.push(code+': '+e+' set to AI past its element ceiling '+cp[e][0]);}else res.checks.push(code+': no element to push past its ceiling');}
+  // An element led past its own ceiling, chosen so the grid still derives to the same stage.
+  if(sp.elPast){const g1=Object.fromEntries(Object.entries(g0).map(([e,v])=>[e,[v]]));
+    const e=Object.keys(g0).find(e=>{if(e===ctl||!cp[e]||lr(cp[e][0])>=3||lr(g0[e])>=3)return false;const t=Object.assign({},g1,{[e]:['AI']});return deriveGrid(a,t)[0]===sp.cur;});
+    if(e){g0[e]='AI';res.checks.push(code+': '+e+' set to AI past its element ceiling '+cp[e][0]);}else{res.checks.push(code+': no element to push past its ceiling');res.noEl=(res.noEl||[]).concat(code);}}
   const g={};Object.keys(g0).forEach((e,i)=>{const t=e===ctl?sp.ev:oneOf(EVT,ix+i);g[e]=[g0[e],t,REFS[t]];});
   const d=deriveGrid(a,g)[0];if(d!==sp.cur)res.checks.push(code+': grid derives '+d+', not '+sp.cur);
   const A0=a.Aroles[0];
   res.assess.push({org:ORG,code,current:d,el:g,confidence:sp.conf,sourceRole:A0,source:A0,note:'Test data. '+sp.say});
   if(sp.override){const fs=(W[code].ceilingFactors||[]);const fac=fs.find(x=>['technical','governance'].includes(x))||fs[0];
-   res.override.push({org:ORG,code,level:'Automation',factor:fac,approverRole:A0,evidence:'Test data. Six months of agent-delegated runs ('+'1,240 instances) with no exception the agent failed to flag; the '+fac+' factor no longer holds for this organization.'});
+   res.override.push({org:ORG,code,level:sp.level||'Automation',factor:fac,approverRole:A0,evidence:'Test data. Six months of runs at the reference ceiling (1,240 instances) with no exception missed; the '+fac+' factor no longer holds for this organization.'});
    res.review.push({org:ORG,code,confirmedRole:A0,note:'Test data. Quarterly review: the evidence still holds.'});}
-  const k=rank(d),ceil=sp.override?'Automation':derivedCeil(a);if(k>=rank(ceil)||!sp.te&&!sp.rd)return;
+  const k=rank(d),ceil=sp.override?(sp.level||'Automation'):derivedCeil(a);if(k>=rank(ceil)||!sp.te&&!sp.rd)return;
   const to=ST[k+1];
   if(sp.te){const L=TE_L[to],vol=teVol(a,to),wk=teWk(a,to),N=sp.te.mode==='ins'?Math.round(vol*0.4):Math.round(vol*1.2),counts={};
    L.m.forEach((m,mi)=>{let den=m.den[0]==='realexc'?Math.max(20,Math.round(N*0.04)):N,rate;
@@ -59,7 +54,4 @@ const out=await f.evaluate(([SPEC,EV])=>{
    const agencyBy={};R.forEach(r=>agencyBy[r]='Test data. '+r+' keeps the judgment at '+ctl+' and can set aside the AI output with a reason; the step changes what they review, not what they answer for.');
    res.ready.push({org:ORG,code,to,cells,dims,meta:{by:'Tim King (test data)',from:TAG,signed:HC[a.cons]?(rdOver(a)||A0):'',agencyBy}});}
  });
- return res;},[SPEC,EV]);
-fs.writeFileSync('abc72_payloads.json',JSON.stringify(out,null,1));
-console.log('assess',out.assess.length,'del',out.del.length,'override',out.override.length,'ready',out.ready.length,'stepev',out.stepev.length);console.log(out.checks.join('\n'));
-await b.close()})();
+ return res;
