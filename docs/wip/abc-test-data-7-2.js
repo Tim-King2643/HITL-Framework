@@ -1179,44 +1179,84 @@ window.ABC_TEST_DATA = {
    },
    "dims": {
     "HRBP Manager|clarity": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager described what AI does at Augmentation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: HRBP Manager · Reference: Role walkthrough of the Augmentation workflow · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.1 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with HRBP Manager."
     },
     "HRBP Manager|authority": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: HRBP Manager · Reference: Approval matrix and system permissions for 7.2.1.1 Align staffing plan to work force plan and business unit strategies/resource needs · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.1 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "HRBP Manager|skill": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: HRBP Manager · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.1 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to HRBP Manager’s review."
     },
     "HRBP Manager|fluency": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and HRBP Manager disagreed in the exercise, HRBP Manager made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: HRBP Manager · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.1 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "HRBP Manager|safety": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: HRBP Manager · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.1 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "HRBP Manager|capacity": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: HRBP Manager · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.1 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "manager": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. The manager has escalation criteria for Augmentation, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: Director of HR Ops · Reference: Manager and governance-body interviews · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     },
     "governance": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. A named owner, stop conditions and an escalation route for 7.2.1.1 Align staffing plan to work force plan and business unit strategies/resource needs at Augmentation are written and agreed.",
+     "prov": "Type: document · Source role: Director of HR Ops · Reference: Decision rights and stop conditions, HR governance pack · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: an incident with no owner response within the agreed time."
     },
     "change": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. No competing change in the recruiting team for the next two quarters; leadership time is committed.",
+     "prov": "Type: document · Source role: Director of HR Ops · Reference: Change calendar and initiative load, 2026–27 · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a new initiative landing on the same team before the step."
     },
     "evidence": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Traceable technical evidence at real volume: type, source, confidence, limits and failure modes are all documented.",
+     "prov": "Type: audit · Source role: Director of HR Ops · Reference: Technical evidence pack for 7.2.1.1 Align staffing plan to work force plan and business unit strategies/resource needs at Augmentation · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: results that cannot be traced to this organization’s data."
     }
    },
    "meta": {
@@ -1252,68 +1292,132 @@ window.ABC_TEST_DATA = {
    },
    "dims": {
     "HRBP Manager|clarity": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager described what AI does at Agent-delegation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: HRBP Manager · Reference: Role walkthrough of the Agent-delegation workflow · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.2 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with HRBP Manager."
     },
     "HR Generalist|clarity": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist described what AI does at Agent-delegation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: HR Generalist · Reference: Role walkthrough of the Agent-delegation workflow · Confidence: high · Coverage: all HR Generalist instances on 7.2.1.2 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with HR Generalist."
     },
     "HRBP Manager|authority": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: HRBP Manager · Reference: Approval matrix and system permissions for 7.2.1.2 Open job requisitions · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.2 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "HR Generalist|authority": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: HR Generalist · Reference: Approval matrix and system permissions for 7.2.1.2 Open job requisitions · Confidence: high · Coverage: all HR Generalist instances on 7.2.1.2 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "HRBP Manager|skill": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: HRBP Manager · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.2 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to HRBP Manager’s review."
     },
     "HR Generalist|skill": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: HR Generalist · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all HR Generalist instances on 7.2.1.2 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to HR Generalist’s review."
     },
     "HRBP Manager|fluency": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and HRBP Manager disagreed in the exercise, HRBP Manager made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: HRBP Manager · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.2 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "HR Generalist|fluency": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and HR Generalist disagreed in the exercise, HR Generalist made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: HR Generalist · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all HR Generalist instances on 7.2.1.2 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "HRBP Manager|safety": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: HRBP Manager · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.2 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "HR Generalist|safety": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: HR Generalist · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all HR Generalist instances on 7.2.1.2 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "HRBP Manager|capacity": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: HRBP Manager · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.2 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "HR Generalist|capacity": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: HR Generalist · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all HR Generalist instances on 7.2.1.2 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "manager": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. The manager has escalation criteria for Agent-delegation, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: Director of HR Ops · Reference: Manager and governance-body interviews · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     },
     "governance": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. A named owner, stop conditions and an escalation route for 7.2.1.2 Open job requisitions at Agent-delegation are written and agreed.",
+     "prov": "Type: document · Source role: Director of HR Ops · Reference: Decision rights and stop conditions, HR governance pack · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: an incident with no owner response within the agreed time."
     },
     "change": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. No competing change in the recruiting team for the next two quarters; leadership time is committed.",
+     "prov": "Type: document · Source role: Director of HR Ops · Reference: Change calendar and initiative load, 2026–27 · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a new initiative landing on the same team before the step."
     },
     "evidence": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Traceable technical evidence at real volume: type, source, confidence, limits and failure modes are all documented.",
+     "prov": "Type: audit · Source role: Director of HR Ops · Reference: Technical evidence pack for 7.2.1.2 Open job requisitions at Agent-delegation · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: results that cannot be traced to this organization’s data."
     }
    },
    "meta": {
@@ -1345,56 +1449,92 @@ window.ABC_TEST_DATA = {
    },
    "dims": {
     "HRBP Manager|clarity": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager described what AI does at Oversight, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: HRBP Manager · Reference: Role walkthrough of the Oversight workflow · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with HRBP Manager."
     },
     "HRBP Manager|authority": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: HRBP Manager · Reference: Approval matrix and system permissions for 7.2.1.3 Approve job requisition · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "HRBP Manager|skill": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026",
-     "gap": "Not yet in place: capability / skill for HRBP Manager at Oversight.",
-     "act": "Close the gap before the step: targeted coaching and scenario practice for HRBP Manager.",
+     "ev": "Test data. HRBP Manager caught 1 of 3 seeded errors and deferred to the AI output on 4 of 10 cases.",
+     "prov": "Type: observed · Source role: HRBP Manager · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: medium · Coverage: all HRBP Manager instances on 7.2.1.3 · Date: Oct 2026",
+     "gap": "Not in place for Oversight; this holds the step.",
+     "act": "Targeted case practice for HRBP Manager on the error types missed, then retest on a fresh set.",
      "owner": "Director of HR Ops",
-     "move": "Reassess in 60 days."
+     "move": "Moves up on: a retest with every seeded error caught and the right call reached independently."
     },
     "HRBP Manager|fluency": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and HRBP Manager disagreed in the exercise, HRBP Manager made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: HRBP Manager · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "HRBP Manager|safety": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: HRBP Manager · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "HRBP Manager|capacity": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026",
-     "gap": "Partly in place: capacity / workload for HRBP Manager at Oversight.",
-     "act": "Before or during the step: targeted coaching and scenario practice for HRBP Manager.",
+     "ev": "Test data. Review fits at average volume, but the hiring peak in Q1 would leave under 10% for exceptions.",
+     "prov": "Type: system · Source role: HRBP Manager · Reference: Caseload and review-time data, Q3 2026 · Confidence: medium · Coverage: all HRBP Manager instances on 7.2.1.3 · Date: Oct 2026",
+     "gap": "Partly in place; the rest must be closed for Oversight.",
+     "act": "Plan peak cover before the step (temporary support or a lower AI hand-off rate in Q1).",
      "owner": "Director of HR Ops",
-     "move": "Confirm within 30 days of the step."
+     "move": "Ready once: peak cover in place and review time measured at peak."
     },
     "manager": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. The manager has escalation criteria for Oversight, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: Director of HR Ops · Reference: Manager and governance-body interviews · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     },
     "governance": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. A named owner, stop conditions and an escalation route for 7.2.1.3 Approve job requisition at Oversight are written and agreed.",
+     "prov": "Type: document · Source role: Director of HR Ops · Reference: Decision rights and stop conditions, HR governance pack · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: an incident with no owner response within the agreed time."
     },
     "change": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026",
-     "gap": "Partly in place: change capacity for the organization at Oversight.",
-     "act": "Before or during the step: targeted organizational action for the organization.",
+     "ev": "Test data. An ATS upgrade lands in the same quarter; the step can proceed if the two are sequenced.",
+     "prov": "Type: document · Source role: Director of HR Ops · Reference: Change calendar and initiative load, 2026–27 · Confidence: medium · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "Partly in place; the rest must be closed for Oversight.",
+     "act": "Sequence the step after the competing change and confirm the dates in the change calendar.",
      "owner": "Director of HR Ops",
-     "move": "Confirm within 30 days of the step."
+     "move": "Ready once: competing change complete or rescheduled, confirmed in the calendar."
     },
     "evidence": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Traceable technical evidence at real volume: type, source, confidence, limits and failure modes are all documented.",
+     "prov": "Type: audit · Source role: Director of HR Ops · Reference: Technical evidence pack for 7.2.1.3 Approve job requisition at Oversight · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: results that cannot be traced to this organization’s data."
+    },
+    "_over|manager": {
+     "ev": "Test data. The manager has escalation criteria for Oversight, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: Director of HR Ops · Reference: Manager and governance-body interviews · Confidence: high · Coverage: oversight of 7.2.1.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "CHRO",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     }
    },
    "meta": {
@@ -1430,68 +1570,132 @@ window.ABC_TEST_DATA = {
    },
    "dims": {
     "HRBP Manager|clarity": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager described what AI does at Automation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: HRBP Manager · Reference: Role walkthrough of the Automation workflow · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.5 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with HRBP Manager."
     },
     "HR Generalist|clarity": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist described what AI does at Automation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: HR Generalist · Reference: Role walkthrough of the Automation workflow · Confidence: high · Coverage: all HR Generalist instances on 7.2.1.5 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with HR Generalist."
     },
     "HRBP Manager|authority": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: HRBP Manager · Reference: Approval matrix and system permissions for 7.2.1.5 Modify job requisitions · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.5 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "HR Generalist|authority": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: HR Generalist · Reference: Approval matrix and system permissions for 7.2.1.5 Modify job requisitions · Confidence: high · Coverage: all HR Generalist instances on 7.2.1.5 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "HRBP Manager|skill": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: HRBP Manager · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.5 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to HRBP Manager’s review."
     },
     "HR Generalist|skill": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: HR Generalist · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all HR Generalist instances on 7.2.1.5 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to HR Generalist’s review."
     },
     "HRBP Manager|fluency": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and HRBP Manager disagreed in the exercise, HRBP Manager made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: HRBP Manager · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.5 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "HR Generalist|fluency": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and HR Generalist disagreed in the exercise, HR Generalist made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: HR Generalist · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all HR Generalist instances on 7.2.1.5 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "HRBP Manager|safety": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: HRBP Manager · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.5 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "HR Generalist|safety": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: HR Generalist · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all HR Generalist instances on 7.2.1.5 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "HRBP Manager|capacity": {
-     "ev": "Test data. Evidence reviewed for HRBP Manager.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HRBP Manager has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: HRBP Manager · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all HRBP Manager instances on 7.2.1.5 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "HR Generalist|capacity": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: HR Generalist · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all HR Generalist instances on 7.2.1.5 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "manager": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. The manager has escalation criteria for Automation, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: Director of HR Ops · Reference: Manager and governance-body interviews · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     },
     "governance": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. A named owner, stop conditions and an escalation route for 7.2.1.5 Modify job requisitions at Automation are written and agreed.",
+     "prov": "Type: document · Source role: Director of HR Ops · Reference: Decision rights and stop conditions, HR governance pack · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: an incident with no owner response within the agreed time."
     },
     "change": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. No competing change in the recruiting team for the next two quarters; leadership time is committed.",
+     "prov": "Type: document · Source role: Director of HR Ops · Reference: Change calendar and initiative load, 2026–27 · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: a new initiative landing on the same team before the step."
     },
     "evidence": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Traceable technical evidence at real volume: type, source, confidence, limits and failure modes are all documented.",
+     "prov": "Type: audit · Source role: Director of HR Ops · Reference: Technical evidence pack for 7.2.1.5 Modify job requisitions at Automation · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of HR Ops",
+     "move": "Would drop to Conditional on: results that cannot be traced to this organization’s data."
     }
    },
    "meta": {
@@ -1522,52 +1726,84 @@ window.ABC_TEST_DATA = {
    },
    "dims": {
     "Recruiter|clarity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter described what AI does at Oversight, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Role walkthrough of the Oversight workflow · Confidence: high · Coverage: all Recruiter instances on 7.2.2.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Recruiter."
     },
     "Recruiter|authority": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Recruiter · Reference: Approval matrix and system permissions for 7.2.2.3 Develop and maintain candidate pool · Confidence: high · Coverage: all Recruiter instances on 7.2.2.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Recruiter|skill": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all Recruiter instances on 7.2.2.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to Recruiter’s review."
     },
     "Recruiter|fluency": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026",
-     "gap": "Partly in place: confidence / decision fluency for Recruiter at Oversight.",
-     "act": "Before or during the step: targeted coaching and scenario practice for Recruiter.",
+     "ev": "Test data. Recruiter made independent calls but hesitated to record the reason when overriding.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Disagreement exercise and manager feedback · Confidence: medium · Coverage: all Recruiter instances on 7.2.2.3 · Date: Oct 2026",
+     "gap": "Partly in place; the rest must be closed for Oversight.",
+     "act": "Coaching on recording override reasons; a second disagreement exercise in 30 days.",
      "owner": "Director of TA",
-     "move": "Confirm within 30 days of the step."
+     "move": "Ready once: override reasons recorded on every disagreement in the next exercise."
     },
     "Recruiter|safety": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all Recruiter instances on 7.2.2.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "Recruiter|capacity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: Recruiter · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all Recruiter instances on 7.2.2.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "manager": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026",
-     "gap": "Partly in place: manager / governance-oversight readiness for the organization at Oversight.",
-     "act": "Before or during the step: targeted organizational action for the organization.",
+     "ev": "Test data. The manager reviews exceptions informally, but escalation criteria for Oversight are not yet agreed.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Manager and governance-body interviews · Confidence: medium · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "Partly in place; the rest must be closed for Oversight.",
+     "act": "Agree escalation criteria and run one exception review with the team before the step.",
      "owner": "Director of TA",
-     "move": "Confirm within 30 days of the step."
+     "move": "Ready once: an exception review held and its outcomes recorded."
     },
     "governance": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. A named owner, stop conditions and an escalation route for 7.2.2.3 Develop and maintain candidate pool at Oversight are written and agreed.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Decision rights and stop conditions, HR governance pack · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an incident with no owner response within the agreed time."
     },
     "change": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. No competing change in the recruiting team for the next two quarters; leadership time is committed.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Change calendar and initiative load, 2026–27 · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a new initiative landing on the same team before the step."
     },
     "evidence": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Traceable technical evidence at real volume: type, source, confidence, limits and failure modes are all documented.",
+     "prov": "Type: audit · Source role: Director of TA · Reference: Technical evidence pack for 7.2.2.3 Develop and maintain candidate pool at Oversight · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: results that cannot be traced to this organization’s data."
     }
    },
    "meta": {
@@ -1603,69 +1839,131 @@ window.ABC_TEST_DATA = {
    },
    "dims": {
     "Director of TA|clarity": {
-     "ev": "Test data. Evidence reviewed for Director of TA.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Director of TA described what AI does at Agent-delegation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Role walkthrough of the Agent-delegation workflow · Confidence: high · Coverage: all Director of TA instances on 7.2.2.4 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Director of TA."
     },
     "Recruiter|clarity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter described what AI does at Agent-delegation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Role walkthrough of the Agent-delegation workflow · Confidence: high · Coverage: all Recruiter instances on 7.2.2.4 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Recruiter."
     },
     "Director of TA|authority": {
-     "ev": "Test data. Evidence reviewed for Director of TA.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Director of TA has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Approval matrix and system permissions for 7.2.2.4 Manage recruitment vendors · Confidence: high · Coverage: all Director of TA instances on 7.2.2.4 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Recruiter|authority": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Recruiter · Reference: Approval matrix and system permissions for 7.2.2.4 Manage recruitment vendors · Confidence: high · Coverage: all Recruiter instances on 7.2.2.4 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Director of TA|skill": {
-     "ev": "Test data. Evidence reviewed for Director of TA.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Director of TA caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: Director of TA · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all Director of TA instances on 7.2.2.4 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to Director of TA’s review."
     },
     "Recruiter|skill": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all Recruiter instances on 7.2.2.4 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to Recruiter’s review."
     },
     "Director of TA|fluency": {
-     "ev": "Test data. Evidence reviewed for Director of TA.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and Director of TA disagreed in the exercise, Director of TA made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: Director of TA · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all Director of TA instances on 7.2.2.4 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "Recruiter|fluency": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and Recruiter disagreed in the exercise, Recruiter made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all Recruiter instances on 7.2.2.4 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "Director of TA|safety": {
-     "ev": "Test data. Evidence reviewed for Director of TA.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Director of TA reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all Director of TA instances on 7.2.2.4 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "Recruiter|safety": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026",
-     "gap": "Partly in place: psychological safety for Recruiter at Agent-delegation."
+     "ev": "Test data. Recruiter raises concerns with the direct manager but not across teams.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Confidential interviews and speak-up history · Confidence: medium · Coverage: all Recruiter instances on 7.2.2.4 · Date: Oct 2026",
+     "gap": "Partly in place; the rest must be closed for Agent-delegation.",
+     "owner": "SVP Talent Management",
+     "move": "Ready once: concerns raised and acted on through the new channel within 60 days."
     },
     "Director of TA|capacity": {
-     "ev": "Test data. Evidence reviewed for Director of TA.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Director of TA has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: Director of TA · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all Director of TA instances on 7.2.2.4 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "Recruiter|capacity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: Recruiter · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all Recruiter instances on 7.2.2.4 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "manager": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. The manager has escalation criteria for Agent-delegation, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: SVP Talent Management · Reference: Manager and governance-body interviews · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     },
     "governance": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. A named owner, stop conditions and an escalation route for 7.2.2.4 Manage recruitment vendors at Agent-delegation are written and agreed.",
+     "prov": "Type: document · Source role: SVP Talent Management · Reference: Decision rights and stop conditions, HR governance pack · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: an incident with no owner response within the agreed time."
     },
     "change": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. No competing change in the recruiting team for the next two quarters; leadership time is committed.",
+     "prov": "Type: document · Source role: SVP Talent Management · Reference: Change calendar and initiative load, 2026–27 · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a new initiative landing on the same team before the step."
     },
     "evidence": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Traceable technical evidence at real volume: type, source, confidence, limits and failure modes are all documented.",
+     "prov": "Type: audit · Source role: SVP Talent Management · Reference: Technical evidence pack for 7.2.2.4 Manage recruitment vendors at Agent-delegation · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: results that cannot be traced to this organization’s data."
     }
    },
    "meta": {
@@ -1702,68 +2000,132 @@ window.ABC_TEST_DATA = {
    },
    "dims": {
     "Recruiter|clarity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter described what AI does at Judgment, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Role walkthrough of the Judgment workflow · Confidence: high · Coverage: all Recruiter instances on 7.2.2.5 · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Recruiter."
     },
     "HR Generalist|clarity": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist described what AI does at Judgment, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: HR Generalist · Reference: Role walkthrough of the Judgment workflow · Confidence: high · Coverage: all HR Generalist instances on 7.2.2.5 · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with HR Generalist."
     },
     "Recruiter|authority": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Recruiter · Reference: Approval matrix and system permissions for 7.2.2.5 Manage employee referral programs · Confidence: high · Coverage: all Recruiter instances on 7.2.2.5 · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "HR Generalist|authority": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: HR Generalist · Reference: Approval matrix and system permissions for 7.2.2.5 Manage employee referral programs · Confidence: high · Coverage: all HR Generalist instances on 7.2.2.5 · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Recruiter|skill": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all Recruiter instances on 7.2.2.5 · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to Recruiter’s review."
     },
     "HR Generalist|skill": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: HR Generalist · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all HR Generalist instances on 7.2.2.5 · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to HR Generalist’s review."
     },
     "Recruiter|fluency": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and Recruiter disagreed in the exercise, Recruiter made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all Recruiter instances on 7.2.2.5 · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "HR Generalist|fluency": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and HR Generalist disagreed in the exercise, HR Generalist made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: HR Generalist · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all HR Generalist instances on 7.2.2.5 · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "Recruiter|safety": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all Recruiter instances on 7.2.2.5 · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "HR Generalist|safety": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: HR Generalist · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all HR Generalist instances on 7.2.2.5 · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "Recruiter|capacity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: Recruiter · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all Recruiter instances on 7.2.2.5 · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "HR Generalist|capacity": {
-     "ev": "Test data. Evidence reviewed for HR Generalist.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. HR Generalist has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: HR Generalist · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all HR Generalist instances on 7.2.2.5 · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "manager": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. The manager has escalation criteria for Judgment, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Manager and governance-body interviews · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     },
     "governance": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. A named owner, stop conditions and an escalation route for 7.2.2.5 Manage employee referral programs at Judgment are written and agreed.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Decision rights and stop conditions, HR governance pack · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an incident with no owner response within the agreed time."
     },
     "change": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. No competing change in the recruiting team for the next two quarters; leadership time is committed.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Change calendar and initiative load, 2026–27 · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a new initiative landing on the same team before the step."
     },
     "evidence": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Traceable technical evidence at real volume: type, source, confidence, limits and failure modes are all documented.",
+     "prov": "Type: audit · Source role: Director of TA · Reference: Technical evidence pack for 7.2.2.5 Manage employee referral programs at Judgment · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Judgment.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: results that cannot be traced to this organization’s data."
     }
    },
    "meta": {
@@ -1794,44 +2156,84 @@ window.ABC_TEST_DATA = {
    },
    "dims": {
     "Recruiter|clarity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter described what AI does at Automation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Role walkthrough of the Automation workflow · Confidence: high · Coverage: all Recruiter instances on 7.2.2.6 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Recruiter."
     },
     "Recruiter|authority": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Recruiter · Reference: Approval matrix and system permissions for 7.2.2.6 Manage recruitment channels · Confidence: high · Coverage: all Recruiter instances on 7.2.2.6 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Recruiter|skill": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all Recruiter instances on 7.2.2.6 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to Recruiter’s review."
     },
     "Recruiter|fluency": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and Recruiter disagreed in the exercise, Recruiter made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all Recruiter instances on 7.2.2.6 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "Recruiter|safety": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all Recruiter instances on 7.2.2.6 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "Recruiter|capacity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: Recruiter · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all Recruiter instances on 7.2.2.6 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "manager": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. The manager has escalation criteria for Automation, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Manager and governance-body interviews · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     },
     "governance": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. A named owner, stop conditions and an escalation route for 7.2.2.6 Manage recruitment channels at Automation are written and agreed.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Decision rights and stop conditions, HR governance pack · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an incident with no owner response within the agreed time."
     },
     "change": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. No competing change in the recruiting team for the next two quarters; leadership time is committed.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Change calendar and initiative load, 2026–27 · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a new initiative landing on the same team before the step."
     },
     "evidence": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Traceable technical evidence at real volume: type, source, confidence, limits and failure modes are all documented.",
+     "prov": "Type: audit · Source role: Director of TA · Reference: Technical evidence pack for 7.2.2.6 Manage recruitment channels at Automation · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: results that cannot be traced to this organization’s data."
     }
    },
    "meta": {
@@ -1868,68 +2270,140 @@ window.ABC_TEST_DATA = {
    },
    "dims": {
     "Recruiter|clarity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter described what AI does at Augmentation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Role walkthrough of the Augmentation workflow · Confidence: high · Coverage: all Recruiter instances on 7.2.3.2 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Recruiter."
     },
     "Hiring Managers*|clarity": {
-     "ev": "Test data. Evidence reviewed for Hiring Managers*.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Hiring Managers* described what AI does at Augmentation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Hiring Managers* · Reference: Role walkthrough of the Augmentation workflow · Confidence: high · Coverage: all Hiring Managers* instances on 7.2.3.2 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Hiring Managers*."
     },
     "Recruiter|authority": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Recruiter · Reference: Approval matrix and system permissions for 7.2.3.2 Interview candidates · Confidence: high · Coverage: all Recruiter instances on 7.2.3.2 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Hiring Managers*|authority": {
-     "ev": "Test data. Evidence reviewed for Hiring Managers*.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Hiring Managers* has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Hiring Managers* · Reference: Approval matrix and system permissions for 7.2.3.2 Interview candidates · Confidence: high · Coverage: all Hiring Managers* instances on 7.2.3.2 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Recruiter|skill": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all Recruiter instances on 7.2.3.2 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to Recruiter’s review."
     },
     "Hiring Managers*|skill": {
-     "ev": "Test data. Evidence reviewed for Hiring Managers*.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Hiring Managers* caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: Hiring Managers* · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all Hiring Managers* instances on 7.2.3.2 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to Hiring Managers*’s review."
     },
     "Recruiter|fluency": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and Recruiter disagreed in the exercise, Recruiter made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all Recruiter instances on 7.2.3.2 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "Hiring Managers*|fluency": {
-     "ev": "Test data. Evidence reviewed for Hiring Managers*.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and Hiring Managers* disagreed in the exercise, Hiring Managers* made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: Hiring Managers* · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all Hiring Managers* instances on 7.2.3.2 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "Recruiter|safety": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all Recruiter instances on 7.2.3.2 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "Hiring Managers*|safety": {
-     "ev": "Test data. Evidence reviewed for Hiring Managers*.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Hiring Managers* reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: Hiring Managers* · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all Hiring Managers* instances on 7.2.3.2 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "Recruiter|capacity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: Recruiter · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all Recruiter instances on 7.2.3.2 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "Hiring Managers*|capacity": {
-     "ev": "Test data. Evidence reviewed for Hiring Managers*.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Hiring Managers* has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: Hiring Managers* · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all Hiring Managers* instances on 7.2.3.2 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "manager": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. The manager has escalation criteria for Augmentation, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Manager and governance-body interviews · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     },
     "governance": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. A named owner, stop conditions and an escalation route for 7.2.3.2 Interview candidates at Augmentation are written and agreed.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Decision rights and stop conditions, HR governance pack · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an incident with no owner response within the agreed time."
     },
     "change": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. No competing change in the recruiting team for the next two quarters; leadership time is committed.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Change calendar and initiative load, 2026–27 · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a new initiative landing on the same team before the step."
     },
     "evidence": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Traceable technical evidence at real volume: type, source, confidence, limits and failure modes are all documented.",
+     "prov": "Type: audit · Source role: Director of TA · Reference: Technical evidence pack for 7.2.3.2 Interview candidates at Augmentation · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: results that cannot be traced to this organization’s data."
+    },
+    "_over|manager": {
+     "ev": "Test data. The manager has escalation criteria for Augmentation, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Manager and governance-body interviews · Confidence: high · Coverage: oversight of 7.2.3.2 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     }
    },
    "meta": {
@@ -1961,45 +2435,92 @@ window.ABC_TEST_DATA = {
    },
    "dims": {
     "Recruiter|clarity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter described what AI does at Oversight, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Role walkthrough of the Oversight workflow · Confidence: high · Coverage: all Recruiter instances on 7.2.3.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Recruiter."
     },
     "Recruiter|authority": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Recruiter · Reference: Approval matrix and system permissions for 7.2.3.3 Test candidates · Confidence: high · Coverage: all Recruiter instances on 7.2.3.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Recruiter|skill": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all Recruiter instances on 7.2.3.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to Recruiter’s review."
     },
     "Recruiter|fluency": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and Recruiter disagreed in the exercise, Recruiter made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all Recruiter instances on 7.2.3.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "Recruiter|safety": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all Recruiter instances on 7.2.3.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "Recruiter|capacity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: Recruiter · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all Recruiter instances on 7.2.3.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "manager": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. The manager has escalation criteria for Oversight, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Manager and governance-body interviews · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     },
     "governance": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. A named owner, stop conditions and an escalation route for 7.2.3.3 Test candidates at Oversight are written and agreed.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Decision rights and stop conditions, HR governance pack · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an incident with no owner response within the agreed time."
     },
     "change": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. No competing change in the recruiting team for the next two quarters; leadership time is committed.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Change calendar and initiative load, 2026–27 · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a new initiative landing on the same team before the step."
     },
     "evidence": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026",
-     "gap": "No evidence yet: Traceable technical evidence: type, source, reference, confidence, limitations, failure modes, real-volume results."
+     "ev": "Test data. No organization-specific evidence yet for the organization at Oversight.",
+     "prov": "Type: audit · Source role: Director of TA · Reference: Technical evidence pack for 7.2.3.3 Test candidates at Oversight · Confidence: none yet · Coverage: the recruiting function · Date: planned by Dec 2026",
+     "gap": "Nothing evidenced, so the finding stays Insufficient Evidence; it is never converted on modeled grounds.",
+     "act": "Gather the evidence: technical evidence pack for 7.2.3.3 test candidates at oversight.",
+     "owner": "Director of TA",
+     "move": "Evidence from technical evidence pack for 7.2.3.3 test candidates at oversight."
+    },
+    "_over|manager": {
+     "ev": "Test data. The manager has escalation criteria for Oversight, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Manager and governance-body interviews · Confidence: high · Coverage: oversight of 7.2.3.3 · Date: Oct 2026",
+     "gap": "None material for Oversight.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     }
    },
    "meta": {
@@ -2042,108 +2563,188 @@ window.ABC_TEST_DATA = {
    },
    "dims": {
     "Director of TA|clarity": {
-     "ev": "Test data. Workflow, role language, RACI, training, scenario walkthrough. Reviewed for Director of TA on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Director of TA described what AI does at Augmentation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Role walkthrough of the Augmentation workflow · Confidence: high · Coverage: all Director of TA instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Director of TA."
     },
     "Recruiter|clarity": {
-     "ev": "Test data. Workflow, role language, RACI, training, scenario walkthrough. Reviewed for Recruiter on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter described what AI does at Augmentation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Role walkthrough of the Augmentation workflow · Confidence: high · Coverage: all Recruiter instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Recruiter."
     },
     "Hiring Managers*|clarity": {
-     "ev": "Test data. Workflow, role language, RACI, training, scenario walkthrough. Reviewed for Hiring Managers* on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Hiring Managers* described what AI does at Augmentation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Hiring Managers* · Reference: Role walkthrough of the Augmentation workflow · Confidence: high · Coverage: all Hiring Managers* instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Hiring Managers*."
     },
     "Director of TA|authority": {
-     "ev": "Test data. Override rights, system permissions, escalation process, approval matrix, governed decision points. Reviewed for Director of TA on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Director of TA has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Approval matrix and system permissions for 7.2.3.4 Select and reject candidates · Confidence: high · Coverage: all Director of TA instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Recruiter|authority": {
-     "ev": "Test data. Override rights, system permissions, escalation process, approval matrix, governed decision points. Reviewed for Recruiter on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Recruiter · Reference: Approval matrix and system permissions for 7.2.3.4 Select and reject candidates · Confidence: high · Coverage: all Recruiter instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Hiring Managers*|authority": {
-     "ev": "Test data. Override rights, system permissions, escalation process, approval matrix, governed decision points. Reviewed for Hiring Managers* on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Hiring Managers* has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Hiring Managers* · Reference: Approval matrix and system permissions for 7.2.3.4 Select and reject candidates · Confidence: high · Coverage: all Hiring Managers* instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Director of TA|skill": {
-     "ev": "Test data. Case review, scenario testing, qualifications, exception-handling evidence. Reviewed for Director of TA on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Director of TA caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: Director of TA · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all Director of TA instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to Director of TA’s review."
     },
     "Recruiter|skill": {
-     "ev": "Test data. Case review, scenario testing, qualifications, exception-handling evidence. Reviewed for Recruiter on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026",
-     "gap": "Partly in place: capability / skill for Recruiter at Augmentation.",
-     "act": "Before or during the step: targeted coaching and scenario practice for Recruiter.",
+     "ev": "Test data. Recruiter caught 2 of 3 seeded errors; the miss was a judgment call on an unusual case.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: medium · Coverage: all Recruiter instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "Partly in place; the rest must be closed for Augmentation.",
+     "act": "Targeted case practice for Recruiter on the error types missed, then retest on a fresh set.",
      "owner": "SVP Talent Management",
-     "move": "Confirm within 30 days of the step."
+     "move": "Ready once: a retest with every seeded error caught and the right call reached independently."
     },
     "Hiring Managers*|skill": {
-     "ev": "Test data. Case review, scenario testing, qualifications, exception-handling evidence. Reviewed for Hiring Managers* on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Hiring Managers* caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: Hiring Managers* · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all Hiring Managers* instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to Hiring Managers*’s review."
     },
     "Director of TA|fluency": {
-     "ev": "Test data. Scenario exercises, observed override behavior, manager feedback. Reviewed for Director of TA on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and Director of TA disagreed in the exercise, Director of TA made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: Director of TA · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all Director of TA instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "Recruiter|fluency": {
-     "ev": "Test data. Scenario exercises, observed override behavior, manager feedback. Reviewed for Recruiter on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026",
-     "gap": "Partly in place: confidence / decision fluency for Recruiter at Augmentation.",
-     "act": "Before or during the step: targeted coaching and scenario practice for Recruiter.",
+     "ev": "Test data. Recruiter made independent calls but hesitated to record the reason when overriding.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Disagreement exercise and manager feedback · Confidence: medium · Coverage: all Recruiter instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "Partly in place; the rest must be closed for Augmentation.",
+     "act": "Coaching on recording override reasons; a second disagreement exercise in 30 days.",
      "owner": "SVP Talent Management",
-     "move": "Confirm within 30 days of the step."
+     "move": "Ready once: override reasons recorded on every disagreement in the next exercise."
     },
     "Hiring Managers*|fluency": {
-     "ev": "Test data. Scenario exercises, observed override behavior, manager feedback. Reviewed for Hiring Managers* on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and Hiring Managers* disagreed in the exercise, Hiring Managers* made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: Hiring Managers* · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all Hiring Managers* instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "Director of TA|safety": {
-     "ev": "Test data. Speak-up history, leadership behavior, escalation norms, incident reviews. Reviewed for Director of TA on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Director of TA reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all Director of TA instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "Recruiter|safety": {
-     "ev": "Test data. Speak-up history, leadership behavior, escalation norms, incident reviews. Reviewed for Recruiter on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all Recruiter instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "Hiring Managers*|safety": {
-     "ev": "Test data. Speak-up history, leadership behavior, escalation norms, incident reviews. Reviewed for Hiring Managers* on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Hiring Managers* reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: Hiring Managers* · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all Hiring Managers* instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "Director of TA|capacity": {
-     "ev": "Test data. Caseload, review time, exception volume, backlog, staffing, verification effort. Reviewed for Director of TA on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026",
-     "gap": "Partly in place: capacity / workload for Director of TA at Augmentation.",
-     "act": "Before or during the step: targeted coaching and scenario practice for Director of TA.",
+     "ev": "Test data. Review fits at average volume, but the hiring peak in Q1 would leave under 10% for exceptions.",
+     "prov": "Type: system · Source role: Director of TA · Reference: Caseload and review-time data, Q3 2026 · Confidence: medium · Coverage: all Director of TA instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "Partly in place; the rest must be closed for Augmentation.",
+     "act": "Plan peak cover before the step (temporary support or a lower AI hand-off rate in Q1).",
      "owner": "SVP Talent Management",
-     "move": "Confirm within 30 days of the step."
+     "move": "Ready once: peak cover in place and review time measured at peak."
     },
     "Recruiter|capacity": {
-     "ev": "Test data. Caseload, review time, exception volume, backlog, staffing, verification effort. Reviewed for Recruiter on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: Recruiter · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all Recruiter instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "Hiring Managers*|capacity": {
-     "ev": "Test data. Caseload, review time, exception volume, backlog, staffing, verification effort. Reviewed for Hiring Managers* on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Hiring Managers* has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: Hiring Managers* · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all Hiring Managers* instances on 7.2.3.4 · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "manager": {
-     "ev": "Test data. Manager/governance expectations, escalation criteria, monitoring, coaching, evidence of the actual oversight body. Reviewed for the organization on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. The manager has escalation criteria for Augmentation, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: SVP Talent Management · Reference: Manager and governance-body interviews · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     },
     "governance": {
-     "ev": "Test data. Decision rights, risk tolerance, stop conditions, escalation routes, named owners, governance standards. Reviewed for the organization on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. A named owner, stop conditions and an escalation route for 7.2.3.4 Select and reject candidates at Augmentation are written and agreed.",
+     "prov": "Type: document · Source role: SVP Talent Management · Reference: Decision rights and stop conditions, HR governance pack · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: an incident with no owner response within the agreed time."
     },
     "change": {
-     "ev": "Test data. Competing initiatives, staffing changes, implementation timing, leadership capacity, change load. Reviewed for the organization on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026",
-     "gap": "Partly in place: change capacity for the organization at Augmentation.",
-     "act": "Before or during the step: targeted organizational action for the organization.",
+     "ev": "Test data. An ATS upgrade lands in the same quarter; the step can proceed if the two are sequenced.",
+     "prov": "Type: document · Source role: SVP Talent Management · Reference: Change calendar and initiative load, 2026–27 · Confidence: medium · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "Partly in place; the rest must be closed for Augmentation.",
+     "act": "Sequence the step after the competing change and confirm the dates in the change calendar.",
      "owner": "SVP Talent Management",
-     "move": "Confirm within 30 days of the step."
+     "move": "Ready once: competing change complete or rescheduled, confirmed in the calendar."
     },
     "evidence": {
-     "ev": "Test data. Traceable technical evidence: type, source, reference, confidence, limitations, failure modes, real-volume results. Reviewed for the organization on 7.2.3.4.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Traceable technical evidence at real volume: type, source, confidence, limits and failure modes are all documented.",
+     "prov": "Type: audit · Source role: SVP Talent Management · Reference: Technical evidence pack for 7.2.3.4 Select and reject candidates at Augmentation · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Augmentation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: results that cannot be traced to this organization’s data."
+    },
+    "_over|manager": {
+     "ev": "Test data. The manager reviews exceptions informally, but escalation criteria for Augmentation are not yet agreed.",
+     "prov": "Type: interview · Source role: SVP Talent Management · Reference: Manager and governance-body interviews · Confidence: medium · Coverage: oversight of 7.2.3.4 · Date: Oct 2026",
+     "gap": "Partly in place; the rest must be closed for Augmentation.",
+     "act": "Agree escalation criteria and run one exception review with the team before the step.",
+     "owner": "CHRO",
+     "move": "Ready once: an exception review held and its outcomes recorded."
     }
    },
    "meta": {
@@ -2175,44 +2776,84 @@ window.ABC_TEST_DATA = {
    },
    "dims": {
     "Recruiter|clarity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter described what AI does at Automation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Role walkthrough of the Automation workflow · Confidence: high · Coverage: all Recruiter instances on 7.2.4.1 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Recruiter."
     },
     "Recruiter|authority": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Recruiter · Reference: Approval matrix and system permissions for 7.2.4.1 Draw up and make offer · Confidence: high · Coverage: all Recruiter instances on 7.2.4.1 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Recruiter|skill": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all Recruiter instances on 7.2.4.1 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to Recruiter’s review."
     },
     "Recruiter|fluency": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and Recruiter disagreed in the exercise, Recruiter made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all Recruiter instances on 7.2.4.1 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "Recruiter|safety": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all Recruiter instances on 7.2.4.1 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "Recruiter|capacity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: Recruiter · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all Recruiter instances on 7.2.4.1 · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "manager": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. The manager has escalation criteria for Automation, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Manager and governance-body interviews · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     },
     "governance": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. A named owner, stop conditions and an escalation route for 7.2.4.1 Draw up and make offer at Automation are written and agreed.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Decision rights and stop conditions, HR governance pack · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an incident with no owner response within the agreed time."
     },
     "change": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. No competing change in the recruiting team for the next two quarters; leadership time is committed.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Change calendar and initiative load, 2026–27 · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a new initiative landing on the same team before the step."
     },
     "evidence": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Traceable technical evidence at real volume: type, source, confidence, limits and failure modes are all documented.",
+     "prov": "Type: audit · Source role: Director of TA · Reference: Technical evidence pack for 7.2.4.1 Draw up and make offer at Automation · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Automation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: results that cannot be traced to this organization’s data."
     }
    },
    "meta": {
@@ -2242,52 +2883,84 @@ window.ABC_TEST_DATA = {
    },
    "dims": {
     "Recruiter|clarity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter described what AI does at Agent-delegation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Role walkthrough of the Agent-delegation workflow · Confidence: high · Coverage: all Recruiter instances on 7.2.4.3 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Recruiter."
     },
     "Recruiter|authority": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Recruiter · Reference: Approval matrix and system permissions for 7.2.4.3 Hire candidate · Confidence: high · Coverage: all Recruiter instances on 7.2.4.3 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Recruiter|skill": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all Recruiter instances on 7.2.4.3 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to Recruiter’s review."
     },
     "Recruiter|fluency": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and Recruiter disagreed in the exercise, Recruiter made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all Recruiter instances on 7.2.4.3 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "Recruiter|safety": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026",
-     "gap": "Not yet in place: psychological safety for Recruiter at Agent-delegation.",
-     "act": "Close the gap before the step: targeted coaching and scenario practice for Recruiter.",
+     "ev": "Test data. Recruiter reports that challenging the system is seen as resisting the change; no concerns were logged in Q3.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Confidential interviews and speak-up history · Confidence: medium · Coverage: all Recruiter instances on 7.2.4.3 · Date: Oct 2026",
+     "gap": "Not in place for Agent-delegation; this holds the step.",
+     "act": "Leadership states the speak-up expectation; add a concern channel to the step and review it monthly.",
      "owner": "Director of TA",
-     "move": "Reassess in 60 days."
+     "move": "Moves up on: concerns raised and acted on through the new channel within 60 days."
     },
     "Recruiter|capacity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: Recruiter · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all Recruiter instances on 7.2.4.3 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "manager": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. The manager has escalation criteria for Agent-delegation, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Manager and governance-body interviews · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     },
     "governance": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. A named owner, stop conditions and an escalation route for 7.2.4.3 Hire candidate at Agent-delegation are written and agreed.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Decision rights and stop conditions, HR governance pack · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: an incident with no owner response within the agreed time."
     },
     "change": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026",
-     "gap": "Not yet in place: change capacity for the organization at Agent-delegation.",
-     "act": "Close the gap before the step: targeted organizational action for the organization.",
+     "ev": "Test data. Two other changes hit the same team this quarter, with no capacity to absorb a third.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Change calendar and initiative load, 2026–27 · Confidence: medium · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "Not in place for Agent-delegation; this holds the step.",
+     "act": "Sequence the step after the competing change and confirm the dates in the change calendar.",
      "owner": "Director of TA",
-     "move": "Reassess in 60 days."
+     "move": "Moves up on: competing change complete or rescheduled, confirmed in the calendar."
     },
     "evidence": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Traceable technical evidence at real volume: type, source, confidence, limits and failure modes are all documented.",
+     "prov": "Type: audit · Source role: Director of TA · Reference: Technical evidence pack for 7.2.4.3 Hire candidate at Agent-delegation · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "Director of TA",
+     "move": "Would drop to Conditional on: results that cannot be traced to this organization’s data."
     }
    },
    "meta": {
@@ -2324,68 +2997,140 @@ window.ABC_TEST_DATA = {
    },
    "dims": {
     "Director of TA|clarity": {
-     "ev": "Test data. Evidence reviewed for Director of TA.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Director of TA described what AI does at Agent-delegation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Role walkthrough of the Agent-delegation workflow · Confidence: high · Coverage: all Director of TA instances on 7.2.5.1 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Director of TA."
     },
     "Recruiter|clarity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter described what AI does at Agent-delegation, what stays with a person, and what cannot be delegated, without prompting; the RACI and the written workflow agree.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Role walkthrough of the Agent-delegation workflow · Confidence: high · Coverage: all Recruiter instances on 7.2.5.1 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a change to the workflow that is not walked through with Recruiter."
     },
     "Director of TA|authority": {
-     "ev": "Test data. Evidence reviewed for Director of TA.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Director of TA has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Director of TA · Reference: Approval matrix and system permissions for 7.2.5.1 Obtain candidate background information · Confidence: high · Coverage: all Director of TA instances on 7.2.5.1 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Recruiter|authority": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has the system permission to override the AI output and a written escalation route; two overrides in the trial were honored.",
+     "prov": "Type: document · Source role: Recruiter · Reference: Approval matrix and system permissions for 7.2.5.1 Obtain candidate background information · Confidence: high · Coverage: all Recruiter instances on 7.2.5.1 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: an override that is reversed without a reason recorded."
     },
     "Director of TA|skill": {
-     "ev": "Test data. Evidence reviewed for Director of TA.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Director of TA caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: Director of TA · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all Director of TA instances on 7.2.5.1 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to Director of TA’s review."
     },
     "Recruiter|skill": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter caught all 3 seeded errors in 10 scenario cases and reached the right call on every case without the AI output.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Scenario test: 10 cases, scored against the criteria · Confidence: high · Coverage: all Recruiter instances on 7.2.5.1 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: missed errors in the in-stage audit traced to Recruiter’s review."
     },
     "Director of TA|fluency": {
-     "ev": "Test data. Evidence reviewed for Director of TA.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and Director of TA disagreed in the exercise, Director of TA made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: Director of TA · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all Director of TA instances on 7.2.5.1 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "Recruiter|fluency": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. When the AI and Recruiter disagreed in the exercise, Recruiter made and defended an independent call each time.",
+     "prov": "Type: observed · Source role: Recruiter · Reference: Disagreement exercise and manager feedback · Confidence: high · Coverage: all Recruiter instances on 7.2.5.1 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a pattern of unrecorded overrides or of deferring to the AI output."
     },
     "Director of TA|safety": {
-     "ev": "Test data. Evidence reviewed for Director of TA.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Director of TA reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: Director of TA · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all Director of TA instances on 7.2.5.1 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "Recruiter|safety": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter reports raising concerns about the AI output without penalty; two concerns raised in Q3 were acted on.",
+     "prov": "Type: interview · Source role: Recruiter · Reference: Confidential interviews and speak-up history · Confidence: high · Coverage: all Recruiter instances on 7.2.5.1 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a concern raised and dismissed without a response."
     },
     "Director of TA|capacity": {
-     "ev": "Test data. Evidence reviewed for Director of TA.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Director of TA has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: Director of TA · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all Director of TA instances on 7.2.5.1 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "Recruiter|capacity": {
-     "ev": "Test data. Evidence reviewed for Recruiter.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Recruiter has about 25% of time free for review and exceptions at the expected volume; backlog under 2 days.",
+     "prov": "Type: system · Source role: Recruiter · Reference: Caseload and review-time data, Q3 2026 · Confidence: high · Coverage: all Recruiter instances on 7.2.5.1 · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: backlog over 5 days or review time falling below the minimum."
     },
     "manager": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. The manager has escalation criteria for Agent-delegation, reviews exceptions weekly, and has coached the team on the change.",
+     "prov": "Type: interview · Source role: SVP Talent Management · Reference: Manager and governance-body interviews · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: escalations that go unanswered for more than a week."
     },
     "governance": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. A named owner, stop conditions and an escalation route for 7.2.5.1 Obtain candidate background information at Agent-delegation are written and agreed.",
+     "prov": "Type: document · Source role: SVP Talent Management · Reference: Decision rights and stop conditions, HR governance pack · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: an incident with no owner response within the agreed time."
     },
     "change": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. No competing change in the recruiting team for the next two quarters; leadership time is committed.",
+     "prov": "Type: document · Source role: SVP Talent Management · Reference: Change calendar and initiative load, 2026–27 · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: a new initiative landing on the same team before the step."
     },
     "evidence": {
-     "ev": "Test data. Evidence reviewed for the organization.",
-     "prov": "ABC Test Org, Nov 17, 2026"
+     "ev": "Test data. Traceable technical evidence at real volume: type, source, confidence, limits and failure modes are all documented.",
+     "prov": "Type: audit · Source role: SVP Talent Management · Reference: Technical evidence pack for 7.2.5.1 Obtain candidate background information at Agent-delegation · Confidence: high · Coverage: the recruiting function · Date: Oct 2026",
+     "gap": "None material for Agent-delegation.",
+     "act": "None before the step; keep it in place and recheck at the next review.",
+     "owner": "SVP Talent Management",
+     "move": "Would drop to Conditional on: results that cannot be traced to this organization’s data."
+    },
+    "_over|manager": {
+     "ev": "Test data. No escalation criteria for Agent-delegation; the manager expects AI exceptions to go to IT.",
+     "prov": "Type: interview · Source role: SVP Talent Management · Reference: Manager and governance-body interviews · Confidence: medium · Coverage: oversight of 7.2.5.1 · Date: Oct 2026",
+     "gap": "Not in place for Agent-delegation; this holds the step.",
+     "act": "Agree escalation criteria and run one exception review with the team before the step.",
+     "owner": "CHRO",
+     "move": "Moves up on: an exception review held and its outcomes recorded."
     }
    },
    "meta": {

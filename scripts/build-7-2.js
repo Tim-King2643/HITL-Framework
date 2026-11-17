@@ -1,13 +1,14 @@
-// Rebuild: serve docs/ on port 8765 (python3 -m http.server 8765), then NODE_PATH=$(npm root -g) node scripts/abc-test-data/build-7-2.js;
+// Rebuild: serve docs/ on port 8765 (python3 -m http.server 8765), then NODE_PATH=$(npm root -g) node scripts/build-7-2.js;
 // it writes abc72_payloads.json, which is folded into docs/wip/abc-test-data-7-2.js with the scenario list.
+// Inputs: scripts/spec-7-2.js (one scenario per activity) and scripts/evidence-7-2.js (readiness evidence text).
 // Builds the ABC Test Org 7.2 payloads from the scenario spec, using the sandbox's own model (run headless).
 const {chromium}=require('playwright'),fs=require('fs');
-const SPEC=require('./spec-7-2.js');
+const SPEC=require('./spec-7-2.js'),EV=require('./evidence-7-2.js');
 (async()=>{const b=await chromium.launch();const p=await b.newPage();
 await p.route('**/*-api/**',r=>r.fulfill({status:200,contentType:'application/json',body:'{}'}));
 await p.goto('http://localhost:8765/sandbox/pcf7.html');await p.waitForTimeout(2500);
 const f=p.frames().find(x=>x.url().includes('four_views'));
-const out=await f.evaluate((SPEC)=>{
+const out=await f.evaluate(([SPEC,EV])=>{
  const W=P.FV_SOURCE.WR_DATA,ORG='abc-test-org',DATE='Nov 17, 2026',TAG='ABC Test Org test data (7.2), '+DATE;
  const EVT=['observed','system','audit','interview','document'],REFS={observed:'Observed instances, Oct 2026',system:'System logs, Q3 2026',audit:'Internal audit sample, Oct 2026',interview:'Interviews with the team, Oct 2026',document:'Process documentation, rev. 2026'};
  const res={assess:[],del:[],override:[],review:[],ready:[],stepev:[],checks:[]};
@@ -39,18 +40,26 @@ const out=await f.evaluate((SPEC)=>{
    res.stepev.push({org:ORG,code,to,counts,wk:sp.te.mode==='ins'?Math.max(1,wk-1):wk+1,auditor:(rdOver(a)||A0),source:'Test data. '+TE_L[to].meth+' in ABC Test Org, Oct–Nov 2026.',signed:sp.te.mode==='ins'?'':signed,log});}
   if(sp.rd){const R=rdRoles(a),cells={},dims={},set=sp.rd.set||{},noAct=sp.rd.noAct||[];
    Object.keys(set).forEach(x=>{const r=x.split('@')[1];if(r&&!R.includes(r))res.checks.push(code+': '+r+' is not one of its roles ('+R.join(', ')+')');});
-   RD_DIMS.forEach(dm=>{const keys=dm.l==='role'?R.map(r=>[r+'|'+dm.k,r+'|'+dm.k,set[dm.k+'@'+r]||set[dm.k]]):[['_|'+dm.k,dm.k,set[dm.k]]];
-     keys.forEach(([ck,dk,f])=>{f=f||sp.rd.base;cells[ck]=f;const who=dm.l==='role'?dk.split('|')[0]:'the organization';
-       const rec={ev:'Test data. '+(sp.rd.rich?dm.ev+' Reviewed for '+who+' on '+code+'.':'Evidence reviewed for '+who+'.'),prov:'ABC Test Org, '+DATE};
-       if(f==='cond'||f==='not'){rec.gap=(f==='not'?'Not yet in place: ':'Partly in place: ')+dm.n.toLowerCase()+' for '+who+' at '+to+'.';
-         if(!noAct.includes(dm.k+'@'+who)){rec.act=(f==='not'?'Close the gap before the step: ':'Before or during the step: ')+'targeted '+(dm.l==='role'?'coaching and scenario practice':'organizational action')+' for '+who+'.';rec.owner=rdOver(a)||A0;rec.move=f==='not'?'Reassess in 60 days.':'Confirm within 30 days of the step.';}}
-       if(f==='ins')rec.gap='No evidence yet: '+dm.ev;
-       dims[dk]=rec;});});
-   if(rdOver(a)&&HC[a.cons]){const f=sp.rd.over||sp.rd.base;cells['_over|manager']=f;}
+   // All six fields under every rating (Nov 17, 2026): evidence, provenance, gap, required action, owner, what would move it.
+   const own=rdOver(a)||A0,CONF={ready:'high',cond:'medium',not:'medium',ins:'none yet'};
+   const rec6=(dm,who,f,src,cov)=>{const T=EV[dm.k],sub=t=>t.replace(/\{R\}/g,who).replace(/\{A\}/g,code+' '+a.name.replace(/\s*\(.*$/,'')).replace(/\{S\}/g,to);
+     const prov='Type: '+T.type+' \u00b7 Source role: '+src+' \u00b7 Reference: '+sub(T.ref)+' \u00b7 Confidence: '+CONF[f]+' \u00b7 Coverage: '+cov+' \u00b7 Date: '+(f==='ins'?'planned by Dec 2026':'Oct 2026');
+     if(f==='ins')return {ev:'Test data. No organization-specific evidence yet for '+who+' at '+to+'.',prov,gap:'Nothing evidenced, so the finding stays Insufficient Evidence; it is never converted on modeled grounds.',act:'Gather the evidence: '+sub(T.ref).toLowerCase()+'.',owner:own,move:'Evidence from '+sub(T.ref).toLowerCase()+'.'};
+     const r={ev:'Test data. '+sub(f==='ready'?T.ready:f==='cond'?T.part:T.not),prov};
+     if(f==='ready'){r.gap='None material for '+to+'.';r.act='None before the step; keep it in place and recheck at the next review.';r.owner=own;r.move='Would drop to Conditional on: '+sub(T.down).replace(/^./,c=>c.toLowerCase());}
+     else{r.gap=f==='cond'?'Partly in place; the rest must be closed for '+to+'.':'Not in place for '+to+'; this holds the step.';r.act=sub(T.act);r.owner=own;r.move=(f==='cond'?'Ready once: ':'Moves up on: ')+sub(T.up).replace(/^./,c=>c.toLowerCase());}
+     return r;};
+   RD_DIMS.forEach(dm=>{const keys=dm.l==='role'?R.map(r=>[r+'|'+dm.k,r+'|'+dm.k,set[dm.k+'@'+r]||set[dm.k],r]):[['_|'+dm.k,dm.k,set[dm.k],null]];
+     keys.forEach(([ck,dk,f,r])=>{f=f||sp.rd.base;cells[ck]=f;const who=r||'the organization';
+       const x=rec6(dm,who,f,r||own,r?'all '+r+' instances on '+code:'the recruiting function');
+       if(noAct.includes(dm.k+'@'+who)){delete x.act;}
+       dims[dk]=x;});});
+   if(rdOver(a)&&HC[a.cons]){const ov=rdOver(a),f=sp.rd.over||sp.rd.base,dm=RD_DIMS.find(d=>d.k==='manager');cells['_over|manager']=f;
+     dims['_over|manager']=Object.assign(rec6(dm,ov,f,ov,'oversight of '+code),{owner:(DATA.roles.find(x=>x.name===ov)||{}).reportsTo||ov});}
    const agencyBy={};R.forEach(r=>agencyBy[r]='Test data. '+r+' keeps the judgment at '+ctl+' and can set aside the AI output with a reason; the step changes what they review, not what they answer for.');
    res.ready.push({org:ORG,code,to,cells,dims,meta:{by:'Tim King (test data)',from:TAG,signed:HC[a.cons]?(rdOver(a)||A0):'',agencyBy}});}
  });
- return res;},SPEC);
+ return res;},[SPEC,EV]);
 fs.writeFileSync('abc72_payloads.json',JSON.stringify(out,null,1));
 console.log('assess',out.assess.length,'del',out.del.length,'override',out.override.length,'ready',out.ready.length,'stepev',out.stepev.length);console.log(out.checks.join('\n'));
 await b.close()})();
