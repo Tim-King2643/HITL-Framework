@@ -250,6 +250,7 @@ body{background:transparent;padding-bottom:0}
 .gbtn.primary{background:#1B4F8A;border-color:#1B4F8A;color:#fff}
 .ovsec{border-top:1px solid #DDE3EE;margin-top:14px;padding-top:10px}.ovsec h5{font-size:12.5px;color:#0D2D4F;margin:0 0 6px}
 .ovt td.el{width:190px}
+.gbtn.sm{font-size:12px;padding:3px 10px;margin-left:8px;vertical-align:middle}
 .gbtn:disabled{opacity:.6;cursor:default}
 .gh2{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);font-weight:600;margin:12px 0 4px}
 .rdc{display:inline-block;font-size:11px;font-weight:600;border-radius:10px;padding:1px 8px;white-space:nowrap}
@@ -747,11 +748,9 @@ let TE=null;
 function teRow(a,k){const to=ST[k+1],L=TE_L[to],open=TE&&TE.code===a.code&&TE.k===k;
   const meth='<span class="temeth">'+teMeth(a,to)+'</span> ';
   if(!isOrg()) return '<tr><td class="el">Technical / process</td><td>'+meth+teReq(a,to)+'<div class="small">Evidence is recorded per organization, gathered before moving (GR-037). Thresholds are proposed defaults (BR-18).</div></td></tr>';
-  const r=open?TE.r:teRec(a,to),f=teFinding(a,to,r),c=(r&&r.counts)||{},os=r?teOpen(r):[];
-  const link=canEdit()?' <span class="assess" style="cursor:pointer;margin-left:6px" onclick="teOpenP(\''+a.code+'\','+k+')">'+(teRec(a,to)?'Update evidence':'Record evidence')+'</span>':'';
-  return '<tr><td class="el">Technical / process</td><td>'+teChip(f)+' '+(r?L.m.map(m=>m.n+' '+(teRate(m,c)!=null?teRate(m,c)+'% <span class="small">('+c[m.num[0]]+' of '+c[m.den[0]]+')</span>':'&mdash;')+' vs '+teThr(m)).join('; ')+
-     ' <span class="small">&middot; '+teN(to,c)+' instances (minimum '+teVol(a,to)+'), '+(r.wk||0)+' weeks (minimum '+teWk(a,to)+')'+(os.length?' &middot; '+os.length+' open serious discrepanc'+(os.length===1?'y':'ies')+': '+os.map(x=>esc(x.inst||'instance')).join(', '):'')+(teSign(a,to)&&!(r.signed||'').trim()?' &middot; awaiting governance sign-off':'')+'</span>':
-     '<span class="small">Not yet recorded. '+meth+teReq(a,to)+'</span>')+link+'</td></tr>';}
+  const r=open?TE.r:teRec(a,to),f=teFinding(a,to,r);
+  return '<tr><td class="el">Technical / process</td><td>'+teChip(f)+gBtn('teOpenP(\''+a.code+'\','+k+')',!!teRec(a,to))+'</td></tr>';}
+function gBtn(js,re){return canEdit()?'<button type="button" class="gbtn sm" onclick="'+js+'">'+(re?'Reassess':'Assess')+'</button>':'';}
 function teOpenP(code,k){const a=ACT[code],to=ST[k+1],rec=teRec(a,to);RD=null;
   TE={code,k,to,r:rec?JSON.parse(JSON.stringify({counts:rec.counts||{},wk:rec.wk,auditor:rec.auditor,source:rec.source,signed:rec.signed,log:rec.log||[]})):{counts:{},log:[]},busy:false,msg:'',ask:false};render();}
 function teKeep(f,v){if(!TE)return;if(f.startsWith('c.'))TE.r.counts[f.slice(2)]=v;else TE.r[f]=v;}
@@ -866,28 +865,18 @@ function readiness(a,k){const to=ST[k+1],org=isOrg(),rec=rdRec(a),open=RD&&RD.co
   const teOpenHere=TE&&TE.code===a.code&&TE.k===k;
   let h='<div class="gh2">Readiness Gate</div><table class="it">'+teRow(a,k);
   if(!org) return h+'<tr><td class="el">Role readiness</td><td>Assessed per organization: readiness cannot be modeled. Choose an organization to assess it.</td></tr><tr><td class="el">Organizational readiness</td><td>Assessed per organization.</td></tr></table><div class="small" style="margin-top:4px">All three must clear before the activity takes this step.</div>';
-  const cells=open?RD.cells:(rec&&rec.to===to?rec.cells:{}),assessed=open||!!(rec&&rec.to===to),rl=rdRoll(a,cells),ov=rdOver(a);
-  const per=rdPer(a);
-  h+=(per?'<tr><td class="el">Role readiness</td><td>'+rdRoles(a).map(r=>{const x=rdRollRole(a,cells,r),L=rdLayer(x,['role','shared']);
-      const by=['ready','cond','not','ins'].filter(f=>L.cnt[f]).map(f=>L.cnt[f]+' '+RD_F[f][0]).join(' · ');return '<div style="margin-bottom:3px">'+esc(r)+': '+rdChip(L.w)+(assessed?' <span class="small">'+by+'</span>':'')+'</div>'}).join('')+
-      '<div class="small">'+(assessed?'Each role&rsquo;s finding stands on its own below High; no roll-up.':'Not yet assessed for this step')+'</div></td></tr>':rdRow('Role readiness',rdLayer(rl,['role','shared']),rl,assessed))+
-    rdRow('Organizational readiness',rdLayer(rl,['org','shared']),rl,assessed)+
-    (ov&&HC[a.cons]?'<tr><td class="el">Governance oversight</td><td>'+esc(ov)+' <span class="small">('+esc(a.Aroles[0])+' reports to this role)</span>: '+rdChip(cells['_over|manager']||'ins')+' <span class="small">assessed separately, never rolled in (BR-16)</span></td></tr>':'')+'</table>';
-  const V=rdVerdict(a,to,assessed?cells:null);
-  const dims=open?RD.dims:(rec&&rec.dims)||{},allIns=Object.values(cells).every(x=>x==='ins');
-  const link=canEdit()?' <span class="assess" style="cursor:pointer;margin-left:6px" onclick="rdOpen(\''+a.code+'\','+k+')">'+(rec&&rec.to===to?'Reassess readiness':'Assess readiness')+'</span>':'';
-  h+='<div class="rdv'+(V.v==='clear'?'':V.v==='cond'?' cond':' hold')+'">'+(V.v==='none'?'Holds: readiness for '+to+' is not yet assessed.'+(rec&&rec.to!==to?' Readiness was assessed for the step to '+rec.to+'.':''):
-    V.per?(allIns?'Holds: nothing is assessed yet.':V.per.map(x=>'<div><b>'+esc(x.r)+'</b> &mdash; '+rdSay(x.rl,x.v,cells,dims,false,x.r)+'</div>').join('')):
-    rdSay(V.rl,V.v,cells,dims,allIns))+link+'</div>';
-  if(!open&&rec&&rec.to===to) h+='<div class="small" style="margin-top:4px">Assessed'+(rec.meta&&rec.meta.by?' by '+esc(rec.meta.by):'')+(rec.savedAt?' on '+new Date(rec.savedAt).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'')+(rec.meta&&rec.meta.signed?' · signed off by '+esc(rec.meta.signed):' · not yet signed off')+'.</div>';
-  {const tf=teFinding(a,to,teOpenHere?TE.r:teRec(a,to)),both=tf==='met'&&V.v==='clear',cond=tf==='met'&&V.v==='cond';
-   h+='<div class="small" style="margin-top:6px">Gate: '+(both?'clears':cond?'clears with conditions':'holds')+' &mdash; Technical / process '+TE_F[tf][0]+'; readiness '+(V.v==='none'?'not yet assessed':V.v==='hold'?'holds':V.v==='cond'?'clears with conditions':'clears')+'. All three must clear before the activity takes this step.</div>';}
+  const cells=open?RD.cells:(rec&&rec.to===to?rec.cells:{}),assessed=!!(rec&&rec.to===to),rl=rdRoll(a,cells),ov=rdOver(a),ord=['not','ins','cond','ready'];
+  const worst=xs=>xs.reduce((w,x)=>ord.indexOf(x)<ord.indexOf(w)?x:w,'ready');
+  const roleF=rdPer(a)?worst(rdRoles(a).map(r=>rdLayer(rdRollRole(a,cells,r),['role','shared']).w)):rdLayer(rl,['role','shared']).w;
+  const row=(lab,chip,ly)=>'<tr><td class="el">'+lab+'</td><td>'+chip+gBtn('rdOpen(\''+a.code+'\','+k+',\''+ly+'\')',assessed)+'</td></tr>';
+  h+=row('Role readiness',rdChip(roleF),'role')+row('Organizational readiness',rdChip(rdLayer(rl,['org','shared']).w),'org')+
+    (ov&&HC[a.cons]?row('Governance oversight',rdChip(cells['_over|manager']||'ins'),'over'):'')+'</table>';
   return h+(teOpenHere?tePanel(a,k):'')+(open?rdPanel(a,k):'');}
-function rdOpen(code,k){TE=null;const a=ACT[code],to=ST[k+1],rec=rdRec(a),same=rec&&rec.to===to;
+function rdOpen(code,k,ly){TE=null;ly=ly||(RD&&RD.code===code&&RD.k===k&&RD.layer)||'role';const a=ACT[code],to=ST[k+1],rec=rdRec(a),same=rec&&rec.to===to;
   const dims=same?JSON.parse(JSON.stringify(rec.dims||{})):{},R=rdRoles(a);
   RD_DIMS.filter(d=>d.l==='role'&&dims[d.k]).forEach(d=>{if(!dims[R[0]+'|'+d.k])dims[R[0]+'|'+d.k]=dims[d.k];delete dims[d.k];});
   const meta=same?JSON.parse(JSON.stringify(rec.meta||{})):{};if(meta.agency){meta.agencyBy=meta.agencyBy||{};if(!meta.agencyBy[R[0]])meta.agencyBy[R[0]]=meta.agency;delete meta.agency;}
-  RD={code,k,to,cells:same?Object.assign({},rec.cells):{},dims,meta,busy:false,msg:'',exp:{},role:R[0]};render();}
+  RD={code,k,to,cells:same?Object.assign({},rec.cells):{},dims,meta,busy:false,msg:'',exp:{},role:R[0],layer:ly};render();}
 function rdRole(r){if(RD){RD.role=r;render();}}
 function rdSet(key,v){if(!RD)return;RD.cells[key]=v;render();}
 function rdText(d,f,v){if(!RD)return;(RD.dims[d]=RD.dims[d]||{})[f]=v;}
@@ -898,7 +887,7 @@ function rdClose(){RD=null;render();}
 // Reset an activity's readiness (Nov 13, 2026): clears the draft and, once confirmed, the saved record; the Worker keeps
 // the saved version in the record's history.
 function rdResetAsk(v){if(RD){RD.ask=v;render();}}
-function rdReset(){const a=ACT[RD.code],k=RD.k,role=RD.role,done=()=>{rdOpen(a.code,k);RD.role=role;RD.msg='Readiness reset.';render();};
+function rdReset(){const a=ACT[RD.code],k=RD.k,role=RD.role,ly=RD.layer,done=()=>{rdOpen(a.code,k,ly);RD.role=role;RD.msg='Readiness reset.';render();};
   if(!rdRec(a)){done();return;}
   RD.busy=true;RD.ask=false;RD.msg='Resetting…';render();
   P.OrgContext.resetReadiness({org:P.ACTIVE_ORG.id,code:a.code}).then(j=>{P.fvReadinessSaved(a.code,j.record);done();})
@@ -946,24 +935,24 @@ function rdDetail(a,d,ov){const r=RD.role,key=ov?'_over|manager':rdKey(d,r),x=RD
    RD_REC.map(([k,l,ph])=>'<label class="rdl">'+l+'<textarea placeholder="'+ph+'" oninput="rdText(\''+key.replace(/'/g,"\\'")+'\',\''+k+'\',this.value)">'+esc(x[k]||'')+'</textarea></label>').join('')+'</div></div>';}
 const rdHas=(d,r)=>{const x=RD.dims[rdKey(d,r)]||{};return Object.values(x).some(v=>(v||'').trim())};
 function rdExp(k){if(!RD)return;RD.exp[k]=!RD.exp[k];render();}
-function rdPanel(a,k){const R=rdRoles(a),rl=rdRoll(a,RD.cells),ov=rdOver(a),c=RD.cells,multi=R.length>1&&HC[a.cons],nc=multi?3:2,sel=RD.role;
-  let h='<div class="rdp"><h4>Assess readiness &middot; '+a.code+' to '+RD.to+'</h4><div class="isub">'+esc(ORGNAME())+'. '+(R.length>1?(HC[a.cons]?'Weakest link across the '+R.length+' required roles (BR-16).':'Each role&rsquo;s finding stands on its own below High.'):'One required role, read directly: '+esc(R[0])+'.')+
-   ' Every finding starts at Insufficient Evidence; modeled facts never move one (GR-012 v0.2). '+(R.length>1?'Choose the role to assess. ':'')+'Click + on a dimension to set its Readiness Rating and record the assessment.</div>'+
-   (R.length>1?'<div class="rdrole">Assess: '+R.map(r=>'<button type="button" class="'+(sel===r?'on':'')+'" onclick="rdRole(\''+r.replace(/'/g,"\\'")+'\')">'+esc(r)+' <span class="small">'+({hold:'holds',cond:'clears with conditions',clear:'clears'})[rdV(rdRollRole(a,RD.cells,r))]+'</span></button>').join('')+'</div>':'')+
-   '<div style="overflow-x:auto"><table class="rdm"><tr><th>Dimension</th><th>Readiness Rating'+(R.length>1?' &middot; '+esc(sel):'')+'</th>'+(multi?'<th class="roll">Activity (weakest link)</th>':'')+'</tr>';
-  ['role','org','shared'].forEach(l=>{h+='<tr><td class="lay" colspan="'+nc+'">'+RD_LAYER[l]+(l==='role'?'':' &middot; once for the activity')+'</td></tr>';
+function rdPanel(a,k){const ly=RD.layer||'role',isR=ly==='role',R=rdRoles(a),rl=rdRoll(a,RD.cells),ov=rdOver(a),c=RD.cells,multi=isR&&R.length>1&&HC[a.cons],nc=multi?3:2,sel=RD.role,LT={role:'Assess role readiness',org:'Assess organizational readiness',over:'Assess governance oversight'};
+  let h='<div class="rdp"><h4>'+LT[ly]+' &middot; '+a.code+' to '+RD.to+'</h4><div class="isub">'+esc(ORGNAME())+'. '+(ly==='over'?'Assessed separately, never rolled in (BR-16). ':ly==='org'?'Assessed once for the activity. ':'')+(!isR?'':R.length>1?(HC[a.cons]?'Weakest link across the '+R.length+' required roles (BR-16).':'Each role&rsquo;s finding stands on its own below High.'):'One required role, read directly: '+esc(R[0])+'.')+
+   ' Every finding starts at Insufficient Evidence; modeled facts never move one (GR-012 v0.2). '+(isR&&R.length>1?'Choose the role to assess. ':'')+'Click + on a dimension to set its Readiness Rating and record the assessment.</div>'+
+   (isR&&R.length>1?'<div class="rdrole">Assess: '+R.map(r=>'<button type="button" class="'+(sel===r?'on':'')+'" onclick="rdRole(\''+r.replace(/'/g,"\\'")+'\')">'+esc(r)+' <span class="small">'+({hold:'holds',cond:'clears with conditions',clear:'clears'})[rdV(rdRollRole(a,RD.cells,r))]+'</span></button>').join('')+'</div>':'')+
+   '<div style="overflow-x:auto"><table class="rdm"><tr><th>Dimension</th><th>Readiness Rating'+(isR&&R.length>1?' &middot; '+esc(sel):'')+'</th>'+(multi?'<th class="roll">Activity (weakest link)</th>':'')+'</tr>';
+  ({role:['role','shared'],org:['org','shared'],over:[]})[ly].forEach(l=>{h+='<tr><td class="lay" colspan="'+nc+'">'+RD_LAYER[l]+(l==='role'?'':' &middot; once for the activity')+'</td></tr>';
     RD_DIMS.filter(d=>d.l===l).forEach(d=>{const x=rl[d.k],ek=d.k,open=!!RD.exp[ek],has=rdHas(d,sel);
       h+='<tr class="rdr'+(open?' open':'')+'"><td><span class="rdplus" onclick="rdExp(\''+ek+'\')" title="'+(open?'Close':'Open')+' the detailed assessment">'+(open?'&minus;':'+')+'</span><span title="'+esc(d.q)+'">'+esc(d.n)+'</span>'+(d.gate?rdGt:'')+(has?'<span class="rdrec" title="Record started'+(d.l==='role'?' for '+esc(sel):'')+'">recorded</span>':'')+'</td>'+
        (l==='role'?'<td>'+rdChip(c[sel+'|'+d.k]||'ins')+'</td>':'<td>'+rdChip(x.f)+'</td>')+(multi?'<td class="roll">'+(l==='role'?rdChip(x.f):'')+'</td>':'')+'</tr>';
       if(open) h+='<tr class="rdx"><td colspan="'+nc+'">'+rdDetail(a,d)+'</td></tr>';});});
-  if(ov&&HC[a.cons]) h+='<tr><td class="lay" colspan="'+nc+'">Governance oversight &middot; assessed separately, never rolled in (BR-16)</td></tr><tr class="rdr'+(RD.exp._over?' open':'')+'"><td><span class="rdplus" onclick="rdExp(\'_over\')">'+(RD.exp._over?'&minus;':'+')+'</span>'+esc(ov)+' <span class="small">('+esc(a.Aroles[0])+' reports to this role) &middot; Manager / Governance-Oversight Readiness</span></td><td>'+rdChip(c['_over|manager']||'ins')+'</td>'+(multi?'<td class="roll"></td>':'')+'</tr>'+
+  if(ly==='over'&&ov&&HC[a.cons]) h+='<tr><td class="lay" colspan="'+nc+'">Governance oversight &middot; assessed separately, never rolled in (BR-16)</td></tr><tr class="rdr'+(RD.exp._over?' open':'')+'"><td><span class="rdplus" onclick="rdExp(\'_over\')">'+(RD.exp._over?'&minus;':'+')+'</span>'+esc(ov)+' <span class="small">('+esc(a.Aroles[0])+' reports to this role) &middot; Manager / Governance-Oversight Readiness</span></td><td>'+rdChip(c['_over|manager']||'ins')+'</td>'+(multi?'<td class="roll"></td>':'')+'</tr>'+
     (RD.exp._over?'<tr class="rdx"><td colspan="'+nc+'">'+rdDetail(a,RD_DIMS.find(d=>d.k==='manager'),ov)+'</td></tr>':'');
   h+='</table></div>';
   const m=RD.meta;
   h+='<div class="gh2">Who determines the findings</div><div class="isub">The assessor is not the sole role holder. Sign-off: '+(HC[a.cons]?'a cross-functional review or panel, since this is '+a.cons+' work.':'the Accountable owner, '+esc(a.Aroles[0])+', plus the assessor.')+'</div>'+
    '<div class="rdf"><input placeholder="Assessed by" value="'+esc(m.by||'')+'" oninput="rdMeta(\'by\',this.value)"><input placeholder="Evidence gathered from" value="'+esc(m.from||'')+'" oninput="rdMeta(\'from\',this.value)"><input placeholder="Signed off by" value="'+esc(m.signed||'')+'" oninput="rdMeta(\'signed\',this.value)"></div>'+
-   '<div class="gh2">Human Agency (GR-013) &middot; derived'+(R.length>1?' &middot; '+esc(sel):'')+'</div><div class="isub">Derived from Decision Authority, Capability / Skill, Confidence / Decision Fluency, Psychological Safety, Capacity / Workload and Trust / Evidence Quality above. No score.'+(R.length>1?' Written for each role; choose the role above.':'')+'</div>'+
-   '<textarea class="rdn" placeholder="Narrative conclusion: can the person actually exercise the judgment and accountability the operating model leaves with them?" oninput="rdAgency(this.value)">'+esc((m.agencyBy||{})[sel]||'')+'</textarea>'+
+   (!isR?'':'<div class="gh2">Human Agency (GR-013) &middot; derived'+(R.length>1?' &middot; '+esc(sel):'')+'</div><div class="isub">Derived from Decision Authority, Capability / Skill, Confidence / Decision Fluency, Psychological Safety, Capacity / Workload and Trust / Evidence Quality above. No score.'+(R.length>1?' Written for each role; choose the role above.':'')+'</div>'+
+   '<textarea class="rdn" placeholder="Narrative conclusion: can the person actually exercise the judgment and accountability the operating model leaves with them?" oninput="rdAgency(this.value)">'+esc((m.agencyBy||{})[sel]||'')+'</textarea>')+
    '<div class="gact"><button type="button" class="gbtn primary"'+(RD.busy?' disabled':'')+' onclick="rdSave()">Save readiness</button><button type="button" class="gbtn" onclick="rdClose()">Close</button><button type="button" class="gbtn" style="margin-left:auto"'+(RD.busy?' disabled':'')+' onclick="rdResetAsk(true)">Reset readiness</button>'+(RD.msg?'<span class="small" style="margin-left:8px">'+esc(RD.msg)+'</span>':'')+'</div>'+
    (RD.ask?'<div class="rdv hold" style="margin-top:8px">Reset readiness for '+a.code+'? Every rating goes back to Insufficient Evidence and every record, sign-off and narrative is cleared, for every role.'+(rdRec(a)?' The saved version stays in its history.':'')+
      '<div class="gact" style="margin-top:6px"><button type="button" class="gbtn primary" onclick="rdReset()">Reset readiness</button><button type="button" class="gbtn" onclick="rdResetAsk(false)">Keep it</button></div></div>':'')+'</div>';
