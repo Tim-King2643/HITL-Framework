@@ -1463,6 +1463,7 @@ var ACTIVE_ORG = null;  // var, not let: renderTopPills() reads it before this l
 var ORG_RECORDS = {};
 var ORG_OVERRIDES = {};  // ceiling overrides (GR-054) for the selected organization
 var ORG_READINESS = {};  // readiness for a proposed step (GR-012, assessed in the Readiness Gate) for the selected organization
+var ORG_STEPEV = {};     // step evidence (GR-037), by activity then step, for the selected organization
 function rerenderAllViews() {
   refreshFourViews();
   renderTopPills();
@@ -1488,6 +1489,7 @@ function applyOrg(org) {
     ORG_RECORDS = {};
     ORG_OVERRIDES = {};
     ORG_READINESS = {};
+    ORG_STEPEV = {};
     Object.keys(WR_DATA).forEach(code => { WR_DATA[code].rel = REF_REL[code]; });
     orgBanner(org, 0);
     rerenderAllViews();
@@ -1496,6 +1498,7 @@ function applyOrg(org) {
   OrgContext.getAssessment(org.id).then(j => {
     ORG_RECORDS = j.records || {};
     ORG_READINESS = j.readiness || {};
+    ORG_STEPEV = j.stepEvidence || {};
     ORG_OVERRIDES = {};
     Object.keys(j.overrides || {}).forEach(k => { if (j.overrides[k] && j.overrides[k].level) ORG_OVERRIDES[k] = j.overrides[k]; });
     let assessed = 0;
@@ -1739,6 +1742,12 @@ function fvAssessmentSaved(code, rec) {
   rerenderKeepingOpen();
 }
 // The Readiness Gate saves readiness (GR-012) itself and reports it here.
+// The Readiness Gate saves step evidence (GR-037) itself and reports it here.
+function fvStepEvidenceSaved(code, to, rec) {
+  if (rec && rec.current) (ORG_STEPEV[code] = ORG_STEPEV[code] || {})[to] = rec;
+  else if (ORG_STEPEV[code]) delete ORG_STEPEV[code][to];
+  rerenderKeepingOpen();
+}
 function fvReadinessSaved(code, rec) {
   if (rec && rec.current) ORG_READINESS[code] = rec; else delete ORG_READINESS[code];
   rerenderKeepingOpen();

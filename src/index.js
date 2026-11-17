@@ -625,6 +625,9 @@ const ORG_MAX = 200, NOTE_MAX = 2000, HISTORY_MAX = 25;
 // GiGi's ten v0.2 dimensions and four findings (GR-012).
 const READY_DIMS = new Set(['clarity', 'authority', 'skill', 'fluency', 'safety', 'capacity', 'manager', 'governance', 'change', 'evidence']);
 const READY_FINDINGS = new Set(['ins', 'ready', 'cond', 'not']);
+// The audit counts each GR-037 measure is calculated from, and BR-17's discrepancy grades.
+const STEPEV_COUNTS = new Set(['rated', 'useful', 'inst', 'used', 'spot', 'errs', 'shadow', 'match', 'reviewed', 'passed', 'realexc', 'flagged', 'instances', 'needed']);
+const STEPEV_SEV = new Set(['Serious', 'Moderate', 'Minor']);
 const OVERRIDE_CONS = new Set(['Low', 'Moderate']);
 const CEILING_FACTOR_KEYS = new Set(['technical', 'governance', 'legal', 'relational', 'floor', 'accountability']);
 const REFERENCE_PATH = '/sandbox/reference-wr.json';
@@ -730,7 +733,17 @@ async function handleOrgApi(request, env, url) {
       const raw = await env.SANDBOX_NOTES.get(k);
       if (raw) { const r = JSON.parse(raw); if (r && r.current) readiness[k.slice(rPrefix.length)] = r; }
     }
-    return json({ reviewer, org, records, overrides, readiness });
+    const sPrefix = 'stepev:' + orgId + ':';
+    const stepEvidence = {};
+    for (const k of await listKeys(env, sPrefix)) {
+      const raw = await env.SANDBOX_NOTES.get(k);
+      if (!raw) continue;
+      const r = JSON.parse(raw);
+      if (!r || !r.current) continue;
+      const [code, to] = k.slice(sPrefix.length).split(':');
+      (stepEvidence[code] = stepEvidence[code] || {})[to] = r;
+    }
+    return json({ reviewer, org, records, overrides, readiness, stepEvidence });
   }
 
   if (url.pathname === '/org-api/assessment' && (request.method === 'POST' || request.method === 'DELETE')) {
@@ -804,6 +817,51 @@ async function handleOrgApi(request, env, url) {
   // view's Readiness Gate (Nov 8, 2026). Findings per required role and dimension; GiGi's standard record per dimension
   // (evidence, provenance, gap, required action, owner, what would move it); who assessed, the evidence sources and the sign-off. Gray is never converted: anything missing stays
   // Insufficient Evidence.
+  // Step evidence (GR-037; BR-17, BR-18) for one activity's step, recorded in the Readiness Gate's Technical / process
+  // check (Nov 17, 2026): the audit's counts, period, auditor, source, governance sign-off and discrepancy log. The rates
+  // and the finding are calculated in the page from the counts; nothing here converts missing evidence.
+  if (url.pathname === '/org-api/step-evidence' && (request.method === 'POST' || request.method === 'DELETE')) {
+    if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
+    let body;
+    try { body = await request.json(); } catch (e) { return json({ error: 'invalid JSON body' }, { status: 400 }); }
+    const orgId = body && body.org, code = body && body.code, to = body && body.to;
+    if (typeof orgId !== 'string' || !ORG_ID_RE.test(orgId) || !(await readOrg(env, orgId))) {
+      return json({ error: 'unknown organization' }, { status: 400 });
+    }
+    if (typeof code !== 'string' || !ASSESS_CODE_RE.test(code)) return json({ error: 'unknown activity' }, { status: 400 });
+    if (!WR_STEPS.includes(to) || to === WR_STEPS[0]) return json({ error: 'name the step being evidenced' }, { status: 400 });
+    const key = 'stepev:' + orgId + ':' + code + ':' + to;
+    const prevRaw = await env.SANDBOX_NOTES.get(key);
+    const prev = prevRaw ? JSON.parse(prevRaw) : null;
+    const history = prev ? (prev.history || []) : [];
+    if (prev && prev.current) { const snap = Object.assign({}, prev); delete snap.history; history.unshift(snap); }
+    if (request.method === 'DELETE') {
+      const rec = { current: null, resetBy: reviewer, resetAt: Date.now(), history: history.slice(0, HISTORY_MAX) };
+      await env.SANDBOX_NOTES.put(key, JSON.stringify(rec));
+      return json({ ok: true, record: rec });
+    }
+    const cIn = body.counts && typeof body.counts === 'object' && !Array.isArray(body.counts) ? body.counts : {};
+    const counts = {};
+    for (const k of Object.keys(cIn)) {
+      const v = Number(cIn[k]);
+      if (STEPEV_COUNTS.has(k) && cIn[k] !== '' && cIn[k] !== null && Number.isFinite(v) && v >= 0 && v <= 1e7) counts[k] = v;
+    }
+    const wk = Number(body.wk);
+    const logIn = Array.isArray(body.log) ? body.log.slice(0, 50) : [];
+    const log = logIn.filter(x => x && typeof x === 'object').map(x => ({
+      inst: clip(x.inst, ORG_MAX), el: clip(x.el, 40), what: clip(x.what, NOTE_MAX),
+      sev: STEPEV_SEV.has(x.sev) ? x.sev : 'Serious', why: clip(x.why, NOTE_MAX), by: clip(x.by, ORG_MAX),
+      disp: clip(x.disp, NOTE_MAX), re: x.re === true,
+    }));
+    const rec = {
+      current: true, to, counts, wk: Number.isFinite(wk) && wk >= 0 && wk <= 520 ? wk : null,
+      auditor: clip(body.auditor, ORG_MAX), source: clip(body.source, NOTE_MAX), signed: clip(body.signed, ORG_MAX), log,
+      savedBy: reviewer, savedAt: Date.now(), history: history.slice(0, HISTORY_MAX),
+    };
+    await env.SANDBOX_NOTES.put(key, JSON.stringify(rec));
+    return json({ ok: true, record: rec });
+  }
+
   if (url.pathname === '/org-api/readiness' && (request.method === 'POST' || request.method === 'DELETE')) {
     if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
     let body;

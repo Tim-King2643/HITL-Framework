@@ -295,6 +295,15 @@ body{background:transparent;padding-bottom:0}
 .rdm tr.rdx>td{background:#FAFBFD;padding:6px 0 10px;border-bottom:1px solid var(--border)}
 .rdm tr.rdx .rdkb{padding:0 14px}
 .rdrec{font-size:10px;color:#166534;border:1px solid #BBE5C8;border-radius:4px;padding:0 5px;margin-left:6px}
+.temeth{display:inline-block;font-size:11px;border:1px solid #C6D8EE;border-radius:4px;padding:0 6px;color:#1B4F8A;white-space:nowrap}
+.teg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 12px;margin-top:4px}
+.teg label{display:flex;flex-direction:column;justify-content:flex-end;font-size:11.5px;color:var(--lgray)}
+.teg input,.teg select{display:block;width:100%;margin-top:2px;font:inherit;font-size:12.5px;color:var(--dark);padding:5px 7px;border:1px solid #C6D8EE;border-radius:6px;background:#fff}
+.teg .w2{grid-column:span 2}.teg .w3{grid-column:1/-1}
+.tecalc{margin-top:2px;padding:6px 8px;border:1px dashed #C6D8EE;border-radius:6px;background:#F8FAFD;color:var(--navy-d);font-size:13px}
+.tedl{border:1px solid var(--border);border-left:4px solid #C6D8EE;border-radius:8px;padding:8px 10px;margin-bottom:8px;background:#fff}
+.tedl.ser{border-left-color:#B91C1C;background:#FFFBFB}
+@media(max-width:640px){.teg{grid-template-columns:1fr}.teg .w2{grid-column:auto}}
 </style></head><body>
 <div class="wrap">
   <div class="side" id="side"></div>
@@ -705,6 +714,86 @@ function elRow(a,e,state,extra,chg){const obj=WORKED[a.code]&&WORKED[a.code].obj
 // The Readiness Gate&rsquo;s three checks: all must clear before an activity takes a step (methodology section 5).
 // Column headers for the element tables; the work column shows only where the activity's work is written out.
 function elHead(a,third){return '<tr class="ith"><th>Element</th>'+(WORKED[a.code]&&WORKED[a.code].obj?'<th>The work here</th>':'')+'<th>'+third+'</th></tr>'}
+/* ---------- Step evidence: the Readiness Gate's Technical / process check (GR-037; BR-17, BR-18) ----------
+   Built Nov 17, 2026 from docs/wip/gr037_step_evidence_sketch.html. Each step has an evidence method, measures with
+   thresholds, and a minimum volume and period; the evidence is gathered before moving (the current stage's own audit
+   trail, or a shadow run of the next). Rates are calculated from the audit's counts. Thresholds are proposed defaults
+   for Tim and GiGi to set. */
+const TE_L={
+ 'Judgment':{m:[{n:'Usefulness',op:'>=',t:70,num:['useful','Rated useful'],den:['rated','Instances rated'],d:'share of sampled instances where people rate the AI input useful'}],vol:30,wk:2,meth:'Replay',how:'Run the AI on past cases; people rate whether its input would have helped.'},
+ 'Augmentation':{m:[{n:'Use rate',op:'>=',t:60,num:['used','Assistance used'],den:['inst','Instances in the trial'],d:'share of instances where the person uses the AI assistance'},{n:'Errors introduced',op:'<=',t:2,num:['errs','With an AI-introduced error'],den:['spot','Instances spot-checked'],d:'share of spot-checked instances where the assistance introduced an error the person missed'}],vol:50,wk:4,meth:'Bounded trial',how:'Offer the assistance, opt-in, to a few people or a low-risk slice of the work; spot-check it.'},
+ 'Oversight':{m:[{n:'Agreement rate',op:'>=',t:90,num:['match','AI matched the person'],den:['shadow','Instances shadowed'],d:'share of instances where the AI&rsquo;s complete work matches what the person produced or decided'}],vol:100,wk:4,meth:'Shadow run',how:'The AI drafts the complete work product in parallel; the person still does the work; compare.'},
+ 'Agent-delegation':{m:[{n:'Audit-pass rate',op:'>=',t:98,num:['passed','Passed clean'],den:['reviewed','Instances reviewed'],d:'share of reviewed instances that pass clean'},{n:'Exception-detection recall',op:'>=',t:95,num:['flagged','Flagged by the AI'],den:['realexc','Real exceptions (flagged + missed)'],d:'share of real exceptions the AI flags'}],vol:500,wk:8,meth:'In-stage audit',how:'The Oversight reviews already happening give the audit-pass rate; shadow the AI&rsquo;s flags against what reviewers caught.'},
+ 'Automation':{m:[{n:'Exception rate',op:'<=',t:1,num:['needed','Needed a person'],den:['instances','Instances'],d:'share of instances needing a person, including missed exceptions found in sampled audits of unflagged work'}],vol:1000,wk:12,meth:'In-stage audit',how:'Sample-audit instances the agent did not flag, as well as the flagged ones.'}};
+const TE_SEV=[['Serious','would have caused the harm the activity&rsquo;s Consequence of Error is about, or bypassed the control point'],['Moderate','wrong, but caught further along before it had any effect'],['Minor','a quality or formatting issue with no effect on the outcome']];
+const TE_F={met:['Met','#DCFCE7','#166534'],not:['Not met','#FEE2E2','#991B1B'],ins:['Insufficient Evidence','#E5E7EB','#374151']};
+const teChip=f=>'<span class="rdc" style="background:'+TE_F[f][1]+';color:'+TE_F[f][2]+'">'+TE_F[f][0]+'</span>';
+const teMeth=(a,to)=>TE_L[to].meth==='Bounded trial'&&HC[a.cons]?'Shadow or replay':TE_L[to].meth;
+const teVol=(a,to)=>TE_L[to].vol*(HC[a.cons]?2:1), teWk=(a,to)=>TE_L[to].wk*(HC[a.cons]?2:1);
+const teSign=(a,to)=>to==='Automation'||(HC[a.cons]&&rank(to)>=rank('Agent-delegation'));
+const teThr=m=>(m.op==='>='?'&ge; ':'&le; ')+m.t+'%';
+const teRec=(a,to)=>isOrg()?(((P.ORG_STEPEV||{})[a.code]||{})[to]||null):null;
+const teNum=v=>v===''||v==null||isNaN(+v)?null:+v;
+const teRate=(m,c)=>{const n=teNum(c[m.num[0]]),d=teNum(c[m.den[0]]);return n==null||!d||n>d?null:Math.round(1000*n/d)/10;};
+const teN=(to,c)=>teNum(c[TE_L[to].m[0].den[0]])||0;
+const teOpen=r=>(r.log||[]).filter(x=>x.sev==='Serious'&&!(x.re&&(x.disp||'').trim()));
+// BR-18: Met, Not met or Insufficient Evidence from the calculated rates, minimums, open Serious entries and sign-off.
+function teFinding(a,to,r){if(!r)return 'ins';const L=TE_L[to],c=r.counts||{},N=teN(to,c);
+  if(!N||!r.wk||N<teVol(a,to)||r.wk<teWk(a,to)||L.m.some(m=>teRate(m,c)==null))return 'ins';
+  if(teOpen(r).length)return 'not';if(teSign(a,to)&&!(r.signed||'').trim())return 'ins';
+  return L.m.every(m=>m.op==='>='?teRate(m,c)>=m.t:teRate(m,c)<=m.t)?'met':'not';}
+const teReq=(a,to)=>TE_L[to].m.map(m=>m.n+' '+teThr(m)).join('; ')+' &middot; minimum '+teVol(a,to)+' instances over '+teWk(a,to)+' weeks'+(teSign(a,to)?' &middot; governance sign-off':'');
+let TE=null;
+function teRow(a,k){const to=ST[k+1],L=TE_L[to],open=TE&&TE.code===a.code&&TE.k===k;
+  const meth='<span class="temeth">'+teMeth(a,to)+'</span> ';
+  if(!isOrg()) return '<tr><td class="el">Technical / process</td><td>'+meth+teReq(a,to)+'<div class="small">Evidence is recorded per organization, gathered before moving (GR-037). Thresholds are proposed defaults (BR-18).</div></td></tr>';
+  const r=open?TE.r:teRec(a,to),f=teFinding(a,to,r),c=(r&&r.counts)||{},os=r?teOpen(r):[];
+  const link=canEdit()?' <span class="assess" style="cursor:pointer;margin-left:6px" onclick="teOpenP(\''+a.code+'\','+k+')">'+(teRec(a,to)?'Update evidence':'Record evidence')+'</span>':'';
+  return '<tr><td class="el">Technical / process</td><td>'+teChip(f)+' '+(r?L.m.map(m=>m.n+' '+(teRate(m,c)!=null?teRate(m,c)+'% <span class="small">('+c[m.num[0]]+' of '+c[m.den[0]]+')</span>':'&mdash;')+' vs '+teThr(m)).join('; ')+
+     ' <span class="small">&middot; '+teN(to,c)+' instances (minimum '+teVol(a,to)+'), '+(r.wk||0)+' weeks (minimum '+teWk(a,to)+')'+(os.length?' &middot; '+os.length+' open serious discrepanc'+(os.length===1?'y':'ies')+': '+os.map(x=>esc(x.inst||'instance')).join(', '):'')+(teSign(a,to)&&!(r.signed||'').trim()?' &middot; awaiting governance sign-off':'')+'</span>':
+     '<span class="small">Not yet recorded. '+meth+teReq(a,to)+'</span>')+link+'</td></tr>';}
+function teOpenP(code,k){const a=ACT[code],to=ST[k+1],rec=teRec(a,to);RD=null;
+  TE={code,k,to,r:rec?JSON.parse(JSON.stringify({counts:rec.counts||{},wk:rec.wk,auditor:rec.auditor,source:rec.source,signed:rec.signed,log:rec.log||[]})):{counts:{},log:[]},busy:false,msg:'',ask:false};render();}
+function teKeep(f,v){if(!TE)return;if(f.startsWith('c.'))TE.r.counts[f.slice(2)]=v;else TE.r[f]=v;}
+function teSet(f,v){teKeep(f,v);render();}
+function teLK(n,f,v){if(TE)TE.r.log[n][f]=v;}
+function teLS(n,f,v){teLK(n,f,v);render();}
+function teAdd(){const a=ACT[TE.code],ch=teChanges(a,TE.k);TE.r.log.push({inst:'',el:(ch[0]||{}).e||'',what:'',sev:'Serious',why:'',by:'',disp:'',re:false});render();}
+function teDel(n){TE.r.log.splice(n,1);render();}
+function teClose(){TE=null;render();}
+function teAsk(v){if(TE){TE.ask=v;render();}}
+function teSave(){const a=ACT[TE.code],to=TE.to;TE.busy=true;TE.msg='Saving…';render();
+  P.OrgContext.saveStepEvidence(Object.assign({org:P.ACTIVE_ORG.id,code:a.code,to},TE.r))
+   .then(j=>{TE.busy=false;TE.msg='Saved for '+ORGNAME()+'.';P.fvStepEvidenceSaved(a.code,to,j.record);})
+   .catch(e=>{TE.busy=false;TE.msg='Could not save: '+e.message;render();});}
+function teReset(){const a=ACT[TE.code],to=TE.to,k=TE.k,done=()=>{teOpenP(a.code,k);TE.msg='Evidence reset.';render();};
+  if(!teRec(a,to)){done();return;}TE.busy=true;TE.ask=false;TE.msg='Resetting…';render();
+  P.OrgContext.resetStepEvidence({org:P.ACTIVE_ORG.id,code:a.code,to}).then(j=>{P.fvStepEvidenceSaved(a.code,to,j.record);done();})
+   .catch(e=>{TE.busy=false;TE.msg='Could not reset: '+e.message;render();});}
+function teChanges(a,k){const f=stageEls(a,ST[k]),g=stageEls(a,ST[k+1]),obj=(WORKED[a.code]||{}).obj||{};return elsOf(a).filter(e=>f[e]!==g[e]).map(e=>({e,from:f[e],to:g[e],w:obj[e]||''}));}
+function tePanel(a,k){const to=TE.to,L=TE_L[to],r=TE.r,c=r.counts,ch=teChanges(a,k),f=teFinding(a,to,r),os=teOpen(r);
+  const inp=(fk,lab,ty,cls,ph,val)=>'<label class="'+(cls||'')+'">'+lab+'<input type="'+(ty||'text')+'" value="'+esc(val==null?'':val)+'" placeholder="'+(ph||'')+'" oninput="teKeep(\''+fk+'\',this.value)" onchange="teSet(\''+fk+'\',this.value)"></label>';
+  let h='<div class="rdp"><h4>Step evidence &middot; '+a.code+' to '+to+'</h4><div class="isub">'+esc(ORGNAME())+'. Gathered before moving: <span class="temeth">'+teMeth(a,to)+'</span> '+(teMeth(a,to)!==L.meth?'Bounded live trials are for Low and Moderate work; at '+a.cons+' the evidence comes from shadow runs or replay, never a live trial at the next stage.':L.how)+' Enter the audit&rsquo;s counts; each rate is calculated from them (BR-18). Thresholds are proposed defaults.</div>'+
+   '<div class="gh2">Audit rubric &middot; the elements that change</div><ul style="margin:0 0 0 18px;font-size:12.5px;line-height:1.55">'+ch.map(x=>'<li>'+x.e+' ('+x.from+' &rarr; '+x.to+')'+(x.w?': '+esc(x.w):'')+'</li>').join('')+'</ul>'+
+   '<div class="gh2">Counts</div><div class="small" style="margin-bottom:4px">'+L.m.map(m=>m.n+': '+m.d+'.').join(' ')+'</div><div class="teg">'+
+   L.m.map(m=>inp('c.'+m.den[0],m.den[1],'number','','',c[m.den[0]])+inp('c.'+m.num[0],m.num[1],'number','','',c[m.num[0]])+
+     '<label>'+m.n+' &middot; calculated<div class="tecalc">'+(teRate(m,c)!=null?teRate(m,c)+'%':teNum(c[m.num[0]])!=null&&teNum(c[m.den[0]])!=null&&+c[m.num[0]]>+c[m.den[0]]?'more than the total':'&mdash;')+' <span class="small">threshold '+teThr(m)+'</span></div></label>').join('')+
+   inp('wk','Period (weeks)','number','','',r.wk)+inp('auditor','Auditor (independent of the work)','text','','Name and role',r.auditor)+inp('source','Source','text','','System, report or audit log',r.source)+
+   (teSign(a,to)?inp('signed','Governance sign-off','text','w3','Body, name and date',r.signed):'')+'</div>';
+  const io=(n,fk,v,ph)=>'<input value="'+esc(v||'')+'" placeholder="'+ph+'" oninput="teLK('+n+',\''+fk+'\',this.value)" onchange="teLS('+n+',\''+fk+'\',this.value)">';
+  h+='<div class="gh2">Discrepancy log &middot; '+r.log.length+' entr'+(r.log.length===1?'y':'ies')+', '+os.length+' open serious</div><div class="small" style="margin-bottom:6px">Grade each discrepancy (BR-17): '+TE_SEV.map(([k2,d])=>k2+', '+d).join('; ')+'. One open Serious entry is Not met, whatever the rate; it closes once its fix is recorded and re-audited. Moderates also count against the pass rate.</div>'+
+   r.log.map((x,n)=>'<div class="tedl'+(x.sev==='Serious'&&!(x.re&&(x.disp||'').trim())?' ser':'')+'"><div class="teg">'+
+     '<label>Instance'+io(n,'inst',x.inst,'Reference')+'</label><label>Element<select onchange="teLS('+n+',\'el\',this.value)">'+ch.map(y=>y.e).concat(ch.some(y=>y.e===x.el)||!x.el?[]:[x.el]).map(e=>'<option'+(e===x.el?' selected':'')+'>'+e+'</option>').join('')+'</select></label>'+
+     '<label>Severity<select onchange="teLS('+n+',\'sev\',this.value)">'+TE_SEV.map(([k2])=>'<option'+(k2===x.sev?' selected':'')+'>'+k2+'</option>').join('')+'</select></label>'+
+     '<label class="w3">What happened'+io(n,'what',x.what,'What went wrong, against the rubric')+'</label>'+
+     '<label class="w2">Why this severity'+io(n,'why',x.why,'The harm it would have caused, or why it had no effect')+'</label><label>Found by, date'+io(n,'by',x.by,'Auditor, date')+'</label>'+
+     '<label class="w2">Disposition'+io(n,'disp',x.disp,'Root cause and fix')+'</label><label>Fix re-audited<select onchange="teLS('+n+',\'re\',this.value===\'yes\')"><option value="no"'+(x.re?'':' selected')+'>Not yet</option><option value="yes"'+(x.re?' selected':'')+'>Yes</option></select></label>'+
+     '</div><div style="text-align:right;margin-top:4px"><span class="small" style="cursor:pointer;border-bottom:1px dotted currentColor" onclick="teDel('+n+')">Remove</span></div></div>').join('')+
+   '<button type="button" class="gbtn" onclick="teAdd()">Add discrepancy</button>';
+  h+='<div class="rdv'+(f==='met'?'':' hold')+'" style="margin-top:10px">Technical / process: '+teChip(f)+' '+(f==='met'?'Clears. The step still needs Role and Organizational readiness to clear.':f==='not'?'Holds: '+(L.m.some(m=>!(m.op==='>='?teRate(m,c)>=m.t:teRate(m,c)<=m.t))?'a rate is below its threshold':'')+(os.length?(L.m.some(m=>!(m.op==='>='?teRate(m,c)>=m.t:teRate(m,c)<=m.t))?'; ':'')+'an open serious discrepancy ('+os.map(x=>esc(x.inst||'instance')).join(', ')+')':'')+'.':'Holds: Insufficient Evidence. '+(teN(to,c)<teVol(a,to)||(r.wk||0)<teWk(a,to)?'Below the minimum volume or period.':teSign(a,to)&&!(r.signed||'').trim()?'Waiting for the governance sign-off.':'A measure is not yet recorded.'))+'</div>'+
+   '<div class="gact"><button type="button" class="gbtn primary"'+(TE.busy?' disabled':'')+' onclick="teSave()">Save evidence</button><button type="button" class="gbtn" onclick="teClose()">Close</button><button type="button" class="gbtn" style="margin-left:auto"'+(TE.busy?' disabled':'')+' onclick="teAsk(true)">Reset evidence</button>'+(TE.msg?'<span class="small" style="margin-left:8px">'+esc(TE.msg)+'</span>':'')+'</div>'+
+   (TE.ask?'<div class="rdv hold" style="margin-top:8px">Reset the evidence for '+a.code+' to '+to+'? Every count, the period, auditor, source, sign-off and discrepancy log are cleared.'+(teRec(a,to)?' The saved version stays in its history.':'')+'<div class="gact" style="margin-top:6px"><button type="button" class="gbtn primary" onclick="teReset()">Reset evidence</button><button type="button" class="gbtn" onclick="teAsk(false)">Keep it</button></div></div>':'')+'</div>';
+  return h;}
 /* ---------- Human Operating Readiness in the Readiness Gate (GR-012 v0.2, GiGi Garcia; GR-001) ----------
    Placement and rules approved Nov 8, 2026 (docs/wip/readiness_gate_sketch.html). Role readiness reads GiGi's six role
    dimensions, Organizational readiness her three organizational ones; Trust / Evidence Quality, her shared layer, shows
@@ -765,7 +854,8 @@ function rdRow(name,L,rl,assessed){const by=['ready','cond','not','ins'].filter(
   return '<tr><td class="el">'+name+'</td><td>'+rdChip(L.w)+' <span class="small">'+(assessed?by+' across '+L.n+' dimensions':'Not yet assessed for this step')+'</span></td></tr>';}
 let RD=null;
 function readiness(a,k){const to=ST[k+1],org=isOrg(),rec=rdRec(a),open=RD&&RD.code===a.code&&RD.k===k;
-  let h='<div class="gh2">Readiness Gate</div><table class="it"><tr><td class="el">Technical / process</td><td>The evidence above. The evidence each step requires is GR-037, not yet defined.</td></tr>';
+  const teOpenHere=TE&&TE.code===a.code&&TE.k===k;
+  let h='<div class="gh2">Readiness Gate</div><table class="it">'+teRow(a,k);
   if(!org) return h+'<tr><td class="el">Role readiness</td><td>Assessed per organization: readiness cannot be modeled. Choose an organization to assess it.</td></tr><tr><td class="el">Organizational readiness</td><td>Assessed per organization.</td></tr></table><div class="small" style="margin-top:4px">All three must clear before the activity takes this step.</div>';
   const cells=open?RD.cells:(rec&&rec.to===to?rec.cells:{}),assessed=open||!!(rec&&rec.to===to),rl=rdRoll(a,cells),ov=rdOver(a);
   const per=rdPer(a);
@@ -781,8 +871,10 @@ function readiness(a,k){const to=ST[k+1],org=isOrg(),rec=rdRec(a),open=RD&&RD.co
     V.per?(allIns?'Holds: nothing is assessed yet.':V.per.map(x=>'<div><b>'+esc(x.r)+'</b> &mdash; '+rdSay(x.rl,x.v,cells,dims,false,x.r)+'</div>').join('')):
     rdSay(V.rl,V.v,cells,dims,allIns))+link+'</div>';
   if(!open&&rec&&rec.to===to) h+='<div class="small" style="margin-top:4px">Assessed'+(rec.meta&&rec.meta.by?' by '+esc(rec.meta.by):'')+(rec.savedAt?' on '+new Date(rec.savedAt).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'')+(rec.meta&&rec.meta.signed?' · signed off by '+esc(rec.meta.signed):' · not yet signed off')+'.</div>';
-  return h+(open?rdPanel(a,k):'');}
-function rdOpen(code,k){const a=ACT[code],to=ST[k+1],rec=rdRec(a),same=rec&&rec.to===to;
+  {const tf=teFinding(a,to,teOpenHere?TE.r:teRec(a,to)),both=tf==='met'&&V.v==='clear',cond=tf==='met'&&V.v==='cond';
+   h+='<div class="small" style="margin-top:6px">Gate: '+(both?'clears':cond?'clears with conditions':'holds')+' &mdash; Technical / process '+TE_F[tf][0]+'; readiness '+(V.v==='none'?'not yet assessed':V.v==='hold'?'holds':V.v==='cond'?'clears with conditions':'clears')+'. All three must clear before the activity takes this step.</div>';}
+  return h+(teOpenHere?tePanel(a,k):'')+(open?rdPanel(a,k):'');}
+function rdOpen(code,k){TE=null;const a=ACT[code],to=ST[k+1],rec=rdRec(a),same=rec&&rec.to===to;
   const dims=same?JSON.parse(JSON.stringify(rec.dims||{})):{},R=rdRoles(a);
   RD_DIMS.filter(d=>d.l==='role'&&dims[d.k]).forEach(d=>{if(!dims[R[0]+'|'+d.k])dims[R[0]+'|'+d.k]=dims[d.k];delete dims[d.k];});
   const meta=same?JSON.parse(JSON.stringify(rec.meta||{})):{};if(meta.agency){meta.agencyBy=meta.agencyBy||{};if(!meta.agencyBy[R[0]])meta.agencyBy[R[0]]=meta.agency;delete meta.agency;}
@@ -887,7 +979,7 @@ function infoBox(a){
   if(sel.t==='stage'){const s=ST[sel.k],g=stageEls(a,s),p=sel.k>0?stageEls(a,ST[sel.k-1]):g;
     return '<div class="ibox">'+X(a)+'<h4>'+s+' — who does what</h4>'+(isOrg()&&ABCSTAGE[a.code]===s?assessLine(a):'')+'<div class="isub">'+s+' keeps '+HPCT[s]+'% H. '+esc(STEPDEF[s])+(sel.k>ci?' <span class="amber">'+(isOrg()&&ABCSTAGE[a.code]===s?(ABC_OV[a.code]&&rank(ABC_OV[a.code].level)>=sel.k?'This activity is past its Progression Ceiling ('+derivedCeil(a)+'), covered by an approved override to '+ABC_OV[a.code].level+'.':'This activity is past its Progression Ceiling ('+derivedCeil(a)+'), with no approved override.'):'Past this activity’s ceiling ('+derivedCeil(a)+'); shown for illustration.')+'</span>':'')+'</div><table class="it">'+elHead(a,'At this step')+elsOf(a).map(e=>elRow(a,e,g[e]+(e===ctlOf(a)&&CTLNOTE[s]?'<span class="small">'+CTLNOTE[s]+'</span>':''),'',sel.k>0&&p[e]!==g[e])).join('')+'</table>'+roleImpact(a,s)+na+phr+'</div>';}
   if(sel.t==='gate'){const k=sel.k,f=stageEls(a,ST[k]),t=stageEls(a,ST[k+1]),ch=elsOf(a).filter(e=>f[e]!==t[e]);
-    return '<div class="ibox">'+X(a)+'<h4>'+ST[k]+' → '+ST[k+1]+' — what changes</h4><div class="isub">'+ch.length+' of '+elsOf(a).length+' elements change in this step.</div><table class="it">'+elHead(a,'Change in this step')+ch.map(e=>elRow(a,e,f[e]+' → '+t[e]+(e===ctlOf(a)&&CTLNOTE[ST[k+1]]?'<span class="small">'+CTLNOTE[ST[k+1]]+'</span>':''))).join('')+'</table><div class="ev"><b>Evidence to take this step:</b> '+GATE_EV[k].join('; ')+'.</div>'+readiness(a,k)+(k+1>ci?'<div class="amber" style="margin-top:6px">This step goes past the Progression Ceiling ('+derivedCeil(a)+').</div>':'')+'</div>';}
+    return '<div class="ibox">'+X(a)+'<h4>'+ST[k]+' → '+ST[k+1]+' — what changes</h4><div class="isub">'+ch.length+' of '+elsOf(a).length+' elements change in this step.</div><table class="it">'+elHead(a,'Change in this step')+ch.map(e=>elRow(a,e,f[e]+' → '+t[e]+(e===ctlOf(a)&&CTLNOTE[ST[k+1]]?'<span class="small">'+CTLNOTE[ST[k+1]]+'</span>':''))).join('')+'</table>'+readiness(a,k)+(k+1>ci?'<div class="amber" style="margin-top:6px">This step goes past the Progression Ceiling ('+derivedCeil(a)+').</div>':'')+'</div>';}
   if(sel.t==='abc'&&ABC_EL[a.code]){const pe=pastEls(a),g=ABC_EL[a.code],ov=ABC_OV[a.code];
     return '<div class="ibox">'+X(a)+'<h4>'+esc(ORGNAME())+' today — '+curOf(a)+'</h4><div class="isub">Derived from the assessed elements. '+(pe.length?'<span class="red">'+pe.join(', ')+' past its element ceiling.</span>':'Every element is within its element ceiling.')+(ov?' Ceiling raised to '+ov.level+' by an approved override ('+(FL[ov.factor]||ov.factor).toLowerCase()+', approved by '+esc(ov.approverRole)+').':'')+' <a href="javascript:void 0" onclick="openGrid(\''+a.code+'\')">'+(canEdit()?'Reassess':'View the element grid')+'</a></div><table class="it">'+elHead(a,'Assessed state and evidence')+elsOf(a).map(e=>{const [st,ev,ref]=g[e],past=lr(st)>lr(cp[e][0]);return elRow(a,e,st+(past?' <span class="red">past element ceiling ('+cp[e][0]+')</span>':'')+'<div class="small">'+(ev?EVL[ev]+(ref?': '+esc(ref):''):'No evidence recorded')+'</div>')}).join('')+'</table></div>';}
   return '<div class="ibox">'+X(a)+'<h4>Progression Ceiling — '+derivedCeil(a)+'</h4><div class="isub">'+esc(a.note)+(!isOrg()&&CHIST.includes(a.code)?' <a href="../wip/production_changelog.html?q='+a.code+'" target="_blank" rel="noopener">Change history</a>':'')+(a.ceiling!==derivedCeil(a)?' <b>GR-058:</b> derived as '+derivedCeil(a)+' from the element ceilings below, which hold the line the '+a.ceiling+' ceiling used to.':'')+'</div><table class="it">'+elHead(a,'Element ceiling')+elsOf(a).map(e=>elRow(a,e,cp[e][0],cp[e][1]?' <span class="small">'+esc(cp[e][1])+'</span>':'')).join('')+'</table>'+na+phr+'</div>';
@@ -1503,6 +1595,7 @@ const FDK=[
  ['past','Past the ceiling at Low or Moderate, no override yet','#E57373','#fff'],
  ['elem','Within the ceiling, an element past its own ceiling','#F2B8B5','#0D2D4F'],
  ['rdy','Readiness not cleared for its proposed step','#7E5AA8','#fff'],
+ ['tev','Step evidence not met (GR-037)','#8B4A62','#fff'],
  ['ctl','Needs a named control: reaches no control point','#B8873F','#fff'],
  ['unchk','Unchecked input: relies on AI-touched work, no person in between','#E2C58F','#0D2D4F'],
  ['ref','To reassess: reference changed since assessed','#6895C8','#fff'],
@@ -1517,7 +1610,8 @@ function findAll(){
       if(cur>ci){if(cur>abcLim(a))f.push(HC[a.cons]?'pastHC':'past');else f.push('ovr');}
       else if(pastEls(a).length) f.push('elem');
       const rf=ABC_REF[a.code];if(rf&&(rf.ceiling!==derivedCeil(a)||rf.cons!==a.cons)) f.push('ref');}
-    if(org){const rr=rdRec(a);if(rr&&rdVerdict(a,rr.to).v==='hold') f.push('rdy');}
+    if(org){const rr=rdRec(a);if(rr&&rdVerdict(a,rr.to).v==='hold') f.push('rdy');
+      const se=(P.ORG_STEPEV||{})[a.code]||{};if(Object.keys(se).some(t=>TE_L[t]&&teFinding(a,t,se[t])==='not')) f.push('tev');}
     if(!r.dp&&!r.feeds.length) f.push('ctl');
     if(unchk.has(a.code)) f.push('unchk');
     f.sort((x,y)=>FDK.findIndex(k=>k[0]===x)-FDK.findIndex(k=>k[0]===y));
@@ -1545,7 +1639,8 @@ function findDash(){
 }
 // A card (or a square) opens the Work view's activities at that process, expanded, and selects the activity's control point.
 function fdOpen(code,act){try{P.setView('work')}catch(e){S.view='work'}
-  if(act){const rr=rdRec(ACT[act]);S.wsel[act]=rr&&findAll()[act][0]==='rdy'?{t:'gate',k:Math.max(0,rank(rr.to)-1)}:{t:'dp',k:0};}dbOpen(code);}
+  if(act){const rr=rdRec(ACT[act]),F0=findAll()[act][0],se=(P.ORG_STEPEV||{})[act]||{},tn=Object.keys(se).find(t=>TE_L[t]&&teFinding(ACT[act],t,se[t])==='not');
+    S.wsel[act]=rr&&F0==='rdy'?{t:'gate',k:Math.max(0,rank(rr.to)-1)}:tn&&F0==='tev'?{t:'gate',k:rank(tn)-1}:{t:'dp',k:0};}dbOpen(code);}
 
 /* ---------- Exceptions report (GR-059: replaces the Exceptions Report button) ----------
    The sandbox's own report, built by pcf7.html (exceptionsReportHTML), with two sections the four views add:
