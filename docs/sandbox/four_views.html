@@ -198,6 +198,9 @@ tr.det td{background:#FAFBFD;text-align:left;padding:6px 10px 12px 26px}
 .aright{display:flex;gap:14px;align-items:baseline;white-space:nowrap}/* Assess / Reassess: black with a dotted underline, like the control point */
 .assess{font-size:12px;color:var(--dark);text-decoration:none;border-bottom:1px dotted currentColor}.assess:hover{border-bottom-style:solid}
 .abcset a{color:var(--navy);font-weight:600;text-decoration:none}.abcset a:hover{text-decoration:underline}
+.gdp{margin:2px 0 6px}.gdp td{vertical-align:top;line-height:1.45}.gdp td.f{width:128px;font-weight:600;color:var(--dark)}
+.gdp .rq{display:block;font-weight:400;font-size:10.5px;color:var(--lgray)}.gdp td.s{width:64px;font-size:10.5px;color:var(--lgray);text-align:right;white-space:nowrap}
+.gdp tr.off td,.gdp tr.off td.f{color:var(--lgray);font-weight:400}.gdp ul{margin:0;padding-left:16px}.gdp .sm{font-size:11px;color:var(--lgray);margin-top:2px}
 .dpm{font-size:12px;color:var(--dark);cursor:pointer;border-bottom:1px dotted currentColor;white-space:nowrap}.dpm.red{color:var(--red)}.dpm.sel{font-weight:600}
 .col{display:inline-block;text-align:right;white-space:nowrap}.crole{width:220px;font-size:12.5px}.cdp{width:145px}.ccoe{width:84px}
 /* Notes as a small link after the name (GR-044), not a column */
@@ -1332,6 +1335,38 @@ function dpLeads(a){if(isOrg()&&ABC_EL[a.code]){const g=ABC_EL[a.code];return Ob
 const holds=v=>v==='Human'||v==='Human-led'||v==='AI-led';
 const DPGOV={Low:'owner and override; reviewed when an exception comes up',Moderate:'owner, escalation path and override; reviewed periodically',
   High:'every field; each decision documented; reviewed on a set cadence',Critical:'every field; each decision documented with its evidence; reviewed on a set cadence and after every override'};
+// Governed Decision Point records (GR-042): the written fields come from GDP_RECORDS in pcf7.html; owner,
+// decides or verifies, and work products are read from the RACI, work elements and CRUD. The activity's
+// Consequence of Error sets which written fields it needs; an AI-led control point also needs its trigger condition.
+const GDP=SRC.GDP_RECORDS||{},CORK={Low:0,Moderate:1,High:2,Critical:3};
+const GDPF={trigger:'Trigger condition',esc:'Escalation path',over:'Override',doc:'Documentation',rev:'Review cadence'};
+function gdpNeed(a,r){const t=CORK[a.cons],n=[];if(r.lead==='AI-led')n.push('trigger');if(t>=1)n.push('esc');n.push('over');if(t>=2)n.push('doc','rev');return n;}
+function gdpMissing(a,r){const g=GDP[a.code]||{};return gdpNeed(a,r).filter(k=>!(k==='esc'?(g.esc||[]).length:g[k]));}
+const gdpDate=d=>{const m=/^(\d{4})-(\d\d)-(\d\d)$/.exec(d||'');return m?['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m[2]-1]+' '+(+m[3])+', '+m[1]:esc(d||'')};
+function gdpTable(a,r){const g=GDP[a.code],t=CORK[a.cons],need=gdpNeed(a,r),miss=gdpMissing(a,r),ar=RACI_ACT[a.code]||{},A0=a.Aroles[0];
+  const st=g?(g.status==='approved'?'approved':'proposed'):'';
+  const row=(n,rq,v,src,off)=>'<tr'+(off?' class="off"':'')+'><td class="f">'+n+'<span class="rq">'+rq+'</span></td><td>'+v+'</td><td class="s'+(src==='missing'?' red':'')+'">'+src+'</td></tr>';
+  const R=(ar.R||[]).filter(x=>x!==A0),x=CRUD.crud[a.code]||{C:[],U:[],D:[]};
+  const owner=esc(A0)+', Accountable'+((ar.R||[]).includes(A0)?' and Responsible':'')+(R.length?'; Responsible: '+R.map(esc).join(', '):'')+'. '+(mgr(A0)!==A0?'Reports to '+esc(mgr(A0))+'.':'Top of the role catalog.');
+  const dec=r.el+(WORKED[a.code]&&WORKED[a.code].obj&&WORKED[a.code].obj[r.el]?': '+esc(WORKED[a.code].obj[r.el]):'')+'.';
+  const ids=[...new Set(x.C.concat(x.U,x.D||[]))];
+  const wp=ids.length?ids.map(i=>esc(WPN[i]?WPN[i].name:i)+' <span class="code">'+i+'</span> ('+['C','U','D'].filter(k=>(x[k]||[]).includes(i)).map(k=>OPN[k]).join(', ')+')').join('<br>')+(r.groups.length?'<div class="sm">The control points on each are listed below.</div>':''):'<span class="red">Creates, updates or deletes no work product in the catalog yet.</span>';
+  const W=(k,v)=>v?[v,st]:need.includes(k)?['<span class="red">Not written yet.</span>','missing']:['&mdash;',''];
+  const escV=g&&(g.esc||[]).length?'<ul>'+g.esc.map(e=>'<li>'+esc(e[0])+' &rarr; '+esc(e[1])+(e[2]?', with '+esc(e[2]):'')+'</li>').join('')+'</ul>'+(g.escNote?'<div class="sm">'+esc(g.escNote)+'</div>':''):'';
+  const revAuto=['Reviewed when an exception comes up.','Reviewed periodically.'][t];
+  let h='<h5 style="margin:10px 0 2px">Governed Decision Point record</h5><div class="isub" style="margin-bottom:2px">'+
+    (g?(st==='approved'?'Approved '+gdpDate(g.date):'Proposed '+gdpDate(g.date)+', for Tim and GiGi to review')+'. ':'')+
+    (miss.length?'<span class="red">'+(g?'Missing':'No record yet. Needs')+' at '+a.cons+': '+miss.map(k=>GDPF[k].toLowerCase()).join(', ')+'.</span>':'Every field its Consequence of Error requires is written.')+
+    (isOrg()&&g?' This is the reference record; '+esc(ORGNAME())+' has not recorded its own.':'')+'</div><table class="al gdp">';
+  h+=row('Owner','on every record',owner,'data');
+  h+=row('Decides or verifies','on every record',dec,'data');
+  h+=row('Work products','on every record',wp,'data');
+  h+=r.lead==='AI-led'?row(GDPF.trigger,'required: AI leads, a person decides flagged instances',...W('trigger',g&&g.trigger&&esc(g.trigger))):row(GDPF.trigger,'only where AI leads','Not needed: a person holds '+r.el+' on every instance.','data',1);
+  h+=t>=1?row(GDPF.esc,'required at '+a.cons,...W('esc',escV)):row(GDPF.esc,'not required at Low',escV||'&mdash;',escV?st:'',!escV);
+  h+=row(GDPF.over,'required',...W('over',g&&g.over&&esc(g.over)));
+  h+=t>=2?row(GDPF.doc,t===3?'required, with the evidence for each decision':'required: each decision',...W('doc',g&&g.doc&&esc(g.doc))):row(GDPF.doc,'not required at '+a.cons,g&&g.doc?esc(g.doc):'&mdash;',g&&g.doc?st:'',!(g&&g.doc));
+  h+=t>=2?row(GDPF.rev,t===3?'on a set cadence and after every override':'on a set cadence',...W('rev',g&&g.rev&&esc(g.rev))):row(GDPF.rev,t?'periodically':'when an exception comes up',g&&g.rev?esc(g.rev):revAuto,g&&g.rev?st:'rating');
+  return h+'</table>';}
 let DPC=null;
 function dpAnalysis(){
   // recomputed on every render (render() clears it), so it follows the organization, its assessments and RACI
@@ -1367,6 +1402,7 @@ function dpBox(a){const m=dpAnalysis(),r=m[a.code],at=isOrg()?'at '+esc(ORGNAME(
   else if(r.feeds.length) h+='No person holds '+(r.el||'Decide or Verify')+' '+at+', so its work is decided or verified at the control points on its work products, below. The anchor stays answerable for the activity itself.';
   else h+='<span class="red">No person holds '+(r.el||'Decide or Verify')+' '+at+', and '+(r.groups.length?'no activity that creates, updates or deletes its work products is a control point':'it creates, updates or deletes no work product in the catalog yet')+'.</span> With no person in the instance, it needs a named control, such as sampled review or outcome monitoring (GR-054). The anchor stays answerable and owns the control.';
   h+='</div>';
+  if(r.dp) h+=gdpTable(a,r);
   if(r.groups.length){
     h+='<h5 style="margin:8px 0 4px">Control points on its work products</h5><div class="isub" style="margin-bottom:4px">From each work product&rsquo;s CRUD: the activities that create, update or delete it where a person holds Decide or Verify.</div><table class="al">';
     // One line per work product says what this activity and the others do to it, e.g. "this activity (C)reates the work
@@ -1380,14 +1416,17 @@ function dpBox(a){const m=dpAnalysis(),r=m[a.code],at=isOrg()?'at '+esc(ORGNAME(
         return '<tr><td><span class="anm"><span class="code">'+d.c+'</span><span>'+esc(ACT[d.c].name)+'</span></span></td><td>'+esc(ACT[d.c].Aroles[0])+'</td><td><span class="acons'+(on?' sel':'')+'" style="color:'+CONSC[ACT[d.c].cons]+'" onclick="'+tg+'" title="Consequence of Error">'+ACT[d.c].cons+'</span></td></tr>'+
           (on?'<tr><td colspan="3">'+coeBox(ACT[d.c],null,'<button class="ix" onclick="'+tg+'">\u00d7</button>')+'</td></tr>':'');}).join('');});
     h+='</table>';}
-  return h+'<div class="prov">Proposed governance depth by Consequence of Error; GR-042 defines the record&rsquo;s fields. Modeled.</div></div>';}
+  return h+'<div class="prov">GR-042: the record&rsquo;s fields, and how much of it each Consequence of Error requires. Record values are approved or proposed as marked; owner, decides or verifies, and work products are read from the sandbox. Modeled.</div></div>';}
 function dpSummary(){const m=dpAnalysis(),L=DATA.acts,dp=L.filter(a=>m[a.code].dp),exc=dp.filter(a=>m[a.code].lead==='AI-led'),ai=L.filter(a=>m[a.code].ai),
   fd=L.filter(a=>!m[a.code].dp&&m[a.code].feeds.length),no=L.filter(a=>!m[a.code].dp&&!m[a.code].feeds.length);
   return {dp,exc,ai,fd,no,ver:dp.filter(a=>m[a.code].el==='Verify')};}
+// GR-042: how many control points have a record with every field their Consequence of Error requires.
+function gdpFinding(dp){const m=dpAnalysis(),miss=dp.filter(a=>gdpMissing(a,m[a.code]).length),by=['Critical','High','Moderate','Low'].map(c=>[c,miss.filter(a=>a.cons===c).length,dp.filter(a=>a.cons===c).length]).filter(z=>z[2]);
+  return '<b>Decision point records (GR-042).</b> '+(dp.length-miss.length)+' of '+dp.length+' control points have a record with every field their Consequence of Error requires'+(miss.length?'; '+miss.length+' do not ('+by.map(z=>z[0]+' '+z[1]+' of '+z[2]).join(', ')+')':'')+'.';}
 function dpFinding(){const x=dpSummary();
   return '<b>Accountability.</b> '+x.dp.length+' control points, where a person holds the control element: '+(x.dp.length-x.ver.length)+' decision points (Decide) and '+x.ver.length+' verification point'+(x.ver.length===1?'':'s')+' (Verify)'+(x.exc.length?': '+(x.dp.length-x.exc.length)+' on every instance, '+x.exc.length+' on flagged exceptions':'')+'. '+
     (x.fd.length?x.fd.length+' activit'+(x.fd.length>1?'ies have':'y has')+' no person deciding or verifying, and '+(x.fd.length>1?'are':'is')+' decided or verified at another activity\u2019s control point. ':'')+
-    (x.no.length?'<span class="red">'+x.no.length+' reach'+(x.no.length>1?'':'es')+' none and need'+(x.no.length>1?'':'s')+' a named control:</span> '+x.no.map(a=>a.code).join(', ')+'.':'Every activity has a control point, its own or another activity\u2019s.');}
+    (x.no.length?'<span class="red">'+x.no.length+' reach'+(x.no.length>1?'':'es')+' none and need'+(x.no.length>1?'':'s')+' a named control:</span> '+x.no.map(a=>a.code).join(', ')+'.':'Every activity has a control point, its own or another activity\u2019s.')+' '+gdpFinding(x.dp);}
 // Data opens on its dashboard (GR-061), remembered per browser like Work's and People's.
 try{const m=localStorage.getItem('fv.dataMode');if(m==='dash'||m==='acts')S.dview=m;}catch(e){}
 function setDView(v){S.dview=v;try{localStorage.setItem('fv.dataMode',v)}catch(e){}render();}

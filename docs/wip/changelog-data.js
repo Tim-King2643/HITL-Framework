@@ -425,5 +425,30 @@ const CHANGE_LOG = [
     "source": "Tim, Oct 21, 2026: build the process RACI from the activities into the People view (GR-060), after reviewing the sketch.",
     "reason": "A stored process RACI can drift from the activities it summarizes; computed, it always agrees with them, as process CRUD already does.",
     "verified": "The People view's RACI by process matches the sketch for all 37 processes (owner and every role's letter). The four views read each activity's roles from ACTIVITY_RACI; the unused RACI parsing helpers are removed from pcf7.html. The change-log audit now tracks ACTIVITY_RACI."
+  },
+  {
+    "id": "CL-021",
+    "date": "2026-11-17",
+    "requestedBy": "Tim",
+    "kind": "gdp",
+    "changeType": "decision",
+    "target": {
+      "domain": "7.0",
+      "activities": [
+        "7.4.4",
+        "7.6.1"
+      ]
+    },
+    "summary": "Governed Decision Point records are master data (GR-042): GDP_RECORDS holds the written fields of each control point's record, starting with 7.4.4 and 7.6.1 as approved on Nov 5.",
+    "from": "No structured record. 7.4.4 and 7.6.1 had prose Governed Decision Point entries, rewritten as records in docs/wip/gdp_record_sketch.html; the decision point box said only which fields a record needs at the activity's Consequence of Error.",
+    "to": "GDP_RECORDS in pcf7.html, one activity per line: escalation path (condition, role, who joins), override, documentation, review cadence, and a trigger condition where AI leads. 7.4.4 (Critical) and 7.6.1 (High) carry the sketch's values. Owner, decides or verifies, and work products are read from ACTIVITY_RACI, WORK_ELEMENTS and ACTIVITY_CRUD. The other 83 control points have no record yet and show which required fields are missing.",
+    "files": [
+      "docs/sandbox/pcf7.html",
+      "docs/sandbox/four_views.html",
+      "scripts/check-changelog-audit.mjs"
+    ],
+    "source": "GR-042 design approved by Tim and GiGi on the Nov 5, 2026 call; register next action: build GDP_RECORDS starting with 7.4.4 and 7.6.1.",
+    "reason": "A record kept as master data can be checked: the decision point box shows it field by field, and Findings counts control points missing a field their rating requires.",
+    "verified": "The Work view's decision point box for 7.4.4 and 7.6.1 shows every field matching the sketch; the other control points list their missing required fields; Findings' count matches the 85 control points by rating. The change-log audit now tracks GDP_RECORDS."
   }
 ];

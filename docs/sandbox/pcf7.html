@@ -1262,6 +1262,18 @@ const WORK_ELEMENTS = {
   "7.8.3": { control:"Verify", obj:{ "Research":"Read the Communication Plan and the Employee Master Record", "Draft":"Write the messages", "Verify":"Check the messages match the Communication Plan", "Produce / Execute":"Send the communications and create the Communication Record", "Communicate":"Deliver the messages to employees" }, na:{ "Evaluate":"the audiences and messages are set at 7.8.1", "Decide":"decided at 7.8.1" } },
 };
 
+// ── Governed Decision Point records (GR-042, CL-021) ─────────────────────
+// The written fields of each control point's record, keyed by activity: escalation path (condition, role,
+// and who joins), override, documentation, review cadence, and the trigger condition where AI leads and a
+// person decides flagged instances. Owner, decides or verifies, and work products are read from
+// ACTIVITY_RACI, WORK_ELEMENTS and ACTIVITY_CRUD, so they are not stored here. Consequence of Error sets
+// which fields a record needs (the four views' decision point box). Master data, one activity per line:
+// a change here needs a CHANGE_LOG entry.
+const GDP_RECORDS = {
+  "7.4.4": { esc:[["Potential litigation or regulatory exposure", "Director of HR Ops", "Legal*"], ["Grievant is an executive-level employee", "CHRO"]], "escNote": "Both roles are already Informed on 7.4.4, and Director of HR Ops is the owner's reports-to, so the path follows the reporting line.", "over": "The labor agreement's grievance steps are the override: the grievant or union can take any step decision to the next step, and to arbitration. Inside the organization, Director of HR Ops, with Legal, can reverse or settle before the next step. Where the HRBP Manager sets aside AI research, evaluation or a draft answer, the case notes it.", "doc": "Each step decision recorded in the Grievance Case with its evidence: the facts found, the CBA provisions applied, precedent relied on, and the contractual deadline met. An AI-assisted draft is marked as such.", "rev": "Quarterly review of closed grievances by Director of HR Ops with Legal, and a review after every override: a step decision reversed, settled above the HRBP Manager, or lost at arbitration.", "status": "approved", "date": "2026-11-05" },
+  "7.6.1": { esc:[["A significant band change, after Compensation & Benefits Manager is consulted", "VP People & Culture"], ["A contested or disputed case, or one outside the standard promotion criteria", "VP People & Culture"]], "escNote": "VP People & Culture is outside the owner's reporting line (Director of HR Ops). Kept deliberately: the escalation goes to the role with authority over career moves.", "over": "VP People & Culture can amend or reverse the decision before its effective date. After it, a correction is a new Position Change Record, not an edit, so the history stays. An employee's appeal of a demotion goes to VP People & Culture. Where the HRBP Manager sets aside an AI assessment or draft, the record notes it.", "doc": "Each decision documented in the Position Change Record: the criteria met, the evidence (Performance Review, Competency Model), the result of the pay-equity and non-discrimination check, and who approved.", "rev": "Quarterly adverse-impact review of the quarter's promotions and demotions by VP People & Culture, with Compensation & Benefits Manager for pay equity.", "status": "approved", "date": "2026-11-05" },
+};
+
 const WP_BY_ID = {};
 WORK_PRODUCTS.forEach(w => { WP_BY_ID[w.id] = w; });
 function wpLabel(id) { const w = WP_BY_ID[id]; return w ? w.name + ' (' + w.system + ')' : id; }
@@ -1724,7 +1736,7 @@ if (window.OrgContext) {
 // four_views.html runs in #fv-frame and reads this page's data through FV_SOURCE
 // (const declarations are not window properties, so they are handed over here).
 window.FV_OPENED_VIEW = FV_OPENED_VIEW;
-window.FV_SOURCE = { PCF7, WR_DATA, ROLE_TAXONOMY, ACTIVITY_CRUD, ACTIVITY_RACI, WORK_ELEMENTS, WORK_PRODUCTS, ASSESS_EVIDENCE_LABEL,
+window.FV_SOURCE = { PCF7, WR_DATA, ROLE_TAXONOMY, ACTIVITY_CRUD, ACTIVITY_RACI, WORK_ELEMENTS, GDP_RECORDS, WORK_PRODUCTS, ASSESS_EVIDENCE_LABEL,
   CHANGE_LOG: (typeof CHANGE_LOG !== 'undefined') ? CHANGE_LOG : [] };
 function showFourViews(v) {
   const f = document.getElementById('fv-frame');

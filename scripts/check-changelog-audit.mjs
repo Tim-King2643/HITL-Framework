@@ -89,6 +89,13 @@ const TRACKED = [
     pattern: /"\d+(?:\.\d+)+"\s*:\s*\{\s*"A"\s*:/,
     label: "an activity's RACI in ACTIVITY_RACI",
   },
+  {
+    file: "docs/sandbox/pcf7.html",
+    // Governed Decision Point records (GR-042), one activity per line, e.g.
+    //   "7.4.4": { esc:[["condition", "role", "with"]], "over": "...", "doc": "...", ... },
+    pattern: /"\d+(?:\.\d+)+"\s*:\s*\{\s*esc\s*:/,
+    label: "a decision point record in GDP_RECORDS",
+  },
 ];
 
 function git(args) {
