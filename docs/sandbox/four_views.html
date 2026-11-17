@@ -422,8 +422,7 @@ function stageBtns(){
   return '<h5>Where the work is</h5>'+btns((isOrg()?[['Today','Today in '+esc(ORGNAME())+': each activity at its assessed Current State']]:[]).concat([['Human-only','Every activity at the Human-only baseline']]).concat(ST.slice(1,5).map(s=>[s,'Up to '+s+', or each activity\u2019s ceiling if lower'])).concat([['Automation','Every activity at its Progression Ceiling']]),'stage');
 }
 // People opens on its dashboard (GR-061), remembered per browser like Work's.
-try{const m=localStorage.getItem('fv.peopleMode');if(m==='praci')S.pmode='acts';else if(['pdash','acts','raci','load'].includes(m))S.pmode=m;}catch(e){}
-function setPMode(v){S.pmode=v;try{localStorage.setItem('fv.peopleMode',v)}catch(e){}render();}
+function setPMode(v){S.pmode=v;render();}
 // People's left column mirrors Work's (Tim, Oct 31, 2026): Show Dashboard or Activities. The dashboard covers every
 // process group; Activities opens on all of them, with the Process group selector and the activity-level displays.
 function peopleSide(){
@@ -685,9 +684,8 @@ function workFilter(){
 }
 // Work opens on the dashboard (GR-061); the activity rows are one click away. The viewer's own choice is remembered
 // in this browser only; a process card, and old links to the Working Relationship or Readiness Gate views, open the rows.
-try{const m=localStorage.getItem('fv.workMode');if(m==='dash'||m==='acts')S.wmode=m;}catch(e){}
 try{const v=P.FV_OPENED_VIEW;if(v==='wr'||v==='gates')S.wmode='acts';}catch(e){}
-function setWMode(v){S.wmode=v;try{localStorage.setItem('fv.workMode',v)}catch(e){}render();}
+function setWMode(v){S.wmode=v;render();}
 function wmodeBtns(){return '<h5>Show</h5><div class="stack">'+[['dash','Dashboard'],['acts','Activities']].map(o=>'<button class="'+(S.wmode===o[0]?'on':'')+'" onclick="'+(o[0]==='acts'?'S.wg=\'all\';':'')+'setWMode(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>';}
 function workSide(){
   if(S.wmode==='dash') return dashSide();
@@ -1428,8 +1426,7 @@ function dpFinding(){const x=dpSummary();
     (x.fd.length?x.fd.length+' activit'+(x.fd.length>1?'ies have':'y has')+' no person deciding or verifying, and '+(x.fd.length>1?'are':'is')+' decided or verified at another activity\u2019s control point. ':'')+
     (x.no.length?'<span class="red">'+x.no.length+' reach'+(x.no.length>1?'':'es')+' none and need'+(x.no.length>1?'':'s')+' a named control:</span> '+x.no.map(a=>a.code).join(', ')+'.':'Every activity has a control point, its own or another activity\u2019s.')+' '+gdpFinding(x.dp);}
 // Data opens on its dashboard (GR-061), remembered per browser like Work's and People's.
-try{const m=localStorage.getItem('fv.dataMode');if(m==='dash'||m==='acts')S.dview=m;}catch(e){}
-function setDView(v){S.dview=v;try{localStorage.setItem('fv.dataMode',v)}catch(e){}render();}
+function setDView(v){S.dview=v;render();}
 function dataSide(){
   const dash=S.dview==='dash';
   return '<div class="q">'+VIEWS[2].q+'</div>'+
@@ -1561,7 +1558,7 @@ function dataByProc(){
   return h;
 }
 // A process card opens By activity at that process and scrolls to it.
-function dpOpenProc(code){S.dview='acts';S.dmode='act';try{localStorage.setItem('fv.dataMode','acts')}catch(e){}render();
+function dpOpenProc(code){S.dview='acts';S.dmode='act';render();
   // A process with sub-activities has its own heading row; a single-activity process (such as 7.4.4) is its activity's row.
   const row=[...document.querySelectorAll('tr.tier')].find(r=>r.textContent.trim().startsWith(code+' '))||[...document.querySelectorAll('#main tr')].find(r=>r.textContent.trim().startsWith(code+' '));
   if(row){try{const fr=window.frameElement;if(fr)P.scrollTo({top:fr.getBoundingClientRect().top+P.scrollY+row.getBoundingClientRect().top-70,behavior:'smooth'});else row.scrollIntoView({behavior:'smooth'});}catch(e){row.scrollIntoView();}}
@@ -1569,8 +1566,7 @@ function dpOpenProc(code){S.dview='acts';S.dmode='act';try{localStorage.setItem(
 
 /* ---------- Findings ---------- */
 // Findings opens on its dashboard (GR-061), remembered per browser like the other views.
-try{const m=localStorage.getItem('fv.findMode2');if(m==='ready'||m==='dash'||m==='sum')S.fview=m;}catch(e){}
-function setFView(v){S.fview=v;try{localStorage.setItem('fv.findMode2',v)}catch(e){}render();}
+function setFView(v){S.fview=v;render();}
 function findSide(){
   const org=isOrg(),dash=S.fview==='dash';
   if(S.fview==='ready') return rdySide();
@@ -1819,7 +1815,10 @@ function fit(){try{const f=window.frameElement;if(f)f.style.height=Math.max(600,
 try{new ResizeObserver(fit).observe(document.body)}catch(e){}
 // pcf7.html calls this when the organization changes or an assessment is saved.
 window.fvRefresh=function(){loadABC();render();};
-window.fvShow=function(v){if(v)S.view=v;window.fvRefresh();};
+// Every view opens on its dashboard each time it is opened (Tim, Nov 17, 2026). A square or card that opens an
+// activity switches the view first and then shows the activities, so it is not undone here.
+const DASH={work:()=>{S.wmode='dash'},people:()=>{S.pmode='pdash'},data:()=>{S.dview='dash'},findings:()=>{S.fview='ready'}};
+window.fvShow=function(v){if(v){S.view=v;if(DASH[v])DASH[v]();}window.fvRefresh();};
 {const v=new URLSearchParams(location.search).get('view');if(v)S.view=v;}
 loadABC();render();
 
