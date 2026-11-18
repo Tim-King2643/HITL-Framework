@@ -1657,6 +1657,9 @@ function findAll(){
     f.sort((x,y)=>FDK.findIndex(k=>k[0]===x)-FDK.findIndex(k=>k[0]===y));
     out[a.code]=f.length?f:['none'];});
   return out;}
+// The Reference Model can only show decision point records; it reads that coloring without changing the choice, so an
+// organization still opens on the Readiness Gate (Tim, Nov 17, 2026).
+const rEnc=()=>isOrg()?S.renc:'gdp';
 /* ---------- Readiness dashboard (Nov 17, 2026) ----------
    The Readiness Gate for each activity's next step, as a map like Work's: one square per activity, colored by whether the
    gate clears. The next step is the one after the organization's Current State; an activity at its Progression Ceiling has
@@ -1686,35 +1689,34 @@ function rdyGate(a){const cur=curOf(a);
   if(!none&&!ter)why.push('Technical / process: not yet assessed');if(!none&&!rdA)why.push('Role and organizational readiness: not yet assessed');
   if(rdA){RD_DIMS.forEach(d=>{const f=rl[d.k].f;if(f==='not'||f==='ins')why.push(d.n+': '+RD_F[f][0]);});if(needOver&&(over==='not'||over==='ins'))why.push('Governance oversight: '+RD_F[over][0]);}
   return {cur,to,k,te:ter?te:'none',role:rdA?role:'none',org:rdA?org:'none',over:needOver?(rdA?over:'none'):'na',none,v:none?'none':v,why};}
-function rdyKey(a,g){if(S.renc==='gdp'){const r=dpAnalysis()[a.code];if(!r.dp)return 'na';return gdpMissing(a,r).length?'miss':GDP[a.code].status==='approved'?'ok':'prop';}
-  if(g.top)return 'top';if(g.none)return S.renc==='over'&&g.over==='na'?'na':'none';
-  return S.renc==='gate'?g.v:S.renc==='te'?(g.te==='none'?'none':g.te):g[S.renc];}
+function rdyKey(a,g){if(rEnc()==='gdp'){const r=dpAnalysis()[a.code];if(!r.dp)return 'na';return gdpMissing(a,r).length?'miss':GDP[a.code].status==='approved'?'ok':'prop';}
+  if(g.top)return 'top';if(g.none)return rEnc()==='over'&&g.over==='na'?'na':'none';
+  return rEnc()==='gate'?g.v:rEnc()==='te'?(g.te==='none'?'none':g.te):g[rEnc()];}
 function rdySide(){const org=isOrg();
   const opts=org?[['gate','Readiness Gate'],['te','Technical / process'],['role','Role readiness'],['org','Organizational readiness'],['over','Governance oversight'],['gdp','Decision point record']]:[['gdp','Decision point record']];
-  if(!org)S.renc='gdp';
   return '<div class="q">Is each activity ready for its next step?</div>'+
    '<h5>Show</h5><div class="stack">'+[['ready','Readiness'],['dash','Findings map'],['sum',org?'Summary and exceptions':'Summary']].map(o=>'<button class="'+(S.fview===o[0]?'on':'')+'" onclick="setFView(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>'+
    '<p style="margin-top:10px">'+(org?'One square per activity, colored by the Readiness Gate for its next step: the step after '+esc(ORGNAME())+'&rsquo;s Current State. A dashed square has nothing assessed for that step yet, so the map doubles as the list of what to assess next. Hover a square for what holds it; click it to open its gate in Work.':'Readiness is assessed per organization and cannot be modeled, so the Reference Model shows its decision point records. Choose an organization to see its Readiness Gates.')+'</p>'+
-   '<h5>Color the squares by</h5><div class="stack">'+opts.map(o=>'<button class="'+(S.renc===o[0]?'on':'')+'" onclick="S.renc=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>'+
+   '<h5>Color the squares by</h5><div class="stack">'+opts.map(o=>'<button class="'+(rEnc()===o[0]?'on':'')+'" onclick="S.renc=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>'+
    '<h5>Reading it</h5><p>The gate clears only when every check clears: Technical / process, Role readiness, Organizational readiness and, on High or Critical work, Governance oversight. Once any check for the step is assessed, one not yet assessed counts as Insufficient Evidence, which holds the step (gray is never converted).</p>';}
-function rdyMain(){if(!isOrg())S.renc='gdp';const org=isOrg(),A=DATA.acts,K=RDYK[S.renc],G={};A.forEach(a=>G[a.code]=org?rdyGate(a):{top:false,none:true});
+function rdyMain(){const org=isOrg(),A=DATA.acts,K=RDYK[rEnc()],G={};A.forEach(a=>G[a.code]=org?rdyGate(a):{top:false,none:true});
   const key=a=>rdyKey(a,G[a.code]),KM=Object.fromEntries(K.k.map(x=>[x[0],x])),cnt={};K.k.forEach(x=>cnt[x[0]]=0);A.forEach(a=>cnt[key(a)]++);
   const sw=x=>'<i class="db-sw'+(x[0]==='none'?' u':'')+'" style="background:'+x[2]+'"></i>';
   const tip=a=>{const g=G[a.code],t='<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>'+(org?'Current State '+(g.cur||'not assessed')+(g.to?' &rarr; next step '+g.to:'')+' &middot; ':'')+a.cons+'<br>'+K.t+': '+KM[key(a)][1];
-    return escA(t+(S.renc!=='gdp'&&g.msg?'<br>'+g.msg:S.renc!=='gdp'&&g.why&&g.why.length?'<br>'+g.why.join('<br>'):S.renc==='gdp'&&key(a)==='miss'?'<br>Missing: '+gdpMissing(a,dpAnalysis()[a.code]).map(k=>GDPF[k].toLowerCase()).join(', '):''));};
+    return escA(t+(rEnc()!=='gdp'&&g.msg?'<br>'+g.msg:rEnc()!=='gdp'&&g.why&&g.why.length?'<br>'+g.why.join('<br>'):rEnc()==='gdp'&&key(a)==='miss'?'<br>Missing: '+gdpMissing(a,dpAnalysis()[a.code]).map(k=>GDPF[k].toLowerCase()).join(', '):''));};
   let h='';
-  if(S.renc==='gdp'){const dp=A.filter(a=>dpAnalysis()[a.code].dp);
+  if(rEnc()==='gdp'){const dp=A.filter(a=>dpAnalysis()[a.code].dp);
     h+='<div class="tiles" style="margin-bottom:16px">'+tile(dp.length,'control points'+(org?' at '+esc(ORGNAME())+'&rsquo;s Current State':' at the ceilings'))+tile(cnt.ok,'records complete and approved')+tile(cnt.prop,'complete, proposed for review')+tile(cnt.miss,'missing a required field')+'</div>';}
   else{const has=A.filter(a=>!G[a.code].top);
     h+='<div class="tiles" style="margin-bottom:16px">'+tile(cnt.clear,'clear their next step')+tile(cnt.cond,'clear with conditions')+tile(cnt.not+cnt.ins,'held ('+cnt.not+' not met or not ready, '+cnt.ins+' insufficient evidence)')+tile(cnt.none+' of '+has.length,'with a next step not yet assessed')+tile(cnt.top,'at their ceiling')+'</div>';
-    if(S.renc!=='gate'){h='<div class="tiles" style="margin-bottom:16px">'+K.k.filter(x=>cnt[x[0]]).map(x=>tile(cnt[x[0]],esc(x[1]))).join('')+'</div>';}}
-  const fig=L=>S.renc==='gdp'?L.filter(a=>key(a)==='miss').length:L.filter(a=>['not','ins'].includes(key(a))).length;
-  h+='<div class="card"><h3>'+(S.renc==='gdp'?'Decision point records, by process':'Readiness for the next step, by process')+'</h3><div class="sub">One square per activity, colored by '+K.t.toLowerCase()+(S.renc==='gdp'?'':' for its next step')+'. The figure on each card is how many of its activities '+(S.renc==='gdp'?'have a record missing a required field':'are held')+'. Click a square to open it in Work.</div>'+
+    if(rEnc()!=='gate'){h='<div class="tiles" style="margin-bottom:16px">'+K.k.filter(x=>cnt[x[0]]).map(x=>tile(cnt[x[0]],esc(x[1]))).join('')+'</div>';}}
+  const fig=L=>rEnc()==='gdp'?L.filter(a=>key(a)==='miss').length:L.filter(a=>['not','ins'].includes(key(a))).length;
+  h+='<div class="card"><h3>'+(rEnc()==='gdp'?'Decision point records, by process':'Readiness for the next step, by process')+'</h3><div class="sub">One square per activity, colored by '+K.t.toLowerCase()+(rEnc()==='gdp'?'':' for its next step')+'. The figure on each card is how many of its activities '+(rEnc()==='gdp'?'have a record missing a required field':'are held')+'. Click a square to open it in Work.</div>'+
    '<div class="db-legend">'+K.k.filter(x=>cnt[x[0]]).map(x=>'<span>'+sw(x)+esc(x[1])+' ('+cnt[x[0]]+')</span>').join('')+'</div><div class="db-grid">'+
    DATA.groups.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+PROCS.filter(p=>p.g===gc).map(p=>{const L=p.acts.map(c=>ACT[c]).filter(Boolean),n=fig(L);
      return '<div class="db-proc" onclick="dbOpen(\''+p.code+'\')"><div class="db-pn"><span><span class="code">'+p.code+'</span> '+esc(p.name)+'</span><span class="h"'+(n?'':' style="color:var(--lgray)"')+'>'+n+'</span></div><div class="db-cells">'+
        L.map(a=>'<i class="db-cell'+(key(a)==='none'?' u':'')+'" data-t="'+tip(a)+'" onclick="event.stopPropagation();rdyOpen(\''+p.code+'\',\''+a.code+'\')" style="background:'+KM[key(a)][2]+'"></i>').join('')+'</div></div>';}).join('')+'</div>').join('')+'</div></div>';
-  if(org&&S.renc!=='gdp'){const why={};A.forEach(a=>(G[a.code].why||[]).forEach(w=>{const n=w.replace(/: .*$/,'');(why[n]=why[n]||{not:0,ins:0,n:0}).n++;why[n][/Not (met|Ready)$/.test(w)?'not':'ins']++;}));
+  if(org&&rEnc()!=='gdp'){const why={};A.forEach(a=>(G[a.code].why||[]).forEach(w=>{const n=w.replace(/: .*$/,'');(why[n]=why[n]||{not:0,ins:0,n:0}).n++;why[n][/Not (met|Ready)$/.test(w)?'not':'ins']++;}));
     const R=Object.entries(why).sort((x,y)=>y[1].n-x[1].n),mx=R.length?R[0][1].n:1;
     h+='<div class="card"><h3>What&rsquo;s holding the work</h3><div class="sub">Across the assessed next steps: each check or readiness dimension, by how many steps it holds. Red is Not met or Not Ready; gray is Insufficient Evidence.</div>'+
      (R.length?'<div class="db-bars">'+R.map(([n,c])=>'<div class="row"><div>'+esc(n)+'</div><div class="db-bar" style="width:'+Math.max(8,Math.round(100*c.n/mx))+'%">'+(c.not?'<div style="flex:'+c.not+';background:#DC2626;color:#fff" data-t="'+esc(n)+'<br>'+c.not+' Not met or Not Ready">'+c.not+'</div>':'')+(c.ins?'<div style="flex:'+c.ins+';background:#9CA3AF;color:#fff" data-t="'+esc(n)+'<br>'+c.ins+' Insufficient Evidence">'+c.ins+'</div>':'')+'</div><div class="h">'+c.n+' step'+(c.n>1?'s':'')+'</div></div>').join('')+'</div>':
@@ -1722,7 +1724,7 @@ function rdyMain(){if(!isOrg())S.renc='gdp';const org=isOrg(),A=DATA.acts,K=RDYK
   return h;}
 // A square opens the Work view at that process with the activity's next-step gate (or its control point) selected.
 function rdyOpen(code,act){try{P.setView('work')}catch(e){S.view='work'}
-  const a=ACT[act],g=isOrg()?rdyGate(a):{top:true};S.wsel[act]=S.renc==='gdp'||g.top||g.k==null?{t:'dp',k:0}:{t:'gate',k:g.k};dbOpen(code);}
+  const a=ACT[act],g=isOrg()?rdyGate(a):{top:true};S.wsel[act]=rEnc()==='gdp'||g.top||g.k==null?{t:'dp',k:0}:{t:'gate',k:g.k};dbOpen(code);}
 function findDash(){
   const org=isOrg(),F=findAll(),L=DATA.acts,cnt={};FDK.forEach(k=>cnt[k[0]]=0);
   L.forEach(a=>F[a.code].forEach(k=>cnt[k]++));
@@ -1817,7 +1819,7 @@ try{new ResizeObserver(fit).observe(document.body)}catch(e){}
 window.fvRefresh=function(){loadABC();render();};
 // Every view opens on its dashboard each time it is opened (Tim, Nov 17, 2026). A square or card that opens an
 // activity switches the view first and then shows the activities, so it is not undone here.
-const DASH={work:()=>{S.wmode='dash'},people:()=>{S.pmode='pdash'},data:()=>{S.dview='dash'},findings:()=>{S.fview='ready'}};
+const DASH={work:()=>{S.wmode='dash'},people:()=>{S.pmode='pdash'},data:()=>{S.dview='dash'},findings:()=>{S.fview='ready';S.renc='gate'}};
 window.fvShow=function(v){if(v){S.view=v;if(DASH[v])DASH[v]();}window.fvRefresh();};
 {const v=new URLSearchParams(location.search).get('view');if(v)S.view=v;}
 loadABC();render();
