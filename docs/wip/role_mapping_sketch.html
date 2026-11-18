@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate"><head><meta charset="UTF-8"><meta name="google" content="notranslate"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>[DRAFT] Organization Role Mapping — Sketch</title>
+<style>
+:root{--navy:#1B4F8A;--navy-d:#0D2D4F;--dark:#0D1B2A;--gray:#444;--lgray:#6B7A90;--faint:#A9B4C4;--bg:#F4F6FB;--border:#DDE3EE;--amber:#8A5A00;--amberbg:#FEF3C7;--red:#A23B3B;--green:#166534}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--dark);padding-bottom:60px}
+.sk{background:#FEF3C7;border-bottom:2px solid #B8873F;color:#7A5A1E;font-size:12.5px;text-align:center;padding:9px 16px}
+.sk a{color:#7A5A1E;font-weight:600}
+.wrap{max-width:1280px;margin:0 auto;padding:18px 16px;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
+.side{flex:0 1 340px;min-width:260px;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow-y:auto}
+.side h1{font-family:Georgia,serif;font-size:21px;color:var(--navy-d);line-height:1.3;margin-bottom:8px}
+.side p,.side li{font-size:12.5px;color:var(--gray);line-height:1.6}
+.side p{margin-bottom:10px}.side ul{margin:0 0 10px 18px}.side li{margin-bottom:4px}
+.side h5{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--lgray);margin:16px 0 6px}
+.stack .btn{display:block;width:100%;text-align:left;margin:0 0 4px}
+.btn{font:inherit;font-size:12.5px;font-weight:600;padding:7px 12px;border-radius:6px;border:1px solid #C6D8EE;background:#fff;color:var(--navy-d);cursor:pointer}
+.btn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn:disabled{opacity:.45;cursor:default}
+.main{flex:1;min-width:320px}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.card h3{font-size:14.5px;color:var(--navy-d);margin-bottom:3px;font-weight:600}
+.sub{font-size:12px;color:var(--lgray);line-height:1.5;margin-bottom:10px}
+table.t{width:100%;border-collapse:collapse;font-size:12.5px}
+.t th{text-align:left;font-size:10.5px;color:var(--lgray);font-weight:600;padding:4px 6px;border-bottom:1px solid var(--border);white-space:nowrap}
+.t td{padding:6px 6px;border-bottom:1px solid #EEF1F6;vertical-align:top;line-height:1.45}
+.t td.n{text-align:right;width:44px}
+.code{font-family:Consolas,monospace;font-size:12px;color:var(--lgray);white-space:nowrap}
+.mt{display:inline-block;font-size:10.5px;font-weight:600;border-radius:10px;padding:1px 8px;white-space:nowrap}
+.mt.one{background:#E6F4EA;color:var(--green)}.mt.many{background:#E8F0FB;color:var(--navy)}.mt.split{background:#EDE7F6;color:#5B3C9A}
+.mt.unk{background:var(--amberbg);color:var(--amber)}.mt.theirs{background:#EEF1F6;color:var(--lgray)}
+.r{border-bottom:1px dotted var(--faint);cursor:help}
+.r.unk{color:var(--amber);font-weight:600}
+.as{font-size:11px;color:var(--lgray)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.panel{border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.panel.unk{border-color:#F0C67A;background:#FFFBEB}.panel.theirs{background:#F8FAFC}
+.panel h4{font-size:13px;color:var(--navy-d);margin-bottom:2px}
+.panel .k{font-size:11.5px;color:var(--lgray);line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 6px}
+.chip{font-size:12px;border:1px solid #C6D8EE;border-radius:14px;padding:4px 10px;background:#fff;color:var(--navy-d)}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.chip.unk{border-color:#F0C67A;color:var(--amber);background:#FFFBEB}
+.note{font-size:12px;color:var(--amber);background:var(--amberbg);border-radius:6px;padding:7px 11px;margin-top:8px;line-height:1.5}
+.esc li{font-size:12.5px;line-height:1.55;margin:0 0 4px 18px}
+#tip{position:fixed;z-index:9;display:none;background:var(--navy-d);color:#fff;font-size:11.5px;padding:5px 9px;border-radius:5px;pointer-events:none;max-width:280px;line-height:1.4}
+.err{background:#FBEAEA;color:var(--red);border-radius:8px;padding:14px 16px;font-size:13px}
+@media(max-width:860px){.side{position:static;max-height:none}}
+</style>
+</head><body>
+<div class="sk"><strong>Sketch</strong> · Organization role mapping: an organization&rsquo;s own titles shown wherever the catalog roles appear · <a href="../sandbox/pcf7.html?org=abc-test-org">Sandbox</a> · <a href="index.html">Back to WIP hub</a></div>
+<div class="wrap">
+<div class="side">
+  <h1>Their titles, everywhere our roles appear</h1>
+  <p>The role catalog, RACI and records stay shared and keyed to the catalog roles. Each organization saves one more record: a <b>role map</b> from its own job titles to the catalog roles, with the match type and who confirmed it. When the organization is selected, every place a catalog role appears shows their title instead; hover any name for the catalog role behind it.</p>
+  <p>The titles here are made up for ABC Test Org to show every match type. The activities, RACI and decision point records are read live from the sandbox.</p>
+  <h5>Show roles as</h5>
+  <div class="stack" id="fNames"></div>
+  <h5>People view, group by</h5>
+  <div class="stack" id="fGroup"></div>
+  <h5>The display rules</h5>
+  <ul>
+    <li><span class="mt one">One-to-one</span> their title replaces ours.</li>
+    <li><span class="mt many">Many-to-one</span> all their titles are listed.</li>
+    <li><span class="mt split">Split</span> one title of theirs covers two catalog roles; it shows in both places, marked with the role it is acting as.</li>
+    <li><span class="mt unk">Unknown</span> no title maps to a catalog role: shown in amber as &ldquo;Unknown (role)&rdquo;. On High or Critical work it holds the Readiness Gate until resolved.</li>
+    <li><span class="mt theirs">Theirs only</span> a title of theirs the catalog does not have: listed in the map, outside the model.</li>
+  </ul>
+  <h5>Recommended</h5>
+  <p>Readiness stays recorded per catalog role, even when one title covers two: a person can be ready for one role&rsquo;s work and not the other&rsquo;s. The People view can combine a split title&rsquo;s work under one panel, since that is how their people experience it.</p>
+</div>
+<div class="main" id="main"><div class="card">Reading the sandbox&hellip;</div></div>
+</div>
+<div id="tip"></div>
+<script>
+const SANDBOX='../sandbox/pcf7.html';
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+function literalAfter(src,marker,open,close){const i=src.indexOf(marker);if(i<0)return null;const s=src.indexOf(open,i);let d=0;
+  for(let j=s;j<src.length;j++){const c=src[j];if(c==='"'){j++;while(j<src.length&&src[j]!=='"'){if(src[j]==='\\')j++;j++;}continue;}
+    if(c==='/'&&src[j+1]==='/'){while(j<src.length&&src[j]!=='\n')j++;continue;}
+    if(c===open)d++;else if(c===close){d--;if(!d)return src.slice(s,j+1);}}return null;}
+const lit=(src,n,o,c)=>{const t=literalAfter(src,'const '+n+' =',o,c);if(!t)throw new Error(n+' not found');return (new Function('return '+t))();};
+
+// ABC Test Org's role map (made up for the sketch): their title, headcount, their reporting line, the catalog roles it covers.
+const MAP=[
+ {t:'Chief People Officer',n:1,rt:'CEO',roles:['CHRO'],by:'Chief People Officer'},
+ {t:'VP, Human Resources',n:1,rt:'Chief People Officer',roles:['SVP Talent Management','VP People & Culture'],by:'Chief People Officer'},
+ {t:'HR Operations Director',n:1,rt:'Chief People Officer',roles:['Director of HR Ops'],by:'Chief People Officer'},
+ {t:'Senior HR Business Partner',n:2,rt:'HR Operations Director',roles:['HRBP Manager'],by:'HR Operations Director'},
+ {t:'HR Business Partner',n:3,rt:'Senior HR Business Partner',roles:['HRBP Manager'],by:'HR Operations Director'},
+ {t:'HR Generalist',n:2,rt:'HR Business Partner',roles:['HR Generalist'],by:'HR Operations Director'},
+ {t:'Talent Acquisition Manager',n:1,rt:'VP, Human Resources',roles:['Director of TA'],by:'VP, Human Resources'},
+ {t:'Talent Acquisition Partner',n:4,rt:'Talent Acquisition Manager',roles:['Recruiter'],by:'Talent Acquisition Manager'},
+ {t:'Total Rewards Manager',n:1,rt:'HR Operations Director',roles:['Compensation & Benefits Manager','Compensation Analyst'],by:'HR Operations Director'},
+ {t:'HRIS Specialist',n:1,rt:'HR Operations Director',roles:['HRIS Analyst'],by:'HR Operations Director'},
+ {t:'Learning & Development Manager',n:1,rt:'VP, Human Resources',roles:['Director of L&D','L&D Specialist'],by:'VP, Human Resources'},
+ {t:'Employee Relations Specialist',n:1,rt:'HR Operations Director',roles:[],by:'HR Operations Director'}];
+const S={names:'theirs',group:'catalog',rec0:0,rec1:0};
+let M=null;
+const byRole={};MAP.forEach(m=>m.roles.forEach(r=>(byRole[r]=byRole[r]||[]).push(m)));
+function matchType(m){if(!m.roles.length)return 'theirs';if(m.roles.length>1)return 'split';return byRole[m.roles[0]].length>1?'many':'one';}
+const MTL={one:'One-to-one',many:'Many-to-one',split:'Split',unk:'Unknown',theirs:'Theirs only'};
+// The one display function every view would call: a catalog role, shown for the selected organization.
+function R(role){if(/\*$/.test(role))return esc(role);
+  if(S.names==='catalog')return '<span class="r" data-t="Catalog role">'+esc(role)+'</span>';
+  const ms=byRole[role];
+  if(!ms)return '<span class="r unk" data-t="No ABC Test Org title maps to the catalog role '+esc(role)+'">Unknown ('+esc(role)+')</span>';
+  return '<span class="r" data-t="Catalog role: '+esc(role)+(ms.some(m=>m.roles.length>1)?' &middot; their title covers more than one catalog role':'')+'">'+ms.map(m=>esc(m.t)).join(', ')+'</span>'+(ms.some(m=>m.roles.length>1)?' <span class="as">as '+esc(role)+'</span>':'');}
+
+function build(src){const PCF7=lit(src,'PCF7','{','}'),RACI=lit(src,'ACTIVITY_RACI','{','}'),ROLES=lit(src,'ROLE_TAXONOMY','[',']'),GDP=lit(src,'GDP_RECORDS','{','}'),WR=lit(src,'WR_DATA','{','}');
+  const acts=[];PCF7.groups.forEach(g=>g.l3.forEach(l3=>(l3.l4&&l3.l4.length?l3.l4:[l3]).forEach(x=>acts.push({code:x.code,name:x.name,cons:(WR[x.code]||{}).cons}))));
+  const RT=Object.fromEntries(ROLES.map(r=>[r.name,r.reportsTo]));
+  const used=new Set();Object.values(RACI).forEach(r=>['A','R','C','I'].forEach(k=>[].concat(r[k]||[]).forEach(n=>{if(!/\*$/.test(n))used.add(n)})));
+  // Sample activities: one for each match type, chosen from the live RACI.
+  const pick=f=>acts.find(a=>RACI[a.code]&&f(RACI[a.code],a));
+  const samples=[['One-to-one',pick(r=>r.A==='Recruiter')],['Many-to-one',pick(r=>r.A==='HRBP Manager')],['Split',pick(r=>r.A==='Compensation Analyst'||r.A==='Compensation & Benefits Manager'&&(r.R||[]).includes('Compensation Analyst'))],
+    ['Split, executive',pick(r=>r.A==='SVP Talent Management')],['Unknown',pick(r=>r.A==='Onboarding Coordinator')],['Same name',pick(r=>r.A==='HR Generalist')]].filter(x=>x[1]);
+  const gate=pick((r,a)=>(a.cons==='High'||a.cons==='Critical')&&[r.A].concat(r.R||[]).some(n=>n==='Compensation Analyst'||n==='Onboarding Coordinator'))||pick(r=>[r.A].concat(r.R||[]).includes('Compensation Analyst'));
+  const CO={Critical:3,High:2,Moderate:1,Low:0},gate2=acts.filter(a=>RACI[a.code]&&[RACI[a.code].A].concat(RACI[a.code].R||[],RACI[a.code].C||[]).includes('Onboarding Coordinator')).sort((x,y)=>CO[y.cons]-CO[x.cons])[0];
+  M={acts,RACI,RT,GDP,used:[...used],samples,gates:[gate,gate2].filter(Boolean)};render();}
+
+function render(){if(!M)return;
+  const btn=(k,v,l,dis)=>'<button class="btn'+(S[k]===v?' on':'')+'"'+(dis?' disabled':'')+' onclick="S.'+k+'=\''+v+'\';render()">'+l+'</button>';
+  document.getElementById('fNames').innerHTML=btn('names','catalog','Catalog roles (Reference Model)')+btn('names','theirs','ABC Test Org titles');
+  document.getElementById('fGroup').innerHTML=btn('group','catalog','Catalog role',S.names==='catalog')+btn('group','titles','Their titles',S.names==='catalog');
+  const {RACI}=M;let h='';
+  // 1. The role map
+  const unk=M.used.filter(r=>!byRole[r]);
+  h+='<div class="card"><h3>ABC Test Org&rsquo;s role map</h3><div class="sub">Saved with the organization, alongside its assessments. Built from their HR title list, checked by walking the activities with their HR lead (who actually decides, who is consulted), then signed off.</div><table class="t"><tr><th>Their title</th><th class="n">People</th><th>Reports to</th><th>Catalog role</th><th>Match</th><th>Confirmed by</th></tr>'+
+    MAP.map(m=>{const mt=matchType(m);return '<tr><td><b>'+esc(m.t)+'</b></td><td class="n">'+m.n+'</td><td>'+esc(m.rt)+'</td><td>'+(m.roles.length?m.roles.map(esc).join('<br>'):'<span class="as">No catalog role: outside the model</span>')+'</td><td><span class="mt '+mt+'">'+MTL[mt]+'</span></td><td>'+esc(m.by)+'</td></tr>';}).join('')+
+    unk.map(r=>'<tr><td><span class="r unk">Unknown</span></td><td class="n">&mdash;</td><td>&mdash;</td><td>'+esc(r)+'</td><td><span class="mt unk">Unknown</span></td><td class="as">Open: find where this work goes</td></tr>').join('')+'</table></div>';
+  // 2. Work rows
+  h+='<div class="card"><h3>Work view</h3><div class="sub">The Accountable role on each row, and who else is Responsible. One sample activity for each match type, from the live RACI.</div><table class="t"><tr><th>Activity</th><th>Accountable</th><th>Responsible</th><th>Shows</th></tr>'+
+    M.samples.map(([l,a])=>{const r=RACI[a.code];return '<tr><td><span class="code">'+a.code+'</span> '+esc(a.name)+'</td><td>'+R(r.A)+'</td><td>'+((r.R||[]).filter(x=>x!==r.A).map(R).join('<br>')||'<span class="as">&mdash;</span>')+'</td><td class="as">'+l+'</td></tr>';}).join('')+'</table></div>';
+  // 3. Readiness Gate record switch: a split example and an Unknown example
+  M.gates.forEach((a,gi)=>{const r=RACI[a.code],roles=[...new Set([r.A].concat(r.R||[],r.C||[]))].filter(x=>!/\*$/.test(x)),k='rec'+gi;if(!(S[k]<roles.length))S[k]=0;
+    const hc=a.cons==='High'||a.cons==='Critical',hasU=S.names==='theirs'&&roles.some(x=>!byRole[x]);
+    h+='<div class="card"><h3>Readiness Gate: &ldquo;Record for&rdquo;'+(gi?' with an Unknown role':'')+'</h3><div class="sub"><span class="code">'+a.code+'</span> '+esc(a.name)+' &middot; Consequence of Error '+esc(a.cons)+'. '+(gi?'A catalog role with no title of theirs still gets its place in the gate, so the gap is visible where the decision is made.':'Readiness stays one record per catalog role, labeled with their title; a split title gets a record for each role it acts as.')+'</div><div class="chips">'+
+      roles.map((x,i)=>'<span class="chip'+(i===S[k]?' on':'')+(byRole[x]||S.names==='catalog'?'':' unk')+'" onclick="S.'+k+'='+i+';render()" style="cursor:pointer">'+(S.names==='catalog'?esc(x):byRole[x]?byRole[x].map(m=>esc(m.t)).join(', ')+(byRole[x].some(m=>m.roles.length>1)?' &middot; as '+esc(x):''):'Unknown ('+esc(x)+')')+'</span>').join('')+'</div>'+
+      (hasU?'<div class="note">'+(hc?'An Unknown role on High or Critical work: the gate holds until ABC Test Org says where this work goes, since the weakest link cannot be assessed.':'An Unknown role below High: flagged here and in Findings, but it does not hold the gate, since below High each role stands on its own (BR-16). It still needs resolving before this role&rsquo;s readiness can be recorded.')+'</div>':'')+'</div>';});
+  // 4. People panels
+  const load=n=>{const c={A:0,R:0};Object.values(RACI).forEach(r=>{if(r.A===n)c.A++;if((r.R||[]).includes(n))c.R++;});return c;};
+  let panels;
+  if(S.names==='theirs'&&S.group==='titles'){
+    // A split title counts each activity once; a many-to-one title says which titles share the role's work.
+    panels=MAP.map(m=>{const A=new Set(),Rs=new Set();Object.entries(RACI).forEach(([c,r])=>{if(m.roles.includes(r.A))A.add(c);if((r.R||[]).some(x=>m.roles.includes(x)))Rs.add(c);});
+      const sh=[...new Set(m.roles.flatMap(x=>byRole[x]).filter(o=>o!==m).map(o=>o.t))];
+      return '<div class="panel'+(m.roles.length?'':' theirs')+'"><h4>'+esc(m.t)+'</h4><div class="k">'+m.n+' '+(m.n>1?'people':'person')+' &middot; '+(m.roles.length?'Accountable on '+A.size+', Responsible on '+Rs.size+' activities<br>Covers: '+m.roles.map(esc).join(', ')+(sh.length?'<br>Shared with: '+sh.map(esc).join(', '):''):'No catalog work: outside the model')+'</div></div>';})
+      .concat(unk.map(x=>{const l=load(x);return '<div class="panel unk"><h4>Unknown ('+esc(x)+')</h4><div class="k">Accountable on '+l.A+', Responsible on '+l.R+' activities, with no title of theirs</div></div>';}));
+  } else panels=M.used.map(x=>{const l=load(x);return '<div class="panel'+(S.names==='theirs'&&!byRole[x]?' unk':'')+'"><h4>'+R(x)+'</h4><div class="k">Accountable on '+l.A+', Responsible on '+l.R+' activities'+(S.names==='theirs'?'':' &middot; reports to '+esc(M.RT[x]||'no one'))+'</div></div>';});
+  h+='<div class="card"><h3>People view</h3><div class="sub">'+(S.names==='theirs'&&S.group==='titles'?'Grouped by their titles: a split title combines the work of every catalog role it covers, and a title outside the model shows with no catalog work.':'One panel per catalog role'+(S.names==='theirs'?', named with their titles.':'.'))+'</div><div class="grid">'+panels.join('')+'</div></div>';
+  // 5. Decision point record
+  const dp=Object.entries(M.GDP).find(([c,g])=>g.esc&&g.esc.some(e=>e[1]==='SVP Talent Management'))||Object.entries(M.GDP)[0];
+  if(dp){const [c,g]=dp,a=M.acts.find(x=>x.code===c);
+    h+='<div class="card"><h3>Decision point record: escalation path</h3><div class="sub"><span class="code">'+c+'</span> '+esc(a?a.name:'')+' &middot; owner '+R(RACI[c].A)+'</div><ul class="esc">'+g.esc.map(e=>'<li>'+esc(e[0])+' &rarr; '+R(e[1])+(e[2]?', with '+R(e[2]):'')+'</li>').join('')+'</ul></div>';}
+  const main=document.getElementById('main');main.innerHTML=h;}
+
+const tip=document.getElementById('tip');
+document.addEventListener('mouseover',e=>{const t=e.target.closest('[data-t]');if(!t){tip.style.display='none';return;}tip.innerHTML=t.getAttribute('data-t');tip.style.display='block';});
+document.addEventListener('mousemove',e=>{tip.style.left=Math.min(e.clientX+12,innerWidth-300)+'px';tip.style.top=(e.clientY+14)+'px';});
+fetch(SANDBOX,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}).then(build)
+ .catch(e=>{document.getElementById('main').innerHTML='<div class="err">Could not read the sandbox ('+esc(e.message)+').</div>';});
+</script>
+</body></html>
