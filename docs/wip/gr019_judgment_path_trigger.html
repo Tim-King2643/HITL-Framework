@@ -185,7 +185,8 @@ acts.forEach(a=>{if(moving(a))Rof(a).forEach(r=>get(r).mv.push(a));
 const hit=Object.values(R).filter(x=>x.mv.length&&x.kp.length).map(x=>{const t=role(x.n);x.tier=t?t.tier:'Extended RACI';x.to=t?t.reportsTo:'';return x;})
   .sort((a,b)=>(TORD[a.tier]??3)-(TORD[b.tier]??3)||b.mv.length-a.mv.length);
 const only=Object.values(R).filter(x=>x.mv.length&&!x.kp.length);
-const signers=x=>{const s=new Set();x.kp.forEach(([a,l])=>{if(l==='R')s.add(a.A);else if(x.to)s.add(x.to+' (reports to)');});return [...s];};
+// Each signer once: a role that signs both as the Accountable role and as the one it reports to is listed once.
+const signers=x=>{const s=new Set(),up=new Set();x.kp.forEach(([a,l])=>{if(l==='R')s.add(a.A);else if(x.to)up.add(x.to);});up.forEach(r=>{if(!s.has(r))s.add(r+' (reports to)');});return [...s];};
 let SHOW='op';
 function card(x){const req=x.tier==='Operational';
   return '<div class="card'+(req?'':' dim')+'"><h3>'+esc(x.n)+'<span class="tier">'+esc(x.tier)+'</span>'+(req?'<span class="tier" style="color:#7A5A1E;border-color:#E4C98F">Path required</span>':'<span class="tier">For review</span>')+'</h3>'+
