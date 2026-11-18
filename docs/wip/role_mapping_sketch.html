@@ -52,12 +52,26 @@ table.t{width:100%;border-collapse:collapse;font-size:12.5px}
 <div class="wrap">
 <div class="side">
   <h1>Their titles, everywhere our roles appear</h1>
-  <p>The role catalog, RACI and records stay shared and keyed to the catalog roles. Each organization saves one more record: a <b>role map</b> from its own job titles to the catalog roles, with the match type and who confirmed it. When the organization is selected, every place a catalog role appears shows their title instead; hover any name for the catalog role behind it.</p>
+  <h5>Approach</h5>
+  <div class="stack" id="fOpt"></div>
+  <div id="side1">
+  <p><b>Option 1: a separate role map.</b> Built outside the app (their title list, a pre-map, validation by walking the activities with their HR lead, sign-off), then loaded in. The role catalog, RACI and records stay shared and keyed to the catalog roles. Each organization saves one more record: a <b>role map</b> from its own job titles to the catalog roles, with the match type and who confirmed it. When the organization is selected, every place a catalog role appears shows their title instead; hover any name for the catalog role behind it.</p>
   <p>The titles here are made up for ABC Test Org to show every match type. The activities, RACI and decision point records are read live from the sandbox.</p>
   <h5>Show roles as</h5>
   <div class="stack" id="fNames"></div>
   <h5>People view, group by</h5>
   <div class="stack" id="fGroup"></div>
+  </div>
+  <div id="side2" style="display:none">
+  <p><b>Option 2: map while walking the activities.</b> The validation step, done in the app. For each activity, the organization answers &ldquo;who here actually holds this?&rdquo; by picking one of its own titles for each catalog role in the RACI. Two things come out of it:</p>
+  <ul><li>the <b>role map builds itself</b> from the picks, match types included;</li>
+  <li>where their answer differs from the catalog, it is kept as that activity&rsquo;s own RACI for the organization, and listed as a <b>difference</b>: a finding, not drift.</li></ul>
+  <p>The catalog stays shared and untouched. Picks start from Option 1&rsquo;s titles so you can see the result; change any of them. One pick on 7.2.3.4 is set to show a difference. Nothing here is saved.</p>
+  <h5>Process</h5>
+  <select id="fProc" onchange="S.proc=this.value;render()" style="width:100%;font:inherit;font-size:12.5px;padding:6px 8px;border:1px solid #C6D8EE;border-radius:6px;color:var(--navy-d)"></select>
+  <h5>Add one of their titles</h5>
+  <div style="display:flex;gap:6px"><input id="newT" placeholder="e.g. Employee Relations Lead" style="flex:1;font:inherit;font-size:12.5px;padding:6px 8px;border:1px solid #C6D8EE;border-radius:6px"><button class="btn" onclick="addTitle()">Add</button></div>
+  </div>
   <h5>The display rules</h5>
   <ul>
     <li><span class="mt one">One-to-one</span> their title replaces ours.</li>
@@ -67,7 +81,7 @@ table.t{width:100%;border-collapse:collapse;font-size:12.5px}
     <li><span class="mt theirs">Theirs only</span> a title of theirs the catalog does not have: listed in the map, outside the model.</li>
   </ul>
   <h5>Recommended</h5>
-  <p>Readiness stays recorded per catalog role, even when one title covers two: a person can be ready for one role&rsquo;s work and not the other&rsquo;s. The People view can combine a split title&rsquo;s work under one panel, since that is how their people experience it.</p>
+  <p><b>Option 2</b>, with Option 1&rsquo;s worksheet as its starting point: the activity walk is where an organization says how its work really happens, which is what the mapping has to capture, and it fits GiGi&rsquo;s GR-022 reality test. Readiness stays recorded per catalog role, even when one title covers two: a person can be ready for one role&rsquo;s work and not the other&rsquo;s. The People view can combine a split title&rsquo;s work under one panel, since that is how their people experience it.</p>
 </div>
 <div class="main" id="main"><div class="card">Reading the sandbox&hellip;</div></div>
 </div>
@@ -95,7 +109,8 @@ const MAP=[
  {t:'HRIS Specialist',n:1,rt:'HR Operations Director',roles:['HRIS Analyst'],by:'HR Operations Director'},
  {t:'Learning & Development Manager',n:1,rt:'VP, Human Resources',roles:['Director of L&D','L&D Specialist'],by:'VP, Human Resources'},
  {t:'Employee Relations Specialist',n:1,rt:'HR Operations Director',roles:[],by:'HR Operations Director'}];
-const S={names:'theirs',group:'catalog',rec0:0,rec1:0};
+const S={names:'theirs',group:'catalog',rec0:0,rec1:0,opt:'1',proc:'7.2.3'};
+const PICK={},EXTRA=[];
 let M=null;
 const byRole={};MAP.forEach(m=>m.roles.forEach(r=>(byRole[r]=byRole[r]||[]).push(m)));
 function matchType(m){if(!m.roles.length)return 'theirs';if(m.roles.length>1)return 'split';return byRole[m.roles[0]].length>1?'many':'one';}
@@ -117,9 +132,19 @@ function build(src){const PCF7=lit(src,'PCF7','{','}'),RACI=lit(src,'ACTIVITY_RA
     ['Split, executive',pick(r=>r.A==='SVP Talent Management')],['Unknown',pick(r=>r.A==='Onboarding Coordinator')],['Same name',pick(r=>r.A==='HR Generalist')]].filter(x=>x[1]);
   const gate=pick((r,a)=>(a.cons==='High'||a.cons==='Critical')&&[r.A].concat(r.R||[]).some(n=>n==='Compensation Analyst'||n==='Onboarding Coordinator'))||pick(r=>[r.A].concat(r.R||[]).includes('Compensation Analyst'));
   const CO={Critical:3,High:2,Moderate:1,Low:0},gate2=acts.filter(a=>RACI[a.code]&&[RACI[a.code].A].concat(RACI[a.code].R||[],RACI[a.code].C||[]).includes('Onboarding Coordinator')).sort((x,y)=>CO[y.cons]-CO[x.cons])[0];
-  M={acts,RACI,RT,GDP,used:[...used],samples,gates:[gate,gate2].filter(Boolean)};render();}
+  const procs=[];PCF7.groups.forEach(g=>g.l3.forEach(l3=>procs.push({code:l3.code,name:l3.name,acts:(l3.l4&&l3.l4.length?l3.l4:[l3]).map(x=>x.code)})));
+  M={acts,RACI,RT,GDP,used:[...used],samples,gates:[gate,gate2].filter(Boolean),procs};
+  // Option 2 starts from Option 1's titles (the first title mapped to each catalog role), unanswered where none maps.
+  // Where several titles share a role (many-to-one), the picks alternate between them.
+  acts.forEach((a,ai)=>{const r=RACI[a.code];if(!r)return;LET.forEach(k=>[].concat(r[k]||[]).filter(x=>!/\*$/.test(x)).forEach(x=>{PICK[a.code+'|'+k+'|'+x]=byRole[x]?byRole[x][ai%byRole[x].length].t:'';}));});
+  if(RACI['7.2.3.4']&&RACI['7.2.3.4'].A)PICK['7.2.3.4|A|'+RACI['7.2.3.4'].A]='Talent Acquisition Partner';
+  render();}
+const LET=['A','R','C'],LETN={A:'Accountable',R:'Responsible',C:'Consulted'};
 
 function render(){if(!M)return;
+  document.getElementById('fOpt').innerHTML=['1','2'].map(o=>'<button class="btn'+(S.opt===o?' on':'')+'" onclick="S.opt=\''+o+'\';render()">'+(o==='1'?'Option 1: separate role map':'Option 2: map while walking the activities')+'</button>').join('');
+  document.getElementById('side1').style.display=S.opt==='1'?'':'none';document.getElementById('side2').style.display=S.opt==='2'?'':'none';
+  if(S.opt==='2')return renderWalk();
   const btn=(k,v,l,dis)=>'<button class="btn'+(S[k]===v?' on':'')+'"'+(dis?' disabled':'')+' onclick="S.'+k+'=\''+v+'\';render()">'+l+'</button>';
   document.getElementById('fNames').innerHTML=btn('names','catalog','Catalog roles (Reference Model)')+btn('names','theirs','ABC Test Org titles');
   document.getElementById('fGroup').innerHTML=btn('group','catalog','Catalog role',S.names==='catalog')+btn('group','titles','Their titles',S.names==='catalog');
@@ -155,6 +180,41 @@ function render(){if(!M)return;
     h+='<div class="card"><h3>Decision point record: escalation path</h3><div class="sub"><span class="code">'+c+'</span> '+esc(a?a.name:'')+' &middot; owner '+R(RACI[c].A)+'</div><ul class="esc">'+g.esc.map(e=>'<li>'+esc(e[0])+' &rarr; '+R(e[1])+(e[2]?', with '+R(e[2]):'')+'</li>').join('')+'</ul></div>';}
   const main=document.getElementById('main');main.innerHTML=h;}
 
+
+// ---------- Option 2: map while walking the activities ----------
+const titles=()=>MAP.map(m=>m.t).concat(EXTRA);
+function addTitle(){const i=document.getElementById('newT'),t=i.value.trim();if(t&&!titles().includes(t))EXTRA.push(t);i.value='';render();}
+function setPick(k,v){PICK[k]=v;render();}
+// The role map, derived from every pick across 7.0: for each catalog role, the titles picked for it and how often.
+function derive(){const per={};Object.entries(PICK).forEach(([k,t])=>{const [code,l,role]=k.split('|');(per[role]=per[role]||{n:0,t:{},none:0,open:0}).n++;
+    if(t==='~none')per[role].none++;else if(!t)per[role].open++;else per[role].t[t]=(per[role].t[t]||0)+1;});
+  // A title is part of the map for a role when it holds that role in at least a quarter of the role's activities;
+  // rarer picks are differences: this activity's own RACI for the organization.
+  const map={},diffs=[];Object.entries(per).forEach(([role,v])=>{map[role]=Object.entries(v.t).filter(([t,n])=>n/v.n>=.25).map(([t])=>t);});
+  Object.entries(PICK).forEach(([k,t])=>{const [code,l,role]=k.split('|');if(t&&t!=='~none'&&!map[role].includes(t))diffs.push({code,l,role,t,usual:map[role]});});
+  const byT={};Object.entries(map).forEach(([role,ts])=>ts.forEach(t=>(byT[t]=byT[t]||[]).push(role)));
+  return {per,map,diffs,byT};}
+function renderWalk(){const D=derive(),P=M.procs.find(p=>p.code===S.proc)||M.procs[0];
+  document.getElementById('fProc').innerHTML=M.procs.map(p=>'<option value="'+p.code+'"'+(p.code===P.code?' selected':'')+'>'+p.code+' '+esc(p.name)+'</option>').join('');
+  const opts=k=>{const v=PICK[k];return '<select onchange="setPick(\''+k.replace(/'/g,"\\'")+'\',this.value)" style="font:inherit;font-size:12.5px;padding:3px 6px;border:1px solid '+(v?'#C6D8EE':'#F0C67A')+';border-radius:5px;background:'+(v?'#fff':'#FFFBEB')+';width:100%">'+
+    '<option value=""'+(v?'':' selected')+'>Not answered</option>'+titles().map(t=>'<option'+(v===t?' selected':'')+'>'+esc(t)+'</option>').join('')+'<option value="~none"'+(v==='~none'?' selected':'')+'>Nobody here does this</option></select>';};
+  let h='<div class="card"><h3>Walk the work: '+P.code+' '+esc(P.name)+'</h3><div class="sub">For each activity, who in ABC Test Org holds each catalog role? Accountable, Responsible and Consulted; Informed is left out of the walk. A pick that differs from how that role is usually filled is marked, and kept as this activity&rsquo;s own RACI for the organization.</div>';
+  P.acts.forEach(c=>{const a=M.acts.find(x=>x.code===c),r=M.RACI[c];if(!r)return;
+    const rows=LET.flatMap(l=>[].concat(r[l]||[]).filter(x=>!/\*$/.test(x)).map(x=>[l,x]));
+    h+='<div style="margin:12px 0 4px;font-weight:600;color:var(--navy-d);font-size:13px"><span class="code">'+c+'</span> '+esc(a?a.name:'')+' <span class="as">&middot; '+esc(a&&a.cons||'')+'</span></div><table class="t" style="table-layout:fixed"><colgroup><col style="width:110px"><col style="width:230px"><col style="width:260px"><col></colgroup><tr><th>RACI</th><th>Catalog role</th><th>Who holds it at ABC Test Org</th><th></th></tr>'+
+      rows.map(([l,x])=>{const k=c+'|'+l+'|'+x,t=PICK[k],d=t&&t!=='~none'&&!D.map[x].includes(t);
+        return '<tr><td>'+LETN[l]+'</td><td>'+esc(x)+'</td><td>'+opts(k)+'</td><td class="as">'+(d?'<span class="mt split">Difference</span> usually '+esc(D.map[x].join(', ')||'unmapped'):t==='~none'?'<span class="mt unk">Not done here</span>':!t?'<span class="mt unk">Open</span>':'')+'</td></tr>';}).join('')+'</table>';});
+  h+='</div>';
+  // The role map that results
+  const unk=Object.keys(D.per).filter(r=>!D.map[r].length).sort();
+  const mt=t=>{const rs=D.byT[t]||[];if(!rs.length)return 'theirs';if(rs.length>1)return 'split';return D.map[rs[0]].length>1?'many':'one';};
+  h+='<div class="card"><h3>The role map it builds</h3><div class="sub">Derived from every pick across PCF 7.0, not just this process. A title is mapped to a catalog role when it holds that role in at least a quarter of the role&rsquo;s activities; the figure is how many of the role&rsquo;s activities it holds.</div><table class="t"><tr><th>Their title</th><th>Catalog role</th><th>Match</th></tr>'+
+    titles().map(t=>{const rs=D.byT[t]||[],m=mt(t);return '<tr><td><b>'+esc(t)+'</b></td><td>'+(rs.length?rs.map(x=>esc(x)+' <span class="as">'+D.per[x].t[t]+' of '+D.per[x].n+'</span>').join('<br>'):'<span class="as">Not picked for any catalog role</span>')+'</td><td><span class="mt '+m+'">'+MTL[m]+'</span></td></tr>';}).join('')+
+    unk.map(x=>'<tr><td><span class="r unk">Unknown</span></td><td>'+esc(x)+' <span class="as">'+(D.per[x].none?D.per[x].none+' answered &ldquo;nobody here&rdquo;, ':'')+D.per[x].open+' not answered</span></td><td><span class="mt unk">Unknown</span></td></tr>').join('')+'</table></div>';
+  // Differences from the catalog
+  h+='<div class="card"><h3>Differences from the catalog</h3><div class="sub">Where ABC Test Org&rsquo;s answer for one activity differs from how it usually fills that role. Each one is kept as that activity&rsquo;s RACI for the organization and becomes evidence for the Readiness Gate and GiGi&rsquo;s reality test.</div>'+
+    (D.diffs.length?'<table class="t"><tr><th>Activity</th><th>RACI</th><th>Catalog role</th><th>At ABC Test Org</th><th>Usually</th></tr>'+D.diffs.map(d=>{const a=M.acts.find(x=>x.code===d.code);return '<tr><td><span class="code">'+d.code+'</span> '+esc(a?a.name:'')+'</td><td>'+LETN[d.l]+'</td><td>'+esc(d.role)+'</td><td><b>'+esc(d.t)+'</b></td><td>'+esc(d.usual.join(', ')||'unmapped')+'</td></tr>';}).join('')+'</table>':'<p class="as">None: every pick matches how the role is usually filled.</p>')+'</div>';
+  document.getElementById('main').innerHTML=h;}
 const tip=document.getElementById('tip');
 document.addEventListener('mouseover',e=>{const t=e.target.closest('[data-t]');if(!t){tip.style.display='none';return;}tip.innerHTML=t.getAttribute('data-t');tip.style.display='block';});
 document.addEventListener('mousemove',e=>{tip.style.left=Math.min(e.clientX+12,innerWidth-300)+'px';tip.style.top=(e.clientY+14)+'px';});
