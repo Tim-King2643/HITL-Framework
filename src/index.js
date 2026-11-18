@@ -622,6 +622,7 @@ function cleanElements(el) {
   return Object.keys(out).length ? out : null;
 }
 const ORG_MAX = 200, NOTE_MAX = 2000, HISTORY_MAX = 25;
+const ROLEMAP_KEY_RE = /^\d+(?:\.\d+)+\|[ARC]\|[^|]{1,200}$/;
 // GiGi's ten v0.2 dimensions and four findings (GR-012).
 const READY_DIMS = new Set(['clarity', 'authority', 'skill', 'fluency', 'safety', 'capacity', 'manager', 'governance', 'change', 'evidence']);
 const READY_FINDINGS = new Set(['ins', 'ready', 'cond', 'not']);
@@ -734,7 +735,9 @@ async function handleOrgApi(request, env, url) {
       const [code, to] = k.split(':');
       (stepEvidence[code] = stepEvidence[code] || {})[to] = r;
     });
-    return json({ reviewer, org, records, overrides, readiness, stepEvidence });
+    const rmRaw = await env.SANDBOX_NOTES.get('rolemap:' + orgId);
+    const roleMap = rmRaw ? (JSON.parse(rmRaw).answers || {}) : {};
+    return json({ reviewer, org, records, overrides, readiness, stepEvidence, roleMap });
   }
 
   if (url.pathname === '/org-api/assessment' && (request.method === 'POST' || request.method === 'DELETE')) {
@@ -903,6 +906,39 @@ async function handleOrgApi(request, env, url) {
     const rec = { current: true, to, cells, dims, meta, savedBy: reviewer, savedAt: Date.now(), history: history.slice(0, HISTORY_MAX) };
     await env.SANDBOX_NOTES.put(key, JSON.stringify(rec));
     return json({ ok: true, record: rec });
+  }
+
+  // The organization's role map (Nov 18, 2026): who holds each catalog role in the RACI of each activity, typed by the
+  // organization during the activity walk. One record per organization, '<activity>|<A|R|C>|<catalog role>' -> their
+  // job title, or '~none' when nobody there does it. Saved one change at a time, with a change log.
+  if (url.pathname === '/org-api/role-map' && (request.method === 'GET' || request.method === 'POST')) {
+    const orgId = request.method === 'GET' ? url.searchParams.get('org') : null;
+    let body = null;
+    if (request.method === 'POST') {
+      if (!reviewer) return json({ error: 'not signed in as a recognized reviewer' }, { status: 401 });
+      try { body = await request.json(); } catch (e) { return json({ error: 'invalid JSON body' }, { status: 400 }); }
+    }
+    const id = request.method === 'GET' ? orgId : body && body.org;
+    if (typeof id !== 'string' || !ORG_ID_RE.test(id) || !(await readOrg(env, id))) return json({ error: 'unknown organization' }, { status: 400 });
+    const key = 'rolemap:' + id;
+    const raw = await env.SANDBOX_NOTES.get(key);
+    const rec = raw ? JSON.parse(raw) : { answers: {}, log: [] };
+    if (request.method === 'GET') return json({ reviewer, answers: rec.answers || {}, savedBy: rec.savedBy || '', savedAt: rec.savedAt || 0 });
+    const setIn = body.set && typeof body.set === 'object' && !Array.isArray(body.set) ? body.set : {};
+    const answers = body.replace === true ? {} : Object.assign({}, rec.answers || {});
+    const log = rec.log || [], now = Date.now();
+    const keys = Object.keys(setIn).slice(0, 1000);
+    for (const k of keys) {
+      if (!ROLEMAP_KEY_RE.test(k) || k.length > 260) continue;
+      const v = typeof setIn[k] === 'string' ? setIn[k].trim().replace(/\s+/g, ' ').slice(0, 120) : '';
+      const was = (rec.answers || {})[k] || '';
+      if (v) answers[k] = v; else delete answers[k];
+      if (was !== v) log.unshift({ k, from: was, to: v, by: reviewer, at: now });
+    }
+    if (body.replace === true) log.unshift({ k: '*', from: '', to: keys.length ? 'replaced' : 'cleared', by: reviewer, at: now });
+    const out = { answers, savedBy: reviewer, savedAt: now, log: log.slice(0, 500) };
+    await env.SANDBOX_NOTES.put(key, JSON.stringify(out));
+    return json({ ok: true, answers, savedBy: reviewer, savedAt: now });
   }
 
   if (url.pathname === '/org-api/ceiling-override/review' && request.method === 'POST') {
