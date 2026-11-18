@@ -93,7 +93,7 @@ const LET=['A','R','C'],LETN={A:'Accountable',R:'Responsible',C:'Consulted'},NON
 let M=null,ANS={},CUR=null,WHO=null,LAST=null,ASK=null,MSG='',PICKT=new Set(),REPL=null,NEWT='';   // ANS: "code|letter|catalog role" -> their title, or NONE
 // The answers live with the organization on the site (the Worker's role map), one copy for everyone; each change is
 // saved as it is made, and the walk shows the saved answers when it is reopened. Saving needs a reviewer's sign-in.
-async function api(body){const r=await fetch(API,{method:body?'POST':'GET',credentials:'same-origin',headers:body?{'content-type':'application/json'}:{},body:body?JSON.stringify(Object.assign({org:ORG},body)):undefined});
+async function api(body){const r=await fetch(body?API:API+'?org='+encodeURIComponent(ORG),{method:body?'POST':'GET',credentials:'same-origin',headers:body?{'content-type':'application/json'}:{},body:body?JSON.stringify(Object.assign({org:ORG},body)):undefined});
   let j=null;try{j=await r.json();}catch(e){}
   if(!r.ok||!j)throw new Error(j&&j.error||(r.status===401?'sign in to save':'could not reach the site'));return j;}
 async function save(set,replace){MSG='Saving\u2026';status();
