@@ -416,10 +416,13 @@ function tally(target,L){
   return {roles,org};
 }
 const LBL={work:'in every instance',approve:'approves every instance',exc:'handles flagged exceptions',escIn:'receives High or Critical exceptions'};
-// Where the work is, shared by People and Data. In an organization, Today puts each activity at its assessed Current State.
+// Where the work is, shared by People and Data. Current State (internal value 'Today', kept so saved settings still work)
+// puts each activity at the organization's assessed Current State; the Reference Model shows the same control, read as
+// its Human-only baseline, so both show the same controls (Tim, Nov 23, 2026).
+const curStLbl=()=>isOrg()?'Current State: each activity at '+esc(ORGNAME())+'&rsquo;s assessed stage':'Current State (Human-only baseline)';
 function stageBtns(){
-  if(S.stage==='Today'&&!isOrg()) S.stage='Human-only';
-  return '<h5>Where the work is</h5>'+btns((isOrg()?[['Today','Today in '+esc(ORGNAME())+': each activity at its assessed Current State']]:[]).concat([['Human-only','Every activity at the Human-only baseline']]).concat(ST.slice(1,5).map(s=>[s,'Up to '+s+', or each activity\u2019s ceiling if lower'])).concat([['Automation','Every activity at its Progression Ceiling']]),'stage');
+  return '<h5>Where the work is</h5>'+btns([['Today',curStLbl()]].concat([['Human-only','Every activity at the Human-only baseline']]).concat(ST.slice(1,5).map(s=>[s,'Up to '+s+', or each activity\u2019s ceiling if lower'])).concat([['Automation','Every activity at its Progression Ceiling']]),'stage')+
+   (!isOrg()&&S.stage==='Today'?'<p class="small" style="margin-top:6px">Not assessed in the Reference Model. Choose an organization to see its Current State.</p>':'');
 }
 // People opens on its dashboard (GR-061), remembered per browser like Work's.
 function setPMode(v){S.pmode=v;render();}
@@ -494,10 +497,10 @@ function peopleMain(){
     return h+'</tbody></table></div>';
   }
   const o=now.org;
-  let h='<div class="card"><h3>Across '+SC.label+'</h3><div class="sub">'+(S.stage==='Today'?'Today in '+esc(ORGNAME())+': each assessed activity at its Current State'+(o.una?'; the '+o.una+' Unassessed are left out until assessed':'')+'.':S.stage==='Human-only'?'Today\u2019s baseline: a person in every instance of every activity.':S.stage==='Automation'?'Every activity at its Progression Ceiling.':'Every activity moved up to '+S.stage+', or its ceiling if lower.')+'</div><div class="tiles">'+
+  let h='<div class="card"><h3>Across '+SC.label+'</h3><div class="sub">'+(S.stage==='Today'?(isOrg()?'At '+esc(ORGNAME())+'&rsquo;s Current State: each assessed activity at its assessed stage'+(o.una?'; the '+o.una+' Unassessed are left out until assessed':'')+'.':'At the Reference Model&rsquo;s Current State, the Human-only baseline: a person in every instance of every activity. Choose an organization to see its Current State.'):S.stage==='Human-only'?'At the Human-only baseline: a person in every instance of every activity.':S.stage==='Automation'?'Every activity at its Progression Ceiling.':'Every activity moved up to '+S.stage+', or its ceiling if lower.')+'</div><div class="tiles">'+
     tile(o.every,'a person in every instance','Human-only '+N)+tile(o.approve,'a person approves every instance','Human-only 0')+tile(o.exc,'a person handles flagged exceptions only'+(o.exc?' ('+o.escHC+' High or Critical)':''),'Human-only 0')+tile(o.none,'no person in the instance; the Accountable role stays answerable','Human-only 0')+'</div><div class="prov">Modeled from the reference. Counts of activities, not hours or volumes.</div></div>';
   const f=[];
-  if(S.stage==='Human-only') f.push('Today every activity has a person in every instance. Choose a stage to move the work up the ramp.');
+  if(S.stage==='Human-only'||S.stage==='Today'&&!isOrg()) f.push('At the Human-only baseline every activity has a person in every instance. Choose a stage to move the work up the ramp.');
   else if(o.every===N) f.push('Up to '+S.stage+', a person is still in every instance of every activity. AI helps with the work, but no one stops doing it, so nothing waits for approval, nothing is flagged and accountability doesn’t shift. Those start at Oversight.');
   else{
     const escRoles=names.filter(n=>R[n].escIn).sort((x,y)=>R[y].escIn-R[x].escIn);
@@ -690,9 +693,9 @@ function wmodeBtns(){return '<h5>Show</h5><div class="stack">'+[['dash','Dashboa
 function workSide(){
   if(S.wmode==='dash') return dashSide();
   const gopts='<option value="all">All process groups</option>'+DATA.groups.map(g=>'<option value="'+g[0]+'"'+(S.wg===g[0]?' selected':'')+'>'+g[0]+' '+esc(g[1])+'</option>').join('');
-  return '<div class="q">'+VIEWS[0].q+'</div>'+wmodeBtns()+'<p style="margin-top:10px">Every activity on the six-step ramp, from today&rsquo;s Current State up to its Progression Ceiling. Click a step for who does each part of the work at that stage, an arrow for what changes in that step, the lock for what must stay with a person, or the Consequence of Error for what drives it.</p>'+
+  return '<div class="q">'+VIEWS[0].q+'</div>'+wmodeBtns()+'<p style="margin-top:10px">Every activity on the six-step ramp, from its Current State up to its Progression Ceiling. Click a step for who does each part of the work at that stage, an arrow for what changes in that step, the lock for what must stay with a person, or the Consequence of Error for what drives it.</p>'+
    '<h5>Process group</h5><select class="gsel" onchange="S.wg=this.value;render()">'+gopts.replace('value="'+S.wg+'"','value="'+S.wg+'" selected')+'</select>'+
-   '<h5>Show</h5>'+btns([['all','All activities'],['person','Must keep a person doing the work'],['auto','May go to Automation'],['hc','High or Critical consequence']].concat(isOrg()?[['assessed','Assessed']]:[]),'ws')+
+   '<h5>Show</h5>'+btns([['all','All activities'],['person','Must keep a person doing the work'],['auto','May go to Automation'],['hc','High or Critical consequence'],['assessed','Assessed']],'ws')+(!isOrg()&&S.ws==='assessed'?'<p class="small" style="margin-top:6px">Nothing is assessed in the Reference Model. Choose an organization to see its assessed activities.</p>':'')+
    '<h5>Reading a ramp</h5><p>Each step carries a share of the work kept with a person (% H): '+ST.map(s=>s+' '+HPCT[s]).join(', ')+'. A process heading averages its activities; click a % H figure for its calculation, or the + to open the process.</p><p>'+'Reached stages, up to the Current State, are in navy with their stage color square in front; the rest are grey. The lock sits at the Progression Ceiling; stages past it are faint. '+(isOrg()?'A stage in red is reached past the ceiling,'+' and a red dot an activity with an element past its own ceiling. Click the Current State step for its element assessment.':'In the Reference Model every activity starts at the Human-only baseline.')+'</p>';
 }
 function ramp(a,big){
@@ -986,7 +989,7 @@ function infoBox(a){
   if(sel.t==='gate'){const k=sel.k,f=stageEls(a,ST[k]),t=stageEls(a,ST[k+1]),ch=elsOf(a).filter(e=>f[e]!==t[e]);
     return '<div class="ibox">'+X(a)+'<h4>'+ST[k]+' → '+ST[k+1]+' — what changes</h4><div class="isub">'+ch.length+' of '+elsOf(a).length+' elements change in this step.</div><table class="it">'+elHead(a,'Change in this step')+ch.map(e=>elRow(a,e,f[e]+' → '+t[e]+(e===ctlOf(a)&&CTLNOTE[ST[k+1]]?'<span class="small">'+CTLNOTE[ST[k+1]]+'</span>':''))).join('')+'</table>'+readiness(a,k)+(k+1>ci?'<div class="amber" style="margin-top:6px">This step goes past the Progression Ceiling ('+derivedCeil(a)+').</div>':'')+'</div>';}
   if(sel.t==='abc'&&ABC_EL[a.code]){const pe=pastEls(a),g=ABC_EL[a.code],ov=ABC_OV[a.code];
-    return '<div class="ibox">'+X(a)+'<h4>'+esc(ORGNAME())+' today — '+curOf(a)+'</h4><div class="isub">Derived from the assessed elements. '+(pe.length?'<span class="red">'+pe.join(', ')+' past its element ceiling.</span>':'Every element is within its element ceiling.')+(ov?' Ceiling raised to '+ov.level+' by an approved override ('+(FL[ov.factor]||ov.factor).toLowerCase()+', approved by '+esc(ov.approverRole)+').':'')+' <a href="javascript:void 0" onclick="openGrid(\''+a.code+'\')">'+(canEdit()?'Reassess':'View the element grid')+'</a></div><table class="it">'+elHead(a,'Assessed state and evidence')+elsOf(a).map(e=>{const [st,ev,ref]=g[e],past=lr(st)>lr(cp[e][0]);return elRow(a,e,st+(past?' <span class="red">past element ceiling ('+cp[e][0]+')</span>':'')+'<div class="small">'+(ev?EVL[ev]+(ref?': '+esc(ref):''):'No evidence recorded')+'</div>')}).join('')+'</table></div>';}
+    return '<div class="ibox">'+X(a)+'<h4>'+esc(ORGNAME())+' Current State — '+curOf(a)+'</h4><div class="isub">Derived from the assessed elements. '+(pe.length?'<span class="red">'+pe.join(', ')+' past its element ceiling.</span>':'Every element is within its element ceiling.')+(ov?' Ceiling raised to '+ov.level+' by an approved override ('+(FL[ov.factor]||ov.factor).toLowerCase()+', approved by '+esc(ov.approverRole)+').':'')+' <a href="javascript:void 0" onclick="openGrid(\''+a.code+'\')">'+(canEdit()?'Reassess':'View the element grid')+'</a></div><table class="it">'+elHead(a,'Assessed state and evidence')+elsOf(a).map(e=>{const [st,ev,ref]=g[e],past=lr(st)>lr(cp[e][0]);return elRow(a,e,st+(past?' <span class="red">past element ceiling ('+cp[e][0]+')</span>':'')+'<div class="small">'+(ev?EVL[ev]+(ref?': '+esc(ref):''):'No evidence recorded')+'</div>')}).join('')+'</table></div>';}
   return '<div class="ibox">'+X(a)+'<h4>Progression Ceiling — '+derivedCeil(a)+'</h4><div class="isub">'+esc(a.note)+(!isOrg()&&CHIST.includes(a.code)?' <a href="../wip/production_changelog.html?q='+a.code+'" target="_blank" rel="noopener">Change history</a>':'')+(a.ceiling!==derivedCeil(a)?' <b>GR-058:</b> derived as '+derivedCeil(a)+' from the element ceilings below, which hold the line the '+a.ceiling+' ceiling used to.':'')+'</div><table class="it">'+elHead(a,'Element ceiling')+elsOf(a).map(e=>elRow(a,e,cp[e][0],cp[e][1]?' <span class="small">'+esc(cp[e][1])+'</span>':'')).join('')+'</table>'+na+phr+'</div>';
 }
 /* ---------- Element assessment (GR-058) ---------- */
@@ -1160,7 +1163,7 @@ const dbU=a=>S.denc==='stage'&&!dbSt(a);
 const dbH=L=>{const K=L.filter(a=>dbSt(a));return K.length?Math.round(mean(K.map(a=>HPCT[dbSt(a)]))):null};
 const dbHs=(L,u)=>{const v=dbH(L);return v==null?'—':v+(u||'%')};
 // The two places the work can be shown, the selected organization's first (shared by Work's and People's dashboards).
-function dbWhereOpts(){return isOrg()?[['cur','Current State ('+esc(ORGNAME())+')'],['ceil','Progression Ceiling']]:[['ceil','Progression Ceiling'],['cur','Current State (Human-only baseline)']];}
+function dbWhereOpts(){return [['cur',isOrg()?'Current State ('+esc(ORGNAME())+')':'Current State (Human-only baseline)'],['ceil','Progression Ceiling']];}
 function dashSide(){
   const where=dbWhereOpts();
   return '<div class="q">'+VIEWS[0].q+'</div>'+wmodeBtns()+'<p style="margin-top:10px">The answer at a glance: one column per process group, one card per process with its % H, one square per activity. Hover a square for the activity; click a card to open its activities.</p>'+
@@ -1172,11 +1175,11 @@ function dashMain(){
   const A=DATA.acts,n=A.length,cur=dbWhere()==='cur',org=isOrg(),k={every:0,flag:0,at:0,ctl:0};A.forEach(a=>k[dbKind(a)]++);
   const auto=A.filter(a=>dbSt(a)==='Automation').length,keep=A.filter(a=>dbSt(a)&&rank(dbSt(a))<=3).length,una=A.filter(a=>!dbSt(a)).length,where=cur?'at the Current State':'at the ceiling';
   let h='<div class="tiles" style="margin-bottom:16px">'+
-   tile(dbHs(A,'% H'),cur?(org?esc(ORGNAME())+'&rsquo;s human share today'+(una?', across the '+(n-una)+' assessed':'')+'; '+Math.round(mean(A.map(a=>HPCT[derivedCeil(a)])))+'% at the ceilings':'human share today, every activity Human-only'):'human share at the ceilings, from 95 Human-only')+
+   tile(dbHs(A,'% H'),cur?(org?esc(ORGNAME())+'&rsquo;s human share at its Current State'+(una?', across the '+(n-una)+' assessed':'')+'; '+Math.round(mean(A.map(a=>HPCT[derivedCeil(a)])))+'% at the ceilings':'human share at the Current State, every activity at the Human-only baseline'):'human share at the ceilings, from 95 Human-only')+
    tile(keep+' of '+n,'keep a person doing or approving every instance, '+where)+
    tile(auto,(cur?'at':'can go to')+' Automation')+
    tile(k.every+k.flag,'control points ('+k.every+' every instance, '+k.flag+' flagged)'+(org?' at the Current State'+(una?'; the '+una+' Unassessed read at their ceilings, Modeled':''):' at the ceilings'))+
-   tile(k.ctl,'need a named control')+(org?tile(A.filter(a=>ABCSTAGE[a.code]).length+' of '+n,'assessed'):'')+'</div>';
+   tile(k.ctl,'need a named control')+tile((org?A.filter(a=>ABCSTAGE[a.code]).length:0)+' of '+n,org?'assessed':'assessed: assessments are per organization')+'</div>';
   const leg=S.denc==='stage'?ST.map(s=>'<span><i class="db-sw" style="background:'+DOT[s]+'"></i>'+s+' ('+HPCT[s]+')</span>').join('')+(una?'<span><i class="db-sw u"></i>Unassessed ('+una+')</span>':''):S.denc==='cons'?CONSO.map(c=>'<span><i class="db-sw" style="background:'+CONSC[c]+'"></i>'+c+'</span>').join(''):Object.values(DBK).map(([l,c])=>'<span><i class="db-sw" style="background:'+c+'"></i>'+l+'</span>').join('');
   h+='<div class="card"><h3>The work, by process</h3><div class="sub">One square per activity, colored by '+({stage:'stage',cons:'Consequence of Error',dp:'control point'})[S.denc]+'. The figure on each card is its process&rsquo;s % H '+where+'. Click a card to open its activities.</div><div class="db-legend">'+leg+'</div><div class="db-grid">'+
    DATA.groups.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+PROCS.filter(p=>p.g===gc).map(p=>{const L=p.acts.map(c=>ACT[c]).filter(Boolean);
@@ -1447,11 +1450,11 @@ function dataMain(){
   const A=wpAnalysis(), touched=A.filter(x=>x.pts.length||x.ho.length), nvp=A.reduce((s,x)=>s+x.pts.length,0), nho=A.reduce((s,x)=>s+x.ho.length,0);
   const roleCnt={};A.forEach(x=>x.pts.forEach(p=>ACT[p.c].Aroles.forEach(r=>roleCnt[r]=(roleCnt[r]||0)+1)));
   const hoActs=[...new Set(A.flatMap(x=>x.ho.map(h=>h.c)))].sort(nat);
-  const where=S.stage==='Today'?'Today in '+esc(ORGNAME())+': each assessed activity at its Current State; Unassessed activities are read at their ceilings, Modeled':S.stage==='Human-only'?'Today’s baseline':S.stage==='Automation'?'Every activity at its Progression Ceiling':'Every activity up to '+S.stage+', or its ceiling if lower';
+  const where=S.stage==='Today'?(isOrg()?'At '+esc(ORGNAME())+'&rsquo;s Current State: each assessed activity at its assessed stage; Unassessed activities are read at their ceilings, Modeled':'At the Reference Model&rsquo;s Current State, the Human-only baseline. Choose an organization to see its Current State'):S.stage==='Human-only'?'At the Human-only baseline':S.stage==='Automation'?'Every activity at its Progression Ceiling':'Every activity up to '+S.stage+', or its ceiling if lower';
   let h='<div class="card"><h3>Work products</h3><div class="sub">'+where+'.</div><div class="tiles">'+
-    tile(CRUD.wps.length,'work products in the catalog')+tile(touched.length,'AI-touched where someone relies on them')+tile(nvp,'checked inputs, across '+Object.keys(roleCnt).length+' roles')+tile(nho,'unchecked inputs into High or Critical steps')+'</div><div class="prov">'+(S.stage==='Today'?'Assessed: each activity&rsquo;s Current State from '+esc(ORGNAME())+'&rsquo;s records, with the activity CRUD.':'Modeled from the reference and the activity CRUD (all 118 activities confirmed).')+'</div></div>';
+    tile(CRUD.wps.length,'work products in the catalog')+tile(touched.length,'AI-touched where someone relies on them')+tile(nvp,'checked inputs, across '+Object.keys(roleCnt).length+' roles')+tile(nho,'unchecked inputs into High or Critical steps')+'</div><div class="prov">'+(S.stage==='Today'&&isOrg()?'Assessed: each activity&rsquo;s Current State from '+esc(ORGNAME())+'&rsquo;s records, with the activity CRUD.':'Modeled from the reference and the activity CRUD (all 118 activities confirmed).')+'</div></div>';
   const f=[];
-  if(!touched.length) f.push(S.stage==='Human-only'?'Today no work product is AI-touched, so nothing needs checking. Choose a stage to move the work up the ramp.':'Up to '+S.stage+', AI only supplies inputs, so no work product reaches the next activity AI-touched. Checking starts once a producer reaches Augmentation.');
+  if(!touched.length) f.push(S.stage==='Human-only'||S.stage==='Today'&&!isOrg()?'At the Human-only baseline no work product is AI-touched, so nothing needs checking. Choose a stage to move the work up the ramp.':'Up to '+S.stage+', AI only supplies inputs, so no work product reaches the next activity AI-touched. Checking starts once a producer reaches Augmentation.');
   else{
     const top=A.slice().sort((x,y)=>y.pts.length-x.pts.length)[0], rr=Object.entries(roleCnt).sort((x,y)=>y[1]-x[1]);
     f.push(touched.length+' of '+CRUD.wps.length+' work products are AI-touched where someone relies on them. '+esc(top.w.name)+' carries the most checking: '+top.pts.length+' checked inputs.');
@@ -1505,7 +1508,7 @@ function dataDash(){
   const A=wpAnalysis(),nvp=A.reduce((s,x)=>s+x.pts.length,0),nho=A.reduce((s,x)=>s+x.ho.length,0),touched=A.filter(x=>x.pts.length||x.ho.length);
   const hoActs=[...new Set(A.flatMap(x=>x.ho.map(h=>h.c)))];
   const una=S.stage==='Today'?DATA.acts.filter(a=>!curOf(a)).length:0;
-  const where=S.stage==='Today'?'at '+esc(ORGNAME())+'&rsquo;s Current State'+(una?' (the '+una+' Unassessed read at their ceilings, Modeled)':''):S.stage==='Human-only'?'at the Human-only baseline':S.stage==='Automation'?'at the Progression Ceilings':'up to '+S.stage;
+  const where=S.stage==='Today'?(isOrg()?'at '+esc(ORGNAME())+'&rsquo;s Current State':'at the Reference Model&rsquo;s Current State, the Human-only baseline')+(una?' (the '+una+' Unassessed read at their ceilings, Modeled)':''):S.stage==='Human-only'?'at the Human-only baseline':S.stage==='Automation'?'at the Progression Ceilings':'up to '+S.stage;
   let h='<div class="tiles" style="margin-bottom:16px">'+tile(touched.length+' of '+CRUD.wps.length,'work products AI-touched where someone relies on them, '+where)+
     tile(nvp,'checked inputs: a person checks AI-touched work at a control point')+tile(nho,'unchecked inputs into High or Critical work, on '+hoActs.length+' activit'+(hoActs.length===1?'y':'ies'))+
     tile(A.filter(x=>!ddRelies(x).length).length,'work products no other activity relies on')+'</div>';
@@ -1535,7 +1538,7 @@ function dataByProc(){
   const A=wpAnalysis(),AW=Object.fromEntries(A.map(x=>[x.w.id,x])),nvp=A.reduce((s,x)=>s+x.pts.length,0),nho=A.reduce((s,x)=>s+x.ho.length,0),touched=A.filter(x=>x.pts.length||x.ho.length);
   const hoActs=[...new Set(A.flatMap(x=>x.ho.map(h=>h.c)))];
   const una=S.stage==='Today'?DATA.acts.filter(a=>!curOf(a)).length:0;
-  const where=S.stage==='Today'?'at '+esc(ORGNAME())+'&rsquo;s Current State'+(una?' (the '+una+' Unassessed read at their ceilings, Modeled)':''):S.stage==='Human-only'?'at the Human-only baseline':S.stage==='Automation'?'at the Progression Ceilings':'up to '+S.stage;
+  const where=S.stage==='Today'?(isOrg()?'at '+esc(ORGNAME())+'&rsquo;s Current State':'at the Reference Model&rsquo;s Current State, the Human-only baseline')+(una?' (the '+una+' Unassessed read at their ceilings, Modeled)':''):S.stage==='Human-only'?'at the Human-only baseline':S.stage==='Automation'?'at the Progression Ceilings':'up to '+S.stage;
   const chk=(w,c)=>{const x=AW[w];return x.pts.some(q=>q.c===c)?'vp':x.ho.some(q=>q.c===c)?'ho':'no'};
   let h='<div class="tiles" style="margin-bottom:16px">'+tile(touched.length+' of '+CRUD.wps.length,'work products AI-touched where someone relies on them, '+where)+
     tile(nvp,'checked inputs: a person checks AI-touched work at a control point')+tile(nho,'unchecked inputs into High or Critical work, on '+hoActs.length+' activit'+(hoActs.length===1?'y':'ies'))+
@@ -1571,9 +1574,9 @@ function findSide(){
   const org=isOrg(),dash=S.fview==='dash';
   if(S.fview==='ready') return rdySide();
   return '<div class="q">'+VIEWS[3].q+'</div>'+
-   '<h5>Show</h5><div class="stack">'+[['ready','Readiness'],['dash','Findings map'],['sum',org?'Summary and exceptions':'Summary']].map(o=>'<button class="'+(S.fview===o[0]?'on':'')+'" onclick="setFView(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>'+
+   '<h5>Show</h5><div class="stack">'+[['ready','Readiness'],['dash','Findings map'],['sum','Summary and exceptions']].map(o=>'<button class="'+(S.fview===o[0]?'on':'')+'" onclick="setFView(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>'+
    (dash?'<p style="margin-top:10px">Every finding on one map: one column per process group, one card per process, one square per activity, colored by the most serious finding on it'+(org?' for '+esc(ORGNAME())+', at its Current State':', with every activity at its Progression Ceiling')+'. Hover a square for all its findings; click a card or square to open the activity in Work.</p>':'<p style="margin-top:10px">'+(org?'Where '+esc(ORGNAME())+' departs from the reference, and the few items that need a decision. Every number is read from its assessment and override records.':'The reference at a glance, drawn from the other three views, and the latest change made to it. Select an organization for its executive summary and exceptions.')+'</p>')+
-   (org&&!dash?'<h5>Show</h5>'+btns([['exec','Executive summary'],['exc','Exceptions report']],'fmode'):'')+
+   (!dash?'<h5>Show</h5>'+btns([['exec','Executive summary'],['exc','Exceptions report']],'fmode'):'')+
    '<div class="pl"><a href="../wip/requirements_register.html">Requirements Register</a>: what Tim and GiGi have decided and what still needs a decision.<br><a href="../wip/production_changelog.html">Change log</a>: every change made to the reference, and why.</div>'+
    '<div class="replaces">Replaces <b>Exceptions Report</b>: the same report, printable, with two more sections (elements past their own ceilings, GR-058, and named controls needed, GR-054). It is also where the executive summary (GR-056) and the reference stress tests live.</div>';
 }
@@ -1623,7 +1626,10 @@ function orgFindings(){
   h+='<div class="outline"><h3>Handed to the human-impact side</h3><p>The role hand-off (GR-056) carries, for each role, the work change that lands on it: the People view&rsquo;s load numbers read from this organization&rsquo;s Current State instead of the ceiling.</p></div>';
   return h;
 }
-function findMain(){return S.fview==='ready'?rdyMain():S.fview==='dash'?findDash():isOrg()?orgFindings():refFindings();}
+function findMain(){return S.fview==='ready'?rdyMain():S.fview==='dash'?findDash():isOrg()?orgFindings():S.fmode==='exc'?refExceptions():refFindings();}
+// The Reference Model shows the same Summary controls as an organization (Tim, Nov 23, 2026). Exceptions are where an
+// organization departs from the reference, so the Reference Model has none to report.
+function refExceptions(){return '<div class="card"><h3>Exceptions report</h3><div class="sub">No assessments in the Reference Model.</div><p style="margin-top:8px">The report lists where an organization departs from the reference: activities past their ceilings, elements past their own ceilings, readiness not cleared and step evidence not met. Choose an organization to see its report.</p></div>';}
 
 
 /* ---------- Findings dashboard (GR-061) ---------- */
@@ -1659,7 +1665,9 @@ function findAll(){
   return out;}
 // The Reference Model can only show decision point records; it reads that coloring without changing the choice, so an
 // organization still opens on the Readiness Gate (Tim, Nov 17, 2026).
-const rEnc=()=>isOrg()?S.renc:'gdp';
+// Every coloring shows in the Reference Model too (Tim, Nov 23, 2026): readiness is assessed per organization, so each
+// readiness coloring there is all Not yet assessed, from the Human-only baseline's next step.
+const rEnc=()=>S.renc;
 /* ---------- Readiness dashboard (Nov 17, 2026) ----------
    The Readiness Gate for each activity's next step, as a map like Work's: one square per activity, colored by whether the
    gate clears. The next step is the one after the organization's Current State; an activity at its Progression Ceiling has
@@ -1693,13 +1701,13 @@ function rdyKey(a,g){if(rEnc()==='gdp'){const r=dpAnalysis()[a.code];if(!r.dp)re
   if(g.top)return 'top';if(g.none)return rEnc()==='over'&&g.over==='na'?'na':'none';
   return rEnc()==='gate'?g.v:rEnc()==='te'?(g.te==='none'?'none':g.te):g[rEnc()];}
 function rdySide(){const org=isOrg();
-  const opts=org?[['gate','Readiness Gate'],['te','Technical / process'],['role','Role readiness'],['org','Organizational readiness'],['over','Governance oversight'],['gdp','Decision point record']]:[['gdp','Decision point record']];
+  const opts=[['gate','Readiness Gate'],['te','Technical / process'],['role','Role readiness'],['org','Organizational readiness'],['over','Governance oversight'],['gdp','Decision point record']];
   return '<div class="q">Is each activity ready for its next step?</div>'+
-   '<h5>Show</h5><div class="stack">'+[['ready','Readiness'],['dash','Findings map'],['sum',org?'Summary and exceptions':'Summary']].map(o=>'<button class="'+(S.fview===o[0]?'on':'')+'" onclick="setFView(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>'+
-   '<p style="margin-top:10px">'+(org?'One square per activity, colored by the Readiness Gate for its next step: the step after '+esc(ORGNAME())+'&rsquo;s Current State. A dashed square has nothing assessed for that step yet, so the map doubles as the list of what to assess next. Hover a square for what holds it; click it to open its gate in Work.':'Readiness is assessed per organization and cannot be modeled, so the Reference Model shows its decision point records. Choose an organization to see its Readiness Gates.')+'</p>'+
+   '<h5>Show</h5><div class="stack">'+[['ready','Readiness'],['dash','Findings map'],['sum','Summary and exceptions']].map(o=>'<button class="'+(S.fview===o[0]?'on':'')+'" onclick="setFView(\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div>'+
+   '<p style="margin-top:10px">'+(org?'One square per activity, colored by the Readiness Gate for its next step: the step after '+esc(ORGNAME())+'&rsquo;s Current State. A dashed square has nothing assessed for that step yet, so the map doubles as the list of what to assess next. Hover a square for what holds it; click it to open its gate in Work.':'Readiness is assessed per organization and cannot be modeled, so in the Reference Model every next step shows as Not yet assessed: each activity starts at the Human-only baseline. Choose an organization to assess its Readiness Gates.')+'</p>'+
    '<h5>Color the squares by</h5><div class="stack">'+opts.map(o=>'<button class="'+(rEnc()===o[0]?'on':'')+'" onclick="S.renc=\''+o[0]+'\';render()">'+o[1]+'</button>').join('')+'</div>'+
    '<h5>Reading it</h5><p>The gate clears only when every check clears: Technical / process, Role readiness, Organizational readiness and, on High or Critical work, Governance oversight. Once any check for the step is assessed, one not yet assessed counts as Insufficient Evidence, which holds the step (gray is never converted).</p>';}
-function rdyMain(){const org=isOrg(),A=DATA.acts,K=RDYK[rEnc()],G={};A.forEach(a=>G[a.code]=org?rdyGate(a):{top:false,none:true});
+function rdyMain(){const org=isOrg(),A=DATA.acts,K=RDYK[rEnc()],G={};A.forEach(a=>G[a.code]=rdyGate(a));
   const key=a=>rdyKey(a,G[a.code]),KM=Object.fromEntries(K.k.map(x=>[x[0],x])),cnt={};K.k.forEach(x=>cnt[x[0]]=0);A.forEach(a=>cnt[key(a)]++);
   const sw=x=>'<i class="db-sw'+(x[0]==='none'?' u':'')+'" style="background:'+x[2]+'"></i>';
   const tip=a=>{const g=G[a.code],t='<span style="opacity:.75">'+a.code+'</span> '+esc(a.name)+'<br>'+(org?'Current State '+(g.cur||'not assessed')+(g.to?' &rarr; next step '+g.to:'')+' &middot; ':'')+a.cons+'<br>'+K.t+': '+KM[key(a)][1];
@@ -1708,8 +1716,9 @@ function rdyMain(){const org=isOrg(),A=DATA.acts,K=RDYK[rEnc()],G={};A.forEach(a
   if(rEnc()==='gdp'){const dp=A.filter(a=>dpAnalysis()[a.code].dp);
     h+='<div class="tiles" style="margin-bottom:16px">'+tile(dp.length,'control points'+(org?' at '+esc(ORGNAME())+'&rsquo;s Current State':' at the ceilings'))+tile(cnt.ok,'records complete and approved')+tile(cnt.prop,'complete, proposed for review')+tile(cnt.miss,'missing a required field')+'</div>';}
   else{const has=A.filter(a=>!G[a.code].top);
-    h+='<div class="tiles" style="margin-bottom:16px">'+tile(cnt.clear,'clear their next step')+tile(cnt.cond,'clear with conditions')+tile(cnt.not+cnt.ins,'held ('+cnt.not+' not met or not ready, '+cnt.ins+' insufficient evidence)')+tile(cnt.none+' of '+has.length,'with a next step not yet assessed')+tile(cnt.top,'at their ceiling')+'</div>';
-    if(rEnc()!=='gate'){h='<div class="tiles" style="margin-bottom:16px">'+K.k.filter(x=>cnt[x[0]]).map(x=>tile(cnt[x[0]],esc(x[1]))).join('')+'</div>';}}
+    if(!org)h+='<div class="tiles" style="margin-bottom:16px">'+tile('0 of '+has.length,'next steps assessed: readiness is assessed per organization')+(cnt.top?tile(cnt.top,'at their ceiling'):'')+'</div>';
+    else h+='<div class="tiles" style="margin-bottom:16px">'+tile(cnt.clear,'clear their next step')+tile(cnt.cond,'clear with conditions')+tile(cnt.not+cnt.ins,'held ('+cnt.not+' not met or not ready, '+cnt.ins+' insufficient evidence)')+tile(cnt.none+' of '+has.length,'with a next step not yet assessed')+tile(cnt.top,'at their ceiling')+'</div>';
+    if(org&&rEnc()!=='gate'){h='<div class="tiles" style="margin-bottom:16px">'+K.k.filter(x=>cnt[x[0]]).map(x=>tile(cnt[x[0]],esc(x[1]))).join('')+'</div>';}}
   const fig=L=>rEnc()==='gdp'?L.filter(a=>key(a)==='miss').length:L.filter(a=>['not','ins'].includes(key(a))).length;
   h+='<div class="card"><h3>'+(rEnc()==='gdp'?'Decision point records, by process':'Readiness for the next step, by process')+'</h3><div class="sub">One square per activity, colored by '+K.t.toLowerCase()+(rEnc()==='gdp'?'':' for its next step')+'. The figure on each card is how many of its activities '+(rEnc()==='gdp'?'have a record missing a required field':'are held')+'. Click a square to open it in Work.</div>'+
    '<div class="db-legend">'+K.k.filter(x=>cnt[x[0]]).map(x=>'<span>'+sw(x)+esc(x[1])+' ('+cnt[x[0]]+')</span>').join('')+'</div><div class="db-grid">'+
@@ -1724,17 +1733,19 @@ function rdyMain(){const org=isOrg(),A=DATA.acts,K=RDYK[rEnc()],G={};A.forEach(a
   return h;}
 // A square opens the Work view at that process with the activity's next-step gate (or its control point) selected.
 function rdyOpen(code,act){try{P.setView('work')}catch(e){S.view='work'}
-  const a=ACT[act],g=isOrg()?rdyGate(a):{top:true};S.wsel[act]=rEnc()==='gdp'||g.top||g.k==null?{t:'dp',k:0}:{t:'gate',k:g.k};dbOpen(code);}
+  const a=ACT[act],g=rdyGate(a);S.wsel[act]=rEnc()==='gdp'||g.top||g.k==null?{t:'dp',k:0}:{t:'gate',k:g.k};dbOpen(code);}
 function findDash(){
   const org=isOrg(),F=findAll(),L=DATA.acts,cnt={};FDK.forEach(k=>cnt[k[0]]=0);
   L.forEach(a=>F[a.code].forEach(k=>cnt[k]++));
   const top=k=>L.filter(a=>F[a.code][0]===k).length,flagged=L.filter(a=>F[a.code][0]!=='none').length;
   let h='<div class="tiles" style="margin-bottom:16px">'+
-    (org?tile(L.filter(a=>ABCSTAGE[a.code]).length+' of '+L.length,'activities assessed')+tile(cnt.pastHC+cnt.past,'past the ceiling with no override ('+cnt.pastHC+' at High or Critical)')+tile(cnt.elem,'with an element past its own ceiling')+tile(cnt.rdy,'readiness not cleared, of '+L.filter(a=>rdRec(a)).length+' with readiness assessed'):'')+
+    (org?tile(L.filter(a=>ABCSTAGE[a.code]).length+' of '+L.length,'activities assessed')+tile(cnt.pastHC+cnt.past,'past the ceiling with no override ('+cnt.pastHC+' at High or Critical)')+tile(cnt.elem,'with an element past its own ceiling')+tile(cnt.rdy,'readiness not cleared, of '+L.filter(a=>rdRec(a)).length+' with readiness assessed'):
+     tile('0 of '+L.length,'activities assessed: assessments are per organization')+tile('&mdash;','past the ceiling: not yet assessed')+tile('&mdash;','element past its own ceiling: not yet assessed')+tile('&mdash;','readiness: not yet assessed'))+
     tile(cnt.ctl,'need a named control: no control point')+tile(cnt.unchk,'receive AI-touched work with no person in between')+
     (org?tile(cnt.ref,'to reassess: reference changed'):tile(flagged+' of '+L.length,'activities with a finding at the ceilings'))+'</div>';
   const used=FDK.filter(k=>k[0]==='none'||cnt[k[0]]||!org&&['ctl','unchk'].includes(k[0]));
-  const leg=used.map(k=>'<span><i class="db-sw" style="background:'+k[2]+'"></i>'+k[1]+(k[0]==='none'?'':' ('+cnt[k[0]]+')')+'</span>').join('');
+  const leg=used.map(k=>'<span><i class="db-sw" style="background:'+k[2]+'"></i>'+k[1]+(k[0]==='none'?'':' ('+cnt[k[0]]+')')+'</span>').join('')+
+    (org?'':'<span><i class="db-sw u"></i>Past the ceiling, element, readiness and step evidence findings: not yet assessed (per organization)</span>');
   h+='<div class="card"><h3>Findings, by process</h3><div class="sub">One square per activity, colored by its most serious finding'+(org?', for '+esc(ORGNAME())+' at its Current State':', at the Progression Ceilings')+'. The figure on each card is how many of its activities have a finding.</div><div class="db-legend">'+leg+'</div><div class="db-grid">'+
     DATA.groups.map(([gc,gn])=>'<div class="db-col"><h4><span class="code">'+gc+'</span>'+esc(gn)+'</h4>'+PROCS.filter(p=>p.g===gc).map(p=>{const PL=p.acts.map(c=>ACT[c]).filter(Boolean),n=PL.filter(a=>F[a.code][0]!=='none').length;
       return '<div class="db-proc" onclick="fdOpen(\''+p.code+'\')"><div class="db-pn"><span><span class="code">'+p.code+'</span> '+esc(p.name)+'</span><span class="h"'+(n?'':' style="color:var(--lgray)"')+'>'+n+'</span></div><div class="db-cells">'+
@@ -1775,7 +1786,7 @@ function xrCard(){
 function printExceptionsReport(){P.fvPrintReport(XR_HTML)}
 
 const ORGS=[['ref','Reference Model'],['abc','ABC Test Org (test data)']];
-function pickOrg(v){if(v==='__new__'){alertNew=true;}else{S.org=v;alertNew=false;if(v==='ref'&&S.ws==='assessed')S.ws='all';}render()}
+function pickOrg(v){if(v==='__new__'){alertNew=true;}else{S.org=v;alertNew=false;}render()}
 let alertNew=false;
 /* ---------- Notes (the sandbox's reactions and notes, sandbox-notes-widget.js) ----------
    A small Notes link after each activity and process name (GR-044: notes on any row); notes are stored by code,
